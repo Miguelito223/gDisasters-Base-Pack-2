@@ -14,7 +14,9 @@ ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 ENT.Mass                             =  100
 
 function ENT:Initialize()		
-
+    
+	local bool hasShelfCloud = false
+	
     self:Lightning()
 	if (CLIENT) then
 	
@@ -225,13 +227,16 @@ function ENT:Squall()
 	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(32,38),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 49000, ["Temperature"] = math.random(16,17), ["Humidity"]    = math.random(32,25), ["BRadiation"]  = 0.1}}
 
     setMapLight("d")
+	
+	if(!hasShelfCloud) then
+	self:AttachParticleEffect()
+	hasShelfCloud = true
+	end
 
 	for k, v in pairs(player.GetAll()) do
 
 		if v.gDisasters.Area.IsOutdoor then
 			
-
-			self:AttachParticleEffect()
 			
 			
 	
@@ -271,7 +276,7 @@ function ENT:AttachParticleEffect()
 	end)
 	
 	
-	timer.Simple(4.5, function()
+	timer.Simple(1000, function()
 	if !self:IsValid() then return end
 	
 	self:StopParticles()
@@ -401,6 +406,9 @@ function ENT:OnRemove()
 		end
 		
 		setMapLight("t")
+		
+		for k, v in pairs(ents.FindByClass("gd_w2_thunderstorm_cl")) do v:Remove() end
+		
 	end
 	
 	if (CLIENT) then

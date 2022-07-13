@@ -15,6 +15,8 @@ ENT.Mass                             =  100
 
 function ENT:Initialize()		
 
+    local bool hasShelfCloud = false
+
     self:Lightning()
 	if (CLIENT) then
 	
@@ -225,13 +227,15 @@ function ENT:Squall()
 	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(75,89),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 49000, ["Temperature"] = math.random(7,12), ["Humidity"]    = math.random(45,49), ["BRadiation"]  = 0.1}}
 
     setMapLight("d")
+	
+	if(!hasShelfCloud) then
+	self:AttachParticleEffect()
+	hasShelfCloud = true
+	end
 
 	for k, v in pairs(player.GetAll()) do
 
 		if v.gDisasters.Area.IsOutdoor then
-			
-
-			self:AttachParticleEffect()
 			
 			
 	
@@ -271,7 +275,7 @@ function ENT:AttachParticleEffect()
 	end)
 	
 	
-	timer.Simple(4.5, function()
+	timer.Simple(1000, function()
 	if !self:IsValid() then return end
 	
 	self:StopParticles()
