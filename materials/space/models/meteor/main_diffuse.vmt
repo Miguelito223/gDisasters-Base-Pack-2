@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	
+	"$basetexture" "space/models/meteor/main_diffuse"
+	"$surfaceprop" "metal"
+	"$model" 1
+	
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[1 1 1]"
+	"$envmapmask" "space/models/meteor/main_specular"
+	
+	
+}
+

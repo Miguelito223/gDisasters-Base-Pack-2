@@ -1,0 +1,15 @@
+"Refract"
+{
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$refractamount" "1"
+	"$bluramount" "1"
+	"$normalmap" "hd2/effects/warps/fire_blur_a_ddn"
+	"$dudvmap" ""
+	"$nocull" 1
+	"$ignorez" 0
+	"Refract_DX80"
+{
+	"$fallbackmaterial" "null"
+	}
+}

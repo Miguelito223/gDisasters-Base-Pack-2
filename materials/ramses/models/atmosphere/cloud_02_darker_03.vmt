@@ -1,0 +1,11 @@
+"UnlitGeneric"
+{
+	"$basetexture" "ramses/models/atmosphere/cloud_02_darker_03"
+	"$surfaceprop" "wood"
+	"$model" 1
+	"$translucent" 1
+	"$nocull" 1
+
+	
+}
+

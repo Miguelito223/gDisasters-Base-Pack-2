@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "ramses/models/nature/sinkhole/main_diffuse"
+	"$surfaceprop" "wood"
+	"$model" 1
+	"$bumpmap" "ramses/models/nature/sinkhole/main_normalmap"
+	
+
+
+
+}
+

@@ -1,0 +1,11 @@
+"SpriteCard"
+{
+	"$basetexture" "hd/effects/sparks/sparkler_generic"
+	"$additive" "1"
+	$POWERFUNCTION "[0.8 2.5 5]"
+	$OVERBRIGHTFACTOR 2
+	$DEPTHBLEND 1
+	$startfadesize .2
+	$endfadesize .25
+	$MAXSIZE .25
+}

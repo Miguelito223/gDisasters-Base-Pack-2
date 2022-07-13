@@ -1,0 +1,8 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "decals/snow"
+	"$decal" 1
+	"$decalscale" 2
+	"$translucent" 1
+
+}

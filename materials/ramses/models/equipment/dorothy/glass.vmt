@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "ramses/models/equipment/dorothy/glass"
+	"$surfaceprop" "wood"
+	"$model" 1
+	"$translucent" 1
+
+	
+
+}
+

@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{
+	"$basetexture" "effects/glow_general"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+}

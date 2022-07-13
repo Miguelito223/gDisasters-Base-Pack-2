@@ -1,0 +1,10 @@
+"SpriteCard"
+{
+	"$basetexture" "hd2/effects/water/vortex"
+	"$additive" 1
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$translucent" 1
+	"$depthblend" 1
+	"$depthblendscale" 0.001
+}

@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "ramses/models/nature/volcano/spiderweb"
+	"$surfaceprop" "wood"
+	"$model" 1
+	"$translucent" 1
+	"$nocull" 1
+
+}
+

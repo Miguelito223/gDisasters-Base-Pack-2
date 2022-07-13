@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\nmr_zombie\zombiekid\ZombieBoy1_Body"
+	"$bumpmap" "models\nmr_zombie\zombiekid\ZombieBoy1_BodyNorm"
+	"$nocull" "1"	
+	"$halflambert" "1"	
+	"$model" "1"
+	"$alphatest" "1"
+	"$rimlight" "1"
+	"$rimlightexponent" "1"
+	"$rimlightboost" ".2"					
+}

@@ -1,0 +1,39 @@
+
+"UnlitTwoTexture"
+{
+	
+	"$basetexture" "nature/env_dynamicwater/base_water_01"
+	"$texture2" "nature/env_dynamicwater/base_water_02"
+
+	"$translucent" 1
+	"$nocull" 1
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[1 1 1]"
+
+
+	
+	"Proxies"
+	{
+	
+		"TextureScroll"
+		{
+			"texturescrollvar" "$baseTextureTransform"
+			"texturescrollrate" 0.005
+			"texturescrollangle" 25
+		
+		}
+	
+
+		"TextureScroll"
+		{
+			"texturescrollvar" "$texture2transform"
+			"texturescrollrate" 0.0025
+			"texturescrollangle" 45
+		}
+		
+		
+	}
+	
+	
+}
+

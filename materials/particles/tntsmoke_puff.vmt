@@ -1,0 +1,5 @@
+"Spritecard"
+{
+	"$basetexture" "particles/tntsmoke_puff"
+	 $translucent 1
+}

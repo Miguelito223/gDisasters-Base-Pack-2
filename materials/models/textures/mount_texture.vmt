@@ -1,0 +1,6 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "nature/mount_texture"
+	"$surfaceprop" "Grass"
+	"$translucent" 1
+}

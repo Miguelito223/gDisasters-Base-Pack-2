@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "ramses/models/furniture/player/body_main"
+	"$surfaceprop" "wood"
+	"$model" 1
+
+
+}
+

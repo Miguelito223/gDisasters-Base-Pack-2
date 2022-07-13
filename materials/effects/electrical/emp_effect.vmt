@@ -1,0 +1,7 @@
+"SpriteCard"
+{
+	"$basetexture" "hd2/effects/electrical/emp_effect"
+	"$additive" 1 
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+}

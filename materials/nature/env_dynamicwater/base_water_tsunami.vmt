@@ -1,0 +1,31 @@
+"VertexLitGeneric"
+{
+	
+	"$basetexture" "nature/env_dynamicwater/base_water_tsunami"
+	
+	"$translucent" 1
+	"$nocull" 1
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[0.4 0.4 0.7]"
+
+
+	$detail "nature/env_dynamicwater/base_water_02"
+	$detailscale 8
+	$detailblendfactor 1
+	$detailblendmode 1
+	
+	"Proxies"
+	{
+	
+		"TextureScroll"
+		{
+			"texturescrollvar" "$baseTextureTransform"
+			"texturescrollrate" 0.02
+			"texturescrollangle" 0
+		
+		}
+	
+	}
+	
+	
+}

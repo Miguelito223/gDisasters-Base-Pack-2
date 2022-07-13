@@ -1,0 +1,10 @@
+"UnlitGeneric"
+{
+	"$basetexture" "effects/environmental/electricity/lightning_texture"
+	
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+
+
+
+}

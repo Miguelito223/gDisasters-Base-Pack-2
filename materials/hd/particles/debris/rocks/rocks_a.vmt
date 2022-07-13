@@ -1,0 +1,6 @@
+"SpriteCard"
+{
+	"$basetexture" "hd/particles/debris/rocks/rocks_a"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+}

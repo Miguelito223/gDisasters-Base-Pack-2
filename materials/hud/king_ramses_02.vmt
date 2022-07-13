@@ -1,0 +1,6 @@
+"UnlitGeneric"
+	{
+		"$baseTexture" "hud/king_ramses_02"
+		"$translucent"		"1"
+		"$vertexalpha" "1"
+	}

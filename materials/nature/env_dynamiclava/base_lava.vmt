@@ -1,0 +1,23 @@
+"VertexLitGeneric"
+{
+	
+	"$basetexture" "nature/env_dynamiclava/base_lava"
+	
+	"$translucent" 1
+	"$nocull" 1
+	
+	"Proxies"
+	{
+	
+		"TextureScroll"
+		{
+			"texturescrollvar" "$baseTextureTransform"
+			"texturescrollrate" 0.01
+			"texturescrollangle" 90
+		
+		}
+	
+	}
+	
+	
+}

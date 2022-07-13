@@ -1,0 +1,11 @@
+"UnlitGeneric"
+{
+	"$baseTexture" "hud/infection_widescreen"
+	"$translucent"		"1"
+	"$alpha" 1
+	"$vertexalpha" "1"
+	"$ignorez"     "1"
+	"$no_fullbright" "1"	
+
+	"%keywords" "infection"
+}

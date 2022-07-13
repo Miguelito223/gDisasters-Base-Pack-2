@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+$basetexture "models\nmr_zombie\casual\casual_02\nmrih_casual_02_body_color"
+$bumpmap "models\nmr_zombie\casual\casual_02\nmrih_casual_01_body_normal"
+}

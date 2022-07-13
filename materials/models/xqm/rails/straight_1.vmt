@@ -1,0 +1,25 @@
+
+"VertexLitGeneric"
+{
+	"$basetexture" "models/XQM/Rails/straight_1"
+	"$surfaceprop" "metal"
+	"$bumpmap" "models/XQM/Rails/straight_1_normal"
+	"$phong" "1"
+	"$phongexponent" "40"
+	"$phongboost" "3"
+	"$phongfresnelranges" "[.05 .6 1]"
+	"$halflambert" "1"
+	
+	"$selfillum" 1
+
+ "Proxies"
+   {
+      "AnimatedTexture"
+      {
+         "animatedtexturevar" "$basetexture"
+         "animatedtextureframenumvar" "$frame"
+         "animatedtextureframerate" 13
+      }
+   }
+	"$model" 1
+}

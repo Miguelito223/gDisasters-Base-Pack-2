@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "atmosphere/skymap_2048x4096"
+	"$nofog" "1"
+	"$model"	"1"
+	"$additive" "1"
+}

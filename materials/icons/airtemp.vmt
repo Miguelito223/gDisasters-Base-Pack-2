@@ -1,0 +1,6 @@
+"UnlitGeneric"
+	{
+		"$baseTexture" "icons/airtemp"
+		"$translucent"		"1"
+		"$vertexalpha" "1"
+	}

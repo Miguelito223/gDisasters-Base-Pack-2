@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	
+	"$basetexture" "space/models/lavabomb/main_diffuse"
+	"$surfaceprop" "metal"
+	"$model" 1
+	$selfillum 1
+    $selfillummask "space/models/lavabomb/main_selfillummask"
+	
+	
+	
+	
+}
+

@@ -1,0 +1,8 @@
+"SpriteCard"
+{
+	"$basetexture" "hd/particles/cockroach/cockroach"
+	"$depthblend" "1"
+	"$depthblendscale" "1"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+}

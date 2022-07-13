@@ -1,0 +1,16 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "ramses/models/nature/volcano/base_volcano"
+	"$surfaceprop" "wood"
+	"$model" 1
+	
+	"$bumpmap" "ramses/models/nature/volcano/base_volcano_normal"
+
+	
+	"$envmaptint" "[0.12 0.12 0.12]"
+	"$envmap" "env_cubemap"
+	"$envmapmask"		"models/thedoctor/mat_t12/t12_body_SPEC"
+	"$normalmapalphaenvmapmask" 1
+
+}
+

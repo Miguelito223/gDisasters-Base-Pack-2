@@ -1,0 +1,19 @@
+"Refract"
+{
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$refractamount" "1"
+	"$bluramount" "1"
+	"$normalmap" 		"hd/particles/debris/glass/warping/shard_04"
+	"$dudvmap" ""
+	"$nocull" 1
+	"$ignorez" 0
+	"$nofog" "1"
+	"$vertexalpha" "1"
+	"$vertexcolor" "1"
+	"$vertexcolormodulate" "1"
+	"Refract_DX80"
+{
+	"$fallbackmaterial" "null"
+	}
+}

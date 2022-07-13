@@ -1,0 +1,30 @@
+"Refract"
+{
+
+	"$refractamount" "0.075"
+	"$refracttint" "[1 1 1]"
+	"$dudvmap" "dev/water_dudv"
+	"$normalmap" "dev/water_normal"
+
+	"$surfaceprop" "water"
+	"$bumpframe" "0"
+	"$nocull" 0
+
+	
+	"Proxies"
+	{
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$normalmap"
+			"animatedtextureframenumvar" "$bumpframe"
+			"animatedtextureframerate" 30.00
+		}
+
+	    "TextureScroll"
+		{
+			"texturescrollvar" "$bumptransform"
+			"texturescrollrate" 0.1
+			"texturescrollangle" 45.00
+		}
+	}
+}

@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\player\hunter\nmrih_eyes_blue_zom"		
+	"$halflambert" "1"	
+	"$model" "1"
+
+	"$phong" "1"
+	"$phongexponent" "10"
+	"$phongboost" "6"	
+	"$phongfresnelranges"	"[3 4 12]"
+	"$phongexponenttexture" "models\player\hunter\nmrih_eyes_blue_zom"
+	"$phongalbedotint" "1"
+}

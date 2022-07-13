@@ -1,0 +1,7 @@
+
+"VertexLitGeneric"
+{
+	"$basetexture" "models/XQM/Rails/gumball_1"
+	"$envmap" "env_cubemap"
+	"$model" 1
+}

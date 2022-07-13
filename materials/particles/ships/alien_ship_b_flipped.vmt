@@ -1,0 +1,9 @@
+"UnlitGeneric"
+{
+	"$basetexture" "hd/particles/ships/alien_ship_b_flipped"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+	"$translucent" "1"
+	"$nocull" 1 
+	
+}

@@ -1,0 +1,7 @@
+"SpriteCard"
+{
+	"$basetexture" "hd2/effects/glow/flare/circular_bokeh_sharp"
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$additive" 1
+}

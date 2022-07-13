@@ -1,0 +1,8 @@
+"SpriteCard"
+{
+	"$basetexture" "hd2/effects/debris/misc/ash_a"
+	"$additive" 1
+	"$translucent" 1
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+}
