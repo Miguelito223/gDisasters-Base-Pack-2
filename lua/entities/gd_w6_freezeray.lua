@@ -111,7 +111,7 @@ end
 
 function ENT:AffectNpcs()
 	for k, v in pairs(ents.GetAll()) do
-		if v:IsNPC() v:IsNextBot() then 
+		if v:IsNPC() or v:IsNextBot() then 
 			if math.random(1,5)== 1 then
 				
 				InflictDamage(v, self, "cold", math.random	(15,20))
