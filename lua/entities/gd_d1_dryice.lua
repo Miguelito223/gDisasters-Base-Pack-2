@@ -5,13 +5,13 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Dry Ice"
+ENT.PrintName		                 =  "Dry Ice (beta)"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 
 
-ENT.Mass                             =  10
+ENT.Mass                             =  100
 ENT.Model                           = "models/ramses/models/nature/blockofice.mdl"
 
     
@@ -34,7 +34,6 @@ function ENT:Initialize()
 	PrecacheParticleSystem( "dryice_medfog_crawler" )
 	PrecacheParticleSystem( "dryice_deepfog_crawler" )
 	PrecacheParticleSystem( "dryice_fog_explosion" )
-	PrecacheParticleSystem( "dryice_melting" )
 	
 	if (SERVER) then
 		
@@ -48,11 +47,8 @@ function ENT:Initialize()
 		if phys:IsValid() then
 			phys:Wake()
 			phys:EnableMotion(true)
-			phys:SetBuoyancyRatio(100)
 			
 		end
-		
-		ParticleEffectAttach("dryice_melting", PATTACH_POINT_FOLLOW, self, 0)
 		
 		if (phys:IsValid()) then
 			phys:SetMass(self.Mass)

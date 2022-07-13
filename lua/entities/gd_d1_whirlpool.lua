@@ -80,7 +80,7 @@ function ENT:Vortex()
 			local vert_force   = (math.Clamp(180 / twoDDistance^2,0,1) * 60) * Vector(0,0,-1)
 			local horiz_force  = (math.Clamp(180 / twoDDistance^1.1,0,1) * 36) * dir2_tangent
 			
-			if v:IsPlayer() or v:IsNPC() then
+			if v:IsPlayer() or v:IsNPC() or v:IsNextBot()then
 				v:SetVelocity( dir * 30 + vert_force + horiz_force)
 
 			else

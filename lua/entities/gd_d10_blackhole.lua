@@ -120,7 +120,7 @@ function ENT:NewtonianGravity()
 			local Fr  = (dir * -1*10^9) / ((r+1000)^2)
 			local Fg  = CalculateNewtonianForce(M1, M2, r) * dir 
 			 
-			if v:IsPlayer() or v:IsNPC() then
+			if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
 				v:SetVelocity(Fg)
 				v:SetMoveType( MOVETYPE_FLY )
 			else

@@ -69,7 +69,7 @@ end
 
 	for k,v in pairs(ents.GetAll()) do
 	
-	if v:IsPlayer() or v:IsNPC() then
+	if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
 	
 	local hit = (Vector( v:GetPos().x, v:GetPos().y, 0) - Vector( self:GetPos().x, self:GetPos().y, 0)):Length() 
 	

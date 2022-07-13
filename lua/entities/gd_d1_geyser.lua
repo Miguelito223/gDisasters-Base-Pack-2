@@ -96,7 +96,7 @@ function ENT:PushEntities()
 		local dist = v:GetPos():Distance(self:GetPos())
 		local force = 1 - (math.Clamp(dist / maxz,0,1))
 		
-		if v:IsPlayer() or v:IsNPC() then
+		if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
 		
 		if v:IsOnGround() and ( v:IsPlayer() and !v:InVehicle() ) then v:SetPos( v:GetPos() + Vector(0,0,1))  end 
 		
@@ -260,7 +260,7 @@ function ENT:WaterDetection()
 		local phys = v:GetPhysicsObject()
 		if vpos.z < maxz and vpos.z > minz and v:GetPhysicsObject():IsValid() then
 			local diff = maxz-vpos.z 
-			if v:IsPlayer() or v:IsNPC() then
+			if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
 			
 			
 				v:TakeDamage(0.1, self, self)

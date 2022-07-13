@@ -97,7 +97,7 @@ function ENT:Touch( entity )
 	
 	if vlength > 300 then return end 
 	
-	if entity:IsNPC() or entity:IsPlayer() then
+	if entity:IsNPC() or entity:IsPlayer() or entity:IsNextBot() then
 		if math.random(1,25)==1 then
 		
 			local dmginfo = DamageInfo()
