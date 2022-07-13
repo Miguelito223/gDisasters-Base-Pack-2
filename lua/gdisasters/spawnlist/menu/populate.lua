@@ -95,6 +95,7 @@ AddToGDSpawnMenu("Freezing Rain", "gd_w2_freezingrain" , "Weather", "Tier 2", fa
 AddToGDSpawnMenu("Chinese Smog", "gd_w2_chinese_smog" , "Weather", "Tier 2", false)
 AddToGDSpawnMenu("Low pressure", "gd_w2_lowpressure_sys" , "Weather", "Tier 2", false)
 AddToGDSpawnMenu("Stationary Front", "gd_w2_stationaryfront" , "Weather", "Tier 2", false)
+AddToGDSpawnMenu("Haboob", "gd_w2_haboob" , "Weather", "Tier 2", false)
 
 --[[
 WEATHER TIER 3
@@ -147,7 +148,8 @@ AddToGDSpawnMenu("Extreme Breeze" , "gd_w6_extremebreeze" , "Weather", "Tier 5",
 AddToGDSpawnMenu("Downburst" , "gd_w6_downburst"    , "Weather", "Tier 5", false)
 AddToGDSpawnMenu("Microburst" , "gd_w5_microburst"    , "Weather", "Tier 5", false)
 AddToGDSpawnMenu("Macroburst" , "gd_w5_macroburst"    , "Weather", "Tier 5", false)
-AddToGDSpawnMenu("Silent Hill "           , "gd_d5_silenthill"           , "Weather", "Tier 5", false)
+AddToGDSpawnMenu("Silent Hill (sp00ky)"           , "gd_d5_silenthill"           , "Weather", "Tier 5", false)
+AddToGDSpawnMenu("Pyrocumulus" , "gd_w5_pyrocum"    , "Weather", "Tier 5", false)
 
 --[[
 WEATHER TIER 6
@@ -164,6 +166,8 @@ AddToGDSpawnMenu("Solar Ray", "gd_w7_solarray", "Weather", "Tier 6", false)
 AddToGDSpawnMenu("Freeze Ray", "gd_w6_freezeray", "Weather", "Tier 6", false)
 AddToGDSpawnMenu("Martian Dust Storm", "gd_w6_martianduststorm", "Weather", "Tier 6", false)
 AddToGDSpawnMenu("Hypercane", "gd_w6_hypercane", "Weather", "Tier 6", false)
+AddToGDSpawnMenu("Jupiter Red Spot", "gd_w6_redspot", "Weather", "Tier 6", false)
+AddToGDSpawnMenu("Neptune", "gd_w6_neptune", "Weather", "Tier 6", false)
 
 --[[
 DISASTERS 
@@ -183,7 +187,7 @@ AddToGDSpawnMenu("Hail"        , "gd_d1_hail" , "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Whirlpool (Small)"        , "gd_d1_whirlpool" , "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Steam devil", "gd_d1_steamdevil", "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Mini Flood", "gd_d0_miniflood", "Disasters", "Tier 1", false)
-AddToGDSpawnMenu("Dry Ice (beta)", "gd_d1_dryice", "Disasters", "Tier 1", false)
+AddToGDSpawnMenu("Dry Ice", "gd_d1_dryice", "Disasters", "Tier 1", false)
 --[[
 DISASTERS 
 TIER TWO
@@ -221,6 +225,7 @@ AddToGDSpawnMenu("category 3 Flood"        , "gd_d3_cat3flood"              , "D
 AddToGDSpawnMenu("category 4 Flood"        , "gd_d3_cat4flood"              , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("category 5 Flood"        , "gd_d3_cat5flood"              , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("Landslide" , "gd_d3_landslide"         , "Disasters", "Tier 3", false)
+AddToGDSpawnMenu("Sinkhole (beta)" , "gd_d3_sinkhole"         , "Disasters", "Tier 3", false)
 
 --[[
 DISASTERS 
@@ -288,6 +293,7 @@ AddToGDSpawnMenu("EF5 Tornado"           , "gd_d8_ef5"           , "Disasters", 
 AddToGDSpawnMenu("EF5 Tornado (Smart)"   , "gd_d8_ef5_pathed"    , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("≈8.0 Magnitude Earthquake" , "gd_d8_rs8eq"         , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("Acient Volcano" , "gd_d8_volcano"         , "Disasters", "Tier 8", false)
+AddToGDSpawnMenu("Combine Invasion" , "gd_d8_combineinv"         , "Disasters", "Tier 8", false)
 
 --[[
 DISASTERS 
@@ -299,6 +305,7 @@ AddToGDSpawnMenu("Meteorite" , "gd_d9_meteroite"         , "Disasters", "Tier 9"
 AddToGDSpawnMenu("EF6 Tornado", "gd_d9_ef6", "Disasters", "Tier 9", false)
 AddToGDSpawnMenu("EF6 Tornado (Smart)", "gd_d9_ef6_pathed", "Disasters", "Tier 9", false)
 AddToGDSpawnMenu("White Hole"  , "gd_d9_whitehole" , "Disasters", "Tier 9", false)
+AddToGDSpawnMenu("Super Whirlpool"  , "gd_d9_superwhirlpool" , "Disasters", "Tier 9", false)
 
 --[[
 DISASTERS 
