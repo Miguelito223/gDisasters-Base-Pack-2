@@ -5,12 +5,11 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Whirlpool"
+ENT.PrintName		                 =  "Super Whirlpool"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 
-ENT.Material                         = "nature/ice"        
 ENT.Mass                             =  100
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"                      
 
@@ -33,10 +32,7 @@ function ENT:Initialize()
 		end 		
 		
 		self:SetNoDraw(true)
-		ParticleEffectAttach("whirlpool_small_effect", PATTACH_POINT_FOLLOW, self, 0)
-
-		
-		
+		ParticleEffectAttach("whirlpool_big_effect", PATTACH_POINT_FOLLOW, self, 0)
 		
 	end
 	
@@ -45,23 +41,19 @@ function ENT:Initialize()
 		local sound = Sound("disasters/water_shared/water_whirlpool_loop_01.wav")
 
 		CSPatch = CreateSound(self, sound)
-		CSPatch:SetSoundLevel( 60 )
+		CSPatch:SetSoundLevel( 80 )
 		CSPatch:Play()
 		CSPatch:ChangeVolume( 1 )
 		self.Sound = CSPatch
 	end)
+		
 end
 
-function ENT:OnRemove()
-
-	self.Sound:Stop()
-
-end
 
 
 function ENT:Vortex()
 
-	local entities = FindInCylinder(self:GetPos(), 180, 2,  -100, true)
+	local entities = FindInCylinder(self:GetPos(), 3400, 4,  -400, true)
 	local selfpos_norm = Vector(self:GetPos().x, self:GetPos().y, 0)
 	
 	for k, v in pairs(entities) do
@@ -77,16 +69,17 @@ function ENT:Vortex()
 			local dir          = (v:GetPos() - self:GetPos()):GetNormalized() * -1
 			local dir2_tangent = self:GetPos():Cross(v:GetPos()):GetNormalized()
 			
-			local vert_force   = (math.Clamp(180 / twoDDistance^2,0,1) * 60) * Vector(0,0,-1)
-			local horiz_force  = (math.Clamp(180 / twoDDistance^1.1,0,1) * 36) * dir2_tangent
+			local vert_force   = (math.Clamp(3400 / twoDDistance^2,0,1) * 600) * Vector(0,0,-1)
+			local horiz_force  = (math.Clamp(3400 / twoDDistance^1.1,0,1) * 4) * dir2_tangent
 			
 			if v:IsPlayer() or v:IsNPC() then
-				v:SetVelocity( dir * 30 + vert_force + horiz_force)
+				v:SetVelocity( dir * 60 + (vert_force*4) + (horiz_force*0.2))
 
 			else
-				phys:AddVelocity( dir * 10 + vert_force + horiz_force)
+				phys:AddVelocity( dir * 40 + (vert_force*7) + horiz_force)
 
 			end
+		
 		
 		
 		end
@@ -116,6 +109,8 @@ function ENT:Think()
 	end
 end
 
+function ENT:OnRemove()
+end
 
 function ENT:Draw()
 
@@ -150,6 +145,13 @@ function ENT:SpawnFunction( ply, tr )
 	end
 	
 	
+end
+
+
+function ENT:OnRemove()
+
+	self.Sound:Stop()
+
 end
 
 

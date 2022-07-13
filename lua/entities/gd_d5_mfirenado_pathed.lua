@@ -94,7 +94,7 @@ function ENT:PostSpawn()
 				
 
 
-				if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
+				if ent:IsPlayer() or ent:IsNPC() then
 					InflictDamage(ent, me, "fire", 8)
 					ent:Ignite(3)
 				else 

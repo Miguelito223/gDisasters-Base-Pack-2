@@ -155,7 +155,7 @@ function ENT:MakeEntitiesSlide()
 		
 		for k, v in pairs(ents.GetAll()) do 
 		
-			if v:IsPlayer()==false and v:IsNPC() == false and v:IsNextBot() == false and v:GetPhysicsObject():IsValid() and v:IsVehicle() == false  then 
+			if v:IsPlayer()==false and v:IsNPC() == false and v:GetPhysicsObject():IsValid() and v:IsVehicle() == false  then 
 				if (v:GetClass()!= "phys_constraintsystem" and v:GetClass()!= "phys_constraint"  and v:GetClass()!= "logic_collision_pair" and v:GetClass()!= "entityflame") then 
 					
 					local phys = v:GetPhysicsObject()

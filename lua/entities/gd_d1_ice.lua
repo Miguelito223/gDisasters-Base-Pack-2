@@ -103,7 +103,7 @@ function ENT:DoIceSkating()
 				self.TouchedEntities[ent] = nil 
 				
 			else
-				if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
+				if ent:IsPlayer() or ent:IsNPC() then
 					
 					ent:SetVelocity( vel_diff )
 				else

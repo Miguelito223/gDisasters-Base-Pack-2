@@ -76,7 +76,7 @@ function ENT:Touch( entity )
 	
 	if vlength > 100 then return end 
 	
-	if entity:IsNPC() or entity:IsPlayer() or entity:IsNextBot()then
+	if entity:IsNPC() or entity:IsPlayer() then
 		
 		
 		if entity:IsPlayer() then

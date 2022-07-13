@@ -5,21 +5,20 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Tar Pit"
+ENT.PrintName		                 =  "Sinkhole (beta)"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 
-ENT.Material                         = "models/rendertarget"        
+ENT.Material                         = "nature/sand"        
 ENT.Mass                             =  100
 ENT.Models                           =  {"models/props_debris/concrete_spawnplug001a.mdl"}  
 
 
 function ENT:Initialize()	
-
 	if (CLIENT) then
-		self:SetMDScale(Vector(1,1,0.05))
 	end
+	
 	
 	if (SERVER) then
 		
@@ -32,16 +31,17 @@ function ENT:Initialize()
 		self:SetMaterial(self.Material)
 		local phys = self:GetPhysicsObject()
 		
-		ParticleEffectAttach("tar_pit_onmodel_main", PATTACH_POINT_FOLLOW, self, 0)
 		self:SetTrigger( true )
-		self.NextBubblingSound = CurTime()
+
 		
 		if (phys:IsValid()) then
 			phys:SetMass(self.Mass)
 		end 		
 		
-		self:SetModelScale( math.random(1,10) ) 
+		self:SetModelScale( math.random(14,18) ) 
 		self:SetAngles( Angle(0,math.random(1,180), 0))
+		
+		self:SetPos(self:GetPos() - Vector(0,0,125))
 		
 		
 		
@@ -61,7 +61,7 @@ function ENT:SpawnFunction( ply, tr )
 	self.OWNER = ply
 	local ent = ents.Create( self.ClassName )
 	ent:SetPhysicsAttacker(ply)
-	ent:SetPos( tr.HitPos + tr.HitNormal * -0.2  ) 
+	ent:SetPos( tr.HitPos + tr.HitNormal * -0.7  ) 
 	ent:Spawn()
 	ent:Activate()
 	return ent
@@ -69,60 +69,31 @@ end
 
 
 
-function ENT:BubblingSound()
-
-	if math.random(1,100)==1 and self:CanPlayBubblingSound() then
-		self:EmitSound("streams/tarpit.mp3")
-
-	end
-end
-
-function ENT:CanPlayBubblingSound()
-
-	if CurTime() >= self.NextBubblingSound then 
-		self.NextBubblingSound = CurTime() + 8
-		return true
-	else 
-		return false
-	end
-	
-end
 
 
 
 function ENT:Touch( entity )
-	
+
 	local vlength = entity:GetVelocity():Length()
-	local zdiff   = math.abs(math.Clamp(entity:GetPos().z - self:GetPos().z, -50,0))
 	
-	if vlength > 300 then return end 
+	if vlength > 100 then return end 
 	
 	if entity:IsNPC() or entity:IsPlayer() then
-		if math.random(1,25)==1 then
 		
-			local dmginfo = DamageInfo()
-			dmginfo:SetDamage( math.random(1,2) + (zdiff/2) )
-			dmginfo:SetDamageType( DMG_BURN ) 
-			dmginfo:SetAttacker( entity ) 
-			entity:TakeDamageInfo(dmginfo)
-			
-		 
-		end
 		
 		if entity:IsPlayer() then
-			local r, g, b  = entity:GetColor().r, entity:GetColor().g, entity:GetColor().b
-			entity:SetColor( Color( math.Clamp(r-1,0,255),  math.Clamp(g-1,0,255),  math.Clamp(b-1,0,255) ) )
-			entity:SetPos( entity:GetPos() - Vector(0,0,0.2))
+		
+			entity:SetPos( entity:GetPos() - Vector(0,0,0.6))
 		
 		else
-			entity:Ignite(60, 0)
+
 			entity:SetPos( entity:GetPos() - Vector(0,0,20))
 
 		end
 		
 	
 	else
-		entity:SetPos( entity:GetPos() - Vector(0,0,0.3))
+		entity:SetPos( entity:GetPos() - Vector(0,0,0.7))
 
 	end
 	
@@ -134,7 +105,6 @@ function ENT:Think()
 		if !self:IsValid() then return end
 		local t =  (FrameTime() / 0.1) / (66.666 / 0.1) -- tick dependant function that allows for constant think loop regardless of server tickrate
 		
-		self:BubblingSound()
 		self:NextThink(CurTime() + t)
 		return true
 	end
