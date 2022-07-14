@@ -188,7 +188,7 @@ function ENT:NewtonianGravity()
 			local FsR = ( Fg:Length() - Fr:Length()) * -dir
 
 			
-			if v:IsPlayer() or v:IsNPC() v:IsNextBot() then
+			if v:IsPlayer() or v:IsNPC() or v:IsNextBot then
 				
 				v:SetVelocity( FsR )
 				v:SetMoveType( MOVETYPE_FLY)
@@ -227,16 +227,7 @@ function ENT:PhysicsUpdate()
 
 end
 
-function ENT:OnRemove()
-	if (SERVER) then
-		EnableGlobalGravity(true)
-	end
-	if self.Sound==nil then return end
-	self.Sound:Stop()
 
-	
-	self:StopParticles()
-end
 
 function ENT:Think()
 
@@ -255,7 +246,16 @@ end
 
 
 
+function ENT:OnRemove()
+	if (SERVER) then
+		EnableGlobalGravity(true)
+	end
+	if self.Sound==nil then return end
+	self.Sound:Stop()
 
+	
+	self:StopParticles()
+end
 
 
 
