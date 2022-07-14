@@ -10,7 +10,7 @@ ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 
-ENT.Model                            = "models/ramses/models/nature/Chicxulub.mdl"
+ENT.Model                            = "models/ramses/models/nature/moon.mdl"
 
 
 function ENT:Initialize()	
@@ -32,14 +32,7 @@ function ENT:Initialize()
 			phys:SetMass(700)
 		end 		
 		
-		phys:EnableDrag( false )
-		
-		timer.Simple(0.1, function()
-		if !self:IsValid() then return end
-		ParticleEffectAttach("chicxuclub_fall_main", PATTACH_POINT_FOLLOW, self, 2)
-		end)
-		
-		
+		phys:EnableDrag( false )	
 		
 		timer.Simple(14, function()
 			if !self:IsValid() then return end
@@ -158,27 +151,33 @@ function ENT:Explode()
 	
 	util.BlastDamage( self, self, self:GetPos()+Vector(0,0,12), 5000000, math.random( 100000, 400000 ) )
 	
-	timer.Simple(5, function()
+	timer.Simple(2, function()
 		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 		if #ents.FindByClass("gd_w*") >= 1 then return end
 		
 		local ent = ents.Create("gd_w3_heavyashstorm")
 		local ent2 = ents.Create("gd_d10_meteorshower")
 		local ent3 = ents.Create("gd_d10_meteoriteshower")
+		ent:SetPos(pos - Vector(0,0,5000))
 		ent:Spawn()
 		ent:Activate()
-		
+		ent2:SetPos(pos - Vector(0,0,5000))
 		ent2:Spawn()
 		ent2:Activate()
-		
+		ent3:SetPos(pos - Vector(0,0,5000))
 		ent3:Spawn()
 		ent3:Activate()
+
+		timer.Simple(300, function()
+			ent:Remove()
+			ent2:Remove()
+			ent3:Remove()
+
+			local ent4 = ents.Create("gd_w4_heavyacidrain")
+			ent4:Spawn()
+			ent4:Activate()
+		end)
 	
-	end)
-	timer.Simple(40llllllllll, function()
-		local ent4 = ents.Create("gd_w4_heavyacidrain")
-		ent4:Spawn()
-		ent4:Activate()
 	end)
 
 	self:Remove()

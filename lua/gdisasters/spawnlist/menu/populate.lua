@@ -67,6 +67,7 @@ AddToGDSpawnMenu("Beaufort 0 Wind (Calm)", "gd_w1_beaufort0", "Weather", "Tier 1
 AddToGDSpawnMenu("Beaufort 1 Wind (Light Air)", "gd_w1_beaufort1", "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Shooting Star Shower", "gd_w1_shootingstarshower" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Cumulus CLoud", "gd_w1_cumu_cldy" , "Weather", "Tier 1", false)
+AddToGDSpawnMenu("Cum CLoud?", "gd_w1_cumcloud" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("City Snow", "gd_w1_citysnow" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("High pressure", "gd_w1_highpressure_sys" , "Weather", "Tier 1", false)
 
@@ -323,5 +324,6 @@ AddToGDSpawnMenu("Meteor Shower", "gd_d10_meteorshower", "Disasters", "Tier ELE"
 AddToGDSpawnMenu("Meteorite Shower", "gd_d10_meteoriteshower", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Black Hole"  , "gd_d10_blackhole" , "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Chicxuclub"  , "gd_d10_chicxuclub" , "Disasters", "Tier ELE", false)
+AddToGDSpawnMenu("Moon Impact"  , "gd_d10_moonimpact" , "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("EF7 Tornado", "gd_d10_ef7", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("EF7 Tornado (Smart)", "gd_d10_ef7_pathed", "Disasters", "Tier ELE", false)

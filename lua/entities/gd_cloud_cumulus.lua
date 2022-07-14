@@ -9,7 +9,7 @@ ENT.PrintName		                 =  "CLOUD"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.Models                           =  {"models/ramses/models/clouds/cumulus_a.mdl","models/ramses/models/clouds/cumulus_c.mdl"}
+ENT.Models                           =  {"models/ramses/models/clouds/cumulus_a.mdl","models/ramses/models/clouds/cumulus_c.mdl", "models/ramses/models/clouds/cumulus_b.mdl"}
 
 ENT.Rendergroup                     = RENDERGROUP_BOTH
 
