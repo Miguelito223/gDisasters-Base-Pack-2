@@ -151,33 +151,27 @@ function ENT:Explode()
 	
 	util.BlastDamage( self, self, self:GetPos()+Vector(0,0,12), 5000000, math.random( 100000, 400000 ) )
 	
-	timer.Simple(2, function()
+	timer.Simple(5, function()
 		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 		if #ents.FindByClass("gd_w*") >= 1 then return end
 		
 		local ent = ents.Create("gd_w3_heavyashstorm")
 		local ent2 = ents.Create("gd_d10_meteorshower")
 		local ent3 = ents.Create("gd_d10_meteoriteshower")
-		ent:SetPos(pos - Vector(0,0,5000))
 		ent:Spawn()
 		ent:Activate()
-		ent2:SetPos(pos - Vector(0,0,5000))
+		
 		ent2:Spawn()
 		ent2:Activate()
-		ent3:SetPos(pos - Vector(0,0,5000))
+		
 		ent3:Spawn()
 		ent3:Activate()
-
-		timer.Simple(300, function()
-			ent:Remove()
-			ent2:Remove()
-			ent3:Remove()
-
-			local ent4 = ents.Create("gd_w4_heavyacidrain")
-			ent4:Spawn()
-			ent4:Activate()
-		end)
 	
+	end)
+	timer.Simple(50, function()
+		local ent4 = ents.Create("gd_w4_heavyacidrain")
+		ent4:Spawn()
+		ent4:Activate()
 	end)
 
 	self:Remove()
