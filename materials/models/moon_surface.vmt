@@ -1,4 +1,4 @@
 "VertexlitGeneric"
 {
-	"$basetexture" "models/moon_surface"
+	"$basetexture" "materials/models/moon_surface"
 }

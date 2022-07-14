@@ -81,8 +81,8 @@ function ENT:CreateMeteorite()
 	moite:Spawn()
 	moite:Activate()
 	moite:GetPhysicsObject():EnableMotion(true)
-	moite:GetPhysicsObject():SetVelocity( Vector(0,0, -0.000001))
-	moite:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
+	moite:GetPhysicsObject():SetVelocity( Vector(0,0,math.random(-0.0000000000000001, -1)))
+	moite:GetPhysicsObject():AddAngleVelocity( VectorRand() * 5 )
 	self:Remove()
 	
 	

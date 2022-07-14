@@ -5,7 +5,7 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "chicxuclub"
+ENT.PrintName		                 =  "Moon"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
@@ -40,19 +40,6 @@ function ENT:Initialize()
 		end)
 
 	end
-end
-
-
-function ENT:Fix()
-	self:SetMDScale(Vector(2,2,2))
-	
-end
-
-
-function ENT:SetMDScale(scale)
-	local mat = Matrix()
-	mat:Scale(scale)
-	self:EnableMatrix("RenderMultiply", mat)
 end
 
 
@@ -182,7 +169,6 @@ end
 function ENT:Think()
 		if (CLIENT) then
 		
-		self:Fix()
 	
 		end
 	
