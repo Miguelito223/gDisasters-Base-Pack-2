@@ -188,7 +188,7 @@ function ENT:NewtonianGravity()
 			local FsR = ( Fg:Length() - Fr:Length()) * -dir
 
 			
-			if v:IsPlayer() or v:IsNPC() or v:IsNextBot then
+			if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
 				
 				v:SetVelocity( FsR )
 				v:SetMoveType( MOVETYPE_FLY)
