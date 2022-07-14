@@ -206,7 +206,7 @@ function ENT:InsideLavaEffect()
 		local phys = v:GetPhysicsObject()
 
 		
-		if v:IsPlayer() or v:IsNPC() or ent:IsNextBot() then
+		if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
 			v:SetVelocity( v:GetVelocity() * -0.9)
 			
 			if v:IsPlayer() then
