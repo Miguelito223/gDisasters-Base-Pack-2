@@ -151,6 +151,18 @@ function ENT:CreateSandDecals()
 	end
 end
 
+function ENT:AffectNpcs()
+	for k, v in pairs(ents.GetAll()) do
+		if v:IsNPC() or v:IsNextBot() then 
+			if math.random(1,2)== 1 then
+				
+				InflictDamage(v, self, "fire", math.random	(2, 5))
+
+			end	
+		end
+	end	
+end	
+
 function ENT:Think()
 	if (CLIENT) then
 		
@@ -180,6 +192,7 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		self:AffectPlayers()
+		self:AffectNpcs()
 		self:CreateSandDecals()
 		
 		local t =  (FrameTime() / 0.1) / (66.666 / 0.1) -- tick dependant function that allows for constant think loop regardless of server tickrate
