@@ -175,7 +175,7 @@ function ENT:Explode()
 		ent3:Activate()
 	
 	end)
-	timer.Simple(40llllllllll, function()
+	timer.Simple(40, function()
 		local ent4 = ents.Create("gd_w4_heavyacidrain")
 		ent4:Spawn()
 		ent4:Activate()
