@@ -6,6 +6,7 @@ if (SERVER) then
 	
 	AddCSLuaFile("gdisasters/shared_func/main.lua")
 	AddCSLuaFile("gdisasters/shared_func/netstrings.lua")
+	AddCSLuaFile("gdisasters/extensions/patchs-bounds.lua")
 	AddCSLuaFile("gdisasters/game/convars/main.lua")
 	AddCSLuaFile("gdisasters/player/cl_menu.lua")
 	AddCSLuaFile("gdisasters/player/sv_menu.lua")
@@ -22,7 +23,8 @@ if (SERVER) then
 	AddCSLuaFile("gdisasters/game/decals.lua")
 
 	include("gdisasters/shared_func/main.lua")	
-	include("gdisasters/shared_func/netstrings.lua")	
+	include("gdisasters/shared_func/netstrings.lua")
+	include("gdisasters/extensions/patchs-bounds.lua")	
 	include("gdisasters/player/sv_menu.lua")
 	include("gdisasters/game/antilag/main.lua")
 	include("gdisasters/game/water_physics.lua")
@@ -49,7 +51,8 @@ if (CLIENT) then
 
 	include("gdisasters/player/cl_menu.lua")
 	include("gdisasters/shared_func/main.lua")	
-	include("gdisasters/shared_func/netstrings.lua")	
+	include("gdisasters/shared_func/netstrings.lua")
+	include("gdisasters/extensions/patchs-bounds.lua")		
 	include("gdisasters/player/postspawn.lua")
 	
 	include("gdisasters/player/process_gfx.lua")
