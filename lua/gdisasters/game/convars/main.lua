@@ -3,8 +3,6 @@ AddCSLuaFile("autorun/server/convars.lua") -- REMOVE THIS FILE AND YOU WILL DIE 
 
 CreateConVar( "gdisasters_envdynamicwater_simquality", "50", {FCVAR_ARCHIVE,FCVAR_NOTIFY}, "this affects simulation quality of env_dynamicwater " )
 CreateConVar( "gdisasters_envdynamicwater_candamageconstraints", "1", {FCVAR_ARCHIVE,FCVAR_NOTIFY}, "" )
-CreateConVar( "gdisasters_envdynamiclava_simquality", "50", {FCVAR_ARCHIVE,FCVAR_NOTIFY}, "this affects simulation quality of env_dynamicwater " )
-CreateConVar( "gdisasters_envdynamiclava_candamageconstraints", "1", {FCVAR_ARCHIVE,FCVAR_NOTIFY}, "" )
 
 CreateConVar( "gdisasters_envearthquake_simquality", "50", {FCVAR_ARCHIVE,FCVAR_NOTIFY}, "this affects simulation quality of env_earthquake " )
 

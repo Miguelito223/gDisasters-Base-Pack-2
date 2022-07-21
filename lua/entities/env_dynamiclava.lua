@@ -89,7 +89,7 @@ end
 function ENT:LavaFloodHeightIncrement(scalar, t)
 
 
-	local sim_quality     = GetConVar( "gdisasters_envdynamiclava_simquality" ):GetFloat() --  original lava simulation is based on a value of 0.01 ( which is alright but not for big servers ) 
+	local sim_quality     = GetConVar( "gdisasters_envdynamicwater_candamageconstraints" ):GetFloat() --  original lava simulation is based on a value of 0.01 ( which is alright but not for big servers ) 
 	local sim_quality_mod = sim_quality / 0.01
 	local overall_mod     = sim_quality_mod * scalar
 	
@@ -122,7 +122,7 @@ function ENT:ProcesslavaFlood(scalar, t)
 	local zmax = self:GetPos().z + self.FloodHeight 
 	local pos  = self:GetPos() - Vector(0,0,50)
 	local wr   = 0.999               -- lava friction
-	local sim_quality     = GetConVar( "gdisasters_envdynamiclava_simquality" ):GetFloat() --  original lava simulation is based on a value of 0.01 ( which is alright but not for big servers ) 
+	local sim_quality     = GetConVar( "gdisasters_envdynamicwater_candamageconstraints" ):GetFloat() --  original lava simulation is based on a value of 0.01 ( which is alright but not for big servers ) 
 	local sim_quality_mod = sim_quality / 0.01
 	
 	local overall_mod     = sim_quality_mod * scalar 
@@ -292,9 +292,6 @@ function ENT:OnRemove()
 	end
 	self:StopParticles()
 end
-
-local lava_textures = Material("nature/env_dynamiclava/base_lava")
-
 	
 function ENT:Draw()
 			
@@ -314,7 +311,7 @@ function env_dynamiclava_Drawlava()
 	local map_bounds = getMapBounds()
 	local vmin, vmax =  Vector(map_bounds[1].x,map_bounds[1].y,0),  Vector(map_bounds[2].x,map_bounds[2].y,height)
 
-	local lava_texture = lava_textures
+	local lava_texture = Material("nature/env_dynamiclava/base_lava")
 
 	local function RenderFix()
 	
