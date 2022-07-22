@@ -311,8 +311,6 @@ function env_dynamiclava_Drawlava()
 	local map_bounds = getMapBounds()
 	local vmin, vmax =  Vector(map_bounds[1].x,map_bounds[1].y,0),  Vector(map_bounds[2].x,map_bounds[2].y,height)
 
-	local lava_texture = Material("nature/env_dynamiclava/base_lava")
-
 	local function RenderFix()
 	
 	
@@ -343,7 +341,7 @@ function env_dynamiclava_Drawlava()
 
 	local function Drawlava()
 	
-		render.SetMaterial(lava_texture)
+		render.SetMaterial( Material("nature/env_dynamiclava/base_lava") )
 		render.SetBlend( 1 )
 		
 		local matrix = Matrix( );
@@ -355,7 +353,7 @@ function env_dynamiclava_Drawlava()
 		
 		cam.PushModelMatrix( matrix );
 
-			mesh.Begin( MATERIAL_QUADS, 1 );
+			mesh.Begin( MATERIAL_QUADS, 2 );
 
 			EasyVert( Vector(map_bounds[1].x,map_bounds[1].y,hmod), vector_up, 0,0 );
 			EasyVert( Vector(map_bounds[1].x,map_bounds[2].y,hmod), vector_up, 0,25 );

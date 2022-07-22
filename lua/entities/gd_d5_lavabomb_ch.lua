@@ -173,7 +173,7 @@ function ENT:Think()
 	
 	local dist = (self:GetPos() - v:GetPos()):Length() 
 	
-	if v:IsPlayer() or v:IsNPC() or ent:IsNextBot() then
+	if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
 	
 	if ( dist <= 400 ) and v:IsValid() and self:IsValid() then
 	
