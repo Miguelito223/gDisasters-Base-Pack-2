@@ -457,7 +457,7 @@ function ENT:ProcessEntitiesInWedge()
 					
 					v:SetVelocity( v:GetVelocity() * -0.5 + Vector(0,0,10) )
 				
-				elseif v.IsInWater and v:IsNPC() then
+				elseif v.IsInWater and v:IsNPC() or v:IsNextBot() then
 					v:SetVelocity( ((Vector(0,0,math.Clamp(diff,-100,50)/4) * 0.99)  * overall_mod) - (v:GetVelocity() * 0.05))
 					v:TakeDamage(1, self, self)
 				else
@@ -871,7 +871,7 @@ end
 
 function ENT:OnWedgeEntry(ent) 
 	
-	if ent:IsPlayer() or ent:IsNPC() then 
+	if ent:IsPlayer() or ent: or v:IsNextBot() then 
 	
 		InflictDamage(ent, self, "cold")
 	

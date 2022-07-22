@@ -110,7 +110,7 @@ function ENT:SpawnZombies()
 	
 	for k, v in pairs(ents.GetAll()) do
 	
-		if v:IsNPC() then 
+		if v:IsNPC() or v:IsNextBot() then 
 		if !IsValid( v ) or ( !IsValid( self ) ) or (v:GetClass()== "npc_zombie" or v:GetClass()== "npc_fastzombie" or v:GetClass()== "npc_zombie_torso" or v:GetClass()== "npc_fastzombie_torso") then return end
 		
 		local npcpos = v:GetPos()
