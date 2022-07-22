@@ -112,7 +112,7 @@ function ENT:Touch( entity )
 		if entity:IsPlayer() then
 			local r, g, b  = entity:GetColor().r, entity:GetColor().g, entity:GetColor().b
 			entity:SetColor( Color( math.Clamp(r-1,0,255),  math.Clamp(g-1,0,255),  math.Clamp(b-1,0,255) ) )
-			entity:SetPos( entity:GetPos() - Vector(0,0,0.2))
+			entity:SetPos( entity:GetPos() - Vector(0,0,0.6))
 		
 		else
 			entity:Ignite(60, 0)
@@ -122,7 +122,7 @@ function ENT:Touch( entity )
 		
 	
 	else
-		entity:SetPos( entity:GetPos() - Vector(0,0,0.3))
+		entity:SetPos( entity:GetPos() - Vector(0,0,0.7))
 
 	end
 	

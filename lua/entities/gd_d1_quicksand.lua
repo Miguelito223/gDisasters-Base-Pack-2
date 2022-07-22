@@ -81,7 +81,7 @@ function ENT:Touch( entity )
 		
 		if entity:IsPlayer() then
 		
-			entity:SetPos( entity:GetPos() - Vector(0,0,0.2))
+			entity:SetPos( entity:GetPos() - Vector(0,0,0.6))
 		
 		else
 
@@ -91,7 +91,7 @@ function ENT:Touch( entity )
 		
 	
 	else
-		entity:SetPos( entity:GetPos() - Vector(0,0,0.3))
+		entity:SetPos( entity:GetPos() - Vector(0,0,0.7))
 
 	end
 	
