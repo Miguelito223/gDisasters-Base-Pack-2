@@ -240,8 +240,6 @@ function Wind()
 					local frictional_velocity = frictional_scalar * -windvel:GetNormalized()
 					local windvel_new         = ( windvel  + frictional_velocity ) * 2
 					
-					print(windvel_new)
-					
 					local windvel_cap         = windvel_new:Length() - v:GetVelocity():Length() 
 					
 					if windvel_cap > 0 then
