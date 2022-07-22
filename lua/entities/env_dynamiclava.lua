@@ -188,7 +188,7 @@ function ENT:ProcesslavaFlood(scalar, t)
 				v:Ignite()
 				v:TakeDamage(10, self, self)
 			
-			elseif v.IsInlava and v:IsNPC() v:IsNextBot() then
+			elseif v.IsInlava and v:IsNPC() or v:IsNextBot() then
 				v:SetVelocity( ((Vector(0,0,math.Clamp(diff,-100,50)/4) * 0.99)  * overall_mod) - (v:GetVelocity() * 0.05))
 				v:TakeDamage(1, self, self)
 				v:Ignite()
