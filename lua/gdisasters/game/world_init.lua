@@ -158,7 +158,7 @@ hook.Add( "Initialize", "AtmosInitFix", function()
 
 	if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 	
-	if GetConVar("gdisasters_atmosphere"):GetInt() <= 1 then 
+	if GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then 
 
 		if #ents.FindByClass("env_skypaint")<1 then
 		local ent = ents.Create("env_skypaint")
@@ -181,9 +181,9 @@ hook.Add( "InitPostEntity", "gDisastersInitPostEvo", function()
 
 	if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 	
-	if GetConVar("gdisasters_atmosphere"):GetInt() <= 1 then 
+	if GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then 
 
-	local oldCleanUpMap = game.CleanUpMap
+		local oldCleanUpMap = game.CleanUpMap
 	
 		game.CleanUpMap = function(dontSendToClients, ExtraFilters)
 			dontSendToClients = (dontSendToClients != nil and dontSendToClients or false)
