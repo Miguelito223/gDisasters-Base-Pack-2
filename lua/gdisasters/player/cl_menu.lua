@@ -36,7 +36,7 @@ local function CreateTickboxConVariable(CPanel, desc, convarname)
 end
 
 local function CreateSliderConVariable(CPanel, desc, minvar, maxvar, dp, convarname)
-	local CB = CPanel:NumSlider(    desc, "", minvar, maxvar, dp );
+	local CB = CPanel:NumSlider(desc, convarname, minvar, maxvar, dp);
 	
  	CB.Scratch.ConVarChanged = function() end	
 	CB.OnValueChanged = function( panel, val )
