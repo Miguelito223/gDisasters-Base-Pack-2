@@ -19,7 +19,7 @@ CreateConVar( "gdisasters_atmosphere", "1", {FCVAR_ARCHIVE,FCVAR_NOTIFY}, "" )
 CreateConVar( "gdisasters_envtornado_manualspeed", "0", {FCVAR_ARCHIVE,FCVAR_NOTIFY}, "" )
 CreateConVar( "gdisasters_envtornado_speed", "9", {FCVAR_ARCHIVE,FCVAR_NOTIFY}, "" )
 
-CreateConVar( "gdisasters_envtornado_lifetime_min", "100", {FCVAR_ARCHIVE,FCVAR_NOTIFY}, "" )
+CreateConVar( "gdisasters_envtornado_lifetime_min", "1", {FCVAR_ARCHIVE,FCVAR_NOTIFY}, "" )
 CreateConVar( "gdisasters_envtornado_lifetime_max", "100", {FCVAR_ARCHIVE,FCVAR_NOTIFY}, "" )
 
 CreateConVar( "gdisasters_wind_postdamage_nocollide_enabled", "1", {FCVAR_ARCHIVE,FCVAR_NOTIFY}, " " )

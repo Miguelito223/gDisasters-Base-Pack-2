@@ -985,7 +985,7 @@ function ENT:AttachParticleEffect()
 end
 
 function ENT:Decay()
-	timer.Simple(math.random(self.Data.Life.Min, self.Data.Life.Min), function()
+	timer.Simple(math.random(self.Data.Life.Min, self.Data.Life.Max), function()
 		if !self:IsValid() then return end
 		self:Remove()
 	end)
