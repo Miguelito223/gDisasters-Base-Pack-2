@@ -138,7 +138,7 @@ end)
 concommand.Add("body_temp", function(test, test2, test3)
 	for k, v in pairs(player.GetAll()) do
 
-		v.BodyTemperature = tonumber(test3[1])
+		v.gDisasters.Body.Temperature = tonumber(test3[1])
 	
 	end
 end)
