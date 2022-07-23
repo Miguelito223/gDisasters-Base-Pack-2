@@ -76,7 +76,7 @@ local function gDisastersSVSettings( CPanel )
 	
 	SVMenuCreated = false;
 
-	AddControlLabel( CPanel, "The day and night cycle requires a map RESTART to take effect." )
+	AddControlLabel( CPanel, "The Atmophere option requires a map RESTART to take effect." )
 
 end
 
