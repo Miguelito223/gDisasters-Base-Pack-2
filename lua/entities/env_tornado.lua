@@ -18,7 +18,7 @@ ENT.EnchancedFujitaScaleData         = {
 	["EF3"] = { Speed = math.random(218,266) },
 	["EF4"] = { Speed = math.random(267,322) },
 	["EF5"] = { Speed = math.random(322,350) },
-	["EF6"] = { Speed = math.random(500,600) },
+	["EF6"] = { Speed = math.random(400,500) },
 	["EF7"] = { Speed = math.random(600,800) }
 }	
 
@@ -96,7 +96,7 @@ function ENT:PlayFadeinSound()
 		
 	elseif category == "EF6" then
 	
-		CreateSoundWave("streams/environment/wind_shared/martian_tornado_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/environment/wind_shared/ef5_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 
 	elseif category == "EF7" then
 	
@@ -124,7 +124,7 @@ function ENT:PlayFadeoutSound()
 
 	elseif category == "EF6" then
 	
-		CreateSoundWave("streams/environment/wind_shared/martian_tornado_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/environment/wind_shared/ef5_fadeout.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 
 	elseif category == "EF7" then
 	
@@ -343,7 +343,7 @@ function ENT:CreateLoop()
 		
 	elseif category == "EF6" then
 	
-		spath      =  ("streams/environment/wind_shared/martian_tornado_loop.wav")
+		spath      =  table.Random( {"streams/environment/wind_shared/ef5_loop.wav", "streams/environment/wind_shared/ef5_loop2.wav"})
 
 	elseif category == "EF7" then
 	
@@ -495,34 +495,24 @@ function ENT:TryRemoveConstraints(ent)
 	
 	
 	local chance = 0 
-	
-	local phys = ent:GetPhysicsObject()
-	
-	local mass = phys:GetMass()
-	
-	if mass <= 200 then
-	
-	if self.Data.EnhancedFujitaScale == "EF0" then
-		chance = math.random(1,2)/12
-		
-	end
 
-	elseif self.Data.EnhancedFujitaScale == "EF1" then
-		chance = math.random(1,3)/10
+	
+	if self.Data.EnhancedFujitaScale == "EF1" then
+		chance = 0.125
 	
 	elseif self.Data.EnhancedFujitaScale == "EF2" then
-		chance = math.random(3,6)/10
+		chance = 0.25
 		
 	elseif self.Data.EnhancedFujitaScale == "EF3" then
-		chance = math.random(0.3,0.5)
+		chance = 0.5
 	elseif self.Data.EnhancedFujitaScale == "EF4" then
-		chance = math.random(0.7,1.1)
+		chance = 1
 	elseif self.Data.EnhancedFujitaScale == "EF5" then
-		chance = math.random(1.4,3.5)
+		chance = 2
 	elseif self.Data.EnhancedFujitaScale == "EF6" then
-		chance = math.random(4.8,6.5)
+		chance = 6
 	elseif self.Data.EnhancedFujitaScale == "EF7" then
-		chance = math.random(5.2,7.5)
+		chance = 8
 	end
 
 	
@@ -575,28 +565,17 @@ function ENT:TryRemoveConstraints(ent)
 end
 
 function ENT:Physics()
-	local phys_scalar = GetConVar( "gdisasters_envtornado_simquality" ):GetFloat() / 0.01
-	if !(CurTime() >= self.NextPhysicsTime) then return end
+	if !(CurTime() >= self.NextPhysicsTime) or !self:HasFadedIn() then return end
+		local phys_scalar = GetConVar( "gdisasters_envtornado_simquality" ):GetFloat() / 0.01
+	
+		self:FunnelPhysics(phys_scalar)
+		self:GroundFunnelPhysics(phys_scalar)
+		self:ApplyShaking()
 
-	local category         = self.Data.EnhancedFujitaScale
 
-	if category == "EF6" then
-
-	if !self:IsValid() then return end
-	self:FunnelPhysics(phys_scalar)
-	self:GroundFunnelPhysics(phys_scalar)
-	self:ApplyShaking()
-
-	else
-
-	timer.Simple(8, function()
-	if !self:IsValid() then return end
-	self:FunnelPhysics(phys_scalar)
-	self:GroundFunnelPhysics(phys_scalar)
-	self:ApplyShaking()
-
-	end)
-end
+	
+		self.NextPhysicsTime = CurTime() + GetConVar( "gdisasters_envtornado_simquality" ):GetFloat()
+	end
 	
 	self.NextPhysicsTime = CurTime() + GetConVar( "gdisasters_envtornado_simquality" ):GetFloat()
 end
@@ -617,13 +596,9 @@ function ENT:ApplyPlayerNPCPhysics(ent, radius, physics_scalar, force_mul)
 	
 	local main_force          = suctional_force + Vector(tangential_force.x,tangential_force.y,0) + updraft_force
 	
-	if self:IsValid() then
-	
-	if ent:IsOnGround() and ent:IsPlayer() and !ent:InVehicle() then ent:SetPos( ent:GetPos() + Vector(0,0,1))  end 
+	if ent:IsOnGround() then ent:SetPos( ent:GetPos() + Vector(0,0,1))  end 
 
 	ent:SetVelocity(main_force * force_mul)
-			
-	end
 	
 end
 
@@ -916,6 +891,16 @@ function ENT:EFire(pointer, arg)
 	
 end
 
+function ENT:HasFadedIn()
+
+	return self:GetElapsedTime() >= self.FadeInTime 
+	
+end
+
+function ENT:GetElapsedTime() 
+	return CurTime() - self.StartTime 
+end
+
 function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
@@ -925,9 +910,9 @@ function ENT:Think()
 		self:IsParentValid()
 		
 
-	self:NextThink(CurTime() + 0.025)
+		self:NextThink(CurTime() + 0.025)
 		
-	return true
+		return true
 	
 	end
 end
@@ -1011,28 +996,6 @@ function ENT:OnRemove()
 	if self.Sound==nil then return end
 	self.Sound:Stop()
 end
-
-
-	
---[[hook.Add( "PreDrawOpaqueRenderables", "test", function()
-
-	render.SetColorMaterial()
-
-	local Path          =  getMapPath()
-	
-	local NextPathIndex = 8
-	
-	if NextPathIndex > #Path then return end
-	for k, v in pairs(ents.FindByClass( "env_tornado" ) ) do
-
-
-
-	render.DrawLine( Path[1], Path[NextPathIndex], Color( 0, 225, 0, 255 ), false )
-	end
-
-	
-end )--]]
-
 	
 function ENT:Draw()	
 
