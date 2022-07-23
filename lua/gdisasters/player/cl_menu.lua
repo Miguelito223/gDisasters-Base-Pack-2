@@ -89,6 +89,8 @@ local function gDisastersSVADVSettings( CPanel )
 	CreateSliderConVariable(CPanel,"Water Simulation Quality", 0.1, 0.50, 2, "gdisasters_envdynamicwater_simquality");
 	CreateSliderConVariable(CPanel,"Wind Simulation Quality", 0.1, 0.50, 2, "gdisasters_wind_physics_simquality")
 	CreateSliderConVariable(CPanel, "Tornado Speed", 4, 20, 2, "gdisasters_envtornado_speed" );
+	CreateSliderConVariable(CPanel, "Tornado Lifetime min", 1, 100, 0, "gdisasters_envtornado_lifetime_min" );
+	CreateSliderConVariable(CPanel, "Tornado Lifetime max", 1, 100, 0, "gdisasters_envtornado_lifetime_max" );
 	CreateSliderConVariable(CPanel, "Hud Type", 1, 3, 0, "gdisasters_hud_type" );
 	CreateSliderConVariable(CPanel,"Max CPPPS ", 0, 1000, 0,"gdisasters_antilag_maximum_safe_collisions_per_second_per_prop");
 	CreateSliderConVariable(CPanel,"Max PD NC BT", 0, 1000, 0,"gdisasters_antilag_post_damage_no_collide_base_time");
