@@ -55,7 +55,7 @@ GLOBAL_SYSTEM_ORIGINAL = {
 				}
 
 
-concommand.Add("smite", function(test, test2, test3)
+concommand.Add("smite", function()
 
 	local bounds    = getMapSkyBox()
 	local min       = bounds[1]
@@ -122,29 +122,40 @@ concommand.Add("freeze", function()
 end)
 
 
-concommand.Add("temp", function(test, test2, test3)
-	local speed = test3[1]
-	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = tonumber(speed)
+concommand.Add("temp", function(cmd, args, temp)
+	local temperature = temp[1]
+	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = tonumber(temperature)
 end)
 
 
 
-concommand.Add("wind", function(test, test2, test3)
-	local speed = test3[1]
+concommand.Add("wind", function(cmd, args, wind)
+	local speed = wind[1]
 	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = tonumber(speed)
 end)
 
+concommand.Add("wind_direction", function(cmd, args, wind)
+	local direction = wind[1]
+	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = tonumber(direction)
+end)
 
-concommand.Add("body_temp", function(test, test2, test3)
+
+concommand.Add("body_temp", function(cmd, args, temp)
 	for k, v in pairs(player.GetAll()) do
-
-		v.gDisasters.Body.Temperature = tonumber(test3[1])
+		local temperature = temp[1]
+		v.gDisasters.Body.Temperature = tonumber(temperature)
 	
 	end
 end)
 
-concommand.Add("pressure", function(test, test2, test3)
-	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = tonumber(test3[1])
+concommand.Add("pressure", function(cmd, args, pressure)
+	local press = pressure[1]
+	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = tonumber(press)
+end)
+
+concommand.Add("humidity", function(cmd, args, humidity)
+	local humi =  humidity[1]
+	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = tonumber(humi)
 end)
 
 concommand.Add("getmap", function(test, test2, test3)

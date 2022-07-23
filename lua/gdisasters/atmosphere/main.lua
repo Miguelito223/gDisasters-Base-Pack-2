@@ -180,7 +180,7 @@ function Wind()
 		-- frictional force has a maximum of 400 gmod units 
 		-- 
 		
-		local windvel           = convert_MetoSU(convert_KMPHtoMe( ( math.Clamp((( math.Clamp(local_wind / 256, 0, 1) * 5)^2) * local_wind, 0, local_wind)  / 2.9225))) * winddir --  curve = ( math.Clamp(local_wind / 256, 0, 1) * 5)^2 
+		local windvel           = convert_MetoSU(convert_KMPHtoMe( ( math.Clamp((( math.Clamp(local_wind / 256, 0, 1) * 5)^2) * local_wind, 0, local_wind)  / 2.9225))) * winddir
 		local frictional_scalar = math.Clamp(windvel:Length(),-400, 400)
 		local frictional_velocity = frictional_scalar * -windvel:GetNormalized()
 		local windvel_new         = ( windvel + frictional_velocity ) * 0.5
