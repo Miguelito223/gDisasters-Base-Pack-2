@@ -235,7 +235,7 @@ Material_Types = {
 if (SERVER) then
 
 
--- --[[
+
 function setMapLight(light)
 	local light_env = ents.FindByClass("light_environment")[1]
 
