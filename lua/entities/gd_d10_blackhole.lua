@@ -125,6 +125,7 @@ function ENT:NewtonianGravity()
 				v:SetMoveType( MOVETYPE_FLY )
 			else
 				if r <= 10000 and v:IsValid() then
+					if !phys:IsValid() then return end
 					constraint.RemoveAll( v )
 					phys:Wake()
 					phys:EnableMotion(true)
