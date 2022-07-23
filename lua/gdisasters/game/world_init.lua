@@ -55,7 +55,7 @@ GLOBAL_SYSTEM_ORIGINAL = {
 				}
 
 
-concommand.Add("smite", function()
+concommand.Add("gdisasters_smite", function()
 
 	local bounds    = getMapSkyBox()
 	local min       = bounds[1]
@@ -80,20 +80,20 @@ concommand.Add("smite", function()
 
 end)
 
-concommand.Add("setlight", function(ply, cmd, args)
+concommand.Add("gdisasters_setlight", function(ply, cmd, args)
 	setMapLight(args[1])
 end)
 
-concommand.Add("setposme", function(ply, cmd, args)
+concommand.Add("gdisasters_setposme", function(ply, cmd, args)
 	ply:SetPos(ply:GetEyeTrace().HitPos)
 end)
 
 
-concommand.Add("tickrate", function(ply, cmd, args)
+concommand.Add("gdisasters_tickrate", function(ply, cmd, args)
 	print( 1 / engine.TickInterval())
 end)
 
-concommand.Add("unfreeze", function()
+concommand.Add("gdisasters_unfreeze", function()
 
 	for k, v in pairs(ents.GetAll()) do
 		if v:GetPhysicsObject():IsValid() then v:GetPhysicsObject():EnableMotion(true) v:GetPhysicsObject():Wake() end 
@@ -101,12 +101,12 @@ concommand.Add("unfreeze", function()
 end)
 
 
-concommand.Add("getpropnum", function()
+concommand.Add("gdisasters_getpropnum", function()
 
 	print(#ents.FindByClass("prop_physics"))
 end)
 
-concommand.Add("ent_getinfo", function(ply)
+concommand.Add("gdisasters_ent_getinfo", function(ply)
 
 	local ent = ply:GetEyeTrace().Entity
 	PrintTable(ent:GetTable())
@@ -114,7 +114,7 @@ end)
 
 
 
-concommand.Add("freeze", function()
+concommand.Add("gdisasters_freeze", function()
 
 	for k, v in pairs(ents.GetAll()) do
 		if v:GetPhysicsObject():IsValid() then v:GetPhysicsObject():EnableMotion(false)  end 
@@ -122,14 +122,14 @@ concommand.Add("freeze", function()
 end)
 
 
-concommand.Add("temp", function(cmd, args, temp)
+concommand.Add("gdisasters_temp", function(cmd, args, temp)
 	local temperature = temp[1]
 	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = tonumber(temperature)
 end)
 
 
 
-concommand.Add("wind", function(cmd, args, wind)
+concommand.Add("gdisasters_wind", function(cmd, args, wind)
 	local speed = wind[1]
 	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = tonumber(speed)
 end)
@@ -140,7 +140,7 @@ concommand.Add("wind_direction", function(cmd, args, wind)
 end)
 
 
-concommand.Add("body_temp", function(cmd, args, temp)
+concommand.Add("gdisasters_body_temp", function(cmd, args, temp)
 	for k, v in pairs(player.GetAll()) do
 		local temperature = temp[1]
 		v.gDisasters.Body.Temperature = tonumber(temperature)
@@ -148,17 +148,17 @@ concommand.Add("body_temp", function(cmd, args, temp)
 	end
 end)
 
-concommand.Add("pressure", function(cmd, args, pressure)
+concommand.Add("gdisasters_pressure", function(cmd, args, pressure)
 	local press = pressure[1]
 	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = tonumber(press)
 end)
 
-concommand.Add("humidity", function(cmd, args, humidity)
+concommand.Add("gdisasters_humidity", function(cmd, args, humidity)
 	local humi =  humidity[1]
 	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = tonumber(humi)
 end)
 
-concommand.Add("getmap", function(test, test2, test3)
+concommand.Add("gdisasters_getmap", function()
 	print(game.GetMap())
 end)
 
