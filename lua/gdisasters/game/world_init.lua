@@ -135,8 +135,8 @@ concommand.Add("gdisasters_wind", function(cmd, args, wind)
 end)
 
 concommand.Add("gdisasters_wind_direction", function(cmd, args, wind)
-	local direction = wind[1]
-	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = tonumber(direction)
+	local direction = Vector(tonumber(wind[1]), tonumber(wind[2]), tonumber(wind[3]))
+	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = direction
 end)
 
 
