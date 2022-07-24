@@ -266,15 +266,19 @@ function ENT:Erupt()
 	self:CreateRocks( 20, {8,10} )
 	
 	timer.Simple(10, function()
-	      local ent = ents.Create("gd_w2_volcano_ash")
-		  ent:Spawn()
-		  ent:Activate()
+		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
+		if #ents.FindByClass("gd_w*") >= 1 then return end
+	    local ent = ents.Create("gd_w2_volcano_ash")
+		ent:Spawn()
+		ent:Activate()
 	end)
 		  
     timer.Simple(50, function()
-	      local ent = ents.Create("gd_w2_acidrain")
-		  ent:Spawn()
-		  ent:Activate()
+		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
+		if #ents.FindByClass("gd_w*") >= 1 then return end
+	    local ent = ents.Create("gd_w2_acidrain")
+		ent:Spawn()
+		ent:Activate()
 	end)
 	
 	ParticleEffect("volcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
