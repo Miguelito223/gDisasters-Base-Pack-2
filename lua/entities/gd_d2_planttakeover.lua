@@ -78,9 +78,9 @@ function ENT:SpawnTrees()
 		
 		if HitChance(0.02) then
 		
-		--print(v:GetModel())
+		print(v:GetModel())
 		
-		--v:SetMaterial(mat)
+		v:SetMaterial(mat)
 		
 		timer.Simple( math.random(4,8), function()
 		if !v:IsValid() or !self:IsValid() then return end

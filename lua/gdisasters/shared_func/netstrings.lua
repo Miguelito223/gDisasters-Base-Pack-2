@@ -180,8 +180,6 @@ net.Receive("gd_soundwave", function()
 
 	elseif stype == "3d" then
 		sound.Play( s,  pos, 150, math.random(pitchrange[1], pitchrange[2]), 1 )
-	else
-		print("WHAT THE FUCK ARE WE DOING HERE???? GO AND REPORT THIS TO THE CREATOR!")
 	end
 	
 	

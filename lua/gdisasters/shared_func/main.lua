@@ -1190,8 +1190,6 @@ function CreateSoundWave(soundpath, epicenter, soundtype, speed, pitchrange, sha
 
 			elseif soundtype == "3d" then
 				sound.Play( soundpath,  epicenter, 170, math.random(pitchrange[1], pitchrange[2]), 1 )
-			else
-				print("WHAT THE FUCK ARE WE DOING HERE???? GO AND REPORT THIS TO THE CREATOR!")
 			end		
 							
 		end
@@ -1563,7 +1561,6 @@ Noise.perlin3D = function(x, y, z )
 		for x=0, Noise.PERLIN_SIZE  do
 			table.insert(Noise.perlin, rand())
 		end
-		print("rebuild")
 	end
 	
 	if (x<0) then x = -x end
