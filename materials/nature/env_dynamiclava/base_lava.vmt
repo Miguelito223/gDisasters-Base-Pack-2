@@ -2,7 +2,9 @@
 {
 	
 	"$basetexture" "nature/env_dynamiclava/base_lava"	
+	
 	"$translucent" 1
+	"$nocull" 1
 	
 	"Proxies"
 	{

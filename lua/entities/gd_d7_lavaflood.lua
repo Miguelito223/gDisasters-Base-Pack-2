@@ -33,7 +33,7 @@ function ENT:Initialize()
 		end 		
 		
 
-		self.Child = createLava(math.random(self.MaxFloodLevel[1], self.MaxFloodLevel[2]), self)
+		self.Child = createlava(math.random(self.MaxFloodLevel[1], self.MaxFloodLevel[2]), self)
 		
 			
 		
