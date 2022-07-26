@@ -177,7 +177,6 @@ function ENT:Explode()
 	end)
 	timer.Simple(45, function()
 		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
-		if #ents.FindByClass("gd_w*") >= 1 then return end
 		local ent4 = ents.Create("gd_w4_heavyacidrain")
 		ent4:Spawn()
 		ent4:Activate()
