@@ -503,26 +503,26 @@ function ENT:TryRemoveConstraints(ent)
 	if mass <= 200 then
 	
 	if self.Data.EnhancedFujitaScale == "EF0" then
-		chance = math.random(1,2)/12
+		chance = GetConVar( "gdisasters_envtornado_damage" ):GetInt()
 		
 	end
 
 	elseif self.Data.EnhancedFujitaScale == "EF1" then
-		chance = math.random(1,3)/10
+		chance = GetConVar( "gdisasters_envtornado_damage" ):GetInt()
 	
 	elseif self.Data.EnhancedFujitaScale == "EF2" then
-		chance = math.random(3,6)/10
+		chance = GetConVar( "gdisasters_envtornado_damage" ):GetInt()
 		
 	elseif self.Data.EnhancedFujitaScale == "EF3" then
-		chance = math.random(0.3,0.5)
+		chance = GetConVar( "gdisasters_envtornado_damage" ):GetInt()
 	elseif self.Data.EnhancedFujitaScale == "EF4" then
-		chance = math.random(0.7,1.1)
+		chance = GetConVar( "gdisasters_envtornado_damage" ):GetInt()
 	elseif self.Data.EnhancedFujitaScale == "EF5" then
-		chance = math.random(1.4,3.5)
+		chance = GetConVar( "gdisasters_envtornado_damage" ):GetInt()
 	elseif self.Data.EnhancedFujitaScale == "EF6" then
-		chance = math.random(4.8,6.5)
+		chance = GetConVar( "gdisasters_envtornado_damage" ):GetInt()
 	elseif self.Data.EnhancedFujitaScale == "EF7" then
-		chance = math.random(5.2,7.5)
+		chance = GetConVar( "gdisasters_envtornado_damage" ):GetInt()
 	end
 
 	

@@ -182,6 +182,7 @@ function gDisasters_ProcessTemperature()
 					
 			if temp >= 44 or temp <= 24 then
 				if v:Alive() then v:Kill() end
+
 			end
 			
 		end
