@@ -25,8 +25,7 @@ ENT.Data.MinFunnel.Radius 			 = 700    -- funnel radius at min height
 ENT.Data.GroundSpeed.Min  			 = 3
 ENT.Data.GroundSpeed.Max 			 = 6
 
-ENT.Data.Life.Min                    = GetConVar("gdisasters_envtornado_lifetime_min"):GetInt()
-ENT.Data.Life.Max                    = GetConVar("gdisasters_envtornado_lifetime_max"):GetInt()
+
 
 ENT.Data.MaxGroundFunnel.Height      = -1
 ENT.Data.MaxGroundFunnel.Radius      = -1
