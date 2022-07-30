@@ -259,10 +259,10 @@ end
 
 hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 
-	spawnmenu.AddToolMenuOption( "gDisasters", "Server", "gDisastersSVADSettings", "Advanced", "", "", gDisastersSVADVSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters", "Server", "gDisastersAutospawn", "Autospawn Settings", "", "", gDisastersAutospawn )
-	spawnmenu.AddToolMenuOption( "gDisasters", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVADSettings", "Advanced", "", "", gDisastersSVADVSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersAutospawn", "Autospawn Settings", "", "", gDisastersAutospawn )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )
 	
 
 end );

@@ -1,23 +1,27 @@
 "VertexLitGeneric"
 {
+	"$basetexture" "ramses/models/nature/volcano/lava_anim"
+	"$surfaceprop" "wood"
+	"$model" 1
 	
-	"$basetexture" "nature/env_dynamiclava/base_lava"	
+
 	
-	"$translucent" 1
-	"$nocull" 1
-	
+	"$envmaptint" "[0.12 0.12 0.12]"
+	"$envmap" "env_cubemap"
+	"$selfillum" 1
+	"$selfillummask" "ramses/models/nature/volcano/lava_anim"
 	"Proxies"
+	
 	{
-	
-		"TextureScroll"
-		{
-			"texturescrollvar" "$baseTextureTransform"
-			"texturescrollrate" 0.01
-			"texturescrollangle" 90
-		
-		}
-	
+      "AnimatedTexture"
+      {
+         "animatedtexturevar" "$baseTexture"
+         "animatedtextureframenumvar" "$frame"
+         "animatedtextureframerate" "1"
 	}
-	
-	
+   }
+
+
+
 }
+
