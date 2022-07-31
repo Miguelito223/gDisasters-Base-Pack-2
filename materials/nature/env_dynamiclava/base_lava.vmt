@@ -1,15 +1,15 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "ramses/models/nature/volcano/lava_anim"
+	"$basetexture" "nature/env_dynamiclava/base_lava"
 	"$surfaceprop" "wood"
 	"$model" 1
-	
 
-	
-	"$envmaptint" "[0.12 0.12 0.12]"
+
 	"$envmap" "env_cubemap"
+	"$envmaptint" "[0.12 0.12 0.12]"
 	"$selfillum" 1
-	"$selfillummask" "ramses/models/nature/volcano/lava_anim"
+	"$selfillummask" "nature/env_dynamiclava/base_lava"
+	
 	"Proxies"
 	
 	{
@@ -20,8 +20,6 @@
          "animatedtextureframerate" "1"
 	}
    }
-
-
-
+	
+	
 }
-

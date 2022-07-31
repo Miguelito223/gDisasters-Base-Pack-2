@@ -9,7 +9,7 @@ ENT.PrintName		                 =  "Lava Flood"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.MaxFloodLevel                    =  600
+ENT.MaxFloodLevel                    =   1000
 
 function ENT:Initialize()	
 
@@ -47,7 +47,7 @@ function createlava(maxheight, parent)
 
 	if IsMapRegistered() == true then
 	
-	for k, v in pairs(ents.FindByClass("env_dynamiclava")) do
+	for k, v in pairs(ents.FindByClass("env_dynamicwater", "env_dynamiclava")) do
 		v:Remove()
 	end
 	
@@ -102,6 +102,38 @@ function ENT:FloodHeightIncrement(scalar, t)
 	self:SetNWFloat("FloodHeight", self.FloodHeight)
 end
 
+function ENT:PlayerOxygen(v, scalar, t)
+
+	local sim_quality     = GetConVar( "gdisasters_envdynamicwater_simquality" ):GetFloat() --  original water simulation is based on a value of 0.01 ( which is alright but not for big servers ) 
+	local sim_quality_mod = sim_quality / 0.01
+
+	local overall_mod     = sim_quality_mod * scalar 
+	
+	if v.IsInlava then
+		if v.Oxygen == nil then v.Oxygen = 5 end 
+
+		v.Oxygen = math.Clamp(v.Oxygen - (engine.TickInterval() * overall_mod ), 0,10)
+		
+		
+		
+		if v.Oxygen <= 0 then
+
+			if math.random(1,math.floor((100/overall_mod)))==1 then
+				
+				local dmg = DamageInfo()
+				dmg:SetDamage( math.random(1,25) )
+				dmg:SetAttacker( v )
+				dmg:SetDamageType( DMG_DROWN  )
+
+				v:TakeDamageInfo(  dmg)
+			end
+		
+		end
+	else
+		v.Oxygen = 5
+	end
+end
+
 local ignore_ents ={
 ["phys_constraintsystem"]=true,
 ["phys_constraint"]=true,
@@ -137,13 +169,14 @@ function ENT:ProcessFlood(scalar, t)
 				local eye = v:EyePos()	
 				
 				if eye.z >= pos.z and eye.z <= zmax then
-					v:SetNWBool("IsUnderlava", true)		
-					
-					v:SetNWInt("ZWaterDepth", diff)
+					v:SetNWBool("IsUnderlava", true)
+					self:PlayerOxygen(v, scalar, t)		
+					v:SetNWInt("ZlavaDepth", diff)
 					
 					
 					
 				else
+					v.Oxygen = 10
 					if v:GetNWBool("IsUnderlava")==true then
 						net.Start("gd_screen_particles")
 						net.WriteString("hud/warp_ripple3")
@@ -180,13 +213,13 @@ function ENT:ProcessFlood(scalar, t)
 			if v.IsInlava and v:IsPlayer() then
 				
 				v:SetVelocity( v:GetVelocity() * -0.5 + Vector(0,0,20) )
-				v:TakeDamage(1, self, self)
-				v:Ignite(5)
+				v:TakeDamage(100, self, self)
+				v:Ignite(15)
 			
 			elseif v.IsInlava and v:IsNPC() or v:IsNextBot() then
 				v:SetVelocity( ((Vector(0,0,math.Clamp(diff,-100,50)/4) * 0.99)  * overall_mod) - (v:GetVelocity() * 0.05))
-				v:TakeDamage(1, self, self)
-				v:Ignite(5)
+				v:TakeDamage(100, self, self)
+				v:Ignite(15)
 			else
 				if v.IsInlava then
 					
@@ -214,16 +247,17 @@ function ENT:ProcessFlood(scalar, t)
 		
 					
 					phys:SetVelocity( final_vel)
-					v:Ignite(5)
+					v:Ignite(15)
 					
 					if v:IsVehicle() and v:GetClass()!="prop_vehicle_airboat" then 
 						v:Fire("TurnOff", 0.1, 0)
-						v:Ignite(5)
+						v:Ignite(15)
 					end 
 					
 					if (v.isWacAircraft) then
 						v:setEngine(false)
-						v.engineDead = true							 
+						v.engineDead = true	
+						v:Ignite(15)						 
 					end
 				end
 			end
@@ -288,14 +322,24 @@ function ENT:OnRemove()
 	self:StopParticles()
 end
 
-local lava_textures = Material("nature/env_dynamiclava/base_lava")
+local water_textures = {}
+water_textures[1]    = Material("nature/env_dynamicwater/base_water_01")
+water_textures[2]    = Material("nature/env_dynamicwater/base_water_02")
+water_textures[3]    = Material("nature/env_dynamicwater/base_water_03")
+
+
+local water_shader   = {}
+water_shader[1]    = Material("nature/env_dynamicwater/water_expensive_02")
+water_shader[2]    = Material("nature/env_dynamicwater/water_expensive_01")
+
+
 
 function ENT:Draw()
 			
 end
 
 
-function env_dynamicwater_DrawWater()
+function env_dynamiclava_Drawlava()
 
 	local flood = ents.FindByClass("env_dynamiclava")[1]
 	if !flood then return end
@@ -308,8 +352,10 @@ function env_dynamicwater_DrawWater()
 	local map_bounds = getMapBounds()
 	local vmin, vmax =  Vector(map_bounds[1].x,map_bounds[1].y,0),  Vector(map_bounds[2].x,map_bounds[2].y,height)
 	
-	local lava_texture =  lava_textures
-	
+	local water_texture =  water_textures[ math.Clamp(GetConVar( "gdisasters_graphics_water_quality" ):GetInt(), 1, 3)]
+	local lava_texture = Material("nature/env_dynamiclava/base_lava")
+
+
 	local function RenderFix()
 	
 	
@@ -338,7 +384,7 @@ function env_dynamicwater_DrawWater()
 	 
 	end
 
-	local function DrawLQWater()
+	local function DrawLava()
 	
 		render.SetMaterial(lava_texture)
 		render.SetBlend( 1 )
@@ -368,25 +414,19 @@ function env_dynamicwater_DrawWater()
 	
 	
 	RenderFix()
-	DrawLQWater()	
+	DrawLava()	
 	
 	model:Remove()	
 end
 
 
 if (CLIENT) then
-	function DrawFlood()
-	
-		
+	hook.Add("PreDrawTranslucentRenderables", "DRAWFLOOD", function()
 		if IsMapRegistered() then
-		
-			env_dynamicwater_DrawWater()
-			
-			
+			env_dynamiclava_Drawlava()
 		end
 		
-	end
-	hook.Add("PreDrawTranslucentRenderables", "DRAWFLOOD", DrawFlood)
+	end)
 	
 end
 
