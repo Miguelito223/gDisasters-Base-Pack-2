@@ -81,6 +81,8 @@ MAP_BOUNDS["gm_flatgrass_night_exp"]     = { Vector(11187.1, -89.5, -12800),  		
 MAP_BOUNDS["gm_flatgrass_water"]     = { Vector(-265.2, -691.5, -960.1),  		Vector(385.9, 5045.4, -960),				Vector(0,0,0)       }
 MAP_BOUNDS["gm_flatgrass_water_v2"]     = { Vector(-265.2, -691.5, -960.1),  		Vector(385.9, 5045.4, -960),				Vector(0,0,0)       }
 MAP_BOUNDS["gm_destroyable_city_001"]  = { Vector(16112, 16111, -3300), Vector(-16112, -16111, 15319), Vector(0,0,60)}
+MAP_BOUNDS["gmt_farmland_final"]  = { Vector(-15343.968750, 15343.968750, 64.031250), Vector(15343.968750,-15343.996094, 375.315002), Vector(0,0,0)}
+MAP_BOUNDS["gm_tornado_interstate_95"]  = { Vector(16271.968750, 16271.968750, -6052.968750), Vector(-16271.968750, -16271.968750, -6052.968750), Vector(0, 0, -6050.330566)}
 
 
 MAP_PATHS = {}
