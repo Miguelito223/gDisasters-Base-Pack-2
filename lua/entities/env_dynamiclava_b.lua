@@ -124,7 +124,7 @@ net.Receive("env_dynamiclava_b_errorcheck", function()
 end)
 
 
-function ENT:ErrorCheck()
+function ENT:ErrorChecklava()
 
 	if CurTime() >= self.NextErrorCheck then
 	
@@ -139,7 +139,7 @@ function ENT:ErrorCheck()
 	
  
 end
-function ENT:Expand()
+function ENT:Expandlava()
 	if (CLIENT) then 
 		
 		if	LocalPlayer().Sounds["Tsunami"]!=nil then
@@ -344,7 +344,7 @@ local ignore_ents ={
 ["worldspawn"]=true
 }
 
-function ENT:ProcessEntitiesInWedge()
+function ENT:ProcessEntitiesInWedgeLava()
 
 	--[[
 		self.Verts = {
@@ -427,7 +427,7 @@ function ENT:ProcessEntitiesInWedge()
 				if (vpos.z >= minz and vpos.z <= zmax) and v.IsInlavaWedge!=true then
 					v.IsInlavaWedge = true 
 					
-					self:OnWedgeEntry(v)
+					self:OnWedgelavaEntry(v)
 				end 
 				
 				
@@ -510,7 +510,7 @@ function ENT:ProcessEntitiesInWedge()
 				if v.IsInlavaWedge ==true then
 	
 					v.IsInlavaWedge = false
-					self:OnWedgeExit(v)
+					self:OnWedgelavaExit(v)
 
 				end
 			
@@ -531,7 +531,7 @@ function ENT:DoPhysics()
 
 	
 		self:ProcessEntitiesInLava()
-		self:ProcessEntitiesInWedge()
+		self:ProcessEntitiesInWedgeLava()
 		
 		self.NextPhysicsTime = CurTime() +  sim_quality 
 	
@@ -684,7 +684,7 @@ function ENT:ProcessState()
 		
 	end
 	
-	self:Expand()
+	self:Expandlava()
 
 
 
@@ -709,7 +709,7 @@ function ENT:Think()
 		self:DoPhysics()
 		
 		self:ProcessState()
-		self:ErrorCheck() 
+		self:ErrorChecklava() 
 		
 		self:NextThink(CurTime() )
 		return true
@@ -824,7 +824,7 @@ function ENT:OnLavaEntry(ent)
 end
 
 
-function ENT:OnWedgeExit(ent)
+function ENT:OnWedgelavaExit(ent)
 
 	if ent:IsPlayer() then 
 		--ent:SetMoveType(MOVETYPE_WALK)
@@ -848,7 +848,7 @@ function ENT:OnWedgeExit(ent)
 					
 end
 
-function ENT:OnWedgeEntry(ent) 
+function ENT:OnWedgelavaEntry(ent) 
 	
 	if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then 
 	
@@ -980,12 +980,12 @@ function ENT:IsParentValid()
 end
 
 
-function env_dynamiclava_b_DrawWater()
+function env_dynamiclava_b_DrawLavar()
 
-	local tsunami = ents.FindByClass("env_dynamiclava_b")[1];
-	if !tsunami then return end
+	local tsunamilava = ents.FindByClass("env_dynamiclava_b")[1];
+	if !tsunamilava then return end
 	
-	local verts   = tsunami.Verts;
+	local verts   = tsunamilava.Verts;
 
 	local model = ClientsideModel("models/props_junk/PopCan01a.mdl", RENDERGROUP_OPAQUE);
 	model:SetNoDraw(true);	
@@ -1000,7 +1000,7 @@ function env_dynamiclava_b_DrawWater()
 			local mat = Matrix();
 			mat:Scale(Vector(0, 0, 0));
 			model:EnableMatrix("RenderMultiply", mat);
-			model:SetPos(tsunami:GetPos());
+			model:SetPos(tsunamilava:GetPos());
 			model:DrawModel();
 		
 			render.SuppressEngineLighting( true );
@@ -1028,7 +1028,7 @@ function env_dynamiclava_b_DrawWater()
 		
 		local matrix = Matrix( );
 		matrix:Translate( getMapCenterFloorPos() );
-		matrix:Rotate( tsunami:GetAngles( ) );
+		matrix:Rotate( tsunamilava:GetAngles( ) );
 	
 		matrix:Scale( Vector(1,1,1) )
 		
@@ -1078,7 +1078,7 @@ if (CLIENT) then
 		
 		if IsMapRegistered() then
 		
-			env_dynamiclava_b_DrawWater()
+			env_dynamiclava_b_DrawLavar()
 			
 			
 		end
