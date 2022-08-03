@@ -1073,7 +1073,7 @@ end
 
 
 if (CLIENT) then
-	function DrawTsunami()
+	function DrawTsunamiLava()
 	
 		
 		if IsMapRegistered() then
@@ -1084,7 +1084,7 @@ if (CLIENT) then
 		end
 		
 	end
-	hook.Add("PostDrawTranslucentRenderables", "DrawTsunami", DrawTsunami)
+	hook.Add("PostDrawTranslucentRenderables", "DrawTsunami", DrawTsunamiLava)
 
 	
 end
