@@ -296,6 +296,8 @@ AddToGDSpawnMenu("EF5 Tornado (Smart)"   , "gd_d8_ef5_pathed"    , "Disasters", 
 AddToGDSpawnMenu("≈8.0 Magnitude Earthquake" , "gd_d8_rs8eq"         , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("Acient Volcano" , "gd_d8_volcano"         , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("Combine Invasion" , "gd_d8_combineinv"         , "Disasters", "Tier 8", false)
+AddToGDSpawnMenu("Lava Tsunami" , "gd_d8_lavatsunami"         , "Disasters", "Tier 8", false)
+
 
 --[[
 DISASTERS 
