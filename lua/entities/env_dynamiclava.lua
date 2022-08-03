@@ -9,7 +9,7 @@ ENT.PrintName		                 =  "Lava Flood"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.MaxFloodLevel                    =   1000
+ENT.MaxlavaLevel                    =   1000
 
 function ENT:Initialize()	
 
@@ -23,8 +23,8 @@ function ENT:Initialize()
 		self:SetUseType( ONOFF_USE )
 		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 				
-		self.FloodHeight = 0
-		self:SetNWFloat("FloodHeight", self.FloodHeight)
+		self.lavaHeight = 0
+		self:SetNWFloat("lavaHeight", self.lavaHeight)
 		
 		if IsMapRegistered()==false then self:Remove() end 
 
@@ -35,11 +35,11 @@ end
 
 function ENT:EFire(pointer, arg) 
 	
-	if pointer == "EnableFHGain" then self.shouldFloodGainHeight = arg or true 
+	if pointer == "EnableFHGain" then self.shouldlavaGainHeight = arg or true 
 	elseif pointer == "Enable" then 
-	elseif pointer == "MaxHeight" then self.MaxFloodLevel = arg or 600 
+	elseif pointer == "MaxHeight" then self.MaxlavaLevel = arg or 600 
 	elseif pointer == "Parent" then self.Parent = arg 
-	elseif pointer == "Height" then self.FloodHeight = arg or 100 
+	elseif pointer == "Height" then self.lavaHeight = arg or 100 
 	end
 end
 
@@ -51,21 +51,21 @@ function createlava(maxheight, parent)
 		v:Remove()
 	end
 	
-	local flood = ents.Create("env_dynamiclava")
-	flood:SetPos(getMapCenterFloorPos())
-	flood:Spawn()
-	flood:Activate()
+	local lava = ents.Create("env_dynamiclava")
+	lava:SetPos(getMapCenterFloorPos())
+	lava:Spawn()
+	lava:Activate()
 
-	flood:EFire("Parent", parent)
-	flood:EFire("MaxHeight", maxheight)
-	flood:EFire("Enable", true)
+	lava:EFire("Parent", parent)
+	lava:EFire("MaxHeight", maxheight)
+	lava:EFire("Enable", true)
 	
-	return flood
+	return lava
 	
 	end
 end
 
-function floodExists()
+function lavaExists()
 
 	return #ents.FindByClass("env_dynamiclava")>0
 end
@@ -90,7 +90,7 @@ function ENT:SpawnFunction( ply, tr )
 end
 
 
-function ENT:FloodHeightIncrement(scalar, t)
+function ENT:lavaHeightIncrement(scalar, t)
 
 
 	local sim_quality     = GetConVar( "gdisasters_envdynamicwater_simquality" ):GetFloat() --  original water simulation is based on a value of 0.01 ( which is alright but not for big servers ) 
@@ -98,39 +98,14 @@ function ENT:FloodHeightIncrement(scalar, t)
 	local overall_mod     = sim_quality_mod * scalar
 	
 	
-	self.FloodHeight = math.Clamp(self.FloodHeight + ( (1/6) * overall_mod), 0, self.MaxFloodLevel) 
-	self:SetNWFloat("FloodHeight", self.FloodHeight)
+	self.lavaHeight = math.Clamp(self.lavaHeight + ( (1/6) * overall_mod), 0, self.MaxlavaLevel) 
+	self:SetNWFloat("lavaHeight", self.lavaHeight)
 end
 
-function ENT:PlayerOxygen(v, scalar, t)
-
-	local sim_quality     = GetConVar( "gdisasters_envdynamicwater_simquality" ):GetFloat() --  original water simulation is based on a value of 0.01 ( which is alright but not for big servers ) 
-	local sim_quality_mod = sim_quality / 0.01
-
-	local overall_mod     = sim_quality_mod * scalar 
-	
+function ENT:ingite(v)	
 	if v.IsInlava then
-		if v.Oxygen == nil then v.Oxygen = 5 end 
-
-		v.Oxygen = math.Clamp(v.Oxygen - (engine.TickInterval() * overall_mod ), 0,10)
-		
-		
-		
-		if v.Oxygen <= 0 then
-
-			if math.random(1,math.floor((100/overall_mod)))==1 then
-				
-				local dmg = DamageInfo()
-				dmg:SetDamage( math.random(1,25) )
-				dmg:SetAttacker( v )
-				dmg:SetDamageType( DMG_DROWN  )
-
-				v:TakeDamageInfo(  dmg)
-			end
-		
-		end
-	else
-		v.Oxygen = 5
+		v:Ignite(15)
+		v:TakeDamage(60)
 	end
 end
 
@@ -146,8 +121,8 @@ function IsValidPhysicsEnt(ent)
 	return !ignore_ents[ent:GetClass()]
 end
 
-function ENT:ProcessFlood(scalar, t)
-	local zmax = self:GetPos().z + self.FloodHeight 
+function ENT:Processlava(scalar, t)
+	local zmax = self:GetPos().z + self.lavaHeight 
 	local pos  = self:GetPos() - Vector(0,0,50)
 	local wr   = 0.999               -- water friction
 	local sim_quality     = GetConVar( "gdisasters_envdynamicwater_simquality" ):GetFloat() --  original water simulation is based on a value of 0.01 ( which is alright but not for big servers ) 
@@ -170,13 +145,12 @@ function ENT:ProcessFlood(scalar, t)
 				
 				if eye.z >= pos.z and eye.z <= zmax then
 					v:SetNWBool("IsUnderlava", true)
-					self:PlayerOxygen(v, scalar, t)		
+					self:ingite(v)		
 					v:SetNWInt("ZlavaDepth", diff)
 					
 					
 					
 				else
-					v.Oxygen = 10
 					if v:GetNWBool("IsUnderlava")==true then
 						net.Start("gd_screen_particles")
 						net.WriteString("hud/warp_ripple3")
@@ -213,13 +187,11 @@ function ENT:ProcessFlood(scalar, t)
 			if v.IsInlava and v:IsPlayer() then
 				
 				v:SetVelocity( v:GetVelocity() * -0.5 + Vector(0,0,20) )
-				v:TakeDamage(100, self, self)
-				v:Ignite(15)
+				self:ingite(v)
 			
 			elseif v.IsInlava and v:IsNPC() or v:IsNextBot() then
 				v:SetVelocity( ((Vector(0,0,math.Clamp(diff,-100,50)/4) * 0.99)  * overall_mod) - (v:GetVelocity() * 0.05))
-				v:TakeDamage(100, self, self)
-				v:Ignite(15)
+				self:ingite(v)
 			else
 				if v.IsInlava then
 					
@@ -247,17 +219,17 @@ function ENT:ProcessFlood(scalar, t)
 		
 					
 					phys:SetVelocity( final_vel)
-					v:Ignite(15)
+					self:ingite(v)
 					
 					if v:IsVehicle() and v:GetClass()!="prop_vehicle_airboat" then 
 						v:Fire("TurnOff", 0.1, 0)
-						v:Ignite(15)
+						self:ingite(v)
 					end 
 					
 					if (v.isWacAircraft) then
 						v:setEngine(false)
 						v.engineDead = true	
-						v:Ignite(15)						 
+						self:ingite(v)						 
 					end
 				end
 			end
@@ -302,8 +274,8 @@ function ENT:Think()
 		local t = GetConVar( "gdisasters_envdynamicwater_simquality" ):GetFloat()-- tick dependant function that allows for constant think loop regardless of server tickrate
 		
 		local scalar = (66/ ( 1/engine.TickInterval()))
-		self:ProcessFlood(scalar, t)
-		self:FloodHeightIncrement(scalar, t)
+		self:Processlava(scalar, t)
+		self:lavaHeightIncrement(scalar, t)
 		self:IsParentValid()
 		
 		self:NextThink(CurTime() + t)
@@ -341,14 +313,14 @@ end
 
 function env_dynamiclava_Drawlava()
 
-	local flood = ents.FindByClass("env_dynamiclava")[1]
-	if !flood then return end
+	local lava = ents.FindByClass("env_dynamiclava")[1]
+	if !lava then return end
 	
 
 	local model = ClientsideModel("models/props_junk/PopCan01a.mdl", RENDERGROUP_OPAQUE)
 	model:SetNoDraw(true)	
 	
-	local height =  flood:GetNWFloat("FloodHeight")
+	local height =  lava:GetNWFloat("lavaHeight")
 	local map_bounds = getMapBounds()
 	local vmin, vmax =  Vector(map_bounds[1].x,map_bounds[1].y,0),  Vector(map_bounds[2].x,map_bounds[2].y,height)
 	
@@ -364,7 +336,7 @@ function env_dynamiclava_Drawlava()
 			local mat = Matrix()
 			mat:Scale(Vector(0, 0, 0))
 			model:EnableMatrix("RenderMultiply", mat)
-			model:SetPos(flood:GetPos())
+			model:SetPos(lava:GetPos())
 			model:DrawModel()
 		
 			render.SuppressEngineLighting( true ) 
@@ -391,7 +363,7 @@ function env_dynamiclava_Drawlava()
 		
 		local matrix = Matrix( );
 		matrix:Translate( getMapCenterFloorPos() );
-		matrix:Rotate( flood:GetAngles( ) );
+		matrix:Rotate( lava:GetAngles( ) );
 		matrix:Scale( Vector(1,1,1) )
 		
 		local hmod = height -1 
@@ -421,7 +393,7 @@ end
 
 
 if (CLIENT) then
-	hook.Add("PreDrawTranslucentRenderables", "DRAWFLOOD", function()
+	hook.Add("PreDrawTranslucentRenderables", "DRAWlava", function()
 		if IsMapRegistered() then
 			env_dynamiclava_Drawlava()
 		end
