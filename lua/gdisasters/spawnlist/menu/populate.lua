@@ -321,6 +321,7 @@ AddToGDSpawnMenu("Martian Tornado (Smart)"  , "gd_d10_martiantornado_pathed" , "
 AddToGDSpawnMenu("Firenado"  , "gd_d10_mfirenado" , "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Firenado (Smart)", "gd_d10_mfirenado_pathed", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Mega Tsunami"  , "gd_d10_megatsunami", "Disasters", "Tier ELE", false)
+AddToGDSpawnMenu("Mega Tsunami Lava"  , "gd_d10_megatsunamilava", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Meteor Shower", "gd_d10_meteorshower", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Meteorite Shower", "gd_d10_meteoriteshower", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Black Hole"  , "gd_d10_blackhole" , "Disasters", "Tier ELE", false)

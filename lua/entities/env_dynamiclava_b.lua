@@ -107,15 +107,15 @@ end
 
 if (SERVER) then 
 
-	util.AddNetworkString("env_dynamicwater_b_errorcheck")
+	util.AddNetworkString("env_dynamiclava_b_errorcheck")
 
 end 
 
 
-net.Receive("env_dynamicwater_b_errorcheck", function()
+net.Receive("env_dynamiclava_b_errorcheck", function()
 	
 	local CurrentDistanceTravelled = net.ReadFloat()
-	local ent = ents.FindByClass("env_dynamicwater_b")[1] 
+	local ent = ents.FindByClass("env_dynamiclava_b")[1] 
 	ent.CurrentDistanceTravelled = CurrentDistanceTravelled
 	
 
@@ -130,7 +130,7 @@ function ENT:ErrorCheck()
 	
 		self.NextErrorCheck = CurTime() + 1 
 		
-		net.Start("env_dynamicwater_b_errorcheck")
+		net.Start("env_dynamiclava_b_errorcheck")
 		net.WriteFloat(self.CurrentDistanceTravelled)
 		net.Broadcast()
 		
@@ -176,33 +176,10 @@ function ENT:Expand()
 
 end
 
-function ENT:PlayerOxygen(v, scalar, t)
-
-	local sim_quality     = GetConVar( "gdisasters_envdynamicwater_simquality" ):GetFloat() --  original water simulation is based on a value of 0.01 ( which is alright but not for big servers ) 
-	local sim_quality_mod = sim_quality / 0.01
-
-	local overall_mod     = sim_quality_mod * scalar 
-	
-	if v.IsInWater then
-		v.Oxygen = math.Clamp(v.Oxygen - (engine.TickInterval() * overall_mod ), 0,10)
-		
-		
-		
-		if v.Oxygen <= 0 then
-
-			if math.random(1,math.floor((100/overall_mod)))==1 then
-				
-				local dmg = DamageInfo()
-				dmg:SetDamage( math.random(1,25) )
-				dmg:SetAttacker( v )
-				dmg:SetDamageType( DMG_DROWN  )
-
-				v:TakeDamageInfo(  dmg)
-			end
-		
-		end
-	else
-		v.Oxygen = 5
+function ENT:ingite(v)	
+	if v.IsInlava then
+		v:Ignite(15)
+		v:TakeDamage(60)
 	end
 end
 
@@ -214,7 +191,7 @@ function ENT:SetDistanceTravelled(float)
 
 end
 
-function ENT:ProcessEntitiesInWater()
+function ENT:ProcessEntitiesInLava()
 
 	--[[
 		self.Verts = {
@@ -264,9 +241,9 @@ function ENT:ProcessEntitiesInWater()
 				
 					local eye = v:EyePos()	
 					if eye.z >= minz and eye.z <= zmax then
-						v:SetNWBool("IsUnderwater", true)		
-						v:SetNWFloat("ZWaterDepth",  math.Round(diff))
-						self:PlayerOxygen(v, scalar, 1)
+						v:SetNWBool("IsUnderlava", true)		
+						v:SetNWFloat("ZlavaDepth",  math.Round(diff))
+						self:ingite(v)
 						
 						--v:SetMoveType(MOVETYPE_WALK)
 						
@@ -279,10 +256,10 @@ function ENT:ProcessEntitiesInWater()
 		
 		
 		
-				if (vpos.z >= minz and vpos.z <= zmax) and v.IsInWater!=true then
-					v.IsInWater = true 
+				if (vpos.z >= minz and vpos.z <= zmax) and v.IsInlava!=true then
+					v.IsInlava = true 
 					
-					self:OnWaterEntry(v)
+					self:OnLavaEntry(v)
 				
 					
 				end
@@ -296,15 +273,16 @@ function ENT:ProcessEntitiesInWater()
 				
 			
 					
-				if v.IsInWater and v:IsPlayer() and self:IsValid() then
+				if v.IsInlava and v:IsPlayer() and self:IsValid() then
 					
 					v:SetVelocity( v:GetVelocity() * -0.5 + Vector(0,0,10) - Vector(40,0,0) )
-				
-				elseif v.IsInWater and v:IsNPC() or v:IsNextBot() then
+					self:ingite(v)
+
+				elseif v.IsInlava and v:IsNPC() or v:IsNextBot() then
 					v:SetVelocity( ((Vector(0,0,math.Clamp(diff,-100,50)/4) * 0.99)  * overall_mod) - (v:GetVelocity() * 0.05) - Vector(40,0,0))
-					v:TakeDamage(1, self, self)
+					self:ingite(v)
 				else
-					if v.IsInWater then
+					if v.IsInlava then
 
 						local massmod       = math.Clamp((phys:GetMass()/25000),0,1)
 						local buoyancy_mod  = GetBuoyancyMod(v)
@@ -334,6 +312,7 @@ function ENT:ProcessEntitiesInWater()
 			
 						
 						phys:SetVelocity( final_vel)
+						self:ingite(v)
 						
 						
 					end
@@ -342,9 +321,9 @@ function ENT:ProcessEntitiesInWater()
 			else 
 				
 	
-				if v.IsInWater==true then
-					v.IsInWater = false
-					self:OnWaterExit(v)
+				if v.IsInlava==true then
+					v.IsInlava = false
+					self:OnLavaExit(v)
 
 				end
 			
@@ -420,8 +399,8 @@ function ENT:ProcessEntitiesInWedge()
 				
 					local eye = v:EyePos()	
 					if eye.z >= minz and eye.z <= zmax then
-						v:SetNWBool("IsUnderwater", true)		
-						v:SetNWFloat("ZWaterDepth",  math.Round(diff))
+						v:SetNWBool("IsUnderlava", true)		
+						v:SetNWFloat("ZlavaDepth",  math.Round(diff))
 						--self:PlayerOxygen(v, scalar, t)
 						
 						--v:SetMoveType(MOVETYPE_WALK)
@@ -445,21 +424,21 @@ function ENT:ProcessEntitiesInWedge()
 				--]] 
 				
 				
-				if (vpos.z >= minz and vpos.z <= zmax) and v.IsInWaterWedge!=true then
-					v.IsInWaterWedge = true 
+				if (vpos.z >= minz and vpos.z <= zmax) and v.IsInlavaWedge!=true then
+					v.IsInlavaWedge = true 
 					
 					self:OnWedgeEntry(v)
 				end 
 				
 				
 
-				if v.IsInWater and v:IsPlayer() then
+				if v.IsInlava and v:IsPlayer() then
 					
 					v:SetVelocity( v:GetVelocity() * -0.5 + Vector(0,0,10) )
-				
-				elseif v.IsInWater and v:IsNPC() or v:IsNextBot() then
+					self:ingite(v)
+				elseif v.IsInlava and v:IsNPC() or v:IsNextBot() then
 					v:SetVelocity( ((Vector(0,0,math.Clamp(diff,-100,50)/4) * 0.99)  * overall_mod) - (v:GetVelocity() * 0.05))
-					v:TakeDamage(1, self, self)
+					self:ingite(v)
 				else
 	
 					local massmod       = math.Clamp((phys:GetMass()/25000),0,1)
@@ -485,7 +464,7 @@ function ENT:ProcessEntitiesInWedge()
 					local final_vel     = Vector(resultant_vel.x * wr,resultant_vel.y * wr, resultant_vel.z * friction)
 		
 					
-	
+					self:ingite(v)
 					
 						
 					local r    = v:BoundingRadius()
@@ -528,9 +507,9 @@ function ENT:ProcessEntitiesInWedge()
 			else 
 				
 				
-				if v.IsInWaterWedge ==true then
+				if v.IsInlavaWedge ==true then
 	
-					v.IsInWaterWedge = false
+					v.IsInlavaWedge = false
 					self:OnWedgeExit(v)
 
 				end
@@ -551,7 +530,7 @@ function ENT:DoPhysics()
 		local sim_quality     = GetConVar( "gdisasters_envdynamicwater_simquality" ):GetFloat() --  original water simulation is based on a value of 0.01 ( which is alright but not for big servers ) 
 
 	
-		self:ProcessEntitiesInWater()
+		self:ProcessEntitiesInLava()
 		self:ProcessEntitiesInWedge()
 		
 		self.NextPhysicsTime = CurTime() +  sim_quality 
@@ -580,7 +559,7 @@ function ENT:PlayerOxygen(v, scalar, t)
 
 	local overall_mod     = sim_quality_mod * scalar 
 	
-	if v.IsInWater then
+	if v.IsInlava then
 		if v.Oxygen == nil then v.Oxygen = 5 end 
 		
 		
@@ -793,8 +772,8 @@ function ENT:OnRemove()
 		
 		for k, v in pairs(player.GetAll()) do
 		
-		v.IsInWater = false 
-		v:SetNWBool("IsUnderwater", false)
+		v.IsInlava = false 
+		v:SetNWBool("IsUnderlava", false)
 		
 		end
 	end
@@ -802,7 +781,7 @@ function ENT:OnRemove()
 end
 
 
-function ENT:OnWaterExit(ent)
+function ENT:OnLavaExit(ent)
 
 
 	if ent:IsPlayer() then 
@@ -821,7 +800,7 @@ function ENT:OnWaterExit(ent)
 	
 		--ent:SetMoveType(MOVETYPE_WALK)
 		
-		ent:SetNWBool("IsUnderwater", false)
+		ent:SetNWBool("IsUnderlava", false)
 			
 
 	end
@@ -830,13 +809,13 @@ function ENT:OnWaterExit(ent)
 end
 
 
-function ENT:OnWaterEntry(ent) 
+function ENT:OnLavaEntry(ent) 
 	
 	local vpos = ent:GetPos()
 
 	
 	if math.random(1,2)==1 then
-		ParticleEffect( "splash_main", Vector(vpos.x, vpos.y, zmax), Angle(0,0,0), nil)
+		ParticleEffect( "lava_splash_main", Vector(vpos.x, vpos.y, zmax), Angle(0,0,0), nil)
 		ent:EmitSound(table.Random({"ambient/water/water_splash1.wav","ambient/water/water_splash2.wav","ambient/water/water_splash3.wav"}), 80, 100)
 	end
 
@@ -862,7 +841,7 @@ function ENT:OnWedgeExit(ent)
 		net.Send(ent)
 		
 
-		ent:SetNWBool("IsUnderwater", false)
+		ent:SetNWBool("IsUnderlava", false)
 			
 
 	end
@@ -873,7 +852,7 @@ function ENT:OnWedgeEntry(ent)
 	
 	if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then 
 	
-		InflictDamage(ent, self, "cold")
+		self:Ingite(ent)
 	
 	else
 		
@@ -973,24 +952,24 @@ function ENT:EFire(pointer, arg)
 	end
 end
 
-function createTsunami(parent, data)
+function createTsunamilava(parent, data)
 	
-	for k, v in pairs(ents.FindByClass("env_dynamicwater_b")) do
+	for k, v in pairs(ents.FindByClass("env_dynamiclava_b")) do
 		v:Remove();
 	end
 	
-	local tsunami = ents.Create("env_dynamicwater_b");
-	tsunami.Data  = data;
+	local tsunamilava = ents.Create("env_dynamiclava_b");
+	tsunamilava.Data  = data;
 
 	
-	tsunami:SetPos(getMapCenterFloorPos());
-	tsunami:Spawn();
-	tsunami:Activate();
+	tsunamilava:SetPos(getMapCenterFloorPos());
+	tsunamilava:Spawn();
+	tsunamilava:Activate();
 
-	tsunami:EFire("Parent", parent);
-	tsunami:EFire("Enable", true);
+	tsunamilava:EFire("Parent", parent);
+	tsunamilava:EFire("Enable", true);
 	
-	return tsunami;
+	return tsunamilava;
 
 end
 
@@ -1001,9 +980,9 @@ function ENT:IsParentValid()
 end
 
 
-function env_dynamicwater_b_DrawWater()
+function env_dynamiclava_b_DrawWater()
 
-	local tsunami = ents.FindByClass("env_dynamicwater_b")[1];
+	local tsunami = ents.FindByClass("env_dynamiclava_b")[1];
 	if !tsunami then return end
 	
 	local verts   = tsunami.Verts;
@@ -1011,7 +990,7 @@ function env_dynamicwater_b_DrawWater()
 	local model = ClientsideModel("models/props_junk/PopCan01a.mdl", RENDERGROUP_OPAQUE);
 	model:SetNoDraw(true);	
 	
-	
+	local lava_texture = Material("nature/env_dynamiclava/base_lava")
 	
 	local function RenderFix()
 	
@@ -1042,57 +1021,10 @@ function env_dynamicwater_b_DrawWater()
 	 
 	end
 	
-	
-	
-	local function DrawHQWater()
-	
+	local function DrawLava2()
 	
 		render.SetBlend( 1 )
-		render.SetMaterial(tsunami_water_textures[2])
-		
-		local matrix = Matrix( );
-		matrix:Translate( getMapCenterFloorPos() );
-		matrix:Rotate( tsunami:GetAngles( ) );
-	
-		matrix:Scale( Vector(1,1,1) )
-		
-		
-		
-			
-		local a, b = verts.wave_front[2]-verts.wave_front[1], verts.wave_front[3] - verts.wave_front[1]
-		
-		local normal_front = a:Cross(b):GetNormalized() * -1 -- setting normals doesn't work...
-		
-		local size_constant = 0.0003
-		
-		local w, h     = verts.wave_top[1]:Distance(verts.wave_top[2]) * size_constant , verts.wave_top[2]:Distance(verts.wave_top[3]) * size_constant
-		local w2, h2     = verts.wave_front[1]:Distance(verts.wave_front[2]) * size_constant , verts.wave_front[2]:Distance(verts.wave_front[3]) * size_constant
-	
-		
-		mesh.Begin( MATERIAL_QUADS, 2 );
-
-			EasyVert( verts.wave_top[1], vector_up, 0,0 )
-			EasyVert( verts.wave_top[2], vector_up, 0, w )
-			EasyVert( verts.wave_top[3], vector_up, h, w )
-			EasyVert( verts.wave_top[4], vector_up, h,0 )
-			
-			
-
-			EasyVert( verts.wave_front[4], vector_up, 0,0 )
-			EasyVert( verts.wave_front[3], vector_up, 0,w2 )
-			EasyVert( verts.wave_front[2], vector_up, h2,w2 )
-			EasyVert( verts.wave_front[1], vector_up, h2,0 )
-
-	
-		mesh.End( );
-		
-		
-	end
-	
-	local function DrawLQWater()
-	
-		render.SetBlend( 1 )
-		render.SetMaterial(tsunami_water_textures[1])
+		render.SetMaterial(lava_texture)
 		
 		local matrix = Matrix( );
 		matrix:Translate( getMapCenterFloorPos() );
@@ -1135,7 +1067,7 @@ function env_dynamicwater_b_DrawWater()
 	end
 	
 	RenderFix()
-	if GetConVar( "gdisasters_graphics_water_quality" ):GetInt() >= 3 then DrawHQWater() else DrawLQWater()	end 
+	DrawLava2()
 	model:Remove()	
 end
 
@@ -1146,7 +1078,7 @@ if (CLIENT) then
 		
 		if IsMapRegistered() then
 		
-			env_dynamicwater_b_DrawWater()
+			env_dynamiclava_b_DrawWater()
 			
 			
 		end
