@@ -672,11 +672,11 @@ function ENT:ProcesslavaState()
 		
 	elseif alpha >= 1 then 
 		if (SERVER) then 
-			local flood = createFlood(self.CurrentHeight, ents.GetAll()[1])
-			flood:EFire("Height", self.CurrentHeight)
+			local lava = createlava(self.CurrentHeight, ents.GetAll()[1])
+			lava:EFire("Height", self.CurrentHeight)
 		
 			timer.Simple(5, function()
-			if flood:IsValid() then flood:Remove() end 
+			if lava:IsValid() then lava:Remove() end 
 			end)
 			self:Remove()
 
