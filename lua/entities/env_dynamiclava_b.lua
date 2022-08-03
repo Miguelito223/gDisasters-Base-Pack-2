@@ -16,12 +16,12 @@ ENT.WedgeSound                       = "streams/disasters/tsunami/idle.wav"
 
 function ENT:Initialize()	
 
-	self:SetupMiscVars()
+	self:SetupMiscVarsLava()
 	if (CLIENT) then 
 
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 		
-		LocalPlayer().Sounds["Tsunami"]         = createLoopedSound(LocalPlayer(), self.WedgeSound)
+		LocalPlayer().Sounds["Tsunamilava"]         = createLoopedSound(LocalPlayer(), self.WedgeSound)
 		
 		
 	end
@@ -59,7 +59,7 @@ function ENT:CreateLoop()
 	
 end
 
-function ENT:SetupMiscVars()
+function ENT:SetupMiscVarsLava()
 
 
 	local bounds      = getMapSkyBox()
@@ -90,12 +90,12 @@ function ENT:SetupMiscVars()
 	end 
 	
 	
-	self:RebuildVertices(self.CurrentDistanceTravelled, self:GetNWFloat("CurrentHeight"), self:GetNWFloat("CurrentWedge"))
+	self:RebuildlavaVertices(self.CurrentDistanceTravelled, self:GetNWFloat("CurrentHeight"), self:GetNWFloat("CurrentWedge"))
 	
 end
 
 
-function ENT:UpdateNetworkedVariables()
+function ENT:UpdateNetworkedVariablesLava()
 
 	self:SetNWFloat("Speed", self.Speed)
 	self:SetNWFloat("CurrentHeight", self.CurrentHeight)
@@ -142,10 +142,10 @@ end
 function ENT:Expandlava()
 	if (CLIENT) then 
 		
-		if	LocalPlayer().Sounds["Tsunami"]!=nil then
+		if	LocalPlayer().Sounds["Tsunamilava"]!=nil then
 			local pos    = LocalPlayer():GetPos()
 			local alpha = 1 - math.Clamp( (math.abs(LocalPlayer():GetPos().x - self.Verts.wave_front[1].x) / 5000),0,1)
-			LocalPlayer().Sounds["Tsunami"]:ChangeVolume( alpha,0,1)
+			LocalPlayer().Sounds["Tsunamilava"]:ChangeVolume( alpha,0,1)
 			
 			if HitChance(10) then 
 			
@@ -187,7 +187,7 @@ end
 function ENT:SetDistanceTravelled(float)
 
 	
-	self:RebuildVertices(float, self:GetNWFloat("CurrentHeight"), self:GetNWFloat("CurrentWedge"))
+	self:RebuildlavaVertices(float, self:GetNWFloat("CurrentHeight"), self:GetNWFloat("CurrentWedge"))
 
 end
 
@@ -522,7 +522,7 @@ end
 
 
 
-function ENT:DoPhysics()
+function ENT:DolavaPhysics()
 	if !self:IsValid() then return end
 	if CurTime() >= self.NextPhysicsTime then 
 	
@@ -542,7 +542,7 @@ end
 
 
 
-function ENT:StateHeightGain(alpha)
+function ENT:StateHeightlavaGain(alpha)
 	
 	if (SERVER) then
 		self.CurrentHeight =  self.Data.StartHeight + ( (self.Data.MiddleHeight - self.Data.StartHeight) * (alpha / 0.35))
@@ -585,7 +585,7 @@ function ENT:PlayerOxygen(v, scalar, t)
 	end
 end
 
-function ENT:StateWedgeDecreaseMain(alpha)
+function ENT:StateWedgelavaDecreaseMain(alpha)
 
 
 	if (SERVER) then
@@ -603,7 +603,7 @@ function ENT:StateWedgeDecreaseMain(alpha)
 
 end
 
-function ENT:StateHeightDecrease03(alpha)
+function ENT:StateHeightDecreaselava03(alpha)
 	
 	if (SERVER) then
 		alpha = alpha - 0.75 
@@ -614,7 +614,7 @@ function ENT:StateHeightDecrease03(alpha)
 	
 end
 
-function ENT:StateHeightDecreaseMain(alpha)
+function ENT:StateHeightDecreaseMainLava(alpha)
 	
 	if (SERVER) then
 		alpha = alpha - 0.75
@@ -626,7 +626,7 @@ function ENT:StateHeightDecreaseMain(alpha)
 	
 end
 
-function ENT:SpeedDecrease(alpha)
+function ENT:SpeedlavaDecrease(alpha)
 	
 	if (SERVER) then
 	
@@ -644,31 +644,31 @@ end
 
 
 
-function ENT:ProcessState()
+function ENT:ProcesslavaState()
 	 
 	local alpha = math.Clamp( self.CurrentDistanceTravelled / self.MaxDistance , 0, 1) 
 
 	
 	if alpha >= 0 and alpha < 0.35 then 
 		self.State = "height_gain"
-		self:StateHeightGain(alpha)
-		self:StateWedgeDecreaseMain(alpha)
+		self:StateHeightlavaGain(alpha)
+		self:StateWedgelavaDecreaseMain(alpha)
 
 		
 	elseif alpha >= 0.35 and alpha < 0.5 then
 		self.State = "height_decrease_01"
-		self:StateWedgeDecreaseMain(alpha)
+		self:StateWedgelavaDecreaseMain(alpha)
 
 		
 	elseif alpha >= 0.5 and alpha < 0.75 then
 		self.State = "height_decrease_02"
-		self:StateWedgeDecreaseMain(alpha)
-		self:SpeedDecrease(alpha)
+		self:StateWedgelavaDecreaseMain(alpha)
+		self:SpeedlavaDecrease(alpha)
 		
 	elseif alpha >= 0.75 and alpha < 1 then 
 		self.State = "the_end"
-		self:StateHeightDecrease03(alpha)
-		self:StateHeightDecreaseMain(alpha)
+		self:StateHeightDecreaselava03(alpha)
+		self:StateHeightDecreaseMainLava(alpha)
 		
 	elseif alpha >= 1 then 
 		if (SERVER) then 
@@ -695,7 +695,7 @@ end
 function ENT:Think()
 	
 	if (CLIENT) then
-		self:ProcessState()
+		self:ProcesslavaState()
 
 		
 	end
@@ -705,10 +705,10 @@ function ENT:Think()
 	
 		
 		self:IsParentValid()
-		self:UpdateNetworkedVariables()
-		self:DoPhysics()
+		self:UpdateNetworkedVariablesLava()
+		self:DolavaPhysics()
 		
-		self:ProcessState()
+		self:ProcesslavaState()
 		self:ErrorChecklava() 
 		
 		self:NextThink(CurTime() )
@@ -719,7 +719,7 @@ end
 
 
 	
-function ENT:RebuildVertices(distance_travelled, height, wedge_constant)
+function ENT:RebuildlavaVertices(distance_travelled, height, wedge_constant)
 
 
 	local bounds    = getMapSkyBox();
@@ -761,9 +761,9 @@ function ENT:OnRemove()
 	if (CLIENT) then 
 	
 	
-		if LocalPlayer().Sounds["Tsunami"]!=nil then 
-			LocalPlayer().Sounds["Tsunami"]:Stop()
-			LocalPlayer().Sounds["Tsunami"]=nil
+		if LocalPlayer().Sounds["Tsunamilava"]!=nil then 
+			LocalPlayer().Sounds["Tsunamilava"]:Stop()
+			LocalPlayer().Sounds["Tsunamilava"]=nil
 		end
 		
 	end
@@ -852,7 +852,7 @@ function ENT:OnWedgelavaEntry(ent)
 	
 	if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then 
 	
-		self:ingite(v)
+		self:ingite(ent)
 	
 	else
 		
@@ -954,7 +954,7 @@ end
 
 function createTsunamilava(parent, data)
 	
-	for k, v in pairs(ents.FindByClass("env_dynamiclava_b")) do
+	for k, v in pairs(ents.FindByClass("env_dynamiclava_b", "env_dynamicwater_b")) do
 		v:Remove();
 	end
 	
@@ -980,7 +980,7 @@ function ENT:IsParentValid()
 end
 
 
-function env_dynamiclava_b_DrawLavar()
+function env_dynamiclava_b_DrawLava()
 
 	local tsunamilava = ents.FindByClass("env_dynamiclava_b")[1];
 	if !tsunamilava then return end
@@ -990,9 +990,9 @@ function env_dynamiclava_b_DrawLavar()
 	local model = ClientsideModel("models/props_junk/PopCan01a.mdl", RENDERGROUP_OPAQUE);
 	model:SetNoDraw(true);	
 	
-	local lava_texture = Material("nature/env_dynamiclava/base_lava")
+	local lava2_texture = Material("nature/env_dynamiclava/base_lava")
 	
-	local function RenderFix()
+	local function RenderFix2()
 	
 	
 		cam.Start3D();
@@ -1024,7 +1024,7 @@ function env_dynamiclava_b_DrawLavar()
 	local function DrawLava2()
 	
 		render.SetBlend( 1 )
-		render.SetMaterial(lava_texture)
+		render.SetMaterial(lava2_texture)
 		
 		local matrix = Matrix( );
 		matrix:Translate( getMapCenterFloorPos() );
@@ -1066,7 +1066,7 @@ function env_dynamiclava_b_DrawLavar()
 		
 	end
 	
-	RenderFix()
+	RenderFix2()
 	DrawLava2()
 	model:Remove()	
 end
@@ -1078,13 +1078,13 @@ if (CLIENT) then
 		
 		if IsMapRegistered() then
 		
-			env_dynamiclava_b_DrawLavar()
+			env_dynamiclava_b_DrawLava()
 			
 			
 		end
 		
 	end
-	hook.Add("PostDrawTranslucentRenderables", "DrawTsunami", DrawTsunamiLava)
+	hook.Add("PostDrawTranslucentRenderables", "DrawTsunamiLava", DrawTsunamiLava)
 
 	
 end
