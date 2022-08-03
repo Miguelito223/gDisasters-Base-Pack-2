@@ -5,11 +5,11 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Lava Flood"
+ENT.PrintName		                 =  "Lava lava"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.MaxFloodLevel                    =  {300,800}
+ENT.MaxlavaLevel                    =  {300,800}
 ENT.Mass                             =  100
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 
@@ -33,7 +33,7 @@ function ENT:Initialize()
 		end 		
 		
 
-		self.Child = createlava(math.random(self.MaxFloodLevel[1], self.MaxFloodLevel[2]), self)
+		self.Child = createlava(math.random(self.MaxlavaLevel[1], self.MaxlavaLevel[2]), self)
 		
 			
 		
