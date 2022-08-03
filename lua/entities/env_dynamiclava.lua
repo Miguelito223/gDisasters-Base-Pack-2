@@ -269,6 +269,8 @@ function ENT:IsParentValid()
 	
 end
 
+
+
 function ENT:Think()
 	if (SERVER) then
 		local t = GetConVar( "gdisasters_envdynamicwater_simquality" ):GetFloat()-- tick dependant function that allows for constant think loop regardless of server tickrate

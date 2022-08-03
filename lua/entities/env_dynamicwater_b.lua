@@ -695,10 +695,6 @@ function ENT:ProcessState()
 		if (SERVER) then 
 			local flood = createFlood(self.CurrentHeight, ents.GetAll()[1])
 			flood:EFire("Height", self.CurrentHeight)
-		
-			timer.Simple(5, function()
-			if flood:IsValid() then flood:Remove() end 
-			end)
 			self:Remove()
 
 		end 

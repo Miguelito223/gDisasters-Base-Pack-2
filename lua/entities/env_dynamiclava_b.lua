@@ -675,9 +675,6 @@ function ENT:ProcesslavaState()
 			local lava = createlava(self.CurrentHeight, ents.GetAll()[1])
 			lava:EFire("Height", self.CurrentHeight)
 		
-			timer.Simple(5, function()
-			if lava:IsValid() then lava:Remove() end 
-			end)
 			self:Remove()
 
 		end 
