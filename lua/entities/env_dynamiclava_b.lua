@@ -852,7 +852,7 @@ function ENT:OnWedgeEntry(ent)
 	
 	if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then 
 	
-		self:Ingite(ent)
+		self:ingite(v)
 	
 	else
 		
