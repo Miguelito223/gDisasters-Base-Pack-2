@@ -284,6 +284,7 @@ AddToGDSpawnMenu("≈7.0  Magnitude Earthquake" , "gd_d7_rs7eq"         , "Disas
 AddToGDSpawnMenu("Tsunami" , "gd_d7_tsunami"         , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("Nurse" , "npc_nurse"         , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("Lava flood" , "gd_d7_lavaflood"         , "Disasters", "Tier 7", false)
+AddToGDSpawnMenu("Lava mini Tsunami " , "gd_d7_minilavatsunami"         , "Disasters", "Tier 7", false)
 
 
 --[[
