@@ -881,26 +881,26 @@ function ENT:OnWedgelavaEntry(ent)
 		
 		if r >= 0 and r < 50 then 
 			if HitChance(10) then 
-			ParticleEffect("tsunami_splash_effect_r200", ent:GetPos() - Vector(-1,0,0) * r * 0.8, Angle(0,0,0), nil)	
+			ParticleEffect("lava_splash_main", ent:GetPos() - Vector(-1,0,0) * r * 0.8, Angle(0,0,0), nil)	
 			end 
 			
 		elseif r >= 50 and r < 100 then 
 			if HitChance(25) then 
-			ParticleEffect("tsunami_splash_effect_r200", ent:GetPos() - Vector(-1,0,0) * r * 0.8, Angle(0,0,0), nil)
+			ParticleEffect("lava_splash_main", ent:GetPos() - Vector(-1,0,0) * r * 0.8, Angle(0,0,0), nil)
 			end
 		elseif r >= 100 and r < 150 then 
 			if HitChance(35) then 
-			ParticleEffect("tsunami_splash_effect_r300", ent:GetPos() - Vector(-1,0,0) * r * 0.8, Angle(0,0,0), nil)
+			ParticleEffect("lava_splash_main", ent:GetPos() - Vector(-1,0,0) * r * 0.8, Angle(0,0,0), nil)
 			end
 			
 		elseif r >= 150 and r < 200 then 
 			if HitChance(55) then 
 			ent:EmitSound("streams/disasters/tsunami/splash_big.mp3", 100, 100, 1)
-			ParticleEffect("tsunami_splash_effect_r400", ent:GetPos() - Vector(-1,0,0) * r * 0.8, Angle(0,0,0), nil)
+			ParticleEffect("lava_splash_main", ent:GetPos() - Vector(-1,0,0) * r * 0.8, Angle(0,0,0), nil)
 			end
 		elseif r >= 200 then 
 			ent:EmitSound("streams/disasters/tsunami/splash_big.mp3", 100, 100, 1)
-			ParticleEffect("tsunami_splash_effect_r500", ent:GetPos() - Vector(-1,0,0) * r * 0.8, Angle(0,0,0), nil)
+			ParticleEffect("lava_splash_main", ent:GetPos() - Vector(-1,0,0) * r * 0.8, Angle(0,0,0), nil)
 		end
 	
 	
