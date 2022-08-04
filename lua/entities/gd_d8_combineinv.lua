@@ -110,7 +110,7 @@ function ENT:SpawnCombine()
 	
 	for k, v in pairs(ents.GetAll()) do
 	
-		if v:IsNPC() or v:IsNextBot() then 
+		if v:IsNPC() then 
 		if !IsValid( v ) or ( !IsValid( self ) ) or (v:GetClass()== "npc_combine_s" or v:GetClass()== "npc_metropolice" or v:GetClass()== "npc_strider" or v:GetClass()== "npc_clawscanner") then return end
 		
 		local npcpos = v:GetPos()
