@@ -1,28 +1,24 @@
 AddCSLuaFile()
-
 DEFINE_BASECLASS( "base_anim" )
-
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
-
 ENT.PrintName		                 =  "Derecho"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"                      
 ENT.Mass                             =  100
 
 function ENT:Initialize()		
 
+    self:Lightning()
     local bool hasShelfCloud = false
 
 	if (CLIENT) then
-	
+
 	end
 	
 	if (SERVER) then
-
 		self:SetModel(self.Model)
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
@@ -53,11 +49,10 @@ function ENT:Initialize()
 				paintSky_Fade(self.Original_SkyData, 0.05)
 			end)
 		end
-		
+
 		self:Lightning()
-		
+
 		setMapLight("e")		
-	
 
 
 		local data = {}
@@ -69,28 +64,22 @@ function ENT:Initialize()
 			data.EndMin         = 100
 			data.EndMinCurrent  = 0
 			data.EndMaxCurrent  = 0       
-
 		gDisasters_CreateGlobalFog(self, data, true)	
 		
 		gDisasters_CreateGlobalGFX("heavyrain", self)
-
 		self:SetupSequencedVars()
 		
 		
 	end
 end
-
 function ENT:SetupSequencedVars()
 	self.StartTime = CurTime()
 	self.State     = "light_raining"
 end
-
 function ENT:GetTimeElapsed()
 	return CurTime() - self.StartTime
 end
-
 function ENT:Lightning()
-
 	local pos = self:GetPos()
 	
 	timer.Simple(0.1, function()
@@ -102,12 +91,10 @@ function ENT:Lightning()
 		
 	end)
 end
-
 function ENT:OnStateChange(next_state)
 	if next_state == "light_rain_fading" then				
 				
 		local lol = {"e","f","g","h","i","j","k"}
-
 		gDisasters_RemoveGlobalFog()
 		gDisasters_RemoveGlobalGFX()
 		for i=0, 100 do
@@ -124,11 +111,9 @@ function ENT:OnStateChange(next_state)
 				setMapLight(lol[i])
 			end)
 		end
-
 	end
 	
 end
-
 function ENT:Phase()
 	local t_elapsed  = self:GetTimeElapsed()
 	
@@ -150,7 +135,6 @@ function ENT:Phase()
 	
 	self:StateProcessor()
 end
-
 function ENT:StateProcessor()
 	
 	if self.State == "light_raining" then
@@ -167,18 +151,12 @@ function ENT:StateProcessor()
 		
 		
 end
-
 function ENT:ClearSky()
 	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(2,6),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 78000, ["Temperature"] = math.random(28,31), ["Humidity"]    = math.random(34,40), ["BRadiation"]  = 0.1}}
 	
 	setMapLight("z")
 	
 end
-
-
-
-
-
 function ENT:HailFollowPlayer(ply)
 	
 	local bounds    = getMapSkyBox()
@@ -217,18 +195,14 @@ function ENT:HailFollowPlayer(ply)
 		end
 	end
 	
-
 end
-
-
-
 			
 			
 function ENT:Squall()
 	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(26,33),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 49000, ["Temperature"] = math.random(17,20), ["Humidity"]    = math.random(45,49), ["BRadiation"]  = 0.1}}
 
     setMapLight("d")
-	
+
 	if(!hasShelfCloud) then
 	self:AttachParticleEffect()
 	hasShelfCloud = true
@@ -237,15 +211,15 @@ function ENT:Squall()
 	for k, v in pairs(player.GetAll()) do
 
 		if v.gDisasters.Area.IsOutdoor then
-			
-			
-			
-	
+
+
+			self:AttachParticleEffect()
+
+
 
 			if math.random(1,6) == 1 then
 				
 				if HitChance(50) then
-
 					net.Start("gd_screen_particles")
 					net.WriteString("hud/warp_ripple3")
 					net.WriteFloat(math.random(5,50))
@@ -257,17 +231,13 @@ function ENT:Squall()
 				
 					
 			end
-
-
 		
 			
 		end
 	end
 	
 	
-
 end
-
 function ENT:AttachParticleEffect()
 	timer.Simple(0.1, function()
 	if !self:IsValid() then return end
@@ -275,20 +245,18 @@ function ENT:AttachParticleEffect()
 	ParticleEffectAttach("t_shelfcloud", PATTACH_POINT_FOLLOW, self, 0)
 	
 	end)
-	
-	
+
+
+	timer.Simple(4.5, function()
 	timer.Simple(1000, function()
 	if !self:IsValid() then return end
-	
+
 	self:StopParticles()
 	
 	end)
 end
-
 function ENT:Passage()
-
 	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(130,148),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 26000, ["Temperature"] = math.random(7,15), ["Humidity"]    = math.random(95,97), ["BRadiation"]  = 0.1}}
-
 	self.Reset_SkyData["TopColor"]       = Vector(0.20,0.50,1.00)
 			self.Reset_SkyData["BottomColor"]    = Vector(0.80,1.00,1.00)
 			self.Reset_SkyData["DuskScale"]      = 1
@@ -296,7 +264,6 @@ function ENT:Passage()
 		
 	
 	for k, v in pairs(player.GetAll()) do
-
 		if v.gDisasters.Area.IsOutdoor then
 				
 	
@@ -317,11 +284,8 @@ function ENT:Passage()
 				net.WriteFloat(math.random(0,1))
 				net.WriteVector(Vector(0,math.random(0,200)/100,0))
 				net.Send(v)	
-
 					
 			end
-
-
 			
 			
 		end
@@ -333,24 +297,15 @@ function ENT:Passage()
 	end
 	
 end
-
-
-
-
-
 function ENT:AfterFront()
-
     GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(4,12),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 126000, ["Temperature"] = math.random(3,5), ["Humidity"]    = math.random(67,89), ["BRadiation"]  = 0.1}}
 	
     setMapLight("z")
 	
 	
 end
-
-
 function ENT:SpawnFunction( ply, tr )
 	if ( !tr.Hit ) then return end
-
 	self.OWNER = ply
 	local ent = ents.Create( self.ClassName )
 	ent:SetPhysicsAttacker(ply)
@@ -359,14 +314,8 @@ function ENT:SpawnFunction( ply, tr )
 	ent:Activate()
 	return ent
 end
-
-
-
-
-
 function ENT:Think()
 	if (CLIENT) then
-
 		
 		local muffled_volume = math.Clamp(1 - ( LocalPlayer().gDisasters.Fog.Data.DensityCurrent/0.8), 0, 1) - 0.25
 		local idle_volume = math.Clamp(( LocalPlayer().gDisasters.Fog.Data.DensityCurrent/0.8)-0.25, 0, 1)
@@ -390,18 +339,14 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		self:Phase()	
-
 		self:NextThink(CurTime() + 0.01)
 		return true
 	end
 end
-
 function ENT:OnRemove()
-
 	if (SERVER) then		
 		local resetdata = self.Reset_SkyData
 		GLOBAL_SYSTEM_TARGET=GLOBAL_SYSTEM_ORIGINAL
-
 		for i=0, 40 do
 			timer.Simple(i/100, function()
 				paintSky_Fade(resetdata,0.05)
@@ -415,10 +360,7 @@ function ENT:OnRemove()
 	end
 	
 	if (CLIENT) then
-
-
 		
-
 		if LocalPlayer().Sounds["Rainstorm_IDLE"]!=nil then 
 			LocalPlayer().Sounds["Rainstorm_IDLE"]:Stop()
 			LocalPlayer().Sounds["Rainstorm_IDLE"]=nil
@@ -434,15 +376,6 @@ function ENT:OnRemove()
 	end
 	
 end
-
 function ENT:UpdateTransmitState()
-
 	return TRANSMIT_ALWAYS
-
 end
-
-
-
-
-
-

@@ -1,20 +1,19 @@
 AddCSLuaFile()
-
 DEFINE_BASECLASS( "base_anim" )
-
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
 ENT.PrintName		                 =  "Dry Ice (beta)"
+ENT.PrintName		                 =  "Dry Ice"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 
 
 ENT.Mass                             =  100
+ENT.Mass                             =  10
 ENT.Model                           = "models/ramses/models/nature/blockofice.mdl"
 
-    
 
 function ENT:Initialize()	
     
@@ -34,22 +33,25 @@ function ENT:Initialize()
 	PrecacheParticleSystem( "dryice_medfog_crawler" )
 	PrecacheParticleSystem( "dryice_deepfog_crawler" )
 	PrecacheParticleSystem( "dryice_fog_explosion" )
-	
+	PrecacheParticleSystem( "dryice_melting" )
+
 	if (SERVER) then
-		
+
 		self:SetModel(self.Model)
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
 		self:SetMoveType( MOVETYPE_VPHYSICS  )
 		self:SetUseType( ONOFF_USE )
-
 		local phys = self:GetPhysicsObject()
 		if phys:IsValid() then
 			phys:Wake()
 			phys:EnableMotion(true)
-			
+			phys:SetBuoyancyRatio(100)
+
 		end
-		
+
+		ParticleEffectAttach("dryice_melting", PATTACH_POINT_FOLLOW, self, 0)
+
 		if (phys:IsValid()) then
 			phys:SetMass(self.Mass)
 		end 		
@@ -58,17 +60,13 @@ function ENT:Initialize()
 		
 	end
 end
-
 function ENT:SetMDScale(scale)
 	local mat = Matrix()
 	mat:Scale(scale)
 	self:EnableMatrix("RenderMultiply", mat)
 end
-
-
 function ENT:SpawnFunction( ply, tr )
 	if ( !tr.Hit ) then return end
-
 	self.OWNER = ply
 	local ent = ents.Create( self.ClassName )
 	ent:SetPhysicsAttacker(ply)
@@ -77,24 +75,16 @@ function ENT:SpawnFunction( ply, tr )
 	ent:Activate()
 	return ent
 end
-
-
-
-
 function ENT:Shrink()
 	self:SetMDScale(Vector(1,1,1) * math.Clamp( 0.5-( (CurTime() - self.SpawnTime)/120), 0,1))
 	
 end
-
-
 function ENT:Think()
 	if (CLIENT) then
 		self:Shrink()
 	end
-
 	if (SERVER) then
 		if !self:IsValid() then return end
-
 		
 		self:NextThink(CurTime() + 1)
 		return true
@@ -157,18 +147,9 @@ function ENT:Think()
 	end
 	
 end
-
 function ENT:OnRemove()
 end
-
 function ENT:Draw()
-
-
-
 	self:DrawModel()
 	
 end
-
-
-
-
