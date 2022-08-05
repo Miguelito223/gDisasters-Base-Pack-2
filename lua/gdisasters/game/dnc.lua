@@ -9,7 +9,7 @@ gdisasters_dnc_length_night = CreateConVar( "gdisasters_dnc_length_night", "3600
 gdisasters_dnc_version = 2.0;
 gdisasters_dnc_dev = false;
 
-gdisasters_dncHeightMin = 300;
+gdisasters_dnc_HeightMin = 300;
 
 function gdisasters_dnc_log( ... )
 
@@ -30,7 +30,7 @@ function gdisasters_dnc_Outside( pos )
 
         local tr = util.TraceLine( trace );
 
-        gdisasters_dncHeightMin = ( tr.HitPos - trace.start ):Length();
+        gdisasters_dnc_HeightMin = ( tr.HitPos - trace.start ):Length();
 
         if ( tr.StartSolid ) then return false end
         if ( tr.HitSky ) then return true end

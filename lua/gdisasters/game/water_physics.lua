@@ -1,5 +1,3 @@
-AddCSLuaFile()
-
 Buoyancy_Lookup = { ["plastic_barrel"] = 5,
 					["floating_metal_barrel"] = 5,
 					["metal"] = 0.2,

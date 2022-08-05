@@ -33,6 +33,12 @@ if (CLIENT) then
 		self:SetMoveType( MOVETYPE_NONE  )
 		self:SetUseType( ONOFF_USE )
 		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+
+		for k, v in pairs( ents.FindByClass( "env_sun" ) ) do
+			v:Fire( "TurnOff", "", 0 )
+		
+		end
+		
 		local phys = self:GetPhysicsObject()
 		
 		if (phys:IsValid()) then
@@ -48,14 +54,16 @@ if (CLIENT) then
 			self.Original_SkyData["OverlaySize"]  = 0.00
 			self.Original_SkyData["DuskScale"]      = 0.00
 			self.Original_SkyData["DuskIntensity"]      = 0.00
-			self.Original_SkyData["SunColor"]       = Vector(1.00,1.00,1.00)
+			self.Original_SkyData["SunColor"]       = Vector(0,0,0)
 			
 			
 			
 		self.Reset_SkyData    = {}
 			self.Reset_SkyData["TopColor"]       = Vector(0.20,0.50,1.00)
 			self.Reset_SkyData["BottomColor"]    = Vector(0.80,1.00,1.00)
+			self.Reset_SkyData["SunSize"]     	 = 2
 			self.Reset_SkyData["DuskScale"]      = 1
+			self.Reset_SkyData["DuskIntensity"]  = 1
 			self.Reset_SkyData["SunColor"]       = Vector(0.20,0.10,0.00)
 			
 			setMapLight("g")		

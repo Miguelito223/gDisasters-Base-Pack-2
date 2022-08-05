@@ -1,5 +1,3 @@
-
-
 if (SERVER) then
 
 	AddCSLuaFile("autorun/gdisasters_load.lua")
@@ -15,6 +13,7 @@ if (SERVER) then
 	AddCSLuaFile("gdisasters/game/world_init.lua")
 	AddCSLuaFile("gdisasters/spawnlist/menu/main.lua")
 	AddCSLuaFile("gdisasters/spawnlist/menu/populate.lua")
+	AddCSLuaFile("gdisasters/game/dnc.lua")
 	AddCSLuaFile("gdisasters/game/damagetypes.lua")
 	AddCSLuaFile("gdisasters/player/process_gfx.lua")
 	AddCSLuaFile("gdisasters/player/process_temp.lua")
@@ -30,6 +29,7 @@ if (SERVER) then
 	include("gdisasters/game/water_physics.lua")
 	include("gdisasters/game/world_init.lua")
 	include("gdisasters/game/convars/main.lua")
+	include("gdisasters/game/dnc.lua")
 	include("gdisasters/player/postspawn.lua")
 	include("gdisasters/player/cl_menu.lua")
 	include("gdisasters/game/decals.lua")
@@ -58,11 +58,12 @@ if (CLIENT) then
 	include("gdisasters/player/process_gfx.lua")
 	include("gdisasters/player/process_temp.lua")
 	include("gdisasters/atmosphere/main.lua")
-	include("gdisasters/hud/main.lua")	
+	include("gdisasters/hud/main.lua")
 		
 	include("gdisasters/spawnlist/menu/main.lua")
 	include("gdisasters/spawnlist/menu/populate.lua")
 	include("gdisasters/game/decals.lua")
+	include("gdisasters/game/dnc_cl.lua")
 	
 end
 

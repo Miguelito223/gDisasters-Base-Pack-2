@@ -1672,49 +1672,7 @@ function EvaluateRayleighAtT(T)
 	
 end
 
-function gDisasters_GetMoonAngleInRadians()
 
-	return math.acos(vector_up:Dot(gDisasters_GetSunDir()))
-end
-
-function gDisasters_GetMoonAngleInDegs()
-
-	return math.deg(gDisasters_GetMoonAngleInRadians())
-end
-
-function gDisasters_GetSunAngleInRadians()
-	return math.acos((vector_up*-1):Dot(gDisasters_GetSunDir()))
-end
-
-function gDisasters_GetSunAngleInDegs()
-	return math.deg(gDisasters_GetSunAngleInRadians)
-end
-
-function gDisasters_GetMoonDir()
-
-	return GetGlobalVector("gdSunDir")*-1
-end
-
-
-function gDisasters_GetSunDir()
-
-	return GetGlobalVector("gdSunDir")
-end
-
-
-function gDisasters_EntityExists(entname)
-	
-	if not(gDisasters.CachedExists[entname]) then 
-	
-		net.Start("gd_entity_exists_on_server")
-			net.WriteString("sky_camera")
-		net.SendToServer()
-	else
-		return true 
-	end
-	
-
-end
 
 
 
