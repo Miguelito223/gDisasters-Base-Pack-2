@@ -97,6 +97,7 @@ local function gDisastersSVADVSettings( CPanel )
 	CreateSliderConVariable(CPanel,"Max PD NC BT", 0, 1000, 0,"gdisasters_antilag_post_damage_no_collide_base_time");
 	CreateSliderConVariable(CPanel,"Max CAPS (s) ", 0, 1000, 0,"gdisasters_antilag_maximum_safe_collisions_per_second_average" );
 	CreateSliderConVariable(CPanel,"Antilag Mode (s) ", 0, 2, 0,"gdisasters_antilag_mode" );
+	CreateTickboxConVariable(CPanel,"Enable Antilag", "gdisasters_antilag_enabled" )
 	
 	AddControlLabel( CPanel, "Don't mess with these settings unless you know what you're doing .\n\nAbbreviation references below.\n\nPD NC BT: Post Damage No Collide Base Time\n\nCPPPS: Collisions Per Prop Per Second\n\nCAPS:Collisions Average Per Second" )
 	-----------------
