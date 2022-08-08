@@ -162,8 +162,8 @@ function ENT:Explode()
 	timer.Simple(80, function()
 		local ent1 = ents.FindByClass("gd_d10_meteorshower")[1]
 		local ent2 = ents.FindByClass("gd_d10_meteoriteshower")[1]
-		if IsValid() then ent1:Remove() end
-		if IsValid() then ent2:Remove() end
+		ent1:Remove()
+		ent2:Remove()
 	end)
 
 	self:Remove()
