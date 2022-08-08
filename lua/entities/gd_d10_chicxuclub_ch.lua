@@ -167,10 +167,8 @@ function ENT:Explode()
 		local ent3 = ents.Create("gd_d10_meteoriteshower")
 		ent:Spawn()
 		ent:Activate()
-		
 		ent2:Spawn()
 		ent2:Activate()
-		
 		ent3:Spawn()
 		ent3:Activate()
 	
@@ -180,6 +178,12 @@ function ENT:Explode()
 		local ent4 = ents.Create("gd_w4_heavyacidrain")
 		ent4:Spawn()
 		ent4:Activate()
+	end)
+	timer.Simple(80, function()
+		local ent1 = ents.FindByClass("gd_d10_meteorshower")[1]
+		local ent2 = ents.FindByClass("gd_d10_meteoriteshower")[1]
+		ent1:Remove()
+		ent2:Remove()
 	end)
 
 	self:Remove()
