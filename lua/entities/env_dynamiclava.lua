@@ -47,7 +47,7 @@ function createlava(maxheight, parent)
 
 	if IsMapRegistered() == true then
 	
-	for k, v in pairs(ents.FindByClass("env_dynamicwater", "env_dynamiclava")) do
+	for k, v in pairs(ents.FindByClass("env_dynamiclava", "env_dynamicwater")) do
 		v:Remove()
 	end
 	
