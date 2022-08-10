@@ -147,30 +147,7 @@ local function gDisastersAutospawn( CPanel )
 end
 
 local function gDisastersExperimental( CPanel )
-	gDisasters_Autospawn_SetupTime = CurTime() 
-
-	local Heat = CPanel:NumSlider("Heat Acumulation", "", 1, 1000, 0 )
-	local Cold = CPanel:NumSlider("Cold Acumulation", "", 0, 1000, 0 )
-
-	Heat.Scratch.ConVarChanged = function() end 
-	Heat.OnValueChanged = function( panel, val)
-		if (CurTime() - gDisasters_Autospawn_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_experimental_heatacumulation", tonumber( val))
-	end
-	
-	Cold.Scratch.ConVarChanged = function() end 
-	Cold.OnValueChanged = function( panel, val)
-		if (CurTime() - gDisasters_Autospawn_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_experimental_coldacumulation", tonumber( val))
-	end	
-	
-	timer.Simple(0.05, function()
-		if Heat then Heat:SetValue(GetConVar(( "gdisasters_experimental_heatacumulation" )):GetFloat()) end
-		if Cold then Cold:SetValue(GetConVar(( "gdisasters_experimental_coldacumulation" )):GetFloat()) end
-	end
-	)
-
-	CreateTickboxConVariable(CPanel, "Esxperimental Enable", "gdisasters_experimental_enabled");
+	CreateTickboxConVariable(CPanel, "Esxperimental Enable", "gdisasters_HeatSytem_enabled");
 end
 
 local function gDisastersADVGraphicsSettings( CPanel )
@@ -289,7 +266,7 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVADSettings", "Advanced", "", "", gDisastersSVADVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVSettings", "Experimental", "", "", gDisastersExperimental )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersExperimental", "Experimental", "", "", gDisastersExperimental )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersAutospawn", "Autospawn Settings", "", "", gDisastersAutospawn )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersADVGraphicsSettings", "Graphics", "", "", gDisastersADVGraphicsSettings )
 	
