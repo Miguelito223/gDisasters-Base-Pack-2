@@ -20,6 +20,7 @@ if (SERVER) then
 	AddCSLuaFile("gdisasters/atmosphere/main.lua")
 	AddCSLuaFile("gdisasters/hud/main.lua")	
 	AddCSLuaFile("gdisasters/game/decals.lua")
+	AddCSLuaFile("gdisasters/experimental/heat-system")
 
 	include("gdisasters/shared_func/main.lua")	
 	include("gdisasters/shared_func/netstrings.lua")
@@ -33,6 +34,7 @@ if (SERVER) then
 	include("gdisasters/player/postspawn.lua")
 	include("gdisasters/player/cl_menu.lua")
 	include("gdisasters/game/decals.lua")
+	include("gdisasters/experimental/heat-system.lua")
 	
 	include("gdisasters/spawnlist/menu/main.lua")
 	include("gdisasters/spawnlist/menu/populate.lua")
@@ -54,6 +56,7 @@ if (CLIENT) then
 	include("gdisasters/shared_func/netstrings.lua")
 	include("gdisasters/extensions/patchs-bounds.lua")		
 	include("gdisasters/player/postspawn.lua")
+	include("gdisasters/experimental/heat-system.lua")
 	
 	include("gdisasters/player/process_gfx.lua")
 	include("gdisasters/player/process_temp.lua")
