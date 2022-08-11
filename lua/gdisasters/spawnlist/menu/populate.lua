@@ -267,7 +267,7 @@ AddToGDSpawnMenu("≈6.0 Magnitude Earthquake" , "gd_d6_rs6eq"         , "Disast
 AddToGDSpawnMenu("Cryo Shower" , "gd_d6_cryoshower"         , "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("Zombie Appocolapse" , "gd_d6_zombieapoc"         , "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("Lava Bomb Shower" , "gd_d10_lavabombshower"         , "Disasters", "Tier 6", false)
-AddToGDSpawnMenu("Category 8 Flood " , "gd_d6_cat8flood"         , "Disasters", "Tier 7", false)
+AddToGDSpawnMenu("Category 8 Flood " , "gd_d6_cat8flood"         , "Disasters", "Tier 6", false)
 
 
 
@@ -300,6 +300,7 @@ AddToGDSpawnMenu("≈8.0 Magnitude Earthquake" , "gd_d8_rs8eq"         , "Disast
 AddToGDSpawnMenu("Acient Volcano" , "gd_d8_volcano"         , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("Combine Invasion" , "gd_d8_combineinv"         , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("Lava Tsunami" , "gd_d8_lavatsunami"         , "Disasters", "Tier 8", false)
+AddToGDSpawnMenu("Mega Lava flood" , "gd_d8_megalavaflood"         , "Disasters", "Tier 8", false)
 
 
 --[[
