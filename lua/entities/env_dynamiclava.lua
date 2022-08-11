@@ -9,7 +9,7 @@ ENT.PrintName		                 =  "Lava Flood"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.MaxlavaLevel                    =   1000
+ENT.MaxlavaLevel                    =   9000
 
 function ENT:Initialize()	
 

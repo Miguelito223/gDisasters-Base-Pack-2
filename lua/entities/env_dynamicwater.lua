@@ -9,7 +9,7 @@ ENT.PrintName		                 =  "Flash Flood"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.MaxFloodLevel                    =  600
+ENT.MaxFloodLevel                    =  9000
 
 function ENT:Initialize()	
 

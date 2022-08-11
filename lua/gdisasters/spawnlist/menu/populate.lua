@@ -267,6 +267,7 @@ AddToGDSpawnMenu("≈6.0 Magnitude Earthquake" , "gd_d6_rs6eq"         , "Disast
 AddToGDSpawnMenu("Cryo Shower" , "gd_d6_cryoshower"         , "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("Zombie Appocolapse" , "gd_d6_zombieapoc"         , "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("Lava Bomb Shower" , "gd_d10_lavabombshower"         , "Disasters", "Tier 6", false)
+AddToGDSpawnMenu("Category 8 Flood " , "gd_d6_cat8flood"         , "Disasters", "Tier 7", false)
 
 
 
@@ -285,6 +286,7 @@ AddToGDSpawnMenu("Tsunami" , "gd_d7_tsunami"         , "Disasters", "Tier 7", fa
 AddToGDSpawnMenu("Nurse" , "npc_nurse"         , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("Lava flood" , "gd_d7_lavaflood"         , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("Lava mini Tsunami " , "gd_d7_minilavatsunami"         , "Disasters", "Tier 7", false)
+AddToGDSpawnMenu("Category 10 Flood " , "gd_d7_cat10flood"         , "Disasters", "Tier 7", false)
 
 
 --[[
