@@ -5,24 +5,24 @@ if (SERVER) then
 	SetGlobalFloat("gDisasters_Humidity", 0)
 	SetGlobalFloat("gDisasters_Wind", 0)
 
-function Atmosphere()
-	local scale                                = (1/engine.TickInterval()) / 66
-	GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Temperature"],-273.3, 273.3)
-	GLOBAL_SYSTEM["Atmosphere"]["Humidity"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Humidity"],0, 100)
+	function Atmosphere()
+		local scale                                = (1/engine.TickInterval()) / 66
+		GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Temperature"],-273.3, 273.3)
+		GLOBAL_SYSTEM["Atmosphere"]["Humidity"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Humidity"],0, 100)
 	
 
-	Wind()
-	Pressure()
-	Humidity()
-	AtmosphereFadeControl()
-	gDisasters_GlobalBreathingEffect()
-	gDisasters_ProcessTemperature()
+		Wind()
+		Pressure()
+		Humidity()
+		AtmosphereFadeControl()
+		gDisasters_GlobalBreathingEffect()
+		gDisasters_ProcessTemperature()
 	
 	
 	
 
-end
-hook.Add("Tick", "atmosphericLoop", Atmosphere)
+	end
+	hook.Add("Tick", "atmosphericLoop", Atmosphere)
 
 
 function AtmosphereFadeControl()
