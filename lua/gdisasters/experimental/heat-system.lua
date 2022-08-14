@@ -1,0 +1,1 @@
+CreateConVar("gdisasters_HeatSytem_enabled", 1, {FCVAR_ARCHIVE})
