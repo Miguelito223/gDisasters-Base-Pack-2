@@ -179,9 +179,6 @@ end
 function ENT:ingite(v)	
 	if v.IsInlava then
 		v:Ignite(15)
-	elseif v.IsInlava and v:IsPlayer() or v:IsNPC() or v:IsNextBot() then 
-		v:Ignite(15)
-		v:TakeDamage(60)
 	end
 end
 
@@ -279,10 +276,12 @@ function ENT:ProcessEntitiesInLava()
 					
 					v:SetVelocity( v:GetVelocity() * -0.5 + Vector(0,0,10) - Vector(40,0,0) )
 					self:ingite(v)
+					v:TakeDamage(60)
 
 				elseif v.IsInlava and v:IsNPC() or v:IsNextBot() then
 					v:SetVelocity( ((Vector(0,0,math.Clamp(diff,-100,50)/4) * 0.99)  * overall_mod) - (v:GetVelocity() * 0.05) - Vector(40,0,0))
 					self:ingite(v)
+					v:TakeDamage(60)
 				else
 					if v.IsInlava then
 
