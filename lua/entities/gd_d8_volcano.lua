@@ -196,11 +196,12 @@ function ENT:InsideLavaEffect()
 					v:SendLua("LocalPlayer().LavaIntensity=LocalPlayer().LavaIntensity + (FrameTime()*8)")
 				end
 			end
-			v:Ignite(5)
+			v:Ignite(15)
 			v:TakeDamage(1, self, self)
 		else
 		
 			phys:SetVelocity( phys:GetVelocity() * 0.01)
+			v:Ignite(15)
 			
 		end
 	end

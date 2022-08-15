@@ -147,7 +147,7 @@ local function gDisastersAutospawn( CPanel )
 end
 
 local function gDisastersExperimental( CPanel )
-	CreateTickboxConVariable(CPanel, "Esxperimental Enable", "gdisasters_HeatSytem_enabled");
+	CreateTickboxConVariable(CPanel, "Experimental Enable", "gdisasters_HeatSytem_enabled");
 end
 
 local function gDisastersADVGraphicsSettings( CPanel )
