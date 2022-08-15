@@ -179,6 +179,9 @@ end
 function ENT:ingite(v)	
 	if v.IsInlava then
 		v:Ignite(15)
+	elseif v.IsInlava and v:IsPlayer() or v:IsNPC() or v:IsNextBot() then 
+		v:Ignite(15)
+		v:TakeDamage(60)
 	end
 end
 
