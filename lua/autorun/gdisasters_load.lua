@@ -20,7 +20,7 @@ if (SERVER) then
 	AddCSLuaFile("gdisasters/atmosphere/main.lua")
 	AddCSLuaFile("gdisasters/hud/main.lua")	
 	AddCSLuaFile("gdisasters/game/decals.lua")
-	AddCSLuaFile("gdisasters/experimental/heat-system")
+	AddCSLuaFile("gdisasters/experimental/heat-system.lua")
 	AddCSLuaFile("gdisasters/Autospawn/autospawn.lua")
 
 	include("gdisasters/shared_func/main.lua")	
