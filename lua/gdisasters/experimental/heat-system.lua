@@ -3,10 +3,10 @@ CreateConVar("gdisasters_HeatSytem_enabled", 1, {FCVAR_ARCHIVE}) --Convars
 function HeatSystem() -- System Core
 	if GetConVar("gdisasters_HeatSytem_enabled"):GetInt() == 0 then return end
 
-	floorheat = 0
+	floorheat = 23
 	airheat =  23
 	upperairheat =  15
-	waterheat =  0
+	waterheat =  23
 	heatIRmultiplier = 1
 	sunHeat = 1
 	heightCooldownRate = 1
@@ -17,16 +17,17 @@ function HeatSystem() -- System Core
 	CalculateHeat()
 	SetGLOBALSYSTEM()
 	
-	print("heat: ".. floorheat, airheat, upperairheat, waterheat)
+	print(floorheat, airheat, upperairheat, waterheat)
 end
 hook.Add("Tick", "experimental", HeatSystem)
 
 function CalculateHeat() -- Calculate Heat -_-
-
-    TransferHeatToGround()
+	
 	CalculateAirInstability()
-    airheat = airheat + sunHeat + heatIRmultiplier
-	upperairheat = airheat - heatIRmultiplier * sunHeat * heightCooldownRate
+	TransferHeatToGround()
+	Weather()
+    airheat = airheat + sunHeat + heatIRmultiplier + sunHeat
+	upperairheat = airheat - (heatIRmultiplier * sunHeat) * heightCooldownRate
 	waterheat = floorheat + sunHeat - heatIRmultiplier
 
 end
@@ -39,9 +40,27 @@ function CalculateAirInstability() -- Calculate CAPE index, wind
 end
 
 function TransferHeatToGround() -- Trasfer Current Heat To Ground (Floor)
+	floorheat = floorheat + sunHeat 
+	waterheat = waterheat + sunHeat
+end
 
-    floorheat = airheat - heatIRmultiplier + sunHeat
-	airheat = airheat - heatIRmultiplier
+function Weather() -- Weather Stuffy
+
+end
+
+function RandomEvent() -- Randomly Change Stuff For More Variance
+
+    if math.random(1, 256) == 11 then
+		airheat = airheat * math.random(-3, 3)
+	end
+
+	if math.random(1, 256) == 34 then
+		waterheat = waterheat * math.random(-3, 3)
+	end
+
+	if math.random(1, 256) == 84 then
+		upperairheat = upperairheat * math.random(-5, 5)
+	end
 
 end
 
