@@ -1,6 +1,6 @@
 CreateConVar("gdisasters_HeatSytem_enabled", 1, {FCVAR_ARCHIVE}) --Convars
 
-function HeatSytem() -- System Core
+function HeatSystem() -- System Core
 	if GetConVar("gdisasters_HeatSytem_enabled"):GetInt() == 0 then return end
 
 	floorheat = 0
@@ -19,6 +19,7 @@ function HeatSytem() -- System Core
 	
 	print("heat: ".. floorheat, airheat, upperairheat, waterheat)
 end
+hook.Add("heatsystem", "experimental", HeatSystem)
 
 function CalculateHeat() -- Calculate Heat -_-
 
