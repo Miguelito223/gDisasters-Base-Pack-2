@@ -1,20 +1,13 @@
-AddCSLuaFile()
+CreateConVar("gdisasters_HeatSytem_enabled", 1, {FCVAR_ARCHIVE}) --Convars
 
-CreateConVar("gdisasters_HeatSytem_enabled", 1, {FCVAR_ARCHIVE}) --Convars (Settings)
-
-if (SERVER) then
-
-function Data(ents, temp, wind, windDir, humidity, Pressure) -- Data Management
-    
+function start() 
 	if GetConVar("gdisasters_HeatSytem_enabled"):GetInt() == 0 then return end
-	
-	SetGlobalFloat("gDisasters_Temperature", temp) --Temperature
-	SetGlobalFloat("gDisasters_Pressure", Pressure)
-	SetGlobalFloat("gDisasters_Humidity", humidity)
-	SetGlobalFloat("gDisasters_Wind", wind)
-    
-	local precipitation = {		--Precipitation Amount
-        "gd_w1_lightbreeze", 
+
+	local floorheat = 0 + 1
+	local airheat =  100
+	local upperairheat =  50
+	local weather = {
+		"gd_w1_lightbreeze", 
 		"gd_w2_mildbreeze", 
 		"gd_w3_strongbreeze", 
 		"gd_w4_intensebreeze", 
@@ -83,62 +76,42 @@ function Data(ents, temp, wind, windDir, humidity, Pressure) -- Data Management
 		"gd_w5_pyrocum",
 		"gd_w6_neptune",
 		"gd_w6_redspot"
-    }
-
-	
-
-	precipitation_cold = {
-		"gd_w1_citysnow",
-		"gd_w2_coldwave",
-		"gd_w1_snow",
-		"gd_w3_blizzard",
-		"gd_w3_icestorm",
-		"gd_w6_neptune",
-		"gd_w2_heavysnow"
-
 	}
 
-	precipitation_hot = {
 
-
+	local tornado = {
+		"gd_d3_ef0", 
+		"gd_d4_ef1", 
+		"gd_d4_landspout", 
+		"gd_d5_ef2", 
+		"gd_d6_ef3", 
+		"gd_d7_ef4", 
+		"gd_d8_ef5", 
+		"gd_d9_ef6", 
+		"gd_d10_ef7"
 	}
 
-	prep = precipitation[math.random(1, #precipitation)]
-	prep_cold = precipitation_cold[math.random(1, #precipitation_cold)]
+	print(airheat, floorheat, upperairheat)
 
-	if temp <= 0 then
-		prep_cold:Spawn()
-		prep_cold:Activate()
-		prep_cold:SetPos(ents:GetPos())
-		
-	elseif temp >= 0 then
+	if floorheat > airheat and airheat - upperairheat > 1000 then
+		local airheat = airheat + 1
+		local floorheat = floorheat - airheat
+		EF = ents.Create( tornado[math.random( 1, #tornado )])
+		if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
+			EF:SetPos(Vector(math.random(-10000,10000),math.random(-10000,10000),5000))
+		else
+			local stormtable = S37K_mapbounds[1]
+			EF:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
+		end
+		EF:Spawn()
+	elseif floorheat < airheat and airheat - upperairheat > 1000 then
+		local wea = ents.FindByClass("gd_w1_lightbreeze")
+		wea:Spawn()
+		wea:Activate()
+	else
 
 	end
 
 end
 
-function GenerateEnts()  -- Generate Grid Of Entites
-	local center = getMapCenterPos()
-	local centerfloor = getMapCenterFloorPos()
-	local bound = getMapBounds()
-    local grid = debugoverlay.Grid(vector(center.x, center.y, center.z)) -- Draw Grid
-
-    local ents = ents.Create("prop_detail")
-	ents:SetPos(Vector(bound[1].x + 1, bound[1].y + 1, centerfloor.z))
-	ents:SetModel("models/props_junk/PopCan01a.mdl") -- Set HL2 Popcan Model
-	ents:SetNoDraw(false)
-    ents:Spawn()
-    ents:Activate()
-	
-		
-	Data(ents, math.random(-100, 100), math.random(0, 1000), math.random(Vector(0,0,0), Vector(360, 360, 0)), math.random(0, 100))
-
-
-end
-hook.Add("heatSystem", "experimental", GenerateEnts)
-
-end
-
-if (CLIENT) then
-
-end
+hook.Add("heatSystem", "experimental", start)
