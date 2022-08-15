@@ -272,7 +272,7 @@ function ENT:ProcessEntitiesInLava()
 					v:TakeDamage(10, self, self)
 
 				elseif v.IsInlava and v:IsNPC() or v:IsNextBot() then
-					v:SetVelocity( v:GetVelocity() * -0.9) - (v:GetVelocity() * 0.05) - Vector(40,0,0))
+					v:SetVelocity( (v:GetVelocity() * -0.9) - (v:GetVelocity() * 0.05) - Vector(40,0,0))
 					v:Ignite(15)
 					v:TakeDamage(10, self, self)
 				else

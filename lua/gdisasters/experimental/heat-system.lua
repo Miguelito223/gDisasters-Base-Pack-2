@@ -15,6 +15,7 @@ function HeatSytem() -- System Core
 	CAPE = 0
 	windDiff = 0
 	CalculateHeat()
+	SetGLOBALSYSTEM()
 	
 	print("heat: ".. floorheat, airheat, upperairheat, waterheat)
 end
@@ -32,7 +33,7 @@ end
 function CalculateAirInstability() -- Calculate CAPE index, wind
 
     windDiff = airheat + waterheat / lowerPointPressure
-    CAPE = airheat + waterheat * (sunheat + 1) + heatIRmultipiler + heightCooldownRate
+    CAPE = airheat + waterheat * (sunHeat + 1) + heatIRmultiplier + heightCooldownRate
 
 end
 
@@ -44,6 +45,7 @@ function TransferHeatToGround() -- Trasfer Current Heat To Ground (Floor)
 end
 
 function SetGLOBALSYSTEM() -- Make Values Like Wind Speed Show Correct Stuff
+	
 	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = airheat
 	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = waterheat + airheat
 	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"] = windDiff
