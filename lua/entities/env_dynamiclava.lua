@@ -154,7 +154,9 @@ function ENT:Processlava(scalar, t)
 			if (vpos.z >= pos.z and vpos.z <= zmax) and v.IsInlava!=true then
 				v.IsInlava = true 
 				
-				ParticleEffect( "lava_splash_main", Vector(vpos.x, vpos.y, zmax), Angle(0,0,0), nil)
+				if math.random(1,3)==1 then
+					ParticleEffect( "lava_splash_main", Vector(vpos.x, vpos.y, zmax), Angle(0,0,0), nil)
+				end
 				
 			end
 			
