@@ -16,6 +16,8 @@ function HeatSystem() -- System Core
 	windDiff = 0
 	CalculateHeat()
 	SetGLOBALSYSTEM()
+	
+	print("heat: ".. floorheat, airheat, upperairheat, waterheat)
 end
 hook.Add("Tick", "experimental", HeatSystem)
 
