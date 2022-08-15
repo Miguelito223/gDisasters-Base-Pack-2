@@ -179,7 +179,6 @@ end
 function ENT:ingite(v)	
 	if v.IsInlava then
 		v:Ignite(15)
-		v:TakeDamage(60)
 	end
 end
 
