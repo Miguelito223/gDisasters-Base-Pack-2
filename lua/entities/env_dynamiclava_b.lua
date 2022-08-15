@@ -176,12 +176,6 @@ function ENT:Expandlava()
 
 end
 
-function ENT:ingite(v)	
-	if v.IsInlava then
-		v:Ignite(15)
-	end
-end
-
 
 function ENT:SetDistanceTravelled(float)
 
@@ -242,7 +236,6 @@ function ENT:ProcessEntitiesInLava()
 					if eye.z >= minz and eye.z <= zmax then
 						v:SetNWBool("IsUnderlava", true)		
 						v:SetNWFloat("ZlavaDepth",  math.Round(diff))
-						self:ingite(v)
 						
 						--v:SetMoveType(MOVETYPE_WALK)
 						
@@ -274,46 +267,19 @@ function ENT:ProcessEntitiesInLava()
 					
 				if v.IsInlava and v:IsPlayer() and self:IsValid() then
 					
-					v:SetVelocity( v:GetVelocity() * -0.5 + Vector(0,0,10) - Vector(40,0,0) )
-					self:ingite(v)
-					v:TakeDamage(60)
+					v:SetVelocity( v:GetVelocity() * -0.9)
+					v:Ignite(15)
+					v:TakeDamage(10, self, self)
 
 				elseif v.IsInlava and v:IsNPC() or v:IsNextBot() then
-					v:SetVelocity( ((Vector(0,0,math.Clamp(diff,-100,50)/4) * 0.99)  * overall_mod) - (v:GetVelocity() * 0.05) - Vector(40,0,0))
-					self:ingite(v)
-					v:TakeDamage(60)
+					v:SetVelocity( v:GetVelocity() * -0.9) - (v:GetVelocity() * 0.05) - Vector(40,0,0))
+					v:Ignite(15)
+					v:TakeDamage(10, self, self)
 				else
 					if v.IsInlava then
-
-						local massmod       = math.Clamp((phys:GetMass()/25000),0,1)
-						local buoyancy_mod  = GetBuoyancyMod(v)
 						
-						if v:GetModel()=="models/airboat.mdl" then 
-							buoyancy_mod = 5 
-							
-						end 
-						
-						local buoyancy      = massmod + (buoyancy_mod*(1 + massmod))
-						
-						local friction      = (1-math.Clamp( (phys:GetVelocity():Length()*overall_mod)/50000,0,1)) 
-						
-						if buoyancy_mod <= 1 then 
-							friction  = (1-math.Clamp( (phys:GetVelocity():Length()*overall_mod)/10000,0,1)) 
-						end
-				
-						local add_vel       = Vector(0,0, (math.Clamp(diff,-20,20)/8 * buoyancy)   * overall_mod) - Vector(40,0,0)
-						phys:AddVelocity( add_vel )
-						
-						local resultant_vel = v:GetVelocity() * friction
-						local final_vel     = Vector(resultant_vel.x * wr,resultant_vel.y * wr, resultant_vel.z * friction)
-			
-						if #ents.FindByClass("gd_d2_minivolcano*") >= 1 then return end
-						if #ents.FindByClass("gd_d8_volcano*") >= 1 then return end
-						if #ents.FindByClass("gd_d4_volcano*") >= 1 then return end
-			
-						
-						phys:SetVelocity( final_vel)
-						self:ingite(v)
+						phys:SetVelocity( phys:GetVelocity() * 0.01)
+						v:Ignite(15)
 						
 						
 					end
@@ -436,10 +402,10 @@ function ENT:ProcessEntitiesInWedgeLava()
 				if v.IsInlava and v:IsPlayer() then
 					
 					v:SetVelocity( v:GetVelocity() * -0.5 + Vector(0,0,10) )
-					self:ingite(v)
+					v:Ignite(15)
 				elseif v.IsInlava and v:IsNPC() or v:IsNextBot() then
 					v:SetVelocity( ((Vector(0,0,math.Clamp(diff,-100,50)/4) * 0.99)  * overall_mod) - (v:GetVelocity() * 0.05))
-					self:ingite(v)
+					v:Ignite(15)
 				else
 	
 					local massmod       = math.Clamp((phys:GetMass()/25000),0,1)
@@ -465,7 +431,7 @@ function ENT:ProcessEntitiesInWedgeLava()
 					local final_vel     = Vector(resultant_vel.x * wr,resultant_vel.y * wr, resultant_vel.z * friction)
 		
 					
-					self:ingite(v)
+					v:Ignite(15)
 					
 						
 					local r    = v:BoundingRadius()
@@ -850,7 +816,7 @@ function ENT:OnWedgelavaEntry(ent)
 	
 	if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then 
 	
-		self:ingite(ent)
+		ents:Ignite(15)
 	
 	else
 		

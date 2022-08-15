@@ -102,11 +102,6 @@ function ENT:lavaHeightIncrement(scalar, t)
 	self:SetNWFloat("lavaHeight", self.lavaHeight)
 end
 
-function ENT:ingite(v)	
-	if v.IsInlava then
-		v:Ignite(15)
-	end
-end
 
 local ignore_ents ={
 ["phys_constraintsystem"]=true,
@@ -143,25 +138,12 @@ function ENT:Processlava(scalar, t)
 				local eye = v:EyePos()	
 				
 				if eye.z >= pos.z and eye.z <= zmax then
-					v:SetNWBool("IsUnderlava", true)
-					self:ingite(v)		
+					v:SetNWBool("IsUnderlava", true)	
 					v:SetNWInt("ZlavaDepth", diff)
 					
 					
 					
 				else
-					if v:GetNWBool("IsUnderlava")==true then
-						net.Start("gd_screen_particles")
-						net.WriteString("hud/warp_ripple3")
-						net.WriteFloat(math.random(10,58))
-						net.WriteFloat(math.random(10,50)/10)
-						net.WriteFloat(math.random(0,10))
-						net.WriteVector(Vector(0,math.random(0,200)/100,0))
-						net.Send(v)
-						
-					
-						
-					end
 					
 					v:SetNWBool("IsUnderlava", false)
 				end
@@ -184,53 +166,28 @@ function ENT:Processlava(scalar, t)
 			end
 			
 			if v.IsInlava and v:IsPlayer() then
-				
-				v:SetVelocity( v:GetVelocity() * -0.5 + Vector(0,0,20) )
-				self:ingite(v)
-				v:TakeDamage(60)
+				v:SetVelocity( v:GetVelocity() * -0.9)
+				v:Ignite(15)
+				v:TakeDamage(10, self, self)
 			
 			elseif v.IsInlava and v:IsNPC() or v:IsNextBot() then
-				v:SetVelocity( ((Vector(0,0,math.Clamp(diff,-100,50)/4) * 0.99)  * overall_mod) - (v:GetVelocity() * 0.05))
-				self:ingite(v)
-				v:TakeDamage(60)
+				v:SetVelocity( v:GetVelocity() * -0.9)
+				v:Ignite(15)
+				v:TakeDamage(10, self, self)
 			else
 				if v.IsInlava then
-					
-					local massmod       = math.Clamp((phys:GetMass()/25000),0,1)
-					local buoyancy_mod  = GetBuoyancyMod(v)
-					
-					if v:GetModel()=="models/airboat.mdl" then 
-						buoyancy_mod = 5 
-						
-					end 
-					
-					local buoyancy      = massmod + (buoyancy_mod*(1 + massmod))
-					
-					local friction      = (1-math.Clamp( (phys:GetVelocity():Length()*overall_mod)/50000,0,1)) 
-					
-					if buoyancy_mod <= 1 then 
-						friction  = (1-math.Clamp( (phys:GetVelocity():Length()*overall_mod)/10000,0,1)) 
-					end
-			
-					local add_vel       = Vector(0,0, (math.Clamp(diff,-20,20)/8 * buoyancy)  * overall_mod)
-					phys:AddVelocity( add_vel )
-					
-					local resultant_vel = v:GetVelocity() * friction
-					local final_vel     = Vector(resultant_vel.x * wr,resultant_vel.y * wr, resultant_vel.z * friction)
-		
-					
-					phys:SetVelocity( final_vel)
-					self:ingite(v)
+					phys:SetVelocity( phys:GetVelocity() * 0.01)
+					v:Ignite(15)
 					
 					if v:IsVehicle() and v:GetClass()!="prop_vehicle_airboat" then 
 						v:Fire("TurnOff", 0.1, 0)
-						self:ingite(v)
+						v:Ignite(15)
 					end 
 					
 					if (v.isWacAircraft) then
 						v:setEngine(false)
 						v.engineDead = true	
-						self:ingite(v)						 
+						v:Ignite(15)						 
 					end
 				end
 			end
