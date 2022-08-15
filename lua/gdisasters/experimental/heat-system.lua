@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 CreateConVar("gdisasters_HeatSytem_enabled", 1, {FCVAR_ARCHIVE}) --Convars
 
 function start() 
@@ -114,8 +113,3 @@ function start()
 	end
 
 end
-
-hook.Add("heatSystem", "experimental", start)
-=======
-CreateConVar("gdisasters_HeatSytem_enabled", 1, {FCVAR_ARCHIVE})
->>>>>>> 74a34fc9c261e41072b9cffb293a3626db56f5bc
