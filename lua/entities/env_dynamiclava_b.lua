@@ -780,7 +780,6 @@ function ENT:OnLavaEntry(ent)
 	
 	if math.random(1,2)==1 then
 		ParticleEffect( "lava_splash_main", Vector(vpos.x, vpos.y, zmax), Angle(0,0,0), nil)
-		ent:EmitSound(table.Random({"ambient/water/water_splash1.wav","ambient/water/water_splash2.wav","ambient/water/water_splash3.wav"}), 80, 100)
 	end
 
 
@@ -862,11 +861,9 @@ function ENT:OnWedgelavaEntry(ent)
 			
 		elseif r >= 150 and r < 200 then 
 			if HitChance(55) then 
-			ent:EmitSound("streams/disasters/tsunami/splash_big.mp3", 100, 100, 1)
 			ParticleEffect("lava_splash_main", ent:GetPos() - Vector(-1,0,0) * r * 0.8, Angle(0,0,0), nil)
 			end
 		elseif r >= 200 then 
-			ent:EmitSound("streams/disasters/tsunami/splash_big.mp3", 100, 100, 1)
 			ParticleEffect("lava_splash_main", ent:GetPos() - Vector(-1,0,0) * r * 0.8, Angle(0,0,0), nil)
 		end
 	

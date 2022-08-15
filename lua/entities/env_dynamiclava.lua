@@ -154,10 +154,7 @@ function ENT:Processlava(scalar, t)
 			if (vpos.z >= pos.z and vpos.z <= zmax) and v.IsInlava!=true then
 				v.IsInlava = true 
 				
-				if math.random(1,2)==1 then
-					ParticleEffect( "lava_splash_main", Vector(vpos.x, vpos.y, zmax), Angle(0,0,0), nil)
-					v:EmitSound(table.Random({"ambient/water/water_splash1.wav","ambient/water/water_splash2.wav","ambient/water/water_splash3.wav"}), 80, 100)
-				end
+				ParticleEffect( "lava_splash_main", Vector(vpos.x, vpos.y, zmax), Angle(0,0,0), nil)
 				
 			end
 			
