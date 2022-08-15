@@ -16,10 +16,8 @@ function HeatSystem() -- System Core
 	windDiff = 0
 	CalculateHeat()
 	SetGLOBALSYSTEM()
-	
-	print("heat: ".. floorheat, airheat, upperairheat, waterheat)
 end
-hook.Add("heatsystem", "experimental", HeatSystem)
+hook.Add("Tick", "experimental", HeatSystem)
 
 function CalculateHeat() -- Calculate Heat -_-
 
@@ -46,10 +44,9 @@ function TransferHeatToGround() -- Trasfer Current Heat To Ground (Floor)
 end
 
 function SetGLOBALSYSTEM() -- Make Values Like Wind Speed Show Correct Stuff
-	
-	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = airheat
-	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = waterheat + airheat
-	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"] = windDiff
-	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = airheat * pressureCoeffitient
+	SetGlobalFloat("gDisasters_Temperature", airheat)
+	SetGlobalFloat("gDisasters_Pressure", airheat * pressureCoeffitient)
+	SetGlobalFloat("gDisasters_Humidity", waterheat + airheat)
+	SetGlobalFloat("gDisasters_Wind", windDiff)
 
 end
