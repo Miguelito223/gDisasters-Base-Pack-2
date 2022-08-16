@@ -815,7 +815,7 @@ function ENT:OnWedgelavaEntry(ent)
 	
 	if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then 
 	
-		ents:Ignite(15)
+		ent:Ignite(15)
 	
 	else
 		
