@@ -42,17 +42,6 @@ function ENT:Initialize()
 		ParticleEffectAttach(self.CurrentParticleEffect, PATTACH_POINT_FOLLOW, self, 0)
 		
 	end
-	
-	timer.Simple(0.5, function()
-		if !self:IsValid() then return end
-		local sound = Sound("disasters/nature/tornado/dust_devil_loop.wav")
-
-		CSPatch = CreateSound(self, sound)
-		CSPatch:SetSoundLevel( 90 )
-		CSPatch:Play()
-		CSPatch:ChangeVolume( 1 )
-		self.Sound = CSPatch
-	end)
 end
 
 function ENT:SpawnFunction( ply, tr )
@@ -67,32 +56,6 @@ function ENT:SpawnFunction( ply, tr )
 	return ent
 end
 
-
-function ENT:Vortex()
-	for k, v in pairs(player.GetAll()) do 
-		local dist = v:GetPos():Distance(self:GetPos())
-		if dist < 300 then
-		
-						
-			if math.random(1,math.Round(math.Round(dist)/2))==1 then
-				
-				net.Start("gd_screen_particles")
-				net.WriteString(table.Random({"hud/sand_1","hud/sand_2","hud/sand_3"}))
-				net.WriteFloat(math.random(50, 300 - dist ))
-				net.WriteFloat(math.random(50,200)/100)
-				net.WriteFloat(math.random(0,1))
-				net.WriteVector(Vector(0,0.5,0))
-				net.Send(v)
-					
-				
-				
-			end
-		
-		end
-		
-	end
-
-end
 
 function ENT:SpeedBoostDecay()
 	self.SpeedBoost = math.Clamp(self.SpeedBoost - 0.01,0,3)
@@ -158,7 +121,6 @@ function ENT:Think()
 		
 		local t =   (66/ ( 1/engine.TickInterval())) * 0.01	
 		
-		self:Vortex()
 		self:SpeedBoostDecay()
 		self:Movement()
 		self:PlayParticleEffect()
