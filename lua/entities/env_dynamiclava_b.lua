@@ -641,8 +641,11 @@ function ENT:ProcesslavaState()
 		if (SERVER) then 
 			local lava = createlava(self.CurrentHeight, ents.GetAll()[1])
 			lava:EFire("Height", self.CurrentHeight)
-		
 			self:Remove()
+
+			timer.Simple(50, function()
+				lava:Remove()
+			end)
 
 		end 
 		

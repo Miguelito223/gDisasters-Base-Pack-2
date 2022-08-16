@@ -163,8 +163,6 @@ concommand.Add("getmap", function()
 end)
 
 
-
-
 hook.Add( "Initialize", "AtmosInitFix", function()
 
 	if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
