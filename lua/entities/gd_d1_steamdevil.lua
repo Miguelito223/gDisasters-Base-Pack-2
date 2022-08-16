@@ -135,9 +135,6 @@ function ENT:OnRemove()
 	if (SERVER) then		
 		self:StopParticles()
 	end
-	
-	
-	self.Sound:Stop()
 end
 
 
