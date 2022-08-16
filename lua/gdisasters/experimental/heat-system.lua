@@ -16,8 +16,6 @@ hook.Add("Tick", "Experimental", function() -- System Core
 	windDiff = 0
 	CalculateHeat()
 	SetGLOBALSYSTEM()
-	
-	print("floorheat: " .. floorheat .." airheat: ".. airheat .. " upperairhea: ".. upperairheat .." waterheat: " .. waterheat)
 end)
 
 
