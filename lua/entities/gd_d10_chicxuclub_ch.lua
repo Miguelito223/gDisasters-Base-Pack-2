@@ -180,6 +180,7 @@ function ENT:Explode()
 		ent4:Activate()
 	end)
 	timer.Simple(80, function()
+		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 		local ent1 = ents.FindByClass("gd_d10_meteorshower")[1]
 		local ent2 = ents.FindByClass("gd_d10_meteoriteshower")[1]
 		ent1:Remove()
