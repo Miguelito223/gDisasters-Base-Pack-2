@@ -210,6 +210,7 @@ AddToGDSpawnMenu("Shooting Star"         , "gd_d2_shootingstar"			, "Disasters",
 AddToGDSpawnMenu("Tidal Wave"         , "gd_d2_tidalwave"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Hail Stone"         , "gd_d2_hail"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Waterspout", "gd_d2_waterspout" , "Disasters", "Tier 2", false)
+AddToGDSpawnMenu("acid puddle", "gd_d2_acidpuddle" , "Disasters", "Tier 2", false)
 
 --[[
 DISASTERS 
