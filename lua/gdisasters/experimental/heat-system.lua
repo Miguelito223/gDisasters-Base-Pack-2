@@ -1,5 +1,8 @@
 CreateConVar("gdisasters_HeatSytem_enabled", 1, {FCVAR_ARCHIVE}) --Convars
 
+if (SERVER) then
+
+
 hook.Add("Tick", "Experimental", function() -- System Core
 	if GetConVar("gdisasters_HeatSytem_enabled"):GetInt() == 0 then return end
 
@@ -75,5 +78,7 @@ function SetGLOBALSYSTEM() -- Make Values Like Wind Speed Show Correct Stuff
 	SetGlobalFloat("gDisasters_Pressure", airheat * pressureCoeffitient)
 	SetGlobalFloat("gDisasters_Humidity", waterheat + airheat)
 	SetGlobalFloat("gDisasters_Wind", windDiff)
+
+end
 
 end
