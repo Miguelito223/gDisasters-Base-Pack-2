@@ -1,12 +1,12 @@
 CreateConVar("gdisasters_HeatSytem_enabled", 1, {FCVAR_ARCHIVE}) --Convars
 
-function HeatSystem() -- System Core
+hook.Add("Tick", "Experimental", function() -- System Core
 	if GetConVar("gdisasters_HeatSytem_enabled"):GetInt() == 0 then return end
 
-	floorheat = 23
+	floorheat = 0
 	airheat =  23
 	upperairheat =  15
-	waterheat =  23
+	waterheat =  0
 	heatIRmultiplier = 1
 	sunHeat = 1
 	heightCooldownRate = 1
@@ -17,14 +17,15 @@ function HeatSystem() -- System Core
 	CalculateHeat()
 	SetGLOBALSYSTEM()
 	
-	print(floorheat, airheat, upperairheat, waterheat)
-end
-hook.Add("Tick", "experimental", HeatSystem)
+	print("floorheat: " .. floorheat .." airheat: ".. airheat .. " upperairhea: ".. upperairheat .." waterheat: " .. waterheat)
+end)
+
 
 function CalculateHeat() -- Calculate Heat -_-
-	
-	CalculateAirInstability()
 	TransferHeatToGround()
+	AddHeatToGround()
+	CalculateAirInstability()
+	RandomEvent()
 	Weather()
     airheat = airheat + sunHeat + heatIRmultiplier + sunHeat
 	upperairheat = airheat - (heatIRmultiplier * sunHeat) * heightCooldownRate
@@ -39,14 +40,16 @@ function CalculateAirInstability() -- Calculate CAPE index, wind
 
 end
 
-function wait(seconds)
-    local start = os.time()
-    repeat until os.time() > start + seconds
+function TransferHeatToGround() -- Trasfer Current Heat To Ground (Floor)
+    floorheat = airheat - heatIRmultiplier + sunHeat
+	airheat = airheat - heatIRmultiplier
 end
 
-function TransferHeatToGround() -- Trasfer Current Heat To Ground (Floor)		
-	floorheat = floorheat + sunHeat
-	waterheat = waterheat + sunHeat
+function AddHeatToGround() -- Trasfer Current Heat To Ground (Floor)
+	timer.Create("lol", 10, 0, function()
+    	floorheat = floorheat + sunHeat
+		waterheat = waterheat + sunHeat
+    end)
 end
 
 function Weather() -- Weather Stuffy
