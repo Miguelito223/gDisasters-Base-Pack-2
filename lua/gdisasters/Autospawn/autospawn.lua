@@ -91,7 +91,9 @@ local function Disasterspawn()
 		"gd_d7_lavaflood",
 		"gd_d8_combineinv",
 		"gd_d10_megatsunamilava",
-		"gd_d8_lavatsunami"
+		"gd_d8_lavatsunami",
+		"gd_d8_megalavaflood",
+		"gd_d7_minilavatsunami"
 	}
 
 
@@ -342,7 +344,9 @@ local function WeatherDisasterspawn()
 		"gd_d7_lavaflood",
 		"gd_d8_combineinv",
 		"gd_d10_megatsunamilava",
-		"gd_d8_lavatsunami"
+		"gd_d8_lavatsunami",
+		"gd_d8_megalavaflood",
+		"gd_d7_minilavatsunami"
 	}
 
 
