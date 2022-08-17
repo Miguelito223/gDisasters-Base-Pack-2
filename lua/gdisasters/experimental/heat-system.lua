@@ -2,14 +2,13 @@ CreateConVar("gdisasters_HeatSytem_enabled", 1, {FCVAR_ARCHIVE}) --Convars
 
 if (SERVER) then
 
-
-hook.Add("Tick", "Experimental", function() -- System Core
+function Core() -- System Core
 	if GetConVar("gdisasters_HeatSytem_enabled"):GetInt() == 0 then return end
 
-	floorheat = 0
+	floorheat = 23
 	airheat =  23
 	upperairheat =  15
-	waterheat =  0
+	waterheat =  23
 	heatIRmultiplier = 1
 	sunHeat = 1
 	heightCooldownRate = 1
@@ -17,9 +16,13 @@ hook.Add("Tick", "Experimental", function() -- System Core
 	lowerPointPressure = 10
 	CAPE = 0
 	windDiff = 0
+
 	CalculateHeat()
 	SetGLOBALSYSTEM()
-end)
+
+	print(floorheat, airheat, upperairheat, waterheat )
+end
+hook.Add("Tick", "Experimental", Core)
 
 
 function CalculateHeat() -- Calculate Heat -_-
@@ -47,7 +50,7 @@ function TransferHeatToGround() -- Trasfer Current Heat To Ground (Floor)
 end
 
 function AddHeatToGround() -- Trasfer Current Heat To Ground (Floor)
-	timer.Create("lol", 10, 0, function()
+	timer.Create("heattimer", 1, 0, function()
     	floorheat = floorheat + sunHeat
 		waterheat = waterheat + sunHeat
     end)
@@ -78,7 +81,6 @@ function SetGLOBALSYSTEM() -- Make Values Like Wind Speed Show Correct Stuff
 	SetGlobalFloat("gDisasters_Pressure", airheat * pressureCoeffitient)
 	SetGlobalFloat("gDisasters_Humidity", waterheat + airheat)
 	SetGlobalFloat("gDisasters_Wind", windDiff)
-
 end
 
 end
