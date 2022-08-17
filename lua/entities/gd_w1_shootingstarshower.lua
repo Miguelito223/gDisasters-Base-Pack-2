@@ -91,8 +91,6 @@ function ENT:Initialize()
 		
 		self.Night = {}
 		
-		self:FogSpawn()
-		
 	end
 end
 
