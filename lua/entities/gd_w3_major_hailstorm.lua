@@ -66,7 +66,7 @@ function ENT:Initialize()
 
 	gDisasters_CreateGlobalFog(self, data, true)	
 	
-	--gDisasters_CreateGlobalGFX("coldwave", self)						
+	gDisasters_CreateGlobalGFX("coldwave", self)						
 		
 	end
 end

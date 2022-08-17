@@ -68,7 +68,7 @@ function ENT:Initialize()
 
 	gDisasters_CreateGlobalFog(self, data, true)	
 	
-	--gDisasters_CreateGlobalGFX("heavyrain", self)						
+	gDisasters_CreateGlobalGFX("heavyrain", self)						
 		
 	end
 end

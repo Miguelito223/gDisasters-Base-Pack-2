@@ -89,9 +89,9 @@ function ENT:Initialize()
 
 		gDisasters_CreateGlobalFog(self, data, true)	
 		
-		--self.Night = {}
+		self.Night = {}
 		
-		--self:FogSpawn()
+		self:FogSpawn()
 		
 	end
 end

@@ -140,7 +140,7 @@ function ENT:Explode()
 	for i=1, 8 do 
 		local mod_vector = Vector( math.random(-1000,1000), math.random(-1000,1000), 0)
 		local piece = ents.Create("prop_physics") 
-		--piece:SetModelScale(0.4,0)
+		piece:SetModelScale(0.4,0)
 		piece:SetModel( models[i] ) 
 		piece:SetMaterial(mat)
 		local phys = piece:GetPhysicsObject()

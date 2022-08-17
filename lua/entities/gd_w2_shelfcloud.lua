@@ -61,7 +61,7 @@ function ENT:Initialize()
 			end)
 		end
 		
-		--setMapLight("d")		
+		setMapLight("d")		
 	
 		self:SetNoDraw(true)
 
@@ -75,7 +75,7 @@ function ENT:Initialize()
 			data.EndMinCurrent  = 0
 			data.EndMaxCurrent  = 0       
 
-		--gDisasters_CreateGlobalFog(self, data, true)	
+		gDisasters_CreateGlobalFog(self, data, true)	
 
 		self:SetupSequencedVars()
 		

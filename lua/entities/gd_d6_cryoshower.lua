@@ -64,9 +64,9 @@ function ENT:Initialize()
 		data.EndMinCurrent  = 0
 		data.EndMaxCurrent  = 0       
 
-	--gDisasters_CreateGlobalFog(self, data, true)	
+	gDisasters_CreateGlobalFog(self, data, true)	
 	
-	--gDisasters_CreateGlobalGFX("coldwave", self)						
+	gDisasters_CreateGlobalGFX("coldwave", self)						
 		
 	end
 end
