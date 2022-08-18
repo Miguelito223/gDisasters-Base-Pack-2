@@ -31,9 +31,9 @@ function gDisasters_PostSpawnCL()
 		CreateConVar( "gdisasters_graphics_dr_maxrenderdistance", 500, {FCVAR_ARCHIVE}	, "")
 		CreateConVar( "gdisasters_graphics_dr_refreshrate", 2, {FCVAR_ARCHIVE}	, "")
 		CreateConVar( "gdisasters_graphics_dr_updaterate", 2, {FCVAR_ARCHIVE}	, "")
-		CreateConVar( "gdisasters_antilag_ground_particles", 500, {FCVAR_ARCHIVE,FCVAR_NOTIFY}, "")
-		CreateConVar( "gdisasters_antilag_weather_particles", 500, {FCVAR_ARCHIVE,FCVAR_NOTIFY}, "")
-		CreateConVar( "gdisasters_antilag_number_of_passes", 500, {FCVAR_ARCHIVE,FCVAR_NOTIFY}, "")
+		CreateConVar( "gdisasters_antilag_ground_particles", 500, {FCVAR_ARCHIVE}, "")
+		CreateConVar( "gdisasters_antilag_weather_particles", 500, {FCVAR_ARCHIVE}, "")
+		CreateConVar( "gdisasters_antilag_number_of_passes", 500, {FCVAR_ARCHIVE}, "")
 	
 	end
 
