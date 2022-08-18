@@ -100,7 +100,7 @@ local function Disasterspawn()
 	
 	if GetConVar("gdisasters_autospawn_disasters"):GetInt() == 0 then return end
 	
-	if GetConVar("gdisasters_autospawn_disasters"):GetInt() == 1 and IsMapRegistered() and GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then
+	if GetConVar("gdisasters_autospawn_disasters"):GetInt() == 1 and IsMapRegistered() then
 		dis = ents.Create( disasters[math.random( 1, #disasters )] .. "" )
 		dis:SetPos(Vector(math.random(-10000,10000),math.random(-10000,10000), getMapCenterFloorPos().z))
 		dis:Spawn()
