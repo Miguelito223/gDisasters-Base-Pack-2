@@ -3,7 +3,6 @@ CreateConVar("gdisasters_HeatSytem_enabled", 1, {FCVAR_ARCHIVE}) --Convars
 if (SERVER) then
 
 function Core() -- System Core
-	if GetConVar("gdisasters_HeatSytem_enabled"):GetInt() == 0 then return end
 
 	floorheat = 23
 	airheat =  23
@@ -16,6 +15,8 @@ function Core() -- System Core
 	lowerPointPressure = 10
 	CAPE = 0
 	windDiff = 0
+
+	if GetConVar("gdisasters_HeatSytem_enabled"):GetInt() == 0 then return end
 
 	CalculateHeat()
 	SetGLOBALSYSTEM()
