@@ -78,10 +78,10 @@ function RandomEvent() -- Randomly Change Stuff For More Variance
 end
 
 function SetGLOBALSYSTEM() -- Make Values Like Wind Speed Show Correct Stuff
-	SetGlobalFloat("gDisasters_Temperature", airheat)
-	SetGlobalFloat("gDisasters_Pressure", airheat * pressureCoeffitient)
-	SetGlobalFloat("gDisasters_Humidity", waterheat + airheat)
-	SetGlobalFloat("gDisasters_Wind", windDiff)
+	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = airheat
+	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = airheat * pressureCoeffitient
+	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = waterheat + airheat
+	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = windDiff
 end
 
 end

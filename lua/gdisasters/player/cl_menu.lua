@@ -72,6 +72,7 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_atmosphere");
 	CreateTickboxConVariable(CPanel, "Disable Map Tornadoes"  , "gdisasters_getridmaptor");
 	CreateTickboxConVariable(CPanel, "Enable Hud"  , "gdisasters_hud_enabled");
+	CreateTickboxConVariable(CPanel, "Enable stormfox"  , "gdisasters_stormfox_enable");
 	CreateTickboxConVariable(CPanel, "Enable Day And Night Cycle"  , "gdisasters_dnc_enabled");
 	
 	SVMenuCreated = false;
