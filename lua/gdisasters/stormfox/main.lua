@@ -4,7 +4,7 @@ if (SERVER) then
 
 function start()
     if GetConVar("gdisasters_stormfox_enable"):GetInt() == 0 then return end
-    temp = StormFox2.Temperature.Get(pressure)
+    temp = StormFox2.Temperature.Get()
     wind = StormFox2.Wind.GetForce()
     
     GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = temp
