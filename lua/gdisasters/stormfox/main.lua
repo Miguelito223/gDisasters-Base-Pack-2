@@ -12,14 +12,8 @@ function start()
 
     if !StormFox2.Weather.IsRaining() and StormFox2.Weather.GetRainAmount(0) then
         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 0
-    elseif StormFox2.Weather.IsRaining() and StormFox2.Weather.GetRainAmount(0.1) then
-        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 10
-    elseif StormFox2.Weather.IsRaining() and StormFox2.Weather.GetRainAmount(0.5) then
-        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 30
-    elseif StormFox2.Weather.IsRaining() and StormFox2.Weather.GetRainAmount(0.8) then
-        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 80
     elseif StormFox2.Weather.IsRaining() and StormFox2.Weather.GetRainAmount(1) then
-        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
+        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 50
     end
 end
 hook.Add("Tick", "stormfoxandgdisasters", start)
