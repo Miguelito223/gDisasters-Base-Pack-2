@@ -203,15 +203,15 @@ if (CLIENT) then
 		local pos_windspeed                = Vector(280 * xscale, 960 * yscale , 0)
 		local pos_lwindspeed                = Vector(280 * xscale, 990 * yscale , 0)
 		
-		local air_tmp   = math.Round(GetGlobalFloat("gDisasters_Temperature"),2)
+		local air_tmp   = math.Round(GetGlobalFloat("gDisasters_Temperature"))
 		local body_tmp  = math.Round(LocalPlayer():GetNWFloat("BodyTemperature"),2)
-		local hm        = math.Round(GetGlobalFloat("gDisasters_Humidity"),2)
+		local hm        = math.Round(GetGlobalFloat("gDisasters_Humidity"))
 		local windspd   = math.Round(GetGlobalFloat("gDisasters_Wind"))
 		local lwindspd  = math.Round(LocalPlayer():GetNWFloat("LocalWind"))
 		
-		local air_temp   =  string.format("%.2f", tostring( air_tmp  )).."c"
-		local body_temp  =  string.format("%.2f",tostring( math.Round(LocalPlayer():GetNWFloat("BodyTemperature"),2) )).."c"
-		local humidity   =  string.format("%.2f",tostring( hm,2) ).."%"
+		local air_temp   =  tostring( air_tmp ).."c"
+		local body_temp  =  tostring( math.Round(LocalPlayer():GetNWFloat("BodyTemperature"),2) ).."c"
+		local humidity   =  tostring( hm).."%"
 		
 		
 		local function windspeed_Format(speed)
