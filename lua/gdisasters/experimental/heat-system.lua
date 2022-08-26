@@ -1,4 +1,4 @@
-CreateConVar("gdisasters_HeatSytem_enabled", 1, {FCVAR_ARCHIVE}) --Convars
+CreateConVar("gdisasters_HeatSytem_enabled", 0, {FCVAR_ARCHIVE}) --Convars
 
 if (SERVER) then
 
