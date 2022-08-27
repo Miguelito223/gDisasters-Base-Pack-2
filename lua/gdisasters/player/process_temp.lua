@@ -133,14 +133,16 @@ function gDisasters_ProcessTemperature()
 			
 			if math.random(1,25) == 25 then
 				if alpha_cold != 0 then
-					--v:SetWalkSpeed( v:GetWalkSpeed() - (alpha_cold + 1) )
-					--v:SetRunSpeed( v:GetRunSpeed() - (alpha_cold + 1)  )
+					v:SetWalkSpeed( v:GetWalkSpeed() - (alpha_cold + 1) )
+					v:SetRunSpeed( v:GetRunSpeed() - (alpha_cold + 1)  )
 
 					InflictDamage(v, v, "cold", alpha_hot + alpha_cold)
 
 				elseif alpha_hot != 0 then
-					InflictDamage(v, v, "heat", alpha_hot + alpha_cold)
+					v:SetWalkSpeed( v:GetWalkSpeed() - (alpha_hot - 1) )
+					v:SetRunSpeed( v:GetRunSpeed() - (alpha_hot - 1)  )
 					
+					InflictDamage(v, v, "heat", alpha_hot + alpha_cold)
 				end
 			end
 			

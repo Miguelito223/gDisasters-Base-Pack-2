@@ -4,10 +4,10 @@ if (SERVER) then
 
 function Core() -- System Core
 
-	floorheat = 23
+	floorheat = 0
 	airheat =  23
 	upperairheat =  15
-	waterheat =  23
+	waterheat =  0
 	heatIRmultiplier = 1
 	sunHeat = 1
 	heightCooldownRate = 1
@@ -20,8 +20,6 @@ function Core() -- System Core
 
 	CalculateHeat()
 	SetGLOBALSYSTEM()
-
-	print(floorheat, airheat, upperairheat, waterheat )
 end
 hook.Add("Tick", "Experimental", Core)
 
@@ -51,10 +49,15 @@ function TransferHeatToGround() -- Trasfer Current Heat To Ground (Floor)
 end
 
 function AddHeatToGround() -- Trasfer Current Heat To Ground (Floor)
-	timer.Create("heattimer", 1, 0, function()
+
+	if airheat >= 0 then
     	floorheat = floorheat + sunHeat
 		waterheat = waterheat + sunHeat
-    end)
+	elseif airheat <= 0 then
+		floorheat = floorheat - heatIRmultiplier
+		waterheat = waterheat - heatIRmultiplier
+	end
+
 end
 
 function Weather() -- Weather Stuffy
@@ -78,10 +81,10 @@ function RandomEvent() -- Randomly Change Stuff For More Variance
 end
 
 function SetGLOBALSYSTEM() -- Make Values Like Wind Speed Show Correct Stuff
-	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = airheat
-	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = airheat * pressureCoeffitient
-	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = waterheat + airheat
-	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = windDiff
+	GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = airheat
+	GLOBAL_SYSTEM["Atmosphere"]["Pressure"] = airheat * pressureCoeffitient
+	GLOBAL_SYSTEM["Atmosphere"]["Humidity"] = waterheat + airheat
+	GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = windDiff
 end
 
 end
