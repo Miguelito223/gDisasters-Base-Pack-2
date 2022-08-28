@@ -644,7 +644,7 @@ function ENT:ProcesslavaState()
 			self:Remove()
 
 			timer.Simple(50, function()
-				lava:Remove()
+				if IsValid() then lava:Remove() end
 			end)
 
 		end 
