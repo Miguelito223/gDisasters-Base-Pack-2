@@ -53,10 +53,8 @@ function ENT:CreateLandsliderocks(num, lifetime)
 end
 
 function ENT:LandslideAction()
-    
 	CreateSoundWave("streams/disasters/earthquake/earthquake_strong.wav", self:GetPos(), "stereo" ,340.29/2, {100,100}, 5)
 	self:CreateLandsliderocks(20, {8, 10})
-
 end
 
 function ENT:Timer()
