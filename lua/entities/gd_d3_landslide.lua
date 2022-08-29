@@ -30,43 +30,8 @@ function ENT:Initialize()
 			
 		end
 
-        self.IsGoingTolandslide    = false
-		self.IsPressureLeaking = false
-
-        self.Pressure = 0
+		self.IsGoingTolandslide = false
     end
-end
-
-function ENT:PressureIncrement()
-	
-	if self.IsGoingTolandslide==false and self.IsPressureLeaking == false then
-		self.Pressure = math.Clamp(self.Pressure + 0.05,0,100)
-		
-	elseif self.IsGoingTolandslide == false and self.IsPressureLeaking == false then
-		self.Pressure = math.Clamp(self.Pressure - 0.1,0,100)
-		if self.Pressure == 0 then self.IsPressureLeaking = false end
-	end
-end
-
-function ENT:CheckPressure()
-	
-	if self.Pressure >= 100 then
-		if self.IsGoingTolandslide==false then
-			self.IsGoingTolandslide = true
-			timer.Simple(math.random(10,20), function()
-				if self:IsValid() then
-					
-					self:LandslideAction()
-					self.Pressure = 99
-					self.IsGoingTolandslide = false
-					self.IsPressureLeaking = true
-				
-				end
-			
-			end)
-		
-		end
-	end
 end
 
 function ENT:CreateLandsliderocks(num, lifetime)
@@ -88,9 +53,22 @@ function ENT:CreateLandsliderocks(num, lifetime)
 end
 
 function ENT:LandslideAction()
-    CreateSoundWave("streams/disasters/earthquake/earthquake_strong.wav", self:GetPos(), "stereo" ,340.29/2, {100,100}, 5)
+    
+	CreateSoundWave("streams/disasters/earthquake/earthquake_strong.wav", self:GetPos(), "stereo" ,340.29/2, {100,100}, 5)
 	self:CreateLandsliderocks(20, {8, 10})
 
+end
+
+function ENT:Timer()
+	timer.simple(math.random(100,500) function()
+		if self.IsGoingTolandslide == false then
+			self.IsGoingTolandslide = true
+			timer.simple(math.random(10,20) function()
+				self:LandslideAction()
+				self.IsGoingTolandslide = false
+			end)
+		end
+	end)
 end
 
 function ENT:SpawnFunction( ply, tr )
@@ -113,9 +91,8 @@ function ENT:Think()
         self:SetPos(self:GetPos())
 		self:GetPhysicsObject():EnableMotion(false)
 		self:SetAngles(self:GetAngles())
+		self:Timer()
 
-        self:CheckPressure()
-		self:PressureIncrement()
         self:NextThink(CurTime() + t)
         return true	
     end
