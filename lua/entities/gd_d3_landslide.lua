@@ -58,7 +58,7 @@ function ENT:LandslideAction()
 end
 
 function ENT:Timer()
-	timer.simple(math.random(100,500) function()
+	timer.simple(math.random(100,500), function()
 		if self.IsGoingTolandslide == false then
 			self.IsGoingTolandslide = true
 			timer.simple(math.random(10,20) function()
