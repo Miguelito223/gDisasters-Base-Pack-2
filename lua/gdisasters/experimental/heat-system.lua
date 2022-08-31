@@ -18,8 +18,8 @@ function Core() -- System Core
 	CAPE = 0
 	windDiff = 0
 
-	SetGLOBALSYSTEM()
 	CalculateHeat()
+	SetGLOBALSYSTEM()
 	
 end
 hook.Add("Tick", "Experimental", Core)
