@@ -4,6 +4,8 @@ if (SERVER) then
 
 function Core() -- System Core
 
+	if GetConVar("gdisasters_HeatSytem_enabled"):GetInt() == 0 then return end
+
 	floorheat = 0
 	airheat =  23
 	upperairheat =  15
@@ -16,10 +18,9 @@ function Core() -- System Core
 	CAPE = 0
 	windDiff = 0
 
-	if GetConVar("gdisasters_HeatSytem_enabled"):GetInt() == 0 then return end
-
-	CalculateHeat()
 	SetGLOBALSYSTEM()
+	CalculateHeat()
+	
 end
 hook.Add("Tick", "Experimental", Core)
 
@@ -30,7 +31,7 @@ function CalculateHeat() -- Calculate Heat -_-
 	CalculateAirInstability()
 	RandomEvent()
 	Weather()
-    airheat = airheat + sunHeat + heatIRmultiplier + sunHeat
+    airheat = airheat + sunHeat - heatIRmultiplier
 	upperairheat = airheat - (heatIRmultiplier * sunHeat) * heightCooldownRate
 	waterheat = floorheat + sunHeat - heatIRmultiplier
 
@@ -50,13 +51,8 @@ end
 
 function AddHeatToGround() -- Trasfer Current Heat To Ground (Floor)
 
-	if airheat >= 0 then
-    	floorheat = floorheat + sunHeat
-		waterheat = waterheat + sunHeat
-	elseif airheat <= 0 then
-		floorheat = floorheat - heatIRmultiplier
-		waterheat = waterheat - heatIRmultiplier
-	end
+    floorheat = floorheat + sunHeat - heatIRmultiplier
+	waterheat = waterheat + sunHeat - heatIRmultiplier
 
 end
 
