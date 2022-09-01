@@ -69,25 +69,46 @@ end
 
 	for k,v in pairs(ents.GetAll()) do
 	
-	if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
+		if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
 	
-	local hit = (Vector( v:GetPos().x, v:GetPos().y, 0) - Vector( self:GetPos().x, self:GetPos().y, 0)):Length() 
+			local hit = (Vector( v:GetPos().x, v:GetPos().y, 0) - Vector( self:GetPos().x, self:GetPos().y, 0)):Length() 
+
+
+		
 	
+			if ( hit < 200 and hit >= 100 ) and v:IsValid() then
 	
-	if ( hit < 200 and hit >= 100 ) and v:IsValid() then
+				InflictDamage(v, self, "electrical", math.random(20,40))
 	
-	InflictDamage(v, self, "electrical", math.random(20,40))
+				v:Ignite(1)
 	
-	v:Ignite(1)
+			elseif hit < 100 and v:IsValid() then
 	
-	elseif hit < 100 and v:IsValid() then
+				InflictDamage(v, self, "electrical", math.random(70,140))
 	
-	InflictDamage(v, self, "electrical", math.random(70,140))
-	
-	v:Ignite(3)
+				v:Ignite(3)
 		
 			end
+
+		else
+			local hitprop = (Vector( v:GetPos().x, v:GetPos().y, 0) - Vector( self:GetPos().x, self:GetPos().y, 0)):Length() 
+
+
+		
 	
+			if ( hitprop < 200 and hitprop >= 100 ) and v:IsValid() then
+	
+				InflictDamage(v, self, "electrical", math.random(20,40))
+	
+				v:Ignite(1)
+	
+			elseif hitprop < 100 and v:IsValid() then
+	
+				InflictDamage(v, self, "electrical", math.random(70,140))
+	
+				v:Ignite(3)
+		
+			end
 		end
 	
 	end
