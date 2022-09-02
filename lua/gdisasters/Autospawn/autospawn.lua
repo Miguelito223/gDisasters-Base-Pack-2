@@ -12,7 +12,17 @@ CreateConVar( "gdisasters_autospawn_weatherdisaster", "0", {FCVAR_ARCHIVE}, "" )
 
 local function Tornadospawn()
 	recentTor = true
-	local tornado = {"gd_d3_ef0", "gd_d4_ef1", "gd_d4_landspout", "gd_d5_ef2", "gd_d6_ef3", "gd_d7_ef4", "gd_d8_ef5", "gd_d9_ef6", "gd_d10_ef7"}
+	local tornado = {
+	"gd_d3_ef0", 
+	"gd_d4_ef1", 
+	"gd_d4_landspout", 
+	"gd_d5_ef2", 
+	"gd_d6_ef3", 
+	"gd_d7_ef4", 
+	"gd_d8_ef5", 
+	"gd_d9_ef6", 
+	"gd_d10_ef7"
+	}
 
 	if GetConVar("gdisasters_autospawn"):GetInt() == 0 then return end
 	
