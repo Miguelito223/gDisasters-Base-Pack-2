@@ -281,6 +281,11 @@ function ENT:Erupt()
 		ent:Spawn()
 		ent:Activate()
 	end)
+	timer.Simple(100, function()
+		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
+	    local ent = ents.FindByClass("gd_w2_acidrain")[1]
+		if ent:IsValid() then ent:Remove() end
+	end)
 	
 	ParticleEffect("volcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
 end
