@@ -184,7 +184,7 @@ function ENT:Explode()
 		if ent1:IsValid() then ent1:Remove() end
 		if ent2:IsValid() then ent2:Remove() end
 	end)
-	timer.Simple(50, function()
+	timer.Simple(120, function()
 		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 		local ent1 = ents.FindByClass("gd_w4_heavyacidrain")[1]
 		if ent1:IsValid() then ent1:Remove() end
