@@ -22,7 +22,7 @@ function start()
 
     if StormFox2.Thunder.IsThundering() then
         ent = ents.FindByClass("gd_d3_lightningstorm")[1]
-        if IsValid() then ent:Remove() end
+        if ent:IsValid() then ent:Remove() end
     end
 end
 hook.Add("Tick", "stormfoxandgdisasters", start)
