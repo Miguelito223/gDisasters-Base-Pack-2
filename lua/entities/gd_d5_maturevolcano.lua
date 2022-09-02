@@ -272,8 +272,7 @@ function ENT:Erupt()
 	    local ent = ents.Create("gd_w2_volcano_ash")
 		ent:Spawn()
 		ent:Activate()
-	end)
-		  
+	end)		  
     timer.Simple(50, function()
 		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 		if #ents.FindByClass("gd_w*") >= 1 then return end
