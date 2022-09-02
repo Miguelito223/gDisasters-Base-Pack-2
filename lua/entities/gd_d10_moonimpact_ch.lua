@@ -109,22 +109,22 @@ function ENT:Explode()
 		
 	if (  v != self && IsValid( v ) && IsValid( v:GetPhysicsObject() ) ) and (v:GetClass()!= "phys_constraintsystem" and v:GetClass()!= "phys_constraint"  and v:GetClass()!= "logic_collision_pair") then 
 	
-	if dist < 5000000 then 
+		if dist < 5000000 then 
 	
-	if( !v.Destroy ) then
+            	if( !v.Destroy ) then
 						
-			constraint.RemoveAll( v )
-			v:GetPhysicsObject():EnableMotion(true)
-			v:GetPhysicsObject():Wake()
-			v.Destroy = true
+					constraint.RemoveAll( v )
+					v:GetPhysicsObject():EnableMotion(true)
+					v:GetPhysicsObject():Wake()
+					v.Destroy = true
 			
-						end
+				end
 						
-					end
+			end
 						
-			  end
-				  
 		end
+				  
+	end
 	
 	local pe = ents.Create( "env_physexplosion" );
 	pe:SetPos( self:GetPos() );

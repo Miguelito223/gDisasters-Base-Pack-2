@@ -35,11 +35,9 @@ function ENT:Initialize()
 		phys:EnableDrag( false )
 		
 		timer.Simple(0.1, function()
-		if !self:IsValid() then return end
-		ParticleEffectAttach("chicxuclub_fall_main", PATTACH_POINT_FOLLOW, self, 2)
+			if !self:IsValid() then return end
+			ParticleEffectAttach("chicxuclub_fall_main", PATTACH_POINT_FOLLOW, self, 2)
 		end)
-		
-		
 		
 		timer.Simple(14, function()
 			if !self:IsValid() then return end
@@ -125,26 +123,26 @@ function ENT:Explode()
 	
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), 5000000)) do
 		
-	local dist = ( v:GetPos() - self:GetPos() ):Length() 	
+		local dist = ( v:GetPos() - self:GetPos() ):Length() 	
 		
-	if (  v != self && IsValid( v ) && IsValid( v:GetPhysicsObject() ) ) and (v:GetClass()!= "phys_constraintsystem" and v:GetClass()!= "phys_constraint"  and v:GetClass()!= "logic_collision_pair") then 
+		if (  v != self && IsValid( v ) && IsValid( v:GetPhysicsObject() ) ) and (v:GetClass()!= "phys_constraintsystem" and v:GetClass()!= "phys_constraint"  and v:GetClass()!= "logic_collision_pair") then 
 	
-	if dist < 5000000 then 
+			if dist < 5000000 then 
 	
-	if( !v.Destroy ) then
+				if( !v.Destroy ) then
 						
-			constraint.RemoveAll( v )
-			v:GetPhysicsObject():EnableMotion(true)
-			v:GetPhysicsObject():Wake()
-			v.Destroy = true
+					constraint.RemoveAll( v )
+					v:GetPhysicsObject():EnableMotion(true)
+					v:GetPhysicsObject():Wake()
+					v.Destroy = true
 			
-						end
+				end
 						
-					end
+			end
 						
-			  end
-				  
 		end
+				  
+	end
 	
 	local pe = ents.Create( "env_physexplosion" );
 	pe:SetPos( self:GetPos() );
@@ -185,7 +183,7 @@ function ENT:Explode()
 		local ent2 = ents.FindByClass("gd_d10_meteoriteshower")[1]
 		if ent1:IsValid() then ent1:Remove() end
 		if ent2:IsValid() then ent2:Remove() end
-	end
+	end)
 	timer.Simple(50, function()
 		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 		local ent1 = ents.FindByClass("gd_w4_heavyacidrain")[1]
