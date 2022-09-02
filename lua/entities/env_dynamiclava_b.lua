@@ -643,7 +643,7 @@ function ENT:ProcesslavaState()
 			lava:EFire("Height", self.CurrentHeight)
 			
 			timer.Simple(50, function()
-				of lava:IsValid() then lava:Remove() end
+				if lava:IsValid() then lava:Remove() end
 			end)
 
 			self:Remove()
