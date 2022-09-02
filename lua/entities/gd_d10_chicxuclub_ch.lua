@@ -185,7 +185,11 @@ function ENT:Explode()
 		local ent2 = ents.FindByClass("gd_d10_meteoriteshower")[1]
 		if ent1:IsValid() then ent1:Remove() end
 		if ent2:IsValid() then ent2:Remove() end
-	end)
+	end
+	timer.Simple(50, function()
+		local ent1 = ents.FindByClass("gd_w4_heavyacidrain")[1]
+		if ent1:IsValid() then ent1:Remove() end
+	end
 
 	self:Remove()
 
