@@ -697,7 +697,7 @@ function ENT:ProcessState()
 			flood:EFire("Height", self.CurrentHeight)
 
 			timer.Simple(50, function()
-				flood:Remove()
+				if flood:IsValid() then flood:Remove() end
 			end)
 			
 			self:Remove()

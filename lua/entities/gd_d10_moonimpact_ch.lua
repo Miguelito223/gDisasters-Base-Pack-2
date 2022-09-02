@@ -163,8 +163,8 @@ function ENT:Explode()
 		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 		local ent1 = ents.FindByClass("gd_d10_meteorshower")[1]
 		local ent2 = ents.FindByClass("gd_d10_meteoriteshower")[1]
-		ent1:Remove()
-		ent2:Remove()
+		if ent1:IsValid() then ent1:Remove() end
+		if ent2:IsValid() then ent2:Remove() end
 	end)
 
 	self:Remove()
