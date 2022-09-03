@@ -116,7 +116,7 @@ function ENT:Smite()
 		if explosion != "" then ParticleEffect(explosion, target:GetPos(), Angle(0,0,0), nil) end 
 		
 		
-		CreateSoundWave(table.Random(sounds), target:GetPos(), "stereo" ,340.29/2, {70,120}, 0.5)
+		CreateSoundWave(table.Random(sounds), target:GetPos(), "3d" ,340.29/2, {70,120}, 0.5)
 		
 	end)
 

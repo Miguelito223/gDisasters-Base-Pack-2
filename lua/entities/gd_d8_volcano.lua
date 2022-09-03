@@ -243,7 +243,7 @@ function ENT:Erupt()
 	
 	timer.Simple(2, function() -- we have a delay here because air is still expanding from heat
 		if !self:IsValid() then return end
-		CreateSoundWave("streams/disasters/nature/krakatoa_explosion.mp3", pos, "stereo" ,340.29/2, {100,100}, 5)
+		CreateSoundWave("streams/disasters/nature/krakatoa_explosion.mp3", pos, "3d" ,340.29/2, {100,100}, 5)
 	end)
 
 	ParticleEffect("volcano_eruption_dusty_main", self:GetLavaLevelPosition() - Vector(0,0,100), Angle(0,0,0), nil)

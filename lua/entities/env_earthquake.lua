@@ -42,9 +42,9 @@ function ENT:Initialize()
 end
 function ENT:PlayInitialSounds()
 	if self.Magnitude > 5 then
-		CreateSoundWave("streams/disasters/earthquake/earthquake_strong.wav", self:GetPos(), "stereo" ,340.29/2, {90,110}, 5)
+		CreateSoundWave("streams/disasters/earthquake/earthquake_strong.wav", self:GetPos(), "3d" ,340.29/2, {90,110}, 5)
 	else
-		CreateSoundWave("streams/disasters/earthquake/earthquake_weak.wav", self:GetPos(), "stereo" ,340.29/2, {90,110}, 5)
+		CreateSoundWave("streams/disasters/earthquake/earthquake_weak.wav", self:GetPos(), "3d" ,340.29/2, {90,110}, 5)
 	end	
 end
 function ENT:CreateEarthquakeWithParent()
@@ -62,7 +62,7 @@ function ENT:CreateEarthquakeWithParent()
 	local decider = math.random(1,math.floor(self.Magnitude * 2)) == 1
 	if decider == false then
 		if  math.floor(self.Magnitude) > 1 then
-			CreateSoundWave("streams/disasters/earthquake/earthquake_aftershock.wav", self:GetPos(), "stereo" ,340.29/2, {40,100}, 10)
+			CreateSoundWave("streams/disasters/earthquake/earthquake_aftershock.wav", self:GetPos(), "3d" ,340.29/2, {40,100}, 10)
 			local aftershock_magnitude = math.Clamp( math.floor(self.Magnitude) - math.random(1,3), 1, 10)
 			local aftershock           = ents.Create( earthquakes[ aftershock_magnitude ] )
 			aftershock.IsAfterShock    = true 
@@ -72,8 +72,8 @@ function ENT:CreateEarthquakeWithParent()
 			ParticleEffect("earthquake_swave_refract", self.Parent:GetPos() + Vector(0,0,10) , Angle(0,0,0), nil)
 		end
 	else
-		CreateSoundWave("streams/disasters/earthquake/earthquake_aftershock.wav", self:GetPos(), "stereo" ,340.29/2, {120,130}, 20)
-		CreateSoundWave("streams/disasters/earthquake/earthquake_aftershock.wav", self:GetPos(), "stereo" ,340.29/2.1, {120,130}, 20)
+		CreateSoundWave("streams/disasters/earthquake/earthquake_aftershock.wav", self:GetPos(), "3d" ,340.29/2, {120,130}, 20)
+		CreateSoundWave("streams/disasters/earthquake/earthquake_aftershock.wav", self:GetPos(), "3d" ,340.29/2.1, {120,130}, 20)
 		local foreshock_magnitude = math.Clamp( math.floor(self.Magnitude) + math.random(1,2), 1, 10)
 		local foreshock           = ents.Create( earthquakes[ foreshock_magnitude ] )
 		foreshock.IsForeShock     = true

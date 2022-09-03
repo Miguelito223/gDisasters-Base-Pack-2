@@ -99,7 +99,7 @@ function ENT:Explode()
 
 	ParticleEffect("meteor_explosion_main_ground", self:GetPos(), Angle(0,0,0), nil)
 	
-	CreateSoundWave(metsound, self:GetPos(), "stereo" ,340.29, {100,110}, 5)
+	CreateSoundWave(metsound, self:GetPos(), "3d" ,340.29, {100,110}, 5)
 
 	local pe = ents.Create( "env_physexplosion" );
 	pe:SetPos( self:GetPos() );

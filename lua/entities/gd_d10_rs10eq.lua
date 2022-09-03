@@ -45,8 +45,8 @@ function ENT:Initialize()
 end
 
 function ENT:Explode()
-	CreateSoundWave("streams/disasters/earthquake/earthquake_aftershock.wav", self:GetPos(), "stereo" ,340.29/2, {70,130}, 20)
-	CreateSoundWave("streams/disasters/earthquake/earthquake_aftershock.wav", self:GetPos(), "stereo" ,340.29/2.1, {80,130}, 20)
+	CreateSoundWave("streams/disasters/earthquake/earthquake_aftershock.wav", self:GetPos(), "3d" ,340.29/2, {70,130}, 20)
+	CreateSoundWave("streams/disasters/earthquake/earthquake_aftershock.wav", self:GetPos(), "3d" ,340.29/2.1, {80,130}, 20)
 	
 			
 	ParticleEffect("earthquake_swave_main", self:GetPos() + Vector(0,0, 10), Angle(0,0,0), nil)

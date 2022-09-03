@@ -118,7 +118,7 @@ function ENT:Explode()
 	
 	ParticleEffect("meteorite_explosion_main_ground", self:GetPos(), Angle(0,0,0), nil)
 	
-	CreateSoundWave(metsound, self:GetPos(), "stereo" ,340.29, {100,110}, 5)
+	CreateSoundWave(metsound, self:GetPos(), "3d" ,340.29, {100,110}, 5)
 	
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), 3500)) do
 		

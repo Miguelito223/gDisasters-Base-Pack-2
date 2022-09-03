@@ -109,7 +109,7 @@ function ENT:Explode()
 	local sound = table.Random({"streams/event/explosion/explosion_light_k.mp3","streams/event/explosion/explosion_light_l.mp3","streams/event/explosion/explosion_light_a.mp3","streams/event/explosion/explosion_light_b.mp3","streams/event/explosion/explosion_light_m.mp3"})
 	
 	
-	CreateSoundWave(sound, self:GetPos(), "stereo" ,340.29/2, {80,100}, 5)
+	CreateSoundWave(sound, self:GetPos(), "3d" ,340.29/2, {80,100}, 5)
 	
 	local pe = ents.Create( "env_physexplosion" );
 	pe:SetPos( self:GetPos() );
