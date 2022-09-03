@@ -28,10 +28,23 @@ function ENT:Initialize()
 		
 		if IsMapRegistered()==false then self:Remove() end 
 
-			
+		
 		
 	end
+	self:CreateLoop()
 end
+
+function ENT:CreateLoop()
+
+	local sound = Sound("disasters/nature/volcano_idle.wav")
+
+	CSPatch = CreateSound(self, sound)
+	CSPatch:Play()
+	
+	self.Sound = CSPatch
+	
+end
+
 
 function ENT:EFire(pointer, arg) 
 	
