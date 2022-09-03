@@ -10,9 +10,15 @@ ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 ENT.MaxlavaLevel                    =   9000
+ENT.WedgeSound2							= "disasters/nature/volcano_idle.wav"
 
 function ENT:Initialize()	
-
+	if (CLIENT) then 
+		if LocalPlayer().Sounds2 == nil then LocalPlayer().Sounds2 = {} end
+		
+		LocalPlayer().Sounds2["lava"]         = createLoopedSound(LocalPlayer(), self.WedgeSound2)
+	
+	end
 	
 	if (SERVER) then
 		
@@ -31,16 +37,19 @@ function ENT:Initialize()
 		
 		
 	end
-	self:CreateLoop()
+	
 end
 
 function ENT:CreateLoop()
 
-	local sound = Sound("disasters/nature/volcano_idle.wav")
+
+	local sound = Sound(self.WedgeSound2)
 
 	CSPatch = CreateSound(self, sound)
+	CSPatch:SetSoundLevel( 100 )
 	CSPatch:Play()
-	
+	CSPatch:ChangeVolume( 1 )
+
 	self.Sound = CSPatch
 	
 end
@@ -239,8 +248,12 @@ function ENT:OnRemove()
 			v.IsInlava = false
 		end
 	end
-	if self.Sound==nil then return end
-	self.Sound:Stop()
+	if (CLIENT) then
+		if LocalPlayer().Sounds2["lava"]!=nil then 
+			LocalPlayer().Sounds2["lava"]:Stop()
+			LocalPlayer().Sounds2["lava"]=nil
+		end
+	end
 
 	self:StopParticles()
 end
