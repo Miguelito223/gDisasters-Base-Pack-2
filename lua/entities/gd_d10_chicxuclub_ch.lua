@@ -119,7 +119,7 @@ function ENT:Explode()
 	
 	ParticleEffect("chicxuclub_explosion_main", self:GetPos(), Angle(0,0,0), nil)
 	
-	CreateSoundWave(metsound, self:GetPos(), "3d" ,340.29, {100,110}, 5)
+	CreateSoundWave(metsound, self:GetPos(), "3d" ,340.29, {100,100}, 5)
 	
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), 5000000)) do
 		
