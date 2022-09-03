@@ -239,6 +239,9 @@ function ENT:OnRemove()
 			v.IsInlava = false
 		end
 	end
+	if self.Sound==nil then return end
+	self.Sound:Stop()
+
 	self:StopParticles()
 end
 
