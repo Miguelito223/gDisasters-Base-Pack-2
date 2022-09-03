@@ -255,6 +255,7 @@ AddToGDSpawnMenu("Mini Firenado (Smart)" , "gd_d5_mfirenado_pathed"         , "D
 AddToGDSpawnMenu("EF2 Tornado (Smart)"           , "gd_d5_ef2_pathed"           , "Disasters", "Tier 5", false)
 AddToGDSpawnMenu("Lava Bomb"           , "gd_d5_lavabomb"           , "Disasters", "Tier 5", false)
 AddToGDSpawnMenu("Mature Volcano"           , "gd_d5_maturevolcano"           , "Disasters", "Tier 5", false)
+AddToGDSpawnMenu("Super Whirlpool"  , "gd_d5_superwhirlpool" , "Disasters", "Tier 5", false)
 
 --[[
 DISASTERS 
@@ -314,7 +315,7 @@ AddToGDSpawnMenu("Meteorite" , "gd_d9_meteroite"         , "Disasters", "Tier 9"
 AddToGDSpawnMenu("EF6 Tornado", "gd_d9_ef6", "Disasters", "Tier 9", false)
 AddToGDSpawnMenu("EF6 Tornado (Smart)", "gd_d9_ef6_pathed", "Disasters", "Tier 9", false)
 AddToGDSpawnMenu("White Hole"  , "gd_d9_whitehole" , "Disasters", "Tier 9", false)
-AddToGDSpawnMenu("Super Whirlpool"  , "gd_d9_superwhirlpool" , "Disasters", "Tier 9", false)
+
 
 --[[
 DISASTERS 
