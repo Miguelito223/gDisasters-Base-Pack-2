@@ -119,7 +119,12 @@ function ENT:Explode()
 	
 	ParticleEffect("chicxuclub_explosion_main", self:GetPos(), Angle(0,0,0), nil)
 	
-	CreateSoundWave(metsound, self:GetPos(), "3d" ,340.29, {100,150}, 5)
+	CreateSoundWave(metsound, self:GetPos(), "3d" ,340.29, {100,110}, 5)
+
+	local earthquake = ents.Create("gd_d10_rs10eq")
+	earthquake:Spawn()
+	earthquake:Activate()
+	earthquake:SetPos(self:GetPos())
 	
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), 5000000)) do
 		
@@ -163,12 +168,14 @@ function ENT:Explode()
 		local ent = ents.Create("gd_w3_heavyashstorm")
 		local ent2 = ents.Create("gd_d10_meteorshower")
 		local ent3 = ents.Create("gd_d10_meteoriteshower")
+		local ent4 = ents.Create("gd_d10_rs10eq")
 		ent:Spawn()
 		ent:Activate()
 		ent2:Spawn()
 		ent2:Activate()
 		ent3:Spawn()
 		ent3:Activate()
+
 	
 	end)
 	timer.Simple(45, function()
