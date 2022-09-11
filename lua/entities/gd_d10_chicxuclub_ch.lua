@@ -168,7 +168,7 @@ function ENT:Explode()
 		local ent = ents.Create("gd_w3_heavyashstorm")
 		local ent2 = ents.Create("gd_d10_meteorshower")
 		local ent3 = ents.Create("gd_d10_meteoriteshower")
-		local ent4 = ents.Create("gd_d10_rs10eq")
+		
 		ent:Spawn()
 		ent:Activate()
 		ent2:Spawn()
