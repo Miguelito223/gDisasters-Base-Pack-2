@@ -145,7 +145,7 @@ function ENT:Explode()
 
 
 	
-	timer.Simple(5, function()
+	timer.Simple(2, function()
 		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 		if #ents.FindByClass("gd_w*") >= 1 then return end
 		

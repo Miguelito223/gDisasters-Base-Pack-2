@@ -161,14 +161,14 @@ function ENT:Explode()
 	
 	util.BlastDamage( self, self, self:GetPos()+Vector(0,0,12), 5000000, math.random( 100000, 400000 ) )
 	
-	timer.Simple(5, function()
+	timer.Simple(2, function()
 		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 		if #ents.FindByClass("gd_w*") >= 1 then return end
 		
 		local ent = ents.Create("gd_w3_heavyashstorm")
 		local ent2 = ents.Create("gd_d10_meteorshower")
 		local ent3 = ents.Create("gd_d10_meteoriteshower")
-		
+
 		ent:Spawn()
 		ent:Activate()
 		ent2:Spawn()
