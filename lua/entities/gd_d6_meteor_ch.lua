@@ -155,7 +155,10 @@ function ENT:Think()
 	if !self:IsValid() then return end
 	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1
 	
-	if self:WaterLevel() >= 2 then self:Remove() end
+	if self:WaterLevel() >= 1 then 
+		self:Remove() 
+		ParticleEffect( "h_water_mini", self:GetPos() + Vector(0,0,100), Angle( 0, 0, 0 ) )
+	end
 		
 	self:NextThink(CurTime() + t)
 		return true

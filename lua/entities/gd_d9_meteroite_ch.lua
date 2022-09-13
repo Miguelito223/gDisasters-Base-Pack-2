@@ -173,7 +173,10 @@ function ENT:Think()
 		
 		ParticleEffect( "meteorite_skyripple", self:GetPos() - Vector(0,0,30), Angle( 0, 0, 90 ) )
 		
-		if self:WaterLevel() >= 2 then self:Remove() end
+		if self:WaterLevel() >= 1 then 
+			self:Remove()
+			ParticleEffect( "h_water_small", self:GetPos() + Vector(0,0,100), Angle( 0, 0, 0 ) )
+		end
 	
 		self:NextThink(CurTime() + t)
 		return true
