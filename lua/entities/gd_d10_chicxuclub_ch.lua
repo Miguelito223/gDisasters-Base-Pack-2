@@ -126,9 +126,9 @@ function ENT:Explode()
 	earthquake:Activate()
 	earthquake:SetPos(self:GetPos())
 
-	if self:WaterLevel() >= 2 then 
+	if self:WaterLevel() >= 1 then 
 		local tsunami = ents.Create("gd_d10_megatsunami")
-		tsunami:Spwan()
+		tsunami:Spawn()
 		tsunami:Activate()
 	end
 	
@@ -209,17 +209,21 @@ function ENT:Explode()
 end
 
 function ENT:Think()
-		if (CLIENT) then
+	if (CLIENT) then
 		
 		self:Fix()
 	
-		end
+	end
 	
-		local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
+	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
 		
-		if (SERVER) then
+	if (SERVER) then
 		
-		
+		if self:WaterLevel() >= 1 then 
+			local tsunami = ents.Create("gd_d10_megatsunami")
+			tsunami:Spawn()
+			tsunami:Activate()
+		end
 
 	
 		self:NextThink(CurTime() + t)
