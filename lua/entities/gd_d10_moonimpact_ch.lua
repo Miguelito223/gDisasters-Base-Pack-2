@@ -187,16 +187,17 @@ function ENT:Explode()
 end
 
 function ENT:Think()
-		if (CLIENT) then
+	if (CLIENT) then
 		
 	
-		end
+	end
 	
-		local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
+	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
 		
-		if (SERVER) then
+	if (SERVER) then
 		
 		if self:WaterLevel() >= 1 then 
+			self:Remove()
 			self:Explode()
 			local tsunami = ents.Create("gd_d10_megatsunami")
 			tsunami:Spawn()
