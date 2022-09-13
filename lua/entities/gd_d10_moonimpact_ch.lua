@@ -108,11 +108,6 @@ function ENT:Explode()
 	earthquake:Activate()
 	earthquake:SetPos(self:GetPos())
 
-	if self:WaterLevel() >= 1 then 
-		local tsunami = ents.Create("gd_d10_megatsunami")
-		tsunami:Spawnn()
-		tsunami:Activate()
-	end
 	
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), 5000000)) do
 		
@@ -202,6 +197,7 @@ function ENT:Think()
 		if (SERVER) then
 		
 		if self:WaterLevel() >= 1 then 
+			self:Explode()
 			local tsunami = ents.Create("gd_d10_megatsunami")
 			tsunami:Spawn()
 			tsunami:Activate()
