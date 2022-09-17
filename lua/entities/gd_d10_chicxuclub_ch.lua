@@ -95,9 +95,16 @@ function ENT:PhysicsCollide( data, physobj )
 	
 		
 		self:Explode()
-						 
+		
+		if self:WaterLevel() >= 1 then 
+			self:Explode()
+			local tsunami = ents.Create("gd_d10_megatsunami")
+			tsunami:Spawn()
+			tsunami:Activate()
+		end				 
 
 	end
+	
 
 	
 end
@@ -213,14 +220,6 @@ function ENT:Think()
 	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
 		
 	if (SERVER) then
-		
-		if self:WaterLevel() >= 1 then 
-			self:Remove()
-			self:Explode()
-			local tsunami = ents.Create("gd_d10_megatsunami")
-			tsunami:Spawn()
-			tsunami:Activate()
-		end
 	
 		self:NextThink(CurTime() + t)
 		return true
