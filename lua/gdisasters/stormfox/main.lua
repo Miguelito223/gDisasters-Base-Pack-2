@@ -21,7 +21,7 @@ function start()
     end
 
     if StormFox2.Thunder.IsThundering() then
-        local ent = ents.FindByClass("gd_d3_lightningstorm")[1]
+        local ent = ents.FindByClass("gd_lightningbolt")[1]
         if !ent then return end
         if ent:IsValid() then ent:Remove() end
     end
