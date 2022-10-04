@@ -22,8 +22,11 @@ function start()
 
     if StormFox2.Thunder.IsThundering() then
         local ent = ents.FindByClass("gd_lightningbolt")[1]
+        local ent2 = ents.FindByClass("gd_d3_lightningstorm")[1]
         if !ent then return end
+        if !ent2 then return end
         if ent:IsValid() then ent:Remove() end
+        if ent2:IsValid() then ent:Remove() end
     end
 end
 hook.Add("Tick", "stormfoxandgdisasters", start)
