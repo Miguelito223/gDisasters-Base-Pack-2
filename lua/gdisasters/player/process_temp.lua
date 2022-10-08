@@ -70,6 +70,7 @@ if (SERVER) then
 function gDisasters_ProcessTemperature()
 
 	local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
+	local humidity = GLOBAL_SYSTEM["Atmosphere"]["Humidity"]
 	local compensation_max      = 10   -- degrees 
 	local body_heat_genK        = engine.TickInterval() -- basically 1 degree Celsius per second
 	local body_heat_genMAX      = 0.01/4
@@ -104,7 +105,6 @@ function gDisasters_ProcessTemperature()
 			
 			if temp >= 5 and temp <= 37 then
 				ambient_equilibrium          = 0
-			else
 			end
 			
 			v.gDisasters.Body.Temperature = math.Clamp(v.gDisasters.Body.Temperature + core_equilibrium  + heatsource_equilibrium + coldsource_equilibrium + ambient_equilibrium, 24, 44)
@@ -151,6 +151,14 @@ function gDisasters_ProcessTemperature()
 			if  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] <= -100 and outdoor or GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 250 and outdoor then
 				if v:Alive() then v:Kill() end
 			end
+
+			if GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 37 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 5 then
+				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.0001
+			end
+
+			if GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= -273.3 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] <= 4 then
+				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
+			end
 			
 			--[[
 					                                  Purpose		
@@ -175,6 +183,23 @@ function gDisasters_ProcessTemperature()
 		
 				end
 			end
+
+			if  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 37 and  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 5 then
+				local wl = v:WaterLevel()
+				if wl==0 then
+				elseif wl==1 then
+				
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.0001
+					
+
+				elseif wl==2 then
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.0002
+				elseif wl==3 then
+				
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.0004
+		
+				end
+			end
 			
 			--[[
 					                                  Purpose		
@@ -186,6 +211,8 @@ function gDisasters_ProcessTemperature()
 				if v:Alive() then v:Kill() end
 
 			end
+
+			
 			
 		end
 	
