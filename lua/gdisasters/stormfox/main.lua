@@ -10,15 +10,15 @@ function gdisasters_stormfox2(ply)
     local wind = StormFox2.Wind.GetForce()
     local wind_yaw = StormFox2.Wind.GetYaw()
 
-    if wind_yaw >= 0
+    if wind_yaw >= 0 then
         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = Vector(-1,0,0)
-    elseif wind_yaw >= 10
+    elseif wind_yaw >= 10 then
         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = Vector(-0.90,-0.10,0)
-    elseif wind_yaw >= 20
+    elseif wind_yaw >= 20 then
         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = Vector(-0.80,-0.20,0)
-    elseif wind_yaw >= 30
+    elseif wind_yaw >= 30 then
         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = Vector(-0.70,-0.30,0)
-    elseif wind_yaw >= 40
+    elseif wind_yaw >= 40 then
         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = Vector(-0.60,-0.40,0)
     elseif wind_yaw >= 50 then
         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = Vector(-0.50,-0.50,0)
