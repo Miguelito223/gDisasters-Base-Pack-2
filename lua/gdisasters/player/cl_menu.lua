@@ -147,10 +147,6 @@ local function gDisastersAutospawn( CPanel )
 	CreateTickboxConVariable(CPanel, "Autospawn weather and disasters"  , "gdisasters_autospawn_weatherdisaster");
 end
 
-local function gDisastersExperimental( CPanel )
-	CreateTickboxConVariable(CPanel, "Experimental Enable", "gdisasters_HeatSytem_enabled");
-end
-
 local function gDisastersADVGraphicsSettings( CPanel )
 
 	gDisasters_gDisastersADVGraphicsSettings_SetupTime = CurTime() 
@@ -267,7 +263,6 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVADSettings", "Advanced", "", "", gDisastersSVADVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersExperimental", "Experimental", "", "", gDisastersExperimental )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersAutospawn", "Autospawn Settings", "", "", gDisastersAutospawn )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersADVGraphicsSettings", "Graphics", "", "", gDisastersADVGraphicsSettings )
 	
