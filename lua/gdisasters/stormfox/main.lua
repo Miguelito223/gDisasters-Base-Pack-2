@@ -2,7 +2,7 @@ CreateConVar("gdisasters_stormfox_enable", 0, {FCVAR_ARCHIVE}, "")
 
 if (SERVER) then
 
-function gdisasters_stormfox2()
+function gdisasters_stormfox2( ply )
     
     if GetConVar("gdisasters_stormfox_enable"):GetInt() == 0 then return end
     
@@ -11,6 +11,7 @@ function gdisasters_stormfox2()
     
     GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = temp
 	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = wind
+    --GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = Vector(x,y,0)
 
 
     if !StormFox2.Weather.IsRaining() and !StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
