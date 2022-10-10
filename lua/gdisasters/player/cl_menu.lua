@@ -69,9 +69,7 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Water Related Damage"  , "gdisasters_envdynamicwater_candamageconstraints");
 	CreateTickboxConVariable(CPanel, "Enable Tornado Related Damage" ,"gdisasters_envtornado_candamageconstraints");
 	CreateTickboxConVariable(CPanel, "Enable Wind Related Damage" ,"gdisasters_wind_candamageconstraints");
-	CreateTickboxConVariable(CPanel, "Enable Custom Tornado Speed" ,"gdisasters_envtornado_manualspeed");
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_atmosphere");
-	CreateTickboxConVariable(CPanel, "Disable Map Tornadoes"  , "gdisasters_getridmaptor");
 	CreateTickboxConVariable(CPanel, "Enable Hud"  , "gdisasters_hud_enabled");
 	CreateTickboxConVariable(CPanel, "Enable stormfox compatibility"  , "gdisasters_stormfox_enable");
 	CreateTickboxConVariable(CPanel, "Enable Day And Night Cycle"  , "gdisasters_dnc_enabled");
@@ -90,6 +88,7 @@ local function gDisastersSVADVSettings( CPanel )
 	CreateSliderConVariable(CPanel, "Earthquake Simulation Quality", 0.1, 0.50, 2, "gdisasters_envearthquake_simquality" );
 	CreateSliderConVariable(CPanel,"Water Simulation Quality", 0.1, 0.50, 2, "gdisasters_envdynamicwater_simquality");
 	CreateSliderConVariable(CPanel,"Wind Simulation Quality", 0.1, 0.50, 2, "gdisasters_wind_physics_simquality")
+	CreateTickboxConVariable(CPanel, "Enable Custom Tornado Speed" ,"gdisasters_envtornado_manualspeed");
 	CreateSliderConVariable(CPanel, "Tornado Speed", 4, 20, 2, "gdisasters_envtornado_speed" );
 	CreateSliderConVariable(CPanel, "Tornado Lifetime min", 1, 1000, 0, "gdisasters_envtornado_lifetime_min" );
 	CreateSliderConVariable(CPanel, "Tornado Lifetime max", 1, 1000, 0, "gdisasters_envtornado_lifetime_max" );
@@ -141,11 +140,12 @@ local function gDisastersAutospawn( CPanel )
 	end
 	)
 
-	CreateTickboxConVariable(CPanel, "Autospawn skybox"  , "gdisasters_autospawn_skybox");
+	CreateTickboxConVariable(CPanel, "autospawn skybox"  , "gdisasters_autospawn_skybox");
 	CreateTickboxConVariable(CPanel, "Autospawn only tornados"  , "gdisasters_autospawn");
 	CreateTickboxConVariable(CPanel, "Autospawn disasters"  , "gdisasters_autospawn_disasters");
 	CreateTickboxConVariable(CPanel, "Autospawn weather"  , "gdisasters_autospawn_weather");
 	CreateTickboxConVariable(CPanel, "Autospawn weather and disasters"  , "gdisasters_autospawn_weatherdisaster");
+	CreateTickboxConVariable(CPanel, "Disable Map Tornadoes"  , "gdisasters_getridmaptor");
 end
 
 local function gDisastersADVGraphicsSettings( CPanel )
