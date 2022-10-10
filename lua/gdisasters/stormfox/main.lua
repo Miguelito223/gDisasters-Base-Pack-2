@@ -11,7 +11,7 @@ function gdisasters_stormfox2( ply )
     
     GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = temp
 	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = wind
-    --GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = Vector(x,y,0)
+    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = Vector(1,0,0)
 
 
     if !StormFox2.Weather.IsRaining() and !StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
