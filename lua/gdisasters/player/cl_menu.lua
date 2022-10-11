@@ -74,7 +74,7 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_atmosphere");
 	CreateTickboxConVariable(CPanel, "Enable Hud"  , "gdisasters_hud_enabled");
 	CreateTickboxConVariable(CPanel, "Enable experimental overdraw"  , "gdisasters_experimental_overdraw");
-	CreateTickboxConVariable(CPanel, "Enable stormfox compatibility"  , "gdisasters_stormfox_enable");
+	CreateTickboxConVariable(CPanel, "Enable Stormfox2 compatibility"  , "gdisasters_stormfox_enable");
 	CreateTickboxConVariable(CPanel, "Enable Day And Night Cycle"  , "gdisasters_dnc_enabled");
 	
 	SVMenuCreated = false;
