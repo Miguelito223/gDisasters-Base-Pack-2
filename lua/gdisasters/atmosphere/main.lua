@@ -114,7 +114,7 @@ function Wind()
 	local windspeed  = table_wind["Speed"]
 	local winddir    = table_wind["Direction"]
 	local windphysics_enabled = GetConVar( "gdisasters_wind_physics_enabled" ):GetInt() == 1 
-	local windconstraints_remove = GetConVar( "gdisasters_wind_candamageconstraints" ):GetInt() == 1 
+	local windconstraints_remove = GetConVar( "gdisasters_wind_candamageconstraints" ):GetInt() == 0 
 
 	
 	SetGlobalFloat("gDisasters_Wind", windspeed)
