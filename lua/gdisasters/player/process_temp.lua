@@ -118,6 +118,9 @@ function gDisasters_ProcessTemperature()
 	
 	
 	local function damagePlayers()
+		
+		if GetConVar("gdisasters_hud_tempdamage"):GetInt() == 0 then return end
+		
 		for k, v in pairs(plytbl) do
 		
 			--[[
@@ -153,7 +156,7 @@ function gDisasters_ProcessTemperature()
 			end
 
 			if GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 37 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 5 then
-				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.0001
+				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.001
 			end
 
 			if GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= -273.3 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] <= 4 then
