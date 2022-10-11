@@ -1,10 +1,10 @@
-CreateConVar( "gdisasters_envdynamicwater_simquality", "10", {FCVAR_ARCHIVE}, "this affects simulation quality of env_dynamicwater " )
+CreateConVar( "gdisasters_envdynamicwater_simquality", "1", {FCVAR_ARCHIVE}, "this affects simulation quality of env_dynamicwater " )
 CreateConVar( "gdisasters_envdynamicwater_candamageconstraints", "1", {FCVAR_ARCHIVE}, "" )
 
-CreateConVar( "gdisasters_envearthquake_simquality", "10", {FCVAR_ARCHIVE}, "this affects simulation quality of env_earthquake " )
+CreateConVar( "gdisasters_envearthquake_simquality", "1", {FCVAR_ARCHIVE}, "this affects simulation quality of env_earthquake " )
 
-CreateConVar( "gdisasters_envtornado_simquality", "10", {FCVAR_ARCHIVE}, " " )
-CreateConVar( "gdisasters_wind_physics_simquality", "10", {FCVAR_ARCHIVE}, " " )
+CreateConVar( "gdisasters_envtornado_simquality", "1", {FCVAR_ARCHIVE}, " " )
+CreateConVar( "gdisasters_wind_physics_simquality", "1", {FCVAR_ARCHIVE}, " " )
 
 CreateConVar( "gdisasters_wind_physics_enabled", "1", {FCVAR_ARCHIVE}, " " )
 CreateConVar( "gdisasters_wind_candamageconstraints", "1", {FCVAR_ARCHIVE}, " " )
