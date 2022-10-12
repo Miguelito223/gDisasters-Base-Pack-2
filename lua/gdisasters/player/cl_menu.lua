@@ -93,8 +93,8 @@ local function gDisastersSVADVSettings( CPanel )
 
 	CreateSliderConVariable(CPanel, "Tornado Simulation Quality", 0.1, 0.50, 2, "gdisasters_envtornado_simquality" );
 	CreateSliderConVariable(CPanel, "Earthquake Simulation Quality", 0.1, 0.50, 2, "gdisasters_envearthquake_simquality" );
-	CreateSliderConVariable(CPanel,"Water Simulation Quality", 0.1, 0.50, 2, "gdisasters_envdynamicwater_simquality");
-	CreateSliderConVariable(CPanel,"Wind Simulation Quality", 0.1, 0.50, 2, "gdisasters_wind_physics_simquality")
+	CreateSliderConVariable(CPanel, "Water Simulation Quality", 0.1, 0.50, 2, "gdisasters_envdynamicwater_simquality");
+	CreateSliderConVariable(CPanel, "Wind Simulation Quality", 0.1, 0.50, 2, "gdisasters_wind_physics_simquality")
 	CreateTickboxConVariable(CPanel, "Enable Custom Tornado Speed" ,"gdisasters_envtornado_manualspeed");
 	CreateSliderConVariable(CPanel, "Tornado Speed", 4, 20, 2, "gdisasters_envtornado_speed" );
 	CreateSliderConVariable(CPanel, "Tornado Lifetime min", 1, 1000, 0, "gdisasters_envtornado_lifetime_min" );
