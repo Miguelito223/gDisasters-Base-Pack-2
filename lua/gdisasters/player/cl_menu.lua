@@ -118,11 +118,11 @@ end
 
 
 local function gDisastersAudioSettings( CPanel )
-	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1,0, "gdisasters_wind_Light_Wind_sound" );
-	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1,0, "gdisasters_wind_Moderate_Wind_sound" );
-	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,0,"gdisasters_wind_Heavy_Wind_sound" );
-	CreateSliderConVariable(CPanel, "hud Hearth Volume", 0,1, 0, "gdisasters_hud_heartbeat_volume" );
-	CreateSliderConVariable(CPanel, "hud Warning Volume", 0,1, 0, "gdisasters_hud_warning_volume" );
+	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1,2, "gdisasters_wind_Light_Wind_sound" );
+	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1,2, "gdisasters_wind_Moderate_Wind_sound" );
+	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,2,"gdisasters_wind_Heavy_Wind_sound" );
+	CreateSliderConVariable(CPanel, "hud Hearth Volume", 0,1, 2, "gdisasters_hud_heartbeat_volume" );
+	CreateSliderConVariable(CPanel, "hud Warning Volume", 0,1, 2, "gdisasters_hud_warning_volume" );
 end
 
 local function gDisastersAutospawn( CPanel )
