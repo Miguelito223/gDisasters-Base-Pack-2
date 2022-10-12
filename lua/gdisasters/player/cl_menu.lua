@@ -258,7 +258,7 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	timer.Simple(0.05, function()
 	
 		if WQ then WQ:SetValue(GetConVar(( "gdisasters_graphics_water_quality" )):GetFloat()) end
-		if FG then WQ:SetValue(GetConVar(( "gdisasters_graphics_fog_quality" )):GetFloat()) end
+		if FG then FQ:SetValue(GetConVar(( "gdisasters_graphics_fog_quality" )):GetFloat()) end
 		
 		if MaxRD then MaxRD:SetValue(GetConVar(( "gdisasters_graphics_dr_maxrenderdistance" )):GetFloat()) end 
 		if UpdateRate then UpdateRate:SetValue(GetConVar(( "gdisasters_graphics_dr_updaterate" )):GetFloat()) end 
