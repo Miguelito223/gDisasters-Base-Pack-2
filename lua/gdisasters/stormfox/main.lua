@@ -30,7 +30,7 @@ function gdisasters_stormfox2()
         if ent:IsValid() then ent:Remove() end
     end
 
-    --[[ 
+    --[[
         local function Weather()
         if StormFox2.Weather.Get("Lava") then
             ent2 = ents.Create("gd_d7_lavaflood")
