@@ -17,9 +17,9 @@ function gdisasters_stormfox2( ply )
     if !StormFox2.Weather.IsRaining() and !StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 0
     elseif StormFox2.Weather.IsRaining() and StormFox2.Weather.GetRainAmount(1) then
-        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 50
+        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
     elseif StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0)then
-        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 50
+        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
     else
         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 0
     end
