@@ -9,9 +9,9 @@ function gdisasters_stormfox2( ply )
     local temp = StormFox2.Temperature.Get()
     local wind = StormFox2.Wind.GetForce()
     
-    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = temp
-	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = wind
-    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = Vector(1,0,0)
+    GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = temp
+	GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = wind
+    GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(1,0,0)
 
 
     if !StormFox2.Weather.IsRaining() and !StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
