@@ -716,7 +716,7 @@ end
 
 
 
-function FindNearestEntity(self, class, class)
+function FindNearestEntity(self, class)
 	
 	if ents.FindByClass(class)[1] == nil then return nil end
 	
