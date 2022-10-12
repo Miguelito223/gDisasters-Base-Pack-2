@@ -2,7 +2,7 @@ CreateConVar("gdisasters_stormfox_enable", 0, {FCVAR_ARCHIVE}, "")
 
 if (SERVER) then
 
-function gdisasters_stormfox2( ply )
+function gdisasters_stormfox2()
     
     if GetConVar("gdisasters_stormfox_enable"):GetInt() == 0 then return end
     
@@ -29,6 +29,19 @@ function gdisasters_stormfox2( ply )
         if !ent then return end
         if ent:IsValid() then ent:Remove() end
     end
+
+    --[[ 
+        local function Weather()
+        if StormFox2.Weather.Get("Lava") then
+            ent2 = ents.Create("gd_d7_lavaflood")
+            ent2:Spawn()
+            ent2:Activate()
+        else
+        if ent2:IsValid() then ent2:Remove()
+        end
+        end
+       Weather()
+    --]]
 end
 hook.Add("Tick", "stormfox2_gdisasters", gdisasters_stormfox2)
 end
