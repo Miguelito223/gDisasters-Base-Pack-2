@@ -182,7 +182,7 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	
 
 	local WQ = CPanel:NumSlider(     "Water Quality", "", 1, 3, 0 );
-	local FQ = CPanel:NumSlider(     "Fog Quality", "", 1, 7, 0 );
+	local FQ = CPanel:NumSlider(     "Fog Quality", "", 1, 8, 0 );
 
 	local dr_ns_label =  AddControlLabel( CPanel, "Section dedicated to Doppler Radar.\nUse with caution." )
 
