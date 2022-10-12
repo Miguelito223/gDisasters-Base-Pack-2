@@ -339,7 +339,7 @@ if (CLIENT) then
 		
 		local local_wind    = LocalPlayer():GetNWFloat("LocalWind")
 		local outside_fac   = LocalPlayer().gDisasters.Outside.OutsideFactor/100 
-		local wind_weak_vol = math.Clamp( ( (math.Clamp((( math.Clamp(local_wind / 20, 0, 1) * 5)^2) * local_wind, 0, local_wind)) / 20), 0, 1) 
+		local wind_weak_vol = math.Clamp( ( (math.Clamp((( math.Clamp(local_wind / 20, 0, 1) * 5)^2) * local_wind, 0, local_wind)) / 20), 0, GetConVar("gdisasters_wind_Light_Wind_sound"):GetInt()) 
 		
 		
 		if LocalPlayer().gDisasters.Outside.IsOutside then
@@ -348,8 +348,8 @@ if (CLIENT) then
 			wind_weak_vol   = wind_weak_vol * math.Clamp(outside_fac , 0.1, 1)
 		end
 		
-		local wind_mod_vol  = math.Clamp( ( (local_wind-20) / 60), 0, 1) * outside_fac 		
-		local wind_str_vol  = math.Clamp( ( (local_wind-80) / 120), 0, 1) * outside_fac 	
+		local wind_mod_vol  = math.Clamp( ( (local_wind-20) / 60), 0, GetConVar("gdisasters_wind_Moderate_Wind_sound"):GetInt()) * outside_fac 		
+		local wind_str_vol  = math.Clamp( ( (local_wind-80) / 120), 0, GetConVar("gdisasters_wind_Heavy_Wind_sound"):GetInt()) * outside_fac 	
 		
 		if LocalPlayer().Sounds["Wind_Heavy"] == nil then
 			

@@ -118,9 +118,11 @@ end
 
 
 local function gDisastersAudioSettings( CPanel )
-	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1, "" );
-	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1, "" );
-	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1, "" );
+	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1, "gdisasters_wind_Light_Wind_sound" );
+	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1, "gdisasters_wind_Moderate_Wind_sound" );
+	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1, "gdisasters_wind_Heavy_Wind_sound" );
+	CreateSliderConVariable(CPanel, "hud Hearth sound", 0,1, 0, "gdisasters_hud_heartbeat_volume" );
+	CreateSliderConVariable(CPanel, "hud Warning sound", 0,1, 0, "gdisasters_hud_warning_volume" );
 end
 
 local function gDisastersAutospawn( CPanel )
@@ -280,6 +282,7 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVADSettings", "Advanced", "", "", gDisastersSVADVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersAutospawn", "Autospawn Settings", "", "", gDisastersAutospawn )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersAudioSettings", "Audio Settings", "", "", gDisastersAudioSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersADVGraphicsSettings", "Graphics", "", "", gDisastersADVGraphicsSettings )
 	
 

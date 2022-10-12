@@ -38,6 +38,9 @@ function gDisasters_PostSpawnCL()
 		CreateConVar( "gdisasters_antilag_ground_particles", 500, {FCVAR_ARCHIVE}, "")
 		CreateConVar( "gdisasters_antilag_weather_particles", 500, {FCVAR_ARCHIVE}, "")
 		CreateConVar( "gdisasters_antilag_number_of_passes", 500, {FCVAR_ARCHIVE}, "")
+		CreateConVar( "gdisasters_wind_Light_Wind_sound", 0.1, {FCVAR_ARCHIVE}, " " )
+		CreateConVar( "gdisasters_wind_Moderate_Wind_sound", 0.1, {FCVAR_ARCHIVE}, " " )
+		CreateConVar( "gdisasters_wind_Heavy_Wind_sound", 0.1, {FCVAR_ARCHIVE}, " " )
 	
 	end
 

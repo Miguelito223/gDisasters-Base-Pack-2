@@ -206,8 +206,8 @@ if (CLIENT) then
 		local air_tmp   = math.Round(GetGlobalFloat("gDisasters_Temperature"),1)
 		local body_tmp  = math.Round(LocalPlayer():GetNWFloat("BodyTemperature"),1)
 		local hm        = math.Round(GetGlobalFloat("gDisasters_Humidity"))
-		local windspd   = math.Round(GetGlobalFloat("gDisasters_Wind"),1)
-		local lwindspd  = math.Round(LocalPlayer():GetNWFloat("LocalWind"),1)
+		local windspd   = math.Round(GetGlobalFloat("gDisasters_Wind"))
+		local lwindspd  = math.Round(LocalPlayer():GetNWFloat("LocalWind"))
 		
 		local air_temp   =  tostring( air_tmp ).."°C"
 		local body_temp  =  tostring( body_tmp ).."°C"

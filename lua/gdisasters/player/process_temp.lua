@@ -240,6 +240,7 @@ function gDisasters_ProcessTemperature()
 	
 	local function subzero_Effect()
 		if GetConVar("gdisasters_hud_temp_breathing"):GetInt() == 0 then return end
+		
 		if temp <= 4 then -- low temperature sfx
 			if timer.Exists("Breathing")==false then
 				timer.Create( "Breathing", 4, 0, function()
