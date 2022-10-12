@@ -72,7 +72,7 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Wind physical" ,"gdisasters_wind_physics_enabled");
 	CreateTickboxConVariable(CPanel, "Enable Temp Related Damage" ,"gdisasters_hud_temp_damage");
 	CreateTickboxConVariable(CPanel, "Enable Temp UpdateVars" ,"gdisasters_hud_temp_updatevars");
-	CreateTickboxConVariable(CPanel, "Enable Temp Breathing" ,"gdisasters_hud_breathing");
+	CreateTickboxConVariable(CPanel, "Enable Temp Breathing" ,"gdisasters_hud_temp_breathing");
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_atmosphere");
 	CreateTickboxConVariable(CPanel, "Enable Hud"  , "gdisasters_hud_enabled");
 	CreateTickboxConVariable(CPanel, "Enable experimental overdraw"  , "gdisasters_experimental_overdraw");
