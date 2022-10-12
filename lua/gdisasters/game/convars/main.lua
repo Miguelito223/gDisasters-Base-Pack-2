@@ -19,6 +19,8 @@ CreateConVar( "gdisasters_envtornado_speed", "9", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_hud_temp_damage", "1", {FCVAR_ARCHIVE}	, "" )
 CreateConVar( "gdisasters_hud_temp_updatevars", "1", {FCVAR_ARCHIVE}	, "" )
 CreateConVar( "gdisasters_hud_temp_breathing", "1", {FCVAR_ARCHIVE}	, "" )
+CreateConVar( "gdisasters_hud_temp_vomit", "1", {FCVAR_ARCHIVE}	, "" )
+CreateConVar( "gdisasters_hud_temp_sneeze", "1", {FCVAR_ARCHIVE}	, "" )
 CreateConVar( "gdisasters_hud_temp_cl", "1", {FCVAR_ARCHIVE}	, "" )
 CreateConVar( "gdisasters_hud_temp_sv", "1", {FCVAR_ARCHIVE}	, "" )
 

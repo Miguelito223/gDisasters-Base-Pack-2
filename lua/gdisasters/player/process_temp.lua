@@ -36,6 +36,7 @@ if (CLIENT) then
 
 	
 		if temp > 39 and math.random(1,400)==1 then
+			if GetConVar("gdisasters_hud_temp_vomit"):GetInt() == 0 then return end
 			if temp >= 42 then
 				
 				hud_gDisastersVomitBlood()
@@ -43,6 +44,17 @@ if (CLIENT) then
 			else
 			
 				hud_gDisastersVomit()
+			end
+		end
+		if temp < 35 and math.random(1,400)==1 then
+			if GetConVar("gdisasters_hud_temp_sneeze"):GetInt() == 0 then return end
+			if temp <= 32 then
+				
+				hud_gDisastersSneezeBig()
+		
+			else
+			
+				hud_gDisastersSneeze()
 			end
 		end
 
@@ -230,7 +242,6 @@ function gDisasters_ProcessTemperature()
 		if GetConVar("gdisasters_hud_temp_breathing"):GetInt() == 0 then return end
 		if temp <= 4 then -- low temperature sfx
 			if timer.Exists("Breathing")==false then
-				
 				timer.Create( "Breathing", 4, 0, function()
 					for k, v in pairs(player.GetAll()) do
 						timer.Simple(math.random(0,20)/10, function()
@@ -259,8 +270,8 @@ function gDisasters_ProcessTemperature()
 end
 
 function gDisasters_GlobalBreathingEffect()
+	if GetConVar("gdisasters_hud_temp_breathing"):GetInt() == 0 then return end
 	
-	--
 	local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
 	
 	if temp > 0 then 

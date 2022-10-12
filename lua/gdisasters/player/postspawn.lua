@@ -14,6 +14,10 @@ function gDisasters_PostSpawnCL()
 		LocalPlayer().gDisasters.HUD.NextVomitBloodTime   = CurTime()
 		LocalPlayer().gDisasters.HUD.VomitIntensity       = 0
 		LocalPlayer().gDisasters.HUD.BloodVomitIntensity  = 0
+		LocalPlayer().gDisasters.HUD.NextSneezeTime       = CurTime()
+		LocalPlayer().gDisasters.HUD.NextSneezeBigTime  = CurTime()
+		LocalPlayer().gDisasters.HUD.SneezeIntensity       = 0
+		LocalPlayer().gDisasters.HUD.SneezeBigIntensity  = 0
 	end
 	
 	local function gDisasters_SetupHUDConvars()

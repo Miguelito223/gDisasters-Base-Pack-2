@@ -7,6 +7,8 @@ if (SERVER) then
 	util.AddNetworkString( "gd_seteyeangles_cl")
 	util.AddNetworkString( "gd_vomit")
 	util.AddNetworkString( "gd_vomit_blood")
+	util.AddNetworkString( "gd_sneeze")
+	util.AddNetworkString( "gd_sneeze_big")
 	util.AddNetworkString( "gd_lightning_bolt")
 	util.AddNetworkString( "gd_sendsound"	)
 	util.AddNetworkString( "gd_ambientlight"	)
