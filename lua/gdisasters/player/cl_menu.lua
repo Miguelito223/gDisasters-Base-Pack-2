@@ -72,6 +72,7 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Wind physical" ,"gdisasters_wind_physics_enabled");
 	CreateTickboxConVariable(CPanel, "Enable Temp Related Damage" ,"gdisasters_hud_tempdamage");
 	CreateTickboxConVariable(CPanel, "Enable Temp UpdateVars" ,"gdisasters_hud_tempupdatevars");
+	CreateTickboxConVariable(CPanel, "Enable Temp Breathing" ,"gdisasters_hud_breathing");
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_atmosphere");
 	CreateTickboxConVariable(CPanel, "Enable Hud"  , "gdisasters_hud_enabled");
 	CreateTickboxConVariable(CPanel, "Enable experimental overdraw"  , "gdisasters_experimental_overdraw");
@@ -181,6 +182,7 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	
 
 	local WQ = CPanel:NumSlider(     "Water Quality", "", 1, 3, 0 );
+	local FQ = CPanel:NumSlider(     "Fog Quality", "", 1, 7, 0 );
 
 	local dr_ns_label =  AddControlLabel( CPanel, "Section dedicated to Doppler Radar.\nUse with caution." )
 
@@ -249,7 +251,8 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	
 	timer.Simple(0.05, function()
 	
-		if WQ then WQ:SetValue(GetConVar(( "gdisasters_graphics_water_quality" )):GetFloat()) end 
+		if WQ then WQ:SetValue(GetConVar(( "gdisasters_graphics_water_quality" )):GetFloat()) end
+		if FG then WQ:SetValue(GetConVar(( "gdisasters_graphics_fog_quality" )):GetFloat()) end
 		
 		if MaxRD then MaxRD:SetValue(GetConVar(( "gdisasters_graphics_dr_maxrenderdistance" )):GetFloat()) end 
 		if UpdateRate then UpdateRate:SetValue(GetConVar(( "gdisasters_graphics_dr_updaterate" )):GetFloat()) end 

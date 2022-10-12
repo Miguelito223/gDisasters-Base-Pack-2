@@ -1,8 +1,9 @@
 if (CLIENT) then
 
 	function gfx_temperatureEffects()
-	
 		
+		if GetConVar("gdisasters_hud_temp_cl"):GetInt() == 0 then return end
+
 		local temp            = LocalPlayer():GetNWFloat("BodyTemperature")
 		local blur_alpha_hot  =  1-((44-math.Clamp(temp,39,44))/5)
 		local blur_alpha_cold =  ((35-math.Clamp(temp,24,35))/11)
@@ -69,6 +70,8 @@ if (SERVER) then
 
 function gDisasters_ProcessTemperature()
 
+	if GetConVar("gdisasters_hud_temp_sv"):GetInt() == 0 then return end
+
 	local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
 	local compensation_max      = 10   -- degrees 
 	local body_heat_genK        = engine.TickInterval() -- basically 1 degree Celsius per second
@@ -79,7 +82,7 @@ function gDisasters_ProcessTemperature()
 				
 	local function updateVars()
 
-		if GetConVar("gdisasters_hud_tempupdatevars"):GetInt() == 0 then return end
+		if GetConVar("gdisasters_hud_temp_updatevars"):GetInt() == 0 then return end
 
 		for k, v in pairs(plytbl) do
 		
@@ -121,7 +124,7 @@ function gDisasters_ProcessTemperature()
 	
 	local function damagePlayers()
 		
-		if GetConVar("gdisasters_hud_tempdamage"):GetInt() == 0 then return end
+		if GetConVar("gdisasters_hud_temp_damage"):GetInt() == 0 then return end
 		
 		for k, v in pairs(plytbl) do
 		
@@ -224,6 +227,7 @@ function gDisasters_ProcessTemperature()
 	end
 	
 	local function subzero_Effect()
+		if GetConVar("gdisasters_hud_temp_breathing"):GetInt() == 0 then return end
 		if temp <= 4 then -- low temperature sfx
 			if timer.Exists("Breathing")==false then
 				
