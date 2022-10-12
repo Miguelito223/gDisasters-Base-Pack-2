@@ -70,7 +70,6 @@ if (SERVER) then
 function gDisasters_ProcessTemperature()
 
 	local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
-	local humidity = GLOBAL_SYSTEM["Atmosphere"]["Humidity"]
 	local compensation_max      = 10   -- degrees 
 	local body_heat_genK        = engine.TickInterval() -- basically 1 degree Celsius per second
 	local body_heat_genMAX      = 0.01/4
@@ -79,6 +78,9 @@ function gDisasters_ProcessTemperature()
 	SetGlobalFloat("gDisasters_Temperature", temp)
 				
 	local function updateVars()
+
+		if GetConVar("gdisasters_hud_tempupdatevars"):GetInt() == 0 then return end
+
 		for k, v in pairs(plytbl) do
 		
 			local closest_fire, distance  = FindNearestEntity(v, "vfire" or "entityflame") -- find closest fire entity
