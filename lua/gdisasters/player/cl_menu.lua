@@ -252,13 +252,13 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	WQ.Scratch.ConVarChanged = function() end
 	WQ.OnValueChanged = function( panel, val )
 		if (CurTime() - gDisasters_gDisastersADVGraphicsSettings_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_graphics_water_quality", tonumber( val ) )		
+		RunConsoleCommand( "gdisasters_graphics_water_quality", 4 - tonumber( val ) )		
 	end
 
 	FQ.Scratch.ConVarChanged = function() end
 	FQ.OnValueChanged = function( panel, val )
 		if (CurTime() - gDisasters_gDisastersADVGraphicsSettings_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_graphics_fog_quality", tonumber( val ) )		
+		RunConsoleCommand( "gdisasters_graphics_fog_quality", 4 - tonumber( val ) )		
 	end
 	
 	GP.Scratch.ConVarChanged = function() end 
