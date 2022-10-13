@@ -203,7 +203,7 @@ local function gDisastersADVGraphicsSettings( CPanel )
 		
 	local label = AddControlLabel( CPanel, "Graphics options." )
 
-	local label = AddControlLabel( CPanel, "Wind/Temp Type. (No Work)" )
+	local label2 = AddControlLabel( CPanel, "Wind/Temp Type. (No Work)" )
 
 	local WQ = CPanel:NumSlider(     "Water Quality", "", 1, 3, 0 );
 	local FQ = CPanel:NumSlider(     "Fog Quality", "", 1, 8, 0 );
