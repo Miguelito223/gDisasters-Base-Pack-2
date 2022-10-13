@@ -81,7 +81,7 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Temp Vomit" ,"gdisasters_hud_temp_vomit");
 	CreateTickboxConVariable(CPanel, "Enable Temp Sneeze" ,"gdisasters_hud_temp_sneeze");
 	
-	AddControlLabel( CPanel, "The Atmophere option requires a map RESTART to take effect.\n\n Same with Stormfox2 compatibility"  )
+	AddControlLabel( CPanel, "The Atmophere option requires a map RESTART to take effect. Same with Stormfox2 compatibility"  )
 
 	AddControlLabel( CPanel, "Other options" )
 	
@@ -102,7 +102,7 @@ local function gDisastersSVADVSettings( CPanel )
 
 	AddControlLabel( CPanel, "Don't mess with these settings unless you know what you're doing.")
 	
-	AddControlLabel( CPanel, "Simulation Option, Change the cuality of simulation.")
+	AddControlLabel( CPanel, "Simulation Option, Change the quality of simulation.")
 	CreateSliderConVariable(CPanel, "Tornado Simulation Quality", 0.1, 0.50, 2, "gdisasters_envtornado_simquality" );
 	CreateSliderConVariable(CPanel, "Earthquake Simulation Quality", 0.1, 0.50, 2, "gdisasters_envearthquake_simquality" );
 	CreateSliderConVariable(CPanel, "Water Simulation Quality", 0.1, 0.50, 2, "gdisasters_envdynamicwater_simquality");
@@ -153,10 +153,9 @@ end
 local function gDisastersAutospawn( CPanel )
 	gDisasters_Autospawn_SetupTime = CurTime() 
 
+	local label = AddControlLabel( CPanel, "Autospawn options." )
 	local AUT = CPanel:NumSlider("autospawn time", "", 1, 1000, 0 )
 	local AUC = CPanel:NumSlider("autospawn chance", "", 0, 1000, 0 )
-
-	AddControlLabel( CPanel, "Autospawn options." )
 
 	AUT.Scratch.ConVarChanged = function() end 
 	AUT.OnValueChanged = function( panel, val)
@@ -212,7 +211,7 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	end
 			
 		
-	
+	local label = AddControlLabel( CPanel, "Graphics options." )
 
 	local WQ = CPanel:NumSlider(     "Water Quality", "", 1, 3, 0 );
 	local FQ = CPanel:NumSlider(     "Fog Quality", "", 1, 8, 0 );
@@ -230,13 +229,11 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	local GP = CPanel:NumSlider( "Max GP", "", 1, 1000, 0 );
 	local WP = CPanel:NumSlider( "Max WP", "", 1, 1000, 0 );
 	local nPass = CPanel:NumSlider( "Max nPass", "", 1, 1000, 0 );
-
-	local label =  AddControlLabel( CPanel, "Reload to disable gdisasters skybox\n\nAbbreviation references below.\n\nGP: Ground Particles\n\nWP:Weather Particles\n\nnPass: Number of Passes " )
 	
 		
 	-- on value change, set values 
 
-	AddControlLabel( CPanel, "Graphics options." )
+	
 	
 	MaxRD.Scratch.ConVarChanged = function() end 
 	MaxRD.OnValueChanged = function( panel, val)
