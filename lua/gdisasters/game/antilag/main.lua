@@ -89,7 +89,7 @@ gDisasters.Game.AntiLag.CollisionsLoop = function()
 		v.Collisions = 0 
 	end
 	
-	gDisasters.Game.AntiLag.NumberOfProps = count 	
+	gDisasters.Game.AntiLag.NumberOfProps = count
 	gDisasters.Game.AntiLag.Collisions.PerSecondPerProp = gDisasters.Game.AntiLag.Collisions.PerSecond / count 
 	
 end
