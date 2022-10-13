@@ -5,6 +5,7 @@ if (SERVER) then
 function gdisasters_stormfox2()
     
     if GetConVar("gdisasters_stormfox_enable"):GetInt() == 0 then return end
+    if !Stormfox2 then return end
     
     local temp = StormFox2.Temperature.Get()
     local wind = StormFox2.Wind.GetForce()
