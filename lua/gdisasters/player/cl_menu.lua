@@ -93,8 +93,7 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Temp Vomit" ,"gdisasters_hud_temp_vomit");
 	CreateTickboxConVariable(CPanel, "Enable Temp Sneeze" ,"gdisasters_hud_temp_sneeze");
 
-	AddControlLabel( CPanel, "Other options" )
-	AddControlLabel( CPanel, "The Atmophere option requires a map RESTART to take effect.  )
+	AddControlLabel( CPanel, "Other options: \n\nThe Atmophere option requires a map RESTART to take effect."  )
 
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_atmosphere");
 	CreateTickboxConVariable(CPanel, "Enable Hud"  , "gdisasters_hud_enabled");
@@ -111,15 +110,15 @@ end
 -- ADVANCED SV MENU
 local function gDisastersSVADVSettings( CPanel )
 
-	AddControlLabel( CPanel, "Don't mess with these settings unless you know what you're doing.")
+	AddControlLabel( CPanel, "Don't mess with these settings unless you know what you're doing.\n\nAdvanced options: ")
 	
-	AddControlLabel( CPanel, "Simulation Option, Change the quality of simulation.")
+	AddControlLabel( CPanel, "Simulation Option: Change the quality of simulation.")
 	CreateSliderConVariable(CPanel, "Tornado Simulation Quality", 0.1, 0.50, 2, "gdisasters_envtornado_simquality" );
 	CreateSliderConVariable(CPanel, "Earthquake Simulation Quality", 0.1, 0.50, 2, "gdisasters_envearthquake_simquality" );
 	CreateSliderConVariable(CPanel, "Water Simulation Quality", 0.1, 0.50, 2, "gdisasters_envdynamicwater_simquality");
 	CreateSliderConVariable(CPanel, "Wind Simulation Quality", 0.1, 0.50, 2, "gdisasters_wind_physics_simquality")
 	
-	AddControlLabel( CPanel, "Tornado option.")
+	AddControlLabel( CPanel, "Tornado options: i need talk about this?")
 	
 	CreateTickboxConVariable(CPanel, "Enable Custom Tornado Speed" ,"gdisasters_envtornado_manualspeed");
 	CreateSliderConVariable(CPanel, "Tornado Speed", 4, 20, 2, "gdisasters_envtornado_speed" );
@@ -127,19 +126,19 @@ local function gDisastersSVADVSettings( CPanel )
 	CreateSliderConVariable(CPanel, "Tornado Lifetime max", 1, 1000, 0, "gdisasters_envtornado_lifetime_max" );
 	CreateSliderConVariable(CPanel, "Tornado Damage", 0, 5000, 0, "gdisasters_envtornado_damage" );
 
-	AddControlLabel( CPanel, "Hud type option.")
+	AddControlLabel( CPanel, "Hud type options: \n\n1: body hud\n\n2: pressure hud\n\n3: earthquake hud")
 	
-	CreateSliderConVariable(CPanel, "Hud Type", 1, 3, 0, "gdisasters_hud_type" );
+	CreateSliderConVariable(CPanel, "Hud Type options:", 1, 3, 0, "gdisasters_hud_type" );
 
-	AddControlLabel( CPanel, "PD NC BT: Post Damage No Collide Base Time (No Work)\n\nCPPPS: Collisions Per Prop Per Second \n\nCAPS:Collisions Average Per Second (No Work)" )
+	AddControlLabel( CPanel, "Antilag collision settings: \n\nPD NC BT: Post Damage No Collide Base Time (No Work)\n\nCPPPS: Collisions Per Prop Per Second \n\nCAPS:Collisions Average Per Second (No Work)" )
 	
 	CreateSliderConVariable(CPanel,"Max CPPPS", 0, 1000, 0,"gdisasters_antilag_maximum_safe_collisions_per_second_per_prop");
 	CreateSliderConVariable(CPanel,"Max PD NC BT", 0, 1000, 0,"gdisasters_antilag_post_damage_no_collide_base_time");
 	CreateSliderConVariable(CPanel,"Max CAPS (s)", 0, 1000, 0,"gdisasters_antilag_maximum_safe_collisions_per_second_average" );
 
-	AddControlLabel( CPanel, "Antilag options\n\nAntilag Mode no work" )
+	AddControlLabel( CPanel, "Antilag options: remove the lag :)" )
 	
-	CreateSliderConVariable(CPanel,"Antilag Mode (s)", 0, 2, 0,"gdisasters_antilag_mode" );
+	CreateSliderConVariable(CPanel,"Antilag Mode (s) (No work)", 0, 2, 0,"gdisasters_antilag_mode" );
 	CreateTickboxConVariable(CPanel,"Enable Antilag", "gdisasters_antilag_enabled" )
 	
 	
@@ -153,7 +152,7 @@ end
 
 
 local function gDisastersAudioSettings( CPanel )
-	AddControlLabel( CPanel, "Audio options. " )
+	AddControlLabel( CPanel, "Audio options: " )
 	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1,0, "gdisasters_wind_Light_Wind_sound" );
 	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1,0, "gdisasters_wind_Moderate_Wind_sound" );
 	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,0,"gdisasters_wind_Heavy_Wind_sound" );
@@ -201,12 +200,12 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	gDisasters_gDisastersADVGraphicsSettings_SetupTime = CurTime() 
 			
 		
-	local label = AddControlLabel( CPanel, "Graphics options." )
+	local label = AddControlLabel( CPanel, "Graphics options:" )
 
 	local WQ = CPanel:NumSlider(     "Water Quality", "", 1, 3, 0 );
 	local FQ = CPanel:NumSlider(     "Fog Quality", "", 1, 8, 0 );
 
-	local label2 = AddControlLabel( CPanel, "Wind/Temp Type. (No Work)" )
+	local label2 = AddControlLabel( CPanel, "Wind/Temp Type: (No Work)" )
 
 	local HudW 			= AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
 	local HudT			= AddComboBox( CPanel, "Hud Temperature Display", {"c", "f"}, "gdisasters_hud_temptype")
