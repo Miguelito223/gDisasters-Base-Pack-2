@@ -99,7 +99,7 @@ function gDisasters_ProcessTemperature()
 		for k, v in pairs(plytbl) do
 		
 			local closest_fire, distance  = FindNearestEntity(v, "vfire" or "entityflame") -- find closest fire entity
-			local closest_ice,  distance_2  = FindNearestEntity(v, "gd_d1_supercooledice" or "gd_d1_dryice") -- find closest ice entity
+			local closest_ice,  distance_2  = FindNearestEntity(v, "gd_d1_supercooledice") -- find closest ice entity
 			
 			local heatscale               = 0
 			local coolscale               = 0
