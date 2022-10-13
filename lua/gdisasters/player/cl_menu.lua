@@ -66,15 +66,25 @@ end
 
 local function gDisastersSVSettings( CPanel )
 
+	AddControlLabel( CPanel, "wind, tornado, water options: " )
+
 	CreateTickboxConVariable(CPanel, "Enable Water Related Damage"  , "gdisasters_envdynamicwater_candamageconstraints");
 	CreateTickboxConVariable(CPanel, "Enable Tornado Related Damage" ,"gdisasters_envtornado_candamageconstraints");
 	CreateTickboxConVariable(CPanel, "Enable Wind Related Damage" ,"gdisasters_wind_candamageconstraints");
 	CreateTickboxConVariable(CPanel, "Enable Wind physical" ,"gdisasters_wind_physics_enabled");
+	
+	AddControlLabel( CPanel, "Temp options: " )
+
 	CreateTickboxConVariable(CPanel, "Enable Temp Related Damage" ,"gdisasters_hud_temp_damage");
 	CreateTickboxConVariable(CPanel, "Enable Temp UpdateVars" ,"gdisasters_hud_temp_updatevars");
 	CreateTickboxConVariable(CPanel, "Enable Temp Breathing" ,"gdisasters_hud_temp_breathing");
 	CreateTickboxConVariable(CPanel, "Enable Temp Vomit" ,"gdisasters_hud_temp_vomit");
 	CreateTickboxConVariable(CPanel, "Enable Temp Sneeze" ,"gdisasters_hud_temp_sneeze");
+	
+	AddControlLabel( CPanel, "The Atmophere option requires a map RESTART to take effect.\n\n Same with Stormfox2 compatibility"  )
+
+	AddControlLabel( CPanel, "Other options" )
+	
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_atmosphere");
 	CreateTickboxConVariable(CPanel, "Enable Hud"  , "gdisasters_hud_enabled");
 	CreateTickboxConVariable(CPanel, "Enable Experimental Overdraw"  , "gdisasters_experimental_overdraw");
@@ -83,31 +93,45 @@ local function gDisastersSVSettings( CPanel )
 	
 	SVMenuCreated = false;
 
-	AddControlLabel( CPanel, "The Atmophere option requires a map RESTART to take effect." )
+	
 
 end
 
 -- ADVANCED SV MENU
 local function gDisastersSVADVSettings( CPanel )
-	
 
+	AddControlLabel( CPanel, "Don't mess with these settings unless you know what you're doing.")
+	
+	AddControlLabel( CPanel, "Simulation Option, Change the cuality of simulation.")
 	CreateSliderConVariable(CPanel, "Tornado Simulation Quality", 0.1, 0.50, 2, "gdisasters_envtornado_simquality" );
 	CreateSliderConVariable(CPanel, "Earthquake Simulation Quality", 0.1, 0.50, 2, "gdisasters_envearthquake_simquality" );
 	CreateSliderConVariable(CPanel, "Water Simulation Quality", 0.1, 0.50, 2, "gdisasters_envdynamicwater_simquality");
 	CreateSliderConVariable(CPanel, "Wind Simulation Quality", 0.1, 0.50, 2, "gdisasters_wind_physics_simquality")
+	
+	AddControlLabel( CPanel, "Tornado option.")
+	
 	CreateTickboxConVariable(CPanel, "Enable Custom Tornado Speed" ,"gdisasters_envtornado_manualspeed");
 	CreateSliderConVariable(CPanel, "Tornado Speed", 4, 20, 2, "gdisasters_envtornado_speed" );
 	CreateSliderConVariable(CPanel, "Tornado Lifetime min", 1, 1000, 0, "gdisasters_envtornado_lifetime_min" );
 	CreateSliderConVariable(CPanel, "Tornado Lifetime max", 1, 1000, 0, "gdisasters_envtornado_lifetime_max" );
 	CreateSliderConVariable(CPanel, "Tornado Damage", 0, 5000, 0, "gdisasters_envtornado_damage" );
+
+	AddControlLabel( CPanel, "Hud type option.")
+	
 	CreateSliderConVariable(CPanel, "Hud Type", 1, 3, 0, "gdisasters_hud_type" );
+
+	AddControlLabel( CPanel, "PD NC BT: Post Damage No Collide Base Time\n\nCPPPS: Collisions Per Prop Per Second\n\nCAPS:Collisions Average Per Second" )
+	
 	CreateSliderConVariable(CPanel,"Max CPPPS ", 0, 1000, 0,"gdisasters_antilag_maximum_safe_collisions_per_second_per_prop");
 	CreateSliderConVariable(CPanel,"Max PD NC BT", 0, 1000, 0,"gdisasters_antilag_post_damage_no_collide_base_time");
 	CreateSliderConVariable(CPanel,"Max CAPS (s) ", 0, 1000, 0,"gdisasters_antilag_maximum_safe_collisions_per_second_average" );
+
+	AddControlLabel( CPanel, "Antilag options." )
+	
 	CreateSliderConVariable(CPanel,"Antilag Mode (s) ", 0, 2, 0,"gdisasters_antilag_mode" );
 	CreateTickboxConVariable(CPanel,"Enable Antilag", "gdisasters_antilag_enabled" )
 	
-	AddControlLabel( CPanel, "Don't mess with these settings unless you know what you're doing .\n\nAbbreviation references below.\n\nPD NC BT: Post Damage No Collide Base Time\n\nCPPPS: Collisions Per Prop Per Second\n\nCAPS:Collisions Average Per Second" )
+	
 	-----------------
 	
 end
@@ -118,6 +142,7 @@ end
 
 
 local function gDisastersAudioSettings( CPanel )
+	AddControlLabel( CPanel, "Volumen options. " )
 	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1,0, "gdisasters_wind_Light_Wind_sound" );
 	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1,0, "gdisasters_wind_Moderate_Wind_sound" );
 	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,0,"gdisasters_wind_Heavy_Wind_sound" );
@@ -130,6 +155,8 @@ local function gDisastersAutospawn( CPanel )
 
 	local AUT = CPanel:NumSlider("autospawn time", "", 1, 1000, 0 )
 	local AUC = CPanel:NumSlider("autospawn chance", "", 0, 1000, 0 )
+
+	AddControlLabel( CPanel, "Autospawn options." )
 
 	AUT.Scratch.ConVarChanged = function() end 
 	AUT.OnValueChanged = function( panel, val)
@@ -155,6 +182,8 @@ local function gDisastersAutospawn( CPanel )
 	CreateTickboxConVariable(CPanel, "Autospawn weather"  , "gdisasters_autospawn_weather");
 	CreateTickboxConVariable(CPanel, "Autospawn weather and disasters"  , "gdisasters_autospawn_weatherdisaster");
 	CreateTickboxConVariable(CPanel, "Autospawn Disable Map Tornadoes"  , "gdisasters_getridmaptor");
+
+	
 end
 
 local function gDisastersADVGraphicsSettings( CPanel )
@@ -206,6 +235,8 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	
 		
 	-- on value change, set values 
+
+	AddControlLabel( CPanel, "Graphics options." )
 	
 	MaxRD.Scratch.ConVarChanged = function() end 
 	MaxRD.OnValueChanged = function( panel, val)
