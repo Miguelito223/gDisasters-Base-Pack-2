@@ -719,8 +719,9 @@ end
 function FindNearestEntity(self, class)
 	
 	if ents.FindByClass(class)[1] == nil then return nil end
+
 	
-	local current_target          = ents.FindByClass(class)[1]
+	local current_target         = ents.FindByClass(class)[1]
 	
 		
 	for k, v in pairs(ents.FindByClass(class)) do
