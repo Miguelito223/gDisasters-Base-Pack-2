@@ -15,16 +15,6 @@ ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 ENT.Mass                             =  100
 
 function ENT:Initialize()		
-
-	if (CLIENT) then
-		
-		if LocalPlayer().fogSetup == nil then 
-			LocalPlayer().fogSetup = false
-			setupFog(LocalPlayer(),Color(255,255,255), 0.90, 100, 5000)
-		end
-		
-		self.LastFogType = false
-	end
 	
 	if (SERVER) then
 	
@@ -75,7 +65,21 @@ function ENT:Initialize()
 			if self:IsValid() then self:CreateDarkness(false)end 
 		end)			
 		
+			
+
+
+		local data = {}
+			data.Color = Color(255,255,255)
+			data.DensityCurrent = 0
+			data.DensityMax     = 5000
+			data.DensityMin     = 5000
+			data.EndMax         = 100
+			data.EndMin         = 0.90
+			data.EndMinCurrent  = 0
+			data.EndMaxCurrent  = 0       
+
 		
+		gDisasters_CreateGlobalFog(self, data, true)	
 		
 		
 	end
@@ -196,11 +200,6 @@ function ENT:CreateDarkness(bool)
 	
 end
 
-function ENT:clearFog()
-	local fogtype = self:GetNWBool("FogType", false)
-	fogtype:Remove()
-end
-
 function ENT:SwitchFog()
 	
 	local fogtype = self:GetNWBool("FogType", false)
@@ -209,31 +208,39 @@ function ENT:SwitchFog()
 		
 		if fogtype == true then -- darkness
 		
-			self:clearFog(LocalPlayer())
 			LocalPlayer().isOutside = false
 	
 			
 			timer.Simple(1, function()
 			
-				LocalPlayer().fogSetup = true
-				setupFog(LocalPlayer(),Color(25,25,25), 0.9, 100, 5000)			
-			
+
+				LocalPlayer().gDisasters.Fog.Data.Color = Color(25,25,25)
+				LocalPlayer().gDisasters.Fog.Data.DensityCurrent = 0
+				LocalPlayer().gDisasters.Fog.Data.DensityMax     = 5000
+				LocalPlayer().gDisasters.Fog.Data.DensityMin     = 5000
+				LocalPlayer().gDisasters.Fog.Data.EndMax         = 100
+				LocalPlayer().gDisasters.Fog.Data.EndMin         = 0.9
+				LocalPlayer().gDisasters.Fog.Data.EndMinCurrent  = 0
+				LocalPlayer().gDisasters.Fog.Data.EndMaxCurrent  = 0       
+				
 			end)
 			
 		else
 		
-			clearFog(LocalPlayer())
 			LocalPlayer().isOutside = false
 
 
 
 			timer.Simple(1, function()
-	
-
-				LocalPlayer().fogSetup = true
-				setupFog(LocalPlayer(),Color(255,255,255), 0.97, 100, 5000)
-
-			
+				
+				LocalPlayer().gDisasters.Fog.Data.Color = Color(255,255,255)
+				LocalPlayer().gDisasters.Fog.Data.DensityCurrent = 0
+				LocalPlayer().gDisasters.Fog.Data.DensityMax     = 5000
+				LocalPlayer().gDisasters.Fog.Data.DensityMin     = 5000
+				LocalPlayer().gDisasters.Fog.Data.EndMax         = 100
+				LocalPlayer().gDisasters.Fog.Data.EndMin         = 0.97
+				LocalPlayer().gDisasters.Fog.Data.EndMinCurrent  = 0
+				LocalPlayer().gDisasters.Fog.Data.EndMaxCurrent  = 0       
 			
 			end)
 
@@ -246,33 +253,6 @@ function ENT:SwitchFog()
 	
 	
 	self.LastFogType = self:GetNWBool("FogType", false)
-end
-
-function ENT:CreateIllusions()
-	if self:GetNWBool("FogType")!=true then return end
-	
-	if math.random(1,100)==100 then
-		
-		local vec = Vector(VectorRand()[1],VectorRand()[2], 0) * math.random(200,2500)
-		
-		local tr = util.TraceLine( {
-			start = LocalPlayer():GetPos() + vec + Vector(0,0,100),
-			endpos = LocalPlayer():GetPos() + vec - Vector(0,0,500),
-			filter = LocalPlayer()
-		} )
-	
-		if tr.Hit then 
-			gfx_SilentHill_OtherWorldlyScene(tr.HitPos)
-			
-		else
-		
-		end
-		
-	
-		
-		
-	end
-
 end
 
 
@@ -316,13 +296,6 @@ end
 function ENT:Think()
 	if (CLIENT) then
 		self:SwitchFog()
-		self:CreateIllusions()
-		
-		if LocalPlayer().fogSetup == nil then 
-			LocalPlayer().fogSetup = true
-			if self:GetNWBool("FogType", false)==false then LocalPlayer().fogDensityCurrent = LocalPlayer().fogDensityMax setupFog(LocalPlayer(),Color(255,255,255), 0.97, 50, 5000)  else setupFog(LocalPlayer(),Color(25,25,25), 0.97, 100, 5000)		 end
-
-		end
 		
 	end
 	if (SERVER) then
@@ -352,9 +325,7 @@ function ENT:OnRemove()
 	end
 	
 	if (CLIENT) then
-		self:clearFog(LocalPlayer())
-		LocalPlayer().isOutside = false
-		LocalPlayer().fogSetup  = nil
+		
 		
 		timer.Simple(0.5, function()
 			if !LocalPlayer():IsValid() then return end
