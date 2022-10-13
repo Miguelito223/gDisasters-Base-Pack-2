@@ -8,6 +8,18 @@ end
 local function AddControlLabel( CPanel, label )
 	return  CPanel:Help( label )
 end
+
+local function AddComboBox( CPanel, title, listofitems, convar)
+		
+	local combobox, label = CPanel:ComboBox( title, convar)
+		
+		
+	for k, item in pairs(listofitems) do
+		combobox:AddChoice(item)
+	end
+		
+	return combobox
+end
 	
 local function CreateTickboxConVariable(CPanel, desc, convarname)
 	local CB = AddControlCB(CPanel, desc, convarname)
@@ -66,7 +78,7 @@ end
 
 local function gDisastersSVSettings( CPanel )
 
-	AddControlLabel( CPanel, "wind, tornado, water options: " )
+	AddControlLabel( CPanel, "wind/tornado/water options: " )
 
 	CreateTickboxConVariable(CPanel, "Enable Water Related Damage"  , "gdisasters_envdynamicwater_candamageconstraints");
 	CreateTickboxConVariable(CPanel, "Enable Tornado Related Damage" ,"gdisasters_envtornado_candamageconstraints");
@@ -80,11 +92,10 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Temp Breathing" ,"gdisasters_hud_temp_breathing");
 	CreateTickboxConVariable(CPanel, "Enable Temp Vomit" ,"gdisasters_hud_temp_vomit");
 	CreateTickboxConVariable(CPanel, "Enable Temp Sneeze" ,"gdisasters_hud_temp_sneeze");
-	
-	AddControlLabel( CPanel, "The Atmophere option requires a map RESTART to take effect. Same with Stormfox2 compatibility"  )
 
 	AddControlLabel( CPanel, "Other options" )
-	
+	AddControlLabel( CPanel, "The Atmophere option requires a map RESTART to take effect. Same with Stormfox2 compatibility"  )
+
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_atmosphere");
 	CreateTickboxConVariable(CPanel, "Enable Hud"  , "gdisasters_hud_enabled");
 	CreateTickboxConVariable(CPanel, "Enable Experimental Overdraw"  , "gdisasters_experimental_overdraw");
@@ -188,40 +199,23 @@ end
 local function gDisastersADVGraphicsSettings( CPanel )
 
 	gDisasters_gDisastersADVGraphicsSettings_SetupTime = CurTime() 
-
-		
-	local function AddControlCB(CPanel, label, command)
-		return CPanel:CheckBox( label, command )
-	end
-	local function AddControlLabel( CPanel, label )
-	
-		return  CPanel:Help( label )
-	end
-	
-	function AddComboBox( CPanel, title, listofitems, convar)
-		
-		local combobox, label = CPanel:ComboBox( title, convar)
-		
-		
-		for k, item in pairs(listofitems) do
-			combobox:AddChoice(item)
-		end
-		
-		return combobox
-	end
 			
 		
 	local label = AddControlLabel( CPanel, "Graphics options." )
 
+	local label = AddControlLabel( CPanel, "Wind/Temp Type. (No Work)" )
+
 	local WQ = CPanel:NumSlider(     "Water Quality", "", 1, 3, 0 );
 	local FQ = CPanel:NumSlider(     "Fog Quality", "", 1, 8, 0 );
+
+	local HudW 			= AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
+	local HudT			= AddComboBox( CPanel, "Hud Temperature Display", {"c", "f"}, "gdisasters_hud_temptype")
 
 	local dr_ns_label =  AddControlLabel( CPanel, "Section dedicated to Doppler Radar.\nUse with caution." )
 
 	local ScreenRes     = AddComboBox( CPanel, "Resolution", {"4x4","8x8","16x16","32x32","64x64","48x48","128x128"}, "gdisasters_graphics_dr_resolution")
 	local Monochromatic = AddComboBox( CPanel, "Monochromatic Mode", {"false", "true"}, "gdisasters_graphics_dr_monochromatic")
-	local HudW 			= AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
-	local HudT			= AddComboBox( CPanel, "Hud Temperature Display", {"c", "f"}, "gdisasters_hud_temptype")
+
 	local MaxRD         = CPanel:NumSlider(     "Max Render Distance", "", 1, 600, 0 );
 	local RefreshRate   = CPanel:NumSlider(     "Refresh Rate (Hz)", "", 1, 16, 0 );
 	local UpdateRate   = CPanel:NumSlider(     "Update  Rate (Hz)", "", 1, 16, 0 );
