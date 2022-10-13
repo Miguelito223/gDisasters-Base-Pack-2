@@ -94,7 +94,7 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Temp Sneeze" ,"gdisasters_hud_temp_sneeze");
 
 	AddControlLabel( CPanel, "Other options" )
-	AddControlLabel( CPanel, "The Atmophere option requires a map RESTART to take effect. Same with Stormfox2 compatibility"  )
+	AddControlLabel( CPanel, "The Atmophere option requires a map RESTART to take effect.  )
 
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_atmosphere");
 	CreateTickboxConVariable(CPanel, "Enable Hud"  , "gdisasters_hud_enabled");
@@ -137,9 +137,9 @@ local function gDisastersSVADVSettings( CPanel )
 	CreateSliderConVariable(CPanel,"Max PD NC BT", 0, 1000, 0,"gdisasters_antilag_post_damage_no_collide_base_time");
 	CreateSliderConVariable(CPanel,"Max CAPS (s)", 0, 1000, 0,"gdisasters_antilag_maximum_safe_collisions_per_second_average" );
 
-	AddControlLabel( CPanel, "Antilag options." )
+	AddControlLabel( CPanel, "Antilag options\n\nAntilag Mode no work" )
 	
-	CreateSliderConVariable(CPanel,"Antilag Mode (s) (No Work)", 0, 2, 0,"gdisasters_antilag_mode" );
+	CreateSliderConVariable(CPanel,"Antilag Mode (s)", 0, 2, 0,"gdisasters_antilag_mode" );
 	CreateTickboxConVariable(CPanel,"Enable Antilag", "gdisasters_antilag_enabled" )
 	
 	
