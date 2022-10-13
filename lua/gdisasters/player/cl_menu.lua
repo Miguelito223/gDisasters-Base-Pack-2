@@ -153,7 +153,7 @@ end
 
 
 local function gDisastersAudioSettings( CPanel )
-	AddControlLabel( CPanel, "Volumen options. " )
+	AddControlLabel( CPanel, "Audio options. " )
 	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1,0, "gdisasters_wind_Light_Wind_sound" );
 	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1,0, "gdisasters_wind_Moderate_Wind_sound" );
 	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,0,"gdisasters_wind_Heavy_Wind_sound" );
@@ -203,10 +203,10 @@ local function gDisastersADVGraphicsSettings( CPanel )
 		
 	local label = AddControlLabel( CPanel, "Graphics options." )
 
-	local label2 = AddControlLabel( CPanel, "Wind/Temp Type. (No Work)" )
-
 	local WQ = CPanel:NumSlider(     "Water Quality", "", 1, 3, 0 );
 	local FQ = CPanel:NumSlider(     "Fog Quality", "", 1, 8, 0 );
+
+	local label2 = AddControlLabel( CPanel, "Wind/Temp Type. (No Work)" )
 
 	local HudW 			= AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
 	local HudT			= AddComboBox( CPanel, "Hud Temperature Display", {"c", "f"}, "gdisasters_hud_temptype")
@@ -219,6 +219,8 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	local MaxRD         = CPanel:NumSlider(     "Max Render Distance", "", 1, 600, 0 );
 	local RefreshRate   = CPanel:NumSlider(     "Refresh Rate (Hz)", "", 1, 16, 0 );
 	local UpdateRate   = CPanel:NumSlider(     "Update  Rate (Hz)", "", 1, 16, 0 );
+
+	local label3 = AddControlLabel( CPanel, "GP: Ground Particles (No Work)\n\nWP:Weather Particles (No Work)\n\nnPass: Number of Passes (No Work)" )
 
 	local GP = CPanel:NumSlider( "Max GP", "", 1, 1000, 0 );
 	local WP = CPanel:NumSlider( "Max WP", "", 1, 1000, 0 );

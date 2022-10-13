@@ -1,9 +1,10 @@
 
+
 gDisasters.Game.AntiLag = {}
 
 gDisasters.Game.AntiLag.Collisions = {}
 gDisasters.Game.AntiLag.Collisions.PropPhysicsHash  = {}
-gDisasters.Game.AntiLag.Collisions.PerSecond        = 0 
+gDisasters.Game.AntiLag.Collisions.PerSecond        = 0  
 gDisasters.Game.AntiLag.Collisions.PerSecondPerProp = 0 
 
 gDisasters.Game.AntiLag.NextThink = CurTime() 
@@ -36,14 +37,14 @@ end
 gDisasters.Game.AntiLag.Collisions.PostPerPropCollisions = function(prop, collisions)
 	if prop:IsValid() then 
 
-	--if gDisasters.Game.AntiLag.Collisions.PerSecond > 0 then print(gDisasters.Game.AntiLag.NumberOfProps /  gDisasters.Game.AntiLag.Collisions.PerSecond  ) end 
+		if gDisasters.Game.AntiLag.Collisions.PerSecond > 0 then print(gDisasters.Game.AntiLag.NumberOfProps /  gDisasters.Game.AntiLag.Collisions.PerSecond  ) end 
 
 
-	if collisions >= GetConVar("gdisasters_antilag_maximum_safe_collisions_per_second_per_prop"):GetInt() then 
+		if collisions >= GetConVar("gdisasters_antilag_maximum_safe_collisions_per_second_per_prop"):GetInt() then 
 
-		prop:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
-		gDisasters.Game.AntiLag.Collisions.RemovePropEntry(prop)
-	end
+			prop:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+			gDisasters.Game.AntiLag.Collisions.RemovePropEntry(prop)
+		end
 	
 	end
 end
@@ -89,13 +90,13 @@ gDisasters.Game.AntiLag.CollisionsLoop = function()
 	end
 	
 	gDisasters.Game.AntiLag.NumberOfProps = count 	
-	--gDisasters.Game.AntiLag.Collisions.PerSecond = 
 	gDisasters.Game.AntiLag.Collisions.PerSecondPerProp = gDisasters.Game.AntiLag.Collisions.PerSecond / count 
 	
 end
 
 gDisasters.Game.AntiLag.MainLoop  = function()
 	if CurTime() < gDisasters.Game.AntiLag.NextThink then return end 
+	if GetConVar("gdisasters_antilag_enabled"):GetInt() == 0 then return end
 	
 	gDisasters.Game.AntiLag.Collisions.PerSecond = 0 
 	gDisasters.Game.AntiLag.Collisions.PerSecondPerProp = 0  
@@ -103,7 +104,7 @@ gDisasters.Game.AntiLag.MainLoop  = function()
 	gDisasters.Game.AntiLag.NextThink = CurTime() + 1 
 	gDisasters.Game.AntiLag.CollisionsLoop()	
 end
-hook.Remove("Think", "gDisasters.Game.AntiLag.MainLoop", gDisasters.Game.AntiLag.MainLoop)
+hook.Add("Think", "gDisasters.Game.AntiLag.MainLoop", gDisasters.Game.AntiLag.MainLoop)
 
 
 
