@@ -139,7 +139,7 @@ local function gDisastersSVADVSettings( CPanel )
 
 	AddControlLabel( CPanel, "Antilag options." )
 	
-	CreateSliderConVariable(CPanel,"Antilag Mode (s) ", 0, 2, 0,"gdisasters_antilag_mode" );
+	CreateSliderConVariable(CPanel,"Antilag Mode (s) (No Work)", 0, 2, 0,"gdisasters_antilag_mode" );
 	CreateTickboxConVariable(CPanel,"Enable Antilag", "gdisasters_antilag_enabled" )
 	
 	
