@@ -2,9 +2,17 @@ CreateConVar("gdisasters_stormfox_enable", 0, {FCVAR_ARCHIVE}, "")
 
 if (SERVER) then
 
-function gdisasters_stormfox2()
-    
+local function gdisasters_stormfox2()
+
     if GetConVar("gdisasters_stormfox_enable"):GetInt() == 0 then return end
+    
+    if not StormFox2 and StormFox2.Version < 2 then 
+        error("error. StormFox 2 no installer") 
+        return 
+    elseif Stormfox and StormFox.Version < 2 then 
+        error("error. StormFox 1 is no compatible with gDisasters. Please install stormfox 2") 
+        return 
+    end
     
     local temp = StormFox2.Temperature.Get()
     local wind = StormFox2.Wind.GetForce()

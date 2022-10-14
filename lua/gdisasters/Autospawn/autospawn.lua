@@ -122,7 +122,7 @@ local function Disasterspawn()
 			if dis:IsValid() then dis:Remove() end
 		end)
 	elseif IsMapRegistered() == false then
-		print("the map is not compatible")
+		error("the map is not compatible")
 	end
 
 end
@@ -220,7 +220,7 @@ local function Weatherspawn()
 			if wea:IsValid() then wea:Remove() end
 		end)
 	elseif IsMapRegistered() == false then
-		print("the map is not compatible")
+		error("the map is not compatible")
 	end
 end
 
@@ -377,7 +377,7 @@ local function WeatherDisasterspawn()
 			if weadis:IsValid() then weadis:Remove() end
 		end)
 	elseif IsMapRegistered() == false then
-		print("the map is not compatible")
+		error("the map is not compatible")
 	end
 end
 
