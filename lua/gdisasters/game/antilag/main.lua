@@ -41,7 +41,12 @@ gDisasters.Game.AntiLag.Collisions.PostPerPropCollisions = function(prop, collis
 
 
 		if collisions >= GetConVar("gdisasters_antilag_maximum_safe_collisions_per_second_per_prop"):GetInt() then 
-
+			prop:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+			gDisasters.Game.AntiLag.Collisions.RemovePropEntry(prop)
+		elseif collisions >= GetConVar("gdisasters_antilag_maximum_safe_collisions_per_second_average"):GetInt()
+			prop:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+			gDisasters.Game.AntiLag.Collisions.RemovePropEntry(prop)
+		elseif collisions >= GetConVar("gdisasters_antilag_post_damage_no_collide_base_time"):GetInt()
 			prop:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
 			gDisasters.Game.AntiLag.Collisions.RemovePropEntry(prop)
 		end
@@ -69,7 +74,7 @@ gDisasters.Game.AntiLag.CollisionsLoop = function()
 			if not(prop.gDCallBackFunction) then 
 				prop.gDCallBackFunction = true 
 				prop:AddCallback( "PhysicsCollide", function(ent, data) 
-					if gDisasters.Game.AntiLag.Collisions.PropEntryExists(ent) and (ent:GetCollisionGroup()==0) then
+				    if gDisasters.Game.AntiLag.Collisions.PropEntryExists(ent) and (ent:GetCollisionGroup()==0) then
 					
 						gDisasters.Game.AntiLag.Collisions.PropPhysicsHash[ent].Collisions = gDisasters.Game.AntiLag.Collisions.PropPhysicsHash[ent].Collisions + 1 + ((10 - math.Clamp(data.DeltaTime,0,10))*0.5)  
 					end

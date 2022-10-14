@@ -208,9 +208,11 @@ if (CLIENT) then
 		local hm        = math.Round(GetGlobalFloat("gDisasters_Humidity"))
 		local windspd   = math.Round(GetGlobalFloat("gDisasters_Wind"))
 		local lwindspd  = math.Round(LocalPlayer():GetNWFloat("LocalWind"))
-		
+
 		local air_temp   =  tostring( air_tmp ).."°C"
 		local body_temp  =  tostring( body_tmp ).."°C"
+		local air_tempf   =  tostring( air_tmp ).."°F"
+		local body_tempf  =  tostring( body_tmp ).."°F"
 		local humidity   =  tostring( hm).."%"
 		
 		
@@ -223,11 +225,14 @@ if (CLIENT) then
 			if chr3 == "" or chr3==nil  then chr3 = "" end
 			if chr4 == "" or chr4==nil  then chr4 = ""; comma="" end
 			
-			if speed <= 256 then 
-			
+			if speed <= 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "km/h" then 
 				strspeed = chr1..comma..chr2..chr3..chr4.." km/h"
-			else
+			elseif speed > 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "km/h" then
 				strspeed = table.Random({">256 km/h", "ERROR"})
+			elseif speed <= 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "mph" then
+				strspeed = chr1..comma..chr2..chr3..chr4.." mph"
+			elseif speed > 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "mph" then
+				strspeed = table.Random({">256 mph", "ERROR"})
 			end
 			
 			return strspeed
@@ -248,10 +253,14 @@ if (CLIENT) then
 		end
 		
 		local function drawText()
-		
-			draw.DrawText( "Air Temperature    : "..air_temp, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
-			
-			draw.DrawText( "Body Temperature: "..body_temp, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_temperature.x , pos_body_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+
+			if GetConVar("gdisasters_hud_temptype"):GetString() == "c" then
+				draw.DrawText( "Air Temperature    : "..air_temp, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+				draw.DrawText( "Body Temperature: "..body_temp, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_temperature.x , pos_body_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+			elseif GetConVar("gdisasters_hud_temptype"):GetString() == "f" then
+                draw.DrawText( "Air Temperature    : "..air_tempf, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+				draw.DrawText( "Body Temperature: "..body_tempf, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_temperature.x , pos_body_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+			end
 			
 			draw.DrawText( "Humidity                : "..humidity, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_humidity.x , pos_humidity.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			

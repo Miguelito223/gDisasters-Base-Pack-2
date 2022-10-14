@@ -78,17 +78,14 @@ end
 
 local function gDisastersSVSettings( CPanel )
 
-	AddControlLabel( CPanel, "wind/tornado/water options: " )
+	AddControlLabel( CPanel, "wind/tornado/water Related Damage options: " )
 
 	CreateTickboxConVariable(CPanel, "Enable Water Related Damage"  , "gdisasters_envdynamicwater_candamageconstraints");
 	CreateTickboxConVariable(CPanel, "Enable Tornado Related Damage" ,"gdisasters_envtornado_candamageconstraints");
 	CreateTickboxConVariable(CPanel, "Enable Wind Related Damage" ,"gdisasters_wind_candamageconstraints");
-	CreateTickboxConVariable(CPanel, "Enable Wind physical" ,"gdisasters_wind_physics_enabled");
-	
+
 	AddControlLabel( CPanel, "Temp options: " )
 
-	CreateTickboxConVariable(CPanel, "Enable Temp Related Damage" ,"gdisasters_hud_temp_damage");
-	CreateTickboxConVariable(CPanel, "Enable Temp UpdateVars" ,"gdisasters_hud_temp_updatevars");
 	CreateTickboxConVariable(CPanel, "Enable Temp Breathing" ,"gdisasters_hud_temp_breathing");
 	CreateTickboxConVariable(CPanel, "Enable Temp Vomit" ,"gdisasters_hud_temp_vomit");
 	CreateTickboxConVariable(CPanel, "Enable Temp Sneeze" ,"gdisasters_hud_temp_sneeze");
@@ -116,7 +113,22 @@ local function gDisastersSVADVSettings( CPanel )
 	CreateSliderConVariable(CPanel, "Tornado Simulation Quality", 0.1, 0.50, 2, "gdisasters_envtornado_simquality" );
 	CreateSliderConVariable(CPanel, "Earthquake Simulation Quality", 0.1, 0.50, 2, "gdisasters_envearthquake_simquality" );
 	CreateSliderConVariable(CPanel, "Water Simulation Quality", 0.1, 0.50, 2, "gdisasters_envdynamicwater_simquality");
-	CreateSliderConVariable(CPanel, "Wind Simulation Quality", 0.1, 0.50, 2, "gdisasters_wind_physics_simquality")
+	CreateSliderConVariable(CPanel, "Wind Simulation Quality", 0.1, 0.50, 2, "gdisasters_wind_physics_simquality");
+
+	AddControlLabel( CPanel, "Advanced Wind options: " )
+	
+	CreateTickboxConVariable(CPanel, "Enable Wind physical" ,"gdisasters_wind_physics_enabled");
+	CreateTickboxConVariable(CPanel, "Enable Wind postdamage no collide basetime" ,"gdisasters_wind_postdamage_nocollide_enabled");
+	CreateTickboxConVariable(CPanel, "Enable Wind postdamage no collide basetimeout" ,"gdisasters_wind_postdamage_nocollide_basetimeout");
+	CreateTickboxConVariable(CPanel, "Enable Wind postdamage no collide basetime spread" ,"gdisasters_wind_postdamage_nocollide_basetimeout_spread");
+	CreateTickboxConVariable(CPanel, "Enable Wind postdamage reducemass" ,"gdisasters_wind_postdamage_reducemass_enabled");
+
+	AddControlLabel( CPanel, "Advanced Temp options: " )
+
+	CreateTickboxConVariable(CPanel, "Enable Temp Related Damage" ,"gdisasters_hud_temp_damage");
+	CreateTickboxConVariable(CPanel, "Enable Temp UpdateVars" ,"gdisasters_hud_temp_updatevars");
+	CreateTickboxConVariable(CPanel, "Enable Temp ClientSide" ,"gdisasters_hud_temp_cl");
+	CreateTickboxConVariable(CPanel, "Enable Temp ServerSide" ,"gdisasters_hud_temp_sv");
 	
 	AddControlLabel( CPanel, "Tornado options: i need talk about this?")
 	
@@ -128,7 +140,12 @@ local function gDisastersSVADVSettings( CPanel )
 
 	AddControlLabel( CPanel, "Hud type options: \n\n1: body hud\n\n2: pressure hud\n\n3: earthquake hud")
 	
-	CreateSliderConVariable(CPanel, "Hud Type options:", 1, 3, 0, "gdisasters_hud_type" );
+	CreateSliderConVariable(CPanel, "Hud Type", 1, 3, 0, "gdisasters_hud_type" );
+	
+	
+end
+
+local function gDisastersServerGraphics( CPanel )
 
 	AddControlLabel( CPanel, "Antilag collision settings: \n\nPD NC BT: Post Damage No Collide Base Time (No Work)\n\nCPPPS: Collisions Per Prop Per Second \n\nCAPS:Collisions Average Per Second (No Work)" )
 	
@@ -139,19 +156,49 @@ local function gDisastersSVADVSettings( CPanel )
 	AddControlLabel( CPanel, "Antilag options: remove the lag :)" )
 	
 	CreateSliderConVariable(CPanel,"Antilag Mode (s) (No work)", 0, 2, 0,"gdisasters_antilag_mode" );
-	CreateTickboxConVariable(CPanel,"Enable Antilag", "gdisasters_antilag_enabled" )
-	
-	
-	-----------------
+	CreateTickboxConVariable(CPanel,"Enable Antilag", "gdisasters_antilag_enabled" );
 	
 end
 
 local function gDisastersGraphicsSettings( CPanel )
 
-	local label2 = AddControlLabel( CPanel, "Graphics options: \n\nWind/Temp Type: (No Work)" )
+	gDisasters_gDisastersGraphicsSettings_SetupTime = CurTime() 
+
+	local label2 = AddControlLabel( CPanel, "Graphics options: \n\nWind/Temp Type: " )
 
 	local HudW 			= AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
 	local HudT			= AddComboBox( CPanel, "Hud Temperature Display", {"c", "f"}, "gdisasters_hud_temptype")
+
+	local label2 = AddControlLabel( CPanel, "\n\nGP: Ground Particles (No Work)\n\nWP:Weather Particles (No Work)\n\nnPass: Number of Passes (No Work)" )
+
+	local GP = CPanel:NumSlider( "Max GP", "", 1, 1000, 0 );
+	local WP = CPanel:NumSlider( "Max WP", "", 1, 1000, 0 );
+	local nPass = CPanel:NumSlider( "Max nPass", "", 1, 1000, 0 );
+
+	GP.Scratch.ConVarChanged = function() end 
+	GP.OnValueChanged = function( panel, val)
+		if (CurTime() - gDisasters_gDisastersGraphicsSettings_SetupTime) < 1 then return end 
+		RunConsoleCommand( "gdisasters_antilag_ground_particles", tonumber( val))
+	end
+
+	WP.Scratch.ConVarChanged = function() end 
+	WP.OnValueChanged = function( panel, val)
+		if (CurTime() - gDisasters_gDisastersGraphicsSettings_SetupTime) < 1 then return end 
+		RunConsoleCommand( "gdisasters_antilag_weather_particles", tonumber( val))
+	end
+	
+	nPass.Scratch.ConVarChanged = function() end 
+	nPass.OnValueChanged = function( panel, val)
+		if (CurTime() - gDisasters_gDisastersGraphicsSettings_SetupTime) < 1 then return end 
+		RunConsoleCommand( "gdisasters_antilag_number_of_passes", tonumber( val))
+	end
+
+	timer.Simple(0.05, function()
+		if GP then GP:SetValue(GetConVar(( "gdisasters_antilag_ground_particles" )):GetFloat()) end
+		if WP then WP:SetValue(GetConVar(( "gdisasters_antilag_weather_particles" )):GetFloat()) end
+		if nPass then nPass:SetValue(GetConVar(( "gdisasters_antilag_number_of_passes" )):GetFloat()) end
+	
+	end)
 
 end
 
@@ -221,12 +268,6 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	local MaxRD         = CPanel:NumSlider(     "Max Render Distance", "", 1, 600, 0 );
 	local RefreshRate   = CPanel:NumSlider(     "Refresh Rate (Hz)", "", 1, 16, 0 );
 	local UpdateRate   = CPanel:NumSlider(     "Update  Rate (Hz)", "", 1, 16, 0 );
-
-	local label3 = AddControlLabel( CPanel, "GP: Ground Particles (No Work)\n\nWP:Weather Particles (No Work)\n\nnPass: Number of Passes (No Work)" )
-
-	local GP = CPanel:NumSlider( "Max GP", "", 1, 1000, 0 );
-	local WP = CPanel:NumSlider( "Max WP", "", 1, 1000, 0 );
-	local nPass = CPanel:NumSlider( "Max nPass", "", 1, 1000, 0 );
 	
 		
 	-- on value change, set values 
@@ -264,24 +305,6 @@ local function gDisastersADVGraphicsSettings( CPanel )
 		RunConsoleCommand( "gdisasters_graphics_fog_quality", 4 - tonumber( val ) )		
 	end
 	
-	GP.Scratch.ConVarChanged = function() end 
-	GP.OnValueChanged = function( panel, val)
-		if (CurTime() - gDisasters_gDisastersADVGraphicsSettings_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_antilag_ground_particles", tonumber( val))
-	end
-
-	WP.Scratch.ConVarChanged = function() end 
-	WP.OnValueChanged = function( panel, val)
-		if (CurTime() - gDisasters_gDisastersADVGraphicsSettings_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_antilag_weather_particles", tonumber( val))
-	end
-	
-	nPass.Scratch.ConVarChanged = function() end 
-	nPass.OnValueChanged = function( panel, val)
-		if (CurTime() - gDisasters_gDisastersADVGraphicsSettings_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_antilag_number_of_passes", tonumber( val))
-	end
-	
 	-- on panel setup, this will set the values for sliders and buttons to their original stored values 
 	
 	
@@ -293,11 +316,6 @@ local function gDisastersADVGraphicsSettings( CPanel )
 		if MaxRD then MaxRD:SetValue(GetConVar(( "gdisasters_graphics_dr_maxrenderdistance" )):GetFloat()) end 
 		if UpdateRate then UpdateRate:SetValue(GetConVar(( "gdisasters_graphics_dr_updaterate" )):GetFloat()) end 
 		if RefreshRate then RefreshRate:SetValue(GetConVar(( "gdisasters_graphics_dr_refreshrate" )):GetFloat()) end 
-		
-		if GP then GP:SetValue(GetConVar(( "gdisasters_antilag_ground_particles" )):GetFloat()) end
-		if WP then WP:SetValue(GetConVar(( "gdisasters_antilag_weather_particles" )):GetFloat()) end
-		if nPass then nPass:SetValue(GetConVar(( "gdisasters_antilag_number_of_passes" )):GetFloat()) end
-	
 	end)
 	
 end
@@ -308,8 +326,9 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVADSettings", "Advanced", "", "", gDisastersSVADVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersAutospawn", "Autospawn", "", "", gDisastersAutospawn )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersServerGraphics", "Server Graphics", "", "", gDisastersServerGraphics )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersAudioSettings", "Audio", "", "", gDisastersAudioSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersGraphicsSettings", "Graphics", "", "", gDisastersGraphicsSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersADVGraphicsSettings", "Advanced Client Graphics", "", "", gDisastersADVGraphicsSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersGraphicsSettings", "Client Graphics", "", "", gDisastersGraphicsSettings )
 
 end );
