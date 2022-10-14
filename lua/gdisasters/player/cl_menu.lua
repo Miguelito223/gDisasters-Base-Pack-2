@@ -148,16 +148,22 @@ end
 
 local function gDisastersGraphicsSettings( CPanel )
 
+	local label2 = AddControlLabel( CPanel, "Graphics options: \n\nWind/Temp Type: (No Work)" )
+
+	local HudW 			= AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
+	local HudT			= AddComboBox( CPanel, "Hud Temperature Display", {"c", "f"}, "gdisasters_hud_temptype")
+
 end
 
 
 local function gDisastersAudioSettings( CPanel )
 	AddControlLabel( CPanel, "Audio options: " )
-	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1,0, "gdisasters_wind_Light_Wind_sound" );
-	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1,0, "gdisasters_wind_Moderate_Wind_sound" );
-	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,0,"gdisasters_wind_Heavy_Wind_sound" );
-	CreateSliderConVariable(CPanel, "hud Hearth Volume", 0,1, 2, "gdisasters_hud_heartbeat_volume" );
-	CreateSliderConVariable(CPanel, "hud Warning Volume", 0,1, 2, "gdisasters_hud_warning_volume" );
+	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1,1, "gdisasters_wind_Light_Wind_sound" );
+	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1,1, "gdisasters_wind_Moderate_Wind_sound" );
+	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,1,"gdisasters_wind_Heavy_Wind_sound" );
+	AddControlLabel( CPanel, "Hud Audio options: " )
+	CreateSliderConVariable(CPanel, "hud Hearth Volume", 0,1,1, "gdisasters_hud_heartbeat_volume" );
+	CreateSliderConVariable(CPanel, "hud Warning Volume", 0,1,1, "gdisasters_hud_warning_volume" );
 end
 
 local function gDisastersAutospawn( CPanel )
@@ -185,6 +191,8 @@ local function gDisastersAutospawn( CPanel )
 	end
 	)
 
+	AddControlLabel( CPanel, "Autospawn Box Options: " )
+
 	CreateTickboxConVariable(CPanel, "Autospawn skybox"  , "gdisasters_autospawn_skybox");
 	CreateTickboxConVariable(CPanel, "Autospawn only tornados"  , "gdisasters_autospawn");
 	CreateTickboxConVariable(CPanel, "Autospawn disasters"  , "gdisasters_autospawn_disasters");
@@ -200,15 +208,10 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	gDisasters_gDisastersADVGraphicsSettings_SetupTime = CurTime() 
 			
 		
-	local label = AddControlLabel( CPanel, "Graphics options:" )
+	local label = AddControlLabel( CPanel, "Advanced Graphics options:" )
 
 	local WQ = CPanel:NumSlider(     "Water Quality", "", 1, 3, 0 );
 	local FQ = CPanel:NumSlider(     "Fog Quality", "", 1, 8, 0 );
-
-	local label2 = AddControlLabel( CPanel, "Wind/Temp Type: (No Work)" )
-
-	local HudW 			= AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
-	local HudT			= AddComboBox( CPanel, "Hud Temperature Display", {"c", "f"}, "gdisasters_hud_temptype")
 
 	local dr_ns_label =  AddControlLabel( CPanel, "Section dedicated to Doppler Radar.\nUse with caution." )
 
@@ -306,7 +309,7 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersAutospawn", "Autospawn", "", "", gDisastersAutospawn )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersAudioSettings", "Audio", "", "", gDisastersAudioSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersADVGraphicsSettings", "Graphics", "", "", gDisastersADVGraphicsSettings )
-	
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersGraphicsSettings", "Graphics", "", "", gDisastersGraphicsSettings )
 
 end );
