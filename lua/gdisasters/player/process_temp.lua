@@ -219,6 +219,22 @@ function gDisasters_ProcessTemperature()
 		
 				end
 			end
+			if  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] < 37 and  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 5 then
+				local wl = v:WaterLevel()
+				if wl==0 then
+				elseif wl==1 then
+				
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
+					
+
+				elseif wl==2 then
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.002
+				elseif wl==3 then
+				
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
+		
+				end
+			end
 			
 			--[[
 					                                  Purpose		
