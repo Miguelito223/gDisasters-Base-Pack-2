@@ -49,7 +49,7 @@ function ENT:SpawnFunction( ply, tr )
 	
 	if IsMapRegistered() == false then 
 		self:Remove()
-		print("current map isn't supported")
+		error("current map isn't supported")
 		ent:SetPos( tr.HitPos + tr.HitNormal * 1  )
 	else 
 		
