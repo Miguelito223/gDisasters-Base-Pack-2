@@ -147,7 +147,7 @@ end
 
 local function gDisastersServerGraphics( CPanel )
 
-	AddControlLabel( CPanel, "Antilag collision settings: \n\nPD NC BT: Post Damage No Collide Base Time (No Work)\n\nCPPPS: Collisions Per Prop Per Second \n\nCAPS:Collisions Average Per Second (No Work)" )
+	AddControlLabel( CPanel, "Antilag collision settings: \n\nPD NC BT: Post Damage No Collide Base Time\n\nCPPPS: Collisions Per Prop Per Second\n\nCAPS:Collisions Average Per Second" )
 	
 	CreateSliderConVariable(CPanel,"Max CPPPS", 0, 1000, 0,"gdisasters_antilag_maximum_safe_collisions_per_second_per_prop");
 	CreateSliderConVariable(CPanel,"Max PD NC BT", 0, 1000, 0,"gdisasters_antilag_post_damage_no_collide_base_time");
@@ -155,7 +155,7 @@ local function gDisastersServerGraphics( CPanel )
 
 	AddControlLabel( CPanel, "Antilag options: remove the lag :)" )
 	
-	CreateSliderConVariable(CPanel,"Antilag Mode (s) (No work)", 0, 2, 0,"gdisasters_antilag_mode" );
+	CreateSliderConVariable(CPanel,"Antilag Mode (s)", 0, 2, 0,"gdisasters_antilag_mode" );
 	CreateTickboxConVariable(CPanel,"Enable Antilag", "gdisasters_antilag_enabled" );
 	
 end
@@ -169,7 +169,7 @@ local function gDisastersGraphicsSettings( CPanel )
 	local HudW 			= AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
 	local HudT			= AddComboBox( CPanel, "Hud Temperature Display", {"c", "f"}, "gdisasters_hud_temptype")
 
-	local label2 = AddControlLabel( CPanel, "\n\nGP: Ground Particles (No Work)\n\nWP:Weather Particles (No Work)\n\nnPass: Number of Passes (No Work)" )
+	local label2 = AddControlLabel( CPanel, "\n\nGP: Ground Particles\n\nWP:Weather Particles\n\nnPass: Number of Passes" )
 
 	local GP = CPanel:NumSlider( "Max GP", "", 1, 1000, 0 );
 	local WP = CPanel:NumSlider( "Max WP", "", 1, 1000, 0 );
