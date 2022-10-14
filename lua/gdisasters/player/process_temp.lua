@@ -208,14 +208,14 @@ function gDisasters_ProcessTemperature()
 				if wl==0 then
 				elseif wl==1 then
 				
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.0001
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
 					
 
 				elseif wl==2 then
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.0002
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.002
 				elseif wl==3 then
 				
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.0004
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
 		
 				end
 			end
