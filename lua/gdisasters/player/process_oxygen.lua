@@ -21,7 +21,7 @@ function gDisasters_ProcessOxygen()
 				    v:TakeDamageInfo(  dmg)
                 end
 		    end
-        elseif v:WaterLevel() <= 0 then
+        elseif v:WaterLevel() >= 0 then
             v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen + 0.1, 0,10)
         end
     end
