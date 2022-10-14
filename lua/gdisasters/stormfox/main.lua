@@ -6,10 +6,7 @@ local function gdisasters_stormfox2()
 
     if GetConVar("gdisasters_stormfox_enable"):GetInt() == 0 then return end
     
-    if not StormFox2 and StormFox2.Version < 2 then 
-        error("error. StormFox 2 no installer") 
-        return 
-    elseif Stormfox and StormFox.Version < 2 then 
+    if Stormfox and StormFox.Version < 2 then 
         error("error. StormFox 1 is no compatible with gDisasters. Please install stormfox 2") 
         return 
     end
