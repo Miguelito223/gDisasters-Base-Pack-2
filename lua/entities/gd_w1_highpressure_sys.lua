@@ -64,7 +64,9 @@ function ENT:Initialize()
 			data.EndMax         = 10050
 			data.EndMin         = 100
 			data.EndMinCurrent  = 0
-			data.EndMaxCurrent  = 0       
+			data.EndMaxCurrent  = 0  
+			
+		gDisasters_CreateGlobalFog(self, data, true)
 
 		self:SetupSequencedVars()
 		

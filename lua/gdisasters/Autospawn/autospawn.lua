@@ -121,7 +121,7 @@ local function Disasterspawn()
 		timer.Simple(GetConVar( "gdisasters_autospawn_timer" ):GetInt(), function()
 			if dis:IsValid() then dis:Remove() end
 		end)
-	elseif IsMapRegistered() == nil then
+	elseif IsMapRegistered() == false then
 		print("the map is not compatible")
 	end
 
@@ -219,7 +219,7 @@ local function Weatherspawn()
 		timer.Simple(GetConVar( "gdisasters_autospawn_timer" ):GetInt(), function()
 			if wea:IsValid() then wea:Remove() end
 		end)
-	elseif IsMapRegistered() == nil then
+	elseif IsMapRegistered() == false then
 		print("the map is not compatible")
 	end
 end
@@ -376,7 +376,7 @@ local function WeatherDisasterspawn()
 		timer.Simple(GetConVar( "gdisasters_autospawn_timer" ):GetInt(), function()
 			if weadis:IsValid() then weadis:Remove() end
 		end)
-	elseif IsMapRegistered() == nil then
+	elseif IsMapRegistered() == false then
 		print("the map is not compatible")
 	end
 end
