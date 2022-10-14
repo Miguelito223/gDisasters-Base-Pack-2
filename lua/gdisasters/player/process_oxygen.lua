@@ -1,14 +1,14 @@
 if (SERVER) then
 
-function gDisasters_ProcessOxygen()
-    for k, v in pairs(player.GetAll()) do
-        
-        v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen - 0.01, 0,10) 
+function gDisasters_ProcessOxygen() 
+    for k, v in pairs(player.GetAll()) do 
 
         v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
         
-        if v:WaterLevel() > 0 then  
-            if v.gDisasters.Body.Oxygen == nil then v.gDisasters.Body.Oxygen = 10 end        
+        if v:WaterLevel() >= 3 then 
+            if v.gDisasters.Body.Oxygen == nil then v.gDisasters.Body.Oxygen = 10 end
+
+            v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen - 0.01, 0,10) 
 
             if v.gDisasters.Body.Oxygen <= 0 then
 
@@ -21,7 +21,7 @@ function gDisasters_ProcessOxygen()
 				    v:TakeDamageInfo(  dmg)
                 end
 		    end
-        elseif v:WaterLevel() == 0 then
+        elseif v:WaterLevel() <= 0 then
             v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen + 0.1, 0,10)
         end
     end
