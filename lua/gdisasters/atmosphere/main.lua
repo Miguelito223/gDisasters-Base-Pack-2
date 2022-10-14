@@ -17,6 +17,7 @@ if (SERVER) then
 		AtmosphereFadeControl()
 		gDisasters_GlobalBreathingEffect()
 		gDisasters_ProcessTemperature()
+		gDisasters_ProcessOxygen()
 	
 	
 	

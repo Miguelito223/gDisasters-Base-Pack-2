@@ -17,6 +17,7 @@ if (SERVER) then
 	AddCSLuaFile("gdisasters/game/damagetypes.lua")
 	AddCSLuaFile("gdisasters/player/process_gfx.lua")
 	AddCSLuaFile("gdisasters/player/process_temp.lua")
+	AddCSLuaFile("gdisasters/player/process_oxygen.lua")
 	AddCSLuaFile("gdisasters/atmosphere/main.lua")
 	AddCSLuaFile("gdisasters/hud/main.lua")	
 	AddCSLuaFile("gdisasters/game/decals.lua")
@@ -43,6 +44,7 @@ if (SERVER) then
 	include("gdisasters/game/damagetypes.lua")
 	include("gdisasters/player/process_gfx.lua")
 	include("gdisasters/player/process_temp.lua")
+	include("gdisasters/player/process_oxygen.lua")
 	include("gdisasters/atmosphere/main.lua")
 	include("gdisasters/hud/main.lua")	
 	
@@ -63,6 +65,7 @@ if (CLIENT) then
 	
 	include("gdisasters/player/process_gfx.lua")
 	include("gdisasters/player/process_temp.lua")
+	include("gdisasters/player/process_oxygen.lua")
 	include("gdisasters/atmosphere/main.lua")
 	include("gdisasters/hud/main.lua")
 	include("gdisasters/Autospawn/skybox.lua")

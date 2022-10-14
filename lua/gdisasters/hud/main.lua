@@ -197,20 +197,23 @@ if (CLIENT) then
 	function hud_DrawBasicINFO()
 		local xscale, yscale, scale        = ScrW()/1920, ScrH()/1080, (ScrH() + ScrW())/ 3000
 			
-		local pos_air_temperature      	   = Vector(280 * xscale, 870 * yscale, 0)
-		local pos_body_temperature         = Vector(280 * xscale, 900 * yscale, 0)
-		local pos_humidity                 = Vector(280 * xscale, 930 * yscale , 0)
-		local pos_windspeed                = Vector(280 * xscale, 960 * yscale , 0)
-		local pos_lwindspeed                = Vector(280 * xscale, 990 * yscale , 0)
+		local pos_air_temperature      	   = Vector(280 * xscale, 860 * yscale, 0)
+		local pos_body_temperature         = Vector(280 * xscale, 890 * yscale, 0)
+		local pos_body_oxygen         = Vector(280 * xscale, 920 * yscale, 0)
+		local pos_humidity                 = Vector(280 * xscale, 950 * yscale , 0)
+		local pos_windspeed                = Vector(280 * xscale, 980 * yscale , 0)
+		local pos_lwindspeed                = Vector(280 * xscale, 1010 * yscale , 0)
 		
 		local air_tmp   = math.Round(GetGlobalFloat("gDisasters_Temperature"),1)
 		local body_tmp  = math.Round(LocalPlayer():GetNWFloat("BodyTemperature"),1)
+		local body_Oxygen  = math.Round(LocalPlayer():GetNWFloat("BodyOxygen"))
 		local hm        = math.Round(GetGlobalFloat("gDisasters_Humidity"))
 		local windspd   = math.Round(GetGlobalFloat("gDisasters_Wind"))
 		local lwindspd  = math.Round(LocalPlayer():GetNWFloat("LocalWind"))
 
 		local air_temp   =  tostring( air_tmp ).."°C"
 		local body_temp  =  tostring( body_tmp ).."°C"
+		local body_Oxy  =  tostring( body_Oxygen ).."%"
 		local air_tempf   =  tostring( air_tmp ).."°F"
 		local body_tempf  =  tostring( body_tmp ).."°F"
 		local humidity   =  tostring( hm).."%"
@@ -262,8 +265,10 @@ if (CLIENT) then
 				draw.DrawText( "Body Temperature: "..body_tempf, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_temperature.x , pos_body_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			end
 			
+			draw.DrawText( "Oxygen               : "..body_Oxy, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_oxygen.x , pos_body_oxygen.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			draw.DrawText( "Humidity                : "..humidity, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_humidity.x , pos_humidity.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			
+
 			local color  = Color(255,255,255,255)
 			local color2  = Color(255,255,255,255)
 		
