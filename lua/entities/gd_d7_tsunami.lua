@@ -46,7 +46,7 @@ function ENT:Initialize()
 					MiddleHeight = GetConVar("gdisasters_envdynamicwater_b_middellevel"):GetInt(),
 					MiddleWedge  = self.MiddleWedgeConstant,
 					
-					EndHeight    = GetConVar("gdisasters_envdynamicwater_b_startlevel"):GetInt(),
+					EndHeight    = GetConVar("gdisasters_envdynamicwater_b_endlevel"):GetInt(),
 					EndWedge     = self.EndWedgeConstant,
 					Speed        = self.Speed
 					}
