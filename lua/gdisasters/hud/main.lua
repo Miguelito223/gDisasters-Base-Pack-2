@@ -208,8 +208,8 @@ if (CLIENT) then
 		local body_tmp  = math.Round(LocalPlayer():GetNWFloat("BodyTemperature"),1)
 		local body_Oxygen  = math.Round(LocalPlayer():GetNWFloat("BodyOxygen"))
 		local hm        = math.Round(GetGlobalFloat("gDisasters_Humidity"))
-		local windspd   = math.Round(GetGlobalFloat("gDisasters_Wind"))
-		local lwindspd  = math.Round(LocalPlayer():GetNWFloat("LocalWind"))
+		local windspd   = math.Round(GetGlobalFloat("gDisasters_Wind"),1)
+		local lwindspd  = math.Round(LocalPlayer():GetNWFloat("LocalWind"),1)
 
 		local air_temp   =  tostring( air_tmp ).."°C"
 		local body_temp  =  tostring( body_tmp ).."°C"
@@ -221,19 +221,19 @@ if (CLIENT) then
 		
 		local function windspeed_Format(speed)
 			local strspeed = tostring(speed)
-			local chr1, chr2, chr3, chr4, comma = strspeed[1], strspeed[2], strspeed[3], strspeed[4], ","
+			local chr1, chr2, chr3, chr4 = strspeed[1], strspeed[2], strspeed[3], strspeed[4]
 			
 			if chr1 == "" or chr1==nil  then chr1 = "" end
 			if chr2 == "" or chr2==nil  then chr2 = "" end
 			if chr3 == "" or chr3==nil  then chr3 = "" end
-			if chr4 == "" or chr4==nil  then chr4 = ""; comma="" end
+			if chr4 == "" or chr4==nil  then chr4 = "" end
 			
 			if speed <= 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "km/h" then 
-				strspeed = chr1..comma..chr2..chr3..chr4.." km/h"
+				strspeed = chr1..chr2..chr3..chr4.." km/h"
 			elseif speed > 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "km/h" then
 				strspeed = table.Random({">256 km/h", "ERROR"})
 			elseif speed <= 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "mph" then
-				strspeed = chr1..comma..chr2..chr3..chr4.." mph"
+				strspeed = chr1..chr2..chr3..chr4.." mph"
 			elseif speed > 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "mph" then
 				strspeed = table.Random({">256 mph", "ERROR"})
 			end
