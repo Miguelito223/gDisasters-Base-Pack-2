@@ -162,6 +162,9 @@ function gDisasters_ProcessTemperature()
 					v:SetRunSpeed( v:GetRunSpeed() - (alpha_hot - 1)  )
 					
 					InflictDamage(v, v, "heat", alpha_hot + alpha_cold)
+				else
+					v:SetWalkSpeed(400)
+					v:SetRunSpeed(600)
 				end
 			end
 			
