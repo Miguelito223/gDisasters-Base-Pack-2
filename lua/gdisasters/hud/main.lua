@@ -250,7 +250,7 @@ if (CLIENT) then
 		local function drawFrame()
 		
 			draw.RoundedBox( 12 * scale, 270 * xscale, 855 * yscale, 560 * xscale, 200 * yscale, Color( 30, 30, 30, 100 ) ) -- main box
-			draw.RoundedBox( 6 * scale, 595 * xscale, 865 * yscale, 225 * xscale, 180 * yscale, Color( 30, 30, 30, 100 ) ) -- main box right
+			draw.RoundedBox( 6 * scale, 565 * xscale, 865 * yscale, 255 * xscale, 180 * yscale, Color( 30, 30, 30, 100 ) ) -- main box right
 			draw.RoundedBox( 6 * scale, 680 * xscale, 890 * yscale, 128 * xscale, 128 * yscale, Color( 30, 30, 30, 150 + (math.sin(CurTime()) * 50) ) ) 
 			
 		end
@@ -386,7 +386,12 @@ if (CLIENT) then
 			local function drawHumidityBar()
 				drawPercentageBox( 0, 648, 1020, 22, 150, 0, 100, hm, Color( 155, 155, 155, 200))
 			end
-			drawHumidityBar()	
+
+			local function drawOxygenBar()
+				drawPercentageBox( 0, 577, 1020, 22, 150, 0, 10, body_Oxygen, Color( 0, 170, 220, 200))
+			end
+			drawHumidityBar()
+			drawOxygenBar()	
 			drawAirBar()
 			drawCoreBar()
 		end
@@ -414,6 +419,7 @@ if (CLIENT) then
 			local airtemp      = surface.GetTextureID( "icons/airtemp" )
 			local bodytemp     = surface.GetTextureID( "icons/bodytemp" )
 			local humidity     = surface.GetTextureID( "icons/humidity" )
+			local oxygen     = surface.GetTextureID( "icons/oxygen" )
 			local w, h   = 16 * scale, 16 * scale
 			
 			local x, y   = 605, 1025
@@ -428,6 +434,10 @@ if (CLIENT) then
 			
 			local x, y   = 651, 1025
 			surface.SetTexture( humidity )
+			surface.DrawTexturedRect(  x * xscale, y * yscale, w * xscale, h * yscale )
+
+			local x, y   = 580, 1025
+			surface.SetTexture( oxygen )
 			surface.DrawTexturedRect(  x * xscale, y * yscale, w * xscale, h * yscale )
 			
 		end
