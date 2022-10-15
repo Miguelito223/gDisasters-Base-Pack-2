@@ -29,6 +29,9 @@ CreateConVar( "gdisasters_envtornado_lifetime_max", "500", {FCVAR_ARCHIVE}, "" )
 
 CreateConVar( "gdisasters_envtornado_damage", "200", {FCVAR_ARCHIVE}, "" )
 
+CreateConVar( "gdisasters_oxygen_damage", "1", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gdisasters_oxygen_enable", "1", {FCVAR_ARCHIVE}, "" )
+
 CreateConVar( "gdisasters_wind_postdamage_nocollide_enabled", "1", {FCVAR_ARCHIVE}, " " )
 CreateConVar( "gdisasters_wind_postdamage_nocollide_basetimeout", "1", {FCVAR_ARCHIVE}, " " )
 CreateConVar( "gdisasters_wind_postdamage_nocollide_basetimeout_spread", "1", {FCVAR_ARCHIVE}, " " )

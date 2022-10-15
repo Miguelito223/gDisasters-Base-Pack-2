@@ -90,6 +90,12 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Temp Vomit" ,"gdisasters_hud_temp_vomit");
 	CreateTickboxConVariable(CPanel, "Enable Temp Sneeze" ,"gdisasters_hud_temp_sneeze");
 
+	AddControlLabel( CPanel, "Oxygen options: " )
+	
+	CreateTickboxConVariable(CPanel, "Enable Oxygen enable" ,"gdisasters_oxygen_enable");
+	CreateTickboxConVariable(CPanel, "Enable oxygen damage" ,"gdisasters_oxygen_damage");
+
+
 	AddControlLabel( CPanel, "Other options: \n\nThe Atmophere option requires a map RESTART to take effect."  )
 
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_atmosphere");
@@ -97,11 +103,6 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Experimental Overdraw"  , "gdisasters_experimental_overdraw");
 	CreateTickboxConVariable(CPanel, "Enable Stormfox2 compatibility"  , "gdisasters_stormfox_enable");
 	CreateTickboxConVariable(CPanel, "Enable Day And Night Cycle"  , "gdisasters_dnc_enabled");
-	
-	SVMenuCreated = false;
-
-	
-
 end
 
 -- ADVANCED SV MENU
