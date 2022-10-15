@@ -199,7 +199,7 @@ function ENT:Think()
 		if self:WaterLevel() >= 1 then 
 			self:Remove()
 			self:Explode()
-			local tsunami = ents.Create("gd_d10_megatsunami")
+			local tsunami = ents.Create("gd_d7_tsunami")
 			tsunami:Spawn()
 			tsunami:Activate()
 		end
