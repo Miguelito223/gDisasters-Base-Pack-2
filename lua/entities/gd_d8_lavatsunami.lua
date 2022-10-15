@@ -16,7 +16,6 @@ ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 ENT.StartWedgeConstant               =  0.5
 ENT.MiddleWedgeConstant              =  0.005 
 ENT.EndWedgeConstant                 =  0.1
-ENT.Speed                            = convert_MetoSU(math.random(10,50)) -- argument is in metres 
 
 
 
@@ -48,7 +47,7 @@ function ENT:Initialize()
 					
 					EndHeight    = GetConVar("gdisasters_envdynamicwater_b_endlevel"):GetInt(),
 					EndWedge     = self.EndWedgeConstant,
-					Speed        = self.Speed
+					Speed        = convert_MetoSU(GetConVar("gdisasters_envdynamicwater_b_speed"):GetInt())
 					}
 					
 
