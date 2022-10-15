@@ -13,13 +13,13 @@ ENT.MaxFloodLevel                    =  300
 ENT.Mass                             =  100
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 
-ENT.StartHeight                      =  1 
+ENT.StartHeight                      =  GetConVar("gdisasters_envdynamicwater_b_startlevel"):GetInt()
 ENT.StartWedgeConstant               =  0.5
 
-ENT.MiddleHeight                     =  500
+ENT.MiddleHeight                     =  GetConVar("gdisasters_envdynamicwater_b_middellevel"):GetInt()
 ENT.MiddleWedgeConstant              =  0.005 
 
-ENT.EndHeight                        =  100 
+ENT.EndHeight                        =  GetConVar("gdisasters_envdynamicwater_b_endlevel"):GetInt() 
 ENT.EndWedgeConstant                 =  0.1
 ENT.Speed                            = convert_MetoSU(math.random(10,50)) -- argument is in metres 
 

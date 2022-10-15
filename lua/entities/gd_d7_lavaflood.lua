@@ -9,7 +9,7 @@ ENT.PrintName		                 =  "Lava flood"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.MaxlavaLevel                    =  {300,800}
+ENT.MaxlavaLevel                    =  {GetConVar("gdisasters_envdynamicwater_level_min"):GetInt(),GetConVar("gdisasters_envdynamicwater_level_max"):GetInt()}
 ENT.Mass                             =  100
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 

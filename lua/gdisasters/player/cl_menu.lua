@@ -130,6 +130,16 @@ local function gDisastersSVADVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Temp UpdateVars" ,"gdisasters_hud_temp_updatevars");
 	CreateTickboxConVariable(CPanel, "Enable Temp ClientSide" ,"gdisasters_hud_temp_cl");
 	CreateTickboxConVariable(CPanel, "Enable Temp ServerSide" ,"gdisasters_hud_temp_sv");
+
+	AddControlLabel( CPanel, "Water/lava flood or tsunami options: " )
+	
+	CreateSliderConVariable(CPanel, "min flood level" , 0, 10000, 1,"gdisasters_envdynamicwater_level_min");
+	CreateSliderConVariable(CPanel, "max flood level", 0, 10000, 1 ,"gdisasters_envdynamicwater_level_max");
+
+	CreateSliderConVariable(CPanel, "Tsunami start level", 0, 10000, 1 ,"gdisasters_envdynamicwater_b_startlevel");
+	CreateSliderConVariable(CPanel, "Tsunami middel level", 0, 10000, 1 ,"gdisasters_envdynamicwater_b_middellevel");
+	CreateSliderConVariable(CPanel, "Tsunami end level", 0, 10000, 1 ,"gdisasters_envdynamicwater_b_endlevel");
+
 	
 	AddControlLabel( CPanel, "Tornado options: i need talk about this?")
 	

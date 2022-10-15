@@ -9,7 +9,7 @@ ENT.PrintName		                 =  "Flash Flood"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.MaxFloodLevel                    =  {200,300}
+ENT.MaxFloodLevel                    =  {GetConVar("gdisasters_envdynamicwater_level_min"):GetInt(),GetConVar("gdisasters_envdynamicwater_level_max"):GetInt()}
 ENT.Mass                             =  100
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 

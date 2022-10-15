@@ -27,6 +27,15 @@ CreateConVar( "gdisasters_hud_temp_sv", "1", {FCVAR_ARCHIVE}	, "" )
 CreateConVar( "gdisasters_envtornado_lifetime_min", "100", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_envtornado_lifetime_max", "500", {FCVAR_ARCHIVE}, "" )
 
+CreateConVar( "gdisasters_envdynamicwater_level_min", "100", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gdisasters_envdynamicwater_level_max", "800", {FCVAR_ARCHIVE}, "" )
+
+CreateConVar( "gdisasters_envdynamicwater_b_startlevel", "1", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gdisasters_envdynamicwater_b_middellevel", "500", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gdisasters_envdynamicwater_b_endlevel", "100", {FCVAR_ARCHIVE}, "" )
+
+
+
 CreateConVar( "gdisasters_envtornado_damage", "200", {FCVAR_ARCHIVE}, "" )
 
 CreateConVar( "gdisasters_oxygen_damage", "1", {FCVAR_ARCHIVE}, "" )
