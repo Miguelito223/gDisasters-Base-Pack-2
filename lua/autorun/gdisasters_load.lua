@@ -77,17 +77,3 @@ if (CLIENT) then
 	
 end
 
-
-PrecacheParticleSystem("earthquake_player_ground_rocks")
-PrecacheParticleSystem("earthquake_player_ground_dust")
-PrecacheParticleSystem("earthquake_player_ground_debris")
-
-
-
-PrecacheParticleSystem("tsunami_splash_effect_r100")
-PrecacheParticleSystem("tsunami_splash_effect_r200")
-PrecacheParticleSystem("tsunami_splash_effect_r300")
-PrecacheParticleSystem("tsunami_splash_effect_r400")
-PrecacheParticleSystem("tsunami_splash_effect_r500")
-
-
