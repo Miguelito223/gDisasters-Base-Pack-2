@@ -60,6 +60,7 @@ if (CLIENT) then
 	include("gdisasters/shared_func/netstrings.lua")
 	include("gdisasters/extensions/patchs-bounds.lua")		
 	include("gdisasters/player/postspawn.lua")
+	include("gdisasters/game/convars/main.lua")
 
 	include("gdisasters/stormfox/main.lua")
 	
