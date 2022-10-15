@@ -231,11 +231,11 @@ if (CLIENT) then
 			if speed <= 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "km/h" then 
 				strspeed = chr1..chr2..chr3..chr4.." km/h"
 			elseif speed > 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "km/h" then
-				strspeed = table.Random({">256 km/h", "ERROR"})
+				strspeed = table.Random({chr1..chr2..chr3..chr4.." km/h", "ERROR"})
 			elseif speed <= 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "mph" then
 				strspeed = chr1..chr2..chr3..chr4.." mph"
 			elseif speed > 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "mph" then
-				strspeed = table.Random({">256 mph", "ERROR"})
+				strspeed = table.Random({chr1..chr2..chr3..chr4.." mph", "ERROR"})
 			end
 			
 			return strspeed
