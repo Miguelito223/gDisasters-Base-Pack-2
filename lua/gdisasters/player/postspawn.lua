@@ -97,8 +97,8 @@ function gDisasters_PostSpawn(ply)
 	
 	local function gDisasters_SetupBodyVariables()
 		ply.gDisasters.Body = {}
-		ply.gDisasters.Body.Temperature = 37 
-		ply.gDisasters.Body.Oxygen      = 100 
+		ply.gDisasters.Body.Temperature = 37
+		ply.gDisasters.Body.Oxygen      = 10
 		
 	end
 	local function gDisasters_SetupAreaVariables()

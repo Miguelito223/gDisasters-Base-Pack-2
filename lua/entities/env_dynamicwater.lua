@@ -107,34 +107,8 @@ end
 
 
 function ENT:PlayerOxygen(v, scalar, t)
-
-	local sim_quality     = GetConVar( "gdisasters_envdynamicwater_simquality" ):GetFloat() --  original water simulation is based on a value of 0.01 ( which is alright but not for big servers ) 
-	local sim_quality_mod = sim_quality / 0.01
-
-	local overall_mod     = sim_quality_mod * scalar 
-	
 	if v.IsInWater then
-		if v.Oxygen == nil then v.Oxygen = 5 end 
-
-		v.Oxygen = math.Clamp(v.Oxygen - (engine.TickInterval() * overall_mod ), 0,10)
-		
-		
-		
-		if v.Oxygen <= 0 then
-
-			if math.random(1,math.floor((100/overall_mod)))==1 then
-				
-				local dmg = DamageInfo()
-				dmg:SetDamage( math.random(1,25) )
-				dmg:SetAttacker( v )
-				dmg:SetDamageType( DMG_DROWN  )
-
-				v:TakeDamageInfo(  dmg)
-			end
-		
-		end
-	else
-		v.Oxygen = 5
+		gDisasters_ProcessOxygen()
 	end
 end
 
@@ -182,7 +156,6 @@ function ENT:ProcessFlood(scalar, t)
 					
 				else
 
-					v.Oxygen = 10
 					if v:GetNWBool("IsUnderwater")==true then
 						net.Start("gd_screen_particles")
 						net.WriteString("hud/warp_ripple3")
@@ -212,7 +185,7 @@ function ENT:ProcessFlood(scalar, t)
 				
 			end
 			
-			if (v:GetPos().z < pos.z or v:GetPos().z > zmax) and v.IsInWater==true then
+			if (v:GetPos().z < pos.z or v:GetPos().z > zmax) and v.IsInWater == true then
 				v.IsInWater = false
 			end
 			

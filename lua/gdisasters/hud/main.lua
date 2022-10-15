@@ -288,9 +288,11 @@ if (CLIENT) then
 			local hypo_min, hypo_max     = 24,   36.5
 			local safe_c_min, safe_c_max = 35.5, 38
 			local hyper_min, hyper_max   = 38,   44
+			local oxygen_min, oxygen_max   = 5,   10
 			
 			local r, g, b                   = 0, 0, 0
 			local r2, g2, b2                = 0, 0, 0
+			local r3, g3, b3               = 0, 0, 0
 			
 			local function drawCoreBar()
 				if body_tmp >= hypo_min and body_tmp <= hypo_max then 
@@ -388,7 +390,25 @@ if (CLIENT) then
 			end
 
 			local function drawOxygenBar()
-				drawPercentageBox( 0, 577, 1020, 22, 150, 0, 10, body_Oxygen, Color( 0, 170, 220, 200))
+
+				if body_Oxygen <= oxygen_min then
+					r3 = 34
+					g3 = 113
+					b3 = 179
+				elseif body_Oxygen > oxygen_min then
+					r3 = 0
+					g3 = 170
+					b3 = 228
+				elseif body_Oxygen <= 2 then
+					r3 = 37
+					g3 = 40
+					b3 = 80
+				elseif body_Oxygen >= oxygen_max then
+					r3 = 221
+					g3 = 224
+					b3 = 245
+				end
+				drawPercentageBox( 0, 577, 1020, 22, 150, 0, 10, body_Oxygen, Color( r3, g3, b3, 200))
 			end
 			drawHumidityBar()
 			drawOxygenBar()	
