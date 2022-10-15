@@ -53,7 +53,6 @@ local function Disasterspawn()
 		"gd_d10_rs10eq", 
 		"gd_d10_meteorshower", 
 		"gd_d7_tsunami", 
-		"gd_d10_megatsunami", 
 		"gd_d10_meteoriteshower", 
 		"gd_d6_cryoshower", 
 		"gd_d10_lavabombshower", 
@@ -90,22 +89,11 @@ local function Disasterspawn()
 		"gd_d2_mfirenado",
 		"gd_d1_dustdevil",
 		"gd_d1_steamdevil",
-		"gd_d2_cat2flood",
-		"gd_d3_cat3flood",
-		"gd_d3_cat4flood",
-		"gd_d3_cat5flood",
-		"gd_d4_flashflood",
 		"gd_d6_landslide",
 		"gd_d2_waterspout",
-		"gd_d0_miniflood",
 		"gd_d7_lavaflood",
 		"gd_d8_combineinv",
-		"gd_d10_megatsunamilava",
-		"gd_d8_lavatsunami",
-		"gd_d8_megalavaflood",
-		"gd_d7_minilavatsunami",
-		"gd_d7_cat10flood",
-		"gd_d6_cat8flood"
+		"gd_d8_lavatsunami"
 	}
 
 
@@ -345,22 +333,11 @@ local function WeatherDisasterspawn()
 		"gd_d2_mfirenado",
 		"gd_d1_dustdevil",
 		"gd_d1_steamdevil",
-		"gd_d2_cat2flood",
-		"gd_d3_cat3flood",
-		"gd_d3_cat4flood",
-		"gd_d3_cat5flood",
-		"gd_d4_flashflood",
 		"gd_d6_landslide",
 		"gd_d2_waterspout",
-		"gd_d0_miniflood",
 		"gd_d7_lavaflood",
 		"gd_d8_combineinv",
-		"gd_d10_megatsunamilava",
-		"gd_d8_lavatsunami",
-		"gd_d8_megalavaflood",
-		"gd_d7_minilavatsunami",
-		"gd_d7_cat10flood",
-		"gd_d6_cat8flood"
+		"gd_d8_lavatsunami"
 	}
 
 
