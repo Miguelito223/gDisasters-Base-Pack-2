@@ -9,7 +9,6 @@ ENT.PrintName		                 =  "Flash Flood"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.MaxFloodLevel                    =  {GetConVar("gdisasters_envdynamicwater_level_min"):GetInt(),GetConVar("gdisasters_envdynamicwater_level_max"):GetInt()}
 ENT.Mass                             =  100
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 
@@ -33,7 +32,7 @@ function ENT:Initialize()
 		end 		
 		
 		
-		self.Child = createFlood(math.random(self.MaxFloodLevel[1], self.MaxFloodLevel[2]), self)
+		self.Child = createFlood(math.random(GetConVar("gdisasters_envdynamicwater_level_min"):GetInt(),GetConVar("gdisasters_envdynamicwater_level_max"):GetInt()), self)
 
 			
 		

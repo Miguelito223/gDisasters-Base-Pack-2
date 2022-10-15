@@ -9,7 +9,6 @@ ENT.PrintName		                 =  "Lava flood"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.MaxlavaLevel                    =  {GetConVar("gdisasters_envdynamicwater_level_min"):GetInt(),GetConVar("gdisasters_envdynamicwater_level_max"):GetInt()}
 ENT.Mass                             =  100
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 
@@ -33,7 +32,7 @@ function ENT:Initialize()
 		end 		
 		
 
-		self.Child = createlava(math.random(self.MaxlavaLevel[1], self.MaxlavaLevel[2]), self)
+		self.Child = createlava(math.random(GetConVar("gdisasters_envdynamicwater_level_min"):GetInt(),GetConVar("gdisasters_envdynamicwater_level_max"):GetInt()), self)
 		
 			
 		
