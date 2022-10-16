@@ -44,8 +44,9 @@ AddToGDSpawnMenu("Dorothy IV", "gd_equip_dorothy" , "Equipment", "Dorothy", fals
 AddToGDSpawnMenu("Siren", "gd_equip_siren" , "Equipment", "Standard", false)
 AddToGDSpawnMenu("Radio", "gd_equip_radio" , "Equipment", "Standard", false)
 AddToGDSpawnMenu("Doppler Radar", "gd_equip_wradar" , "Equipment", "Standard", false)
-AddToGDSpawnMenu("Dry Ice", "gd_equip_dryice", "Equipment", "Survival", false)
 AddToGDSpawnMenu("Supercooled Ice" , "gd_equip_supercooledice"		, "Equipment", "Survival", false)
+AddToGDSpawnMenu("Campfire" , "gd_equip_campfire"		, "Equipment", "Survival", false)
+AddToGDSpawnMenu("Dry Ice", "gd_equip_dryice", "Equipment", "Others", false)
 
 --[[
 WEATHER TIER 1
