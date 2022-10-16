@@ -677,7 +677,7 @@ function ENT:Think()
 			end 
 			
 		end
-		for k, v in pairs(ents.FindByClass("gd_d10_moonimpact")) do 
+		for k, v in pairs(ents.FindByClass("gd_d10_moonimpact_ch")) do 
 			
 			
 			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
@@ -691,7 +691,7 @@ function ENT:Think()
 			end 
 			
 		end
-		for k, v in pairs(ents.FindByClass("gd_d10_chicxuclub")) do 
+		for k, v in pairs(ents.FindByClass("gd_d10_chicxuclub_ch")) do 
 			
 			
 			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
