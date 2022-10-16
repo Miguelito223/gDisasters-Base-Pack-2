@@ -31,6 +31,12 @@ function ENT:Initialize()
 	if (phys:IsValid()) then
 		phys:SetMass(self.Mass)
 	end 
+	if IsMapRegistered() == false then
+		self:Remove()
+		for k, v in pairs(player.GetAll()) do 
+			v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
+		end 
+	end
 	
 	self.Original_SkyData = {}
 		self.Original_SkyData["TopColor"]    = Vector(0.1, 0.1, 0.1)
