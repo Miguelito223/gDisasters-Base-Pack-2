@@ -98,14 +98,17 @@ function gDisasters_ProcessTemperature()
 
 		for k, v in pairs(plytbl) do
 		
-			local closest_fire, distance  = FindNearestEntity(v, "vfire") -- find closest fire entity
+			local closest_vfire, distance  = FindNearestEntity(v, "vfire") -- find closest fire entity
 			local closest_ice,  distance_2  = FindNearestEntity(v, "gd_d1_supercooledice") -- find closest ice entity
+			local closest_fire, distance_3 = FindNearestEntity(v, "entityflame")
 			
 			local heatscale               = 0
 			local coolscale               = 0
 			
-			if closest_fire != nil then
+			if closest_vfire != nil then
 				if not vFireInstalled then heatscale = math.Clamp(1000/distance^2, 0,1) else heatscale = math.Clamp(200/distance^2, 0,1) end
+			elseif closest_fire != nil then
+				heatscale = math.Clamp(200/distance_3^2, 0,1)
 			end
 
 			if closest_ice != nil then

@@ -88,7 +88,77 @@ function ENT:Think()
 		
 			end 
 			
-		end 
+		end
+		for k, v in pairs(ents.FindByClass("env_earthquake")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("env_dynamicwater_b")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("env_dynamiclava_b")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("env_dynamicwater")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("env_dynamiclava")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
 	
 	
 	end 

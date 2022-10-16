@@ -41,9 +41,11 @@ Equipment
 
 AddToGDSpawnMenu("Dorothy Probe", "gd_equip_dorothy_probe" , "Equipment", "Dorothy", false)
 AddToGDSpawnMenu("Dorothy IV", "gd_equip_dorothy" , "Equipment", "Dorothy", false)
-AddToGDSpawnMenu("Tornado Siren", "gd_equip_siren" , "Equipment", "Standard", false)
+AddToGDSpawnMenu("Siren", "gd_equip_siren" , "Equipment", "Standard", false)
 AddToGDSpawnMenu("Radio", "gd_equip_radio" , "Equipment", "Standard", false)
 AddToGDSpawnMenu("Doppler Radar", "gd_equip_wradar" , "Equipment", "Standard", false)
+AddToGDSpawnMenu("Dry Ice", "gd_equip_dryice", "Equipment", "Survival", false)
+AddToGDSpawnMenu("Supercooled Ice" , "gd_equip_supercooledice"		, "Equipment", "Survival", false)
 
 --[[
 WEATHER TIER 1
@@ -181,13 +183,11 @@ AddToGDSpawnMenu("≈1.0 Magnitude Earthquake" , "gd_d1_rs1eq"	, "Disasters", "T
 AddToGDSpawnMenu("Small Whirlpool" , "gd_d1_whirlpool"		, "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("TarPit" , "gd_d1_tarpit"		, "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Quicksand" , "gd_d1_quicksand"		, "Disasters", "Tier 1", false)
-AddToGDSpawnMenu("Supercooled Ice" , "gd_d1_supercooledice"		, "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Rainbow" , "gd_d1_rainbow"		, "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Geyser"        , "gd_d1_geyser" , "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Hail"        , "gd_d1_hail" , "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Whirlpool (Small)"        , "gd_d1_whirlpool" , "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Steam devil", "gd_d1_steamdevil", "Disasters", "Tier 1", false)
-AddToGDSpawnMenu("Dry Ice", "gd_d1_dryice", "Disasters", "Tier 1", false)
 --[[
 DISASTERS 
 TIER TWO

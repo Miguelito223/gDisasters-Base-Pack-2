@@ -82,7 +82,19 @@ function ENT:SpawnFunction( ply, tr )
 	return ent
 end
 
-
+function ENT:vfire()
+	for k, v in pairs(ents.GetAll()) do
+		local p1, p2 = self:GetPos(), v:GetPos()
+		local r = p1:Distance(p2)
+		local dis = (p1-p2):GetNormalized()
+		
+		if vFireInstalled then
+			if v:IsOnFire() and r <= 10 and v:IsValid() then
+				v:Extinguish()
+			end
+		end
+	end
+end
 
 
 function ENT:Shrink()
@@ -98,7 +110,7 @@ function ENT:Think()
 
 	if (SERVER) then
 		if !self:IsValid() then return end
-
+		self:vfire()
 		
 		self:NextThink(CurTime() + 1)
 		return true
