@@ -110,7 +110,9 @@ local function Disasterspawn()
 			if dis:IsValid() then dis:Remove() end
 		end)
 	elseif IsMapRegistered() == false then
-		error("the map is not compatible")
+		for k, v in pairs(player.GetAll()) do 
+			v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
+		end 
 	end
 
 end
@@ -208,7 +210,9 @@ local function Weatherspawn()
 			if wea:IsValid() then wea:Remove() end
 		end)
 	elseif IsMapRegistered() == false then
-		error("the map is not compatible")
+		for k, v in pairs(player.GetAll()) do 
+			v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
+		end 
 	end
 end
 
@@ -353,7 +357,9 @@ local function WeatherDisasterspawn()
 			if weadis:IsValid() then weadis:Remove() end
 		end)
 	elseif IsMapRegistered() == false then
-		error("the map is not compatible")
+		for k, v in pairs(player.GetAll()) do 
+			v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
+		end 
 	end
 end
 

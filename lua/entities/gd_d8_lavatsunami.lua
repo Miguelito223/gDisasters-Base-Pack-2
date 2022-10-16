@@ -50,10 +50,14 @@ function ENT:Initialize()
 					Speed        = convert_MetoSU(GetConVar("gdisasters_envdynamicwater_b_speed"):GetInt())
 					}
 					
-
-		self.Child = createTsunamilava(self, data)
-		
-		
+		if IsMapRegistered() == true then
+			self.Child = createTsunamilava(self, data)
+		else
+			self:Remove()
+			for k, v in pairs(player.GetAll()) do 
+				v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
+			end 
+		end
 			
 		
 	end
@@ -69,10 +73,8 @@ function ENT:SpawnFunction( ply, tr )
 	ent:SetPhysicsAttacker(ply)
 	
 	if IsMapRegistered() == false then 
-		self:Remove()
 		ent:SetPos( tr.HitPos + tr.HitNormal * 1  )
 	else 
-		
 		ent:SetPos( getMapCenterFloorPos() )
 	end
 	
