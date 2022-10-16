@@ -107,7 +107,9 @@ function gDisasters_ProcessTemperature()
 			
 			if closest_vfire != nil then
 				if not vFireInstalled then heatscale = math.Clamp(1000/distance^2, 0,1) else heatscale = math.Clamp(200/distance^2, 0,1) end
-			elseif closest_fire != nil then
+			end
+			
+			if closest_fire != nil then
 				heatscale = math.Clamp(200/distance_3^2, 0,1)
 			end
 
