@@ -92,6 +92,10 @@ function ENT:vfire()
 			if v:IsOnFire() and r <= 10 and v:IsValid() then
 				v:Extinguish()
 			end
+		else
+			if v:IsOnFire() and r <= 10 and v:IsValid() then
+				v:Extinguish()
+			end
 		end
 	end
 end
