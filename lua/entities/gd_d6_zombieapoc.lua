@@ -26,8 +26,12 @@ function ENT:Initialize()
 		self:SetMoveType( MOVETYPE_NONE  )
 		self:SetUseType( ONOFF_USE )
 		if IsMapRegistered() == true then
-		self:SetPos(getMapCenterFloorPos())
+			self:SetPos(getMapCenterFloorPos())
 		else
+			self:Remove()
+			for k, v in pairs(player.GetAll()) do 
+				v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
+			end  
 		end
 		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 		local phys = self:GetPhysicsObject()
