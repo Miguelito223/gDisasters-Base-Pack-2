@@ -4,6 +4,7 @@ if !CLIENT then return end
 Ammo
 --]]
 
+AddToGDSpawnMenu("hammer", "weapon_hammer" , "Weapons", "Hammer", false)
 
 --[[ 
 Buildings
@@ -47,6 +48,7 @@ AddToGDSpawnMenu("Doppler Radar", "gd_equip_wradar" , "Equipment", "Standard", f
 AddToGDSpawnMenu("Supercooled Ice" , "gd_equip_supercooledice"		, "Equipment", "Survival", false)
 AddToGDSpawnMenu("Campfire" , "gd_equip_campfire"		, "Equipment", "Survival", false)
 AddToGDSpawnMenu("Dry Ice", "gd_equip_dryice", "Equipment", "Others", false)
+AddToGDSpawnMenu("Hail"        , "gd_d1_hail" , "Equipment", "Nature", false)
 
 --[[
 WEATHER TIER 1
@@ -186,7 +188,6 @@ AddToGDSpawnMenu("TarPit" , "gd_d1_tarpit"		, "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Quicksand" , "gd_d1_quicksand"		, "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Rainbow" , "gd_d1_rainbow"		, "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Geyser"        , "gd_d1_geyser" , "Disasters", "Tier 1", false)
-AddToGDSpawnMenu("Hail"        , "gd_d1_hail" , "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Whirlpool (Small)"        , "gd_d1_whirlpool" , "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Steam devil", "gd_d1_steamdevil", "Disasters", "Tier 1", false)
 --[[
