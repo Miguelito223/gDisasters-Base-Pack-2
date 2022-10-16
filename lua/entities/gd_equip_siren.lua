@@ -159,6 +159,580 @@ function ENT:Think()
 			end 
 			
 		end
+		for k, v in pairs(ents.FindByClass("gd_w1_catonehurricane")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w2_cattwohurricane")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w3_catthreehurricane")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w4_catfourhurricane")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w5_catfivehurricane")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w6_catsixhurricane")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w2_haboob")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w1_duststorm")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w3_heavythunderstorm")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w4_severethunderstorm")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w5_macroburst")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w6_downburst")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w5_microburst")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w3_drought")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w4_heavyacidrain")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w7_solarray")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w6_freezeray")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w6_neptune")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w6_redspot")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w2_volcano_ash")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w2_acidrain")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w3_heavyashstorm")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w3_major_hailstorm")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w2_blizzard")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w3_icestorm")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w3_hurricanic_lowpressure_sys")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w3_extremeheavyrain")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w4_strong_coldfront")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w4_strong_warmfront")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w4_strong_occludedfront")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w4_derecho")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w5_pyrocum")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w6_martiansnow")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w6_martianduststorm")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_w6_hypercane")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_d8_volcano")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_d5_maturevolcano")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_d10_moonimpact")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_d10_chicxuclub")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_d10_meteorshower")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_d10_meteoriteshower")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
 	
 	
 	end 
