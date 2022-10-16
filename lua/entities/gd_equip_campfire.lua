@@ -35,10 +35,7 @@ function ENT:Initialize()
 		
 		if (phys:IsValid()) then
 			phys:SetMass(self.Mass)
-		end 		
-		
-		timer.Simple(20, function() if !self:IsValid() then return end self:Remove() end)
-		
+		end		
 	end
 end
 
