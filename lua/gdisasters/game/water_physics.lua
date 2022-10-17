@@ -11,7 +11,6 @@ Buoyancy_Lookup = {
 					["flesh"] = 4,
 					["watermelon"] = 4,
 					["foliage"] = 4,
-					["foliage"] = 4,
 					["alienflesh"] = 4,
 					["bloodyflesh"] = 4,
 					["zombieflesh"] = 4,
@@ -33,6 +32,7 @@ Buoyancy_Lookup = {
 					["player"] = 4,
 					["rock"] = 0.2,
 					["brick"] = 0.2,
+					["plastic"] = 5,
 					}
 
 					
