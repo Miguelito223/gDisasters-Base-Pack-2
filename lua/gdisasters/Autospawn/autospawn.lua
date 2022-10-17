@@ -27,7 +27,7 @@ local function Tornadospawn()
 	if GetConVar("gdisasters_autospawn"):GetInt() == 0 then return end
 	
 	if GetConVar("gdisasters_autospawn"):GetInt() == 1 then
-		local EF = ents.Create( tornado[math.random( 1, #tornado )] .. "" )
+		EF = ents.Create( tornado[math.random( 1, #tornado )] .. "" )
 		if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
 			if IsMapRegistered() == false then
 				for k, v in pairs(player.GetAll()) do 
@@ -107,7 +107,7 @@ local function Disasterspawn()
 	if GetConVar("gdisasters_autospawn_disasters"):GetInt() == 0 then return end
 	
 	if GetConVar("gdisasters_autospawn_disasters"):GetInt() == 1 and IsMapRegistered() then
-		local dis = ents.Create( disasters[math.random( 1, #disasters )])
+		dis = ents.Create( disasters[math.random( 1, #disasters )])
 		local map_bounds = getMapBounds()
 		local map_floorcenter = getMapCenterFloorPos()
 
@@ -205,7 +205,7 @@ local function Weatherspawn()
 	if GetConVar("gdisasters_autospawn_weather"):GetInt() == 0 then return end
 	
 	if GetConVar("gdisasters_autospawn_weather"):GetInt() == 1 and IsMapRegistered() and GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then
-		local wea = ents.Create( weather[math.random( 1, #weather )])
+		wea = ents.Create( weather[math.random( 1, #weather )])
 		local map_bounds = getMapBounds()
 		local map_floorcenter = getMapCenterFloorPos()
 
@@ -360,7 +360,7 @@ local function WeatherDisasterspawn()
 	if GetConVar("gdisasters_autospawn_weatherdisaster"):GetInt() == 0 then return end
 	
 	if GetConVar("gdisasters_autospawn_weatherdisaster"):GetInt() == 1 and IsMapRegistered() and GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then
-		local weadis = ents.Create( weadisas[math.random( 1, #weadisas)])
+		weadis = ents.Create( weadisas[math.random( 1, #weadisas)])
 		local map_bounds = getMapBounds()
 		local map_floorcenter = getMapCenterFloorPos()
 		
