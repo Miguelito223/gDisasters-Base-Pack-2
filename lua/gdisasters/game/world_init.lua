@@ -112,7 +112,11 @@ concommand.Add("ent_getinfo", function(ply)
 	PrintTable(ent:GetTable())
 end)
 
-
+concommand.Add("ent_getall", function()
+	for k, v in pairs(ents.GetAll()) do
+		print(v)
+	end
+end)
 
 concommand.Add("freeze", function()
 

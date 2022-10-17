@@ -1,0 +1,22 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models\weapons\hammer"
+
+	"$blink" 0.0
+	"Proxies"
+	{
+		"Sine"
+		{
+			"resultVar"	"$blink"
+			"sineperiod"	1
+			"sinemin"		0
+			"sinemax"	1
+		}
+
+		"HighlightWeapon"
+		{
+			"resultVar"	"$selfillumtint"
+			"blinkVar"	"$blink"
+		}
+	}
+}
