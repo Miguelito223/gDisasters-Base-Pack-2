@@ -101,7 +101,7 @@ local function Disasterspawn()
 	if GetConVar("gdisasters_autospawn_disasters"):GetInt() == 0 then return end
 	
 	if GetConVar("gdisasters_autospawn_disasters"):GetInt() == 1 and IsMapRegistered() then
-		dis = ents.Create( disasters[math.random( 1, #disasters )] .. "" )
+		dis = ents.Create( disasters[math.random( 1, #disasters )])
 		dis:SetPos(Vector(math.random(-10000,10000),math.random(-10000,10000), getMapCenterFloorPos().z))
 		dis:Spawn()
 		dis:Activate()
@@ -196,7 +196,7 @@ local function Weatherspawn()
 	if GetConVar("gdisasters_autospawn_weather"):GetInt() == 0 then return end
 	
 	if GetConVar("gdisasters_autospawn_weather"):GetInt() == 1 and IsMapRegistered() and GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then
-		wea = ents.Create( weather[math.random( 1, #weather )] .. "" )
+		wea = ents.Create( weather[math.random( 1, #weather )])
 		if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
 			wea:SetPos(Vector(math.random(-10000,10000),math.random(-10000,10000),5000))
 		else
@@ -349,7 +349,18 @@ local function WeatherDisasterspawn()
 	
 	if GetConVar("gdisasters_autospawn_weatherdisaster"):GetInt() == 1 and IsMapRegistered() and GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then
 		weadis = ents.Create( weadisas[math.random( 1, #weadisas)])
-		weadis:SetPos(Vector(math.random(-10000,10000),math.random(-10000,10000), getMapCenterFloorPos().z))
+		
+		for k, v in pairs(ents.FindByClass("gd_d*")) do
+			weadis:SetPos(Vector(math.random(-10000,10000),math.random(-10000,10000), getMapCenterFloorPos().z))
+		end
+		for k, v in pairs(ents.FindByClass("gd_w*")) do
+			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
+				weadis:SetPos(Vector(math.random(-10000,10000),math.random(-10000,10000),5000))
+			else
+				local stormtable = S37K_mapbounds[1]
+				weadis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
+			end
+		end
 		weadis:Spawn()
 		weadis:Activate()
 		print("the weather or disaster that is happening now: " .. tostring(weadis) .. " Pos: " .. tostring(weadis:GetPos()))
