@@ -12,7 +12,7 @@ ENT.Category                         =  "Hmm"
 
 
 ENT.Mass                             =  100
-ENT.Model                           = "models/camp/campfire.mdl"
+ENT.Model                           = "models/camping/campfire.mdl"
 
 
 function ENT:Initialize()	
