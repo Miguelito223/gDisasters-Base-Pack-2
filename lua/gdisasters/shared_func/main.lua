@@ -1039,8 +1039,6 @@ function gfx_Underwater()
 
 end
 hook.Add("RenderScreenspaceEffects", "gfx_Underwater", gfx_Underwater )
-
-	
 	
 function gfx_Underlava()
 	
@@ -1082,7 +1080,57 @@ end
 hook.Add("RenderScreenspaceEffects", "gfx_Underlava", gfx_Underlava )
 	
 	
+function gfx_UnderLava()
+
+	if LocalPlayer():GetNWBool("IsUnderlava", false)==true then
+		if LocalPlayer().LastIsUnderlava==false and LocalPlayer():GetNWBool("IsUnderlava", false)==true then
+			LocalPlayer():EmitSound("Underwater", 100, 100)
+			LocalPlayer().LastIsUnderlava=true
+		end
+
+		
+		local flood2  = ents.FindByClass("env_dynamiclava")[1] or  ents.FindByClass("env_dynamiclava_b")[1]
+		
+		if flood2==nil then return end 
+		
+		if flood2:IsValid() then 
+			
+			local z_diff2 = math.abs(LocalPlayer():GetNWInt("ZlavaDepth", 0))
+			local alpha2  =  math.Clamp( z_diff2,0,800) / 800
+
+			local tab = {}
+				tab[ "$pp_colour_addr" ] = alpha2 * 4
+				tab[ "$pp_colour_addg" ] = alpha2 * 4
+				tab[ "$pp_colour_addb" ] = -alpha2
+				tab[ "$pp_colour_brightness" ] = 0
+				tab[ "$pp_colour_contrast" ] = 1
+				tab[ "$pp_colour_colour" ] = 1
+				tab[ "$pp_colour_mulr" ] = alpha2
+				tab[ "$pp_colour_mulg" ] = -alpha2
+				tab[ "$pp_colour_mulb" ] = -alpha2
+			DrawColorModify( tab )
+			
+			local mat_Overlay = Material("effects/water_warp01")
+			render.UpdateScreenEffectTexture()
+
+			mat_Overlay:SetFloat( "$envmap", 0 )
+			mat_Overlay:SetFloat( "$envmaptint", 0 )
+			mat_Overlay:SetFloat( "$refractamount", alpha2 )
+			mat_Overlay:SetInt( "$ignorez", 1 )
+
+			render.SetMaterial( mat_Overlay )
+			render.DrawScreenQuad()
+		end
+	end
 	
+	if  LocalPlayer():GetNWBool("IsUnderlava", false)==false then -- FIX NULL ERROR
+		LocalPlayer():StopSound("Underwater")
+
+	end
+	LocalPlayer().LastIsUnderlava = LocalPlayer():GetNWBool("IsUnderwater")
+
+end
+hook.Add("RenderScreenspaceEffects", "gfx_UnderLava", gfx_UnderLava )
 	
 	
 	
