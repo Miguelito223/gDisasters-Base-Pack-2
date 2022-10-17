@@ -1100,7 +1100,7 @@ function gfx_UnderLava()
 
 			local tab = {}
 				tab[ "$pp_colour_addr" ] = alpha2 * 4
-				tab[ "$pp_colour_addg" ] = alpha2 * 4
+				tab[ "$pp_colour_addg" ] = alpha2 * 2
 				tab[ "$pp_colour_addb" ] = -alpha2
 				tab[ "$pp_colour_brightness" ] = 0
 				tab[ "$pp_colour_contrast" ] = 1
