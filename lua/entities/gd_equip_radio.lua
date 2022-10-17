@@ -20,7 +20,7 @@ sound.Add( {
 	volume = 1.0,
 	level = 70,
 	pitch = { 100, 102 },
-        sound = {"streams/eas.mp3","streams/easthree.mp3","streams/eastwo.mp3"}
+    sound = {"streams/eas.mp3","streams/easthree.mp3","streams/eastwo.mp3"}
 } )
 
 
@@ -60,36 +60,37 @@ function ENT:Think()
 	
 	for k, v in pairs(ents.FindByClass("env_tornado")) do 	
 
-	local function Light()
+		local function Light()
 
-				local dlight = DynamicLight( self:EntIndex() )
-					if ( dlight ) then
-						dlight.pos = self:LocalToWorld(Vector(0,0,0))
-						dlight.r = 255
-						dlight.g = 0
-						dlight.b = 0
-						dlight.brightness = 6
-						dlight.Decay = 5
-						dlight.Size = 40
-						dlight.DieTime = CurTime() + 0.1
-					end
+			local dlight = DynamicLight( self:EntIndex() )
+				if ( dlight ) then
+					dlight.pos = self:LocalToWorld(Vector(0,0,0))
+					dlight.r = 255
+					dlight.g = 0
+					dlight.b = 0
+					dlight.brightness = 6
+					dlight.Decay = 5
+					dlight.Size = 40
+					dlight.DieTime = CurTime() + 0.1
+			    end
 	
-			end
+		end
 
-if v:IsValid() then
-	Light()
-	end
+		if v:IsValid() then
+			Light()
+		end
 	
 	
 	end
 	
 end	
+
 	if (SERVER) then 
 
 
-	for k, v in pairs(ents.FindByClass("env_tornado")) do 	
+		for k, v in pairs(ents.FindByClass("env_tornado")) do 	
 	
-	if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
 				self.NextAvailableSoundEmission = CurTime() + 80
 				
 				timer.Simple(v:GetPos():Distance(self:GetPos())/4000, function()
@@ -100,7 +101,7 @@ end
 			end
 
 			
-			end
+		end
 		
 	
 	end 

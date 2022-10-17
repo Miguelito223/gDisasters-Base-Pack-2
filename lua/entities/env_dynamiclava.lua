@@ -241,6 +241,19 @@ function ENT:Think()
 		self:NextThink(CurTime() + t)
 		return true
 	end
+	if (CLIENT) then
+		local dlight = DynamicLight( self:EntIndex() )
+		if ( dlight ) then
+			dlight.pos = self:GetPos()
+			dlight.r = 255
+			dlight.g = 37
+			dlight.b = 0
+			dlight.brightness = 8
+			dlight.Decay = 100
+			dlight.Size = 2000
+			dlight.DieTime = CurTime() + 0.1
+		end
+	end
 	
 end
 function ENT:OnRemove()
