@@ -41,7 +41,11 @@ end
 
 function ENT:Use(Activator)
 	if Activator:IsPlayer() then
-		self:Ignite()
+		if vFireInstalled then
+			self:Ignite()
+		else 
+			self:Ignite(9999999999999999999999)
+		end
 	end
 end
 
