@@ -255,7 +255,7 @@ local function gDisastersAutospawn( CPanel )
 
 	CreateTickboxConVariable(CPanel, "Autospawn Storm Skybox"  , "gdisasters_autospawn_skybox");
 	CreateTickboxConVariable(CPanel, "Autospawn Disable Map Tornadoes"  , "gdisasters_getridmaptor");
-	
+
 	CreateTickboxConVariable(CPanel, "Autospawn Tornados"  , "gdisasters_autospawn");
 	CreateTickboxConVariable(CPanel, "Autospawn Disasters"  , "gdisasters_autospawn_disasters");
 	CreateTickboxConVariable(CPanel, "Autospawn Weather"  , "gdisasters_autospawn_weather");
@@ -341,9 +341,9 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVADSettings", "Advanced", "", "", gDisastersSVADVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersAutospawn", "Autospawn", "", "", gDisastersAutospawn )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersServerGraphics", "Server Graphics", "", "", gDisastersServerGraphics )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersAudioSettings", "Audio", "", "", gDisastersAudioSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersADVGraphicsSettings", "Advanced Client Graphics", "", "", gDisastersADVGraphicsSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersGraphicsSettings", "Client Graphics", "", "", gDisastersGraphicsSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersServerGraphics", "SVGraphics", "", "", gDisastersServerGraphics )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersAudioSettings", "Volume", "", "", gDisastersAudioSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersGraphicsSettings", "Graphics", "", "", gDisastersGraphicsSettings )
 
 end );
