@@ -169,6 +169,9 @@ function ENT:PressureBoundary()
 			net.Start("gd_clParticles")
 			net.WriteString("downburst_heavy_rain_main", Angle(0,math.random(1,40),0))
 			net.Send(v)
+			net.Start("gd_clParticles")
+			net.WriteString("heavy_rain_splash_effect", Angle(0,math.random(1,40),0))
+			net.Send(v)
 			
 
 			if math.random(1,2) == 1 then

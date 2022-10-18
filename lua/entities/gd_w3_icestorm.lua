@@ -195,6 +195,12 @@ function ENT:AffectPlayers()
 			
 				net.Start("gd_clParticles")
 				net.WriteString("localized_blizzard_effect")
+				net.Send(v)	
+				net.Start("gd_clParticles")
+				net.WriteString("heavy_snow_ground_effect")
+				net.Send(v)	
+				net.Start("gd_clParticles")
+				net.WriteString("snow_gust_effect", Angle(0,math.random(1,40),0))
 				net.Send(v)		
 			else
 				if HitChance(50) then

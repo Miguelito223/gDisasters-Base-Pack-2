@@ -103,7 +103,10 @@ function ENT:AffectPlayers()
 			
 				net.Start("gd_clParticles")
 				net.WriteString("localized_blizzard_effect", Angle(0,math.random(1,40),0))
-				net.Send(v)			
+				net.Send(v)
+				net.Start("gd_clParticles")
+				net.WriteString("snow_ground_effect", Angle(0,math.random(1,40),0))
+				net.Send(v)				
 			end
 		end
 	end

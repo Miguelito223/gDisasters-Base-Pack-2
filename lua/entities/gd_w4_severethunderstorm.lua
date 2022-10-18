@@ -150,6 +150,9 @@ function ENT:AffectPlayers()
 			net.Start("gd_clParticles")
 			net.WriteString("localized_extreme_rain_effect")
 			net.Send(v)
+			net.Start("gd_clParticles")
+			net.WriteString("heavy_rain_splash_effect")
+			net.Send(v)	
 			
 
 			if math.random(1,2) == 1 then

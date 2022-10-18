@@ -101,17 +101,26 @@ function ENT:AffectPlayers()
 			net.Start("gd_clParticles")
 			net.WriteString("localized_light_rain_effect", Angle(0,math.random(1,40),0))
 			net.Send(v)
-			end
-			
-			if math.random(1,2) == 2 then
 			net.Start("gd_clParticles")
-			net.WriteString("localized_light_rain_effect", Angle(0,math.random(1,40),0))
+			net.WriteString("rain_splash_effect", Angle(0,math.random(1,40),0))
 			net.Send(v)
 			end
 			
 			if math.random(1,2) == 2 then
 			net.Start("gd_clParticles")
 			net.WriteString("localized_light_rain_effect", Angle(0,math.random(1,40),0))
+			net.Send(v)
+			net.Start("gd_clParticles")
+			net.WriteString("rain_splash_effect", Angle(0,math.random(1,40),0))
+			net.Send(v)
+			end
+			
+			if math.random(1,2) == 2 then
+			net.Start("gd_clParticles")
+			net.WriteString("localized_light_rain_effect", Angle(0,math.random(1,40),0))
+			net.Send(v)
+			net.Start("gd_clParticles")
+			net.WriteString("rain_splash_effect", Angle(0,math.random(1,40),0))
 			net.Send(v)
 			end
 

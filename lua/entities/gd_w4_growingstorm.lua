@@ -258,6 +258,9 @@ function ENT:LightRaining()
 				net.Start("gd_clParticles")
 				net.WriteString("localized_light_rain_effect")
 				net.Send(v)	
+				net.Start("gd_clParticles")
+				net.WriteString("light_rain_splash_a")
+				net.Send(v)	
 		
 					
 			end
@@ -318,6 +321,9 @@ function ENT:LRHRT()
 	
 				net.Start("gd_clParticles")
 				net.WriteString("downburst_medium_rain_main")
+				net.Send(v)	
+				net.Start("gd_clParticles")
+				net.WriteString("rain_splash_effect")
 				net.Send(v)	
 				
 		
@@ -403,6 +409,9 @@ function ENT:HeavyRain()
 				net.Start("gd_clParticles")
 				net.WriteString("downburst_heavy_rain_main")
 				net.Send(v)	
+				net.Start("gd_clParticles")
+				net.WriteString("heavy_rain_splash_effect")
+				net.Send(v)	
 		
 					
 			end
@@ -412,6 +421,9 @@ function ENT:HeavyRain()
 	
 				net.Start("gd_clParticles")
 				net.WriteString("downburst_heavy_rain_main")
+				net.Send(v)	
+				net.Start("gd_clParticles")
+				net.WriteString("heavy_rain_splash_effect")
 				net.Send(v)	
 		
 					

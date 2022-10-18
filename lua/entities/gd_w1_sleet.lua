@@ -98,6 +98,9 @@ function ENT:AffectPlayers()
 			net.Start("gd_clParticles")
 			net.WriteString("localized_sleet_effect", Angle(0,math.random(1,40),0))
 			net.Send(v)
+			net.Start("gd_clParticles")
+			net.WriteString("sleet_splash_effect", Angle(0,math.random(1,40),0))
+			net.Send(v)
 			
 
 			

@@ -104,6 +104,9 @@ function ENT:AffectPlayers()
 				net.Start("gd_clParticles")
 				net.WriteString("localized_acid_rain_effect", Angle(0,math.random(1,40),0))
 				net.Send(v)
+				net.Start("gd_clParticles")
+				net.WriteString("rain_splash_effect", Angle(0,math.random(1,40),0))
+				net.Send(v)
 				
 			end
 			
@@ -117,6 +120,9 @@ function ENT:AffectPlayers()
 			if math.random(1,10)==10 then
 			net.Start("gd_clParticles")
 			net.WriteString("localized_snow_effect", Angle(0,math.random(1,40),0))
+			net.Send(v)	
+			net.Start("gd_clParticles")
+			net.WriteString("snow_ground_effect", Angle(0,math.random(1,40),0))
 			net.Send(v)			
 			end
 			

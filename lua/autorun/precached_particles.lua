@@ -32,6 +32,16 @@ PrecacheParticleSystem("downburst_light_rain_main")
 PrecacheParticleSystem("downburst_medium_rain_main")
 PrecacheParticleSystem("downburst_heavy_rain_main")
 
+PrecacheParticleSystem("extreme_rain_splash_effect")
+PrecacheParticleSystem("heavy_rain_splash_effect")
+PrecacheParticleSystem("heavy_snow_ground_effect")
+PrecacheParticleSystem("snow_ground_effect")
+PrecacheParticleSystem("snow_gust_effect")
+PrecacheParticleSystem("sleet_splash_effect")
+PrecacheParticleSystem("rain_splash_effect")
+PrecacheParticleSystem("light_rain_splash_a")
+PrecacheParticleSystem("tumbleweed_effect")
+
 PrecacheParticleSystem("heatburst_air_compression_main")
 
 PrecacheParticleSystem("neutron_star_magnetic_field_lines_main")

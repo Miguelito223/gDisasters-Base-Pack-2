@@ -307,7 +307,10 @@ function ENT:Passage()
 	
 				net.Start("gd_clParticles")
 				net.WriteString("localized_rain_effect")
-				net.Send(v)	
+				net.Send(v)
+				net.Start("gd_clParticles")
+				net.WriteString("rain_splash_effect")
+				net.Send(v)		
 				
 			else
 				

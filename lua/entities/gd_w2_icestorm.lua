@@ -200,7 +200,8 @@ function ENT:AffectPlayers()
 			
 				net.Start("gd_clParticles")
 				net.WriteString("localized_blizzard_effect")
-				net.Send(v)		
+				net.Send(v)
+	
 			else
 				if HitChance(50) then
 				

@@ -108,6 +108,17 @@ function ENT:AffectPlayers()
 			net.WriteString("downburst_heavy_rain_main", Angle(math.random(1,360),math.random(1,360),math.random(1,360)))
 			net.WriteString("downburst_heavy_rain_main", Angle(math.random(1,360),math.random(1,360),math.random(1,360)))
 			net.Send(v)
+			net.Start("gd_clParticles")
+			net.WriteString("heavy_rain_splash_effect", Angle(math.random(1,360),math.random(1,360),math.random(1,360)))
+			net.WriteString("heavy_rain_splash_effect", Angle(math.random(1,360),math.random(1,360),math.random(1,360)))
+			net.WriteString("heavy_rain_splash_effect", Angle(math.random(1,360),math.random(1,360),math.random(1,360)))
+            net.WriteString("heavy_rain_splash_effect", Angle(math.random(1,360),math.random(1,360),math.random(1,360)))
+			net.WriteString("heavy_rain_splash_effect", Angle(math.random(1,360),math.random(1,360),math.random(1,360)))
+			net.WriteString("heavy_rain_splash_effect", Angle(math.random(1,360),math.random(1,360),math.random(1,360)))
+			net.WriteString("heavy_rain_splash_effect", Angle(math.random(1,360),math.random(1,360),math.random(1,360)))
+			net.WriteString("heavy_rain_splash_effect", Angle(math.random(1,360),math.random(1,360),math.random(1,360)))
+			net.WriteString("heavy_rain_splash_effect", Angle(math.random(1,360),math.random(1,360),math.random(1,360)))
+			net.Send(v)
 			
 
 			if math.random(1,2) == 1 then

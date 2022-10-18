@@ -188,12 +188,12 @@ function ENT:LightRaining()
 				if HitChance(2) then
 					net.Start("gd_clParticles")
 					net.WriteString("localized_snow_effect")
-					net.Send(v)	
+					net.Send(v)
 				else
 					if HitChance(10) then					
 						net.Start("gd_clParticles")
 						net.WriteString("downburst_light_rain_main")
-						net.Send(v)		
+						net.Send(v)
 					end
 				end
 			end
@@ -293,7 +293,10 @@ function ENT:LRTF()
 			
 				net.Start("gd_clParticles")
 				net.WriteString("downburst_light_rain_main")
-				net.Send(v)				
+				net.Send(v)		
+				net.Start("gd_clParticles")
+				net.WriteString("rain_splash_effect")
+				net.Send(v)			
 			
 			end
 			

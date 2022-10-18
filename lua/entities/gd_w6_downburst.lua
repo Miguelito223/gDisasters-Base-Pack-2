@@ -148,10 +148,17 @@ function ENT:LightRaining()
 					net.Start("gd_clParticles")
 					net.WriteString("localized_snow_effect")
 					net.Send(v)	
+					net.Start("gd_clParticles")
+					net.WriteString("snow_ground_effect")
+					net.Send(v)	
+
 				else
 					if HitChance(10) then					
 						net.Start("gd_clParticles")
 						net.WriteString("downburst_light_rain_main")
+						net.Send(v)	
+						net.Start("gd_clParticles")
+						net.WriteString("rain_splash_effect")
 						net.Send(v)		
 					end
 				end

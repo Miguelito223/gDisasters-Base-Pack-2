@@ -119,7 +119,10 @@ function ENT:AffectPlayers()
 			
 				net.Start("gd_clParticles")
 				net.WriteString("localized_snow_effect")--heatburst_air_compression_main
-				net.Send(v)			
+				net.Send(v)		
+				net.Start("gd_clParticles")
+				net.WriteString("snow_ground_effect")
+				net.Send(v)		
 			end
 			if math.random(1,50)==50 then
 			
