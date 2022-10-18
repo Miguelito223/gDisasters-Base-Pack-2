@@ -259,7 +259,7 @@ function ENT:LightRaining()
 				net.WriteString("localized_light_rain_effect")
 				net.Send(v)	
 				net.Start("gd_clParticles")
-				net.WriteString("light_rain_splash_a")
+				net.WriteString("rain_splash_effect")
 				net.Send(v)	
 		
 					
