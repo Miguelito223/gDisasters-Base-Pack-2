@@ -24,7 +24,7 @@ function gDisasters_PostSpawnCL()
 	
 		CreateConVar( "gdisasters_hud_heartbeat_volume", 0.1, {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_hud_warning_volume", 0.1, {FCVAR_ARCHIVE}	, "" )
-		CreateConVar( "gdisasters_hud_enabled", 0, {FCVAR_ARCHIVE}	, "" )
+		CreateConVar( "gdisasters_hud_enabled", 1, {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_hud_type", 1, {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_hud_windtype", "km/h", {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_hud_temptype", "c", {FCVAR_ARCHIVE}	, "" )
