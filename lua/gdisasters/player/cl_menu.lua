@@ -184,9 +184,9 @@ local function gDisastersGraphicsSettings( CPanel )
 
 	local label2 = AddControlLabel( CPanel, "\n\nGP: Ground Particles\n\nWP:Weather Particles\n\nnPass: Number of Passes" )
 
-	local GP = CPanel:NumSlider( "Max GP", "", 1, 1000, 0 );
-	local WP = CPanel:NumSlider( "Max WP", "", 1, 1000, 0 );
-	local nPass = CPanel:NumSlider( "Max nPass", "", 1, 1000, 0 );
+	local GP = CPanel:NumSlider( "Max GP", "", 0, 1, 0 );
+	local WP = CPanel:NumSlider( "Max WP", "", 0, 1, 0 );
+	local nPass = CPanel:NumSlider( "Max nPass", "", 0, 20, 0 );
 
 	GP.Scratch.ConVarChanged = function() end 
 	GP.OnValueChanged = function( panel, val)
