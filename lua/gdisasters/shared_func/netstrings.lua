@@ -89,7 +89,8 @@ net.Receive("gd_ambientlight", function()
 end)
 
 net.Receive("gd_clParticles", function()
-	
+	if GetConVar("gdisasters_antilag_ground_particles"):GetInt() <= 1 or GetConVar("gdisasters_antilag_weather_particles"):GetInt() <= 1 then return end
+
 	local effect = net.ReadString()
 	local angle  = net.ReadAngle()
 	ParticleEffect( effect, LocalPlayer():GetPos(), angle, nil )
@@ -115,8 +116,7 @@ end)
 net.Receive("gd_screen_particles", function()
 
 	if LocalPlayer().ScreenParticles == nil then LocalPlayer().ScreenParticles = {} end
-	
-	
+	if GetConVar("gdisasters_antilag_weather_particles"):GetInt() <= 1 then return end
 	
 	local texture  = net.ReadString()
 	local size     = net.ReadFloat()
@@ -261,6 +261,7 @@ end)
 net.Receive("gd_screen_particles", function()
 
 	if LocalPlayer().ScreenParticles == nil then LocalPlayer().ScreenParticles = {} end
+	if GetConVar("gdisasters_antilag_weather_particles"):GetInt() <= 1 then return end
 	
 	
 	
