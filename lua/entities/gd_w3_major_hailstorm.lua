@@ -120,7 +120,7 @@ function ENT:AffectPlayers()
 				net.Start("gd_clParticles")
 				net.WriteString("localized_snow_effect")--heatburst_air_compression_main
 				net.Send(v)		
-				net.Start("gd_clParticles")
+				net.Start("gd_clParticles_ground")
 				net.WriteString("snow_ground_effect")
 				net.Send(v)		
 			end

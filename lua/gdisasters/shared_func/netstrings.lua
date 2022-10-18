@@ -1,7 +1,8 @@
 if (SERVER) then
 
 	util.AddNetworkString( "gd_isOutdoor" )
-	util.AddNetworkString( "gd_clParticles" )	
+	util.AddNetworkString( "gd_clParticles" )
+	util.AddNetworkString( "gd_clParticles_ground" )	
 	util.AddNetworkString( "gd_screen_particles" )	
 	util.AddNetworkString( "gd_maplight_cl")
 	util.AddNetworkString( "gd_seteyeangles_cl")
@@ -89,12 +90,20 @@ net.Receive("gd_ambientlight", function()
 end)
 
 net.Receive("gd_clParticles", function()
-	if GetConVar("gdisasters_antilag_ground_particles"):GetInt() <= 1 or GetConVar("gdisasters_antilag_weather_particles"):GetInt() <= 1 then return end
+	if GetConVar("gdisasters_antilag_weather_particles"):GetInt() <= 1 then return end
 
 	local effect = net.ReadString()
 	local angle  = net.ReadAngle()
 	ParticleEffect( effect, LocalPlayer():GetPos(), angle, nil )
-	
+ 
+end)
+
+net.Receive("gd_clParticles_ground", function()
+	if GetConVar("gdisasters_antilag_ground_particles"):GetInt() <= 1 then return end
+
+	local effect = net.ReadString()
+	local angle  = net.ReadAngle()
+	ParticleEffect( effect, LocalPlayer():GetPos(), angle, nil )
  
 end)
 

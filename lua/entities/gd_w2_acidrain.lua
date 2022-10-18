@@ -100,7 +100,7 @@ function ENT:AffectPlayers()
 				net.Start("gd_clParticles")
 				net.WriteString("localized_acid_rain_effect", Angle(0,math.random(1,40),0))
 				net.Send(v)
-				net.Start("gd_clParticles")
+				net.Start("gd_clParticles_ground")
 				net.WriteString("light_rain_splash_a", Angle(0,math.random(1,40),0))
 				net.Send(v)
 				

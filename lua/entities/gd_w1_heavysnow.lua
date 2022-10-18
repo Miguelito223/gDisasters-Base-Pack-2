@@ -107,7 +107,7 @@ function ENT:AffectPlayers()
 			net.Send(v)	
 			end
 			
-			net.Start("gd_clParticles")
+			net.Start("gd_clParticles_ground")
 			net.WriteString("localized_snow_effect", Angle(0,math.random(40,60),0))
 			net.Send(v)	
             

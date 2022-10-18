@@ -194,7 +194,7 @@ function ENT:ModerateRaining()
 				net.Start("gd_clParticles")
 				net.WriteString("downburst_medium_rain_main")
 				net.Send(v)	
-				net.Start("gd_clParticles")
+				net.Start("gd_clParticles_ground")
 				net.WriteString("rain_splash_effect")
 				net.Send(v)	
 				

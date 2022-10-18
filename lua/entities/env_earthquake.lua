@@ -162,13 +162,13 @@ function ENT:SendClientsideEffects( ply, offset_ang, amplitude )
 		net.Send(ply)
 	end
 	if math.random(1, 11 - magnitude)==1 then
-		net.Start("gd_clParticles")
+		net.Start("gd_clParticles_ground")
 		net.WriteString("earthquake_player_ground_rocks", Angle(0,math.random(1,40),0))
 		net.Send(ply)
 	end
 	if magnitude >= 4 then
 		if math.random(1, 21 - magnitude)==1 then
-			net.Start("gd_clParticles")
+			net.Start("gd_clParticles_ground")
 			net.WriteString("earthquake_player_ground_dust", Angle(0,math.random(1,40),0))
 			net.Send(ply)
 		end	
