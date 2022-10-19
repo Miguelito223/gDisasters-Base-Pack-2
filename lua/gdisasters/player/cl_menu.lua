@@ -160,7 +160,7 @@ end
 
 local function gDisastersServerGraphics( CPanel )
 
-	AddControlLabel( CPanel, "Antilag collision settings: \n\nPD NC BT: Post Damage No Collide Base Time\n\nCPPPS: Collisions Per Prop Per Second\n\nCAPS:Collisions Average Per Second" )
+	AddControlLabel( CPanel, "Antilag collision settings: \n\SPD NC BT: Post Damage No Collide Base Time\n\nCPPPS: Collisions Per Prop Per Second\n\nCAPS:Collisions Average Per Second" )
 	
 	CreateSliderConVariable(CPanel,"Max CPPPS", 0, 1000, 0,"gdisasters_antilag_maximum_safe_collisions_per_second_per_prop");
 	CreateSliderConVariable(CPanel,"Max PD NC BT", 0, 1000, 0,"gdisasters_antilag_post_damage_no_collide_base_time");
@@ -182,34 +182,22 @@ local function gDisastersGraphicsSettings( CPanel )
 	local HudW 			= AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
 	local HudT			= AddComboBox( CPanel, "Hud Temperature Display", {"c", "f"}, "gdisasters_hud_temptype")
 
-	local label2 = AddControlLabel( CPanel, "\n\nGP: Ground Particles\n\nWP:Weather Particles\n\nnPass: Number of Passes" )
-
-	local GP = CPanel:NumSlider( "Max GP", "", 0, 1, 1 );
-	local WP = CPanel:NumSlider( "Max WP", "", 0, 1, 1 );
-	local nPass = CPanel:NumSlider( "Max nPass", "", 0, 20, 1 );
-
-	GP.Scratch.ConVarChanged = function() end 
-	GP.OnValueChanged = function( panel, val)
-		if (CurTime() - gDisasters_gDisastersGraphicsSettings_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_antilag_ground_particles", tonumber( val))
-	end
-
-	WP.Scratch.ConVarChanged = function() end 
-	WP.OnValueChanged = function( panel, val)
-		if (CurTime() - gDisasters_gDisastersGraphicsSettings_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_antilag_weather_particles", tonumber( val))
-	end
+	local label2 = AddControlLabel( CPanel, "\n\nGP: Ground Particles\n\nWP:Weather Particles\n\nSP: Screen Particles" )
 	
-	nPass.Scratch.ConVarChanged = function() end 
-	nPass.OnValueChanged = function( panel, val)
+	CreateTickboxConVariable(CPanel, "Enable GP"  , "gdisasters_graphics_enable_ground_particles");
+	CreateTickboxConVariable(CPanel, "Enable WP"  , "gdisasters_graphics_enable_weather_particles");
+	CreateTickboxConVariable(CPanel, "Enable SP"  , "gdisasters_graphics_enable_screen_particles");
+
+	local SP = CPanel:NumSlider( "Max SP", "", 0, 20, 1 );
+
+	SP.Scratch.ConVarChanged = function() end 
+	SP.OnValueChanged = function( panel, val)
 		if (CurTime() - gDisasters_gDisastersGraphicsSettings_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_antilag_number_of_passes", tonumber( val))
+		RunConsoleCommand( "gdisasters_graphics_number_of_screen_particles", tonumber( val))
 	end
 
 	timer.Simple(0.05, function()
-		if GP then GP:SetValue(GetConVar(( "gdisasters_antilag_ground_particles" )):GetFloat()) end
-		if WP then WP:SetValue(GetConVar(( "gdisasters_antilag_weather_particles" )):GetFloat()) end
-		if nPass then nPass:SetValue(GetConVar(( "gdisasters_antilag_number_of_passes" )):GetFloat()) end
+		if SP then SP:SetValue(GetConVar(( "gdisasters_graphics_number_of_screen_particles" )):GetFloat()) end
 	
 	end)
 

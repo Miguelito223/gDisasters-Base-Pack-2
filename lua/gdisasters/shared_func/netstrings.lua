@@ -90,7 +90,7 @@ net.Receive("gd_ambientlight", function()
 end)
 
 net.Receive("gd_clParticles", function()
-	if GetConVar("gdisasters_antilag_weather_particles"):GetInt() <= 0 then return end
+	if GetConVar("gdisasters_graphics_enable_weather_particles"):GetInt() <= 0 then return end
 
 	local effect = net.ReadString()
 	local angle  = net.ReadAngle()
@@ -99,7 +99,7 @@ net.Receive("gd_clParticles", function()
 end)
 
 net.Receive("gd_clParticles_ground", function()
-	if GetConVar("gdisasters_antilag_ground_particles"):GetInt() <= 0 then return end
+	if GetConVar("gdisasters_graphics_enable_ground_particles"):GetInt() <= 0 then return end
 
 	local effect = net.ReadString()
 	local angle  = net.ReadAngle()
@@ -124,12 +124,14 @@ end)
 
 net.Receive("gd_screen_particles", function()
 
+	if GetConVar("gdisasters_graphics_enable_screen_particles"):GetInt() <= 0 then return end
+
 	if LocalPlayer().ScreenParticles == nil then LocalPlayer().ScreenParticles = {} end
 	
 	local texture  = net.ReadString()
 	local size     = net.ReadFloat()
 	local life     = net.ReadFloat() + CurTime()
-	local number   = GetConVar("gdisasters_antilag_number_of_passes"):GetInt()
+	local number   = GetConVar("gdisasters_graphics_number_of_screen_particles"):GetInt()
 	local vel      = net.ReadVector()
 	
 	
