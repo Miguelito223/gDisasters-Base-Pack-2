@@ -5,6 +5,7 @@ Ammo
 --]]
 
 AddToGDSpawnMenu("hammer", "weapon_hammer" , "Weapons", "Hammer", false)
+AddToGDSpawnMenu("Thermometer", "weapon_thermometer" , "Weapons", "Thermomether", false)
 
 --[[ 
 Buildings
