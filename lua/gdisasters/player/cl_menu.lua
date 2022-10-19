@@ -185,7 +185,7 @@ local function gDisastersGraphicsSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable WP"  , "gdisasters_graphics_enable_weather_particles");
 	CreateTickboxConVariable(CPanel, "Enable SP"  , "gdisasters_graphics_enable_screen_particles");
 
-	CreateSliderConVariable( "Max SP", 0, 20, 1,"gdisasters_graphics_number_of_screen_particles"  );
+	CreateSliderConVariable(CPanel, "Max SP", 0, 20, 1,"gdisasters_graphics_number_of_screen_particles"  );
 
 end
 
@@ -208,8 +208,8 @@ local function gDisastersAutospawn( CPanel )
 
 	AddControlLabel( CPanel, "Autospawn options: " )
 	
-	CreateSliderConVariable("Autospawn Time", 1, 1000, 0, "gdisasters_autospawn_timer" )
-	CreateSliderConVariable("Autospawn Chance", 0, 1000, 0, "gdisasters_autospawn_spawn_chance" )
+	CreateSliderConVariable(CPanel, "Autospawn Time", 1, 1000, 0, "gdisasters_autospawn_timer" )
+	CreateSliderConVariable(CPanel, "Autospawn Chance", 0, 1000, 0, "gdisasters_autospawn_spawn_chance" )
 
 	AddControlLabel( CPanel, "Autospawn Box Options: " )
 
@@ -228,17 +228,17 @@ end
 local function gDisastersADVGraphicsSettings( CPanel )			
 	AddControlLabel( CPanel, "Advanced Graphics options:" )
 
-	CreateSliderConVariable(     "Water Quality", 1, 3, 0, "gdisasters_graphics_water_quality" );
-	CreateSliderConVariable(     "Fog Quality", 1, 8, 0, "gdisasters_graphics_fog_quality" );
+	CreateSliderConVariable(CPanel,  "Water Quality", 1, 3, 0, "gdisasters_graphics_water_quality" );
+	CreateSliderConVariable(CPanel,   "Fog Quality", 1, 8, 0, "gdisasters_graphics_fog_quality" );
 
 	AddControlLabel( CPanel, "Section dedicated to Doppler Radar.\nUse with caution." )
 
 	AddComboBox( CPanel, "Resolution", {"4x4","8x8","16x16","32x32","64x64","48x48","128x128"}, "gdisasters_graphics_dr_resolution")
 	AddComboBox( CPanel, "Monochromatic Mode", {"false", "true"}, "gdisasters_graphics_dr_monochromatic")
 
-	CreateSliderConVariable(     "Max Render Distance", 1, 600, 0, "gdisasters_graphics_dr_maxrenderdistance" );
-	CreateSliderConVariable(     "Refresh Rate (Hz)", 1, 16, 0, "gdisasters_graphics_dr_refreshrate" );
-	CreateSliderConVariable(     "Update  Rate (Hz)", 1, 16, 0, "gdisasters_graphics_dr_updaterate" );
+	CreateSliderConVariable(CPanel,"Max Render Distance", 1, 600, 0, "gdisasters_graphics_dr_maxrenderdistance" );
+	CreateSliderConVariable(CPanel,"Refresh Rate (Hz)", 1, 16, 0, "gdisasters_graphics_dr_refreshrate" );
+	CreateSliderConVariable(CPanel,"Update  Rate (Hz)", 1, 16, 0, "gdisasters_graphics_dr_updaterate" );
 	
 end
 
