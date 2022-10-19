@@ -160,7 +160,7 @@ end
 
 local function gDisastersServerGraphics( CPanel )
 
-	AddControlLabel( CPanel, "Antilag collision settings: \n\SPD NC BT: Post Damage No Collide Base Time\n\nCPPPS: Collisions Per Prop Per Second\n\nCAPS:Collisions Average Per Second" )
+	AddControlLabel( CPanel, "Antilag collision settings: \n\nPD NC BT: Post Damage No Collide Base Time\n\nCPPPS: Collisions Per Prop Per Second\n\nCAPS:Collisions Average Per Second" )
 	
 	CreateSliderConVariable(CPanel,"Max CPPPS", 0, 1000, 0,"gdisasters_antilag_maximum_safe_collisions_per_second_per_prop");
 	CreateSliderConVariable(CPanel,"Max PD NC BT", 0, 1000, 0,"gdisasters_antilag_post_damage_no_collide_base_time");
@@ -174,70 +174,42 @@ local function gDisastersServerGraphics( CPanel )
 end
 
 local function gDisastersGraphicsSettings( CPanel )
+	AddControlLabel( CPanel, "Graphics options: \n\nWind/Temp Type: " )
 
-	gDisasters_gDisastersGraphicsSettings_SetupTime = CurTime() 
+	AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
+	AddComboBox( CPanel, "Hud Temperature Display", {"c", "f"}, "gdisasters_hud_temptype")
 
-	local label2 = AddControlLabel( CPanel, "Graphics options: \n\nWind/Temp Type: " )
-
-	local HudW 			= AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
-	local HudT			= AddComboBox( CPanel, "Hud Temperature Display", {"c", "f"}, "gdisasters_hud_temptype")
-
-	local label2 = AddControlLabel( CPanel, "\n\nGP: Ground Particles\n\nWP:Weather Particles\n\nSP: Screen Particles" )
+	AddControlLabel( CPanel, "\n\nGP: Ground Particles\n\nWP:Weather Particles\n\nSP: Screen Particles" )
 	
 	CreateTickboxConVariable(CPanel, "Enable GP"  , "gdisasters_graphics_enable_ground_particles");
 	CreateTickboxConVariable(CPanel, "Enable WP"  , "gdisasters_graphics_enable_weather_particles");
 	CreateTickboxConVariable(CPanel, "Enable SP"  , "gdisasters_graphics_enable_screen_particles");
 
-	local SP = CPanel:NumSlider( "Max SP", "", 0, 20, 1 );
-
-	SP.Scratch.ConVarChanged = function() end 
-	SP.OnValueChanged = function( panel, val)
-		if (CurTime() - gDisasters_gDisastersGraphicsSettings_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_graphics_number_of_screen_particles", tonumber( val))
-	end
-
-	timer.Simple(0.05, function()
-		if SP then SP:SetValue(GetConVar(( "gdisasters_graphics_number_of_screen_particles" )):GetFloat()) end
-	
-	end)
+	CreateSliderConVariable( "Max SP", 0, 20, 1,"gdisasters_graphics_number_of_screen_particles"  );
 
 end
 
 
 local function gDisastersAudioSettings( CPanel )
+	
 	AddControlLabel( CPanel, "Audio options: " )
+	
 	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1,1, "gdisasters_wind_Light_Wind_sound" );
 	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1,1, "gdisasters_wind_Moderate_Wind_sound" );
 	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,1,"gdisasters_wind_Heavy_Wind_sound" );
+	
 	AddControlLabel( CPanel, "Hud Audio options: " )
+	
 	CreateSliderConVariable(CPanel, "hud Hearth Volume", 0,1,1, "gdisasters_hud_heartbeat_volume" );
 	CreateSliderConVariable(CPanel, "hud Warning Volume", 0,1,1, "gdisasters_hud_warning_volume" );
 end
 
 local function gDisastersAutospawn( CPanel )
-	gDisasters_Autospawn_SetupTime = CurTime() 
 
-	local label = AddControlLabel( CPanel, "Autospawn options: " )
-	local AUT = CPanel:NumSlider("Autospawn Time", "", 1, 1000, 0 )
-	local AUC = CPanel:NumSlider("Autospawn Chance", "", 0, 1000, 0 )
-
-	AUT.Scratch.ConVarChanged = function() end 
-	AUT.OnValueChanged = function( panel, val)
-		if (CurTime() - gDisasters_Autospawn_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_autospawn_timer", tonumber( val))
-	end
+	AddControlLabel( CPanel, "Autospawn options: " )
 	
-	AUC.Scratch.ConVarChanged = function() end 
-	AUC.OnValueChanged = function( panel, val)
-		if (CurTime() - gDisasters_Autospawn_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_autospawn_spawn_chance", tonumber( val))
-	end	
-	
-	timer.Simple(0.05, function()
-		if AUT then AUT:SetValue(GetConVar(( "gdisasters_autospawn_timer" )):GetFloat()) end
-		if AUC then AUC:SetValue(GetConVar(( "gdisasters_autospawn_spawn_chance" )):GetFloat()) end
-	end
-	)
+	CreateSliderConVariable("Autospawn Time", 1, 1000, 0, "gdisasters_autospawn_timer" )
+	CreateSliderConVariable("Autospawn Chance", 0, 1000, 0, "gdisasters_autospawn_spawn_chance" )
 
 	AddControlLabel( CPanel, "Autospawn Box Options: " )
 
@@ -253,73 +225,20 @@ local function gDisastersAutospawn( CPanel )
 	
 end
 
-local function gDisastersADVGraphicsSettings( CPanel )
+local function gDisastersADVGraphicsSettings( CPanel )			
+	AddControlLabel( CPanel, "Advanced Graphics options:" )
 
-	gDisasters_gDisastersADVGraphicsSettings_SetupTime = CurTime() 
-			
-		
-	local label = AddControlLabel( CPanel, "Advanced Graphics options:" )
+	CreateSliderConVariable(     "Water Quality", 1, 3, 0, "gdisasters_graphics_water_quality" );
+	CreateSliderConVariable(     "Fog Quality", 1, 8, 0, "gdisasters_graphics_fog_quality" );
 
-	local WQ = CPanel:NumSlider(     "Water Quality", "", 1, 3, 0 );
-	local FQ = CPanel:NumSlider(     "Fog Quality", "", 1, 8, 0 );
+	AddControlLabel( CPanel, "Section dedicated to Doppler Radar.\nUse with caution." )
 
-	local dr_ns_label =  AddControlLabel( CPanel, "Section dedicated to Doppler Radar.\nUse with caution." )
+	AddComboBox( CPanel, "Resolution", {"4x4","8x8","16x16","32x32","64x64","48x48","128x128"}, "gdisasters_graphics_dr_resolution")
+	AddComboBox( CPanel, "Monochromatic Mode", {"false", "true"}, "gdisasters_graphics_dr_monochromatic")
 
-	local ScreenRes     = AddComboBox( CPanel, "Resolution", {"4x4","8x8","16x16","32x32","64x64","48x48","128x128"}, "gdisasters_graphics_dr_resolution")
-	local Monochromatic = AddComboBox( CPanel, "Monochromatic Mode", {"false", "true"}, "gdisasters_graphics_dr_monochromatic")
-
-	local MaxRD         = CPanel:NumSlider(     "Max Render Distance", "", 1, 600, 0 );
-	local RefreshRate   = CPanel:NumSlider(     "Refresh Rate (Hz)", "", 1, 16, 0 );
-	local UpdateRate   = CPanel:NumSlider(     "Update  Rate (Hz)", "", 1, 16, 0 );
-	
-		
-	-- on value change, set values 
-
-	
-	
-	MaxRD.Scratch.ConVarChanged = function() end 
-	MaxRD.OnValueChanged = function( panel, val)
-		if (CurTime() - gDisasters_gDisastersADVGraphicsSettings_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_graphics_dr_maxrenderdistance", tonumber( val))
-	end
-	
-	UpdateRate.Scratch.ConVarChanged = function() end 
-	UpdateRate.OnValueChanged = function( panel, val)
-		if (CurTime() - gDisasters_gDisastersADVGraphicsSettings_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_graphics_dr_updaterate", tonumber( val))
-	end
-	
-	RefreshRate.Scratch.ConVarChanged = function() end 
-	RefreshRate.OnValueChanged = function( panel, val)
-		if (CurTime() - gDisasters_gDisastersADVGraphicsSettings_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_graphics_dr_refreshrate", tonumber( val))
-	end
-		
-	
-	WQ.Scratch.ConVarChanged = function() end
-	WQ.OnValueChanged = function( panel, val )
-		if (CurTime() - gDisasters_gDisastersADVGraphicsSettings_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_graphics_water_quality", 4 - tonumber( val ) )		
-	end
-
-	FQ.Scratch.ConVarChanged = function() end
-	FQ.OnValueChanged = function( panel, val )
-		if (CurTime() - gDisasters_gDisastersADVGraphicsSettings_SetupTime) < 1 then return end 
-		RunConsoleCommand( "gdisasters_graphics_fog_quality", 4 - tonumber( val ) )		
-	end
-	
-	-- on panel setup, this will set the values for sliders and buttons to their original stored values 
-	
-	
-	timer.Simple(0.05, function()
-	
-		if WQ then WQ:SetValue(GetConVar(( "gdisasters_graphics_water_quality" )):GetFloat()) end
-		if FQ then FQ:SetValue(GetConVar(( "gdisasters_graphics_fog_quality" )):GetFloat()) end
-		
-		if MaxRD then MaxRD:SetValue(GetConVar(( "gdisasters_graphics_dr_maxrenderdistance" )):GetFloat()) end 
-		if UpdateRate then UpdateRate:SetValue(GetConVar(( "gdisasters_graphics_dr_updaterate" )):GetFloat()) end 
-		if RefreshRate then RefreshRate:SetValue(GetConVar(( "gdisasters_graphics_dr_refreshrate" )):GetFloat()) end 
-	end)
+	CreateSliderConVariable(     "Max Render Distance", 1, 600, 0, "gdisasters_graphics_dr_maxrenderdistance" );
+	CreateSliderConVariable(     "Refresh Rate (Hz)", 1, 16, 0, "gdisasters_graphics_dr_refreshrate" );
+	CreateSliderConVariable(     "Update  Rate (Hz)", 1, 16, 0, "gdisasters_graphics_dr_updaterate" );
 	
 end
 
