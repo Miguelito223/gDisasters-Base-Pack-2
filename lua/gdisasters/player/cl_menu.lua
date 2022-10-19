@@ -86,6 +86,7 @@ local function gDisastersSVSettings( CPanel )
 
 	AddControlLabel( CPanel, "Temp options: " )
 
+	CreateTickboxConVariable(CPanel, "Enable Temp Related Damage" ,"gdisasters_hud_temp_damage");
 	CreateTickboxConVariable(CPanel, "Enable Temp Breathing" ,"gdisasters_hud_temp_breathing");
 	CreateTickboxConVariable(CPanel, "Enable Temp Vomit" ,"gdisasters_hud_temp_vomit");
 	CreateTickboxConVariable(CPanel, "Enable Temp Sneeze" ,"gdisasters_hud_temp_sneeze");
@@ -93,7 +94,7 @@ local function gDisastersSVSettings( CPanel )
 	AddControlLabel( CPanel, "Oxygen options: " )
 	
 	CreateTickboxConVariable(CPanel, "Enable Oxygen enable" ,"gdisasters_oxygen_enable");
-	CreateTickboxConVariable(CPanel, "Enable oxygen damage" ,"gdisasters_oxygen_damage");
+	CreateTickboxConVariable(CPanel, "Enable Oxygen Related damage" ,"gdisasters_oxygen_damage");
 
 
 	AddControlLabel( CPanel, "Other options: \n\nThe Atmophere option requires a map RESTART to take effect."  )
@@ -126,7 +127,6 @@ local function gDisastersSVADVSettings( CPanel )
 
 	AddControlLabel( CPanel, "Advanced Temp options: " )
 
-	CreateTickboxConVariable(CPanel, "Enable Temp Related Damage" ,"gdisasters_hud_temp_damage");
 	CreateTickboxConVariable(CPanel, "Enable Temp UpdateVars" ,"gdisasters_hud_temp_updatevars");
 	CreateTickboxConVariable(CPanel, "Enable Temp ClientSide" ,"gdisasters_hud_temp_cl");
 	CreateTickboxConVariable(CPanel, "Enable Temp ServerSide" ,"gdisasters_hud_temp_sv");
