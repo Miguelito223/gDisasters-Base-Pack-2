@@ -230,8 +230,8 @@ local function gDisastersAutospawn( CPanel )
 	gDisasters_Autospawn_SetupTime = CurTime() 
 
 	local label = AddControlLabel( CPanel, "Autospawn options: " )
-	local AUT = CPanel:NumSlider("autospawn time", "", 1, 1000, 0 )
-	local AUC = CPanel:NumSlider("autospawn chance", "", 0, 1000, 0 )
+	local AUT = CPanel:NumSlider("Autospawn Time", "", 1, 1000, 0 )
+	local AUC = CPanel:NumSlider("Autospawn Chance", "", 0, 1000, 0 )
 
 	AUT.Scratch.ConVarChanged = function() end 
 	AUT.OnValueChanged = function( panel, val)
