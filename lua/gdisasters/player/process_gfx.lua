@@ -366,7 +366,7 @@ if (CLIENT) then
 			
 			else 
 				
-				if GetConVar( "gdisasters_graphics_fog_quality" ):GetInt() <= 4 then
+				if GetConVar( "gdisasters_graphics_fog_quality" ):GetInt() >= 4 then
 					if CurTime() >= LocalPlayer().gDisasters.Fog.NextEmitTime then 
 						
 						if math.random(1, 2 * ( ( GetConVar( "gdisasters_graphics_fog_quality" ):GetInt() + 1 ) * 2)  )==1 and LocalPlayer().gDisasters.Outside.IsOutside then
