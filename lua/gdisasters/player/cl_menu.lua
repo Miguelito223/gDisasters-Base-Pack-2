@@ -168,7 +168,7 @@ local function gDisastersServerGraphics( CPanel )
 
 	AddControlLabel( CPanel, "Antilag options: remove the lag :)" )
 	
-	CreateSliderConVariable(CPanel,"Antilag Mode (s)", 0, 2, 0,"gdisasters_antilag_mode" );
+	--CreateSliderConVariable(CPanel,"Antilag Mode (s)", 0, 2, 0,"gdisasters_antilag_mode" );
 	CreateTickboxConVariable(CPanel,"Enable Antilag", "gdisasters_antilag_enabled" );
 	
 end
