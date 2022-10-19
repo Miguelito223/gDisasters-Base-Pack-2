@@ -233,7 +233,7 @@ AddToGDSpawnMenu("Landspout", "gd_d4_landspout", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("≈4.0 Magnitude Earthquake" , "gd_d4_rs4eq"         , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("EF1 Tornado"        , "gd_d4_ef1"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Megacryometeor"        , "gd_d4_mcryometeor"              , "Disasters", "Tier 4", false)
-AddToGDSpawnMenu("♫ The Man In Gauze ♫"        , "gd_d4_themaningauze"              , "Disasters", "Tier 4", false)
+AddToGDSpawnMenu("♫ The Man In Gauze ♫"        , "gd_d4_themaningauze"              , "Disasters", "Others", false)
 AddToGDSpawnMenu("Young Volcano"        , "gd_d4_volcano"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("EF1 Tornado (Smart)"        , "gd_d4_ef1_pathed"              , "Disasters", "Tier 4", false)
 
@@ -279,7 +279,7 @@ AddToGDSpawnMenu("EF4 Tornado"           , "gd_d7_ef4"           , "Disasters", 
 AddToGDSpawnMenu("EF4 Tornado (Smart)"           , "gd_d7_ef4_pathed"           , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("≈7.0  Magnitude Earthquake" , "gd_d7_rs7eq"         , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("Tsunami" , "gd_d7_tsunami"         , "Disasters", "Tier 7", false)
-AddToGDSpawnMenu("Nurse" , "npc_nurse"         , "Disasters", "Tier 7", false)
+AddToGDSpawnMenu("Nurse" , "npc_nurse"         , "Disasters", "NPCS", false)
 AddToGDSpawnMenu("Lava flood" , "gd_d7_lavaflood"         , "Disasters", "Tier 7", false)
 
 
