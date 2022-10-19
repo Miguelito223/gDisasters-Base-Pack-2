@@ -269,6 +269,8 @@ end)
 
 
 net.Receive("gd_screen_particles", function()
+	
+	if GetConVar("gdisasters_graphics_enable_screen_particles"):GetInt() <= 0 then return end
 
 	if LocalPlayer().ScreenParticles == nil then LocalPlayer().ScreenParticles = {} end
 	
@@ -277,7 +279,7 @@ net.Receive("gd_screen_particles", function()
 	local texture  = net.ReadString()
 	local size     = net.ReadFloat()
 	local life     = net.ReadFloat() + CurTime()
-	local number   = GetConVar("gdisasters_antilag_number_of_passes"):GetInt()
+	local number   = GetConVar("gdisasters_graphics_number_of_screen_particles"):GetInt()
 	local vel      = net.ReadVector()
 	
 	
