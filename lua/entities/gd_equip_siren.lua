@@ -733,7 +733,118 @@ function ENT:Think()
 			end 
 			
 		end
-	
+		for k, v in pairs(ents.FindByClass("gd_d9_meteroite")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_d6_meteor")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_d6_cryoshower")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_d10_lavabombshower")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_d6_zombieapoc")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_d8_combineinv")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_d10_blackhole")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
+		for k, v in pairs(ents.FindByClass("gd_d9_whitehole")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
 	
 	end 
 end
