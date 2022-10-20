@@ -214,7 +214,7 @@ local function gDisastersAutospawn( CPanel )
 	AddControlLabel( CPanel, "Autospawn Box Options: " )
 
 	CreateTickboxConVariable(CPanel, "Enable Storm Skybox"  , "gdisasters_autospawn_skybox");
-	CreateTickboxConVariable(CPanel, "Enable Disable Map Tornadoes"  , "gdisasters_getridmaptor");
+	CreateTickboxConVariable(CPanel, "Disable Map Tornadoes "  , "gdisasters_getridmaptor");
 
 	CreateTickboxConVariable(CPanel, "Autospawn Tornados"  , "gdisasters_autospawn");
 	CreateTickboxConVariable(CPanel, "Autospawn Disasters"  , "gdisasters_autospawn_disasters");
