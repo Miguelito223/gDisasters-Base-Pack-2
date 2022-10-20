@@ -52,7 +52,7 @@ if (SERVER) then
 		
 		local ent = net.ReadEntity()
 		local mouth_attach = ent:LookupAttachment("mouth")
-		ent:EmitSound("disasters/player/sneeze.wav", 80, 100)
+		ent:EmitSound("disasters/player/vomit.wav", 80, 100)
 		ParticleEffectAttach( "sneeze_main", PATTACH_POINT_FOLLOW, ent, mouth_attach )
 
 	end)
@@ -60,7 +60,7 @@ if (SERVER) then
 		
 		local ent = net.ReadEntity()
 		local mouth_attach = ent:LookupAttachment("mouth")
-		ent:EmitSound("disasters/player/sneeze.wav", 80, 100)
+		ent:EmitSound("disasters/player/vomitblood.wav", 80, 100)
 		ParticleEffectAttach( "sneeze_big_main", PATTACH_POINT_FOLLOW, ent, mouth_attach )
 
 	end)
