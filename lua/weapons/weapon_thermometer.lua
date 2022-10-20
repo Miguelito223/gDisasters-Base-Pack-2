@@ -26,7 +26,7 @@ SWEP.Secondary.Ammo = "none"
 SWEP.Secondary.Damage = 0
 SWEP.Secondary.Delay = 1
 SWEP.Secondary.Automatic = false
-SWEP.Secondary.Distance = 75 
+SWEP.Secondary.Distance = 100
 
 
 function SWEP:Initialize()
