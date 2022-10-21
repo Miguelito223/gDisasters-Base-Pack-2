@@ -1,5 +1,3 @@
-CreateClientConVar( "gdisasters_autospawn_skybox", "0", true, false )
-
 if GetConVar("gdisasters_autospawn_skybox"):GetInt() == 1 then
 if not string.find(game.GetMap(), "night") then
 	local skyscale = 16

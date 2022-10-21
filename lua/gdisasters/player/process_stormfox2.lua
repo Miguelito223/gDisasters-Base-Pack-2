@@ -1,5 +1,3 @@
-CreateConVar("gdisasters_stormfox_enable", 0, {FCVAR_ARCHIVE}, "")
-
 function gDisasters_stormfox2()
 
     if GetConVar("gdisasters_stormfox_enable"):GetInt() == 0 then return end

@@ -36,7 +36,14 @@ CreateConVar( "gdisasters_envdynamicwater_b_endlevel", "100", {FCVAR_ARCHIVE}, "
 
 CreateConVar( "gdisasters_envdynamicwater_b_speed", "20", {FCVAR_ARCHIVE}, "" )
 
+CreateConVar( "gdisasters_stormfox_enable", 0, {FCVAR_ARCHIVE}, "")
 
+CreateConVar( "gdisasters_autospawn_timer", 120, { FCVAR_ARCHIVE,FCVAR_SERVER_CAN_EXECUTE,FCVAR_PROTECTED}, "How often do you want to run the tornado spawn?")
+CreateConVar( "gdisasters_autospawn_spawn_chance", 3, { FCVAR_ARCHIVE,FCVAR_SERVER_CAN_EXECUTE,FCVAR_PROTECTED}, "What is the chance that a tornado will spawn?")
+CreateConVar( "gdisasters_autospawn", "0", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gdisasters_autospawn_disasters", "0", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gdisasters_autospawn_weather", "0", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gdisasters_autospawn_weatherdisaster", "0", {FCVAR_ARCHIVE}, "" )
 
 CreateConVar( "gdisasters_envtornado_damage", "200", {FCVAR_ARCHIVE}, "" )
 
@@ -56,10 +63,10 @@ CreateConVar( "gdisasters_antilag_mode", "1", {FCVAR_ARCHIVE}, "" )
 
 CreateConVar( "gdisasters_experimental_overdraw", "1", {FCVAR_ARCHIVE}, "sexy " )
 
+if (CLIENT) then
 
+CreateClientConVar( "gdisasters_autospawn_skybox", "0", true, false )
 
-
-
-
+end
 
 

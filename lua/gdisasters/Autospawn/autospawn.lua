@@ -3,13 +3,6 @@ local recentDis = false
 local recentWea = false
 local recentWeaDis = false
 
-CreateConVar( "gdisasters_autospawn_timer", 120, { FCVAR_ARCHIVE,FCVAR_SERVER_CAN_EXECUTE,FCVAR_PROTECTED}, "How often do you want to run the tornado spawn?")
-CreateConVar( "gdisasters_autospawn_spawn_chance", 3, { FCVAR_ARCHIVE,FCVAR_SERVER_CAN_EXECUTE,FCVAR_PROTECTED}, "What is the chance that a tornado will spawn?")
-CreateConVar( "gdisasters_autospawn", "0", {FCVAR_ARCHIVE}, "" )
-CreateConVar( "gdisasters_autospawn_disasters", "0", {FCVAR_ARCHIVE}, "" )
-CreateConVar( "gdisasters_autospawn_weather", "0", {FCVAR_ARCHIVE}, "" )
-CreateConVar( "gdisasters_autospawn_weatherdisaster", "0", {FCVAR_ARCHIVE}, "" )
-
 local function Tornadospawn()
 	recentTor = true
 	local tornado = {
