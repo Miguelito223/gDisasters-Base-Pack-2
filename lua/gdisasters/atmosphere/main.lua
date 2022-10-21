@@ -18,6 +18,7 @@ if (SERVER) then
 		gDisasters_GlobalBreathingEffect()
 		gDisasters_ProcessTemperature()
 		gDisasters_ProcessOxygen()
+		gDisasters_stormfox2()
 	
 	
 	

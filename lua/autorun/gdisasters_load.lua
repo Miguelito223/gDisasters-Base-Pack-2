@@ -21,8 +21,8 @@ if (SERVER) then
 	AddCSLuaFile("gdisasters/atmosphere/main.lua")
 	AddCSLuaFile("gdisasters/hud/main.lua")	
 	AddCSLuaFile("gdisasters/game/decals.lua")
-	AddCSLuaFile("gdisasters/Autospawn/autospawn.lua")
-	AddCSLuaFile("gdisasters/stormfox/main.lua")
+	AddCSLuaFile("gdisasters/game/Autospawn/autospawn.lua")
+	AddCSLuaFile("gdisasters/player/process_stormfox2.lua")
 
 	include("gdisasters/shared_func/main.lua")	
 	include("gdisasters/shared_func/netstrings.lua")
@@ -36,8 +36,8 @@ if (SERVER) then
 	include("gdisasters/player/postspawn.lua")
 	include("gdisasters/player/cl_menu.lua")
 	include("gdisasters/game/decals.lua")
-	include("gdisasters/Autospawn/autospawn.lua")
-	include("gdisasters/stormfox/main.lua")
+	include("gdisasters/game/Autospawn/autospawn.lua")
+	include("gdisasters/player/process_stormfox2.lua")
 	
 	include("gdisasters/spawnlist/menu/main.lua")
 	include("gdisasters/spawnlist/menu/populate.lua")
@@ -61,14 +61,14 @@ if (CLIENT) then
 	include("gdisasters/extensions/patchs-bounds.lua")		
 	include("gdisasters/player/postspawn.lua")
 
-	include("gdisasters/stormfox/main.lua")
+	include("gdisasters/player/process_stormfox2.lua")
 	
 	include("gdisasters/player/process_gfx.lua")
 	include("gdisasters/player/process_temp.lua")
 	include("gdisasters/player/process_oxygen.lua")
 	include("gdisasters/atmosphere/main.lua")
 	include("gdisasters/hud/main.lua")
-	include("gdisasters/Autospawn/skybox.lua")
+	include("gdisasters/game/Autospawn/skybox.lua")
 		
 	include("gdisasters/spawnlist/menu/main.lua")
 	include("gdisasters/spawnlist/menu/populate.lua")

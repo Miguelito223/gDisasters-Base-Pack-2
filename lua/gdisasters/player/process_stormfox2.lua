@@ -1,14 +1,13 @@
 CreateConVar("gdisasters_stormfox_enable", 0, {FCVAR_ARCHIVE}, "")
 
-if (SERVER) then
-
-local function gdisasters_stormfox2()
+function gDisasters_stormfox2()
 
     if GetConVar("gdisasters_stormfox_enable"):GetInt() == 0 then return end
-    
     if Stormfox and StormFox.Version < 2 then 
-        error("error. StormFox 1 is no compatible with gDisasters. Please install stormfox 2") 
-        return 
+	    for k, v in pairs(player.GetAll()) do 
+	    	v:ChatPrint("StormFox 1 is no compatible with gDisasters. Please install stormfox 2")
+	    end
+        return
     end
     
     local temp = StormFox2.Temperature.Get()
@@ -34,9 +33,4 @@ local function gdisasters_stormfox2()
         if !ent then return end
         if ent:IsValid() then ent:Remove() end
     end
-end
-hook.Add("Tick", "stormfox2_gdisasters", gdisasters_stormfox2)
-end
-
-if (CLIENT) then
 end
