@@ -63,9 +63,3 @@ CreateConVar( "gdisasters_antilag_post_damage_no_collide_base_time", "400", {FCV
 CreateConVar( "gdisasters_antilag_mode", "1", {FCVAR_ARCHIVE}, "" )
 
 CreateConVar( "gdisasters_experimental_overdraw", "1", {FCVAR_ARCHIVE}, "sexy " )
-
-
-
-
-
-
