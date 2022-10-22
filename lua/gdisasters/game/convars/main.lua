@@ -44,7 +44,7 @@ CreateConVar( "gdisasters_autospawn", "0", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_autospawn_disasters", "0", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_autospawn_weather", "0", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_autospawn_weatherdisaster", "0", {FCVAR_ARCHIVE}, "" )
-CreateConVar( "gdisasters_autospawn_skybox", "0", true, false )
+CreateConVar( "gdisasters_autospawn_skybox", "0", {FCVAR_ARCHIVE}, "")
 
 CreateConVar( "gdisasters_envtornado_damage", "200", {FCVAR_ARCHIVE}, "" )
 
