@@ -44,6 +44,7 @@ CreateConVar( "gdisasters_autospawn", "0", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_autospawn_disasters", "0", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_autospawn_weather", "0", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_autospawn_weatherdisaster", "0", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gdisasters_autospawn_skybox", "0", true, false )
 
 CreateConVar( "gdisasters_envtornado_damage", "200", {FCVAR_ARCHIVE}, "" )
 
@@ -63,10 +64,8 @@ CreateConVar( "gdisasters_antilag_mode", "1", {FCVAR_ARCHIVE}, "" )
 
 CreateConVar( "gdisasters_experimental_overdraw", "1", {FCVAR_ARCHIVE}, "sexy " )
 
-if (CLIENT) then
 
-CreateClientConVar( "gdisasters_autospawn_skybox", "0", true, false )
 
-end
+
 
 
