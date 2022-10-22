@@ -103,7 +103,6 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Hud"  , "gdisasters_hud_enabled");
 	CreateTickboxConVariable(CPanel, "Enable Experimental Overdraw"  , "gdisasters_experimental_overdraw");
 	CreateTickboxConVariable(CPanel, "Enable Stormfox2 compatibility"  , "gdisasters_stormfox_enable");
-	CreateTickboxConVariable(CPanel, "Enable Day And Night Cycle"  , "gdisasters_dnc_enabled");
 end
 
 -- ADVANCED SV MENU
@@ -171,6 +170,16 @@ local function gDisastersServerGraphics( CPanel )
 	--CreateSliderConVariable(CPanel,"Antilag Mode (s)", 0, 2, 0,"gdisasters_antilag_mode" );
 	CreateTickboxConVariable(CPanel,"Enable Antilag", "gdisasters_antilag_enabled" );
 	
+end
+
+local function gDisastersDayAndNightCycle( CPanel )
+	CreateTickboxConVariable(CPanel, "Enable DNC"  , "gdisasters_dnc_enabled");
+	CreateTickboxConVariable(CPanel, "Pause DNC"  , "gdisasters_dnc_paused");
+	CreateTickboxConVariable(CPanel, "Real Time"  , "gdisasters_dnc_realtime");
+	CreateTickboxConVariable(CPanel, "Log"  , "gdisasters_dnc_log");
+	
+	CreateSliderConVariable(CPanel, "length day", 1, 3600, 0, "gdisasters_dnc_length_day" )
+	CreateSliderConVariable(CPanel, "length night", 1, 3600, 0, "gdisasters_dnc_length_night" )
 end
 
 local function gDisastersGraphicsSettings( CPanel )
@@ -249,6 +258,7 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersAutospawn", "Autospawn", "", "", gDisastersAutospawn )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersServerGraphics", "Server Graphics", "", "", gDisastersServerGraphics )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersDayAndNightCycle", "Day and Night Cycle", "", "", gDisastersDayAndNightCycle)
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersAudioSettings", "Volume", "", "", gDisastersAudioSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersGraphicsSettings", "Graphics", "", "", gDisastersGraphicsSettings )
