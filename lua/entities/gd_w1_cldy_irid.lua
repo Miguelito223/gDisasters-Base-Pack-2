@@ -34,6 +34,7 @@ function ENT:Initialize()
 		
 		self.NextCloudCreation = CurTime()
 		
+		self.Cloud = {}
 		
 	end
 end
@@ -62,10 +63,7 @@ function ENT:CreateClouds()
 	cloud:Spawn()
 	cloud:Activate()
 	
-	timer.Simple(math.random(self.CloudDecayTimes[1], self.CloudDecayTimes[2]), function()
-		if !cloud:IsValid() then return end
-		cloud:Remove()
-	end)
+	table.insert(self.Cloud, cloud)
 	
 	
 	
@@ -82,12 +80,19 @@ function ENT:Think()
 		self:CreateClouds()
 		self:NextThink(CurTime() + 0.01)
 		return true
+
+
 	end
 end
 
 function ENT:OnRemove()
+	if (SERVER) then
 
-	
+	for k, v in pairs(self.Cloud) do
+		if v:IsValid() then v:Remove() end
+	end
+
+end
 	
 	
 end

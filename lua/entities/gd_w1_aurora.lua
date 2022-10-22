@@ -12,8 +12,6 @@ ENT.Category                         =  "Hmm"
 
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"                      
 ENT.Mass                             =  100
-ENT.MaxClouds                        =  25
-ENT.CloudDecayTimes                  = {15, 40}
 
 function ENT:Initialize()		
 	
@@ -27,6 +25,8 @@ function ENT:Initialize()
 		self:SetUseType( ONOFF_USE )
 		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 		
+		self:SetNoDraw(true)
+		
 		local phys = self:GetPhysicsObject()
 		if (phys:IsValid()) then
 			phys:SetMass(self.Mass)
@@ -34,6 +34,7 @@ function ENT:Initialize()
 		
 		self.NextCloudCreation = CurTime()
 		
+		self.Cloud = {}
 		
 	end
 end
@@ -53,19 +54,14 @@ end
 function ENT:CreateClouds()
 
 	if CurTime() < self.NextCloudCreation then return end 
-
-	if #ents.FindByClass("gd_auroraborealis") > self.MaxClouds then return end 
 	
 	self.NextCloudCreation = CurTime() + 0.1
 	
 	local cloud = ents.Create("gd_auroraborealis")
 	cloud:Spawn()
 	cloud:Activate()
-	
-	timer.Simple(math.random(self.CloudDecayTimes[1], self.CloudDecayTimes[2]), function()
-		if !cloud:IsValid() then return end
-		cloud:Remove()
-	end)
+	table.insert(self.Cloud, cloud)
+
 	
 	
 	
@@ -86,9 +82,11 @@ function ENT:Think()
 end
 
 function ENT:OnRemove()
-
-	
-	
+	if (SERVER) then
+	for k, v in pairs(self.Cloud) do
+		if v:IsValid() then v:Remove() end
+	end
+end
 	
 end
 
