@@ -39,9 +39,9 @@ function gDisasters_PostSpawnCL()
 		CreateConVar( "gdisasters_graphics_enable_weather_particles", 1, {FCVAR_ARCHIVE}, "")
 		CreateConVar( "gdisasters_graphics_enable_screen_particles", 1, {FCVAR_ARCHIVE}, "")
 		CreateConVar( "gdisasters_graphics_number_of_screen_particles", 1, {FCVAR_ARCHIVE}, "")
-		CreateConVar( "gdisasters_wind_Light_Wind_sound", 1, {FCVAR_ARCHIVE}, " " )
-		CreateConVar( "gdisasters_wind_Moderate_Wind_sound", 1, {FCVAR_ARCHIVE}, " " )
-		CreateConVar( "gdisasters_wind_Heavy_Wind_sound", 1, {FCVAR_ARCHIVE}, " " )
+		CreateConVar( "gdisasters_sound_Light_Wind", 1, {FCVAR_ARCHIVE}, " " )
+		CreateConVar( "gdisasters_sound_Moderate_Wind", 1, {FCVAR_ARCHIVE}, " " )
+		CreateConVar( "gdisasters_sound_Heavy_Wind", 1, {FCVAR_ARCHIVE}, " " )
 	
 	end
 

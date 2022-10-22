@@ -194,9 +194,9 @@ local function gDisastersAudioSettings( CPanel )
 	
 	AddControlLabel( CPanel, "Audio options: " )
 	
-	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1,1, "gdisasters_wind_Light_Wind_sound" );
-	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1,1, "gdisasters_wind_Moderate_Wind_sound" );
-	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,1,"gdisasters_wind_Heavy_Wind_sound" );
+	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1,1, "gdisasters_sound_Light_Wind" );
+	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1,1, "gdisasters_sound_Moderate_Wind" );
+	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,1,"gdisasters_sound_Heavy_Wind" );
 	
 	AddControlLabel( CPanel, "Hud Audio options: " )
 	
