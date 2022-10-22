@@ -119,7 +119,7 @@ local function gDisastersSVADVSettings( CPanel )
 	AddControlLabel( CPanel, "Advanced Wind options: " )
 	
 	CreateTickboxConVariable(CPanel, "Enable Wind physical" ,"gdisasters_wind_physics_enabled");
-	CreateTickboxConVariable(CPanel, "Enable Wind postdamage no collide basetime" ,"gdisasters_wind_postdamage_nocollide_enabled");
+	CreateTickboxConVariable(CPanel, "Enable Wind postdamage no collide" ,"gdisasters_wind_postdamage_nocollide_enabled");
 	CreateTickboxConVariable(CPanel, "Enable Wind postdamage no collide basetimeout" ,"gdisasters_wind_postdamage_nocollide_basetimeout");
 	CreateTickboxConVariable(CPanel, "Enable Wind postdamage no collide basetime spread" ,"gdisasters_wind_postdamage_nocollide_basetimeout_spread");
 	CreateTickboxConVariable(CPanel, "Enable Wind postdamage reducemass" ,"gdisasters_wind_postdamage_reducemass_enabled");
