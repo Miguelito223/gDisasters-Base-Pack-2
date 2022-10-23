@@ -68,7 +68,7 @@ function ENT:LockPosition()
 end
 
 function ENT:SoundLoop()
-    local sound = Sound("disasters/space/neutron_star/idle.wav")
+    local sound = Sound("streams/disasters/space/neutron_star/idle.wav")
 
 	CSPatch = CreateSound(self, sound)
 	CSPatch:SetSoundLevel( 140 )
