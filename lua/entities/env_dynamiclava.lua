@@ -10,7 +10,7 @@ ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 ENT.MaxlavaLevel                    =   9000
-ENT.WedgeSound2							= "disasters/nature/volcano_idle.wav"
+ENT.WedgeSound2							= "streams/disasters/nature/volcano_idle.wav"
 
 function ENT:Initialize()	
 	if (CLIENT) then 

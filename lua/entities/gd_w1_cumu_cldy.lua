@@ -28,6 +28,7 @@ function ENT:Initialize()
 		self:SetUseType( ONOFF_USE )
 		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 		
+		
 		local phys = self:GetPhysicsObject()
 		if (phys:IsValid()) then
 			phys:SetMass(self.Mass)

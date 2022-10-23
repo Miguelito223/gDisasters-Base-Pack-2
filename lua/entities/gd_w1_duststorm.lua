@@ -23,8 +23,8 @@ function ENT:Initialize()
 	
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 		
-		LocalPlayer().Sounds["Sandstorm_IDLE"]         = createLoopedSound(LocalPlayer(), "disasters/nature/sandstorm_loop.wav")
-		LocalPlayer().Sounds["Sandstorm_muffled_IDLE"] = createLoopedSound(LocalPlayer(), "disasters/nature/sandstorm_muffled_loop.wav")
+		LocalPlayer().Sounds["Sandstorm_IDLE"]         = createLoopedSound(LocalPlayer(), "streams/disasters/nature/sandstorm_loop.wav")
+		LocalPlayer().Sounds["Sandstorm_muffled_IDLE"] = createLoopedSound(LocalPlayer(), "streams/disasters/nature/sandstorm_muffled_loop.wav")
 
 	end
 	
@@ -160,7 +160,7 @@ function ENT:Think()
 			util.ScreenShake( LocalPlayer():GetPos(), 0.4, 5, 0.2, 500 )
 		end
 		
-		if math.random(1,2000)==1 then surface.PlaySound("disasters/nature/thunder"..tostring(math.random(1,3))..".wav") end 
+		if math.random(1,2000)==1 then surface.PlaySound("streams/disasters/nature/thunder"..tostring(math.random(1,3))..".wav") end 
 		
 		
 		

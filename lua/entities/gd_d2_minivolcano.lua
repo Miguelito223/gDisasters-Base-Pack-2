@@ -101,7 +101,7 @@ function ENT:CheckPressure()
 end
 function ENT:CreateLoop()
 
-	local sound = Sound("disasters/nature/volcano_idle.wav")
+	local sound = Sound("streams/disasters/nature/volcano_idle.wav")
 
 	CSPatch = CreateSound(self, sound)
 	CSPatch:Play()
@@ -254,7 +254,7 @@ function ENT:Erupt()
 	
 	timer.Simple(2, function() -- we have a delay here because air is still expanding from heat
 		if !self:IsValid() then return end
-		CreateSoundWave("disasters/nature/explosion_light_fiery_b.mp3", self:GetPos(), "3d" ,340.29/2, {100,100}, 5)
+		CreateSoundWave("streams/disasters/nature/explosion_light_fiery_b.mp3", self:GetPos(), "3d" ,340.29/2, {100,100}, 5)
 	end)
 	self:CreateRocks( 20, {8,10} )
 

@@ -5,8 +5,8 @@
 SWEP.Author 			= "Buzzofwar"                           -- Your name.
 SWEP.Contact 			= "Buzzofwar"                     		-- How People could contact you.
 SWEP.base 				= "weapon_base"							-- What base should the swep be based on.
-SWEP.ViewModel 			= "models/weapons/v_crowbar.mdl" 									-- The viewModel, the model you see when you are holding it.
-SWEP.WorldModel 		= "models/weapons/w_buzzhammer.mdl"   									-- The world model, The model you when it's down on the ground.
+SWEP.ViewModel 			= "models/ramses/models/weapons/v_crowbar.mdl" 									-- The viewModel, the model you see when you are holding it.
+SWEP.WorldModel 		= "models/ramses/models/weapons/w_buzzhammer.mdl"   									-- The world model, The model you when it's down on the ground.
 SWEP.HoldType 			= "melee"                            		-- How the swep is hold Pistol smg grenade melee.
 SWEP.PrintName 			= "Hammer"                         			-- your sweps name.
 SWEP.Category 			= "Buildables"                					-- Make your own category for the swep.

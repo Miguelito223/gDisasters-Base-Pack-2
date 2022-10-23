@@ -52,7 +52,7 @@ function ENT:Initialize()
 end
 
 function ENT:CreateLoop()
-	local sound = Sound("disasters/nature/bugsloop.wav")
+	local sound = Sound("streams/disasters/nature/bugsloop.wav")
 
 	CSPatch = CreateSound(self, sound)
 	CSPatch:Play()

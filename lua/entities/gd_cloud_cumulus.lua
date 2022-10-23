@@ -9,9 +9,7 @@ ENT.PrintName		                 =  "CLOUD"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.Models                           =  {"models/ramses/models/clouds/cumulus_a.mdl","models/ramses/models/clouds/cumulus_c.mdl", "models/ramses/models/clouds/cumulus_b.mdl"}
-
-ENT.Rendergroup                     = RENDERGROUP_BOTH
+ENT.Models                           =  {"models/ramses/models/atmosphere/clouds/cumulus_a.mdl", "models/ramses/models/atmosphere/clouds/cumulus_b.mdl"}
 
 ENT.FadeInTime                       = 0.40 
 ENT.FadeOutTime                      = 0.40 
@@ -25,36 +23,25 @@ function ENT:Initialize()
 
 	self.StartTime = CurTime()
 	
-	if (CLIENT) then
-	
-		local w_l = math.Clamp(math.random() * 2,1,2)
-		local h   = math.Clamp(math.random() * 2,1,2)
-		self:SetMDScale(Vector(w_l,w_l ,h  ))
-		
-
-	
-	end
-	
-	
 	if (SERVER) then
 		
 		self.Life = math.random(self.LifeMin, self.LifeMax)	
 		
-	if math.random(1,8) == 1 then	
-		self:SetModelScale(math.random(0.5,1), 0)
-		self:SetModel(table.Random(self.Models))
-		self:PhysicsInit( SOLID_VPHYSICS )
-		self:SetSolid( SOLID_VPHYSICS )
-		self:SetMoveType( MOVETYPE_NONE  )
-		self:SetUseType( ONOFF_USE )
-		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+		if math.random(1,8) == 1 then	
+			self:SetModelScale(math.random(0.5,1), 0)
+			self:SetModel(table.Random(self.Models))
+			self:PhysicsInit( SOLID_VPHYSICS )
+			self:SetSolid( SOLID_VPHYSICS )
+			self:SetMoveType( MOVETYPE_NONE  )
+			self:SetUseType( ONOFF_USE )
+			self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 
-		self:SetAngles( Angle(0,math.random(1,180), 0))
-		self:SetColor(self.DefaultColor)
+			self:SetAngles( Angle(0,math.random(1,180), 0))
+			self:SetColor(self.DefaultColor)
 		
-		self:AtmosphericReposition()
+			self:AtmosphericReposition()
 		
-		--self:SetNoDraw(true)
+			self:SetNoDraw(false)
 		
 		end
 	end
@@ -109,12 +96,6 @@ function ENT:AtmosphericReposition()
 
 end
 
-
-function ENT:SetMDScale(scale)
-	local mat = Matrix()
-	mat:Scale(scale)
-	self:EnableMatrix("RenderMultiply", mat)
-end
 
 function ENT:MoveCloud()
 	local wind_speed, wind_dir = GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"], GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]

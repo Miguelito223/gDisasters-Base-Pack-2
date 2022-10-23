@@ -62,7 +62,7 @@ function ENT:Reposition()
 end
 
 function ENT:CreateLoop()
-	local sound = Sound("disasters/nature/geyser_idle.wav")
+	local sound = Sound("streams/disasters/nature/geyser_idle.wav")
 
 	CSPatch = CreateSound(self, sound)
 	CSPatch:Play()
@@ -146,7 +146,7 @@ function ENT:Erupt()
 	if self:GetModel()=="models/ramses/models/nature/geyser_64.mdl" then ParticleEffectAttach("geyser_big_eruption_main", PATTACH_POINT_FOLLOW, self, 0) else ParticleEffectAttach("geyser_small_eruption_main", PATTACH_POINT_FOLLOW, self, 0) end
 	
 
-	self:EmitSound("disasters/nature/geyser_eruption.mp3")
+	self:EmitSound("streams/disasters/nature/geyser_eruption.mp3")
 	
 end
 

@@ -168,7 +168,7 @@ function ENT:PostSpawn()
 				
 				timer.Simple(1, function()
 					if !self:IsValid() then return end
-					local sound = Sound("disasters/nature/tornado/firenado.wav")
+					local sound = Sound("streams/disasters/nature/tornado/firenado.wav")
 
 					CSPatch = CreateSound(self, sound)
 					CSPatch:SetSoundLevel( 120 )

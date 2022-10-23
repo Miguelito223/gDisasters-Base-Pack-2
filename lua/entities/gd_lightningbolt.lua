@@ -91,7 +91,7 @@ function ENT:Smite()
 	local explosion = ""
 	local color     = table.Random(self.ParticleData["Color"])
 	local grounded  = table.Random(self.ParticleData["IsGrounded"])
-	local sounds = {"disasters/nature/closethunder02.mp3","disasters/nature/closethunder03.mp3","disasters/nature/closethunder04.mp3","disasters/nature/closethunder05.mp3"}
+	local sounds = {"streams/disasters/nature/closethunder02.mp3","streams/disasters/nature/closethunder03.mp3","streams/disasters/nature/closethunder04.mp3","streams/disasters/nature/closethunder05.mp3"}
 
 	particle =  table.Random(self.Effects[color][grounded])
 	

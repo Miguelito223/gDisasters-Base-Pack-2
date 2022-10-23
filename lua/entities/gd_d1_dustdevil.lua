@@ -45,7 +45,7 @@ function ENT:Initialize()
 	
 	timer.Simple(0.5, function()
 		if !self:IsValid() then return end
-		local sound = Sound("disasters/nature/tornado/dust_devil_loop.wav")
+		local sound = Sound("streams/disasters/nature/tornado/dust_devil_loop.wav")
 
 		CSPatch = CreateSound(self, sound)
 		CSPatch:SetSoundLevel( 90 )
