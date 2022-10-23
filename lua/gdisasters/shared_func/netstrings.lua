@@ -202,6 +202,8 @@ end)
 
 
 net.Receive("gd_shakescreen", function()
+
+	if GetConVar("gdisasters_shakescreen_enable"):GetInt() == 0 then return end
 	
 	local duration = net.ReadFloat()
 	local a        = net.ReadFloat() or 25

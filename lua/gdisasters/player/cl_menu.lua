@@ -189,6 +189,8 @@ local function gDisastersGraphicsSettings( CPanel )
 	AddComboBox( CPanel, "Hud Temperature Display", {"c", "f"}, "gdisasters_hud_temptype")
 
 	AddControlLabel( CPanel, "\n\nGP: Ground Particles\n\nWP:Weather Particles\n\nSP: Screen Particles" )
+
+	CreateTickboxConVariable(CPanel, "Enable ShakeScreen"  , "gdisasters_shakescreen_enable");
 	
 	CreateTickboxConVariable(CPanel, "Enable GP"  , "gdisasters_graphics_enable_ground_particles");
 	CreateTickboxConVariable(CPanel, "Enable WP"  , "gdisasters_graphics_enable_weather_particles");
