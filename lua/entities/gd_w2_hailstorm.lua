@@ -169,6 +169,7 @@ function ENT:AffectPlayers()
 				net.WriteString("snow_ground_effect")
 				net.Send(v)			
 			end
+			self:HailFollowPlayer(v)
 		else
 		self:HailFollowPlayer(v)
 			if math.random(1,2) == 2 then
