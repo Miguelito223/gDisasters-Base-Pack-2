@@ -42,6 +42,7 @@ function gDisasters_PostSpawnCL()
 		CreateConVar( "gdisasters_sound_Light_Wind", 1, {FCVAR_ARCHIVE}, " " )
 		CreateConVar( "gdisasters_sound_Moderate_Wind", 1, {FCVAR_ARCHIVE}, " " )
 		CreateConVar( "gdisasters_sound_Heavy_Wind", 1, {FCVAR_ARCHIVE}, " " )
+        CreateConVar( "gdisasters_shakescreen_enable", 1,{FCVAR_ARCHIVE}, "")
 	
 	end
 
