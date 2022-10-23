@@ -328,13 +328,15 @@ function ENT:Passage()
 
 					
 			end
+			self:HailFollowPlayer(v)
 
+		else
 
-			
+			self:HailFollowPlayer(v)
 			
 		end
 		
-		self:HailFollowPlayer(v)
+		
 		
 	end
 	

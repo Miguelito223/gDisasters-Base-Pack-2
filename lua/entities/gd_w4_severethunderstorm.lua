@@ -169,8 +169,14 @@ function ENT:AffectPlayers()
 			self:HailFollowPlayer(v)
 			self:HailFollowPlayer(v)
 			self:HailFollowPlayer(v)
+		else
+			self:HailFollowPlayer(v)
+			self:HailFollowPlayer(v)
+			self:HailFollowPlayer(v)
+			self:HailFollowPlayer(v)
 			
 		end
+
 	end
 end
 

@@ -170,21 +170,22 @@ function ENT:AffectPlayers()
 				net.Send(v)
 			
 			end
-	
+		else
+
+		if math.random(1,2) == 2 then
+			net.Start("gd_clParticles")
+			net.WriteString("hail_character_effect_01_main")
+			net.Send(v)			
+			if math.random(1,2) == 2 then		
+				net.Start("gd_clParticles")
+				net.WriteString("hail_character_effect_01_main")
+				net.Send(v)			
+			end
 		end
 		
-		if math.random(1,2) == 2 then
-					net.Start("gd_clParticles")
-					net.WriteString("hail_character_effect_01_main")
-					net.Send(v)			
-			if math.random(1,2) == 2 then		
-					net.Start("gd_clParticles")
-					net.WriteString("hail_character_effect_01_main")
-					net.Send(v)			
-				end
-			end
-		
 		self:HailFollowPlayer(v)
+	
+		end
 		
 	end
 end

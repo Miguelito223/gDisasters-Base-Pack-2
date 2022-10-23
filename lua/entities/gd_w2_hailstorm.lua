@@ -90,51 +90,6 @@ function ENT:SpawnFunction( ply, tr )
 	return ent
 end
 
-
-function ENT:AffectPlayers()
-	for k, v in pairs(player.GetAll()) do
-	
-		
-		
-		if v.gDisasters.Area.IsOutdoor then
-			if math.random(1,2) == 2 then
-				if HitChance(50) then
-				
-					net.Start("gd_clParticles")
-					net.WriteString("hail_character_effect_01_main")
-					net.Send(v)			
-					
-				else
-					net.Start("gd_clParticles")
-					net.WriteString("hail_character_effect_01_main")
-					net.Send(v)			
-				end
-			end
-			if math.random(1,100)==100 then
-				net.Start("gd_screen_particles")
-				net.WriteString("hud/snow")
-				net.WriteFloat(math.random(5,128))
-				net.WriteFloat(math.random(0,100)/100)
-				net.WriteFloat(math.random(0,1))
-				net.WriteVector(Vector(0,2,0))
-				net.Send(v)	
-			end
-			if math.random(1,100)==100 then
-			
-				net.Start("gd_clParticles")
-				net.WriteString("localized_snow_effect")
-				net.Send(v)	
-				net.Start("gd_clParticles_ground")
-				net.WriteString("snow_ground_effect")
-				net.Send(v)			
-			end
-			
-			self:HailFollowPlayer(v)
-			
-		end
-	end
-end
-
 function ENT:HailFollowPlayer(ply)
 	
 	local bounds    = getMapSkyBox()
@@ -175,6 +130,63 @@ function ENT:HailFollowPlayer(ply)
 	end
 	
 
+end
+
+function ENT:AffectPlayers()
+	for k, v in pairs(player.GetAll()) do
+	
+		
+		
+		if v.gDisasters.Area.IsOutdoor then
+			if math.random(1,2) == 2 then
+				if HitChance(50) then
+				
+					net.Start("gd_clParticles")
+					net.WriteString("hail_character_effect_01_main")
+					net.Send(v)			
+					
+				else
+					net.Start("gd_clParticles")
+					net.WriteString("hail_character_effect_01_main")
+					net.Send(v)			
+				end
+			end
+			if math.random(1,100)==100 then
+				net.Start("gd_screen_particles")
+				net.WriteString("hud/snow")
+				net.WriteFloat(math.random(5,128))
+				net.WriteFloat(math.random(0,100)/100)
+				net.WriteFloat(math.random(0,1))
+				net.WriteVector(Vector(0,2,0))
+				net.Send(v)	
+			end
+			if math.random(1,100)==100 then
+			
+				net.Start("gd_clParticles")
+				net.WriteString("localized_snow_effect")
+				net.Send(v)	
+				net.Start("gd_clParticles_ground")
+				net.WriteString("snow_ground_effect")
+				net.Send(v)			
+			end
+		else
+		self:HailFollowPlayer(v)
+			if math.random(1,2) == 2 then
+				if HitChance(50) then
+				
+					net.Start("gd_clParticles")
+					net.WriteString("hail_character_effect_01_main")
+					net.Send(v)			
+					
+				else
+					net.Start("gd_clParticles")
+					net.WriteString("hail_character_effect_01_main")
+					net.Send(v)			
+				end
+			end
+		end
+
+	end
 end
 
 

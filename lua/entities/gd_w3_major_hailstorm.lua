@@ -137,6 +137,8 @@ function ENT:AffectPlayers()
 				net.Send(v)			
 			end
 			self:HailFollowPlayer(v)
+		else 
+			self:HailFollowPlayer(v)
 		end
 	end
 end

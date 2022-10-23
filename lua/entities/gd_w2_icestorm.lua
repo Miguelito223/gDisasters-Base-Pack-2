@@ -215,6 +215,17 @@ function ENT:AffectPlayers()
 				self:HailFollowPlayer(v)
 				
 			end
+		else
+				if HitChance(50) then
+				
+					net.Start("gd_clParticles")
+					net.WriteString("hail_character_effect_02_main")
+					net.Send(v)	
+					
+					
+				end
+				
+			self:HailFollowPlayer(v)
 		end
 		
 	end
