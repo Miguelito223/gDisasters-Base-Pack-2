@@ -213,6 +213,8 @@ function ENT:AffectPlayers()
 					
 				end
 			end
+		else
+			self:HailFollowPlayer(v)
 		end
 	end
 end
