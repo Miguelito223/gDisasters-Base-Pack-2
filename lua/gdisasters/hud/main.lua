@@ -65,7 +65,7 @@ if (CLIENT) then
 		
 		if CurTime() >= LocalPlayer().gDisasters.HUD.NextWarningSoundTime then
 		
-			LocalPlayer():EmitSound( "disasters/player/hud_warning.wav", 100, 100, math.Clamp(GetConVar( "gdisasters_hud_warning_volume" ):GetFloat(),0,1) )
+			LocalPlayer():EmitSound( "streams/disasters/player/hud_warning.wav", 100, 100, math.Clamp(GetConVar( "gdisasters_hud_warning_volume" ):GetFloat(),0,1) )
 			LocalPlayer().gDisasters.HUD.NextWarningSoundTime = CurTime() + 1
 		else
 		end
@@ -73,7 +73,7 @@ if (CLIENT) then
 	
 	function hud_gDisastersHeart(nexttime, pitch)
 		if CurTime() >= LocalPlayer().gDisasters.HUD.NextHeartSoundTime then
-			LocalPlayer():EmitSound( "disasters/player/heartbeat.wav", 100, pitch, math.Clamp(GetConVar( "gdisasters_hud_heartbeat_volume" ):GetFloat(),0,1))
+			LocalPlayer():EmitSound( "streams/disasters/player/heartbeat.wav", 100, pitch, math.Clamp(GetConVar( "gdisasters_hud_heartbeat_volume" ):GetFloat(),0,1))
 			LocalPlayer().gDisasters.HUD.NextHeartSoundTime = CurTime() + nexttime
 		else
 		end
