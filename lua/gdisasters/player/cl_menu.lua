@@ -190,7 +190,7 @@ local function gDisastersGraphicsSettings( CPanel )
 
 	AddControlLabel( CPanel, "\n\nGP: Ground Particles\n\nWP:Weather Particles\n\nSP: Screen Particles" )
 
-	CreateTickboxConVariable(CPanel, "Enable ShakeScreen"  , "gdisasters_shakescreen_enable");
+	CreateTickboxConVariable(CPanel, "Enable Shake Screen"  , "gdisasters_shakescreen_enable");
 	
 	CreateTickboxConVariable(CPanel, "Enable GP"  , "gdisasters_graphics_enable_ground_particles");
 	CreateTickboxConVariable(CPanel, "Enable WP"  , "gdisasters_graphics_enable_weather_particles");
