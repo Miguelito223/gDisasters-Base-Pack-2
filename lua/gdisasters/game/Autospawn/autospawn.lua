@@ -103,7 +103,7 @@ local function Disasterspawn()
 	if GetConVar("gdisasters_autospawn_disasters"):GetInt() == 0 then return end
 	
 	if GetConVar("gdisasters_autospawn_disasters"):GetInt() == 1 and IsMapRegistered() then
-		local dis = ents.Create(table.Random(disasters ))
+		local dis = ents.Create(table.Random(disasters))
 		local map_bounds = getMapBounds()
 		local map_floorcenter = getMapCenterFloorPos()
 
