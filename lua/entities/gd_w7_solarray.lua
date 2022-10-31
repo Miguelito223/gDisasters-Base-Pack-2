@@ -103,7 +103,7 @@ function ENT:AffectPlayers()
 
 	for k, v in pairs(player.GetAll()) do
 
-		if v.gDisasters.Area.IsOutdoor and v:IsOnGround() then
+		if v.gDisasters.Area.IsOutdoor then
 			
 			if HitChance(75) then
 				net.Start("gd_clParticles")
