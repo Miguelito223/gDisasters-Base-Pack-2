@@ -20,7 +20,10 @@ local function Tornadospawn()
 	if GetConVar("gdisasters_autospawn"):GetInt() == 0 then return end
 	
 	if GetConVar("gdisasters_autospawn"):GetInt() == 1 then
-		EF = ents.Create(table.Random(tornado))
+		local EF = ents.Create(table.Random(tornado))
+		local map_bounds = getMapBounds()
+		local map_skybox = getMapSkyBox()
+
 		if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
 			if IsMapRegistered() == false then
 				for k, v in pairs(player.GetAll()) do 
@@ -28,7 +31,7 @@ local function Tornadospawn()
 				end 
 				return
 			end
-			EF:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z + 5000))
+			EF:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_skybox[2].z))
 		else
 			local stormtable = S37K_mapbounds[1]
 			EF:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
@@ -100,7 +103,7 @@ local function Disasterspawn()
 	if GetConVar("gdisasters_autospawn_disasters"):GetInt() == 0 then return end
 	
 	if GetConVar("gdisasters_autospawn_disasters"):GetInt() == 1 and IsMapRegistered() then
-		dis = ents.Create(table.Random(disasters ))
+		local dis = ents.Create(table.Random(disasters ))
 		local map_bounds = getMapBounds()
 		local map_floorcenter = getMapCenterFloorPos()
 
@@ -198,12 +201,12 @@ local function Weatherspawn()
 	if GetConVar("gdisasters_autospawn_weather"):GetInt() == 0 then return end
 	
 	if GetConVar("gdisasters_autospawn_weather"):GetInt() == 1 and IsMapRegistered() and GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then
-		wea = ents.Create(table.Random(weather))
+		local wea = ents.Create(table.Random(weather))
 		local map_bounds = getMapBounds()
-		local map_floorcenter = getMapCenterFloorPos()
+		local map_skybox = getMapSkyBox()
 
 		if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-			wea:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z + 5000))
+			wea:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_skybox[2].z))
 		else
 			local stormtable = S37K_mapbounds[1]
 			wea:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
@@ -353,16 +356,17 @@ local function WeatherDisasterspawn()
 	if GetConVar("gdisasters_autospawn_weatherdisaster"):GetInt() == 0 then return end
 	
 	if GetConVar("gdisasters_autospawn_weatherdisaster"):GetInt() == 1 and IsMapRegistered() and GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then
-		weadis = ents.Create(table.Random(weadisas))
+		local weadis = ents.Create(table.Random(weadisas))
 		local map_bounds = getMapBounds()
 		local map_floorcenter = getMapCenterFloorPos()
+		local map_skybox = getMapSkyBox()
 		
 		for k, v in pairs(ents.FindByClass("gd_d*")) do
 			weadis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z))
 		end
 		for k, v in pairs(ents.FindByClass("gd_w*")) do
 			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-				weadis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z + 5000))
+				weadis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_skybox[2].z))
 			else
 				local stormtable = S37K_mapbounds[1]
 				weadis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
