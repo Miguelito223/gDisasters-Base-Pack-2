@@ -175,15 +175,19 @@ function gDisasters_ProcessTemperature()
 			
 			
 			
-			if  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] <= -100 and outdoor or GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 250 and outdoor then
-				if v:Alive() then v:Kill() end
+			if  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] <= -100 and outdoor then
+				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.1
+			elseif GLOBAL_SYSTEM["Atmosphere"]["Temperature"] <= -100 then
+				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.01
+			elseif GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 250 and outdoor then
+				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.1
+			elseif GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 250 then
+				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.01
 			end
 
 			if GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 37 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 5 then
 				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.001
-			end
-
-			if GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= -273.3 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] <= 4 then
+			elseif GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= -273.3 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] <= 4 then
 				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
 			end
 			
@@ -209,9 +213,7 @@ function gDisasters_ProcessTemperature()
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
 		
 				end
-			end
-
-			if  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 37 and  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 5 then
+			elseif GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 37 and  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 5 then
 				local wl = v:WaterLevel()
 				if wl==0 then
 				elseif wl==1 then
@@ -226,8 +228,7 @@ function gDisasters_ProcessTemperature()
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
 		
 				end
-			end
-			if  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] < 37 and  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 5 then
+			elseif  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] < 37 and  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 5 then
 				local wl = v:WaterLevel()
 				if wl==0 then
 				elseif wl==1 then
@@ -252,7 +253,6 @@ function gDisasters_ProcessTemperature()
 					
 			if temp >= 44 or temp <= 24 then
 				if v:Alive() then v:Kill() end
-
 			end
 
 			
