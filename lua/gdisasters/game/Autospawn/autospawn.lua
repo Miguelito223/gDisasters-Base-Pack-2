@@ -142,7 +142,7 @@ local function Disasterspawn()
 				dis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
 			end
 		end
-		
+
 		dis:Spawn()
 		dis:Activate()
 		print("the disaster that is happening now: " .. tostring(dis) .. " Pos: " .. tostring(dis:GetPos()) )
@@ -407,7 +407,7 @@ local function WeatherDisasterspawn()
 				weadis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
 			end
 		end
-		for k, v in pairs(ents.FindByClass("gd_d*_ef")) do
+		for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
 			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
 				weadis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z + 5000))
 			else
