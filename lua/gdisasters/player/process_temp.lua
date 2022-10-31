@@ -106,14 +106,10 @@ function gDisasters_ProcessTemperature()
 			local coolscale               = 0
 			
 			if closest_vfire != nil then
-				if not vFireInstalled then heatscale = math.Clamp(1000/distance^2, 0,1) else heatscale = math.Clamp(200/distance^2, 0,1) end
-			end
-			
-			if closest_fire != nil then
-				heatscale = math.Clamp(200/distance_3^2, 0,1)
-			end
-
-			if closest_ice != nil then
+				heatscale = math.Clamp(200/distance^2, 0,1)
+			elseif closest_fire != nil then
+				heatscale = math.Clamp(1000/distance_3^2, 0,1)
+			elseif closest_ice != nil then
 				coolscale = math.Clamp(500/distance_2^2, 0,1) * -1 -- inverse square law
 			end
 			
@@ -149,11 +145,12 @@ function gDisasters_ProcessTemperature()
 				This part basically calculates how much damage should be dealt to players 
 				
 			--]]
-			
-			local temp            = v.gDisasters.Body.Temperature
+
+			local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
+			local tempbody            = v.gDisasters.Body.Temperature
 			local outdoor           = v.gDisasters.Area.IsOutdoor
-			local alpha_hot  =  1-((44-math.Clamp(temp,39,44))/5)
-			local alpha_cold =  ((35-math.Clamp(temp,24,35))/11)	
+			local alpha_hot  =  1-((44-math.Clamp(tempbody,39,44))/5)
+			local alpha_cold =  ((35-math.Clamp(tempbody,24,35))/11)	
 			
 			if math.random(1,25) == 25 then
 				if alpha_cold != 0 then
@@ -175,19 +172,19 @@ function gDisasters_ProcessTemperature()
 			
 			
 			
-			if  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] <= -100 and outdoor then
+			if  temp <= -100 and outdoor then
 				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.1
-			elseif GLOBAL_SYSTEM["Atmosphere"]["Temperature"] <= -100 then
+			elseif temp <= -100 then
 				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.01
-			elseif GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 250 and outdoor then
+			elseif temp >= 250 and outdoor then
 				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.1
-			elseif GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 250 then
+			elseif temp >= 250 then
 				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.01
 			end
 
-			if GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 37 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 5 then
+			if GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and temp >= 37 and temp >= 5 then
 				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.001
-			elseif GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= -273.3 and GLOBAL_SYSTEM["Atmosphere"]["Temperature"] <= 4 then
+			elseif GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and temp >= -273.3 and temp <= 4 then
 				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
 			end
 			
@@ -198,7 +195,7 @@ function gDisasters_ProcessTemperature()
 			--]]
 			
 
-			if  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= -273.3 and  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] <= 4 then
+			if  temp >= -273.3 and  temp <= 4 then
 				local wl = v:WaterLevel()
 				if wl==0 then
 				elseif wl==1 then
@@ -213,7 +210,7 @@ function gDisasters_ProcessTemperature()
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
 		
 				end
-			elseif GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 37 and  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 5 then
+			elseif temp >= 37 and  temp >= 5 then
 				local wl = v:WaterLevel()
 				if wl==0 then
 				elseif wl==1 then
@@ -228,7 +225,7 @@ function gDisasters_ProcessTemperature()
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
 		
 				end
-			elseif  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] < 37 and  GLOBAL_SYSTEM["Atmosphere"]["Temperature"] >= 5 then
+			elseif  temp < 37 and  temp >= 5 then
 				local wl = v:WaterLevel()
 				if wl==0 then
 				elseif wl==1 then
@@ -251,7 +248,7 @@ function gDisasters_ProcessTemperature()
 				
 			--]]		
 					
-			if temp >= 44 or temp <= 24 then
+			if tempbody >= 44 or tempbody <= 24 then
 				if v:Alive() then v:Kill() end
 			end
 
