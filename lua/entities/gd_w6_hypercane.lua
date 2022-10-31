@@ -157,7 +157,7 @@ function ENT:Think()
 			util.ScreenShake( LocalPlayer():GetPos(), 0.4, 5, 0.2, 500 )
 		end
 		
-		if math.random(1,2500)==1 then surface.PlaySound(streams/disasters/nature/thunder"..tostring(math.random(1,3))..".wav") end 
+		if math.random(1,2500)==1 then surface.PlaySound("streams/disasters/nature/thunder"..tostring(math.random(1,3))..".wav") end 
 		
 		
 	end
