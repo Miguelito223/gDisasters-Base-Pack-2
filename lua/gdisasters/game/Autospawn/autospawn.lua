@@ -371,6 +371,14 @@ local function WeatherDisasterspawn()
 				weadis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
 			end
 		end
+		for k, v in pairs(ents.FindByClass("gd_d*_ef")) do
+			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
+				weadis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z + 5000))
+			else
+				local stormtable = S37K_mapbounds[1]
+				weadis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
+			end
+		end
 		weadis:Spawn()
 		weadis:Activate()
 		print("the weather or disaster that is happening now: " .. tostring(weadis) .. " Pos: " .. tostring(weadis:GetPos()))
