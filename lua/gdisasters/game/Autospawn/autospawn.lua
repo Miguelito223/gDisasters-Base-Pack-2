@@ -106,8 +106,43 @@ local function Disasterspawn()
 		local dis = ents.Create(table.Random(disasters))
 		local map_bounds = getMapBounds()
 		local map_floorcenter = getMapCenterFloorPos()
-
-		dis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z))
+		
+		for k, v in pairs(ents.FindByClass("gd_d*")) do
+			dis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z))
+		end
+		for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
+			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
+				dis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z + 5000))
+			else
+				local stormtable = S37K_mapbounds[1]
+				dis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
+			end
+		end
+		for k, v in pairs(ents.FindByClass("gd_d4_landspout")) do
+			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
+				dis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z + 5000))
+			else
+				local stormtable = S37K_mapbounds[1]
+				dis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
+			end
+		end
+		for k, v in pairs(ents.FindByClass("gd_d2_waterspout")) do
+			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
+				dis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z + 5000))
+			else
+				local stormtable = S37K_mapbounds[1]
+				dis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
+			end
+		end
+		for k, v in pairs(ents.FindByClass("gd_d*_mfirenado")) do
+			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
+				dis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z + 5000))
+			else
+				local stormtable = S37K_mapbounds[1]
+				dis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
+			end
+		end
+		
 		dis:Spawn()
 		dis:Activate()
 		print("the disaster that is happening now: " .. tostring(dis) .. " Pos: " .. tostring(dis:GetPos()) )
@@ -211,6 +246,7 @@ local function Weatherspawn()
 			local stormtable = S37K_mapbounds[1]
 			wea:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
 		end
+
 		wea:Spawn()
 		wea:Activate()
 		print("the weather that is happening now: " .. tostring(wea) .. " Pos: " .. tostring(wea:GetPos()) )
@@ -379,6 +415,31 @@ local function WeatherDisasterspawn()
 				weadis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
 			end
 		end
+		for k, v in pairs(ents.FindByClass("gd_d4_landspout")) do
+			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
+				weadis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z + 5000))
+			else
+				local stormtable = S37K_mapbounds[1]
+				weadis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
+			end
+		end
+		for k, v in pairs(ents.FindByClass("gd_d2_waterspout")) do
+			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
+				weadis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z + 5000))
+			else
+				local stormtable = S37K_mapbounds[1]
+				weadis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
+			end
+		end
+		for k, v in pairs(ents.FindByClass("gd_d*_mfirenado")) do
+			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
+				weadis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z + 5000))
+			else
+				local stormtable = S37K_mapbounds[1]
+				weadis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
+			end
+		end
+
 		weadis:Spawn()
 		weadis:Activate()
 		print("the weather or disaster that is happening now: " .. tostring(weadis) .. " Pos: " .. tostring(weadis:GetPos()))
