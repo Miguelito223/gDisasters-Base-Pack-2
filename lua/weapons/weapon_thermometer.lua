@@ -40,7 +40,7 @@ function SWEP:PrimaryAttack()
 		if plypos:Distance(v:GetPos()) <= self.Primary.Distance then
 			if v != ply then
 				if v:IsPlayer() then
-					temp = math.Round(ply.gDisasters.Body.Temperature,1)
+					temp = math.Round(v.gDisasters.Body.Temperature,1)
 					PrintMessage(HUD_PRINTTALK,"The Temp of player: ".. v:GetName() .." Is: ".. temp)
 				elseif v:IsNPC() or v:IsNextBot() then
 					PrintMessage(HUD_PRINTTALK, "No Work With Npcs or Nextbot")
