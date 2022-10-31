@@ -173,19 +173,19 @@ function gDisasters_ProcessTemperature()
 			
 			
 			if  temp <= -100 and outdoor then
-				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.1
+				tempbody = tempbody - 0.1
 			elseif temp <= -100 then
-				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.01
+				tempbody = tempbody - 0.01
 			elseif temp >= 250 and outdoor then
-				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.1
+				tempbody = tempbody + 0.1
 			elseif temp >= 250 then
-				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.01
+				tempbody = tempbody + 0.01
 			end
 
 			if GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and temp >= 37 and temp >= 5 then
-				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.001
+				tempbody = tempbody + 0.001
 			elseif GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and temp >= -273.3 and temp <= 4 then
-				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
+				tempbody = tempbody - 0.001
 			end
 			
 			--[[
@@ -200,14 +200,14 @@ function gDisasters_ProcessTemperature()
 				if wl==0 then
 				elseif wl==1 then
 				
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
+					tempbody = tempbody - 0.001
 					
 
 				elseif wl==2 then
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.002
+					tempbody = tempbody - 0.002
 				elseif wl==3 then
 				
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
+					tempbody = tempbody - 0.004
 		
 				end
 			elseif temp >= 37 and  temp >= 5 then
@@ -215,14 +215,14 @@ function gDisasters_ProcessTemperature()
 				if wl==0 then
 				elseif wl==1 then
 				
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
+					tempbody = tempbody - 0.001
 					
 
 				elseif wl==2 then
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.002
+					tempbody = tempbody - 0.002
 				elseif wl==3 then
 				
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
+					tempbody = tempbody - 0.004
 		
 				end
 			elseif  temp < 37 and  temp >= 5 then
@@ -230,14 +230,14 @@ function gDisasters_ProcessTemperature()
 				if wl==0 then
 				elseif wl==1 then
 				
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
+					tempbody = tempbody - 0.001
 					
 
 				elseif wl==2 then
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.002
+					tempbody = tempbody - 0.002
 				elseif wl==3 then
 				
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
+					tempbody = tempbody - 0.004
 		
 				end
 			end
