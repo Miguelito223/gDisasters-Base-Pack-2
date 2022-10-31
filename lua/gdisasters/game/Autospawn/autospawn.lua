@@ -4,11 +4,12 @@ function Autospawn_Timer()
 
 	if GetConVar("gdisasters_autospawn_enable"):GetInt() == 0 then return end
 
+	local recentTor = false
+	local recentDis = false
+	local recentWea = false
+	local recentWeaDis = false
+
 	local function Autospawn()
-		local recentTor = false
-		local recentDis = false
-		local recentWea = false
-		local recentWeaDis = false
 		if GetConVar("gdisasters_autospawn_type"):GetString() == "Tornado" then
 		
 			recentTor = true
