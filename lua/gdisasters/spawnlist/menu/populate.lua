@@ -4,9 +4,10 @@ if !CLIENT then return end
 Ammo
 --]]
 
-AddToGDSpawnMenu("hammer", "weapon_hammer" , "Weapons", "Hammer", false)
-AddToGDSpawnMenu("Thermometer", "weapon_thermometer" , "Weapons", "Thermomether", false)
-AddToGDSpawnMenu("Baromether", "weapon_baromether" , "Weapons", "Baromether", false)
+AddToGDSpawnMenu("hammer", "weapon_hammer" , "Weapons", "Weapons", false)
+AddToGDSpawnMenu("Thermometer", "weapon_thermometer" , "Weapons", "measurer", false)
+AddToGDSpawnMenu("Baromether", "weapon_baromether" , "Weapons", "measurer", false)
+AddToGDSpawnMenu("Autospawn Weapon", "weapon_autospawn" , "Weapons", "Others", false)
 
 --[[ 
 Buildings

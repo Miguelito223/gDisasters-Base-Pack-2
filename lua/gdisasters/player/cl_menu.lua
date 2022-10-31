@@ -222,16 +222,14 @@ local function gDisastersAutospawn( CPanel )
 	CreateSliderConVariable(CPanel, "Autospawn Time", 1, 1000, 0, "gdisasters_autospawn_timer" )
 	CreateSliderConVariable(CPanel, "Autospawn Chance", 0, 1000, 0, "gdisasters_autospawn_spawn_chance" )
 
+	AddComboBox( CPanel, "Autospawn Type", {"Disasters", "Weather", "Tornado", "Weather/Disasters"}, "gdisasters_autospawn_type")
+
 	AddControlLabel( CPanel, "Autospawn Box Options: " )
 
 	CreateTickboxConVariable(CPanel, "Enable Storm Skybox"  , "gdisasters_autospawn_skybox");
 	CreateTickboxConVariable(CPanel, "Disable Map Tornadoes "  , "gdisasters_getridmaptor");
-
-	CreateTickboxConVariable(CPanel, "Autospawn Tornados"  , "gdisasters_autospawn");
-	CreateTickboxConVariable(CPanel, "Autospawn Disasters"  , "gdisasters_autospawn_disasters");
-	CreateTickboxConVariable(CPanel, "Autospawn Weather"  , "gdisasters_autospawn_weather");
-	CreateTickboxConVariable(CPanel, "Autospawn Weather/Disasters"  , "gdisasters_autospawn_weatherdisaster");
-
+	
+	CreateTickboxConVariable(CPanel, "Enable Autospawn "  , "gdisasters_autospawn_enable");
 
 	
 end
