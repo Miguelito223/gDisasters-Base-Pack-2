@@ -1,4 +1,4 @@
-if (CLIENT) then return end
+if (SERVER) then
 
 function Autospawn_Timer()
 
@@ -43,7 +43,7 @@ function Autospawn_Timer()
 			end
 			EF:Spawn()
 
-		elseif GetConVar("disasters_autospawn_type"):GetString() == "Disasters" then
+		elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Disasters" then
 
 			recentDis = true
 			local disasters = {
@@ -455,3 +455,4 @@ function Autospawn_Timer()
 
 end
 
+end

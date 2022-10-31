@@ -295,9 +295,9 @@ function ENT:Passage()
 	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(59,65),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 26000, ["Temperature"] = math.random(6,11), ["Humidity"]    = math.random(83,91), ["BRadiation"]  = 0.1}}
 
 	self.Reset_SkyData["TopColor"]       = Vector(0.20,0.50,1.00)
-			self.Reset_SkyData["BottomColor"]    = Vector(0.80,1.00,1.00)
-			self.Reset_SkyData["DuskScale"]      = 1
-			self.Reset_SkyData["SunColor"]       = Vector(0.20,0.10,0.00)
+	self.Reset_SkyData["BottomColor"]    = Vector(0.80,1.00,1.00)
+	self.Reset_SkyData["DuskScale"]      = 1
+	self.Reset_SkyData["SunColor"]       = Vector(0.20,0.10,0.00)
 		
 	
 	for k, v in pairs(player.GetAll()) do
