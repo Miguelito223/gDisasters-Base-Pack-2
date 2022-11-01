@@ -1,5 +1,3 @@
-if (SERVER) then
-
 function Autospawn_Timer()
 
 	if GetConVar("gdisasters_autospawn_enable"):GetInt() == 0 then  
@@ -460,7 +458,5 @@ function Autospawn_Timer()
 		end
 	end
 	)
-
-end
 
 end
