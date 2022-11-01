@@ -47,7 +47,7 @@ function ENT:Initialize()
 			self:Remove()
 		end)
 		
-		CreateSoundWave("disasters/wtf/kingramses.mp3", self:GetPos(), "mono" ,340.29/2, {100,100}, 10)
+		CreateSoundWave("streams/disasters/wtf/kingramses.mp3", self:GetPos(), "mono" ,340.29/2, {100,100}, 10)
 
 		
 	end
