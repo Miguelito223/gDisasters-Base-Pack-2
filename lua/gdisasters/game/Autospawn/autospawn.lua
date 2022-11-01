@@ -2,14 +2,11 @@ function Autospawn_Timer()
 
 	if GetConVar("gdisasters_autospawn_enable"):GetInt() == 0 then return end
 
-	local recentTor = false
-	local recentDis = false
-	local recentWea = false
-	local recentWeaDis = false
+	local recent = false
 
 	local function Autospawn()
 		if GetConVar("gdisasters_autospawn_type"):GetString() == "Tornado" then
-			recentTor = true
+			recent = true
 			local tornado = {
 			"gd_d3_ef0", 
 			"gd_d4_ef1", 
@@ -43,7 +40,7 @@ function Autospawn_Timer()
 			EF:Activate()
 
 		elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Disasters" then
-			recentDis = true
+			recent = true
 			local disasters = {
 				"gd_d1_rs1eq", 
 				"gd_d2_rs2eq", 
@@ -148,8 +145,7 @@ function Autospawn_Timer()
 			end)
 		
 		elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Weather" then
-
-			recentWea = true
+			recent = true
 			local weather = {
 				"gd_w1_lightbreeze", 
 				"gd_w2_mildbreeze", 
@@ -241,8 +237,7 @@ function Autospawn_Timer()
 			end)
 
 		elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Weather/Disasters" then
-
-			recentWeaDis = true
+			recent = true
 			local weadisas = {
 				"gd_w1_lightbreeze", 
 				"gd_w2_mildbreeze", 
@@ -445,10 +440,7 @@ function Autospawn_Timer()
 
 	timer.Create( "Autospawn_Timer", GetConVar( "gdisasters_autospawn_timer" ):GetInt(), 0, function()
 		if math.random(0,GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt()) == GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt() then
-			if recentTor then recentTor = false return end
-			if recentDis then recentDis = false return end
-			if recentWea then recentWea = false return end
-			if recentWeaDis then recentWeaDis = false return end
+			if recent then recent = false return end
 			Autospawn()
 		end
 	end
