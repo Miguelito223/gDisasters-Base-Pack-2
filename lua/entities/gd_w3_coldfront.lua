@@ -305,14 +305,13 @@ function ENT:Passage()
 		if v.gDisasters.Area.IsOutdoor then
 				
 	
-				net.Start("gd_clParticles")
-				net.WriteString("localized_rain_effect")
-				net.Send(v)
-				net.Start("gd_clParticles_ground")
-				net.WriteString("rain_splash_effect")
-				net.Send(v)		
+			net.Start("gd_clParticles")
+			net.WriteString("localized_rain_effect")
+			net.Send(v)
+			net.Start("gd_clParticles_ground")
+			net.WriteString("rain_splash_effect")
+			net.Send(v)		
 				
-			else
 				
 		
 			if HitChance(1)  then
@@ -328,6 +327,7 @@ function ENT:Passage()
 
 					
 			end
+			
 			self:HailFollowPlayer(v)
 
 		else

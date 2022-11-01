@@ -286,7 +286,7 @@ function ENT:PassageCold()
 
 		else
 			self:HailFollowPlayer(v)
-		end
+		
 			
 			
 		end

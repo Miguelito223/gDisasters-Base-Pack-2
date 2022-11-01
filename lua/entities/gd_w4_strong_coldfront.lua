@@ -332,12 +332,12 @@ function ENT:Passage()
 
 			
 			
+		
+		
+			self:HailFollowPlayer(v)
+		else
+			self:HailFollowPlayer(v)
 		end
-		
-		self:HailFollowPlayer(v)
-	else
-		self:HailFollowPlayer(v)
-		
 	end
 	
 end
