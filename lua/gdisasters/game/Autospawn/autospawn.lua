@@ -1,6 +1,7 @@
 function Autospawn_Timer()
 
 	if GetConVar("gdisasters_autospawn_enable"):GetInt() == 0 then return end
+	if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 	
 	if IsMapRegistered() == false then			
 		for k, v in pairs(player.GetAll()) do 
@@ -9,7 +10,7 @@ function Autospawn_Timer()
 		return 
 	end
 	
-	if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
+	
 
 	local recent = false
 
