@@ -1,6 +1,8 @@
 function Autospawn_Timer()
 
 	if GetConVar("gdisasters_autospawn_enable"):GetInt() == 0 then return end
+	if IsMapRegistered() == false then return end
+	if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 
 	local recent = false
 
