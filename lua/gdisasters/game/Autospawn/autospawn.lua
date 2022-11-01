@@ -446,6 +446,9 @@ function Autospawn_Timer()
 	timer.Create( "Autospawn_Timer", GetConVar( "gdisasters_autospawn_timer" ):GetInt(), 0, function()
 		if math.random(0,GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt()) == GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt() then
 			if recentTor then recentTor = false return end
+			if recentDis then recentDis = false return end
+			if recentWea then recentWea = false return end
+			if recentWeaDis then recentWeaDis = false return end
 			Autospawn()
 		end
 	end
