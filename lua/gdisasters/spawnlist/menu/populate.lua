@@ -7,7 +7,6 @@ Ammo
 AddToGDSpawnMenu("hammer", "weapon_hammer" , "Weapons", "Weapons", false)
 AddToGDSpawnMenu("Thermometer", "weapon_thermometer" , "Weapons", "measurer", false)
 AddToGDSpawnMenu("Baromether", "weapon_baromether" , "Weapons", "measurer", false)
-AddToGDSpawnMenu("Autospawn Weapon", "weapon_autospawn" , "Weapons", "Others", false)
 
 --[[ 
 Buildings
