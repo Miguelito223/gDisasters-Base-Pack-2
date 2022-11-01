@@ -19,7 +19,6 @@ if (SERVER) then
 		gDisasters_ProcessTemperature()
 		gDisasters_ProcessOxygen()
 		gDisasters_stormfox2()
-		Autospawn_Timer()
 	
 	
 	

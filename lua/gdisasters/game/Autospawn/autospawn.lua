@@ -17,7 +17,6 @@ function Autospawn_Timer()
 
 	local function Autospawn()
 		if GetConVar("gdisasters_autospawn_type"):GetString() == "Tornado" then
-		
 			recentTor = true
 			local tornado = {
 			"gd_d3_ef0", 
@@ -47,10 +46,11 @@ function Autospawn_Timer()
 				local stormtable = S37K_mapbounds[1]
 				EF:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
 			end
+			
 			EF:Spawn()
+			EF:Activate()
 
 		elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Disasters" then
-
 			recentDis = true
 			local disasters = {
 				"gd_d1_rs1eq", 
@@ -460,3 +460,4 @@ function Autospawn_Timer()
 	)
 
 end
+hook.Add( "Initialize", "gDisasters_Autospawn", Autospawn_Timer)
