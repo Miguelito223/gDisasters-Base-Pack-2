@@ -25,8 +25,8 @@ function ENT:Initialize()
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 		if LocalPlayer().Sounds["Nurse_Idle"]==nil or LocalPlayer().Sounds["Nurse_Chasing"]==nil then
 		
-			LocalPlayer().Sounds["Nurse_Idle"]         = {  ["sound"] = createLoopedSound(LocalPlayer(), "disasters/silenthill/nurse_nearby.wav"), ["volume"] = 0 }
-			LocalPlayer().Sounds["Nurse_Chasing"]      = {  ["sound"] = createLoopedSound(LocalPlayer(), "disasters/silenthill/nurse_attack.wav"), ["volume"] = 0 }
+			LocalPlayer().Sounds["Nurse_Idle"]         = {  ["sound"] = createLoopedSound(LocalPlayer(), "streams/disasters/silenthill/nurse_nearby.wav"), ["volume"] = 0 }
+			LocalPlayer().Sounds["Nurse_Chasing"]      = {  ["sound"] = createLoopedSound(LocalPlayer(), "streams/disasters/silenthill/nurse_attack.wav"), ["volume"] = 0 }
 			LocalPlayer().Sounds["Nurse_Idle"]["sound"]:ChangeVolume(0,0)
 			LocalPlayer().Sounds["Nurse_Chasing"]["sound"]:ChangeVolume(0,0)
 		end
@@ -58,7 +58,7 @@ function ENT:Initialize()
 		self.FirstTimeAngered  = false
 		self.CurrentStep       = 0
 		self.RunSpeed          = 1
-		self:EmitSound("disasters/silenthill/nurse_spawn.mp3", 100, 100, 1)
+		self:EmitSound("streams/disasters/silenthill/nurse_spawn.mp3", 100, 100, 1)
 		self.SpawnTime         = CurTime()
 		self.TimeSinceNoTarget = CurTime()
 		ParticleEffectAttach( "vomit_blood_main", PATTACH_POINT_FOLLOW, self, 1 )
@@ -244,7 +244,7 @@ function ENT:CountSteps()
 end
 
 function ENT:PlayStepSound()
-	sound.Play( "disasters/silenthill/nurse_step.mp3", self:GetPos(), 70, math.random(90,110), 1 )
+	sound.Play( "streams/disasters/silenthill/nurse_step.mp3", self:GetPos(), 70, math.random(90,110), 1 )
 end
 
 function ENT:AddPause()
