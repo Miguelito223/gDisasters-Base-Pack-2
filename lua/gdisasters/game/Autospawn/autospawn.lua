@@ -1,14 +1,6 @@
 function Autospawn_Timer()
 
-	if GetConVar("gdisasters_autospawn_enable"):GetInt() == 0 then  
-		if timer.Exists("Autospawn_Timer") then
-			timer.Pause("Autospawn_Timer")
-		end
-	else
-		if timer.Exists("Autospawn_Timer") then
-			timer.UnPause("Autospawn_Timer")
-		end
-	end
+	if GetConVar("gdisasters_autospawn_enable"):GetInt() == 0 then return end
 
 	local recentTor = false
 	local recentDis = false
