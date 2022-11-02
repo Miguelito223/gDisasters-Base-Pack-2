@@ -261,11 +261,10 @@ function ENT:PassageCold()
 		if v.gDisasters.Area.IsOutdoor then
 				
 	
-				net.Start("gd_clParticles")
-				net.WriteString("downburst_heavy_rain_main")
-				net.Send(v)	
+			net.Start("gd_clParticles")
+			net.WriteString("downburst_heavy_rain_main")
+			net.Send(v)	
 				
-			else
 				
 		
 			if HitChance(1)  then

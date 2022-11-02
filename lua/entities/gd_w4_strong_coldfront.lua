@@ -304,15 +304,14 @@ function ENT:Passage()
 		if v.gDisasters.Area.IsOutdoor then
 				
 	
-				net.Start("gd_clParticles")
-				net.WriteString("localized_extreme_rain_effect")
-				net.Send(v)	
-				net.Start("gd_clParticles_ground")
-				net.WriteString("extreme_rain_splash_effect")
-				net.Send(v)	
+			net.Start("gd_clParticles")
+			net.WriteString("localized_extreme_rain_effect")
+			net.Send(v)	
+			net.Start("gd_clParticles_ground")
+			net.WriteString("extreme_rain_splash_effect")
+			net.Send(v)	
 
-				
-			else
+			
 				
 		
 			if HitChance(1)  then
