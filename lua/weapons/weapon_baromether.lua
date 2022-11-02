@@ -44,19 +44,23 @@ function SWEP:SecondaryAttack()
 	local ply = self:GetOwner()
 	local pressure = math.Round(GLOBAL_SYSTEM["Atmosphere"]["Pressure"])
 	
-	if pressure <= 100000 then
+	if pressure <= 100000 and pressure > 98000 then
 		PrintMessage(HUD_PRINTCENTER,"Is Partly Cloudy")
-	elseif pressure <= 98000 then
-		PrintMessage(HUD_PRINTCENTER,"Is Light Raining")
-	elseif pressure => 102000 then
+	elseif pressure <= 98000 and pressure > 96000 then
+		PrintMessage(HUD_PRINTCENTER,"Is Light Rain/Snow")
+	elseif pressure <= 96000 and pressure > 94000 then
+		PrintMessage(HUD_PRINTCENTER,"Is Heavy Rain/Snow")
+	elseif pressure <= 94000 and pressure > 92000 then
+		PrintMessage(HUD_PRINTCENTER,"Is Extreme Rain/Snow")
+	elseif pressure <= 92000 then
+		PrintMessage(HUD_PRINTCENTER,"Is Thunder Storm")
+	elseif pressure >= 100001 and pressure < 102000 then
+		PrintMessage(HUD_PRINTCENTER,"Is Sunny")
+	elseif pressure >= 102000 and pressure < 104000 then
 		PrintMessage(HUD_PRINTCENTER,"Is Very Sunny")
-	elseif pressure <= 96000 then
-		PrintMessage(HUD_PRINTCENTER,"Is Raining")
-	elseif pressure <= 94000 then
-		PrintMessage(HUD_PRINTCENTER,"Is Storm")
-	elseif pressure => 104000 then
+	elseif pressure >= 104000 and pressure < 106000 then
 		PrintMessage(HUD_PRINTCENTER,"Is Heavy Sunny")
-	elseif pressure => 106000 then
+	elseif pressure >= 106000 then
 		PrintMessage(HUD_PRINTCENTER,"Is Extreme Heavy Sunny (Very Hot)")
 	else
 		PrintMessage(HUD_PRINTCENTER,"IDK")
