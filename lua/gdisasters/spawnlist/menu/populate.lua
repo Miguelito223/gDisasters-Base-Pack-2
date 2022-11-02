@@ -113,6 +113,7 @@ AddToGDSpawnMenu("Strong Breeze" , "gd_w3_strongbreeze" , "Weather", "Tier 3", f
 AddToGDSpawnMenu("Major Hailstorm" , "gd_w3_major_hailstorm" , "Weather", "Tier 3", false)
 AddToGDSpawnMenu("Ice Storm", "gd_w3_icestorm" , "Weather", "Tier 3", false)
 AddToGDSpawnMenu("Extreme Heavy Rain", "gd_w3_extremeheavyrain" , "Weather", "Tier 3", false)
+AddToGDSpawnMenu("Extreme Rain", "gd_w3_extremerain" , "Weather", "Tier 3", false)
 AddToGDSpawnMenu("Category 3 Hurricane", "gd_w3_catthreehurricane", "Weather", "Tier 3", false)
 AddToGDSpawnMenu("Beaufort 4 Wind (Moderate Breeze)", "gd_w3_beaufort4", "Weather", "Tier 3", false)
 AddToGDSpawnMenu("Beaufort 5 Wind (Fresh Breeze)", "gd_w3_beaufort5", "Weather", "Tier 3", false)
