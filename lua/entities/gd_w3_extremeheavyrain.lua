@@ -111,7 +111,47 @@ function ENT:AffectPlayers()
 
 			if math.random(1,2) == 1 then
 				net.Start("gd_screen_particles")
-				net.WriteString("hud/warp_ripple3")
+				net.WriteString("hud/water_droplets/droplet_01")
+				net.WriteFloat(math.random(5,228))
+				net.WriteFloat(math.random(0,100)/100)
+				net.WriteFloat(math.random(0,1))
+				net.WriteVector(Vector(0,math.random(0,200)/100,0))
+				net.Send(v)	
+			end
+			
+			if math.random(1,2) == 1 then
+				net.Start("gd_screen_particles")
+				net.WriteString("hud/water_droplets/droplet_02")
+				net.WriteFloat(math.random(5,228))
+				net.WriteFloat(math.random(0,100)/100)
+				net.WriteFloat(math.random(0,1))
+				net.WriteVector(Vector(0,math.random(0,200)/100,0))
+				net.Send(v)	
+			end
+			
+			if math.random(1,2) == 1 then
+				net.Start("gd_screen_particles")
+				net.WriteString("hud/water_droplets/droplet_03")
+				net.WriteFloat(math.random(5,228))
+				net.WriteFloat(math.random(0,100)/100)
+				net.WriteFloat(math.random(0,1))
+				net.WriteVector(Vector(0,math.random(0,200)/100,0))
+				net.Send(v)	
+			end
+			
+			if math.random(1,2) == 1 then
+				net.Start("gd_screen_particles")
+				net.WriteString("hud/water_droplets/droplet_04")
+				net.WriteFloat(math.random(5,228))
+				net.WriteFloat(math.random(0,100)/100)
+				net.WriteFloat(math.random(0,1))
+				net.WriteVector(Vector(0,math.random(0,200)/100,0))
+				net.Send(v)	
+			end
+			
+			if math.random(1,2) == 1 then
+				net.Start("gd_screen_particles")
+				net.WriteString("hud/water_droplets/droplet_05")
 				net.WriteFloat(math.random(5,228))
 				net.WriteFloat(math.random(0,100)/100)
 				net.WriteFloat(math.random(0,1))
