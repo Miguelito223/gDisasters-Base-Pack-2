@@ -57,8 +57,3 @@ function SWEP:SecondaryAttack()
 	local airtemp = math.Round(GLOBAL_SYSTEM["Atmosphere"]["Temperature"],1)
 	PrintMessage(HUD_PRINTCENTER,"your temp is: ".. temp .."°C / Air Temp Is: ".. airtemp .."°C")
 end
-
-function SWEP:CanSecondaryAttack()
-	return false
-end
-
