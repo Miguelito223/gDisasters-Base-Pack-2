@@ -13,8 +13,10 @@ SWEP.Slot = 0
 SWEP.DrawAmmo = false
 SWEP.DrawCrosshair = false
 
-SWEP.Spawnable = false
-SWEP.AdminSpawnable = false
+SWEP.Spawnable = true 
+SWEP.AdminSpawnable = true
+
+SWEP.Category 			= "gDisasters Revived Edition"
 
 SWEP.Primary.Ammo = "none"
 SWEP.Primary.Damage = 0
