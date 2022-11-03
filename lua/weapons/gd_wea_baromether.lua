@@ -1,6 +1,6 @@
 SWEP.Author = "Miguelito"
 SWEP.Base = "weapon_base"
-SWEP.PrintName = "Thermomether"
+SWEP.PrintName = "Baromemether"
 SWEP.ViewModel = "models/weapons/v_hands.mdl"
 SWEP.UseHands = false
 
