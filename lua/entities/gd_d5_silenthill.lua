@@ -134,7 +134,7 @@ function ENT:CreateDarkness(bool)
 	if bool == true then
 	
 		for k, ply in pairs(player.GetAll()) do	
-			clPlaySound(ply, "disasters/silenthill/darkness_warning.mp3", 100, 1)
+			clPlaySound(ply, "streams/disasters/silenthill/darkness_warning.mp3", 100, 1)
 		end
 		
 		timer.Simple(20, function()
@@ -170,7 +170,7 @@ function ENT:CreateDarkness(bool)
 				net.Start("gd_clParticles")
 				net.WriteString("darkness_arriving_main", Angle(0,math.random(0,1),0))
 				net.Send(ply)	
-				clPlaySound(ply, "disasters/silenthill/darkness_arrival.mp3", 100, 1)
+				clPlaySound(ply, "streams/disasters/silenthill/darkness_arrival.mp3", 100, 1)
 			end
 			
 			timer.Simple(23.3, function()

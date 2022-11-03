@@ -41,7 +41,7 @@ function ENT:Initialize()
 	
 	timer.Simple(1, function()
 		if !self:IsValid() then return end
-		local sound = Sound("disasters/water_shared/water_whirlpool_loop_01.wav")
+		local sound = Sound("streams/disasters/water_shared/water_whirlpool_loop_01.wav")
 
 		CSPatch = CreateSound(self, sound)
 		CSPatch:SetSoundLevel( 60 )

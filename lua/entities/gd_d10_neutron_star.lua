@@ -131,7 +131,7 @@ end
 
 
 function ENT:CreateLoop()
-	local sound = Sound("disasters/space/neutron_star/idle.wav")
+	local sound = Sound("streams/disasters/space/neutron_star/idle.wav")
 
 	CSPatch = CreateSound(self, sound)
 	CSPatch:SetSoundLevel( 140 )

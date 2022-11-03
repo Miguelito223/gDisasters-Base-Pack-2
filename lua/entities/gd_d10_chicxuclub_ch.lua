@@ -115,7 +115,7 @@ function ENT:Explode()
 	local mat = self.Material
 	local vel = self.Move_vector 
 	
-	local metsound = "disasters/space/chucxulub/chucxulub.wav"
+	local metsound = "streams/disasters/space/chucxulub/chucxulub.wav"
 	
 	ParticleEffect("chicxuclub_explosion_main", self:GetPos(), Angle(0,0,0), nil)
 	
