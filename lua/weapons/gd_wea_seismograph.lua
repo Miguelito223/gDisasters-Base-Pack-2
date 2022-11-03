@@ -35,9 +35,12 @@ end
 function SWEP:PrimaryAttack()
 	if (CLIENT) then return end
 	local ply = self:GetOwner()
-	for k, v in pairs(ents.FindByClass("env_earthquake")) do
-		if !v:IsValid() then PrintMessage(HUD_PRINTCENTER, "Nou") end
-		PrintMessage(HUD_PRINTCENTER, v:GetName())
+	for k, v in pairs(ents.GetAll()) do
+		if v:IsValid() and v:GetClass() == "env_earthquake"  then
+			PrintMessage(HUD_PRINTCENTER, "Seismograph Detect: " .. v.Magnitude .. "≈")
+		else
+			PrintMessage(HUD_PRINTCENTER, "I don't detect anything")
+		end
 	end
 end
 
