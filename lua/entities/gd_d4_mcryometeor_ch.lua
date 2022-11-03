@@ -66,7 +66,7 @@ function ENT:PhysicsCollide( data, phys )
 	local mat = self.Material
 	local vel = self.Move_vector 
 	
-	CreateSoundWave("streams/disaters/atmospheric/sonic_boom_01.mp3", self:GetPos(), "3d" ,340.29/2, {100,100}, 5)
+	CreateSoundWave("streams/disasters/atmospheric/sonic_boom_01.mp3", self:GetPos(), "3d" ,340.29/2, {100,100}, 5)
 
 		
 	local models = { "models/ramses/models/nature/megacryometeor_01.mdl",
