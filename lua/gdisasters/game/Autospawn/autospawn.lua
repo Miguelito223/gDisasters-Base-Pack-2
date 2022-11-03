@@ -1,17 +1,4 @@
 function Autospawn_Timer()
-
-	if GetConVar("gdisasters_autospawn_enable"):GetInt() == 0 then return end
-	if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
-	
-	if IsMapRegistered() == false then			
-		for k, v in pairs(player.GetAll()) do 
-			v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
-		end   
-		return 
-	end
-	
-	
-
 	local recent = false
 
 	local function Autospawn()
@@ -450,6 +437,9 @@ function Autospawn_Timer()
 
 	timer.Create( "Autospawn_Timer", GetConVar( "gdisasters_autospawn_timer" ):GetInt(), 0, function()
 		if math.random(0,GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt()) == GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt() then
+			if GetConVar("gdisasters_autospawn_enable"):GetInt() <= 0 then return end
+			if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
+			if IsMapRegistered() == false then return end
 			if recent then recent = false return end
 			Autospawn()
 		end
