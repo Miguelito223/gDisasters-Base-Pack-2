@@ -16,7 +16,7 @@ SWEP.DrawCrosshair = false
 SWEP.Spawnable = true
 SWEP.AdminSpawnable = true
 
-SWEP.Category 			= "gDisasters Revived Edition"
+SWEP.Category 			= "gDisasters - Measurer"
 
 SWEP.Primary.Ammo = "none"
 SWEP.Primary.Damage = 0
