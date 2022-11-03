@@ -33,10 +33,11 @@ function SWEP:Initialize()
 end
 
 function SWEP:PrimaryAttack()
+	if (CLIENT) then return end
 	local ply = self:GetOwner()
-	for k,v in pairs(ents.FindByClass("env_earthquake")) do
+	for k, v in pairs(ents.FindByClass("env_earthquake")) do
 		if !v:IsValid() then PrintMessage(HUD_PRINTCENTER, "Nou") end
-		PrintMessage(HUD_PRINTCENTER, "≈" .. v:GetName())
+		PrintMessage(HUD_PRINTCENTER, v:GetName())
 	end
 end
 
