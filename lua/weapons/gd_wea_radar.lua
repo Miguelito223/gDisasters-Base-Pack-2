@@ -1,6 +1,6 @@
 SWEP.Author = "Miguelito"
 SWEP.Base = "weapon_base"
-SWEP.PrintName = "Radar"
+SWEP.PrintName = "Tornado Radar"
 SWEP.ViewModel = "models/weapons/v_hands.mdl"
 SWEP.UseHands = false
 
