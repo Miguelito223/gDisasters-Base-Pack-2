@@ -35,37 +35,35 @@ function SWEP:Initialize()
 end
 
 function SWEP:PrimaryAttack()
-	if (CLIENT) then return end
 	local ply = self:GetOwner()
 	local pressure =  math.Round(GLOBAL_SYSTEM["Atmosphere"]["Pressure"])
-	PrintMessage(HUD_PRINTCENTER,"Pressure is: " .. pressure .. "Pa")
+	ply:PrintMessage(HUD_PRINTCENTER,"Pressure is: " .. pressure .. "Pa")
 end
 
 function SWEP:SecondaryAttack()
-	if (CLIENT) then return end
 	local ply = self:GetOwner()
 	local pressure = math.Round(GLOBAL_SYSTEM["Atmosphere"]["Pressure"])
 	
 	if pressure <= 100000 and pressure > 98000 then
-		PrintMessage(HUD_PRINTCENTER,"Is Partly Cloudy")
+		ply:PrintMessage(HUD_PRINTCENTER,"Is Partly Cloudy")
 	elseif pressure <= 98000 and pressure > 96000 then
-		PrintMessage(HUD_PRINTCENTER,"Is Light Rain/Snow")
+		ply:PrintMessage(HUD_PRINTCENTER,"Is Light Rain/Snow")
 	elseif pressure <= 96000 and pressure > 94000 then
-		PrintMessage(HUD_PRINTCENTER,"Is Heavy Rain/Snow")
+		ply:PrintMessage(HUD_PRINTCENTER,"Is Heavy Rain/Snow")
 	elseif pressure <= 94000 and pressure > 92000 then
-		PrintMessage(HUD_PRINTCENTER,"Is Extreme Rain/Snow")
+		ply:PrintMessage(HUD_PRINTCENTER,"Is Extreme Rain/Snow")
 	elseif pressure <= 92000 then
-		PrintMessage(HUD_PRINTCENTER,"Is Thunder Storm")
+		ply:PrintMessage(HUD_PRINTCENTER,"Is Thunder Storm")
 	elseif pressure >= 100001 and pressure < 102000 then
-		PrintMessage(HUD_PRINTCENTER,"Is Sunny")
+		ply:PrintMessage(HUD_PRINTCENTER,"Is Sunny")
 	elseif pressure >= 102000 and pressure < 104000 then
-		PrintMessage(HUD_PRINTCENTER,"Is Very Sunny")
+		ply:PrintMessage(HUD_PRINTCENTER,"Is Very Sunny")
 	elseif pressure >= 104000 and pressure < 106000 then
-		PrintMessage(HUD_PRINTCENTER,"Is Heavy Sunny")
+		ply:PrintMessage(HUD_PRINTCENTER,"Is Heavy Sunny")
 	elseif pressure >= 106000 then
-		PrintMessage(HUD_PRINTCENTER,"Is Extreme Heavy Sunny (Very Hot)")
+		ply:PrintMessage(HUD_PRINTCENTER,"Is Extreme Heavy Sunny (Very Hot)")
 	else
-		PrintMessage(HUD_PRINTCENTER,"IDK")
+		ply:PrintMessage(HUD_PRINTCENTER,"IDK")
 	end
 end
 

@@ -35,13 +35,12 @@ function SWEP:Initialize()
 end
 
 function SWEP:PrimaryAttack()
-	if (CLIENT) then return end
 	local ply = self:GetOwner()
 	for k, v in pairs(ents.GetAll()) do
 		if v:IsValid() and v:GetClass() == "env_tornado"  then
-			PrintMessage(HUD_PRINTCENTER, "Radar Dectect: " .. v.Data.Parent.PrintName)
+			ply:PrintMessage(HUD_PRINTCENTER, "Radar Dectect: " .. v.Data.Parent.PrintName)
 		else
-			PrintMessage(HUD_PRINTCENTER, "I don't detect anything")
+			ply:PrintMessage(HUD_PRINTCENTER, "I don't detect anything")
 		end
 	end
 end
