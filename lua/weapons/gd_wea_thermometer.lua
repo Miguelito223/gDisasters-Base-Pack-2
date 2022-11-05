@@ -35,6 +35,7 @@ function SWEP:Initialize()
 end
 
 function SWEP:PrimaryAttack()
+	if CLIENT then return end
 	local ply = self:GetOwner()
 	local plypos = ply:GetPos()
 	for k, v in pairs(ents.GetAll()) do
@@ -52,6 +53,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:SecondaryAttack()
+	if CLIENT then return end
 	local ply = self:GetOwner()
 	local temp = math.Round(ply.gDisasters.Body.Temperature,1)
 	local airtemp = math.Round(GLOBAL_SYSTEM["Atmosphere"]["Temperature"],1)
