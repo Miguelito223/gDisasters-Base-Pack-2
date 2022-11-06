@@ -2,7 +2,7 @@ if (CLIENT) then
 
 	function gfx_temperatureEffects()
 		
-		if GetConVar("gdisasters_hud_temp_cl"):GetInt() == 0 then return end
+		if GetConVar("gdisasters_hud_temp_enable_cl"):GetInt() == 0 then return end
 
 		local temp            = LocalPlayer():GetNWFloat("BodyTemperature")
 		local blur_alpha_hot  =  1-((44-math.Clamp(temp,39,44))/5)
@@ -82,7 +82,7 @@ if (SERVER) then
 
 function gDisasters_ProcessTemperature()
 
-	if GetConVar("gdisasters_hud_temp_sv"):GetInt() == 0 then return end
+	if GetConVar("gdisasters_hud_temp_enable"):GetInt() == 0 then return end
 
 	local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
 	local compensation_max      = 10   -- degrees 
@@ -93,8 +93,6 @@ function gDisasters_ProcessTemperature()
 	SetGlobalFloat("gDisasters_Temperature", temp)
 				
 	local function updateVars()
-
-		if GetConVar("gdisasters_hud_temp_updatevars"):GetInt() == 0 then return end
 
 		for k, v in pairs(plytbl) do
 		

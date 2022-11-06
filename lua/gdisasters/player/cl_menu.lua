@@ -78,23 +78,26 @@ end
 
 local function gDisastersSVSettings( CPanel )
 
-	AddControlLabel( CPanel, "wind/tornado/water Related Damage options: " )
+	AddControlLabel( CPanel, "Wind/Tornado/Water Related Damage options: " )
 
 	CreateTickboxConVariable(CPanel, "Enable Water Related Damage"  , "gdisasters_envdynamicwater_candamageconstraints");
 	CreateTickboxConVariable(CPanel, "Enable Tornado Related Damage" ,"gdisasters_envtornado_candamageconstraints");
 	CreateTickboxConVariable(CPanel, "Enable Wind Related Damage" ,"gdisasters_wind_candamageconstraints");
 
-	AddControlLabel( CPanel, "Temp options: " )
-
-	CreateTickboxConVariable(CPanel, "Enable Temp Related Damage" ,"gdisasters_hud_temp_damage");
-	CreateTickboxConVariable(CPanel, "Enable Temp Breathing" ,"gdisasters_hud_temp_breathing");
-	CreateTickboxConVariable(CPanel, "Enable Temp Vomit" ,"gdisasters_hud_temp_vomit");
-	CreateTickboxConVariable(CPanel, "Enable Temp Sneeze" ,"gdisasters_hud_temp_sneeze");
-
-	AddControlLabel( CPanel, "Drowning options: " )
+	AddControlLabel( CPanel, "Body Temperature options: " )
 	
-	CreateTickboxConVariable(CPanel, "Enable Drowning" ,"gdisasters_oxygen_enable");
-	CreateTickboxConVariable(CPanel, "Enable Drowning Related damage" ,"gdisasters_oxygen_damage");
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature" ,"gdisasters_hud_temp_enable");
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Screen Effects" ,"gdisasters_hud_temp_enable_cl");
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Related Damage" ,"gdisasters_hud_temp_damage");
+
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Breathing" ,"gdisasters_hud_temp_breathing");
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Vomit" ,"gdisasters_hud_temp_vomit");
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Sneeze" ,"gdisasters_hud_temp_sneeze");
+
+	AddControlLabel( CPanel, "Body Oxygen options: " )
+	
+	CreateTickboxConVariable(CPanel, "Enable Body Oxygen" ,"gdisasters_oxygen_enable");
+	CreateTickboxConVariable(CPanel, "Enable Body Oxygen Related damage" ,"gdisasters_oxygen_damage");
 
 
 	AddControlLabel( CPanel, "Other options: \n\nThe Atmophere option requires a map RESTART to take effect."  )
@@ -127,12 +130,6 @@ local function gDisastersSVADVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Wind postdamage no collide basetimeout" ,"gdisasters_wind_postdamage_nocollide_basetimeout");
 	CreateTickboxConVariable(CPanel, "Enable Wind postdamage no collide basetime spread" ,"gdisasters_wind_postdamage_nocollide_basetimeout_spread");
 	CreateTickboxConVariable(CPanel, "Enable Wind postdamage reducemass" ,"gdisasters_wind_postdamage_reducemass_enabled");
-
-	AddControlLabel( CPanel, "Advanced Temp options: " )
-
-	CreateTickboxConVariable(CPanel, "Enable Temp UpdateVars" ,"gdisasters_hud_temp_updatevars");
-	CreateTickboxConVariable(CPanel, "Enable Temp ClientSide" ,"gdisasters_hud_temp_cl");
-	CreateTickboxConVariable(CPanel, "Enable Temp ServerSide" ,"gdisasters_hud_temp_sv");
 
 	AddControlLabel( CPanel, "Water/lava and flood/tsunami options: " )
 	
