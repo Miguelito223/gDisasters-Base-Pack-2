@@ -82,15 +82,16 @@ if (SERVER) then
 
 function gDisasters_ProcessTemperature()
 
-	if GetConVar("gdisasters_hud_temp_enable"):GetInt() == 0 then return end
-
 	local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
 	local compensation_max      = 10   -- degrees 
 	local body_heat_genK        = engine.TickInterval() -- basically 1 degree Celsius per second
 	local body_heat_genMAX      = 0.01/4
 	local fire_heat_emission    = 50
 	local plytbl                = player.GetAll()
+	
 	SetGlobalFloat("gDisasters_Temperature", temp)
+
+	if GetConVar("gdisasters_hud_temp_enable"):GetInt() == 0 then return end
 				
 	local function updateVars()
 
