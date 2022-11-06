@@ -1,3 +1,5 @@
+if (SERVER) then
+
 function Autospawn_Timer()
 	local recent = false
 
@@ -448,3 +450,5 @@ function Autospawn_Timer()
 
 end
 hook.Add( "Initialize", "gDisasters_Autospawn", Autospawn_Timer)
+	
+end

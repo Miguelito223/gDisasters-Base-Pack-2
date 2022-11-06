@@ -189,6 +189,8 @@ hook.Add( "Initialize", "AtmosInitFix", function()
 	end
 end )
 
+if (SERVER) then
+
 hook.Add( "InitPostEntity", "gDisastersInitPostEvo", function()
 
 
@@ -214,6 +216,7 @@ hook.Add( "InitPostEntity", "gDisastersInitPostEvo", function()
 
 end )
 
+end
 
 
 
