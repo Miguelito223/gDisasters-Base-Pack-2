@@ -91,10 +91,10 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Temp Vomit" ,"gdisasters_hud_temp_vomit");
 	CreateTickboxConVariable(CPanel, "Enable Temp Sneeze" ,"gdisasters_hud_temp_sneeze");
 
-	AddControlLabel( CPanel, "Oxygen options: " )
+	AddControlLabel( CPanel, "Drowning options: " )
 	
-	CreateTickboxConVariable(CPanel, "Enable Oxygen enable" ,"gdisasters_oxygen_enable");
-	CreateTickboxConVariable(CPanel, "Enable Oxygen Related damage" ,"gdisasters_oxygen_damage");
+	CreateTickboxConVariable(CPanel, "Enable Drowning" ,"gdisasters_oxygen_enable");
+	CreateTickboxConVariable(CPanel, "Enable Drowning Related damage" ,"gdisasters_oxygen_damage");
 
 
 	AddControlLabel( CPanel, "Other options: \n\nThe Atmophere option requires a map RESTART to take effect."  )
@@ -102,7 +102,7 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_atmosphere");
 	CreateTickboxConVariable(CPanel, "Enable Hud"  , "gdisasters_hud_enabled");
 	CreateTickboxConVariable(CPanel, "Enable Experimental Overdraw"  , "gdisasters_experimental_overdraw");
-	CreateTickboxConVariable(CPanel, "Enable Stormfox2 compatibility"  , "gdisasters_stormfox_enable");
+	CreateTickboxConVariable(CPanel, "Enable Stormfox2 Compatibility"  , "gdisasters_stormfox_enable");
 
 	AddControlLabel( CPanel, "Hud type options: \n\n1: body hud\n\n2: pressure hud\n\n3: earthquake hud")
 	
@@ -134,7 +134,7 @@ local function gDisastersSVADVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Temp ClientSide" ,"gdisasters_hud_temp_cl");
 	CreateTickboxConVariable(CPanel, "Enable Temp ServerSide" ,"gdisasters_hud_temp_sv");
 
-	AddControlLabel( CPanel, "Water/lava flood or tsunami options: " )
+	AddControlLabel( CPanel, "Water/lava and flood/tsunami options: " )
 	
 	CreateSliderConVariable(CPanel, "min flood level" , 0, 10000, 1,"gdisasters_envdynamicwater_level_min");
 	CreateSliderConVariable(CPanel, "max flood level", 0, 10000, 1 ,"gdisasters_envdynamicwater_level_max");
