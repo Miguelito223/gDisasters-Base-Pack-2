@@ -166,6 +166,7 @@ concommand.Add("getmap", function()
 	print(game.GetMap())
 end)
 
+if (SERVER) then
 
 hook.Add( "Initialize", "AtmosInitFix", function()
 
@@ -189,7 +190,7 @@ hook.Add( "Initialize", "AtmosInitFix", function()
 	end
 end )
 
-if (SERVER) then
+
 
 hook.Add( "InitPostEntity", "gDisastersInitPostEvo", function()
 
