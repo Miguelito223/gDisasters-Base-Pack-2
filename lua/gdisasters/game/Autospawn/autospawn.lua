@@ -23,12 +23,6 @@ function Autospawn_Timer()
 			local map_floorcenter = getMapCenterFloorPos()
 
 			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-				if IsMapRegistered() == false then
-					for k, v in pairs(player.GetAll()) do 
-						v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
-					end 
-					return
-				end
 				EF:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z + 5000))
 			else
 				local stormtable = S37K_mapbounds[1]
@@ -441,7 +435,12 @@ function Autospawn_Timer()
 		if math.random(0,GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt()) == GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt() then
 			if GetConVar("gdisasters_autospawn_enable"):GetInt() <= 0 then return end
 			if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
-			if IsMapRegistered() == false then return end
+			if IsMapRegistered() == false then 
+				for k, v in pairs(player.GetAll()) do 
+					v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
+				end 
+				return 
+			end
 			if recent then recent = false return end
 			Autospawn()
 		end
