@@ -112,7 +112,7 @@ function ENT:TryChokeOnAsh(v)
 		local mouth_attach = v:LookupAttachment("mouth")
 		ParticleEffectAttach( "cough_ash", PATTACH_POINT_FOLLOW, v, mouth_attach )
 		v:TakeDamage( math.random(8,10), self, self)
-		clPlaySound(v, "steams/disasters/player/cough.wav", math.random(80,120), 1)
+		clPlaySound(v, "streams/disasters/player/cough.wav", math.random(80,120), 1)
 		
 		v.NextChokeOnAsh = CurTime() + math.random(3,7)
 	else
