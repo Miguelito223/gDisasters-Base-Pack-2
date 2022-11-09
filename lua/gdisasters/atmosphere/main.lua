@@ -58,7 +58,7 @@ function WindUnweld(ent)
 	local wind_mul   = (math.Clamp(table_wind["Speed"],200, 256) -200) / 10
 	
 
-	if HitChance(math.random(0.02,0.05) + wind_mul ) then
+	if HitChance(0.01 + wind_mul ) then
 		local can_play_sound = false
 		
 		
