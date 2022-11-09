@@ -100,6 +100,9 @@ end)
 
 net.Receive("gd_clParticles_ground", function()
 	if GetConVar("gdisasters_graphics_enable_ground_particles"):GetInt() <= 0 then return end
+	for k,v in pairs(player.GetAll()) do
+		if !v:IsOnGround() then return end
+	end
 
 	local effect = net.ReadString()
 	local angle  = net.ReadAngle()
