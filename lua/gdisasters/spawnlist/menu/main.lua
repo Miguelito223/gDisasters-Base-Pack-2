@@ -75,7 +75,7 @@ hook.Add( "PopulategDisasters_Weapons", "AddWeaponsContent", function( pnlConten
 				{ 
 					nicename	= swep.PrintName or swep.Name,
 					spawnname	= swep.Class,
-					material	= "weapons/"..swep.Class..".png",
+					material	= "entities/"..swep.Class..".png",
 					admin		= swep.AdminOnly or false
 				})
 				

@@ -9,6 +9,8 @@ AddToGDSpawnMenu("Thermometer", "gd_wea_thermometer" , "Weapons", "Measurer", fa
 AddToGDSpawnMenu("Baromether", "gd_wea_baromether" , "Weapons", "Measurer", false)
 AddToGDSpawnMenu("Seismograph", "gd_wea_seismograph" , "Weapons", "Measurer", false)
 AddToGDSpawnMenu("Tornado Radar", "gd_wea_radar" , "Weapons", "Measurer", false)
+AddToGDSpawnMenu("Hygrometer", "gd_wea_hygrometer" , "Weapons", "Measurer", false)
+AddToGDSpawnMenu("Anemometer", "gd_wea_anemometer" , "Weapons", "Measurer", false)
 
 --[[ 
 Buildings
