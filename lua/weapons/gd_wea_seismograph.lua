@@ -40,8 +40,6 @@ function SWEP:PrimaryAttack()
 	for k, v in pairs(ents.FindByClass("env_earthquake")) do
 		if v:IsValid() then
 			ply:PrintMessage(HUD_PRINTCENTER, "Seismograph Detect: " .. v.Magnitude .. "≈")
-		else
-			ply:PrintMessage(HUD_PRINTCENTER, "I don't detect anything")
 		end
 	end
 end
