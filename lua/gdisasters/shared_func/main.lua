@@ -804,7 +804,7 @@ function isOutdoor(ply, isprop)
 		tr.start = ply:GetPos()
 		tr.endpos = tr.start + Vector(0,0,48000)
 		tr.filter = { ply }
-		tr.mask = MASK_SOLID_BRUSHONLY
+		tr.mask = MASK_SOLID
 		trace = util.TraceLine( tr )
 		return trace.HitSky
 		
