@@ -94,7 +94,7 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Vomit" ,"gdisasters_hud_temp_vomit");
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Sneeze" ,"gdisasters_hud_temp_sneeze");
 
-	AddControlLabel( CPanel, "Body Oxygen options: " )
+	AddControlLabel( CPanel, "Body Oxygen Options: " )
 	
 	CreateTickboxConVariable(CPanel, "Enable Body Oxygen" ,"gdisasters_oxygen_enable");
 	CreateTickboxConVariable(CPanel, "Enable Body Oxygen Related Damage" ,"gdisasters_oxygen_damage");
@@ -103,7 +103,7 @@ end
 -- ADVANCED SV MENU
 local function gDisastersSVADVSettings( CPanel )
 
-	AddControlLabel( CPanel, "Don't mess with these settings unless you know what you're doing.\n\nAdvanced options: ")
+	AddControlLabel( CPanel, "Don't mess with these settings unless you know what you're doing.\n\nAdvanced Options: ")
 	
 	AddControlLabel( CPanel, "Simulation Option: Change the quality of simulation.")
 	CreateSliderConVariable(CPanel, "Tornado Simulation Quality", 0.1, 0.50, 2, "gdisasters_envtornado_simquality" );
@@ -144,7 +144,7 @@ end
 local function gDisastersServerGraphics( CPanel )
 
 	AddControlLabel( CPanel, "Main Server Graphics" )
-	
+
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_atmosphere");
 	CreateTickboxConVariable(CPanel, "Enable Stormfox2 Compatibility"  , "gdisasters_stormfox_enable");
 
@@ -200,13 +200,13 @@ end
 
 local function gDisastersAudioSettings( CPanel )
 	
-	AddControlLabel( CPanel, "Audio options: " )
+	AddControlLabel( CPanel, "Audio Options: " )
 	
 	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1,1, "gdisasters_sound_Light_Wind" );
 	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1,1, "gdisasters_sound_Moderate_Wind" );
 	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,1,"gdisasters_sound_Heavy_Wind" );
 	
-	AddControlLabel( CPanel, "Hud Audio options: " )
+	AddControlLabel( CPanel, "Hud Audio Options: " )
 	
 	CreateSliderConVariable(CPanel, "hud Hearth Volume", 0,1,1, "gdisasters_hud_heartbeat_volume" );
 	CreateSliderConVariable(CPanel, "hud Warning Volume", 0,1,1, "gdisasters_hud_warning_volume" );
@@ -214,7 +214,7 @@ end
 
 local function gDisastersAutospawn( CPanel )
 
-	AddControlLabel( CPanel, "Autospawn options: " )
+	AddControlLabel( CPanel, "Autospawn Options: " )
 	
 	CreateSliderConVariable(CPanel, "Autospawn Time", 1, 1000, 0, "gdisasters_autospawn_timer" )
 	CreateSliderConVariable(CPanel, "Autospawn Chance", 0, 1000, 0, "gdisasters_autospawn_spawn_chance" )
@@ -232,7 +232,7 @@ local function gDisastersAutospawn( CPanel )
 end
 
 local function gDisastersADVGraphicsSettings( CPanel )			
-	AddControlLabel( CPanel, "Advanced Graphics options:" )
+	AddControlLabel( CPanel, "Advanced Graphics Options:" )
 
 	CreateSliderConVariable(CPanel,  "Water Quality", 1, 3, 0, "gdisasters_graphics_water_quality" );
 	CreateSliderConVariable(CPanel,   "Fog Quality", 1, 8, 0, "gdisasters_graphics_fog_quality" );
