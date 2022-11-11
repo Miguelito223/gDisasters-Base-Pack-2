@@ -60,5 +60,3 @@ CreateConVar( "gdisasters_antilag_maximum_safe_collisions_per_second_average", "
 CreateConVar( "gdisasters_antilag_maximum_safe_collisions_per_second_per_prop", "400", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_antilag_post_damage_no_collide_base_time", "400", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_antilag_mode", "1", {FCVAR_ARCHIVE}, "" )
-
-CreateConVar( "gdisasters_experimental_overdraw", "1", {FCVAR_ARCHIVE}, "sexy " )
