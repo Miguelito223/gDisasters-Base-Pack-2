@@ -67,7 +67,7 @@ PrecacheParticleSystem("gustnado_06_main")
 
 -- ef0
 PrecacheParticleSystem("h_ef0")
-PrecacheParticleSystem("l_EF1")
+PrecacheParticleSystem("temp_EF0")
 PrecacheParticleSystem("t_ef0")
 PrecacheParticleSystem("har_ef0")
 PrecacheParticleSystem("t_tornado_EF0")
@@ -78,7 +78,8 @@ PrecacheParticleSystem("t_EF0_wip")
 -- ef1
 PrecacheParticleSystem("h_ef1")
 PrecacheParticleSystem("t_ef1")
-PrecacheParticleSystem("t_EF14")
+PrecacheParticleSystem("temp_EF1")
+PrecacheParticleSystem("temp_EF1_fix")
 PrecacheParticleSystem("har_ef1")
 PrecacheParticleSystem("t_tornado_EF1")
 PrecacheParticleSystem("h1_EF1")
@@ -90,6 +91,7 @@ PrecacheParticleSystem("har_waterspout")
 PrecacheParticleSystem("har_waterspout_nocloud")
 -- ef2
 PrecacheParticleSystem("h_ef2")
+PrecacheParticleSystem("temp_EF2")
 PrecacheParticleSystem("t_ef2")
 PrecacheParticleSystem("har_ef2")
 PrecacheParticleSystem("t_tornado_EF2")
@@ -97,6 +99,7 @@ PrecacheParticleSystem("h1_EF2")
 
 -- ef3
 PrecacheParticleSystem("h_ef3")
+PrecacheParticleSystem("temp_EF3")
 PrecacheParticleSystem("t_ef3")
 PrecacheParticleSystem("har_ef3")
 PrecacheParticleSystem("t_tornado_EF3")
@@ -104,19 +107,19 @@ PrecacheParticleSystem("h1_EF3")
 
 -- ef4
 PrecacheParticleSystem("h_ef4")
+PrecacheParticleSystem("temp_EF4")
 PrecacheParticleSystem("t_ef4")
-PrecacheParticleSystem("t_EF46")
 PrecacheParticleSystem("har_ef4")
 PrecacheParticleSystem("t_tornado_EF4")
 PrecacheParticleSystem("h1_EF4")
 
 -- ef5
 PrecacheParticleSystem("h_ef5")
+PrecacheParticleSystem("temp_EF5")
 PrecacheParticleSystem("t_ef5")
 PrecacheParticleSystem("har_ef5")
 PrecacheParticleSystem("t_tornado_EF5")
 PrecacheParticleSystem("h1_EF5")
-PrecacheParticleSystem("TTC_Multivortex")
 
 -- ef6
 PrecacheParticleSystem("martian_tornado")

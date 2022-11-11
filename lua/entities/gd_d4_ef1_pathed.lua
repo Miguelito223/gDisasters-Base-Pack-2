@@ -12,7 +12,7 @@ ENT.Category                         =  "Hmm"
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"                      
 
 ENT.Data                             = {GroundSpeed = {}, MaxFunnel = {}, MinFunnel = {}, Life={}, MaxGroundFunnel={}, MinGroundFunnel={}}
-ENT.Data.Effect                      = {"h_ef1","t_ef1","t_EF14","har_ef1","t_tornado_EF1","h1_EF1"}
+ENT.Data.Effect                      = {"h_ef1","t_ef1","temp_EF1","temp_EF1_fix","har_ef1","t_tornado_EF1","h1_EF1"}
 ENT.Data.Parent                      = nil
 ENT.Data.ShouldFollowPath            = true
 ENT.Data.EnhancedFujitaScale         = "EF1"
