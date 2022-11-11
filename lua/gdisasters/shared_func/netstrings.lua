@@ -15,6 +15,8 @@ if (SERVER) then
 	util.AddNetworkString( "gd_ambientlight"	)
 	util.AddNetworkString( "gd_shakescreen"	)
 	util.AddNetworkString( "gd_soundwave" )
+
+	util.AddNetworkString( "gd_entity_exists_on_server" )
 	
 	util.AddNetworkString( "gd_createfog" )
 	util.AddNetworkString( "gd_creategfx" )
@@ -87,6 +89,13 @@ net.Receive("gd_ambientlight", function()
 		net.WriteVector(LocalPlayer().AmbientLight)
 	net.SendToServer()
 	
+end)
+
+net.Receive( "gd_entity_exists_on_server", function() 
+	local string = net.ReadString()
+	local ent = ents.Create(string)
+	ent:Spawn()
+	ent:Activate()
 end)
 
 net.Receive("gd_clParticles", function()
