@@ -77,7 +77,7 @@ if (CLIENT) then
 	include("gdisasters/game/antilag/main.lua")
 	include("gdisasters/game/damagetypes.lua")
 	include("gdisasters/game/water_physics.lua")
-	include("gdisasters/game/dnc_cl.lua")
+	include("gdisasters/game/dnc.lua")
 	include("gdisasters/game/world_init.lua")
 	include("gdisasters/game/convars/main.lua")
 	
