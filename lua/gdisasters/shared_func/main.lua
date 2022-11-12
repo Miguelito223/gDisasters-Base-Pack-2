@@ -1739,13 +1739,12 @@ end
 
 function gDisasters_GetMoonDir()
 
-	return GetGlobalVector("gdSunDir")*-1
+	return GetGlobalAngle("gdSunDir")*-1
 end
-
 
 function gDisasters_GetSunDir()
 
-	return GetGlobalVector("gdSunDir")
+	return GetGlobalAngle("gdSunDir")
 end
 
 function gDisasters_EntityExists(entname)
