@@ -32,6 +32,13 @@ if (SERVER) then
 	
 	end)
 
+	net.Receive( "gd_entity_exists_on_server", function() 
+		local string = net.ReadString()
+		local ent = ents.Create(string)
+		ent:Spawn()
+		ent:Activate()
+	end)
+
 	net.Receive("gd_vomit_blood", function()
 		
 		local ent = net.ReadEntity()
@@ -89,13 +96,6 @@ net.Receive("gd_ambientlight", function()
 		net.WriteVector(LocalPlayer().AmbientLight)
 	net.SendToServer()
 	
-end)
-
-net.Receive( "gd_entity_exists_on_server", function() 
-	local string = net.ReadString()
-	local ent = ents.Create(string)
-	ent:Spawn()
-	ent:Activate()
 end)
 
 net.Receive("gd_clParticles", function()

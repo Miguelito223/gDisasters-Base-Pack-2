@@ -1444,7 +1444,7 @@ end
 
 function Vec2D(vector)
 
-return Vector(vector.x, vector.y, 0 )
+	return Vector(vector.x, vector.y, 0 )
 
 end
 

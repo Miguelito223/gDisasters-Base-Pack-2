@@ -1,5 +1,3 @@
-
-
 gDisasters.Game.AntiLag = {}
 
 gDisasters.Game.AntiLag.Collisions = {}
