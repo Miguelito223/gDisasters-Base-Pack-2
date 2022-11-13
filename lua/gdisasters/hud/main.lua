@@ -199,7 +199,7 @@ if (CLIENT) then
 			
 		local pos_air_temperature      	   = Vector(280 * xscale, 860 * yscale, 0)
 		local pos_body_temperature         = Vector(280 * xscale, 890 * yscale, 0)
-		local pos_body_oxygen         = Vector(280 * xscale, 920 * yscale, 0)
+		local pos_body_oxygen        	  = Vector(280 * xscale, 920 * yscale, 0)
 		local pos_humidity                 = Vector(280 * xscale, 950 * yscale , 0)
 		local pos_windspeed                = Vector(280 * xscale, 980 * yscale , 0)
 		local pos_lwindspeed                = Vector(280 * xscale, 1010 * yscale , 0)
@@ -258,15 +258,15 @@ if (CLIENT) then
 		local function drawText()
 
 			if GetConVar("gdisasters_hud_temptype"):GetString() == "c" then
-				draw.DrawText( "Air Temperature    : "..air_temp, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+				draw.DrawText( "Air Temperature: "..air_temp, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 				draw.DrawText( "Body Temperature: "..body_temp, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_temperature.x , pos_body_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			elseif GetConVar("gdisasters_hud_temptype"):GetString() == "f" then
-                draw.DrawText( "Air Temperature    : "..air_tempf, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+                draw.DrawText( "Air Temperature: "..air_tempf, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 				draw.DrawText( "Body Temperature: "..body_tempf, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_temperature.x , pos_body_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			end
 			
-			draw.DrawText( "Body Oxygen               : "..body_Oxy, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_oxygen.x , pos_body_oxygen.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
-			draw.DrawText( "Humidity                : "..humidity, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_humidity.x , pos_humidity.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+			draw.DrawText( "Body Oxygen: "..body_Oxy, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_oxygen.x , pos_body_oxygen.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+			draw.DrawText( "Humidity: "..humidity, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_humidity.x , pos_humidity.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			
 
 			local color  = Color(255,255,255,255)
@@ -277,7 +277,7 @@ if (CLIENT) then
 				color2    = Color(math.random(0,255), 0, 0, 255)
 			end
 			
-			draw.DrawText( "Wind Speed          : "..wind_speed, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_windspeed.x , pos_windspeed.y, color, TEXT_ALIGN_LEFT )
+			draw.DrawText( "Wind Speed: "..wind_speed, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_windspeed.x , pos_windspeed.y, color, TEXT_ALIGN_LEFT )
 			draw.DrawText( "Local Wind Speed: "..local_wspeed, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_lwindspeed.x , pos_lwindspeed.y, color2, TEXT_ALIGN_LEFT )
 	
 			
