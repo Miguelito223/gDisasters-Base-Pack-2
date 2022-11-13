@@ -408,6 +408,7 @@ if (SERVER) then
                     local angle = Angle( -180 * sunfrac, 15, 0 );
 
                     self.m_EnvSun:SetKeyValue( "sun_dir", tostring( angle:Forward() ) );
+                    SetGlobalAngle("gdSunDir", angle)
                 end
             end
 

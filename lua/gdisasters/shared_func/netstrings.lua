@@ -33,6 +33,7 @@ if (SERVER) then
 	end)
 
 	net.Receive( "gd_entity_exists_on_server", function() 
+		if ent:IsValid() then return end
 		local string = net.ReadString()
 		local ent = ents.Create(string)
 		ent:Spawn()
