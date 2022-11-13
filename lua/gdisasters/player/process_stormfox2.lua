@@ -18,12 +18,16 @@ function gDisasters_stormfox2()
 
     if !StormFox2.Weather.IsRaining() and !StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 0
+        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 10200
     elseif StormFox2.Weather.IsRaining() and StormFox2.Weather.GetRainAmount(1) then
         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
+        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 9600
     elseif StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0)then
         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
+        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 9600
     else
         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 0
+        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 10200
     end
 
     if StormFox2.Thunder.IsThundering() then
