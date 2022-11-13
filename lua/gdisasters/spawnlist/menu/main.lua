@@ -9,6 +9,7 @@ spawnmenu.AddCreationTab("gDisasters Revived Edition", function()
 	ctrl:CallPopulateHook("PopulategDisasters_Buildings")
 	ctrl:CallPopulateHook("PopulategDisasters_Weapons")
 	ctrl:CallPopulateHook("PopulategDisasters_Equipment")
+	ctrl:CallPopulateHook("PopulategDisasters_Misc")
 	return ctrl
 	end,
 	"icons/gdlogo.png", 60
@@ -30,6 +31,8 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 		list.Set( "gDisasters_Buildings", class, {Name = name, Class = class, Category = subcategory, AdminOnly = adminonly, Offset = 0})
 	elseif category == "Equipment" then
 		list.Set( "gDisasters_Equipment", class, {Name = name, Class = class, Category = subcategory, AdminOnly = adminonly, Offset = 0})
+	elseif category == "Misc" then
+		list.Set( "gDisasters_Misc", class, {Name = name, Class = class, Category = subcategory, AdminOnly = adminonly, Offset = 0})
 	end
 
 end
@@ -308,6 +311,68 @@ hook.Add( "PopulategDisasters_Weather", "AddWeatherContent", function( pnlConten
 	for CategoryName, v in SortedPairs(WeaponsCategories) do
 	
 		local node = dtree:AddNode(CategoryName, "icons/weather.png")
+		
+		
+		node.DoPopulate = function( self )
+	
+			if ( self.PropPanel ) then return end
+
+			self.PropPanel = vgui.Create( "ContentContainer", pnlContent )
+			self.PropPanel:SetVisible( false )
+			self.PropPanel:SetTriggerSpawnlistChange( false )
+
+			for name, ent in SortedPairsByMemberValue( v, "PrintName" ) do
+				
+				spawnmenu.CreateContentIcon( "entity", self.PropPanel, 
+				{ 
+					nicename	= ent.PrintName or ent.Name,
+					spawnname	= ent.Class,
+					material	= "entities/"..ent.Class..".png",
+					admin		= ent.AdminOnly or false
+				})
+				
+			end
+
+		end
+
+		node.DoClick = function( self )
+	
+			self:DoPopulate()		
+			pnlContent:SwitchPanel( self.PropPanel )
+	
+		end
+		
+
+		
+	end
+
+
+
+end )
+
+hook.Add( "PopulategDisasters_Misc", "AddMiscContent", function( pnlContent, tree, node )
+
+	local dtree = tree:AddNode("Misc", "icon16/monkey.png")
+	dtree.PropPanel = vgui.Create("ContentContainer", pnlContent)
+	dtree.PropPanel:SetVisible(false)
+	dtree.PropPanel:SetTriggerSpawnlistChange(false)
+
+	function dtree:DoClick()
+		--pnlContent:SwitchPanel(self.PropPanel)
+	end
+
+	local WeaponsCategories = {}
+	local SpawnableWeaponsList = list.Get("gDisasters_Misc")
+	if (SpawnableWeaponsList) then
+		for k, v in pairs(SpawnableWeaponsList) do
+
+			WeaponsCategories[v.Category] = WeaponsCategories[v.Category] or {}
+			table.insert(WeaponsCategories[v.Category], v)
+		end
+	end
+	for CategoryName, v in SortedPairs(WeaponsCategories) do
+	
+		local node = dtree:AddNode(CategoryName, "icon16/monkey.png")
 		
 		
 		node.DoPopulate = function( self )
