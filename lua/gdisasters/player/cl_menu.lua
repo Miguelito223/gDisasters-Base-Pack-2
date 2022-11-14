@@ -210,6 +210,12 @@ end
 
 local function gDisastersGraphicsSettings( CPanel )
 
+	local lb3 = AddControlLabel( CPanel, "Graphics Options." )
+	local lb4 = AddControlLabel( CPanel, "GP: Ground Particles\n\nWP:Weather Particles\n\nSP: Screen Particles" )
+	lb3:SetTextColor(Color( 0, 0, 0))
+	lb3:SetSize(500, 500)
+	lb4:SetTextColor(Color( 0, 47, 255))
+
 	CreateTickboxConVariable(CPanel, "Enable Experimental Overdraw"  , "gdisasters_experimental_overdraw");
 	CreateTickboxConVariable(CPanel, "Enable Shake Screen"  , "gdisasters_shakescreen_enable");
 	
@@ -234,13 +240,6 @@ local function gDisastersHudSettings( CPanel )
 
 	AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
 	AddComboBox( CPanel, "Hud Temperature Display", {"c", "f"}, "gdisasters_hud_temptype")
-
-	local lb3 = AddControlLabel( CPanel, "Graphics Options." )
-	local lb4 = AddControlLabel( CPanel, "GP: Ground Particles\n\nWP:Weather Particles\n\nSP: Screen Particles" )
-	lb3:SetTextColor(Color( 0, 0, 0))
-	lb3:SetSize(500, 500)
-	lb4:SetTextColor(Color( 0, 47, 255))
-
 end
 
 
