@@ -167,6 +167,8 @@ local function gDisastersServerGraphics( CPanel )
 	lb:SetSize(500, 500)
 
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_atmosphere");
+	CreateTickboxConVariable(CPanel, "Enable GFX effect"  , "gdisasters_gfx_enable");
+	CreateTickboxConVariable(CPanel, "Enable Fog Effect"  , "gdisasters_fog_enable");
 	CreateTickboxConVariable(CPanel, "Enable Stormfox2 Compatibility"  , "gdisasters_stormfox_enable");
 
 	local lb2 = AddControlLabel( CPanel, "Antilag Collision Options:" )
@@ -207,6 +209,19 @@ local function gDisastersDayAndNightCycle( CPanel )
 end
 
 local function gDisastersGraphicsSettings( CPanel )
+
+	CreateTickboxConVariable(CPanel, "Enable Experimental Overdraw"  , "gdisasters_experimental_overdraw");
+	CreateTickboxConVariable(CPanel, "Enable Shake Screen"  , "gdisasters_shakescreen_enable");
+	
+	CreateTickboxConVariable(CPanel, "Enable GP"  , "gdisasters_graphics_enable_ground_particles");
+	CreateTickboxConVariable(CPanel, "Enable WP"  , "gdisasters_graphics_enable_weather_particles");
+	CreateTickboxConVariable(CPanel, "Enable SP"  , "gdisasters_graphics_enable_screen_particles");
+
+	CreateSliderConVariable(CPanel, "Max SP", 0, 20, 1,"gdisasters_graphics_number_of_screen_particles"  );
+
+end
+
+local function gDisastersHudSettings( CPanel )
 	
 	local lb = AddControlLabel( CPanel, "Hud Options: ")
 	local lb2 = AddControlLabel( CPanel, "1: body hud\n\n2: pressure hud\n\n3: earthquake hud")
@@ -225,15 +240,6 @@ local function gDisastersGraphicsSettings( CPanel )
 	lb3:SetTextColor(Color( 0, 0, 0))
 	lb3:SetSize(500, 500)
 	lb4:SetTextColor(Color( 0, 47, 255))
-
-	CreateTickboxConVariable(CPanel, "Enable Experimental Overdraw"  , "gdisasters_experimental_overdraw");
-	CreateTickboxConVariable(CPanel, "Enable Shake Screen"  , "gdisasters_shakescreen_enable");
-	
-	CreateTickboxConVariable(CPanel, "Enable GP"  , "gdisasters_graphics_enable_ground_particles");
-	CreateTickboxConVariable(CPanel, "Enable WP"  , "gdisasters_graphics_enable_weather_particles");
-	CreateTickboxConVariable(CPanel, "Enable SP"  , "gdisasters_graphics_enable_screen_particles");
-
-	CreateSliderConVariable(CPanel, "Max SP", 0, 20, 1,"gdisasters_graphics_number_of_screen_particles"  );
 
 end
 
@@ -309,6 +315,7 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersDayAndNightCycle", "Day and Night Cycle", "", "", gDisastersDayAndNightCycle)
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersAudioSettings", "Volume", "", "", gDisastersAudioSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "ggDisastersHudSettings", "Hud", "", "", gDisastersHudSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersGraphicsSettings", "Graphics", "", "", gDisastersGraphicsSettings )
 
 end );

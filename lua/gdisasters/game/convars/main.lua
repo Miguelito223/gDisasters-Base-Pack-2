@@ -13,6 +13,8 @@ CreateConVar( "gdisasters_envtornado_candamageconstraints", "1", {FCVAR_ARCHIVE}
 
 CreateConVar( "gdisasters_getridmaptor", "1", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_atmosphere", "1", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gdisasters_gfx_enable", "1", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gdisasters_fog_enable", "1", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_envtornado_manualspeed", "0", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_envtornado_speed", "9", {FCVAR_ARCHIVE}, "" )
 

@@ -67,7 +67,7 @@ function ENT:Initialize()
 			self.Reset_SkyData["StarFade"]       = 1.5
 			
 			
-			setMapLight("g")		
+		setMapLight("g")		
 			
 		
 		for i=0, 100 do
