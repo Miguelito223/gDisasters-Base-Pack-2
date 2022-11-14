@@ -138,7 +138,6 @@ function Autospawn_Timer()
 			end)
 		
 		elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Weather" then
-			if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 			recent = true
 			local weather = {
 				"gd_w1_lightbreeze", 
@@ -365,7 +364,6 @@ function Autospawn_Timer()
 				weadis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z))
 			end
 			for k, v in pairs(ents.FindByClass("gd_w*")) do
-				if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
 					weadis:SetPos(Vector(math.random(map_bounds[1].x,map_bounds[2].x),math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z + 5000))
 				else

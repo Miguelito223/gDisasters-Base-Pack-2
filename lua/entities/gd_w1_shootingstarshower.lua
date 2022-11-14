@@ -151,9 +151,7 @@ end
 
 function ENT:SpawnFunction( ply, tr )
 	if ( !tr.Hit ) then return end
-	if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
-	
-	if #ents.FindByClass("gd_w*") >= 1 then return end
+
 	
 	if #ents.FindByClass("gd_d2_shootingstarshower") >= 1 then return end
 
