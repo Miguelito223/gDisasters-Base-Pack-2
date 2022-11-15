@@ -422,11 +422,6 @@ local function Autospawn_Timer()
 					if recent then recent = false return end
 					Autospawn()
 				end
-			elseif IsMapRegistered() == false and S37K_mapbounds ~= nil or table.IsEmpty(S37K_mapbounds) == false then
-				if math.random(0,GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt()) == GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt() then
-					if recent then recent = false return end
-					Autospawn()
-				end
 			elseif IsMapRegistered() == true and S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) == true then
 				if math.random(0,GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt()) == GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt() then
 					if recent then recent = false return end
