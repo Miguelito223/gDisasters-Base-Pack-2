@@ -427,6 +427,11 @@ function Autospawn_Timer()
 					if recent then recent = false return end
 					Autospawn()
 				end
+			elseif IsMapRegistered() == true and S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
+				if math.random(0,GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt()) == GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt() then
+					if recent then recent = false return end
+					Autospawn()
+				end
 			else
 				for k, v in pairs(player.GetAll()) do 
 					v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
