@@ -93,8 +93,8 @@ net.Receive("gd_ambientlight", function()
 	LocalPlayer().AmbientLight = render.ComputeLighting(  tr.HitPos, tr.HitNormal )
 
 	net.Start("gd_ambientlight")
-		net.WriteEntity(LocalPlayer())
-		net.WriteVector(LocalPlayer().AmbientLight)
+	net.WriteEntity(LocalPlayer())
+	net.WriteVector(LocalPlayer().AmbientLight)
 	net.SendToServer()
 	
 end)
@@ -144,7 +144,7 @@ net.Receive("gd_screen_particles", function()
 	local texture  = net.ReadString()
 	local size     = net.ReadFloat()
 	local life     = net.ReadFloat() + CurTime()
-	local number   = GetConVar("gdisasters_graphics_number_of_screen_particles"):GetInt()
+	local number   = math.random(0, GetConVar("gdisasters_graphics_number_of_screen_particles"):GetInt())
 	local vel      = net.ReadVector()
 	
 	
@@ -280,38 +280,6 @@ net.Receive("gd_seteyeangles_cl", function()
 	
 	
  
-end)
-
-
-net.Receive("gd_screen_particles", function()
-	
-	if GetConVar("gdisasters_graphics_enable_screen_particles"):GetInt() <= 0 then return end
-
-	if LocalPlayer().ScreenParticles == nil then LocalPlayer().ScreenParticles = {} end
-	
-	
-	
-	local texture  = net.ReadString()
-	local size     = net.ReadFloat()
-	local life     = net.ReadFloat() + CurTime()
-	local number   = GetConVar("gdisasters_graphics_number_of_screen_particles"):GetFloat()
-	local vel      = net.ReadVector()
-	
-	
-	for i=0, number do
-		local pos      = Vector( math.random(0,ScrW()), math.random(0,ScrH()), 0) 
-		local center   = pos - Vector(size/2,size/2,0)
-		
-		LocalPlayer().ScreenParticles[#LocalPlayer().ScreenParticles+1] = {["Texture"]=surface.GetTextureID(texture),
-																		   ["Material"]=Material(texture),
-																	       ["Size"]   = size, 
-																	       ["Life"]   = life,
-																	       ["Pos"]    = center,
-																		   ["Velocity"] = vel
-																	        }
-		hook.Add( "RenderScreenspaceEffects", "Draw Particles", gfx_screenParticles)
-	end	
-	
 end)
 
 
