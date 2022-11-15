@@ -444,7 +444,6 @@ local function Removemaptornados()
 end
 
 hook.Add("InitPostEntity","Removemaptornados", Removemaptornados)
-
 hook.Add("PostCleanupMap","ReRemovemaptornados", Removemaptornados)
 	
 end
