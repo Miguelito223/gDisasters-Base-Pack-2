@@ -414,39 +414,41 @@ function Autospawn_Timer()
 			end)
 		end
 	end
-	
-	local function Removemaptornados()
-		if GetConVar('gdisasters_getridmaptor'):GetInt() == 1 then
-			for k,v in pairs(ents.FindByClass("func_tracktrain", "func_tanktrain")) do
-				v:Remove()
-			end
-		end
-	end
-
-	hook.Add("InitPostEntity","Removemaptornados",function()
-		Removemaptornados()
-	end)
-
-	hook.Add("PostCleanupMap","ReRemovemaptornados",function()
-		Removemaptornados()
-	end)
 
 	timer.Create( "Autospawn_Timer", GetConVar( "gdisasters_autospawn_timer" ):GetInt(), 0, function()
-		if math.random(0,GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt()) == GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt() then
-			if GetConVar("gdisasters_autospawn_enable"):GetInt() <= 0 then return end
-			if IsMapRegistered() == false then 
+		if GetConVar("gdisasters_autospawn_enable"):GetInt() >= 1 then 
+			if IsMapRegistered() == true or S37K_mapbounds ~= nil or table.IsEmpty(S37K_mapbounds) == false then 
+				if math.random(0,GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt()) == GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt() then
+					if recent then recent = false return end
+					Autospawn()
+				end
+			else
 				for k, v in pairs(player.GetAll()) do 
 					v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
 				end 
 				return 
 			end
-			if recent then recent = false return end
-			Autospawn()
 		end
 	end
 	)
 
 end
 hook.Add( "Initialize", "gDisasters_Autospawn", Autospawn_Timer)
+
+local function Removemaptornados()
+	if GetConVar('gdisasters_getridmaptor'):GetInt() == 1 then
+		for k,v in pairs(ents.FindByClass("func_tracktrain", "func_tanktrain")) do
+			v:Remove()
+		end
+	end
+end
+
+hook.Add("InitPostEntity","Removemaptornados",function()
+	Removemaptornados()
+end)
+
+hook.Add("PostCleanupMap","ReRemovemaptornados",function()
+	Removemaptornados()
+end)
 	
 end
