@@ -417,12 +417,7 @@ local function Autospawn_Timer()
 
 	timer.Create( "Autospawn_Timer", GetConVar( "gdisasters_autospawn_timer" ):GetInt(), 0, function()
 		if GetConVar("gdisasters_autospawn_enable"):GetInt() >= 1 then 
-			if IsMapRegistered() == true and S37K_mapbounds ~= nil or table.IsEmpty(S37K_mapbounds) == false then 
-				if math.random(0,GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt()) == GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt() then
-					if recent then recent = false return end
-					Autospawn()
-				end
-			elseif IsMapRegistered() == true and S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) == true then
+			if IsMapRegistered() == true then 
 				if math.random(0,GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt()) == GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt() then
 					if recent then recent = false return end
 					Autospawn()
