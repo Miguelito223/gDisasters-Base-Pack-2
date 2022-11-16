@@ -172,7 +172,7 @@ if (SERVER) then
         [NIGHT] =
         {
 		    TopColor		= Vector( 0.00, 0.00, 0.00 ),
-		    BottomColor		= Vector( 0.10, 0.05, 0.11 ),
+		    BottomColor		= Vector(  0.00, 0.00, 0.00 ),
 		    FadeBias		= 0.27,
 		    HDRScale		= 0.19,
 		    StarScale		= 0.66,
@@ -180,7 +180,7 @@ if (SERVER) then
             StarSpeed 		= 0.01,
 		    DuskScale		= 0,
 		    DuskIntensity	= 0,
-		    DuskColor		= Vector( 1, 0.36, 0 ),
+		    DuskColor		= Vector(  0.00, 0.00, 0.00 ),
 		    SunColor		= Vector( 0.83, 0.45, 0.11 ),
 		    SunSize			= 0.0,
         }
