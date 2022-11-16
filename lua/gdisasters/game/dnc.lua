@@ -312,7 +312,7 @@ if (SERVER) then
                 timeLen = gdisasters_dnc_length_day:GetInt();
             end
 
-            if ( !self.m_Paused and gdisasters_dnc_paused:GetInt() <= 0 ) then
+            if ( !self.m_Paused and gdisasters_dnc_paused:GetInt() <= 0) or #ents.FindByClass("gd_w*") == 0 then
                 if ( gdisasters_dnc_realtime:GetInt() <= 0 ) then
                     self.m_Time = self.m_Time + ( 24 / timeLen ) * FrameTime();
                     if ( self.m_Time > 24 ) then
