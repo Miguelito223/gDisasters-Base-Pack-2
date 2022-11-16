@@ -58,20 +58,20 @@ if (SERVER) then
 
     end
 
-    local TIME_NOON	= 12;		-- 12:00pm
-    local TIME_MIDNIGHT	= 0;		-- 12:00am
+    local TIME_NOON			= 12;		-- 12:00pm
+    local TIME_MIDNIGHT		= 0;		-- 12:00am
     local TIME_DAWN_START	= 4;		-- 4:00am
-    local TIME_DAWN_END	= 6.5;		-- 6:30am
-    local TIME_DUSK_START	= 19;		-- 7:00pm;
-    local TIME_DUSK_END	= 20.5;		-- 8:30pm;
-
-    local STYLE_LOW	= string.byte( 'a' );		-- style for night time
-    local STYLE_HIGH = string.byte( 'm' );		-- style for day time
-
-    local NIGHT	= 0;
-    local DAWN = 1;
-    local DAY = 2;
-    local DUSK = 3;
+    local TIME_DAWN_END		= 6.5;		-- 6:30am
+    local TIME_DUSK_START	= 17;		-- 5:00pm;
+    local TIME_DUSK_END		= 19.5;		-- 7:30pm;
+    
+    local STYLE_LOW			= string.byte( 'a' );		-- style for night time
+    local STYLE_HIGH		= string.byte( 'm' );		-- style for day time
+    
+    local NIGHT				= 0;
+    local DAWN				= 1;
+    local DAY				= 2;
+    local DUSK				= 3;
 
     hook.Add( "Initialize", "gdisasters_dncInitFix", function()
 
@@ -126,63 +126,63 @@ if (SERVER) then
     {
         [DAWN] =
         {
-            TopColor		= Vector( 0.2, 0.5, 1 ),
-            BottomColor		= Vector( 0.46, 0.65, 0.49 ),
-            FadeBias		= 1,
-            HDRScale		= 0.26,
-            StarScale 		= 1.84,
-            StarFade		= 0.0,	-- Do not change!
+		    TopColor		= Vector( 0.2, 0.5, 1 ),
+		    BottomColor		= Vector( 1, 0.71, 0 ),
+		    FadeBias		= 1,
+		    HDRScale		= 0.26,
+		    StarScale		= 0.66,
+		    StarFade		= 0.0,	-- Do not change!
             StarSpeed 		= 0.02,
-            DuskScale		= 1,
-            DuskIntensity	= 1,
-            DuskColor		= Vector( 1, 0.2, 0 ),
-            SunColor		= Vector( 0.2, 0.1, 0 ),
-            SunSize			= 2,
+		    DuskScale		= 1,
+		    DuskIntensity	= 1,
+		    DuskColor		= Vector( 1, 0.2, 0 ),
+		    SunColor		= Vector( 0.2, 0.1, 0 ),
+		    SunSize			= 0.34,
         },
         [DAY] =
         {
-            TopColor		= Vector( 0.2, 0.49, 1 ),
-            BottomColor		= Vector( 0.8, 1, 1 ),
-            FadeBias		= 1,
-            HDRScale		= 0.26,
-            StarScale 		= 1.84,
-            StarFade		= 1.5,	-- Do not change!
+		    TopColor		= Vector( 0.2, 0.49, 1 ),
+		    BottomColor		= Vector( 0.01, 0.96, 1 ),
+		    FadeBias		= 1,
+		    HDRScale		= 0.26,
+		    StarScale		= 0.66,
+		    StarFade		= 1.5,	-- Do not change!
             StarSpeed 		= 0.02,
-            DuskScale		= 1,
-            DuskIntensity	= 1,
-            DuskColor		= Vector( 1, 0.2, 0 ),
-            SunColor		= Vector( 0.83, 0.45, 0.11 ),
-            SunSize			= 0.34,
+		    DuskScale		= 1,
+		    DuskIntensity	= 1,
+		    DuskColor		= Vector( 1, 0.2, 0 ),
+		    SunColor		= Vector( 0.83, 0.45, 0.11 ),
+		    SunSize			= 0.34,
         },
         [DUSK] =
         {
-            TopColor		= Vector( 0.24, 0.15, 0.08 ),
-            BottomColor		= Vector( .4, 0.07, 0 ),
-            FadeBias		= 1,
-            HDRScale		= 0.36,
-            StarScale		= 1.50,
-            StarFade		= 5.0,	-- Do not change!
+		    TopColor		= Vector( 0.09, 0.32, 0.32 ),
+		    BottomColor		= Vector( 1, 0.48, 0 ),
+		    FadeBias		= 1,
+		    HDRScale		= 0.36,
+		    StarScale		= 0.66,
+		    StarFade		= 0.0,	-- Do not change!
             StarSpeed 		= 0.01,
-            DuskScale		= 1,
-            DuskIntensity	= 1.94,
-            DuskColor		= Vector( 0.69, 0.22, 0.02 ),
-            SunColor		= Vector( 0.90, 0.30, 0.00 ),
-            SunSize			= 0.44,
+		    DuskScale		= 1,
+		    DuskIntensity	= 5.31,
+		    DuskColor		= Vector( 1, 0.36, 0 ),
+		    SunColor		= Vector( 0.83, 0.45, 0.11 ),
+		    SunSize			= 0.34,
         },
         [NIGHT] =
         {
-            TopColor		= Vector( 0.00, 0.00, 0.00 ),
-            BottomColor		= Vector( 0.00, 0.00, 0.0 ),
-            FadeBias		= 0.1,
-            HDRScale		= 0.19,
-            StarScale		= 1.50,
-            StarFade		= 5.0,	-- Do not change!
+		    TopColor		= Vector( 0.00, 0.00, 0.00 ),
+		    BottomColor		= Vector( 0.10, 0.05, 0.11 ),
+		    FadeBias		= 0.27,
+		    HDRScale		= 0.19,
+		    StarScale		= 0.66,
+		    StarFade		= 5.0,	-- Do not change!
             StarSpeed 		= 0.01,
-            DuskScale		= 0,
-            DuskIntensity	= 0,
-            DuskColor		= Vector( 0, 0, 0 ),
-            SunColor		= Vector( 0.83, 0.45, 0.11 ),
-            SunSize			= 0.0,
+		    DuskScale		= 0,
+		    DuskIntensity	= 0,
+		    DuskColor		= Vector( 1, 0.36, 0 ),
+		    SunColor		= Vector( 0.83, 0.45, 0.11 ),
+		    SunSize			= 0.0,
         }
 
     };
