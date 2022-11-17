@@ -163,19 +163,21 @@ function ENT:Explode()
 	util.BlastDamage( self, self, self:GetPos()+Vector(0,0,12), 5000000, math.random( 100000, 400000 ) )
 	
 	timer.Simple(2, function()
-		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
-		if #ents.FindByClass("gd_w*") >= 1 then return end
-		
-		local ent = ents.Create("gd_w3_heavyashstorm")
-		local ent2 = ents.Create("gd_d10_meteorshower")
-		local ent3 = ents.Create("gd_d10_meteoriteshower")
+		if self:IsValid() then
+			if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
+			if #ents.FindByClass("gd_w*") >= 1 then return end
+			
+			local ent = ents.Create("gd_w3_heavyashstorm")
+			local ent2 = ents.Create("gd_d10_meteorshower")
+			local ent3 = ents.Create("gd_d10_meteoriteshower")
 
-		ent:Spawn()
-		ent:Activate()
-		ent2:Spawn()
-		ent2:Activate()
-		ent3:Spawn()
-		ent3:Activate()
+			ent:Spawn()
+			ent:Activate()
+			ent2:Spawn()
+			ent2:Activate()
+			ent3:Spawn()
+			ent3:Activate()
+		end
 
 	
 	end)
@@ -214,7 +216,7 @@ function ENT:Think()
 		
 	if (SERVER) then
 		
-		if self:WaterLevel() >= 1 then 
+		if self:WaterLevel() > 0 then 
 			self:Remove()
 			self:Explode()
 			local tsunami = ents.Create("gd_d7_tsunami")
