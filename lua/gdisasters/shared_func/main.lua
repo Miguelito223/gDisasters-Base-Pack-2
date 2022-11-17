@@ -811,7 +811,7 @@ function isOutdoor(ply, isprop)
 	end
 
 	
-	--[[
+	
 	local hitLeft    = performTrace(ply, Vector(1,0,0))
 	local hitRight   = performTrace(ply, Vector(-1,0,0))
 	
@@ -820,7 +820,7 @@ function isOutdoor(ply, isprop)
 	
 	local hitBelow   = performTrace(ply, Vector(0,0,-1))
 	local inTunnel = ((hitLeft and hitRight) and ( (hitForward and hitBehind) == false)) or (((hitLeft and hitRight)==false) and ( (hitForward and hitBehind) == true))
-	--]]
+	
 
 	local hitSky     = isBelowSky(ply)
 	
