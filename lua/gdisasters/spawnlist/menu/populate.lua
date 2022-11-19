@@ -137,7 +137,7 @@ AddToGDSpawnMenu("Cold Front", "gd_w3_coldfront" , "Weather", "Tier 3", false)
 AddToGDSpawnMenu("Warm Front", "gd_w3_warmfront" , "Weather", "Tier 3", false)
 AddToGDSpawnMenu("Occluded Front", "gd_w3_occludedfront" , "Weather", "Tier 3", false)
 AddToGDSpawnMenu("Heavy Thunderstorm", "gd_w3_heavythunderstorm" , "Weather", "Tier 3", false)
-AddToGDSpawnMenu("Low pressure Hurricane", "gd_w3_hurricanic_lowpressure_sys" , "Weather", "Tier 3", false)
+AddToGDSpawnMenu("Extra Tropical Cyclone", "gd_w3_hurricanic_lowpressure_sys" , "Weather", "Tier 3", false)
 AddToGDSpawnMenu("Dry Thunderstorm", "gd_w3_drythunderstorm" , "Weather", "Tier 3", false)
 
 --[[
