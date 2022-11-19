@@ -19,7 +19,8 @@ ENT.EnchancedFujitaScaleData         = {
 	["EF4"] = { Speed = math.random(267,322) },
 	["EF5"] = { Speed = math.random(322,350) },
 	["EF6"] = { Speed = math.random(500,600) },
-	["EF7"] = { Speed = math.random(600,800) }
+	["Martian EF6"] = { Speed = math.random(600,800) },
+	["EF7"] = { Speed = math.random(400,500) }
 }	
 
 
@@ -98,6 +99,10 @@ function ENT:PlayFadeinSound()
 	
 		CreateSoundWave("streams/environment/wind_shared/ef5_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 
+	elseif category == "Martian EF6" then
+	
+		CreateSoundWave("streams/environment/wind_shared/martian_tornado_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+
 	elseif category == "EF7" then
 	
 		CreateSoundWave("streams/environment/wind_shared/martian_tornado_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
@@ -125,6 +130,10 @@ function ENT:PlayFadeoutSound()
 	elseif category == "EF6" then
 	
 		CreateSoundWave("streams/environment/wind_shared/ef5_fadeout.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+	
+	elseif category == "Martian EF6" then
+	
+		CreateSoundWave("streams/environment/wind_shared/martian_tornado_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 
 	elseif category == "EF7" then
 	
@@ -345,6 +354,10 @@ function ENT:CreateLoop()
 	
 		spath      =  table.Random( {"streams/environment/wind_shared/ef5_loop.wav", "streams/environment/wind_shared/ef5_loop2.wav"})
 
+	elseif category == "Martian EF6" then
+	
+		spath      =  ("streams/environment/wind_shared/martian_tornado_loop.wav")
+
 	elseif category == "EF7" then
 	
 		spath      =  ("streams/environment/wind_shared/martian_tornado_loop.wav")
@@ -520,6 +533,8 @@ function ENT:TryRemoveConstraints(ent)
 	elseif self.Data.EnhancedFujitaScale == "EF5" then
 		chance = GetConVar( "gdisasters_envtornado_damage" ):GetInt()
 	elseif self.Data.EnhancedFujitaScale == "EF6" then
+		chance = GetConVar( "gdisasters_envtornado_damage" ):GetInt()
+	elseif self.Data.EnhancedFujitaScale == "Martian EF6" then
 		chance = GetConVar( "gdisasters_envtornado_damage" ):GetInt()
 	elseif self.Data.EnhancedFujitaScale == "EF7" then
 		chance = GetConVar( "gdisasters_envtornado_damage" ):GetInt()
@@ -760,13 +775,22 @@ function ENT:GroundFunnelPhysics(physics_scalar)
 							self:ApplyPhysics(ent, main_force * 10 * (1 - ((mass - 10000) / 40000)) * physics_scalar)
 						end
 					end
-				elseif category == "EF7" then
+				elseif category == "Martian EF6" then
 					if mass <= 10000 then	
 						self:ApplyPhysics(ent, (main_force * 10) * physics_scalar )
 
 					else
 						if mass > 10000 then
 							self:ApplyPhysics(ent, main_force * 10 * (1 - ((mass - 10000) / 40000)) * physics_scalar)
+						end
+					end
+				elseif category == "EF7" then
+					if mass <= 100000 then	
+						self:ApplyPhysics(ent, (main_force * 10) * physics_scalar )
+
+					else
+						if mass > 100000 then
+							self:ApplyPhysics(ent, main_force * 10 * (1 - ((mass - 100000) / 40000)) * physics_scalar)
 						end
 					end
 				end
@@ -887,12 +911,21 @@ function ENT:FunnelPhysics(physics_scalar)
 							self:ApplyPhysics(ent, main_force * math.random(-2000,2000)/1000 * physics_scalar)
 						end
 					end
-				elseif category == "EF7" then
+				elseif category == "Martian EF6" then
 					if mass <= 10000 then	
 						self:ApplyPhysics(ent, main_force * physics_scalar )
 
 					else
 						if mass > 10000 then
+							self:ApplyPhysics(ent, main_force * math.random(-2000,2000)/1000 * physics_scalar)
+						end
+					end
+				elseif category == "EF7" then
+					if mass <= 100000 then	
+						self:ApplyPhysics(ent, main_force * physics_scalar )
+
+					else
+						if mass > 100000 then
 							self:ApplyPhysics(ent, main_force * math.random(-2000,2000)/1000 * physics_scalar)
 						end
 					end

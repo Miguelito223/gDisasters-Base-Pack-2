@@ -15,7 +15,7 @@ ENT.Data                             = {GroundSpeed = {}, MaxFunnel = {}, MinFun
 ENT.Data.Effect                      = {"martian_tornado"}
 ENT.Data.Parent                      = nil
 ENT.Data.ShouldFollowPath            = true
-ENT.Data.EnhancedFujitaScale         = "EF7"
+ENT.Data.EnhancedFujitaScale         = "Martian EF6"
 
 ENT.Data.MaxFunnel.Height 			 = 5000
 ENT.Data.MaxFunnel.Radius 			 = 5000 -- funnel radius at max height
