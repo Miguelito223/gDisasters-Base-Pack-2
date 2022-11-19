@@ -1,15 +1,55 @@
 if !CLIENT then return end 
 
+search.AddProvider(
+	function(str)
+		local results = {}
+		local entities = {}
+
+		local function searchList(lname, lctype)
+			for k, v in pairs(list.Get(lname)) do
+				v.ClassName = k
+				v.PrintName = v.PrintName or v.Name
+				v.ScriptedEntityType = lctype
+				table.insert(entities, v)
+			end
+		end
+		searchList("gDisasters_Weapons", "weapon")
+		searchList("gDisasters_Disasters", "entity")
+		searchList("gDisasters_Weather", "entity")
+		searchList("gDisasters_Buildings", "entity")
+		searchList("gDisasters_Equipment", "entity")
+		searchList("gDisasters_Misc", "entity")
+
+		// searchList("VJBASE_SPAWNABLE_VEHICLES", "vehicle") -- vehicle (Not yet lol)
+		for _, v in pairs(entities) do
+			local name = v.PrintName
+			local name_c = v.ClassName
+			if (!name && !name_c) then continue end
+
+			if ((name && name:lower():find(str, nil, true)) or (name_c && name_c:lower():find(str, nil, true))) then
+				local entry = {
+					text = v.PrintName or v.ClassName,
+					icon = spawnmenu.CreateContentIcon(v.ScriptedEntityType or "entity", nil, {
+						nicename = v.PrintName or v.ClassName,
+						spawnname = v.ClassName,
+						material = "entities/" .. v.ClassName .. ".png",
+						admin = v.AdminOnly
+					}),
+					words = {v}
+				}
+				table.insert(results, entry)
+			end
+		end
+		table.SortByMember(results, "text", true)
+		return results
+	end, "gDisastersSearch"
+
+)
 
 spawnmenu.AddCreationTab("gDisasters Revived Edition", function()
 
 	local ctrl = vgui.Create("SpawnmenuContentPanel")
-	ctrl:EnableSearch("entity","PopulategDisasters_Disasters")
-	ctrl:EnableSearch("entity","PopulategDisasters_Weather")
-	ctrl:EnableSearch("entity","PopulategDisasters_Buildings")
-	ctrl:EnableSearch("entity","PopulategDisasters_Weapons")
-	ctrl:EnableSearch("entity","PopulategDisasters_Equipment")
-	ctrl:EnableSearch("entity","PopulategDisasters_Misc")
+	ctrl:EnableSearch("gDisastersSearch","PopulategDisasters_Disasters")
 	ctrl:CallPopulateHook("PopulategDisasters_Disasters")
 	ctrl:CallPopulateHook("PopulategDisasters_Weather")
 	ctrl:CallPopulateHook("PopulategDisasters_Buildings")
@@ -43,8 +83,6 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 
 end
 
-
-
 hook.Add( "PopulategDisasters_Weapons", "AddWeaponsContent", function( pnlContent, tree, node )
 
 	local dtree = tree:AddNode("Weapons & Ammo", "icons/weapons.png")
@@ -53,7 +91,7 @@ hook.Add( "PopulategDisasters_Weapons", "AddWeaponsContent", function( pnlConten
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		--pnlContent:SwitchPanel(self.PropPanel)
+		pnlContent:SwitchPanel(self.PropPanel)
 	end
 
 	local WeaponsCategories = {}
@@ -116,7 +154,7 @@ hook.Add( "PopulategDisasters_Equipment", "AddEquipmentContent", function( pnlCo
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		--pnlContent:SwitchPanel(self.PropPanel)
+		pnlContent:SwitchPanel(self.PropPanel)
 	end
 
 	local WeaponsCategories = {}
@@ -177,7 +215,7 @@ hook.Add( "PopulategDisasters_Disasters", "AddDisastersContent", function( pnlCo
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		--pnlContent:SwitchPanel(self.PropPanel)
+		pnlContent:SwitchPanel(self.PropPanel)
 	end
 
 	local WeaponsCategories = {}
@@ -240,7 +278,7 @@ hook.Add( "PopulategDisasters_Buildings", "AddBuildingsContent", function( pnlCo
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		--pnlContent:SwitchPanel(self.PropPanel)
+		pnlContent:SwitchPanel(self.PropPanel)
 	end
 
 	local WeaponsCategories = {}
@@ -302,7 +340,7 @@ hook.Add( "PopulategDisasters_Weather", "AddWeatherContent", function( pnlConten
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		--pnlContent:SwitchPanel(self.PropPanel)
+		pnlContent:SwitchPanel(self.PropPanel)
 	end
 
 	local WeaponsCategories = {}
@@ -364,7 +402,7 @@ hook.Add( "PopulategDisasters_Misc", "AddMiscContent", function( pnlContent, tre
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		--pnlContent:SwitchPanel(self.PropPanel)
+		pnlContent:SwitchPanel(self.PropPanel)
 	end
 
 	local WeaponsCategories = {}
