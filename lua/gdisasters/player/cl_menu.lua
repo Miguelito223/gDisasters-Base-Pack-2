@@ -216,8 +216,8 @@ local function gDisastersGraphicsSettings( CPanel )
 	lb3:SetSize(500, 500)
 	lb4:SetTextColor(Color( 0, 47, 255))
 
-	CreateTickboxConVariable(CPanel, "Enable Experimental Overdraw"  , "gdisasters_experimental_overdraw");
-	CreateTickboxConVariable(CPanel, "Enable Shake Screen"  , "gdisasters_shakescreen_enable");
+	CreateTickboxConVariable(CPanel, "Enable Experimental Overdraw"  , "gdisasters_graphics_experimental_overdraw");
+	CreateTickboxConVariable(CPanel, "Enable Shake Screen"  , "gdisasters_graphics_shakescreen_enable");
 	
 	CreateTickboxConVariable(CPanel, "Enable GP"  , "gdisasters_graphics_enable_ground_particles");
 	CreateTickboxConVariable(CPanel, "Enable WP"  , "gdisasters_graphics_enable_weather_particles");

@@ -117,7 +117,7 @@ end
 function ENT:CreateSnowDecals()
 	if self.CreatedDecals then return end
 	self.CreatedDecals = true
-	if GetConVar("gdisasters_experimental_overdraw"):GetInt() != 1 then return end
+	if GetConVar("gdisasters_graphics_experimental_overdraw"):GetInt() != 1 then return end
 
 	for i=0, 25 do
 	

@@ -39,11 +39,11 @@ function gDisasters_PostSpawnCL()
 		CreateConVar( "gdisasters_graphics_enable_weather_particles", 1, {FCVAR_ARCHIVE}, "")
 		CreateConVar( "gdisasters_graphics_enable_screen_particles", 1, {FCVAR_ARCHIVE}, "")
 		CreateConVar( "gdisasters_graphics_number_of_screen_particles", 1, {FCVAR_ARCHIVE}, "")
+		CreateConVar( "gdisasters_graphics_shakescreen_enable", 1,{FCVAR_ARCHIVE}, "")
+		CreateConVar( "gdisasters_graphics_experimental_overdraw", 1, {FCVAR_ARCHIVE}, "sexy " )
 		CreateConVar( "gdisasters_sound_Light_Wind", 1, {FCVAR_ARCHIVE}, " " )
 		CreateConVar( "gdisasters_sound_Moderate_Wind", 1, {FCVAR_ARCHIVE}, " " )
 		CreateConVar( "gdisasters_sound_Heavy_Wind", 1, {FCVAR_ARCHIVE}, " " )
-        CreateConVar( "gdisasters_shakescreen_enable", 1,{FCVAR_ARCHIVE}, "")
-		CreateConVar( "gdisasters_experimental_overdraw", 1, {FCVAR_ARCHIVE}, "sexy " )
 	
 	end
 
