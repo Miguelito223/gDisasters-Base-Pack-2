@@ -289,7 +289,9 @@ function ENT:Unfreeze(phys, v, mag)
 		phys:EnableMotion(true)
 		phys:Wake()
 		constraint.RemoveAll( v )
-		v:SetCollisionGroup(COLLISION_GROUP_WORLD)
+		if GetConVar("gdisasters_envearthquake_change_collision_group"):GetInt() >= 1 then 
+			v:SetCollisionGroup(COLLISION_GROUP_WORLD)
+		end
 	end
 end
 function ENT:DoPhysics()

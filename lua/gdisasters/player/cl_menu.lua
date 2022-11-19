@@ -124,7 +124,7 @@ local function gDisastersSVADVSettings( CPanel )
 	CreateSliderConVariable(CPanel, "Water Simulation Quality", 0.1, 0.50, 2, "gdisasters_envdynamicwater_simquality");
 	CreateSliderConVariable(CPanel, "Wind Simulation Quality", 0.1, 0.50, 2, "gdisasters_wind_physics_simquality");
 
-	local lb4 = AddControlLabel( CPanel, "Advanced Wind Options: " )
+	local lb4 = AddControlLabel( CPanel, "Wind Options: " )
 	lb4:SetTextColor(Color( 0, 0, 0))
 	lb4:SetSize(500, 500)
 	
@@ -133,6 +133,12 @@ local function gDisastersSVADVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Wind postdamage no collide basetimeout" ,"gdisasters_wind_postdamage_nocollide_basetimeout");
 	CreateTickboxConVariable(CPanel, "Enable Wind postdamage no collide basetime spread" ,"gdisasters_wind_postdamage_nocollide_basetimeout_spread");
 	CreateTickboxConVariable(CPanel, "Enable Wind postdamage reducemass" ,"gdisasters_wind_postdamage_reducemass_enabled");
+
+	local lb41 = AddControlLabel( CPanel, "Eathquake Options: " )
+	lb41:SetTextColor(Color( 0, 0, 0))
+	lb41:SetSize(500, 500)
+
+	CreateTickboxConVariable(CPanel, "Enable earthquake change collision group" ,"gdisasters_envearthquake_change_collision_group");
 
 	local lb5 = AddControlLabel( CPanel, "Water/Lava and Flood/Tsunami Options: " )
 	lb5:SetTextColor(Color( 0, 0, 0))
