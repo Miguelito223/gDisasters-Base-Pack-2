@@ -12,7 +12,7 @@ spawnmenu.AddCreationTab("gDisasters Revived Edition", function()
 	ctrl:CallPopulateHook("PopulategDisasters_Misc")
 	return ctrl
 	end,
-	"icons/gdlogo.png", 60
+	"icons/gdlogo.png", 30
 )
 
 
