@@ -1,63 +1,63 @@
+gdisasters_dnc_enabled = CreateConVar( "gdisasters_dnc_enabled", "1", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY ), "Day & Night enabled." );
+gdisasters_dnc_paused = CreateConVar( "gdisasters_dnc_paused", "0", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY ), "Day & Night time progression enabled." );
+gdisasters_dnc_realtime = CreateConVar( "gdisasters_dnc_realtime", "0", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY ), "Whether or not Day & Night progresses based on the servers time zone." );
+gdisasters_dnc_logging = CreateConVar( "gdisasters_dnc_log", "0", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY ), "Turn Day & Night logging to console on or off." );
+
+gdisasters_dnc_length_day = CreateConVar( "gdisasters_dnc_length_day", "3600", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED ), "The duration modifier of daytime in seconds." );
+gdisasters_dnc_length_night = CreateConVar( "gdisasters_dnc_length_night", "3600", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED ), "The duration modifier of nighttime in seconds." );
+
+gdisasters_dnc_version = 2.0;
+gdisasters_dnc_dev = false;
+
+gdisasters_dnc_HeightMin = 300;
+
+function gdisasters_dnc_log( ... )
+
+    if ( gdisasters_dnc_logging:GetInt() < 1 ) then return end
+
+    print( "[day and night] " .. string.format( ... ) .. "\n" );
+
+end
+
+function gdisasters_dnc_Outside( pos )
+
+    if ( pos != nil ) then
+
+        local trace = { };
+        trace.start = pos;
+        trace.endpos = trace.start + Vector( 0, 0, 32768 );
+        trace.mask = MASK_BLOCKLOS;
+
+        local tr = util.TraceLine( trace );
+
+        gdisasters_dnc_HeightMin = ( tr.HitPos - trace.start ):Length();
+
+        if ( tr.StartSolid ) then return false end
+        if ( tr.HitSky ) then return true end
+
+    end
+
+    return false;
+
+end
+
+function gdisasters_dnc_outside( pos )
+
+    return gdisasters_dnc_Outside( pos );
+
+end
+
+-- usergroup support
+local meta = FindMetaTable( "Player" )
+
+function meta:gdisasters_dncAdmin()
+
+    return self:IsSuperAdmin() or self:IsAdmin();
+
+end
+    
 if (SERVER) then
-
-    gdisasters_dnc_enabled = CreateConVar( "gdisasters_dnc_enabled", "1", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY ), "Day & Night enabled." );
-    gdisasters_dnc_paused = CreateConVar( "gdisasters_dnc_paused", "0", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY ), "Day & Night time progression enabled." );
-    gdisasters_dnc_realtime = CreateConVar( "gdisasters_dnc_realtime", "0", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY ), "Whether or not Day & Night progresses based on the servers time zone." );
-    gdisasters_dnc_logging = CreateConVar( "gdisasters_dnc_log", "0", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY ), "Turn Day & Night logging to console on or off." );
-
-    gdisasters_dnc_length_day = CreateConVar( "gdisasters_dnc_length_day", "3600", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED ), "The duration modifier of daytime in seconds." );
-    gdisasters_dnc_length_night = CreateConVar( "gdisasters_dnc_length_night", "3600", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED ), "The duration modifier of nighttime in seconds." );
-
-    gdisasters_dnc_version = 2.0;
-    gdisasters_dnc_dev = false;
-
-    gdisasters_dnc_HeightMin = 300;
-
-    function gdisasters_dnc_log( ... )
-
-        if ( gdisasters_dnc_logging:GetInt() < 1 ) then return end
-
-        print( "[day and night] " .. string.format( ... ) .. "\n" );
-
-    end
-
-    function gdisasters_dnc_Outside( pos )
-
-        if ( pos != nil ) then
-
-            local trace = { };
-            trace.start = pos;
-            trace.endpos = trace.start + Vector( 0, 0, 32768 );
-            trace.mask = MASK_BLOCKLOS;
-
-            local tr = util.TraceLine( trace );
-
-            gdisasters_dnc_HeightMin = ( tr.HitPos - trace.start ):Length();
-
-            if ( tr.StartSolid ) then return false end
-            if ( tr.HitSky ) then return true end
-
-        end
-
-        return false;
-
-    end
-
-    function gdisasters_dnc_outside( pos )
-
-        return gdisasters_dnc_Outside( pos );
-
-    end
-
-    -- usergroup support
-    local meta = FindMetaTable( "Player" )
-
-    function meta:gdisasters_dncAdmin()
-
-        return self:IsSuperAdmin() or self:IsAdmin();
-
-    end
-
+    
     local TIME_NOON			= 12;		-- 12:00pm
     local TIME_MIDNIGHT		= 0;		-- 12:00am
     local TIME_DAWN_START	= 4;		-- 4:00am
@@ -312,7 +312,7 @@ if (SERVER) then
                 timeLen = gdisasters_dnc_length_day:GetInt();
             end
 
-            if ( !self.m_Paused and gdisasters_dnc_paused:GetInt() <= 0) or #ents.FindByClass("gd_w*") <= 0 then
+            if ( !self.m_Paused and gdisasters_dnc_paused:GetInt() <= 0 and #ents.FindByClass("gd_w*") <= 0)  then
                 if ( gdisasters_dnc_realtime:GetInt() <= 0 ) then
                     self.m_Time = self.m_Time + ( 24 / timeLen ) * FrameTime();
                     if ( self.m_Time > 24 ) then
@@ -657,66 +657,64 @@ if (SERVER) then
 
 end
 
-if (CLIENT) then
-    -- lightmap stuff
-    net.Receive( "gdisasters_dnc_lightmaps", function( len )
+-- lightmap stuff
+net.Receive( "gdisasters_dnc_lightmaps", function( len )
 
-    	render.RedownloadAllLightmaps();
+	render.RedownloadAllLightmaps();
 
-    end );
+end );
 
-    -- precache
-    hook.Add( "InitPostEntity", "gdisasters_dncFirstJoinLightmaps", function()
+-- precache
+hook.Add( "InitPostEntity", "gdisasters_dncFirstJoinLightmaps", function()
 
-    	render.RedownloadAllLightmaps();
+	render.RedownloadAllLightmaps();
 
-    end );
+end );
 
-    net.Receive( "gdisasters_dnc_message", function( len )
+net.Receive( "gdisasters_dnc_message", function( len )
 
-    	local tab = net.ReadTable();
+	local tab = net.ReadTable();
 
-    	if ( #tab > 0 ) then
+	if ( #tab > 0 ) then
 
-    		chat.AddText( unpack( tab ) );
+		chat.AddText( unpack( tab ) );
 
-    	end
+	end
 
-    end );
+end );
 
-    local function UpdateValues( CPanel )
+local function UpdateValues( CPanel )
 
-    	if ( CPanel == nil ) then return end
+	if ( CPanel == nil ) then return end
 
-    	if ( CPanel.enabled ) then
+	if ( CPanel.enabled ) then
 
-    		CPanel.enabled:SetValue( cvars.Number( "gdisasters_dnc_enabled" ) );
+		CPanel.enabled:SetValue( cvars.Number( "gdisasters_dnc_enabled" ) );
 
-    	end
+	end
 
-    	if ( CPanel.paused ) then
+	if ( CPanel.paused ) then
 
-    		CPanel.paused:SetValue( cvars.Number( "gdisasters_dnc_paused" ) );
+		CPanel.paused:SetValue( cvars.Number( "gdisasters_dnc_paused" ) );
 
-    	end
+	end
 
-    	if ( CPanel.realtime ) then
+	if ( CPanel.realtime ) then
 
-    		CPanel.realtime:SetValue( cvars.Number( "gdisasters_dnc_realtime" ) );
+		CPanel.realtime:SetValue( cvars.Number( "gdisasters_dnc_realtime" ) );
 
-    	end
+	end
 
-    	if ( CPanel.length_day ) then
+	if ( CPanel.length_day ) then
 
-    		CPanel.length_day:SetValue( cvars.Number( "gdisasters_dnc_length_day" ) );
+		CPanel.length_day:SetValue( cvars.Number( "gdisasters_dnc_length_day" ) );
 
-    	end
+	end
 
-    	if ( CPanel.length_night ) then
+	if ( CPanel.length_night ) then
 
-    		CPanel.length_night:SetValue( cvars.Number( "gdisasters_dnc_length_night" ) );
+		CPanel.length_night:SetValue( cvars.Number( "gdisasters_dnc_length_night" ) );
 
-    	end
+	end
 
-    end
 end
