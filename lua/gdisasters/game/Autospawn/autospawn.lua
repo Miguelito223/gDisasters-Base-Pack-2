@@ -443,7 +443,12 @@ local function Removemaptornados()
 	end
 end
 
-hook.Add("InitPostEntity","Removemaptornados", Removemaptornados)
-hook.Add("PostCleanupMap","ReRemovemaptornados", Removemaptornados)
+hook.Add("InitPostEntity","Removemaptornados",function()
+	Removemaptornados()
+end)
+
+hook.Add("PostCleanupMap","ReRemovemaptornados",function()
+	Removemaptornados()
+end)
 	
 end
