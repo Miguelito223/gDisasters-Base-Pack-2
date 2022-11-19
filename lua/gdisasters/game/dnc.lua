@@ -62,8 +62,8 @@ if (SERVER) then
     local TIME_MIDNIGHT		= 0;		-- 12:00am
     local TIME_DAWN_START	= 4;		-- 4:00am
     local TIME_DAWN_END		= 6.5;		-- 6:30am
-    local TIME_DUSK_START	= 17;		-- 5:00pm;
-    local TIME_DUSK_END		= 19.5;		-- 7:30pm;
+    local TIME_DUSK_START	= 19;		-- 7:00pm;
+    local TIME_DUSK_END		= 20.5;		-- 8:30pm;
     
     local STYLE_LOW			= string.byte( 'a' );		-- style for night time
     local STYLE_HIGH		= string.byte( 'm' );		-- style for day time
