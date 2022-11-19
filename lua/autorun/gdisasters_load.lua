@@ -68,7 +68,6 @@ if (CLIENT) then
 	
 	include("gdisasters/atmosphere/main.lua")
 	include("gdisasters/hud/main.lua")
-	include("gdisasters/game/Autospawn/skybox.lua")
 	include("gdisasters/game/Autospawn/autospawn.lua")
 	include("gdisasters/spawnlist/menu/main.lua")
 	include("gdisasters/spawnlist/menu/populate.lua")
