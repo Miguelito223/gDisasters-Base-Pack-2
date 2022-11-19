@@ -144,7 +144,7 @@ net.Receive("gd_screen_particles", function()
 	local texture  = net.ReadString()
 	local size     = net.ReadFloat()
 	local life     = net.ReadFloat() + CurTime()
-	local number   = math.random(0, GetConVar("gdisasters_graphics_number_of_screen_particles"):GetInt())
+	local number   = math.random(0, GetConVar("gdisasters_graphics_number_of_screen_particles"):GetFloat())
 	local vel      = net.ReadVector()
 	
 	
