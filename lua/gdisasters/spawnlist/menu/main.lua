@@ -4,6 +4,12 @@ if !CLIENT then return end
 spawnmenu.AddCreationTab("gDisasters Revived Edition", function()
 
 	local ctrl = vgui.Create("SpawnmenuContentPanel")
+	ctrl:EnableSearch("entity","PopulategDisasters_Disasters")
+	ctrl:EnableSearch("entity","PopulategDisasters_Weather")
+	ctrl:EnableSearch("entity","PopulategDisasters_Buildings")
+	ctrl:EnableSearch("entity","PopulategDisasters_Weapons")
+	ctrl:EnableSearch("entity","PopulategDisasters_Equipment")
+	ctrl:EnableSearch("entity","PopulategDisasters_Misc")
 	ctrl:CallPopulateHook("PopulategDisasters_Disasters")
 	ctrl:CallPopulateHook("PopulategDisasters_Weather")
 	ctrl:CallPopulateHook("PopulategDisasters_Buildings")
