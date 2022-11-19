@@ -290,7 +290,7 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	lb:SetSize(500, 500)
 
 	CreateSliderConVariable(CPanel,  "Water Quality", 1, 3, 0, "gdisasters_graphics_water_quality" );
-	CreateSliderConVariable(CPanel,   "Fog Quality", 1, 8, 0, "gdisasters_graphics_fog_quality" );
+	CreateSliderConVariable(CPanel,   "Fog Quality", 1, 4, 0, "gdisasters_graphics_fog_quality" );
 
 	local lb2 = AddControlLabel( CPanel, "Section dedicated to Doppler Radar.\nUse with caution." )
 	lb2:SetTextColor(Color( 255, 0, 0))
