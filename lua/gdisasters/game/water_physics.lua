@@ -33,6 +33,9 @@ Buoyancy_Lookup = {
 					["rock"] = 0.2,
 					["brick"] = 0.2,
 					["plastic"] = 5,
+					["Plastic_Box"] = 5,
+					["plaster"] = 5,
+					["generic"] = 4,
 					}
 
 					
