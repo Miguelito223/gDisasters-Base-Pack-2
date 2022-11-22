@@ -957,6 +957,9 @@ function createTsunami(parent, data)
 	for k, v in pairs(ents.FindByClass("env_dynamicwater_b")) do
 		v:Remove();
 	end
+	for k, v in pairs(ents.FindByClass("env_dynamiclava_b")) do
+		v:Remove();
+	end
 	
 	local tsunami = ents.Create("env_dynamicwater_b");
 	tsunami.Data  = data;

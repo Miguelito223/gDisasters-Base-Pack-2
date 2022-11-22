@@ -919,7 +919,10 @@ end
 
 function createTsunamilava(parent, data)
 	
-	for k, v in pairs(ents.FindByClass("env_dynamiclava_b", "env_dynamicwater_b")) do
+	for k, v in pairs(ents.FindByClass("env_dynamicwater_b")) do
+		v:Remove();
+	end
+	for k, v in pairs(ents.FindByClass("env_dynamiclava_b")) do
 		v:Remove();
 	end
 	
