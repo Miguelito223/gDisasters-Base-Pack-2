@@ -13,6 +13,7 @@ ENT.Mass                             =  100
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 ENT.Data                             = {}
 ENT.WedgeSound                       = "streams/disasters/tsunami/idle.wav"
+ENT.WedgeSound2                       = "streams/disasters/nature/volcano_idle.wav"
 
 function ENT:Initialize()	
 
@@ -22,6 +23,7 @@ function ENT:Initialize()
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 		
 		LocalPlayer().Sounds["Tsunamilava"]         = createLoopedSound(LocalPlayer(), self.WedgeSound)
+		LocalPlayer().Sounds["lava"]         = createLoopedSound(LocalPlayer(), self.WedgeSound2)
 		
 		
 	end
