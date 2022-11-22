@@ -942,36 +942,6 @@ function gfx_screenParticles()
 	
 end
 
-
-function FindNearestEntity(self, class)
-
-	if ents.FindByClass(class)[1] == nil then return nil end
-
-	local current_target          = ents.FindByClass(class)[1]
-
-
-	for k, v in pairs(ents.FindByClass(class)) do
-
-		local dis   = current_target:GetPos():Distance(self:GetPos()) -- from current target to self
-		local dis2  = v:GetPos():Distance(self:GetPos()) -- from new target to self 
-
-
-		if dis2 <= dis then
-			current_target = v
-
-
-		end
-
-	end
-
-	return current_target, self:GetPos():Distance(current_target:GetPos())
-
-end
-
-
-
-
-
 sound.Add( {
 	name = "Underwater",
 	channel = CHAN_STATIC,
@@ -1206,50 +1176,6 @@ function FindInCylinder(pos, radius, top, bottom)
 	
 	return entities 
 end
-
-
-
-
-
-
-
-function CreateSoundWave(soundpath, epicenter, soundtype, speed, pitchrange, shakeduration) -- SPEED MUST BE IN MS^-1
-
-
-	local distance = LocalPlayer():GetPos():Distance(epicenter) -- distance from player and epicenter
-	local t        = distance / convert_MetoSU(speed)  -- speed of sound = 340.29 m/s
-
-	timer.Simple(t, function()
-		if LocalPlayer():IsValid() then
-			
-			if shakeduration > 0 then
-				
-				util.ScreenShake( LocalPlayer():GetPos(), 1, 15, 1, 10000 )
-		
-			end
-			
-			if soundtype == "mono" then
-				
-				surface.PlaySound( soundpath )
-
-			elseif soundtype == "stereo" then
-				LocalPlayer():EmitSound( soundpath, 100, math.random(pitchrange[1], pitchrange[2]), 1 )
-
-			elseif soundtype == "3d" then
-				sound.Play( soundpath,  epicenter, 170, math.random(pitchrange[1], pitchrange[2]), 1 )
-			end		
-							
-		end
-	end)
-
-end
-		
-
-
-
-
-
-
 
 
 function AddCeilingWaterDrops(effect_nm, ieffect_nm, delay, offset_range, angle)

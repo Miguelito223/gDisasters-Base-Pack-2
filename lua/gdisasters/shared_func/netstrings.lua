@@ -1,5 +1,6 @@
 if (SERVER) then
-
+	
+	util.AddNetworkString( "gdisasters_clmenu_vars" )
 	util.AddNetworkString( "gd_isOutdoor" )
 	util.AddNetworkString( "gd_clParticles" )
 	util.AddNetworkString( "gd_clParticles_ground" )	
@@ -23,6 +24,20 @@ if (SERVER) then
 	
 	util.AddNetworkString( "gd_removegfxfog" )
 	util.AddNetworkString( "gd_resetoutsidefactor" )
+	
+
+	net.Receive( "gdisasters_clmenu_vars", function( len, pl ) 
+		if !pl:IsAdmin() or !pl:IsSuperAdmin() then return end
+
+		local cvar = net.ReadString();
+		local val = net.ReadFloat();
+
+		if( GetConVar( tostring( cvar ) ) == nil ) then return end
+		if( GetConVar( tostring( cvar ) ):GetInt() == tonumber( val ) ) then return end
+
+		game.ConsoleCommand( tostring( cvar ) .." ".. tostring( val ) .."\n" );
+
+	end );
 
 	net.Receive("gd_ambientlight", function()
 		local ent = net.ReadEntity()
