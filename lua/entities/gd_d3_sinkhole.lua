@@ -82,7 +82,7 @@ function ENT:Touch( entity )
 		
 		if entity:IsPlayer() then
 		
-			entity:SetPos( entity:GetPos() - Vector(0,0,10))
+			entity:SetPos( entity:GetPos() - Vector(0,0,5))
 
 			timer.Simple(5, function()
 				local dmg = DamageInfo()
@@ -95,7 +95,7 @@ function ENT:Touch( entity )
 		
 		else
 
-			entity:SetPos( entity:GetPos() - Vector(0,0,10))
+			entity:SetPos( entity:GetPos() - Vector(0,0,5))
 
 			timer.Simple(5, function()
 				local dmg = DamageInfo()
@@ -110,7 +110,7 @@ function ENT:Touch( entity )
 		
 	
 	else
-		entity:SetPos( entity:GetPos() - Vector(0,0,10))
+		entity:SetPos( entity:GetPos() - Vector(0,0,5))
 
 	end
 	
