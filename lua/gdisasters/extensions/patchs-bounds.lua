@@ -86,6 +86,8 @@ MAP_BOUNDS["gm_tornado_interstate_95"]  = { Vector(162710, 16271, -6052), Vector
 MAP_BOUNDS["gm_tornadoalley_e1"]  = { Vector(-15343, -15338, 64), Vector(15300, -15331, 64), Vector(0, 0, 0)}
 MAP_BOUNDS["gm_teletubbyland_day_remake"]  = { Vector(-10415, 6267, -1215), Vector(10213, -8722, -1301), Vector(0, 0, -1215)}
 MAP_BOUNDS["gm_boreas"] = { Vector(-15855, -15855, -10308), Vector(15855, 15850, -10308), Vector(0, 0, -10414)}
+MAP_BOUNDS["rp_clazfort"] = { Vector(8163, -13152, -1858), Vector(-11235, 13419, -1858), Vector(0, 0, -3071)}
+MAP_BOUNDS["gm_constructed"] = { Vector(-14303, 14303, 576), Vector(14303, -14303, 464), Vector(0, 0, -22)}
 
 
 MAP_PATHS = {}
