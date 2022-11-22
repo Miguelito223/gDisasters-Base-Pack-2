@@ -941,6 +941,31 @@ function gfx_screenParticles()
 	
 end
 
+function FindNearestEntity(self, class)
+
+	if ents.FindByClass(class)[1] == nil then return nil end
+
+	local current_target          = ents.FindByClass(class)[1]
+
+
+	for k, v in pairs(ents.FindByClass(class)) do
+
+		local dis   = current_target:GetPos():Distance(self:GetPos()) -- from current target to self
+		local dis2  = v:GetPos():Distance(self:GetPos()) -- from new target to self 
+
+
+		if dis2 <= dis then
+			current_target = v
+
+
+		end
+
+	end
+
+	return current_target, self:GetPos():Distance(current_target:GetPos())
+
+end
+
 sound.Add( {
 	name = "Underwater",
 	channel = CHAN_STATIC,
