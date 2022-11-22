@@ -113,10 +113,28 @@ function ENT:Touch( entity )
 			local r, g, b  = entity:GetColor().r, entity:GetColor().g, entity:GetColor().b
 			entity:SetColor( Color( math.Clamp(r-1,0,255),  math.Clamp(g-1,0,255),  math.Clamp(b-1,0,255) ) )
 			entity:SetPos( entity:GetPos() - Vector(0,0,0.6))
+			
+			timer.Simple(2, function()
+				local dmg = DamageInfo()
+				dmg:SetDamage( 100 )
+				dmg:SetAttacker( entity )
+				dmg:SetDamageType( DMG_BURN  )
+
+				entity:TakeDamageInfo(  dmg)
+			end)
 		
 		else
 			entity:Ignite(60, 0)
 			entity:SetPos( entity:GetPos() - Vector(0,0,20))
+			
+			timer.Simple(2, function()
+				local dmg = DamageInfo()
+				dmg:SetDamage( 100 )
+				dmg:SetAttacker( entity )
+				dmg:SetDamageType( DMG_BURN  )
+
+				entity:TakeDamageInfo(  dmg)
+			end)
 
 		end
 		

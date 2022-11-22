@@ -82,10 +82,28 @@ function ENT:Touch( entity )
 		if entity:IsPlayer() then
 		
 			entity:SetPos( entity:GetPos() - Vector(0,0,0.6))
+
+			timer.Simple(5, function()
+				local dmg = DamageInfo()
+				dmg:SetDamage( 100 )
+				dmg:SetAttacker( entity )
+				dmg:SetDamageType( DMG_DROWN  )
+
+				entity:TakeDamageInfo(  dmg)
+			end)
 		
 		else
 
 			entity:SetPos( entity:GetPos() - Vector(0,0,20))
+
+			timer.Simple(5, function()
+				local dmg = DamageInfo()
+				dmg:SetDamage(100)
+				dmg:SetAttacker( entity )
+				dmg:SetDamageType( DMG_DROWN  )
+
+				entity:TakeDamageInfo(  dmg)
+			end)
 
 		end
 		

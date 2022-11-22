@@ -27,7 +27,6 @@ function ENT:Initialize()
 		self:SetSolid( SOLID_VPHYSICS )
 		self:SetMoveType( MOVETYPE_NONE  )
 		self:SetUseType( ONOFF_USE )
-		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 		self:SetMaterial(self.Material)
 		local phys = self:GetPhysicsObject()
 		
@@ -78,22 +77,40 @@ function ENT:Touch( entity )
 	
 	if vlength > 100 then return end 
 	
-	if entity:IsNPC() or entity:IsPlayer() then
+	if entity:IsNPC() or entity:IsPlayer() or entity:IsNextBot() then
 		
 		
 		if entity:IsPlayer() then
 		
-			entity:SetPos( entity:GetPos() - Vector(0,0,0.9))
+			entity:SetPos( entity:GetPos() - Vector(0,0,10))
+
+			timer.Simple(5, function()
+				local dmg = DamageInfo()
+				dmg:SetDamage( 100 )
+				dmg:SetAttacker( entity )
+				dmg:SetDamageType( DMG_DROWN  )
+
+				entity:TakeDamageInfo(  dmg)
+			end)
 		
 		else
 
-			entity:SetPos( entity:GetPos() - Vector(0,0,20))
+			entity:SetPos( entity:GetPos() - Vector(0,0,10))
+
+			timer.Simple(5, function()
+				local dmg = DamageInfo()
+				dmg:SetDamage( 100 )
+				dmg:SetAttacker( entity )
+				dmg:SetDamageType( DMG_DROWN  )
+
+				entity:TakeDamageInfo(  dmg)
+			end)
 
 		end
 		
 	
 	else
-		entity:SetPos( entity:GetPos() - Vector(0,0,1))
+		entity:SetPos( entity:GetPos() - Vector(0,0,10))
 
 	end
 	
