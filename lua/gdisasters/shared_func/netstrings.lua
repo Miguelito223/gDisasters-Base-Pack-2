@@ -1,6 +1,6 @@
 if (SERVER) then
 	
-	util.AddNetworkString( "gdisasters_clmenu_vars" )
+	util.AddNetworkString( "gd_clmenu_vars" )
 	util.AddNetworkString( "gd_isOutdoor" )
 	util.AddNetworkString( "gd_clParticles" )
 	util.AddNetworkString( "gd_clParticles_ground" )	
@@ -26,7 +26,7 @@ if (SERVER) then
 	util.AddNetworkString( "gd_resetoutsidefactor" )
 	
 
-	net.Receive( "gdisasters_clmenu_vars", function( len, pl ) 
+	net.Receive( "gd_clmenu_vars", function( len, pl ) 
 		if !pl:IsAdmin() or !pl:IsSuperAdmin() then return end
 
 		local cvar = net.ReadString();

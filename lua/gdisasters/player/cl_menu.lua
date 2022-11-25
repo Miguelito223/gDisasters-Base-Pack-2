@@ -30,7 +30,7 @@ local function CreateTickboxConVariable(CPanel, desc, convarname)
 
 		if( (LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() )and !Created ) then
 			if( ( bVal and 1 or 0 ) == cvars.Number( convarname ) ) then return end
-			net.Start( "gdisasters_clmenu_vars" );
+			net.Start( "gd_clmenu_vars" );
 			net.WriteString( convarname );
 			net.WriteFloat( bVal and 1 or 0 );
 			net.SendToServer();
@@ -57,7 +57,7 @@ local function CreateSliderConVariable(CPanel, desc, minvar, maxvar, dp, convarn
 		
 		if( (LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() )and !Created ) then
 			if ( tonumber(val) ) == cvars.Number( convarname )  then return end
-			net.Start( "gdisasters_clmenu_vars" );
+			net.Start( "gd_clmenu_vars" );
 			net.WriteString( convarname );
 			net.WriteFloat(tonumber(val) );
 			net.SendToServer();
