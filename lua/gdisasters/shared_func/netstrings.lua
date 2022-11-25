@@ -12,6 +12,7 @@ if (SERVER) then
 	util.AddNetworkString( "gd_sneeze")
 	util.AddNetworkString( "gd_sneeze_big")
 	util.AddNetworkString( "gd_lightning_bolt")
+	util.AddNetworkString( "gd_createdecals")
 	util.AddNetworkString( "gd_sendsound"	)
 	util.AddNetworkString( "gd_ambientlight"	)
 	util.AddNetworkString( "gd_shakescreen"	)
@@ -112,6 +113,31 @@ net.Receive("gd_ambientlight", function()
 	net.WriteVector(LocalPlayer().AmbientLight)
 	net.SendToServer()
 	
+end)
+
+net.Receive("gd_createdecals", function()
+	if self.CreatedDecals then return end
+	self.CreatedDecals = true
+	if GetConVar("gdisasters_graphics_experimental_overdraw"):GetInt() != 1 then return end
+
+	decal = net.ReadString()
+
+	for i=0, 25 do
+	
+		local bounds    = getMapSkyBox()
+		local min       = bounds[1]
+		local max       = bounds[2]
+		
+		local startpos  = Vector(   math.random(min.x,max.x)      ,  math.random(min.y,max.y) ,  max.z )
+		local tr = util.TraceLine( {
+			start = startpos,
+			endpos = startpos - Vector(0,0,50000),
+		} )	
+		
+		
+		util.Decal(decal, tr.HitPos + tr.HitNormal,  tr.HitPos - tr.HitNormal)
+		
+	end
 end)
 
 net.Receive("gd_clParticles", function()

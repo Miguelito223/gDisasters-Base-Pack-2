@@ -138,26 +138,8 @@ function ENT:AffectNpcs()
 end
 
 function ENT:CreateSnowDecals()
-	if self.CreatedDecals then return end
-	self.CreatedDecals = true
-	if GetConVar("gdisasters_graphics_experimental_overdraw"):GetInt() != 1 then return end
-
-	for i=0, 25 do
-	
-		local bounds    = getMapSkyBox()
-		local min       = bounds[1]
-		local max       = bounds[2]
-		
-		local startpos  = Vector(   math.random(min.x,max.x)      ,  math.random(min.y,max.y) ,  max.z )
-		local tr = util.TraceLine( {
-			start = startpos,
-			endpos = startpos - Vector(0,0,50000),
-		} )	
-		
-		
-		util.Decal("snow", tr.HitPos + tr.HitNormal,  tr.HitPos - tr.HitNormal)
-		
-	end
+	net.Start("gd_createdecals")
+	net.WriteString("snow")
 end
 
 function ENT:Think()
