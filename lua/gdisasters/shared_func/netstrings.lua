@@ -138,7 +138,7 @@ net.Receive("gd_createdecals", function()
 			endpos = startpos - Vector(0,0,50000),
 		} )	
 		
-		timer.Create("lol", 10, 0, function()
+		timer.Create("lol", 1, 1, function()
 			util.Decal(decal, tr.HitPos + tr.HitNormal,  tr.HitPos - tr.HitNormal)
 		end)
 	end
