@@ -1,8 +1,3 @@
-if (SERVER) then
-	AddCSLuaFile("autorun/precached_particles.lua") -- this file
-end
-
-
 PrecacheParticleSystem("localized_dust_effect")
 PrecacheParticleSystem("localized_sand_effect")
 PrecacheParticleSystem("localized_rain_effect")

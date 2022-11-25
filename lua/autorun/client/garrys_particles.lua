@@ -1,5 +1,3 @@
-AddCSLuaFile()
-
 game.AddParticles( "particles/dust_storm_effect.pcf") 
 game.AddParticles( "particles/sand_storm_effect.pcf") 
 game.AddParticles( "particles/heavy_rain_effect.pcf") 

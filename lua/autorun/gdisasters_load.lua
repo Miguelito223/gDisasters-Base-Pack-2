@@ -1,6 +1,7 @@
 if (SERVER) then
-
+	AddCSLuaFile("autorun/client/garrys_particles.lua")
 	AddCSLuaFile("autorun/gdisasters_load.lua")
+	AddCSLuaFile("autorun/precached_particles.lua")
 	
 	AddCSLuaFile("gdisasters/shared_func/main.lua")
 	AddCSLuaFile("gdisasters/shared_func/netstrings.lua")
