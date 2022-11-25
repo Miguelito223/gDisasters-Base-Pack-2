@@ -152,6 +152,7 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		self:AffectPlayers()
+		self:CreateIceDecals()
 		
 		local t =  (FrameTime() / 0.1) / (66.666 / 0.1) -- tick dependant function that allows for constant think loop regardless of server tickrate
 		
@@ -159,8 +160,6 @@ function ENT:Think()
 		self:NextThink(CurTime() + t)
 		return true
 	end
-	
-	self:CreateIceDecals()
 	
 end
 
@@ -206,12 +205,12 @@ end
 function ENT:CreateIceDecals()
 	for k, v in pairs(player.GetAll()) do
 		net.Start("gd_createdecals")
-		net.WriteBool(self.CreatedDecals)
 		if HitChance(15) then
 			net.WriteString("snow")	
 		else
 			net.WriteString("ice")	
 		end
+		net.WriteBool(self.CreatedDecals)
 		net.Send(v)
 	end
 end

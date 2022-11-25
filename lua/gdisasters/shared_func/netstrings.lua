@@ -92,6 +92,7 @@ if (SERVER) then
 	end)
 
 
+
 end
 	
 if (CLIENT) then
@@ -137,9 +138,9 @@ net.Receive("gd_createdecals", function()
 			endpos = startpos - Vector(0,0,50000),
 		} )	
 		
-		
-		util.Decal(decal, tr.HitPos + tr.HitNormal,  tr.HitPos - tr.HitNormal)
-		
+		timer.Create("lol", 10, 0, function()
+			util.Decal(decal, tr.HitPos + tr.HitNormal,  tr.HitPos - tr.HitNormal)
+		end)
 	end
 end)
 

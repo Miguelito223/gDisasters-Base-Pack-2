@@ -237,6 +237,7 @@ function ENT:CreateIceDecals()
 		else
 			net.WriteString("ice")	
 		end
+		net.WriteBool(self.CreatedDecals)
 		net.Send(v)
 	end
 end

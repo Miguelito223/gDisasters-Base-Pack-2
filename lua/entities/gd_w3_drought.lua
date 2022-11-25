@@ -254,8 +254,8 @@ end
 function ENT:CreateSandDecals()
 	for k, v in pairs(player.GetAll()) do
 		net.Start("gd_createdecals")
-		net.WriteBool(self.CreatedDecals)
 		net.WriteString("sand")
+		net.WriteBool(self.CreatedDecals)
 		net.Send(v)
 	end
 end

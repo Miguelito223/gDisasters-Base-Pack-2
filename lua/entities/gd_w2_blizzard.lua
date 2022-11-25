@@ -122,8 +122,8 @@ end
 function ENT:CreateSnowDecals()
 	for k, v in pairs(player.GetAll()) do
 		net.Start("gd_createdecals")
-		net.WriteBool(self.CreatedDecals)
 		net.WriteString("snow")
+		net.WriteBool(self.CreatedDecals)
 		net.Send(v)
 	end
 end
