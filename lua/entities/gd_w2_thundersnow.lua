@@ -56,6 +56,7 @@ function ENT:Initialize()
 			end)
 		end
 		
+	self:CreateSnowDecals()
 	self:Lightning()
 	setMapLight("d")		
 	
@@ -138,7 +139,6 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		self:AffectPlayers()
-		self:CreateSnowDecals()
 		self:NextThink(CurTime() + 0.01)
 		return true
 	end

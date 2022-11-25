@@ -63,7 +63,7 @@ function ENT:Initialize()
 		
 		physenv.SetAirDensity(85)
 		
-
+		self:CreateSandDecals()
 		setMapLight("z")		
 		gDisasters_CreateGlobalGFX("heavyfog", self)
 		
@@ -190,7 +190,6 @@ function ENT:Think()
 		if !self:IsValid() then return end
 
 		self:AffectPlayers()
-		self:CreateSandDecals()
 		
 		self:NextThink(CurTime() + 0.01)
 		return true

@@ -60,7 +60,7 @@ function ENT:Initialize()
 			end)
 		end
 		
-
+		self:CreateSandDecals()
 		setMapLight("c")		
 		gDisasters_CreateGlobalGFX("sandstormy", self)
 		
@@ -154,7 +154,7 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		self:AffectPlayers()
-		self:CreateSandDecals()
+		
 		
 		local t =  (FrameTime() / 0.1) / (66.666 / 0.1) -- tick dependant function that allows for constant think loop regardless of server tickrate
 		

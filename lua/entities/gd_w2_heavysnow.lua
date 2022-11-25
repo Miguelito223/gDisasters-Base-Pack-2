@@ -55,7 +55,8 @@ function ENT:Initialize()
 				paintSky_Fade(self.Original_SkyData, 0.05)
 			end)
 		end
-		
+	
+	self:CreateSnowDecals()
 	setMapLight("d")		
 	
 
@@ -150,7 +151,6 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		self:AffectPlayers()
-		self:CreateSnowDecals()
 		self:AffectNpcs()
 		self:NextThink(CurTime() + 0.001)
 		return true

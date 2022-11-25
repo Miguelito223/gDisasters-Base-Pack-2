@@ -62,6 +62,7 @@ function ENT:Initialize()
 			end)
 		end
 		
+		self:CreateIceDecals()
 		setMapLight("d")
 		
 		local data = {}
@@ -152,7 +153,7 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		self:AffectPlayers()
-		self:CreateIceDecals()
+		
 		
 		local t =  (FrameTime() / 0.1) / (66.666 / 0.1) -- tick dependant function that allows for constant think loop regardless of server tickrate
 		
