@@ -204,11 +204,15 @@ function ENT:UpdateTransmitState()
 end
 
 function ENT:CreateIceDecals()
-	net.Start("gd_createdecals")
-	if HitChance(15) then
-		net.WriteString("snow")	
-	else
-		net.WriteString("ice")	
+	for k, v in pairs(player.GetAll()) do
+		net.Start("gd_createdecals")
+		net.WriteBool(self.CreatedDecals)
+		if HitChance(15) then
+			net.WriteString("snow")	
+		else
+			net.WriteString("ice")	
+		end
+		net.Send(v)
 	end
 end
 

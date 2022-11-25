@@ -129,8 +129,12 @@ function ENT:AffectPlayers()
 end
 
 function ENT:CreateSandDecals()
-	net.Start("gd_createdecals")
-	net.WriteString("sand")
+	for k, v in pairs(player.GetAll()) do
+		net.Start("gd_createdecals")
+		net.WriteBool(self.CreatedDecals)
+		net.WriteString("sand")
+		net.Send(v)
+	end
 end
 
 function ENT:Think()

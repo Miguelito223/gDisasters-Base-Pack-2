@@ -220,8 +220,12 @@ function ENT:AffectPlayers()
 end
 
 function ENT:CreateIceDecals()
-	net.Start("gd_createdecals")
-	net.WriteString("ice")
+	for k, v in pairs(player.GetAll()) do
+		net.Start("gd_createdecals")
+		net.WriteBool(self.CreatedDecals)
+		net.WriteString("ice")
+		net.Send(v)
+	end
 end
 
 function ENT:AffectNpcs()

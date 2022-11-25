@@ -116,11 +116,14 @@ net.Receive("gd_ambientlight", function()
 end)
 
 net.Receive("gd_createdecals", function()
-	if self.CreatedDecals then return end
-	self.CreatedDecals = true
 	if GetConVar("gdisasters_graphics_experimental_overdraw"):GetInt() != 1 then return end
-
+	
 	decal = net.ReadString()
+	bool = net.ReadBool()
+
+	if bool then return end
+	bool = true
+	
 
 	for i=0, 25 do
 	
