@@ -88,6 +88,7 @@ MAP_BOUNDS["gm_teletubbyland_day_remake"]  = { Vector(-10415, 6267, -1215), Vect
 MAP_BOUNDS["gm_boreas"] = { Vector(-15855, -15855, -10308), Vector(15855, 15850, -10308), Vector(0, 0, -10414)}
 MAP_BOUNDS["rp_clazfort"] = { Vector(8163, -13152, -1858), Vector(-11235, 13419, -1858), Vector(0, 0, -3071)}
 MAP_BOUNDS["gm_constructed"] = { Vector(-14303, 14303, 576), Vector(14303, -14303, 464), Vector(0, 0, -22)}
+MAP_BOUNDS["freespace_gs"] = { Vector(15703, -15159, -3996), Vector(-14983, 15527, -3984), Vector(0, 0, -4430)}
 
 
 MAP_PATHS = {}
