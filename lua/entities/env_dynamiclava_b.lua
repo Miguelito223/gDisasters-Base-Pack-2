@@ -731,9 +731,11 @@ function ENT:OnRemove()
 	if (CLIENT) then 
 	
 	
-		if LocalPlayer().Sounds["Tsunamilava"]!=nil then 
+		if LocalPlayer().Sounds["Tsunamilava"]!=nil and LocalPlayer().Sounds["lava"]!=nil then 
 			LocalPlayer().Sounds["Tsunamilava"]:Stop()
 			LocalPlayer().Sounds["Tsunamilava"]=nil
+			LocalPlayer().Sounds["lava"]:Stop()
+			LocalPlayer().Sounds["lava"]=nil
 		end
 		
 	end
