@@ -27,6 +27,7 @@ function ENT:Initialize()
 		self:SetSolid( SOLID_VPHYSICS )
 		self:SetMoveType( MOVETYPE_NONE  )
 		self:SetUseType( ONOFF_USE )
+		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 		self:SetMaterial(self.Material)
 		local phys = self:GetPhysicsObject()
 		
