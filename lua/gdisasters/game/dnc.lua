@@ -73,7 +73,7 @@ if (SERVER) then
     local DAY				= 2;
     local DUSK				= 3;
 
-    hook.Add( "Initialize", "gdisasters_dncInitFix", function()
+    hook.Add( "Initialize", "gdisasters_dnc_InitFix", function()
 
         if ( gdisasters_dnc_enabled:GetInt() <= 0 ) then return end
 
@@ -87,7 +87,7 @@ if (SERVER) then
 
     end );
 
-    hook.Add( "InitPostEntity", "gdisasters_dncInitPostEvo", function()
+    hook.Add( "InitPostEntity", "gdisasters_dnc_InitPostEvo", function()
 
         -- HACK: fixes the darkened sky effect on evocity
         local map = string.lower( game.GetMap() );
@@ -225,7 +225,7 @@ if (SERVER) then
 
                 timer.Simple( 0.1, function()
 
-                    net.Start( "gdisasters_dnc_lightmaps" );
+                    net.Start( "gd_maplight_cl" );
                     net.Broadcast();
 
                 end );
@@ -504,7 +504,7 @@ if (SERVER) then
     -- global handle for debugging
     gdisasters_dncGlobal = gdisasters_dnc;
 
-    hook.Add( "Initialize", "gdisasters_dncInit", function()
+    hook.Add( "Initialize", "gdisasters_dnc_Init", function()
 
         gdisasters_dnc:Initialize();
 
@@ -554,63 +554,25 @@ if (SERVER) then
 
     end );
 
-    function gdisasters_dncMessage( pl, ... )
+    function gdisasters_dnc_Message( pl, ... )
 
-        net.Start( "gdisasters_dnc_message" );
-            net.WriteTable( { ... } );
+        net.Start( "gd_dnc_message" );
+        net.WriteTable( { ... } );
         net.Send( pl );
 
     end
 
-    function gdisasters_dncMessageAll( ... )
+    function gdisasters_dnc_MessageAll( ... )
 
-        net.Start( "gdisasters_dnc_message" );
-            net.WriteTable( { ... } );
+        net.Start( "gd_dnc_message" );
+        net.WriteTable( { ... } );
         net.Broadcast();
 
     end
 
     -- Net
-    util.AddNetworkString( "gdisasters_dnc_settings" );
-    util.AddNetworkString( "gdisasters_dnc_lightmaps" );
-    util.AddNetworkString( "gdisasters_dnc_message" );
 
     -- Hacky workaround to make it possible for admins to change server cvars on dedicated servers
-    net.Receive( "gdisasters_dnc_settings", function( len, pl )
-
-        if ( !IsValid( pl ) or !pl:gdisasters_dncAdmin() ) then return end
-
-        local function safeVal( v )
-
-            -- no lua injection plz
-            v = tonumber( v );
-            v = tostring( v );
-            v = string.Replace( v, ":", "" );
-            v = string.Replace( v, ";", "" );
-            v = string.Replace( v, "'", "" );
-            v = string.Replace( v, '"', "" );
-            v = string.Replace( v, '(', "" );
-            v = string.Replace( v, ')', "" );
-
-            return v;
-
-        end
-
-        local tbl = net.ReadTable();
-
-        local enabled = safeVal( tbl.enabled );
-        local paused = safeVal( tbl.paused );
-        local realtime = safeVal( tbl.realtime );
-        local dnclength_day = safeVal( tbl.dnclength_day );
-        local dnclength_night = safeVal( tbl.dnclength_night );
-
-        game.ConsoleCommand( "gdisasters_dnc_enabled " .. enabled .. "\n" );
-        game.ConsoleCommand( "gdisasters_dnc_paused " .. paused .. "\n" );
-        game.ConsoleCommand( "gdisasters_dnc_realtime " .. realtime .. "\n" );
-        game.ConsoleCommand( "gdisasters_dnc_length_day " .. dnclength_day .. "\n" );
-        game.ConsoleCommand( "gdisasters_dnc_length_night " .. dnclength_night .. "\n" );
-
-    end );
 
     concommand.Add( "gdisasters_dnc_reset", function( pl, cmd, args )
 
@@ -657,64 +619,17 @@ if (SERVER) then
 
 end
 
+if (CLIENT) then
+
 -- lightmap stuff
-net.Receive( "gdisasters_dnc_lightmaps", function( len )
 
-	render.RedownloadAllLightmaps();
 
-end );
+    -- precache
+    hook.Add( "InitPostEntity", "gdisasters_dnc_FirstJoinLightmaps", function()
 
--- precache
-hook.Add( "InitPostEntity", "gdisasters_dncFirstJoinLightmaps", function()
+    	render.RedownloadAllLightmaps();
 
-	render.RedownloadAllLightmaps();
+    end );
 
-end );
-
-net.Receive( "gdisasters_dnc_message", function( len )
-
-	local tab = net.ReadTable();
-
-	if ( #tab > 0 ) then
-
-		chat.AddText( unpack( tab ) );
-
-	end
-
-end );
-
-local function UpdateValues( CPanel )
-
-	if ( CPanel == nil ) then return end
-
-	if ( CPanel.enabled ) then
-
-		CPanel.enabled:SetValue( cvars.Number( "gdisasters_dnc_enabled" ) );
-
-	end
-
-	if ( CPanel.paused ) then
-
-		CPanel.paused:SetValue( cvars.Number( "gdisasters_dnc_paused" ) );
-
-	end
-
-	if ( CPanel.realtime ) then
-
-		CPanel.realtime:SetValue( cvars.Number( "gdisasters_dnc_realtime" ) );
-
-	end
-
-	if ( CPanel.length_day ) then
-
-		CPanel.length_day:SetValue( cvars.Number( "gdisasters_dnc_length_day" ) );
-
-	end
-
-	if ( CPanel.length_night ) then
-
-		CPanel.length_night:SetValue( cvars.Number( "gdisasters_dnc_length_night" ) );
-
-	end
 
 end
