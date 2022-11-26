@@ -229,6 +229,8 @@ local function gDisastersGraphicsSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable WP"  , "gdisasters_graphics_enable_weather_particles");
 	CreateTickboxConVariable(CPanel, "Enable SP"  , "gdisasters_graphics_enable_screen_particles");
 
+	CreateTickboxConVariable(CPanel, "Enable Manual SP"  , "gdisasters_graphics_enable_manual_number_of_screen_particles");
+
 	CreateSliderConVariable(CPanel, "Max SP", 0, 20, 1,"gdisasters_graphics_number_of_screen_particles"  );
 
 end

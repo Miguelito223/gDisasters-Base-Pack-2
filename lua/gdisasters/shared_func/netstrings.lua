@@ -188,7 +188,13 @@ if (CLIENT) then
 		local texture  = net.ReadString()
 		local size     = net.ReadFloat()
 		local life     = net.ReadFloat() + CurTime()
-		local number   = math.random(0, GetConVar("gdisasters_graphics_number_of_screen_particles"):GetFloat())
+		
+		if GetConVar("disasters_graphics_enable_manual_number_of_screen_particles"):GetInt() >= 1 then  
+			local number   = math.random(0, GetConVar("gdisasters_graphics_number_of_screen_particles"):GetFloat())
+		else
+			local number   = net.ReadFloat()
+		end
+		
 		local vel      = net.ReadVector()
 
 
