@@ -115,6 +115,7 @@ function ENT:Touch( entity )
 			entity:SetPos( entity:GetPos() - Vector(0,0,0.6))
 			
 			timer.Simple(2, function()
+				if !self:IsValid then return end
 				local dmg = DamageInfo()
 				dmg:SetDamage( 100 )
 				dmg:SetAttacker( entity )
