@@ -16,6 +16,8 @@ ENT.Models                           =  {"models/props_debris/concrete_spawnplug
 
 
 function ENT:Initialize()	
+	if (CLIENT) then
+	end
 	if (SERVER) then
 		
 		self:SetModel(table.Random(self.Models))
@@ -43,6 +45,12 @@ function ENT:Initialize()
 		
 		
 	end
+end
+
+function ENT:SetMDScale(scale)
+	local mat = Matrix()
+	mat:Scale(scale)
+	self:EnableMatrix("RenderMultiply", mat)
 end
 
 function ENT:SpawnFunction( ply, tr )
