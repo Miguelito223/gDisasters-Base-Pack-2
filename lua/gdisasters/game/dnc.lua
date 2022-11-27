@@ -420,7 +420,7 @@ if (SERVER) then
 
                 self.m_EnvSkyPaint:SetTopColor( LerpVector( frac, SKYPAINT[cur].TopColor, SKYPAINT[next].TopColor ) );
                 self.m_EnvSkyPaint:SetBottomColor( LerpVector( frac, SKYPAINT[cur].BottomColor, SKYPAINT[next].BottomColor ) );
-                self.m_EnvSkyPaint:SetSunNormal( (LerpVector( frac, SKYPAINT[cur].SunNormal, SKYPAINT[next].SunNormal )) );
+                self.m_EnvSkyPaint:SetSunNormal( LerpVector( frac, SKYPAINT[cur].SunNormal, SKYPAINT[next].SunNormal ) );
                 self.m_EnvSkyPaint:SetSunColor( LerpVector( frac, SKYPAINT[cur].SunColor, SKYPAINT[next].SunColor ) );
                 self.m_EnvSkyPaint:SetDuskColor( LerpVector( frac, SKYPAINT[cur].DuskColor, SKYPAINT[next].DuskColor ) );
                 self.m_EnvSkyPaint:SetFadeBias( Lerp( frac, SKYPAINT[cur].FadeBias, SKYPAINT[next].FadeBias ) );
