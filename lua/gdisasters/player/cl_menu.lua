@@ -262,7 +262,6 @@ local function gDisastersAudioSettings( CPanel )
 	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,1,"gdisasters_sound_Heavy_Wind" );
 
 	CreateTickboxConVariable(CPanel, "Enable manual SoundWave "  , "gdisasters_sound_enable_soundwave_manual_level");
-
 	CreateSliderConVariable(CPanel, "SoundWave Volume", 0,1,1,"gdisasters_sound_soundwave_manual_level" );
 	
 	local lb2 =  AddControlLabel( CPanel, "Hud Audio Options: " )
