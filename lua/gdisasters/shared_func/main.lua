@@ -406,47 +406,47 @@ if (SERVER) then
 
 		if GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then 
 		
-		local self          = ents.FindByClass("env_skypaint")[1]
-		local TopColor      = Vector(0.20,0.50,1.00)
-		local BottomColor   = Vector(0.80,1.00,1.00)
-		local FadeBias      = 1.00
-		local HDRScale      = 0.66
-		
-		local DrawStars     = true
-		local StarTexture   = "skybox/starfield"
-		local StarScale     = 0.50
-		local StarFade      = 1.50
-		local StarSpeed     = 0.01
-		
-		local DuskIntensity = 0.5
-		local DuskScale     = 1.00
-		local DuskColor     = Vector(1.00,0.20,0.00)
-		
-		local SunSize       = 2.00
-		local SunColor      = Vector(0.20,0.10,0.00)
-		local SunNormal     = Vector( 0.0, 0.0, 0.00 )
-		
-		self:SetTopColor( TopColor )
-		self:SetBottomColor( BottomColor )
-		self:SetFadeBias( FadeBias )
-		
-		self:SetDrawStars( DrawStars )
-		self:SetStarSpeed( StarSpeed )
-		self:SetStarScale( StarScale )
-		self:SetStarFade( StarFade )
-		
-		self:SetStarTexture( StarTexture )		
-		self:SetDuskColor( DuskColor )
-		self:SetDuskScale( DuskScale )
-		self:SetDuskIntensity( DuskIntensity )
-		
-		self:SetSunNormal( SunNormal )
-		self:SetSunColor( SunColor )
-		self:SetSunSize( SunSize )
-
-
-
-		self:SetHDRScale( HDRScale )
+			local self          = ents.FindByClass("env_skypaint")[1]
+			local TopColor      = Vector(0.20,0.50,1.00)
+			local BottomColor   = Vector(0.80,1.00,1.00)
+			local FadeBias      = 1.00
+			local HDRScale      = 0.66
+			
+			local DrawStars     = true
+			local StarTexture   = "skybox/starfield"
+			local StarScale     = 0.50
+			local StarFade      = 1.50
+			local StarSpeed     = 0.01
+			
+			local DuskIntensity = 0.5
+			local DuskScale     = 1.00
+			local DuskColor     = Vector(1.00,0.20,0.00)
+			
+			local SunSize       = 2.00
+			local SunColor      = Vector(0.20,0.10,0.00)
+			local SunNormal     = Vector( 0.0, 0.0, 0.00 )
+			
+			self:SetTopColor( TopColor )
+			self:SetBottomColor( BottomColor )
+			self:SetFadeBias( FadeBias )
+			
+			self:SetDrawStars( DrawStars )
+			self:SetStarSpeed( StarSpeed )
+			self:SetStarScale( StarScale )
+			self:SetStarFade( StarFade )
+			
+			self:SetStarTexture( StarTexture )		
+			self:SetDuskColor( DuskColor )
+			self:SetDuskScale( DuskScale )
+			self:SetDuskIntensity( DuskIntensity )
+			
+			self:SetSunNormal( SunNormal )
+			self:SetSunColor( SunColor )
+			self:SetSunSize( SunSize )
+			
+			
+			
+			self:SetHDRScale( HDRScale )
 		
 		end
 
