@@ -1216,18 +1216,29 @@ function CreateSoundWave(soundpath, epicenter, soundtype, speed, pitchrange, sha
 				util.ScreenShake( LocalPlayer():GetPos(), 1, 15, 1, 10000 )
 
 			end
+			if GetConVar("gdisasters_sound_enable_soundwave_manual_level"):GetInt() == 0 then
+				if soundtype == "mono" then
 
-			if soundtype == "mono" then
+					surface.PlaySound( soundpath )
 
-				surface.PlaySound( soundpath )
+				elseif soundtype == "stereo" then
+					LocalPlayer():EmitSound( soundpath, 100, math.random(pitchrange[1], pitchrange[2]), 1 )
 
-			elseif soundtype == "stereo" then
-				LocalPlayer():EmitSound( soundpath, 100, math.random(pitchrange[1], pitchrange[2]), 1 )
+				elseif soundtype == "3d" then
+					sound.Play( soundpath,  epicenter, 170, math.random(pitchrange[1], pitchrange[2]), 1 )
+				end		
+			else
+				if soundtype == "mono" then
 
-			elseif soundtype == "3d" then
-				sound.Play( soundpath,  epicenter, 170, math.random(pitchrange[1], pitchrange[2]), 1 )
-			end		
+					surface.PlaySound( soundpath )
 
+				elseif soundtype == "stereo" then
+					LocalPlayer():EmitSound( soundpath, 100, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_sound_soundwave_manual_level"):GetFloat() )
+
+				elseif soundtype == "3d" then
+					sound.Play( soundpath,  epicenter, 170, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_sound_soundwave_manual_level"):GetFloat() )
+				end		
+			end
 		end
 	end)
 
