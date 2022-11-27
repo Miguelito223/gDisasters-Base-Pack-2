@@ -1,10 +1,10 @@
-gdisasters_dnc_enabled = CreateConVar( "gdisasters_dnc_enabled", "1", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY ), "Day & Night enabled." );
-gdisasters_dnc_paused = CreateConVar( "gdisasters_dnc_paused", "0", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY ), "Day & Night time progression enabled." );
-gdisasters_dnc_realtime = CreateConVar( "gdisasters_dnc_realtime", "0", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY ), "Whether or not Day & Night progresses based on the servers time zone." );
-gdisasters_dnc_logging = CreateConVar( "gdisasters_dnc_log", "0", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY ), "Turn Day & Night logging to console on or off." );
+gdisasters_dnc_enabled = GetConVar("gdisasters_dnc_enabled")
+gdisasters_dnc_paused =  GetConVar("gdisasters_dnc_paused")
+gdisasters_dnc_realtime =  GetConVar("gdisasters_dnc_realtime")
+gdisasters_dnc_logging =  GetConVar("gdisasters_dnc_log")
 
-gdisasters_dnc_length_day = CreateConVar( "gdisasters_dnc_length_day", "3600", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED ), "The duration modifier of daytime in seconds." );
-gdisasters_dnc_length_night = CreateConVar( "gdisasters_dnc_length_night", "3600", bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED ), "The duration modifier of nighttime in seconds." );
+gdisasters_dnc_length_day = GetConVar( "gdisasters_dnc_length_day")
+gdisasters_dnc_length_night = GetConVar( "gdisasters_dnc_length_night")
 
 gdisasters_dnc_version = 2.0;
 gdisasters_dnc_dev = false;
@@ -72,55 +72,6 @@ if (SERVER) then
     local DAWN				= 1;
     local DAY				= 2;
     local DUSK				= 3;
-
-    hook.Add( "Initialize", "gdisasters_dnc_InitFix", function()
-
-        if ( gdisasters_dnc_enabled:GetInt() <= 0 ) then return end
-
-        RunConsoleCommand( "sv_skyname", "painted" );
-
-        if ( game.ConsoleCommand ) then
-
-            game.ConsoleCommand( "sv_skyname painted\n" );
-
-        end
-
-    end );
-
-    hook.Add( "InitPostEntity", "gdisasters_dnc_InitPostEvo", function()
-
-        -- HACK: fixes the darkened sky effect on evocity
-        local map = string.lower( game.GetMap() );
-
-        if ( string.find( map, "evocity" ) != nil ) then
-
-            for _, brush in pairs( ents.FindByName( "gdisasters_dnc_brush" ) ) do
-
-                gdisasters_dnc_log( "removing gdisasters_dnc_brush " .. tostring( brush ) );
-
-                brush:Remove();
-
-            end
-
-        end
-
-        -- HACK: fixes cleanup removing env_skypaint, light_environment
-        local oldCleanUpMap = game.CleanUpMap;
-
-        game.CleanUpMap = function(dontSendToClients, ExtraFilters)
-            dontSendToClients = (dontSendToClients != nil and dontSendToClients or false);
-
-            if ( ExtraFilters != nil ) then
-                table.insert(ExtraFilters, "env_skypaint");
-                table.insert(ExtraFilters, "light_environment");
-            else
-                ExtraFilters = { "env_skypaint", "light_environment" };
-            end
-
-            oldCleanUpMap(dontSendToClients, ExtraFilters);
-        end
-
-    end );
 
     local SKYPAINT =
     {
@@ -450,28 +401,21 @@ if (SERVER) then
                     cur = NIGHT;
                     next = DAWN;
                     frac = math.EaseInOut( ( self.m_Time - TIME_DAWN_START ) / ( dawnMidPoint - TIME_DAWN_START ), ease, ease );
-                    gDisasters_RemoveGlobalFog()
                 elseif ( self.m_Time >= dawnMidPoint and self.m_Time < TIME_DAWN_END ) then
                     cur = DAWN;
                     next = DAY;
                     frac = math.EaseInOut( ( self.m_Time - dawnMidPoint ) / ( TIME_DAWN_END - dawnMidPoint ), ease, ease );
-                    gDisasters_RemoveGlobalFog()
                 elseif ( self.m_Time >= TIME_DUSK_START and self.m_Time < duskMidPoint ) then
                     cur = DAY;
                     next = DUSK;
                     frac = math.EaseInOut( ( self.m_Time - TIME_DUSK_START ) / ( duskMidPoint - TIME_DUSK_START ), ease, ease );
-                    gDisasters_CreateGlobalFog(self, data, true)
-                    gDisasters_CreateGlobalGFX("heavyfog", self)
                 elseif ( self.m_Time >= duskMidPoint and self.m_Time < TIME_DUSK_END ) then
                     cur = DUSK;
                     next = NIGHT;
                     frac = math.EaseInOut( ( self.m_Time - duskMidPoint ) / ( TIME_DUSK_END - duskMidPoint ), ease, ease );
-                    gDisasters_CreateGlobalFog(self, data, true)
-                    gDisasters_CreateGlobalGFX("heavyfog", self)
                 elseif ( self.m_Time >= TIME_DAWN_END and self.m_Time <= TIME_DUSK_END ) then
                     cur = DAY;
                     next = DAY;
-                    gDisasters_RemoveGlobalFog()
                 end
 
                 self.m_EnvSkyPaint:SetTopColor( LerpVector( frac, SKYPAINT[cur].TopColor, SKYPAINT[next].TopColor ) );
