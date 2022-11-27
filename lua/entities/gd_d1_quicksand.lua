@@ -84,12 +84,14 @@ function ENT:Touch( entity )
 			entity:SetPos( entity:GetPos() - Vector(0,0,0.6))
 
 			timer.Simple(5, function()
-				local dmg = DamageInfo()
-				dmg:SetDamage( 100 )
-				dmg:SetAttacker( entity )
-				dmg:SetDamageType( DMG_DROWN  )
-
-				entity:TakeDamageInfo(  dmg)
+				if self:IsValid() then 
+					local dmg = DamageInfo()
+					dmg:SetDamage( 100 )
+					dmg:SetAttacker( entity )
+					dmg:SetDamageType( DMG_BURN  )
+					
+					entity:TakeDamageInfo(  dmg)
+				end
 			end)
 		
 		else
@@ -97,13 +99,14 @@ function ENT:Touch( entity )
 			entity:SetPos( entity:GetPos() - Vector(0,0,20))
 
 			timer.Simple(5, function()
-				if !self:IsValid then return end
-				local dmg = DamageInfo()
-				dmg:SetDamage(100)
-				dmg:SetAttacker( entity )
-				dmg:SetDamageType( DMG_DROWN  )
-
-				entity:TakeDamageInfo(  dmg)
+				if self:IsValid() then 
+					local dmg = DamageInfo()
+					dmg:SetDamage( 100 )
+					dmg:SetAttacker( entity )
+					dmg:SetDamageType( DMG_BURN  )
+					
+					entity:TakeDamageInfo(  dmg)
+				end
 			end)
 
 		end

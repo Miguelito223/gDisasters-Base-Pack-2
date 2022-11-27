@@ -18,6 +18,8 @@ ENT.Models                           =  {"models/props_debris/concrete_spawnplug
 function ENT:Initialize()	
 	if (CLIENT) then
 	end
+	
+	
 	if (SERVER) then
 		
 		self:SetModel(table.Random(self.Models))
@@ -36,7 +38,7 @@ function ENT:Initialize()
 			phys:SetMass(self.Mass)
 		end 		
 		
-		self:SetModelScale( math.random(20,24) ) 
+		self:SetModelScale( math.random(14,18) ) 
 		self:SetAngles( Angle(0,math.random(1,180), 0))
 		
 		self:SetPos(self:GetPos() - Vector(0,0,125))
@@ -65,6 +67,11 @@ function ENT:SpawnFunction( ply, tr )
 	return ent
 end
 
+
+
+
+
+
 function ENT:Touch( entity )
 
 	local vlength = entity:GetVelocity():Length()
@@ -79,12 +86,14 @@ function ENT:Touch( entity )
 			entity:SetPos( entity:GetPos() - Vector(0,0,5))
 
 			timer.Simple(5, function()
-				local dmg = DamageInfo()
-				dmg:SetDamage( 100 )
-				dmg:SetAttacker( entity )
-				dmg:SetDamageType( DMG_DROWN  )
-
-				entity:TakeDamageInfo(  dmg)
+				if self:IsValid() then 
+					local dmg = DamageInfo()
+					dmg:SetDamage( 100 )
+					dmg:SetAttacker( entity )
+					dmg:SetDamageType( DMG_DROWN  )
+					
+					entity:TakeDamageInfo(  dmg)
+				end
 			end)
 		
 		else
@@ -92,13 +101,14 @@ function ENT:Touch( entity )
 			entity:SetPos( entity:GetPos() - Vector(0,0,5))
 
 			timer.Simple(5, function()
-				if !self:IsValid then return end
-				local dmg = DamageInfo()
-				dmg:SetDamage( 100 )
-				dmg:SetAttacker( entity )
-				dmg:SetDamageType( DMG_DROWN  )
-
-				entity:TakeDamageInfo(  dmg)
+				if self:IsValid() then 
+					local dmg = DamageInfo()
+					dmg:SetDamage( 100 )
+					dmg:SetAttacker( entity )
+					dmg:SetDamageType( DMG_DROWN  )
+					
+					entity:TakeDamageInfo(  dmg)
+				end
 			end)
 
 		end
@@ -132,7 +142,3 @@ function ENT:Draw()
 	self:DrawModel()
 	
 end
-
-
-
-
