@@ -127,7 +127,7 @@ function ENT:Touch( entity )
 		
 		else
 			entity:Ignite(60, 0)
-			entity:SetPos( entity:GetPos() - Vector(0,0,0.6))
+			entity:SetPos( entity:GetPos() - Vector(0,0,20))
 			
 			timer.Simple(2, function()
 				if self:IsValid() then 

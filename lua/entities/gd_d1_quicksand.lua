@@ -29,17 +29,18 @@ function ENT:Initialize()
 		self:SetUseType( ONOFF_USE )
 		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 		self:SetMaterial(self.Material)
-		local phys = self:GetPhysicsObject()
 		
 		self:SetTrigger( true )
 
-		
+		self:SetModelScale( math.random(1,4) ) 
+		self:SetAngles( Angle(0,math.random(1,180), 0))
+
+		local phys = self:GetPhysicsObject()
+
 		if (phys:IsValid()) then
 			phys:SetMass(self.Mass)
 		end 		
-		
-		self:SetModelScale( math.random(1,4) ) 
-		self:SetAngles( Angle(0,math.random(1,180), 0))
+
 		
 		
 		
@@ -96,7 +97,7 @@ function ENT:Touch( entity )
 		
 		else
 
-			entity:SetPos( entity:GetPos() - Vector(0,0,0.6))
+			entity:SetPos( entity:GetPos() - Vector(0,0,20))
 
 			timer.Simple(5, function()
 				if self:IsValid() then 
