@@ -131,8 +131,6 @@ if (SERVER) then
 		    FadeBias		= 1,
 		    HDRScale		= 0.26,
 		    StarScale		= 0.66,
-            DrawStars     = true,
-            StarTexture     = "skybox/starfield",
 		    StarFade		= 0.0,	-- Do not change!
             StarSpeed 		= 0.02,
 		    DuskScale		= 1,
@@ -140,7 +138,6 @@ if (SERVER) then
 		    DuskColor		= Vector( 1, 0.2, 0 ),
 		    SunColor		= Vector( 0.2, 0.1, 0 ),
 		    SunSize			= 0.34,
-            SunNormal       = Vector( 0.0, 0.0, 0.00 ),
         },
         [DAY] =
         {
@@ -149,8 +146,6 @@ if (SERVER) then
 		    FadeBias		= 1.00,
 		    HDRScale		= 0.66,
 		    StarScale		= 0.50,
-            DrawStars     = true,
-            StarTexture     = "skybox/starfield",
 		    StarFade		= 1.5,	-- Do not change!
             StarSpeed 		= 0.01,
 		    DuskScale		= 0.5,
@@ -158,7 +153,6 @@ if (SERVER) then
 		    DuskColor		= Vector(1.00,0.20,0.00),
 		    SunColor		= Vector(0.20,0.10,0.00 ),
 		    SunSize			= 2.00,
-            SunNormal       = Vector( 0.0, 0.0, 0.00 ),
         },
         [DUSK] =
         {
@@ -167,8 +161,6 @@ if (SERVER) then
 		    FadeBias		= 1,
 		    HDRScale		= 0.36,
 		    StarScale		= 0.66,
-            DrawStars     = true,
-            StarTexture     = "skybox/starfield",
 		    StarFade		= 0.0,	-- Do not change!
             StarSpeed 		= 0.01,
 		    DuskScale		= 1,
@@ -176,7 +168,6 @@ if (SERVER) then
 		    DuskColor		= Vector( 1.00,0.20,0.00 ),
 		    SunColor		= Vector( 0.83, 0.45, 0.11 ),
 		    SunSize			= 0.34,
-            SunNormal       = Vector( 0.0, 0.0, 0.00 ),
         },
         [NIGHT] =
         {
@@ -185,8 +176,6 @@ if (SERVER) then
 		    FadeBias		= 0.27,
 		    HDRScale		= 0.19,
 		    StarScale		= 0.66,
-            DrawStars     = true,
-            StarTexture     = "skybox/starfield",
 		    StarFade		= 5.0,	-- Do not change!
             StarSpeed 		= 0.01,
 		    DuskScale		= 0,
@@ -194,7 +183,6 @@ if (SERVER) then
 		    DuskColor		= Vector(  0.00, 0.00, 0.00 ),
 		    SunColor		= Vector( 0.83, 0.45, 0.11 ),
 		    SunSize			= 0.0,
-            SunNormal       = Vector( 0.0, 0.0, 0.00 ),
         }
 
     };
@@ -343,6 +331,7 @@ if (SERVER) then
             if ( self.m_Time >= TIME_DUSK_END and IsValid( self.m_EnvSun ) ) then
                 if ( self.m_LastPeriod != NIGHT ) then
                     self.m_EnvSun:Fire( "TurnOff", "", 0 );
+                    gDisasters_CreateGlobalGFX("heavyfog", self)
 
                     self.m_LastPeriod = NIGHT;
                 end
@@ -466,13 +455,10 @@ if (SERVER) then
                 self.m_EnvSkyPaint:SetDuskScale( Lerp( frac, SKYPAINT[cur].DuskScale, SKYPAINT[next].DuskScale ) );
                 self.m_EnvSkyPaint:SetDuskIntensity( Lerp( frac, SKYPAINT[cur].DuskIntensity, SKYPAINT[next].DuskIntensity ) );
                 self.m_EnvSkyPaint:SetSunSize( (Lerp( frac, SKYPAINT[cur].SunSize, SKYPAINT[next].SunSize )) );
-                self.m_EnvSkyPaint:SetSunNormal( (Lerp( frac, SKYPAINT[cur].SunNormal, SKYPAINT[next].SunNormal )) );
 
                 self.m_EnvSkyPaint:SetStarFade( SKYPAINT[next].StarFade );
-                self.m_EnvSkyPaint:SetDrawStars( SKYPAINT[next].DrawStars );
                 self.m_EnvSkyPaint:SetStarScale( SKYPAINT[next].StarScale );
                 self.m_EnvSkyPaint:SetStarSpeed( SKYPAINT[next].StarSpeed );
-                self.m_EnvSkyPaint:SetStarTexture(SKYPAINT[next].StarTexture)
 
             end
 
