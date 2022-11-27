@@ -469,6 +469,7 @@ if (SERVER) then
                 self.m_EnvSkyPaint:SetSunNormal( (Lerp( frac, SKYPAINT[cur].SunNormal, SKYPAINT[next].SunNormal )) );
 
                 self.m_EnvSkyPaint:SetStarFade( SKYPAINT[next].StarFade );
+                self.m_EnvSkyPaint:SetDrawStars( SKYPAINT[next].DrawStars );
                 self.m_EnvSkyPaint:SetStarScale( SKYPAINT[next].StarScale );
                 self.m_EnvSkyPaint:SetStarSpeed( SKYPAINT[next].StarSpeed );
                 self.m_EnvSkyPaint:SetStarTexture(SKYPAINT[next].StarTexture)
