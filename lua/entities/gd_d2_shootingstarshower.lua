@@ -5,7 +5,7 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Megacryometeor"
+ENT.PrintName		                 =  "Shooting Star Shower"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
@@ -32,7 +32,6 @@ function ENT:Initialize()
 			phys:SetMass(self.Mass)
 		end 		
 
-		self:CreateHail()
 		self:SetNoDraw(true)
 		
 		
@@ -41,31 +40,41 @@ end
 
 function ENT:CreateHail()
 
-
-
+	if HitChance(24) then
 	
-	local startpos  = self:GetPos()
-	
-	local endpos    = startpos + Vector(0,0,50000)
-	
+		local bounds    = getMapSkyBox()
+		local min       = bounds[1]
+		local max       = bounds[2]
 		
-	local tr = util.TraceLine( {
-		start  = startpos,
-		endpos = endpos,
+		local startpos  = Vector(   math.random(min.x,max.x)      ,  math.random(min.y,max.y) ,   max.z )
 
-	} )
-
-
-	local hail = ents.Create("gd_d1_shootingstarshower_ch")
 			
-	hail:SetPos( tr.HitPos - Vector(0,0,1000) )
-	hail:Spawn()
-	hail:Activate()
-	hail:GetPhysicsObject():EnableMotion(true)
-	hail:GetPhysicsObject():SetVelocity( Vector(0,0,-10000)  )
-	hail:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
-	self:Remove()
+		local tr = util.TraceLine( {
+		start  = startpos,
+		endpos    = startpos + Vector(0,0,50000),
+		} )
+
+		if #ents.FindByClass("gd_d2_shootingstar") < 1 then 
+		
+		
+			
+
+			local star = ents.Create("gd_d2_shootingstar_ch")
+			star:Spawn()
+			star:Activate()	
+			star:SetPos( tr.HitPos )
+			star:GetPhysicsObject():EnableMotion(true)
+			star:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
+			
+			timer.Simple( math.random(14,18), function()
+				if star:IsValid() then star:Remove() end
+				
+			end)
+			
+		
+		end
 	
+	end		
 	
 end
 
@@ -83,7 +92,16 @@ function ENT:SpawnFunction( ply, tr )
 end
 
 
-
+function ENT:Think()
+	if (SERVER) then
+		local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1
+	
+		if !self:IsValid() then return end
+		self:CreateHail()
+		self:NextThink(CurTime() + t)
+		return true
+	end
+end
 
 
 
