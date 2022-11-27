@@ -257,31 +257,12 @@ if (CLIENT) then
 		local pos  		 = net.ReadVector() or LocalPlayer():GetPos() -- epicenter
 		local pitchrange = net.ReadTable() or {100,100}
 
-		if GetConVar("gdisasters_sound_enable_soundwave_manual_level"):GetInt() == 0 then
-
-			if stype == "mono" then
-
-				surface.PlaySound( s )
-			
-			elseif stype == "stereo" then
-			
-				LocalPlayer():EmitSound( s, 100, math.random(pitchrange[1], pitchrange[2]), 1 )
-
-			elseif stype == "3d" then
-				sound.Play( s,  pos, 150, math.random(pitchrange[1], pitchrange[2]), 1 )
-			end
-		else
-			if stype == "mono" then
-
-				surface.PlaySound( s )
-			
-			elseif stype == "stereo" then
-			
-				LocalPlayer():EmitSound( s, 100, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_sound_soundwave_manual_level"):GetFloat() )
-
-			elseif stype == "3d" then
-				sound.Play( s,  pos, 150, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_sound_soundwave_manual_level"):GetFloat() )
-			end
+		if stype == "mono" then
+			surface.PlaySound( s )
+		elseif stype == "stereo" then
+			LocalPlayer():EmitSound( s, 100, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_sound_soundwave_manual_level"):GetFloat() )
+		elseif stype == "3d" then
+			sound.Play( s,  pos, 150, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_sound_soundwave_manual_level"):GetFloat() )
 		end
 
 
