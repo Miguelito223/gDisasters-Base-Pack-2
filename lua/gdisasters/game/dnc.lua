@@ -436,25 +436,42 @@ if (SERVER) then
                 local frac = 0;
                 local ease = 0.3;
 
+                data = {}
+			    data.Color = Color(0,0,0)
+			    data.DensityCurrent = 0
+			    data.DensityMax     = 0.8
+			    data.DensityMin     = 0.1
+			    data.EndMax         = 10050
+			    data.EndMin         = 0
+			    data.EndMinCurrent  = 0
+			    data.EndMaxCurrent  = 0   
+
                 if ( self.m_Time >= TIME_DAWN_START and self.m_Time < dawnMidPoint ) then
                     cur = NIGHT;
                     next = DAWN;
                     frac = math.EaseInOut( ( self.m_Time - TIME_DAWN_START ) / ( dawnMidPoint - TIME_DAWN_START ), ease, ease );
+                    gDisasters_RemoveGlobalFog()
                 elseif ( self.m_Time >= dawnMidPoint and self.m_Time < TIME_DAWN_END ) then
                     cur = DAWN;
                     next = DAY;
                     frac = math.EaseInOut( ( self.m_Time - dawnMidPoint ) / ( TIME_DAWN_END - dawnMidPoint ), ease, ease );
+                    gDisasters_RemoveGlobalFog()
                 elseif ( self.m_Time >= TIME_DUSK_START and self.m_Time < duskMidPoint ) then
                     cur = DAY;
                     next = DUSK;
                     frac = math.EaseInOut( ( self.m_Time - TIME_DUSK_START ) / ( duskMidPoint - TIME_DUSK_START ), ease, ease );
+                    gDisasters_CreateGlobalFog(self, data, true)
+                    gDisasters_CreateGlobalGFX("heavyfog", self)
                 elseif ( self.m_Time >= duskMidPoint and self.m_Time < TIME_DUSK_END ) then
                     cur = DUSK;
                     next = NIGHT;
                     frac = math.EaseInOut( ( self.m_Time - duskMidPoint ) / ( TIME_DUSK_END - duskMidPoint ), ease, ease );
+                    gDisasters_CreateGlobalFog(self, data, true)
+                    gDisasters_CreateGlobalGFX("heavyfog", self)
                 elseif ( self.m_Time >= TIME_DAWN_END and self.m_Time <= TIME_DUSK_END ) then
                     cur = DAY;
                     next = DAY;
+                    gDisasters_RemoveGlobalFog()
                 end
 
                 self.m_EnvSkyPaint:SetTopColor( LerpVector( frac, SKYPAINT[cur].TopColor, SKYPAINT[next].TopColor ) );
