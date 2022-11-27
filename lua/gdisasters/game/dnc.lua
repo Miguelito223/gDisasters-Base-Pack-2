@@ -141,18 +141,18 @@ if (SERVER) then
         },
         [DAY] =
         {
-		    TopColor		= Vector( 0.2, 0.49, 1 ),
-		    BottomColor		= Vector( 0.01, 0.96, 1 ),
-		    FadeBias		= 1,
-		    HDRScale		= 0.26,
-		    StarScale		= 0.66,
+		    TopColor		= Vector(0.20,0.50,1.00),
+		    BottomColor		= Vector(0.80,1.00,1.00),
+		    FadeBias		= 1.00,
+		    HDRScale		= 0.66,
+		    StarScale		= 0.50,
 		    StarFade		= 1.5,	-- Do not change!
-            StarSpeed 		= 0.02,
-		    DuskScale		= 1,
-		    DuskIntensity	= 1,
-		    DuskColor		= Vector( 1, 0.2, 0 ),
-		    SunColor		= Vector( 0.83, 0.45, 0.11 ),
-		    SunSize			= 0.34,
+            StarSpeed 		= 0.01,
+		    DuskScale		= 0.5,
+		    DuskIntensity	= 1.00,
+		    DuskColor		= Vector(1.00,0.20,0.00),
+		    SunColor		= Vector( 0.20,0.10,0.00 ),
+		    SunSize			= 2.00,
         },
         [DUSK] =
         {
