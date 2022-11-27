@@ -224,7 +224,8 @@ AddToGDSpawnMenu("Plant Appocolapse"         , "gd_d2_planttakeover"			, "Disast
 AddToGDSpawnMenu("Shooting Star"         , "gd_d2_shootingstar"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Hail Stone"         , "gd_d2_hail"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Waterspout", "gd_d2_waterspout" , "Disasters", "Tier 2", false)
-AddToGDSpawnMenu("acid puddle", "gd_d2_acidpuddle" , "Disasters", "Tier 2", false)
+AddToGDSpawnMenu("Sinkhole" , "gd_d3_sinkhole"         , "Disasters", "Tier 2", false)
+
 
 --[[
 DISASTERS 
@@ -238,7 +239,9 @@ AddToGDSpawnMenu("≈3.0 Magnitude Earthquake" , "gd_d3_rs3eq"         , "Disast
 AddToGDSpawnMenu("EF0 Tornado"        , "gd_d3_ef0"              , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("EF0 Tornado (Smart)"        , "gd_d3_ef0_pathed"              , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("Landslide" , "gd_d3_landslide"         , "Disasters", "Tier 3", false)
-AddToGDSpawnMenu("Sinkhole (beta)" , "gd_d3_sinkhole"         , "Disasters", "Tier 3", false)
+AddToGDSpawnMenu("acid puddle", "gd_d2_acidpuddle" , "Disasters", "Tier 3", false)
+AddToGDSpawnMenu("Lava flood" , "gd_d7_lavaflood"         , "Disasters", "Tier 3", false)
+
 
 --[[
 DISASTERS 
@@ -293,7 +296,6 @@ AddToGDSpawnMenu("EF4 Tornado"           , "gd_d7_ef4"           , "Disasters", 
 AddToGDSpawnMenu("EF4 Tornado (Smart)"           , "gd_d7_ef4_pathed"           , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("≈7.0  Magnitude Earthquake" , "gd_d7_rs7eq"         , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("Tsunami" , "gd_d7_tsunami"         , "Disasters", "Tier 7", false)
-AddToGDSpawnMenu("Lava flood" , "gd_d7_lavaflood"         , "Disasters", "Tier 7", false)
 
 
 --[[

@@ -5,7 +5,7 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Sinkhole (beta)"
+ENT.PrintName		                 =  "Sinkhole"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
@@ -38,7 +38,7 @@ function ENT:Initialize()
 			phys:SetMass(self.Mass)
 		end 		
 		
-		self:SetModelScale( math.random(14,18) ) 
+		self:SetModelScale( math.random(20,24) ) 
 		self:SetAngles( Angle(0,math.random(1,180), 0))
 		
 		self:SetPos(self:GetPos() - Vector(0,0,125))
