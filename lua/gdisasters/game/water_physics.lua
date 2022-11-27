@@ -104,7 +104,7 @@ Buoyancy_Lookup = {
 				["computer"] = 0.2,
 				["pottery"] = 0.2
 
-			}
+}
 
 					
 if (SERVER) then
