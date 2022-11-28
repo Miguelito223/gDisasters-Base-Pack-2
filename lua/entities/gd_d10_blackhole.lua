@@ -53,7 +53,7 @@ function ENT:SpawnFunction(ply, tr, ClassName)
 	return ent
 end
 
-function ENT:StartTouch(entity)
+function ENT:Touch(entity)
     if entity:IsPlayer() then
         entity:Kill()
         entity:Remove()
