@@ -167,7 +167,7 @@ end)
 
 if (SERVER) then
 
-	hook.Add( "Initialize", "AtmosInitFix", function()
+	hook.Add( "Initialize", "gDisastersInitFix", function()
 
 		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 
