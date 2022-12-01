@@ -170,6 +170,8 @@ function ENT:PostShouldFollowPath()
 end
 
 
+
+
 function ENT:PostRandomMovementType()
 	
 	self.PositionsCache     = {self:GetPos()}
@@ -953,14 +955,15 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		
+		
 		self:Move()
 		self:Physics()
 		self:IsParentValid()
 		
 
-	self:NextThink(CurTime() + 0.025)
+		self:NextThink(CurTime() + 0.025)
 		
-	return true
+		return true
 	
 	end
 end

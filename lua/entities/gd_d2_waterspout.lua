@@ -57,6 +57,31 @@ function ENT:Initialize()
 	end
 end
 
+function ENT:OverWater()
+
+	local tr = util.TraceLine( {
+		start = self:GetPos(),
+		endpos = self:GetPos() - Vector(0,0,11),
+		mask   = MASK_WATER 
+	} )
+	
+	return tr.HitWorld
+	
+end
+
+function ENT:RemoveWaterSpoutInSolid()
+	local isOnWater    = self:OverWater()
+
+	for k, v in pairs(ents.FindByClass("gd_d2_waterspout")) do
+		if isOnWater==true then
+
+		elseif isOnWater==false then
+			v:Remove()
+		end
+	end
+
+end
+
 
 function ENT:SpawnFunction( ply, tr )
 	local tr = util.TraceLine( {
@@ -86,6 +111,7 @@ function ENT:Think()
 
 	if (SERVER) then
 		if !self:IsValid() then return end
+		self:RemoveWaterSpoutInSolid()
 
 		self:NextThink(CurTime() + 1)
 		return true
