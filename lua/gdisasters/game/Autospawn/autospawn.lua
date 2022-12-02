@@ -10,7 +10,7 @@ local function Autospawn_Timer()
 		local startpos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].x,map_bounds[2].x),  map_bounds[2].z)
 		local tr = util.TraceLine( {
 			start = startpos,
-			endpos = startpos - Vector(0,0,50000),
+			endpos = startpos - Vector(0,0,map_floorcenter.z),
 		} )	
 
 		if GetConVar("gdisasters_autospawn_type"):GetString() == "Tornado" then
@@ -100,7 +100,7 @@ local function Autospawn_Timer()
 			local dis = ents.Create(table.Random(disasters))
 
 			for k, v in pairs(ents.FindByClass("gd_d*")) do
-				dis:SetPos(tr.HitPos + Vector(0,0,1000))
+				dis:SetPos(tr.HitPos)
 			end
 			for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
@@ -362,7 +362,7 @@ local function Autospawn_Timer()
 			local weadis = ents.Create(table.Random(weadisas))
 
 			for k, v in pairs(ents.FindByClass("gd_d*")) do
-				weadis:SetPos(tr.HitPos + Vector(0,0,1000))
+				weadis:SetPos(tr.HitPos)
 			end
 			for k, v in pairs(ents.FindByClass("gd_w*")) do
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then

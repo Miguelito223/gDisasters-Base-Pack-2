@@ -71,39 +71,29 @@ end
 
 function ENT:RemoveWaterSpoutInSolid()
 	local isOnWater    = self:OverWater()
+	local v = ents.FindByClass("gd_d2_waterspout")[1]
+	local ply = self.OWNER
 
-	for k, v in pairs(ents.FindByClass("gd_d2_waterspout")) do
-		if isOnWater==true then
-
-		elseif isOnWater==false then
-			v:Remove()
-		end
+	if isOnWater==true then
+	elseif isOnWater==false then
+		v:Remove()
+		ply:ChatPrint("It must be spawned on water...")
 	end
+
 
 end
 
 
 function ENT:SpawnFunction( ply, tr )
-	local tr = util.TraceLine( {
-		start  =  ply:GetPos(),
-		endpos = ply:GetPos() + ply:GetAimVector() * 500,
-		mask   = MASK_WATER 
-	} )
-	
-	if tr.Hit then
-		self.OWNER = ply
-		local ent = ents.Create( self.ClassName )
-		ent:SetPhysicsAttacker(ply)
-		ent:SetPos( tr.HitPos + tr.HitNormal * 20    ) 
-		ent:Spawn()
-		ent:Activate()
-		return ent
+	if ( !tr.Hit ) then return end
 
-	else
-	
-		ply:ChatPrint("It must be spawned on water...")
-	
-	end
+	self.OWNER = ply
+	local ent = ents.Create( self.ClassName )
+	ent:SetPhysicsAttacker(ply)
+	ent:SetPos( tr.HitPos + tr.HitNormal * 16 ) 
+	ent:Spawn()
+	ent:Activate()
+	return ent
 end
 
 
