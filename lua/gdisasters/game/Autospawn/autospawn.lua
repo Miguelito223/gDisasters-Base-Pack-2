@@ -10,12 +10,13 @@ local function Autospawn_Timer()
 		local startpos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].x,map_bounds[2].x),  map_bounds[2].z)
 		local tr = util.TraceLine( {
 			start = startpos,
-			endpos = startpos - Vector(0,0,map_floorcenter.z),
+			endpos = startpos - Vector(0, 0, map_floorcenter.z),
 		} )	
 
 		if GetConVar("gdisasters_autospawn_type"):GetString() == "Tornado" then
 			recent = true
 			local tornado = {
+			"gd_d2_waterspout", 
 			"gd_d3_ef0", 
 			"gd_d4_ef1", 
 			"gd_d4_landspout", 
