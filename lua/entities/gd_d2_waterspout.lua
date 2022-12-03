@@ -129,9 +129,12 @@ function ENT:Think()
 
 	if (SERVER) then
 		if !self:IsValid() then return end
+
+		local t =   (66/ ( 1/engine.TickInterval())) * 0.01	
+
 		self:RemoveWaterSpoutInSolid()
 
-		self:NextThink(CurTime() + 1)
+		self:NextThink(CurTime() + t)
 		return true
 	end
 end
