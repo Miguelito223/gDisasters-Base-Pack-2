@@ -5,13 +5,13 @@ local function Autospawn_Timer()
 
 	local function Autospawn()
 		
-		local map_bounds = getMapSkyBox()
+		local map_bounds = getMapBounds()
 		local map_floorcenter = getMapCenterFloorPos()
-		local startpos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].x,map_bounds[2].x),  map_bounds[2].z)
-		local tr = util.TraceLine( {
-			start = startpos,
-			endpos = startpos - Vector(0, 0, map_floorcenter.z),
-		} )	
+		local map_center = getMapCenterPos()
+
+		local WeatherTornadoPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].x,map_bounds[2].x),  map_bounds[2].z)
+		local DisastersPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].x,map_bounds[2].x), map_floorcenter.z)
+		local BlackHoleWhiteHolePos = Vector(map_center.x,  map_center.y, map_center.z)
 
 		if GetConVar("gdisasters_autospawn_type"):GetString() == "Tornado" then
 			recent = true
@@ -31,7 +31,7 @@ local function Autospawn_Timer()
 			local EF = ents.Create(table.Random(tornado))
 
 			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-				EF:SetPos(startpos)
+				EF:SetPos(WeatherTornadoPos)
 			else
 				local stormtable = S37K_mapbounds[1]
 				EF:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
@@ -101,11 +101,11 @@ local function Autospawn_Timer()
 			local dis = ents.Create(table.Random(disasters))
 
 			for k, v in pairs(ents.FindByClass("gd_d*")) do
-				dis:SetPos(tr.HitPos)
+				dis:SetPos(DisastersPos)
 			end
 			for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					dis:SetPos(startpos)
+					dis:SetPos(WeatherTornadoPos)
 				else
 					local stormtable = S37K_mapbounds[1]
 					dis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
@@ -113,7 +113,7 @@ local function Autospawn_Timer()
 			end
 			for k, v in pairs(ents.FindByClass("gd_d4_landspout")) do
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					dis:SetPos(startpos)
+					dis:SetPos(WeatherTornadoPos)
 				else
 					local stormtable = S37K_mapbounds[1]
 					dis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
@@ -121,7 +121,7 @@ local function Autospawn_Timer()
 			end
 			for k, v in pairs(ents.FindByClass("gd_d2_waterspout")) do
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					dis:SetPos(startpos)
+					dis:SetPos(WeatherTornadoPos)
 				else
 					local stormtable = S37K_mapbounds[1]
 					dis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
@@ -129,11 +129,14 @@ local function Autospawn_Timer()
 			end
 			for k, v in pairs(ents.FindByClass("gd_d*_mfirenado")) do
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					dis:SetPos(startpos)
+					dis:SetPos(WeatherTornadoPos)
 				else
 					local stormtable = S37K_mapbounds[1]
 					dis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
 				end
+			end
+			for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
+				dis:SetPos(BlackHoleWhiteHolePos)
 			end
 
 			dis:Spawn()
@@ -220,7 +223,7 @@ local function Autospawn_Timer()
 			local wea = ents.Create(table.Random(weather))
 
 			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-				wea:SetPos(startpos)
+				wea:SetPos(WeatherTornadoPos)
 			else
 				local stormtable = S37K_mapbounds[1]
 				wea:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
@@ -363,11 +366,11 @@ local function Autospawn_Timer()
 			local weadis = ents.Create(table.Random(weadisas))
 
 			for k, v in pairs(ents.FindByClass("gd_d*")) do
-				weadis:SetPos(tr.HitPos)
+				weadis:SetPos(DisastersPos)
 			end
 			for k, v in pairs(ents.FindByClass("gd_w*")) do
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					weadis:SetPos(startpos)
+					weadis:SetPos(WeatherTornadoPos)
 				else
 					local stormtable = S37K_mapbounds[1]
 					weadis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
@@ -375,7 +378,7 @@ local function Autospawn_Timer()
 			end
 			for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					weadis:SetPos(startpos)
+					weadis:SetPos(WeatherTornadoPos)
 				else
 					local stormtable = S37K_mapbounds[1]
 					weadis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
@@ -383,7 +386,7 @@ local function Autospawn_Timer()
 			end
 			for k, v in pairs(ents.FindByClass("gd_d4_landspout")) do
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					weadis:SetPos(startpos)
+					weadis:SetPos(WeatherTornadoPos)
 				else
 					local stormtable = S37K_mapbounds[1]
 					weadis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
@@ -391,7 +394,7 @@ local function Autospawn_Timer()
 			end
 			for k, v in pairs(ents.FindByClass("gd_d2_waterspout")) do
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					weadis:SetPos(startpos)
+					weadis:SetPos(WeatherTornadoPos)
 				else
 					local stormtable = S37K_mapbounds[1]
 					weadis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
@@ -399,12 +402,19 @@ local function Autospawn_Timer()
 			end
 			for k, v in pairs(ents.FindByClass("gd_d*_mfirenado")) do
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					weadis:SetPos(startpos)
+					weadis:SetPos(WeatherTornadoPos)
 				else
 					local stormtable = S37K_mapbounds[1]
 					weadis:SetPos( Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ) )
 				end
 			end
+			for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
+				weadis:SetPos(BlackHoleWhiteHolePos)
+			end
+			for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
+				weadis:SetPos(BlackHoleWhiteHolePos)
+			end
+			
 
 			weadis:Spawn()
 			weadis:Activate()
