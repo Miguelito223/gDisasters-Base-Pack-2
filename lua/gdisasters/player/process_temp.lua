@@ -153,17 +153,29 @@ if (SERVER) then
 				
 				if math.random(1,25) == 25 then
 					if alpha_cold != 0 then
+						
+						InflictDamage(v, v, "cold", alpha_hot + alpha_cold)
+						
+						if GetConVar("gdisasters_hud_temp_player_speed"):GetInt() == 0 then return end
+						
 						v:SetWalkSpeed( v:GetWalkSpeed() - (alpha_cold + 1) )
 						v:SetRunSpeed( v:GetRunSpeed() - (alpha_cold + 1)  )
 					
-						InflictDamage(v, v, "cold", alpha_hot + alpha_cold)
+						
 					
 					elseif alpha_hot != 0 then
+						
+						InflictDamage(v, v, "heat", alpha_hot + alpha_cold)
+						
+						if GetConVar("gdisasters_hud_temp_player_speed"):GetInt() == 0 then return end
+						
 						v:SetWalkSpeed( v:GetWalkSpeed() - (alpha_hot - 1) )
 						v:SetRunSpeed( v:GetRunSpeed() - (alpha_hot - 1)  )
 						
-						InflictDamage(v, v, "heat", alpha_hot + alpha_cold)
+						
 					else
+						if GetConVar("gdisasters_hud_temp_player_speed"):GetInt() == 0 then return end
+						
 						v:SetWalkSpeed(400)
 						v:SetRunSpeed(600)
 					end

@@ -93,6 +93,7 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature" ,"gdisasters_hud_temp_enable");
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Screen Effects" ,"gdisasters_hud_temp_enable_cl");
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Related Damage" ,"gdisasters_hud_temp_damage");
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Change Player Speed" ,"gdisasters_hud_temp_player_speed");
 
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Breathing" ,"gdisasters_hud_temp_breathing");
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Vomit" ,"gdisasters_hud_temp_vomit");
