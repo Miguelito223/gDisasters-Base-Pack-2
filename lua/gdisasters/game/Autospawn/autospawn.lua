@@ -20,6 +20,7 @@ local function Autospawn_Timer()
 			recent = true
 			local tornado = {
 			"gd_d2_waterspout", 
+			"gd_d2_gustnado",
 			"gd_d3_ef0", 
 			"gd_d4_ef1", 
 			"gd_d4_landspout", 
@@ -95,6 +96,7 @@ local function Autospawn_Timer()
     	    	"gd_d1_steamdevil",
     	    	"gd_d3_landslide",
     	    	"gd_d2_waterspout",
+				"gd_d2_gustnado",
     	    	"gd_d7_lavaflood",
     	    	"gd_d8_combineinv",
     	    	"gd_d8_lavatsunami"
@@ -221,6 +223,8 @@ local function Autospawn_Timer()
 				"gd_w2_stationaryfront",
 				"gd_w2_haboob",
 				"gd_w5_pyrocum",
+				"gd_w1_cldy_irid",
+				"gd_w1_aurora",
 				"gd_w6_neptune",
 				"gd_w6_redspot"
 			}
@@ -243,7 +247,8 @@ local function Autospawn_Timer()
 		elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Weather/Disasters" then
 			recent = true
 			local weadisas = {
-				"gd_w1_lightbreeze", 
+				"gd_w1_lightbreeze",
+				"gd_d2_gustnado",
 				"gd_w2_mildbreeze", 
 				"gd_w3_strongbreeze", 
 				"gd_w4_intensebreeze", 
@@ -302,6 +307,8 @@ local function Autospawn_Timer()
 				"gd_w4_dryline",
 				"gd_w4_derecho",
 				"gd_w4_strong_coldfront",
+				"gd_w1_cldy_irid",
+				"gd_w1_aurora",
 				"gd_w4_strong_occludedfront",
 				"gd_w4_strong_warmfront",
 				"gd_w4_severethunderstorm",
