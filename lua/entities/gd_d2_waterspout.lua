@@ -88,12 +88,9 @@ function ENT:RemoveWaterSpoutInSolid()
 	local ply = self.OWNER
 
 	if isOnWater==true and isOnSolid == false then
-		print("work")
 	elseif isOnWater==false and isOnSolid == true then
-		print("no work")
 		v:Remove()
 	elseif isOnWater==false and isOnSolid == false then
-		print("no work")
 		v:Remove()
 	end
 
@@ -129,12 +126,9 @@ function ENT:Think()
 
 	if (SERVER) then
 		if !self:IsValid() then return end
-
-		local t =   (66/ ( 1/engine.TickInterval())) * 0.01	
-
 		self:RemoveWaterSpoutInSolid()
 
-		self:NextThink(CurTime() + t)
+		self:NextThink(CurTime() + 1)
 		return true
 	end
 end
