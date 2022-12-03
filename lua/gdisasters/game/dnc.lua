@@ -580,18 +580,3 @@ if (SERVER) then
     end);
 
 end
-
-if (CLIENT) then
-
--- lightmap stuff
-
-
-    -- precache
-    hook.Add( "InitPostEntity", "gdisasters_dnc_FirstJoinLightmaps", function()
-
-    	render.RedownloadAllLightmaps();
-
-    end );
-
-
-end
