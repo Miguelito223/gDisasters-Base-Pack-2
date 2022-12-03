@@ -9,8 +9,8 @@ local function Autospawn_Timer()
 		local map_floorcenter = getMapCenterFloorPos()
 		local map_center = getMapCenterPos()
 
-		local WeatherTornadoPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].x,map_bounds[2].x),  map_bounds[2].z)
-		local DisastersPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].x,map_bounds[2].x), map_floorcenter.z)
+		local WeatherTornadoPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y),  map_bounds[2].z)
+		local DisastersPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z)
 		local BlackHoleWhiteHolePos = Vector(map_center.x,  map_center.y, map_center.z)
 
 		if GetConVar("gdisasters_autospawn_type"):GetString() == "Tornado" then
@@ -137,6 +137,9 @@ local function Autospawn_Timer()
 			end
 			for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
 				dis:SetPos(BlackHoleWhiteHolePos)
+			end
+			for k, v in pairs(ents.FindByClass("gd_d10_neutron_star")) do
+				weadis:SetPos(BlackHoleWhiteHolePos)
 			end
 
 			dis:Spawn()
@@ -411,7 +414,7 @@ local function Autospawn_Timer()
 			for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
 				weadis:SetPos(BlackHoleWhiteHolePos)
 			end
-			for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
+			for k, v in pairs(ents.FindByClass("gd_d10_neutron_star")) do
 				weadis:SetPos(BlackHoleWhiteHolePos)
 			end
 			
