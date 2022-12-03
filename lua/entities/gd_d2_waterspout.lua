@@ -85,7 +85,6 @@ function ENT:RemoveWaterSpoutInSolid()
 	local isOnWater    = self:OverWater()
 	local isOnSolid    = self:OverSolid()
 	local v = ents.FindByClass("gd_d2_waterspout")[1]
-	local ply = self.OWNER
 
 	if isOnWater==true and isOnSolid == false then
 	elseif isOnWater==false and isOnSolid == true then
