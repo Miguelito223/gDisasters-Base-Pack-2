@@ -106,7 +106,8 @@ function ENT:OverWater()
 		endpos = self:GetPos() - Vector(0,0,11),
 		mask   = MASK_WATER 
 	} )
-	
+	print(tr.HitPos)
+	print(self:GetPos())
 	return tr.HitWorld
 	
 end

@@ -230,11 +230,11 @@ function ENT:RandomMove()
 		
 		local tr = util.TraceLine( {
 			start = self:GetPos(),
-			endpos = self:GetPos() - Vector(0,0,1000),
+			endpos = self:GetPos() - Vector(0,0,50000),
 			mask   = MASK_WATER + MASK_SOLID_BRUSHONLY 
 		} )
 	
-		self:SetPos( tr.HitPos + Vector(0,0,20) )
+		self:SetPos( tr.HitPos + Vector(0,0,10) )
 		
 		
 	

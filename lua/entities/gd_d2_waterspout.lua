@@ -69,27 +69,12 @@ function ENT:OverWater()
 	
 end
 
-function ENT:OverSolid()
-
-	local tr = util.TraceLine( {
-		start = self:GetPos(),
-		endpos = self:GetPos() - Vector(0,0,11),
-		mask   = MASK_SOLID
-	})
-	
-	return tr.HitWorld
-	
-end
-
 function ENT:RemoveWaterSpoutInSolid()
 	local isOnWater    = self:OverWater()
-	local isOnSolid    = self:OverSolid()
 	local v = ents.FindByClass("gd_d2_waterspout")[1]
 
-	if isOnWater==true and isOnSolid == false then
-	elseif isOnWater==false and isOnSolid == true then
-		v:Remove()
-	elseif isOnWater==false and isOnSolid == false then
+	if isOnWater == true then
+	elseif isOnWater == false then
 		v:Remove()
 	end
 
