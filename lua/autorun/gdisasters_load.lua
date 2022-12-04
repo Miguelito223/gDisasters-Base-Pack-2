@@ -1,5 +1,4 @@
 if (SERVER) then
-	AddCSLuaFile("autorun/client/garrys_particles.lua")
 	AddCSLuaFile("autorun/gdisasters_load.lua")
 	AddCSLuaFile("autorun/precached_particles.lua")
 	
@@ -51,6 +50,10 @@ if (SERVER) then
 end
 
 if (CLIENT) then	
+
+	AddCSLuaFile("autorun/client/garrys_particles.lua")
+	AddCSLuaFile("autorun/gdisasters_load.lua")
+	AddCSLuaFile("autorun/precached_particles.lua")
 
 	include("gdisasters/player/menu.lua")
 	include("gdisasters/shared_func/main.lua")	
