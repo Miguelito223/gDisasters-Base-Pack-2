@@ -353,7 +353,7 @@ function ENT:RemoveWaterSpoutInSolid()
 
 	if isOnWater == true then
 	elseif isOnWater == false then
-		if entity:IsValid then entity:Remove() return end
+		if entity:IsValid() then entity:Remove() return end
 	end
 
 end
