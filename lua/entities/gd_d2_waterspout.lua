@@ -83,15 +83,26 @@ end
 
 
 function ENT:SpawnFunction( ply, tr )
-	if ( !tr.Hit ) then return end
+	local tr = util.TraceLine( {
+		start  =  ply:GetPos(),
+		endpos = ply:GetPos() + ply:GetAimVector() * 500,
+		mask   = MASK_WATER 
+	} )
+	
+	if tr.Hit then
+		self.OWNER = ply
+		local ent = ents.Create( self.ClassName )
+		ent:SetPhysicsAttacker(ply)
+		ent:SetPos( tr.HitPos + tr.HitNormal * 16) 
+		ent:Spawn()
+		ent:Activate()
+		return ent
 
-	self.OWNER = ply
-	local ent = ents.Create( self.ClassName )
-	ent:SetPhysicsAttacker(ply)
-	ent:SetPos( tr.HitPos + tr.HitNormal * 16 ) 
-	ent:Spawn()
-	ent:Activate()
-	return ent
+	else
+	
+		ply:ChatPrint("It must be spawned on water...")
+	
+	end
 end
 
 
