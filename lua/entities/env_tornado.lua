@@ -316,6 +316,48 @@ function ENT:PreCalculateVolume()
 	
 end
 
+function ENT:OverWater()
+
+	local tr = util.TraceLine( {
+		start = self:GetPos(),
+		endpos = self:GetPos() - Vector(0,0,11),
+		mask   = MASK_WATER
+	})
+	
+	print(self:GetPos())
+	print(tr.HitPos)
+
+	return tr.HitWorld
+	
+end
+
+function ENT:OverSolid()
+
+	local tr = util.TraceLine( {
+		start = self:GetPos(),
+		endpos = self:GetPos() - Vector(0,0,11),
+		mask   = MASK_SOLID_BRUSHONLY
+	})
+	
+	--print(self:GetPos())
+	--print(tr.HitPos)
+	
+	return tr.HitWorld
+	
+end
+
+function ENT:RemoveWaterSpoutInSolid()
+	local isOnWater    = self:OverWater()
+	local entity = ents.FindByClass("gd_d2_waterspout")[1]
+	ply = self.OWNER
+
+	if isOnWater == true then
+	elseif isOnWater == false then
+		if entity:IsValid then entity:Remove() return end
+	end
+
+end
+
 
 function ENT:CalculateVolumeOfTornado()
 	return self.Volume
@@ -959,6 +1001,7 @@ function ENT:Think()
 		self:Move()
 		self:Physics()
 		self:IsParentValid()
+		self:RemoveWaterSpoutInSolid()
 		
 
 		self:NextThink(CurTime() + 0.025)

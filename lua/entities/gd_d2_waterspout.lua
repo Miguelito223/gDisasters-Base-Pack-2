@@ -72,36 +72,8 @@ function ENT:SpawnFunction( ply, tr )
 		ent:Activate()
 		return ent
 	else
-	
 		ply:ChatPrint("It must be spawned on water...")
-	
 	end
-end
-
-function ENT:OverWater()
-
-	local tr = util.TraceLine( {
-		start = self:GetPos(),
-		endpos = self:GetPos() - Vector(0,0,11),
-		mask   = MASK_WATER 
-	})
-	
-	return tr.HitWorld
-	
-end
-
-function ENT:RemoveWaterSpoutInSolid()
-	local isOnWater    = self:OverWater()
-	local ent = ents.FindByClass(self.ClassName)[1]
-	ply = self.OWNER
-
-
-	if isOnWater == true then
-	elseif isOnWater == false then
-		ent:Remove()
-	end
-
-
 end
 
 
@@ -109,15 +81,9 @@ function ENT:Think()
 
 	if (SERVER) then
 		if !self:IsValid() then return end
-		self:RemoveWaterSpoutInSolid()
-
-		self:NextThink(CurTime() + 0.01)
+		self:NextThink(CurTime() + 1)
 		return true
 	end
-end
-
-function ENT:OnRemove()
-
 end
 
 
