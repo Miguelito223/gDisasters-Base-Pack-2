@@ -58,14 +58,24 @@ function ENT:Initialize()
 end
 
 function ENT:SpawnFunction( ply, tr )
-	if ( !tr.Hit ) then return end
-	self.OWNER = ply
-	local ent = ents.Create( self.ClassName )
-	ent:SetPhysicsAttacker(ply)
-	ent:SetPos( tr.HitPos + tr.HitNormal * 16) 
-	ent:Spawn()
-	ent:Activate()
-	return ent
+	local tr = util.TraceLine( {
+		start  =  ply:GetPos(),
+		endpos = ply:GetPos() + ply:GetAimVector() * 500,
+		mask   = MASK_WATER
+	} )
+	if tr.Hit then
+		self.OWNER = ply
+		local ent = ents.Create( self.ClassName )
+		ent:SetPhysicsAttacker(ply)
+		ent:SetPos( tr.HitPos + tr.HitNormal * 20) 
+		ent:Spawn()
+		ent:Activate()
+		return ent
+	else
+	
+		ply:ChatPrint("It must be spawned on water...")
+	
+	end
 end
 
 function ENT:OverWater()
@@ -82,14 +92,14 @@ end
 
 function ENT:RemoveWaterSpoutInSolid()
 	local isOnWater    = self:OverWater()
-	local v = ents.FindByClass("gd_d2_waterspout")[1]
+	local ent = ents.FindByClass(self.ClassName)[1]
 	ply = self.OWNER
 
 
 	if isOnWater == true then
 	elseif isOnWater == false then
 		ply:ChatPrint("It must be spawned on water...")
-		v:Remove()
+		ent:Remove()
 	end
 
 
