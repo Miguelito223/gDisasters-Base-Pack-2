@@ -113,14 +113,14 @@ end
 function ENT:VFire()
 
 	if not vFireInstalled then return end
-	
+
 	for k, v in pairs(ents.GetAll()) do
 		if (v:GetClass() == "vfire") then do
-		if !self:IsValid() then return end
-		if v:IsValid() then 
-		if (v:GetParent() == self) then
-			v:SoftExtinguish(1)
-					end
+			if !self:IsValid() then return end
+			if v:IsValid() then 
+				if (v:GetParent() == self) then
+					v:SoftExtinguish(1)
+						
 				end
 			end
 		end
@@ -285,7 +285,7 @@ function ENT:SpawnFunction( ply, tr )
 	self.OWNER = ply
 	local ent = ents.Create( self.ClassName )
 	ent:SetPhysicsAttacker(ply)
-	ent:SetPos( tr.HitPos + tr.HitNormal * 42.5  ) 
+	ent:SetPos( tr.HitPos + tr.HitNormal * 85  ) 
 	ent:Spawn()
 	ent:Activate()
 	return ent
