@@ -5,7 +5,7 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Earthquake"
+ENT.PrintName		                 =  "Earthquake Magnitude 6.0"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
