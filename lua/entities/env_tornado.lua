@@ -351,9 +351,11 @@ function ENT:RemoveWaterSpoutInSolid()
 	local entity = ents.FindByClass("gd_d2_waterspout")[1]
 	ply = self.OWNER
 
+	if !entity then return end
+
 	if isOnWater == true then
 	elseif isOnWater == false then
-		if entity:IsValid() then entity:Remove() return end
+		if entity then entity:Remove() end
 	end
 
 end
