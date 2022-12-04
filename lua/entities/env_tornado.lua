@@ -324,8 +324,8 @@ function ENT:OverWater()
 		mask   = MASK_WATER
 	})
 	
-	print(self:GetPos())
-	print(tr.HitPos)
+	--print(self:GetPos())
+	--print(tr.HitPos)
 
 	return tr.HitWorld
 	
