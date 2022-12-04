@@ -439,7 +439,7 @@ local function Autospawn_Timer()
 			weadis:Activate()
 
 			for k, ply in pairs(player.GetAll()) do
-				ply:ChatPrint("the weather or disaster that is happening now: " .. weadis.PrintName .. ", Position:: " .. tostring(weadis:GetPos()))
+				ply:ChatPrint("the weather or disaster that is happening now: " .. weadis.PrintName .. ", Position: " .. tostring(weadis:GetPos()))
 			end
 
 			timer.Simple(GetConVar( "gdisasters_autospawn_timer" ):GetInt(), function()
