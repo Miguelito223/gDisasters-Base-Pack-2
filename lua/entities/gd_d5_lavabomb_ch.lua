@@ -170,6 +170,7 @@ function ENT:Think()
 		if bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER or self:WaterLevel() > 0 or self.IsInWater or self.IsInlava then 
 			self:Remove() 
 			ParticleEffect( "water_small", self:GetPos() + Vector(0,0,100), Angle( 0, 0, 0 ) )
+			self:EmitSound(table.Random({"ambient/water/water_splash1.wav","ambient/water/water_splash2.wav","ambient/water/water_splash3.wav"}), 80, 100)
 		end
 
 		for k,v in pairs(ents.GetAll()) do
