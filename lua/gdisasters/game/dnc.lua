@@ -333,6 +333,7 @@ if (SERVER) then
 
             elseif ( self.m_Time >= TIME_DAWN_START and IsValid( self.m_EnvSun ) ) then
                 if ( self.m_LastPeriod != DAY ) then
+                    self.m_EnvSun:Fire( "TurnOn", "", 0 );
 
                     self.m_LastPeriod = DAY;
                 end
