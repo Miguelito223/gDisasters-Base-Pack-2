@@ -61,11 +61,8 @@ AddToGDSpawnMenu("Hail"        , "gd_d1_hail" , "Equipment", "Nature", false)
 -]]
 AddToGDSpawnMenu("Nurse" , "npc_nurse"         , "Misc", "NPCS", false)
 AddToGDSpawnMenu("♫ The Man In Gauze ♫"        , "gd_d4_themaningauze"              , "Misc", "Others", false)
-
-if gbomb5 then
-    AddToGDSpawnMenu("tvirus" , "gb5_chemical_tvirus"         , "Misc", "Infections", false)
-    AddToGDSpawnMenu("tvirus cure"        , "gb5_chemical_tvirus_cure"              , "Misc", "Infections", false)
-end
+AddToGDSpawnMenu("tvirus" , "gb5_chemical_tvirus"         , "Misc", "gbomb 5 Infections", false)
+AddToGDSpawnMenu("tvirus cure"        , "gb5_chemical_tvirus_cure"              , "Misc", "gbomb 5 Infections", false)
 
 --[[
 WEATHER TIER 1
