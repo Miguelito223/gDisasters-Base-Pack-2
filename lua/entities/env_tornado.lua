@@ -360,6 +360,20 @@ function ENT:RemoveWaterSpoutInSolid()
 
 end
 
+function ENT:RemoveLandSpoutInWater()
+	local isOnSolid   = self:OverSolid()
+	local entity = ents.FindByClass("gd_d4_landspout")[1]
+	ply = self.OWNER
+
+	if !entity then return end
+
+	if isOnSolid == true then
+	elseif isOnSolid == false then
+		if entity then entity:Remove() end
+	end
+
+end
+
 
 function ENT:CalculateVolumeOfTornado()
 	return self.Volume
@@ -1004,6 +1018,7 @@ function ENT:Think()
 		self:Physics()
 		self:IsParentValid()
 		self:RemoveWaterSpoutInSolid()
+		self:RemoveLandSpoutInWater()
 		
 
 		self:NextThink(CurTime() + 0.025)
