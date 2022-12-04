@@ -148,7 +148,11 @@ local function Autospawn_Timer()
 
 			dis:Spawn()
 			dis:Activate()
-			print("the disaster that is happening now: " .. tostring(dis) .. " Pos: " .. tostring(dis:GetPos()) )
+			
+			for k, ply in pairs(player.GetAll()) do
+				ply:ChatPrint("the disaster that is happening now: " .. dis.PrintName .. " Pos: " .. tostring(dis:GetPos()) )
+			end
+			
 			timer.Simple(GetConVar( "gdisasters_autospawn_timer" ):GetInt(), function()
 				if dis:IsValid() then dis:Remove() end
 			end)
@@ -239,7 +243,11 @@ local function Autospawn_Timer()
 
 			wea:Spawn()
 			wea:Activate()
-			print("the weather that is happening now: " .. tostring(wea) .. " Pos: " .. tostring(wea:GetPos()) )
+			
+			for k, ply in pairs(player.GetAll()) do
+				ply:ChatPrint("the weather that is happening now: " .. wea.PrintName .. " Pos: " .. tostring(wea:GetPos()) )
+			end
+			
 			timer.Simple(GetConVar( "gdisasters_autospawn_timer" ):GetInt(), function()
 				if wea:IsValid() then wea:Remove() end
 			end)
@@ -429,9 +437,11 @@ local function Autospawn_Timer()
 
 			weadis:Spawn()
 			weadis:Activate()
-			
-			print("the weather or disaster that is happening now: " .. tostring(weadis) .. " Pos: " .. tostring(weadis:GetPos()))
-			
+
+			for k, ply in pairs(player.GetAll()) do
+				ply:ChatPrint("the weather or disaster that is happening now: " .. weadis.PrintName .. " Pos: " .. tostring(weadis:GetPos()))
+			end
+
 			timer.Simple(GetConVar( "gdisasters_autospawn_timer" ):GetInt(), function()
 				if weadis:IsValid() then weadis:Remove() end
 			end)
