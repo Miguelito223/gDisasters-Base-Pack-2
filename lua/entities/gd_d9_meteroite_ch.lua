@@ -99,6 +99,7 @@ function ENT:PhysicsCollide( data, physobj )
 
 	end
 
+
 	
 end
 
@@ -170,13 +171,14 @@ function ENT:Think()
 		local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
 		
 		if (SERVER) then
-		
-		ParticleEffect( "meteorite_skyripple", self:GetPos() - Vector(0,0,30), Angle( 0, 0, 90 ) )
-		
-		if self:WaterLevel() >= 1 then 
+
+		if bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER  or self:WaterLevel() > 0 then 
 			self:Remove()
 			ParticleEffect( "h_water_small", self:GetPos() + Vector(0,0,100), Angle( 0, 0, 0 ) )
 		end
+		
+		ParticleEffect( "meteorite_skyripple", self:GetPos() - Vector(0,0,30), Angle( 0, 0, 90 ) )
+		
 	
 		self:NextThink(CurTime() + t)
 		return true

@@ -95,14 +95,7 @@ function ENT:PhysicsCollide( data, physobj )
 	
 		
 		self:Explode()
-
-		if ( bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER ) or self:WaterLevel() > 0 then
-			local ent = ents.Create("gd_d7_tsunami")
-			ent:Spawn()
-			ent:Activate()
-		end	
 						 
-
 	end
 
 	
@@ -217,7 +210,14 @@ function ENT:Think()
 	
 	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
 		
-	if (SERVER) then	
+	if (SERVER) then
+		if bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER or self:WaterLevel() > 0 then
+			self:Explode()
+			local ent = ents.Create("gd_d7_tsunami")
+			ent:Spawn()
+			ent:Activate()
+		end	
+		
 		self:NextThink(CurTime() + t)
 		return true
 	

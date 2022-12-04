@@ -152,15 +152,16 @@ end
 
 function ENT:Think()
 	if (SERVER) then
-	if !self:IsValid() then return end
-	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1
-	
-	if self:WaterLevel() >= 1 then 
-		self:Remove() 
-		ParticleEffect( "h_water_mini", self:GetPos() + Vector(0,0,100), Angle( 0, 0, 0 ) )
-	end
+		if !self:IsValid() then return end
 		
-	self:NextThink(CurTime() + t)
+		if bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER or self:WaterLevel() > 0 then 
+			self:Remove() 
+			ParticleEffect( "h_water_mini", self:GetPos() + Vector(0,0,100), Angle( 0, 0, 0 ) )
+		end
+		
+		local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1
+		
+		self:NextThink(CurTime() + t)
 		return true
 	end
 end
