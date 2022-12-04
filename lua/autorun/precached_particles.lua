@@ -37,6 +37,11 @@ PrecacheParticleSystem("rain_splash_effect")
 PrecacheParticleSystem("light_rain_splash_a")
 PrecacheParticleSystem("tumbleweed_effect")
 
+PrecacheParticleSystem("water_huge")
+PrecacheParticleSystem("water_medium")
+PrecacheParticleSystem("water_small")
+PrecacheParticleSystem("water_torpedo")
+
 PrecacheParticleSystem("heatburst_air_compression_main")
 
 PrecacheParticleSystem("neutron_star_magnetic_field_lines_main")

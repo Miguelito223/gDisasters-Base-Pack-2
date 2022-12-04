@@ -156,7 +156,7 @@ function ENT:Think()
 		
 		if bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER or self:WaterLevel() > 0 or self.IsInWater or self.IsInlava then 
 			self:Remove() 
-			ParticleEffect( "h_water_mini", self:GetPos() + Vector(0,0,100), Angle( 0, 0, 0 ) )
+			ParticleEffect( "water_medium", self:GetPos() + Vector(0,0,100), Angle( 0, 0, 0 ) )
 		end
 		
 		local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1

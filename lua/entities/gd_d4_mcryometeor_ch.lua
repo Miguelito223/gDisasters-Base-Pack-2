@@ -116,6 +116,11 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		self:Move()
+
+		if bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER or self:WaterLevel() > 0 or self.IsInWater or self.IsInlava then 
+			self:Remove() 
+			ParticleEffect( "water_small", self:GetPos() + Vector(0,0,100), Angle( 0, 0, 0 ) )
+		end
 		
 		self:NextThink(CurTime() + 0.01)
 		return true

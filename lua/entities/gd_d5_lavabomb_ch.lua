@@ -164,31 +164,34 @@ end
 
 function ENT:Think()
 	if (SERVER) then
-	if !self:IsValid() then return end
-	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1
-	
-	if self:WaterLevel() >= 1 then self:Remove() end
-	
-	for k,v in pairs(ents.GetAll()) do
-	
-	local dist = (self:GetPos() - v:GetPos()):Length() 
-	
-	if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
-	
-	if ( dist <= 400 ) and v:IsValid() and self:IsValid() then
-	
-	InflictDamage(v, self, "fire", math.random(2,4))
-	
-	
-			end
-	
-		end
-	
-	if ( dist <= 400 ) and v:IsValid() and self:IsValid() and v != self and (v:GetClass() == "prop_physics") then v:Ignite() end
-	
-	end
+		if !self:IsValid() then return end
+		local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1
 		
-	self:NextThink(CurTime() + t)
+		if bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER or self:WaterLevel() > 0 or self.IsInWater or self.IsInlava then 
+			self:Remove() 
+			ParticleEffect( "water_small", self:GetPos() + Vector(0,0,100), Angle( 0, 0, 0 ) )
+		end
+
+		for k,v in pairs(ents.GetAll()) do
+		
+			local dist = (self:GetPos() - v:GetPos()):Length() 
+
+			if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
+
+				if ( dist <= 400 ) and v:IsValid() and self:IsValid() then
+				
+					InflictDamage(v, self, "fire", math.random(2,4))
+				
+				
+				end
+
+			end
+
+			if ( dist <= 400 ) and v:IsValid() and self:IsValid() and v != self and (v:GetClass() == "prop_physics") then v:Ignite() end
+		
+		end
+
+		self:NextThink(CurTime() + t)
 		return true
 	end
 end
