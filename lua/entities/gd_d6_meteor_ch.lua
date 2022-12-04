@@ -154,7 +154,7 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		
-		if bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER or self:WaterLevel() > 0 then 
+		if bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER or self:WaterLevel() > 0 or self.IsInWater then 
 			self:Remove() 
 			ParticleEffect( "h_water_mini", self:GetPos() + Vector(0,0,100), Angle( 0, 0, 0 ) )
 		end
