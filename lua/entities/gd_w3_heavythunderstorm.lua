@@ -162,6 +162,7 @@ function ENT:AffectPlayers()
 				net.WriteVector(Vector(0,math.random(0,200)/100,0))
 				net.Send(v)	
 			end
+			self:HailFollowPlayer(v)
 		else
 			self:HailFollowPlayer(v)
 			
