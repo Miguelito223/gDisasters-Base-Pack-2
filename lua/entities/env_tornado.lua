@@ -333,7 +333,7 @@ end
 
 function ENT:OverSolid()
 
-	local tr = util.TraceLine( {
+	local tr = util.TraceLine({
 		start = self:GetPos(),
 		endpos = self:GetPos() - Vector(0,0,11),
 		mask   = MASK_SOLID_BRUSHONLY
