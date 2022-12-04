@@ -44,7 +44,7 @@ CreateConVar( "gdisasters_stormfox_enable", 0, {FCVAR_ARCHIVE}, "")
 CreateConVar( "gdisasters_autospawn_timer", 120, { FCVAR_ARCHIVE,FCVAR_SERVER_CAN_EXECUTE,FCVAR_PROTECTED}, "How often do you want to run the tornado spawn?")
 CreateConVar( "gdisasters_autospawn_spawn_chance", 3, { FCVAR_ARCHIVE,FCVAR_SERVER_CAN_EXECUTE,FCVAR_PROTECTED}, "What is the chance that a tornado will spawn?")
 CreateConVar( "gdisasters_autospawn_enable", 1, {FCVAR_ARCHIVE}, "" )
-CreateConVar( "gdisasters_autospawn_skybox", 0, {FCVAR_ARCHIVE}, "")
+CreateConVar( "gdisasters_autospawn_chat", 1, {FCVAR_ARCHIVE}, "")
 CreateConVar( "gdisasters_autospawn_type", "Tornado", {FCVAR_ARCHIVE}, "" )
 
 CreateConVar( "gdisasters_envtornado_damage", "200", {FCVAR_ARCHIVE}, "" )

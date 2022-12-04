@@ -286,8 +286,8 @@ local function gDisastersAutospawn( CPanel )
 	lb2:SetTextColor(Color( 0, 0, 0))
 	lb2:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "Enable Storm Skybox"  , "gdisasters_autospawn_skybox");
 	CreateTickboxConVariable(CPanel, "Disable Map Tornadoes "  , "gdisasters_getridmaptor");
+	CreateTickboxConVariable(CPanel, "Enable Chat Messages"  , "gdisasters_autospawn_chat");
 	
 	CreateTickboxConVariable(CPanel, "Enable Autospawn "  , "gdisasters_autospawn_enable");
 
