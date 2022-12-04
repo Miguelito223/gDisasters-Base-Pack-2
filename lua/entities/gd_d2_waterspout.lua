@@ -67,7 +67,7 @@ function ENT:SpawnFunction( ply, tr )
 		self.OWNER = ply
 		local ent = ents.Create( self.ClassName )
 		ent:SetPhysicsAttacker(ply)
-		ent:SetPos( tr.HitPos + tr.HitNormal * 20) 
+		ent:SetPos( tr.HitPos + tr.HitNormal * 16) 
 		ent:Spawn()
 		ent:Activate()
 		return ent
@@ -98,7 +98,6 @@ function ENT:RemoveWaterSpoutInSolid()
 
 	if isOnWater == true then
 	elseif isOnWater == false then
-		ply:ChatPrint("It must be spawned on water...")
 		ent:Remove()
 	end
 
@@ -112,7 +111,7 @@ function ENT:Think()
 		if !self:IsValid() then return end
 		self:RemoveWaterSpoutInSolid()
 
-		self:NextThink(CurTime() + 1)
+		self:NextThink(CurTime() + 0.01)
 		return true
 	end
 end
