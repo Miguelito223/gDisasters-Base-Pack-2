@@ -216,6 +216,10 @@ function ENT:Think()
 			local ent = ents.Create("gd_d7_tsunami")
 			ent:Spawn()
 			ent:Activate()
+		elseif self.IsInlava then
+			local ent = ents.Create("gd_d8_lavatsunami")
+			ent:Spawn()
+			ent:Activate()
 		end	
 		
 		self:NextThink(CurTime() + t)
