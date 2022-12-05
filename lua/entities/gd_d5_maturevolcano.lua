@@ -350,7 +350,7 @@ function ENT:VFire()
 	if not vFireInstalled then return end
 
 	for k, v in pairs(ents.GetAll()) do
-		if (v:GetClass() == "vfire") then do
+		if (v:GetClass() == "vfire") then
 			if !self:IsValid() then return end
 			if v:IsValid() then 
 				if (v:GetParent() == self) then
