@@ -13,51 +13,93 @@ ENT.RenderGroup = RENDERGROUP_BOTH
 
 
 cloud_intensity_to_weather_ent = {
-
-	["gd_w1_lightrain"] = 0.25,
-	["gd_w1_aurora"] = 0,
-	["gd_w1_catonehurricane"] = 0.4,
-	["gd_w2_cattwohurricane"] = 0.6,
-	["gd_w3_cattheehurricane"] = 0.7,
-	["gd_w4_catfourhurricane"] = 0.8,
-	["gd_w5_catfivehurricane"] = 0.9,
-	["gd_w6_catsixhurricane"] = 1,
+	
 	["env_tornado"] = 0.5,
+
 	["gd_w1_sandstorm"] = 0.8,
 	["gd_w1_duststorm"] = 1,
-	
+	["gd_w1_lightrain"] = 0.25,
 	["gd_w1_heavyfog"] = 0.3,
-	["gd_w2_heavyrain"] = 0.7,
-	
+	["gd_w1_catonehurricane"] = 0.4,
+	["gd_w1_tropicaldepression"] = 0.5,
+	["gd_w1_tropicalstorm"] = 0.5,
+	["gd_w1_highpressure_sys"] = 0,
 	["gd_w1_snow"] = 0.6,
 	["gd_w1_sunny"] = 0,
-	
-	["gd_w1_cldy_irid"] = 0.5,
+	["gd_w1_night"] = 0,
+	["gd_w1_shootingstarshower"] = 0,
 	["gd_w1_sleet"] = 0.5,
-	
 	["gd_w1_smog"] = 0.4, 
-	
 	["gd_w1_cumu_cldy"] = 0.25, 
 	["gd_w1_tropicalstorm"] = 0, 
 	
 	["gd_w2_heavysnow"] = 0.5, 
-	["gd_w3_extremeheavyrain"] = 0.8,
-	
 	["gd_w2_acidrain"] = 0.5, 
 	["gd_w2_modbreeze"] = 0,
-
+	["gd_w2_heavyrain"] = 0.7,
+	["gd_w2_cattwohurricane"] = 0.6,
 	["gd_w2_heatwave"] = 0.2,
+	["gd_w2_haboob"] = 1,
+	["gd_w2_freezingrain"] = 0.5,
+	["gd_w2_stationaryfront"] = 0.8,
+	["gd_w2_hailstorm"] = 0.8,
+	["gd_w2_smog"] = 0.2,
+	["gd_w2_chinese_smog"] = 0.4,
+	["gd_w2_lowpressure_sys"] = 0.2,
+	["gd_w2_coldwave"] = 0.1,
+	["gd_w2_thunderstorm"] = 0.9,
+	["gd_w2_thundersnow"] = 0.9,
+	["gd_w2_shelfcloud"] = 1,
+
+	["gd_w3_extremeheavyrain"] = 0.8,
+	["gd_w3_extremerain"] = 0.5
+	["gd_w3_cattheehurricane"] = 0.7,
 	["gd_w3_blizzard"] = 0.8,
 	["gd_w3_icestorm"] = 0.8, 
 	["gd_w3_heatburst"] = 1,
-	["gd_w2_coldwave"] = 0.1,
-	["gd_w3_hailstorm"] = 0.9,
-	["gd_w2_thunderstorm"] = 0.9, 
+	["gd_w3_major_hailstorm"] = 0.9,
 	["gd_w3_strongbreeze"] = 0,
-	["gd_w2_shelfcloud"] = 1,
-	["gd_w4_intensebreeze"] = 0, 
+	["gd_w3_drought"] = 0,
+	["gd_w3_coldfront"] = 0.5
+	["gd_w3_drythunderstorm"] = 0.9,
+	["gd_w3_hurricanic_lowpressure_sys"] = 0.8,
+	["gd_w3_heavyashstorm"] = 0.5, 
+	["gd_w3_warmfront"] = 0.5,
+	["gd_w3_occludedfront"] = 0.6,
+	["gd_w3_heavythunderstorm"] = 1,
+	
+	["gd_w4_intensebreeze"] = 0,
+	["gd_w4_catfourhurricane"] = 0.8,
+	["gd_w4_heavyacidrain"] = 0.8,
+	["gd_w4_severethunderstorm"] = 1,
+	["gd_w4_strong_occludedfront"] = 1,
+	["gd_w4_dryline"] = 0.5,
+	["gd_w4_strong_coldfront"] = 1,
+	["gd_w4_strong_warmfront"] = 0.8,
+	["gd_w4_derecho"] = 1,
+	["gd_w4_growingstorm"] = 1,
+
+	["gd_w5_catfivehurricane"] = 0.9,
+	["gd_d5_silenthill"] = 0.2,
+	["gd_w5_pyrocum"] = 0.8,
+	["gd_w5_macroburst"] = 1,
+	["gd_w5_microburst"] = 1,
+
 	["gd_w6_downburst"] = 1,
-	["gd_w6_solarray"] = 0.5, 
+	["gd_w6_freezeray"] = 1, 
+	["gd_w6_catsixhurricane"] = 1,
+	["gd_w6_hypercane"] = 1,
+	["gd_w6_martiansnow"] = 1,
+	["gd_w6_redspot"] = 1, 
+	["gd_w6_neptune"] = 1,
+	["gd_w6_martianduststorm"] = 1,
+
+	["gd_w7_solarray"] = 0,
+
+	["gd_d1_aurora"] = 0,
+	["gd_d1_cldy_irid"] = 0.5,
+	["gd_d1_cumcloud"] = 0.8,
+	["gd_d6_cryoshower"] = 1,
 
 
 
