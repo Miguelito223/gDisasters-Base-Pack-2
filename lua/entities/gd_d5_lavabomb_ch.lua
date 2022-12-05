@@ -167,10 +167,13 @@ function ENT:Think()
 		if !self:IsValid() then return end
 		local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1
 		
-		if bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER or self:WaterLevel() > 0 or self.IsInWater or self.IsInlava then 
+		if bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER or self:WaterLevel() > 0 or self.IsInWater then 
 			self:Remove() 
 			ParticleEffect( "water_small", self:GetPos() + Vector(0,0,100), Angle( 0, 0, 0 ) )
 			self:EmitSound(table.Random({"ambient/water/water_splash1.wav","ambient/water/water_splash2.wav","ambient/water/water_splash3.wav"}), 80, 100)
+		elseif self.IsInlava then
+			self:Remove()
+			ParticleEffect( "lava_splash_main", self:GetPos() + Vector(0,0,100), Angle( 0, 0, 0 ) )
 		end
 
 		for k,v in pairs(ents.GetAll()) do
