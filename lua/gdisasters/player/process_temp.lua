@@ -235,7 +235,7 @@ if (SERVER) then
 					elseif lv==true then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.008
 					end
-				elseif  temp < 37 and  temp >= 5 then
+				elseif temp < 37 and temp >= 5 then
 					if wl==0 then
 					elseif wl==1 then			
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
@@ -300,11 +300,7 @@ if (SERVER) then
 	function gDisasters_GlobalBreathingEffect()
 		local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
 		
-		if temp > 0 then 
-			if timer.Exists("Breathing") then
-				timer.Destroy("Breathing")
-			end
-		elseif GetConVar("gdisasters_hud_temp_breathing"):GetInt() == 0 then
+		if temp > 0 or GetConVar("gdisasters_hud_temp_breathing"):GetInt() == 0 then 
 			if timer.Exists("Breathing") then
 				timer.Destroy("Breathing")
 			end
