@@ -9,7 +9,7 @@ ENT.PrintName		                 =  "CLOUD"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.Models                           =  {"models/ramses/models/atmosphere/clouds/cumulus_a.mdl", "models/ramses/models/atmosphere/clouds/cumulus_b.mdl"}
+ENT.Models                           =  {"models/ramses/models/atmosphere/clouds/cumulus_a.mdl", "models/ramses/models/atmosphere/clouds/cumulus_b.mdl", "models/ramses/models/atmosphere/clouds/cumulus_c.mdl"}
 
 ENT.FadeInTime                       = 0.40 
 ENT.FadeOutTime                      = 0.40 
