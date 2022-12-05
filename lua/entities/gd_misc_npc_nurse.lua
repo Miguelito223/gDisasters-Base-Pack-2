@@ -80,7 +80,7 @@ if (CLIENT) then
 
 	local function NearestNurse_Sound()
 
-		local nurse = FindNearestEntity(LocalPlayer(),  "npc_nurse")
+		local nurse = FindNearestEntity(LocalPlayer(),  "gd_misc_npc_nurse")
 		
 		if nurse==nil then 
 			
