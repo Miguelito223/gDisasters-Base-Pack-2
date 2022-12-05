@@ -44,6 +44,8 @@ function ENT:Initialize()
 		self:AtmosphericReposition()
 		local tint = Color(math.random(155,255), math.random(155,255),math.random(155,255))
 		self:SetColor(tint)
+
+		self:SetNoDraw(false)
 		
 		
 	end
