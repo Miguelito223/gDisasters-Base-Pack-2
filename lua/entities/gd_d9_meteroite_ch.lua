@@ -164,7 +164,7 @@ end
 function ENT:Think()
 		if (CLIENT) then
 		
-		self:Fix()
+			self:Fix()
 	
 		end
 	
