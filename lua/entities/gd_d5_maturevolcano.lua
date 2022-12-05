@@ -267,21 +267,16 @@ function ENT:Erupt()
 	self:CreateRocks( 20, {8,10} )
 	
 	timer.Simple(10, function()
-		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
-		if #ents.FindByClass("gd_w*") >= 1 then return end
 	    local ent = ents.Create("gd_w2_volcano_ash")
 		ent:Spawn()
 		ent:Activate()
 	end)		  
     timer.Simple(50, function()
-		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
-		if #ents.FindByClass("gd_w*") >= 1 then return end
 	    local ent = ents.Create("gd_w2_acidrain")
 		ent:Spawn()
 		ent:Activate()
 	end)
 	timer.Simple(100, function()
-		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 	    local ent = ents.FindByClass("gd_w2_acidrain")[1]
 		if ent:IsValid() then ent:Remove() end
 	end)

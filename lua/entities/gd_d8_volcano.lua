@@ -251,8 +251,6 @@ function ENT:Erupt()
 	
 	
 	timer.Simple(22, function()
-		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
-		if #ents.FindByClass("gd_w*") >= 1 then return end
 		if !self:IsValid() then return end
 		local ent = ents.Create("gd_w2_ashstorm")
 		local ent2 = ents.Create("gd_d10_lavabombshower")
@@ -265,7 +263,6 @@ function ENT:Erupt()
 	end)
 	
 	timer.Simple(120, function()
-		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 		if !self:IsValid() then return end
 		local ent = ents.FindByClass("gd_w2_ashstorm")[1]
 		local ent2 = ents.FindByClass("gd_d10_lavabombshower")[1]
@@ -278,7 +275,6 @@ function ENT:Erupt()
 		
 	end)
 	timer.Simple(200, function()
-		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
 		local ent1 = ents.FindByClass("gd_w4_heavyacidrain")[1]
 		if ent1:IsValid() then ent1:Remove() end
 	end)

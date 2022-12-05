@@ -215,9 +215,9 @@ if (CLIENT) then
     
 	hook.Add( "InitPostEntity", "gDisastersFirstJoinLightmaps", function()
 
-    	render.RedownloadAllLightmaps();
+    	render.RedownloadAllLightmaps()
 
-    end );
+    end)
 
 end
 
