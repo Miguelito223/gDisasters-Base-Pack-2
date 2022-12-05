@@ -83,7 +83,7 @@ function ENT:LightningLightColorController()
 end
 
 function ENT:AtmosphericReposition()
-	local max_height_below_ceiling, min_height_below_ceiling =  5000,2000
+	local max_height_below_ceiling, min_height_below_ceiling =  20000, 15000
 	local height = math.random(min_height_below_ceiling, max_height_below_ceiling)
 	
 	local bounds    = getMapSkyBox()
