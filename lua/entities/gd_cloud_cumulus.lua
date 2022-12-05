@@ -24,17 +24,13 @@ ENT.DefaultColor = Color(255, 255, 255)
 function ENT:Initialize()	
 
 	self.StartTime = CurTime()
-
-	if (CLIENT) then
-		local scale = math.random(0.5,1)
-		self:SetMDScale(Vector(scale,scale,scale))
-	end
 	
 	if (SERVER) then
 		
 		self.Life = math.random(self.LifeMin, self.LifeMax)	
 		
 		if math.random(1,8) == 1 then	
+			self:SetModelScale(math.random(0.5,1), 0)
 			self:SetModel(table.Random(self.Models))
 			self:PhysicsInit( SOLID_VPHYSICS )
 			self:SetSolid( SOLID_VPHYSICS )
@@ -83,8 +79,11 @@ function ENT:LightningLightColorController()
 end
 
 function ENT:AtmosphericReposition()
-	local max_height_below_ceiling, min_height_below_ceiling =  20000, 15000
-	local height = math.random(min_height_below_ceiling, max_height_below_ceiling)
+	local max_height_below_ceiling, min_height_below_ceiling = 20000, 15000
+	
+	local ceiling_multiplier = math.abs(   getMapBounds()[2].z -  getMapBounds()[1].z ) / 27625 
+
+	local height = math.random(min_height_below_ceiling * ceiling_multiplier, max_height_below_ceiling * ceiling_multiplier)
 	
 	local bounds    = getMapSkyBox()
 	local min       = bounds[1]
@@ -93,16 +92,9 @@ function ENT:AtmosphericReposition()
 	local spawnpos  = Vector(   math.random(min.x,max.x)      ,  math.random(min.y,max.y) ,  max.z - height )
 
 		
-	self:SetPos( spawnpos )
+	self:SetPos( spawnpos * -0.7 )
 	
 end
-
-function ENT:SetMDScale(scale)
-	local mat = Matrix()
-	mat:Scale(scale)
-	self:EnableMatrix("RenderMultiply", mat)
-end
-
 
 function ENT:MoveCloud()
 	local wind_speed, wind_dir = GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"], GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]
