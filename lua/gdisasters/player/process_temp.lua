@@ -149,7 +149,10 @@ if (SERVER) then
 				local tempbody            = v.gDisasters.Body.Temperature
 				local outdoor           = v.gDisasters.Area.IsOutdoor
 				local alpha_hot  =  1-((44-math.Clamp(tempbody,39,44))/5)
-				local alpha_cold =  ((35-math.Clamp(tempbody,24,35))/11)	
+				local alpha_cold =  ((35-math.Clamp(tempbody,24,35))/11)
+				local wl = v:WaterLevel()
+				local wl2 = v.IsInWater
+				local lv = v.IsInlava
 				
 				if math.random(1,25) == 25 then
 					if alpha_cold != 0 then
@@ -193,9 +196,9 @@ if (SERVER) then
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.01
 				end
 			
-				if GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and temp >= 37 and temp >= 5 then
+				if GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 50 and temp >= 37 and temp >= 5 then
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.001
-				elseif GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 30 and temp >= -273.3 and temp <= 4 then
+				elseif GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 50 and temp >= -273.3 and temp <= 4 then
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
 				end
 				
@@ -206,50 +209,44 @@ if (SERVER) then
 				--]]
 				
 			
-				if  temp >= -273.3 and  temp <= 4 then
-					local wl = v:WaterLevel()
+				if temp >= -273.3 and temp <= 4 then
 					if wl==0 then
 					elseif wl==1 then
-					
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
-						
-					
 					elseif wl==2 then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.002
 					elseif wl==3 then
-					
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
-					
+					elseif wl2==true then
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
+					elseif lv==true then
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.002
 					end
 				elseif temp >= 37 and  temp >= 5 then
-					local wl = v:WaterLevel()
 					if wl==0 then
 					elseif wl==1 then
-					
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
-						
-					
 					elseif wl==2 then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.002
 					elseif wl==3 then
-					
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
-					
+					elseif wl2==true then
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
+					elseif lv==true then
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.008
 					end
 				elseif  temp < 37 and  temp >= 5 then
-					local wl = v:WaterLevel()
 					if wl==0 then
-					elseif wl==1 then
-					
+					elseif wl==1 then			
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
-						
-					
 					elseif wl==2 then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.002
 					elseif wl==3 then
-					
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
-					
+					elseif wl2==true then
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
+					elseif lv==true then
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.004
 					end
 				end
 				

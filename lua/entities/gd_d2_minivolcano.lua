@@ -110,22 +110,6 @@ function ENT:CreateLoop()
 	
 end
 
-function ENT:VFire()
-
-	if not vFireInstalled then return end
-
-	for k, v in pairs(ents.GetAll()) do
-		if (v:GetClass() == "vfire") then do
-			if !self:IsValid() then return end
-			if v:IsValid() then 
-				if (v:GetParent() == self) then
-					v:SoftExtinguish(1)
-						
-				end
-			end
-		end
-	end
-end
 
 function ENT:GetLavaLevelPosition()
 	local crater = self:GetAttachment(self:LookupAttachment("crater")).Pos
@@ -340,7 +324,22 @@ tsunami_water_textures[1]    = Material("nature/env_dynamicwater/base_water_tsun
 tsunami_water_textures[2]    = Material("nature/env_dynamicwater/base_water_03");
 
 
+function ENT:VFire()
 
+	if not vFireInstalled then return end
+
+	for k, v in pairs(ents.GetAll()) do
+		if (v:GetClass() == "vfire") then do
+			if !self:IsValid() then return end
+			if v:IsValid() then 
+				if (v:GetParent() == self) then
+					v:SoftExtinguish(1)
+					end
+				end
+			end
+		end
+	end
+end
 
 function ENT:Think()
 	if (CLIENT) then

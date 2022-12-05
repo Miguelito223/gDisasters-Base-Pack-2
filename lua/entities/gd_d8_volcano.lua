@@ -384,14 +384,14 @@ end
 
 function ENT:VFire()
 
-if not vFireInstalled then return end
+	if not vFireInstalled then return end
 
-for k, v in pairs(ents.GetAll()) do
-	if (v:GetClass() == "vfire") then do
-	if !self:IsValid() then return end
-	if v:IsValid() then 
-	if (v:GetParent() == self) then
-		v:SoftExtinguish(1)
+	for k, v in pairs(ents.GetAll()) do
+		if (v:GetClass() == "vfire") then do
+			if !self:IsValid() then return end
+			if v:IsValid() then 
+				if (v:GetParent() == self) then
+					v:SoftExtinguish(1)
 					end
 				end
 			end
