@@ -73,9 +73,7 @@ AddToGDSpawnMenu("Dust Storm", "gd_w1_duststorm" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Heavy Fog", "gd_w1_heavyfog" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Light Snow", "gd_w1_snow" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Sunny", "gd_w1_sunny" , "Weather", "Tier 1", false)
-AddToGDSpawnMenu("Iridescent Cloudy", "gd_w1_cldy_irid" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Sleet", "gd_w1_sleet" , "Weather", "Tier 1", false)
-AddToGDSpawnMenu("Aurora Borealis", "gd_w1_aurora" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Light Rain", "gd_w1_lightrain" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Night", "gd_w1_night" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Tropical Depression", "gd_w1_tropicaldepression", "Weather", "Tier 1", false)
@@ -85,9 +83,7 @@ AddToGDSpawnMenu("Light Breeze", "gd_w1_lightbreeze", "Weather", "Tier 1", false
 AddToGDSpawnMenu("Beaufort 0 Wind (Calm)", "gd_w1_beaufort0", "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Beaufort 1 Wind (Light Air)", "gd_w1_beaufort1", "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Shooting Star Shower", "gd_w1_shootingstarshower" , "Weather", "Tier 1", false)
-AddToGDSpawnMenu("Shooting Star Shower (No Climate Change)", "gd_d2_shootingstarshower", "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Cumulus Cloud", "gd_w1_cumu_cldy" , "Weather", "Tier 1", false)
-AddToGDSpawnMenu("Cumulus Cloud (No Climate Change)", "gd_w1_cumcloud" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("City Snow", "gd_w1_citysnow" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("High pressure", "gd_w1_highpressure_sys" , "Weather", "Tier 1", false)
 
@@ -178,18 +174,22 @@ WEATHER TIER 6
 --]]
 --
 AddToGDSpawnMenu("Category Six Hurricane" , "gd_w6_catsixhurricane"    , "Weather", "Tier 6", false)
-AddToGDSpawnMenu("Like Really Cold" , "gd_w6_freezeray"    , "Weather", "Tier 6", false)
 AddToGDSpawnMenu("Extreme Wind" , "gd_w6_extremebreeze"    , "Weather", "Tier 6", false)
 AddToGDSpawnMenu("Beaufort 10 Wind (Storm, Whole Gale)", "gd_w6_beaufort10", "Weather", "Tier 6", false)
 AddToGDSpawnMenu("Beaufort 11 Wind (Violent Storm)", "gd_w6_beaufort11", "Weather", "Tier 6", false)
 AddToGDSpawnMenu("Beaufort 12 Wind (Hurricane Force)", "gd_w6_beaufort12", "Weather", "Tier 6", false)
-AddToGDSpawnMenu("Martian Snow Storm", "gd_w6_martiansnow", "Weather", "Tier 6", false)
-AddToGDSpawnMenu("Solar Ray", "gd_w7_solarray", "Weather", "Tier 6", false)
-AddToGDSpawnMenu("Freeze Ray", "gd_w6_freezeray", "Weather", "Tier 6", false)
-AddToGDSpawnMenu("Martian Dust Storm", "gd_w6_martianduststorm", "Weather", "Tier 6", false)
-AddToGDSpawnMenu("Hypercane", "gd_w6_hypercane", "Weather", "Tier 6", false)
-AddToGDSpawnMenu("Jupiter Red Spot", "gd_w6_redspot", "Weather", "Tier 6", false)
-AddToGDSpawnMenu("Neptune", "gd_w6_neptune", "Weather", "Tier 6", false)
+
+--[[
+WEATHER TIER 7
+--]]
+
+AddToGDSpawnMenu("Martian Snow Storm", "gd_w6_martiansnow", "Weather", "Tier 7", false)
+AddToGDSpawnMenu("Solar Ray", "gd_w7_solarray", "Weather", "Tier 7", false)
+AddToGDSpawnMenu("Freeze Ray", "gd_w6_freezeray", "Weather", "Tier 7", false)
+AddToGDSpawnMenu("Martian Dust Storm", "gd_w6_martianduststorm", "Weather", "Tier 7", false)
+AddToGDSpawnMenu("Hypercane", "gd_w6_hypercane", "Weather", "Tier 7", false)
+AddToGDSpawnMenu("Jupiter Red Spot", "gd_w6_redspot", "Weather", "Tier 7", false)
+AddToGDSpawnMenu("Neptune", "gd_w6_neptune", "Weather", "Tier 7", false)
 
 --[[
 DISASTERS 
@@ -200,11 +200,14 @@ AddToGDSpawnMenu("Dust Devil"     , "gd_d1_dustdevil"       , "Disasters", "Tier
 AddToGDSpawnMenu("Patch of Ice"   , "gd_d1_ice"				, "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("≈1.0 Magnitude Earthquake" , "gd_d1_rs1eq"	, "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Small Whirlpool" , "gd_d1_whirlpool"		, "Disasters", "Tier 1", false)
+AddToGDSpawnMenu("Cumulus Cloud (No Climate Change)", "gd_d1_cumcloud" , "Disasters", "Tier 1", false)
+AddToGDSpawnMenu("Iridescent Cloudy (No Climate Change)", "gd_d1_cldy_irid" , "Disasters", "Tier 1", false)
+AddToGDSpawnMenu("Aurora Borealis (No Climate Change)", "gd_d1_aurora" , "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("TarPit" , "gd_d1_tarpit"		, "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Quicksand" , "gd_d1_quicksand"		, "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Rainbow" , "gd_d1_rainbow"		, "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Geyser"        , "gd_d1_geyser" , "Disasters", "Tier 1", false)
-AddToGDSpawnMenu("Whirlpool (Small)"        , "gd_d1_whirlpool" , "Disasters", "Tier 1", false)
+AddToGDSpawnMenu("Whirlpool (Small)" , "gd_d1_whirlpool" , "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Steam devil", "gd_d1_steamdevil", "Disasters", "Tier 1", false)
 --[[
 DISASTERS 
@@ -223,6 +226,7 @@ AddToGDSpawnMenu("Micro Firenado"        , "gd_d2_mfirenado"              , "Dis
 AddToGDSpawnMenu("Gustnado (Smart)"         , "gd_d2_gustnado_pathed"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Plant Appocolapse"         , "gd_d2_planttakeover"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Shooting Star"         , "gd_d2_shootingstar"			, "Disasters", "Tier 2", false)
+AddToGDSpawnMenu("Shooting Star Shower (No Climate Change)", "gd_d2_shootingstarshower", "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Hail Stone"         , "gd_d2_hail"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Waterspout", "gd_d2_waterspout" , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Sinkhole" , "gd_d3_sinkhole"         , "Disasters", "Tier 2", false)

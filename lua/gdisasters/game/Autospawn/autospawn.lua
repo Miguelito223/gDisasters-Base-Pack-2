@@ -228,8 +228,8 @@ local function Autospawn_Timer()
 				"gd_w2_stationaryfront",
 				"gd_w2_haboob",
 				"gd_w5_pyrocum",
-				"gd_w1_cldy_irid",
-				"gd_w1_aurora",
+				"gd_d1_cldy_irid",
+				"gd_d1_aurora",
 				"gd_w6_neptune",
 				"gd_w6_redspot"
 			}
@@ -317,8 +317,8 @@ local function Autospawn_Timer()
 				"gd_w4_dryline",
 				"gd_w4_derecho",
 				"gd_w4_strong_coldfront",
-				"gd_w1_cldy_irid",
-				"gd_w1_aurora",
+				"gd_d1_cldy_irid",
+				"gd_d1_aurora",
 				"gd_w4_strong_occludedfront",
 				"gd_w4_strong_warmfront",
 				"gd_w4_severethunderstorm",
