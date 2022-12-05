@@ -32,7 +32,7 @@ function ENT:Initialize()
 		self:SetSolid( SOLID_VPHYSICS )
 		self:SetMoveType( MOVETYPE_NONE  )
 		self:SetUseType( ONOFF_USE )
-		--self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 		local phys = self:GetPhysicsObject()
 		
 		if (phys:IsValid()) then
