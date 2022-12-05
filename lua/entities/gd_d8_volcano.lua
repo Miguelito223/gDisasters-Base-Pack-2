@@ -384,7 +384,7 @@ end
 
 function ENT:VFire()
 
-	if not vFireInstalled then return end
+	if !vFireInstalled then return end
 
 	for k, v in pairs(ents.GetAll()) do
 		if (v:GetClass() == "vfire") then do
@@ -392,7 +392,6 @@ function ENT:VFire()
 			if v:IsValid() then 
 				if (v:GetParent() == self) then
 					v:SoftExtinguish(1)
-					end
 				end
 			end
 		end
@@ -426,7 +425,6 @@ function ENT:Think()
 	
 end
 
-
 function ENT:OnRemove()
 
 	if self.Sound==nil then return end
@@ -440,14 +438,9 @@ local watertexture = table.Random({"nature/base_water_01", "nature/base_water_02
 
 local water = Material("nature/base_water_01")
 
-
 function ENT:Draw()
 
 	self:DrawModel()
 
 
 end
-
-
-
-

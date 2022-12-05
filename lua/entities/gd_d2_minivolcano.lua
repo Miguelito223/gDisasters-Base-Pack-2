@@ -334,7 +334,6 @@ function ENT:VFire()
 			if v:IsValid() then 
 				if (v:GetParent() == self) then
 					v:SoftExtinguish(1)
-					end
 				end
 			end
 		end
@@ -365,12 +364,6 @@ function ENT:Think()
 	
 end
 
-
-
-
-
-
-
 function ENT:OnRemove()
 
 	if self.Sound==nil then return end
@@ -387,7 +380,3 @@ function ENT:Draw()
 
 
 end
-
-
-
-
