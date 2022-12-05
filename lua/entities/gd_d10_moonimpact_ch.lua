@@ -199,6 +199,7 @@ function ENT:Think()
 			ent:Spawn()
 			ent:Activate()
 		elseif self.IsInlava then
+			self:Explode()
 			local ent = ents.Create("gd_d8_lavatsunami")
 			ent:Spawn()
 			ent:Activate()
