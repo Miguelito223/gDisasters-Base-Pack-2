@@ -181,7 +181,7 @@ function ENT:AddGlobalClouds()
 
 	local function ReturnIntensity()
 		local i = 0
-		local t1, t2 = ents.FindByClass("gd_w*"), ents.FindByClass("env_*")
+		local t1, t2 = ents.FindByClass("gd_*"), ents.FindByClass("env_*")
 		
 		local function mergethem(x,y)
 			for index, item in pairs(y) do 
