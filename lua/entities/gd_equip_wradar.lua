@@ -49,7 +49,7 @@ cloud_intensity_to_weather_ent = {
 	["gd_w2_thundersnow"] = 0.9,
 	["gd_w2_shelfcloud"] = 1,
 	["gd_w3_extremeheavyrain"] = 0.8,
-	["gd_w3_extremerain"] = 0.5
+	["gd_w3_extremerain"] = 0.5,
 	["gd_w3_cattheehurricane"] = 0.7,
 	["gd_w3_blizzard"] = 0.8,
 	["gd_w3_icestorm"] = 0.8, 
@@ -57,7 +57,7 @@ cloud_intensity_to_weather_ent = {
 	["gd_w3_major_hailstorm"] = 0.9,
 	["gd_w3_strongbreeze"] = 0,
 	["gd_w3_drought"] = 0,
-	["gd_w3_coldfront"] = 0.5
+	["gd_w3_coldfront"] = 0.5,
 	["gd_w3_drythunderstorm"] = 0.9,
 	["gd_w3_hurricanic_lowpressure_sys"] = 0.8,
 	["gd_w3_heavyashstorm"] = 0.5, 
@@ -92,6 +92,7 @@ cloud_intensity_to_weather_ent = {
 	["gd_d1_cldy_irid"] = 0.5,
 	["gd_d1_cumcloud"] = 0.8,
 	["gd_d6_cryoshower"] = 1,
+
 }
 
 function ENT:Use()
