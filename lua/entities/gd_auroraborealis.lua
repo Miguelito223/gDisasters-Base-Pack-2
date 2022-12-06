@@ -52,7 +52,7 @@ function ENT:Initialize()
 end
 
 function ENT:AtmosphericReposition()
-	local max_height_below_ceiling, min_height_below_ceiling = 12000, 20000
+	local max_height_below_ceiling, min_height_below_ceiling = 5000,2000
 	local height = math.random(min_height_below_ceiling, max_height_below_ceiling)
 	
 	local bounds    = getMapSkyBox()
