@@ -5,11 +5,13 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "CLOUD"
+ENT.PrintName		                 =  "Cumulus Cloud"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 ENT.Models                           =  {"models/ramses/models/atmosphere/clouds/cumulus_a.mdl", "models/ramses/models/atmosphere/clouds/cumulus_b.mdl", "models/ramses/models/atmosphere/clouds/cumulus_c.mdl"}
+
+ENT.Mass                             =  100
 
 ENT.FadeInTime                       = 0.40 
 ENT.FadeOutTime                      = 0.40 

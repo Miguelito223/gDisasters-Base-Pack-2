@@ -27,8 +27,6 @@ function ENT:Initialize()
 		self:SetUseType( ONOFF_USE )
 		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 		
-		self:SetNoDraw(true)
-		
 		local phys = self:GetPhysicsObject()
 		if (phys:IsValid()) then
 			phys:SetMass(self.Mass)
@@ -57,12 +55,15 @@ end
 function ENT:CreateClouds()
 
 	if CurTime() < self.NextCloudCreation then return end 
+
+	if #ents.FindByClass("gd_cloud_cumulus") > self.MaxClouds then return end 
 	
 	self.NextCloudCreation = CurTime() + 0.1
 	
 	local cloud = ents.Create("gd_cloud_cumulus")
 	cloud:Spawn()
 	cloud:Activate()
+
 	table.insert(self.Cloud, cloud)
 
 	
@@ -83,8 +84,8 @@ function ENT:OnRemove()
 
 	if (SERVER) then		
 		
-	for k, v in pairs(self.Cloud) do
-	if v:IsValid() then v:Remove() end 
+		for k, v in pairs(self.Cloud) do
+			if v:IsValid() then v:Remove() end 
 	
 		end
 		
