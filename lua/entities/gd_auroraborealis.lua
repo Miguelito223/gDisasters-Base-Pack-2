@@ -14,19 +14,15 @@ ENT.Material                         = "nature/ice"
 ENT.Mass                             =  25
 ENT.Models                           =  {"models/ramses/models/nature/aurora_borealis_01.mdl", "models/ramses/models/nature/aurora_borealis_02.mdl"}  
 
+ENT.LifeMin                          = 10 
+ENT.LifeMax                          = 20 
 
 function ENT:Initialize()	
 
-	if (CLIENT) then
-		local scale = math.random(5,15)
-		self:SetMDScale(Vector(scale,scale,scale))
-		
-
-	end
-	
-	
 	if (SERVER) then
-		
+		self.Life = math.random(self.LifeMin, self.LifeMax)	
+
+		self:SetModelScale(math.random(5,15), 0)
 		self:SetModel(table.Random(self.Models))
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )

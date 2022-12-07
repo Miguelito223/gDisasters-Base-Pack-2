@@ -64,6 +64,10 @@ function ENT:CreateClouds()
 	cloud:Activate()
 	
 	table.insert(self.Cloud, cloud)
+
+	timer.Simple(cloud.Life, function()
+		if cloud:IsValid() then cloud:Remove() end
+	end)
 	
 	
 	

@@ -60,10 +60,13 @@ function ENT:CreateClouds()
 	local cloud = ents.Create("gd_auroraborealis")
 	cloud:Spawn()
 	cloud:Activate()
+	
 	table.insert(self.Cloud, cloud)
 
 	
-	
+	timer.Simple(cloud.Life, function()
+		if cloud:IsValid() then cloud:Remove() end
+	end)
 	
 	
 end

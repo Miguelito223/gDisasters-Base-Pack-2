@@ -9,9 +9,10 @@ ENT.PrintName		                 =  "Cumulus Cloud"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.Models                           =  {"models/ramses/models/atmosphere/clouds/cumulus_a.mdl", "models/ramses/models/atmosphere/clouds/cumulus_b.mdl", "models/ramses/models/atmosphere/clouds/cumulus_c.mdl"}
 
-ENT.Mass                             =  100
+ENT.Models                           =  {"models/ramses/models/atmosphere/clouds/cumulus_a.mdl", "models/ramses/models/atmosphere/clouds/cumulus_b.mdl", "models/ramses/models/atmosphere/clouds/cumulus_c.mdl"}
+ENT.Material                         = "nature/ice"  
+ENT.Mass                             =  25
 
 ENT.FadeInTime                       = 0.40 
 ENT.FadeOutTime                      = 0.40 
@@ -31,23 +32,24 @@ function ENT:Initialize()
 		
 		self.Life = math.random(self.LifeMin, self.LifeMax)	
 		
-		if math.random(1,8) == 1 then	
-			self:SetModelScale(math.random(0.5,1), 0)
-			self:SetModel(table.Random(self.Models))
-			self:PhysicsInit( SOLID_VPHYSICS )
-			self:SetSolid( SOLID_VPHYSICS )
-			self:SetMoveType( MOVETYPE_NONE  )
-			self:SetUseType( ONOFF_USE )
-			self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+		self:SetModelScale(math.random(0.5,1), 0)
+		self:SetModel(table.Random(self.Models))
+		self:PhysicsInit( SOLID_VPHYSICS )
+		self:SetSolid( SOLID_VPHYSICS )
+		self:SetMoveType( MOVETYPE_NONE  )
+		self:SetUseType( ONOFF_USE )
+		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+		local phys = self:GetPhysicsObject()
+		
+		if (phys:IsValid()) then
+			phys:SetMass(self.Mass)
+		end 
 
-			self:SetAngles( Angle(0,math.random(1,180), 0))
-			self:SetColor(self.DefaultColor)
+		self:SetAngles( Angle(0,math.random(1,180), 0))
+		self:AtmosphericReposition()
+		self:SetColor(self.DefaultColor)
 		
-			self:AtmosphericReposition()
-		
-			self:SetNoDraw(false)
-		
-		end
+		self:SetNoDraw(false)
 	end
 end
 

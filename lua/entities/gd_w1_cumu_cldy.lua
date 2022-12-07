@@ -12,6 +12,8 @@ ENT.Category                         =  "Hmm"
 
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"                      
 ENT.Mass                             =  100
+ENT.MaxClouds                        =  30
+ENT.CloudDecayTimes                  = {15, 40}
 
 function ENT:Initialize()		
 	
@@ -79,6 +81,8 @@ end
 function ENT:CreateClouds()
 
 	if CurTime() < self.NextCloudCreation then return end 
+
+	if #ents.FindByClass("gd_cloud_cumulus") > self.MaxClouds then return end 
 	
 	self.NextCloudCreation = CurTime() + 0.1
 	
@@ -86,6 +90,10 @@ function ENT:CreateClouds()
 	cloud:Spawn()
 	cloud:Activate()
 	table.insert(self.Cloud, cloud)
+
+	timer.Simple(cloud.Life, function()
+		if cloud:IsValid() then cloud:Remove() end
+	end)
 
 	
 end	
