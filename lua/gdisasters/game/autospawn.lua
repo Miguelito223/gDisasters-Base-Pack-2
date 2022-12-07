@@ -6,6 +6,7 @@ local function Autospawn_Timer()
 	local function Autospawn()
 		
 		local map_bounds = getMapBounds()
+		local map_skybox = getMapSkyBox()
 		local map_floorcenter = getMapCenterFloorPos()
 		local map_center = getMapCenterPos()
 
@@ -13,7 +14,7 @@ local function Autospawn_Timer()
 			stormtable = S37K_mapbounds[1]
 			stormtablePos = Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ)
 		else
-			WeatherTornadoPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y),  map_bounds[2].z)
+			WeatherTornadoPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y),  map_skybox[2].z)
 		end
 
 		local DisastersPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z)
