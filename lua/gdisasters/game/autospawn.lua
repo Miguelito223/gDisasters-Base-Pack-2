@@ -237,9 +237,9 @@ local function Autospawn_Timer()
 			local wea = ents.Create(table.Random(weather))
 
 			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-				dis:SetPos(WeatherTornadoPos)
+				wea:SetPos(WeatherTornadoPos)
 			else	
-				dis:SetPos( stormtablePos )
+				wea:SetPos( stormtablePos )
 			end
 
 			wea:Spawn()
@@ -391,9 +391,9 @@ local function Autospawn_Timer()
 			end
 			for k, v in pairs(ents.FindByClass("gd_w*")) do
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					dis:SetPos(WeatherTornadoPos)
+					weadis:SetPos(WeatherTornadoPos)
 				else
-					dis:SetPos( stormtablePos )
+					weadis:SetPos( stormtablePos )
 				end
 			end
 			for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
