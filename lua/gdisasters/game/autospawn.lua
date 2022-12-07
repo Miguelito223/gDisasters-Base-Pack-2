@@ -10,10 +10,10 @@ local function Autospawn_Timer()
 		local map_center = getMapCenterPos()
 
 		if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-			local WeatherTornadoPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y),  map_bounds[2].z)
+			WeatherTornadoPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y),  map_bounds[2].z)
 		else
-			local stormtable = S37K_mapbounds[1]
-			local stormtablePos = Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ)
+			stormtable = S37K_mapbounds[1]
+			stormtablePos = Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ)
 		end
 
 		local DisastersPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y), map_floorcenter.z)
