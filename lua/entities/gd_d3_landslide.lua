@@ -75,7 +75,7 @@ function ENT:SpawnFunction( ply, tr )
 	self.OWNER = ply
 	local ent = ents.Create( self.ClassName )
 	ent:SetPhysicsAttacker(ply)
-	ent:SetPos( tr.HitPos + tr.HitNormal * 85  ) 
+	ent:SetPos( tr.HitPos + tr.HitNormal * 500  ) 
 	ent:Spawn()
 	ent:Activate()
 	return ent
