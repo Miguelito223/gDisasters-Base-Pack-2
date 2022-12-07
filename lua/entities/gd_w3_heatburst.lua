@@ -234,6 +234,8 @@ function ENT:LightRaining()
 			end		
 		
 			self:HailFollowPlayer(v)
+		else
+			self:HailFollowPlayer(v)
 		end
 	end
 	
