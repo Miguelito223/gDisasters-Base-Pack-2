@@ -55,8 +55,6 @@ end
 function ENT:CreateClouds()
 
 	if CurTime() < self.NextCloudCreation then return end 
-
-	if #ents.FindByClass("gd_cloud_cumulus") > self.MaxClouds then return end 
 	
 	self.NextCloudCreation = CurTime() + 0.1
 	
