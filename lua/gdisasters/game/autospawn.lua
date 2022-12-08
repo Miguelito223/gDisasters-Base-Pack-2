@@ -469,6 +469,7 @@ if (SERVER) then
 				v:Remove()
 			end
 		end
+		print("Remove all map tornados!!")
 	end
 
 	hook.Add("InitPostEntity","gdisastersRemovemaptornados",function()
