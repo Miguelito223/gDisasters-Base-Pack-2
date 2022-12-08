@@ -53,6 +53,11 @@ local function Autospawn_Timer()
 			EF:Spawn()
 			EF:Activate()
 
+			for k, ply in pairs(player.GetAll()) do
+				if GetConVar("gdisasters_autospawn_chat"):GetInt() <= 0 then return end
+				ply:ChatPrint("the disaster that is happening now: " .. dis.PrintName .. ", Position: " .. tostring(dis:GetPos()) )
+			end
+
 		elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Disasters" then
 			recent = true
 			local disasters = {
