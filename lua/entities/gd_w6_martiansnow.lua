@@ -56,6 +56,7 @@ function ENT:Initialize()
 			end)
 		end
 		
+		self:CreateSandDecals()
 		setMapLight("c")		
 		gDisasters_CreateGlobalGFX("sandstormy", self)	
 	
@@ -164,6 +165,19 @@ function ENT:AffectPlayers()
 			end
 			
 		end
+	end
+end
+
+function ENT:CreateSandDecals()
+	for k, v in pairs(player.GetAll()) do
+		net.Start("gd_createdecals")
+		if HitChance(15) then
+			net.WriteString("snow")	
+		else
+			net.WriteString("sand")	
+		end
+		net.WriteBool(self.CreatedDecals)
+		net.Send(v)
 	end
 end
 
