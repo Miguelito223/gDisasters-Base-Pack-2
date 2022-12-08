@@ -474,10 +474,7 @@ hook.Add( "Initialize", "gDisasters_Autospawn", Autospawn_Timer)
 
 local function Removemaptornados()
 	if GetConVar('gdisasters_getridmaptor'):GetInt() == 1 then
-		for k,v in pairs(ents.FindByClass("func_tanktrain")) do
-			v:Remove()
-		end
-		for k,v in pairs(ents.FindByClass("func_tracktrain")) do
+		for k, v in pairs(ents.FindByClass("func_tracktrain", "func_tanktrain")) do
 			v:Remove()
 		end
 	end
