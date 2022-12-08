@@ -8,6 +8,7 @@ local function Autospawn_Timer()
 		local map_bounds = getMapBounds()
 		local map_skybox = getMapSkyBox()
 		local map_center = getMapCenterPos()
+		local map_floorcenter = getMapCenterFloorPos()
 		
 		if S37K_mapbounds then
 			stormtable = S37K_mapbounds[1]
@@ -15,8 +16,8 @@ local function Autospawn_Timer()
 		end
 
 		local tr = util.TraceLine({
-			start = Vector(DisastersPos.x, DisastersPos.y, map_bounds[2].z),
-			endpos = Vector(DisastersPos.x, DisastersPos.y, map_bounds[1].z),
+			start = Vector(0, 0, map_bounds[2].z),
+			endpos = Vector(0, 0, map_bounds[1].z),
 			mask = MASK_WATER + MASK_PLAYERSOLID_BRUSHONLY
 		})
 
