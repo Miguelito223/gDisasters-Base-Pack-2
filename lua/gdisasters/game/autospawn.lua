@@ -15,15 +15,14 @@ if (SERVER) then
 				stormtablePos = Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ)
 			end
 
-			local startpos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y), map_bounds[2].z)
+			local WeatherTornadoPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y),  map_skybox[2].z)
 
 			local tr = util.TraceLine({
-				start = startpos,
-				endpos = startpos - Vector(0,0,50000),
+				start = WeatherTornadoPos,
+				endpos = WeatherTornadoPos - Vector(0,0,50000),
 				mask = MASK_WATER + MASK_SOLID_BRUSHONLY
 			})
 
-			local WeatherTornadoPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y),  map_skybox[2].z)
 			local DisastersPos = tr.HitPos
 			local BlackHoleWhiteHolePos = Vector(map_center.x, map_center.y, map_center.z)
 
