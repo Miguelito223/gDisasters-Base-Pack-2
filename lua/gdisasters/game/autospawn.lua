@@ -124,18 +124,11 @@ local function Autospawn_Timer()
 					dis:SetPos( stormtablePos )
 				end
 			end
-			for k, v in pairs(ents.FindByClass("gd_d4_landspout")) do
+			for k, v in pairs(ents.FindByClass("gd_d*_*spout")) do
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					dis:SetPos(WeatherTornadoPos)
+					weadis:SetPos(WeatherTornadoPos)
 				else
-					dis:SetPos( stormtablePos )
-				end
-			end
-			for k, v in pairs(ents.FindByClass("gd_d2_waterspout")) do
-				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					dis:SetPos(WeatherTornadoPos)
-				else
-					dis:SetPos( stormtablePos )
+					weadis:SetPos( stormtablePos )
 				end
 			end
 			for k, v in pairs(ents.FindByClass("gd_d*_mfirenado")) do
@@ -409,14 +402,7 @@ local function Autospawn_Timer()
 					weadis:SetPos( stormtablePos )
 				end
 			end
-			for k, v in pairs(ents.FindByClass("gd_d4_landspout")) do
-				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					weadis:SetPos(WeatherTornadoPos)
-				else
-					weadis:SetPos( stormtablePos )
-				end
-			end
-			for k, v in pairs(ents.FindByClass("gd_d2_waterspout")) do
+			for k, v in pairs(ents.FindByClass("gd_d*_*spout")) do
 				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
 					weadis:SetPos(WeatherTornadoPos)
 				else
