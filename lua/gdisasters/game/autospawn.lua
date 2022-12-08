@@ -18,7 +18,7 @@ local function Autospawn_Timer()
 		local tr = util.TraceLine({
 			start = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y), map_bounds[2].z),
 			endpos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y), map_bounds[1].z),
-			mask = MASK_WATER + MASK_SOLID
+			mask = MASK_WATER + MASK_SOLID_BRUSHONLY
 		})
 
 		local WeatherTornadoPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y),  map_skybox[2].z)
