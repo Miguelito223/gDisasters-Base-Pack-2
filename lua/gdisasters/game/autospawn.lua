@@ -15,14 +15,15 @@ local function Autospawn_Timer()
 			stormtablePos = Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ)
 		end
 
-		local tr = util.TraceLine({
-			start = Vector(0, 0, map_bounds[2].z),
-			endpos = Vector(0, 0, map_bounds[1].z),
-		})
-
 		local WeatherTornadoPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y),  map_skybox[2].z)
 		local DisastersPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y), tr.HitPos.z)
 		local BlackHoleWhiteHolePos = Vector(map_center.x, map_center.y, map_center.z)
+
+		local tr = util.TraceLine({
+			start = Vector(DisastersPos.x, DisastersPos.y, map_bounds[2].z),
+			endpos = Vector(DisastersPos.x, DisastersPos.y, map_bounds[1].z),
+		})
+
 
 		if GetConVar("gdisasters_autospawn_type"):GetString() == "Tornado" then
 			recent = true
