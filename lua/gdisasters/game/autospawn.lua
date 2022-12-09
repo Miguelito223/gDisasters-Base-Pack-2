@@ -129,9 +129,9 @@ if (SERVER) then
 
 				local dis = ents.Create(table.Random(disasters))
 					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						weadis:SetPos(FloorPos)
+						dis:SetPos(FloorPos)
 					else
-						weadis:SetPos(stormtableFloorPos)
+						dis:SetPos(stormtableFloorPos)
 					end
 				for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
 					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
@@ -142,9 +142,9 @@ if (SERVER) then
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*spout")) do
 					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						weadis:SetPos(SkyPos)
+						dis:SetPos(SkyPos)
 					else
-						weadis:SetPos( stormtableSkyPos )
+						dis:SetPos( stormtableSkyPos )
 					end
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_mfirenado")) do
@@ -156,16 +156,16 @@ if (SERVER) then
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
 					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						weadis:SetPos(CenterPos)
+						dis:SetPos(CenterPos)
 					else
-						weadis:SetPos(stormtableCenterPos)
+						dis:SetPos(stormtableCenterPos)
 					end
 				end
 				for k, v in pairs(ents.FindByClass("gd_d10_neutron_star")) do
 					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						weadis:SetPos(CenterPos)
+						dis:SetPos(CenterPos)
 					else
-						weadis:SetPos(stormtableCenterPos)
+						dis:SetPos(stormtableCenterPos)
 					end
 				end
 
