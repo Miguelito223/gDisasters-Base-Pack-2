@@ -803,7 +803,7 @@ if (SERVER) then
 			tr.start = ply:GetPos()
 			tr.endpos = tr.start + Vector(0,0,48000)
 			tr.filter = { ply }
-			tr.mask = MASK_PLAYERSOLID + MASK_WATER
+			tr.mask = MASK_WATER + MASK_PLAYERSOLID
 			trace = util.TraceLine( tr )
 			return trace.HitSky
 
