@@ -56,7 +56,7 @@ if (SERVER) then
 
 				for k, ply in pairs(player.GetAll()) do
 					if GetConVar("gdisasters_autospawn_chat"):GetInt() <= 0 then return end
-					ply:ChatPrint("the disaster that is happening now: " .. dis.PrintName )
+					ply:ChatPrint("the disaster that is happening now: " .. EF.PrintName )
 				end
 
 			elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Disasters" then
