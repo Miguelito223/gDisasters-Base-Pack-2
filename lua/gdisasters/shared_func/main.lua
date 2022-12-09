@@ -803,9 +803,22 @@ if (SERVER) then
 			tr.start = ply:GetPos()
 			tr.endpos = tr.start + Vector(0,0,48000)
 			tr.filter = { ply }
-			tr.mask = MASK_WATER + MASK_PLAYERSOLID
+			tr.mask = MASK_PLAYERSOLID
 			trace = util.TraceLine( tr )
 			return trace.HitSky
+
+		end
+
+		local function isBelowWater(ply)
+
+			local tr, trace={},{}
+
+			tr.start = ply:GetPos()
+			tr.endpos = tr.start + Vector(0,0,48000)
+			tr.filter = { ply }
+			tr.mask = MASK_WATER
+			trace = util.TraceLine( tr )
+			return trace.HitWorld
 
 		end
 
@@ -817,20 +830,31 @@ if (SERVER) then
 
 		local hitBelow   = performTrace(ply, Vector(0,0,-1))
 		local inTunnel = ((hitLeft and hitRight) and ( (hitForward and hitBehind) == false)) or (((hitLeft and hitRight)==false) and ( (hitForward and hitBehind) == true))
-
-
+		
 		local hitSky     = isBelowSky(ply)
-
-		if isprop == nil then
-			net.Start("gd_isOutdoor")
-			net.WriteBool(hitSky)
-			net.Send(ply)
-			ply.gDisasters.Area.IsOutdoor = hitSky
+		local hitWater     = isBelowWater(ply)
+		
+		if hitWater then
+			if isprop == nil then
+				net.Start("gd_isOutdoor")
+				net.WriteBool(false)
+				net.Send(ply)
+				ply.gDisasters.Area.IsOutdoor = false
+			else
+				ply.IsOutdoor = false
+			end
+			return false
 		else
-			ply.IsOutdoor = hitSky
+			if isprop == nil then
+				net.Start("gd_isOutdoor")
+				net.WriteBool(hitSky)
+				net.Send(ply)
+				ply.gDisasters.Area.IsOutdoor = hitSky
+			else
+				ply.IsOutdoor = hitSky
+			end
+			return hitSky
 		end
-
-		return hitSky
 	end
 
 	function windPressure(windspeed)
