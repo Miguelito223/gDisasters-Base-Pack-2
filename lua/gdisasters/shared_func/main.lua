@@ -809,8 +809,6 @@ if (SERVER) then
 
 		end
 
-
-
 		local hitLeft    = performTrace(ply, Vector(1,0,0))
 		local hitRight   = performTrace(ply, Vector(-1,0,0))
 
