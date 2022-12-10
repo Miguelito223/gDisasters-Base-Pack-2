@@ -53,7 +53,7 @@ if (SERVER) then
 	
 	   		GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = temp
 			GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = wind
-	   		GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(1,0,0)
+	   		GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]
 	
 	
 	   		if !StormFox2.Weather.IsRaining() and !StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
