@@ -76,7 +76,8 @@ if (SERVER) then
 	   		    if ent:IsValid() then ent:Remove() end
 	   		end
 		else
-			GLOBAL_SYSTEM_TARGET = GLOBAL_SYSTEM_ORIGINAL
+			GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
+			GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
 		end
 	end
 	
