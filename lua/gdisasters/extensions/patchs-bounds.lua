@@ -90,6 +90,7 @@ MAP_BOUNDS["rp_clazfort"] = { Vector(8163, -13152, -1858), Vector(-11235, 13419,
 MAP_BOUNDS["gm_constructed"] = { Vector(-14303, 14303, 576), Vector(14303, -14303, 464), Vector(0, 0, -22)}
 MAP_BOUNDS["freespace_gs"] = { Vector(15703, -15159, -3996), Vector(-14983, 15527, -3984), Vector(0, 0, -4430)}
 MAP_BOUNDS["gm_tornado_province_40"] = { Vector(16173, 16173, 128), Vector(-16173, -16173, -3984), Vector(0, 0, -8)}
+MAP_BOUNDS["gm_arid_valley_v2_day"] = { Vector(-14313, 14319, -206), Vector(14319, -14319, 15482), Vector(0, 0, -206)}
 
 
 MAP_PATHS = {}
