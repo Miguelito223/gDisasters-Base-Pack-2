@@ -909,18 +909,7 @@ Vector(3975,1832,67),
 Vector(-2316,2100,67)
 }
 
-function BoundsAndPatchFunctions()		
-	
-	function IsMapPathsRegistered()
-		local map = game.GetMap()
-		if MAP_PATHS[map]==nil then return false else return true end 
-	end
-	
-	function getMapPath()
-		local map = game.GetMap()
-		if IsMapRegistered()==false then print("This map no have path, no work path tornados") return nil end 
-		return MAP_PATHS[map]
-	end
+function BoundsAndPatchFunctions()								  
 	
 	if S37K_mapbounds then
 		
@@ -964,7 +953,7 @@ function BoundsAndPatchFunctions()
 			return Vector(0,0,-stormtable.skyZ)
 		end
 
-	else
+	elseif MAP_BOUNDS then
 
 		function IsMapRegistered()
 			local map = game.GetMap()
@@ -1008,6 +997,18 @@ function BoundsAndPatchFunctions()
 			if IsMapRegistered()==false then print("This map no have FloorPos") return nil end 
 
 			return MAP_BOUNDS[map][3]
+		end
+
+	elseif MAP_PATHS then
+
+		function IsMapPathsRegistered()
+			local map = game.GetMap()
+			if MAP_PATHS[map]==nil then return false else return true end 
+		end
+		function getMapPath()
+			local map = game.GetMap()
+			if IsMapRegistered()==false then print("This map no have path, no work path tornados") return nil end 
+			return MAP_PATHS[map]
 		end
 
 	end
