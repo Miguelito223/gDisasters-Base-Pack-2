@@ -957,7 +957,7 @@ if S37K_mapbounds then
 	end
 
 	function IsMapRegistered()
-		if S37K_mapbounds == nil or stormtable == nil then return false else return true end 
+		if S37K_mapbounds == nil then return false else return true end 
 	end
 else
 	function getMapCeiling()
