@@ -110,8 +110,11 @@ if (SERVER) then
 
 				local dis = ents.Create(table.Random(disasters))
 
-					dis:SetPos(FloorPos)
+				for k, v in pairs(ents.FindByClass("gd_d*")) do
 
+					weadis:SetPos(FloorPos)
+
+				end
 				for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
 
 					dis:SetPos(SkyPos)
