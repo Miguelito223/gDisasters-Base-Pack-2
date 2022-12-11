@@ -910,7 +910,9 @@ Vector(-2316,2100,67)
 }
 
 function BoundsAndPatchFunctions()								  
+	
 	if S37K_mapbounds then
+		
 		local stormtable = S37K_mapbounds[1]
 
 		function IsMapRegistered()
@@ -996,7 +998,9 @@ function BoundsAndPatchFunctions()
 
 			return MAP_BOUNDS[map][3]
 		end
+
 	elseif MAP_PATHS then
+
 		function IsMapRegistered()
 			local map = game.GetMap()
 			if MAP_PATHS[map]==nil then return false else return true end 
@@ -1006,6 +1010,7 @@ function BoundsAndPatchFunctions()
 			if IsMapRegistered()==false then print("This map no have path, no work path tornados") return nil end 
 			return MAP_PATHS[map]
 		end
+
 	end
 end
 hook.Add("Think", "BoundsAndPatch", BoundsAndPatchFunctions)
