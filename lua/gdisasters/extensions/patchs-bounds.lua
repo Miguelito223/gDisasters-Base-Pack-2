@@ -1007,7 +1007,7 @@ function BoundsAndPatchFunctions()
 		end
 		function getMapPath()
 			local map = game.GetMap()
-			if IsMapRegistered()==false then print("This map no have path, no work path tornados") return nil end 
+			if IsMapPathsRegistered()==false then print("This map no have path, no work path tornados") return nil end 
 			return MAP_PATHS[map]
 		end
 
