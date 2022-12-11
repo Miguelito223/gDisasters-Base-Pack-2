@@ -911,7 +911,6 @@ Vector(-2316,2100,67)
 
 }
 
-
 function getMapPath()
 	local map = game.GetMap()
 	if IsMapRegistered()==false then print("This map no have path, no work path tornados") return nil end 
@@ -920,6 +919,16 @@ end
 										  
 if S37K_mapbounds then
 	local stormtable = S37K_mapbounds[1]
+
+	function IsMapRegistered()
+		if stormtable == nil then return false else return true end 
+	end
+	
+	function getMapBounds()
+		if IsMapRegistered()==false then print("This map no have Bounds") return nil end 
+
+		return {Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ),Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ)}
+	end
 	
 	function getMapCeiling()
 		if IsMapRegistered()==false then print("This map no have Ceiling") return nil end 
@@ -950,16 +959,20 @@ if S37K_mapbounds then
 		return Vector(0,0,-stormtable.skyZ)
 	end
 
-	function getMapBounds()
-		if IsMapRegistered()==false then print("This map no have Bounds") return nil end 
-
-		return {Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ),Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ)}
-	end
+elseif MAP_BOUNDS then
 
 	function IsMapRegistered()
-		if S37K_mapbounds == nil then return false else return true end 
+		local map = game.GetMap()
+		if MAP_BOUNDS[map]==nil then return false else return true end 
 	end
-else
+
+	function getMapBounds()
+		local map = game.GetMap()
+		if IsMapRegistered()==false then print("This map no have Bounds") return nil end 
+
+		return {MAP_BOUNDS[map][1],MAP_BOUNDS[map][2]}
+	end
+
 	function getMapCeiling()
 		local map = game.GetMap()
 		if IsMapRegistered()==false then print("This map no have Ceiling") return nil end 
@@ -990,18 +1003,6 @@ else
 		if IsMapRegistered()==false then print("This map no have FloorPos") return nil end 
 
 		return MAP_BOUNDS[map][3]
-	end
-
-	function getMapBounds()
-		local map = game.GetMap()
-		if IsMapRegistered()==false then print("This map no have Bounds") return nil end 
-
-		return {MAP_BOUNDS[map][1],MAP_BOUNDS[map][2]}
-	end
-
-	function IsMapRegistered()
-		local map = game.GetMap()
-		if MAP_BOUNDS[map]==nil then return false else return true end 
 	end
 end
 
