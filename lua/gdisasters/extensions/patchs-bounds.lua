@@ -922,7 +922,6 @@ if S37K_mapbounds then
 	local stormtable = S37K_mapbounds[1]
 	
 	function getMapCeiling()
-
 		if IsMapRegistered()==false then print("This map no have Ceiling") return nil end 
 
 		return stormtable.skyZ
@@ -938,7 +937,6 @@ if S37K_mapbounds then
 	end
 
 	function getMapCenterPos()
-
 		if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
 
 		local av         = ((Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ) + Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ)) / 2)
@@ -947,21 +945,18 @@ if S37K_mapbounds then
 
 
 	function getMapCenterFloorPos()
-
 		if IsMapRegistered()==false then print("This map no have FloorPos") return nil end 
 
 		return Vector(0,0,-stormtable.skyZ)
 	end
 
 	function getMapBounds()
-
 		if IsMapRegistered()==false then print("This map no have Bounds") return nil end 
 
 		return {Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ),Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ)}
 	end
 
 	function IsMapRegistered()
-
 		if S37K_mapbounds == nil or stormtable == nil then return false else return true end 
 	end
 else
