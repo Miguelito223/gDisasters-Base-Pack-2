@@ -83,7 +83,7 @@ MAP_BOUNDS["gm_flatgrass_water_v2"]     = { Vector(-8096, -11509, -4925),  		Vec
 MAP_BOUNDS["gm_destroyable_city_001"]  = { Vector(16112, 16111, -3300), Vector(-16112, -16111, 15319), Vector(0,0,128)}
 MAP_BOUNDS["gm_twister_farmland_final"]  = { Vector(-15343, 15343, -374), Vector(15343,-15343, 9055), Vector(0,0,0)}
 MAP_BOUNDS["gm_tornado_interstate_95"]  = { Vector(162710, 16271, -6497), Vector(-16271, -16271, 7993), Vector(0, 0, -6050)}
-MAP_BOUNDS["gm_tornadoalley_e1"]  = { Vector(-15343, -15338, 64), Vector(15300, -15331, 64), Vector(0, 0, 0)}
+MAP_BOUNDS["gm_tornadoalley_e2"]  = { Vector(-15343, -15338, -168), Vector(15300, -15331, 15022), Vector(0, 0, 0)}
 MAP_BOUNDS["gm_teletubbyland_day_remake"]  = { Vector(-10415, 6267, -1215), Vector(10213, -8722, -1301), Vector(0, 0, -1215)}
 MAP_BOUNDS["gm_boreas"] = { Vector(-15855, -15855, -10308), Vector(15855, 15850, -10308), Vector(0, 0, -10414)}
 MAP_BOUNDS["rp_clazfort"] = { Vector(8163, -13152, -1858), Vector(-11235, 13419, -1858), Vector(0, 0, -3071)}
@@ -910,58 +910,105 @@ Vector(-2316,2100,67)
 
 
 }
-										  
+
 
 function getMapPath()
 	local map = game.GetMap()
 	if IsMapRegistered()==false then print("This map no have path, no work path tornados") return nil end 
 	return MAP_PATHS[map]
 end
-
-
-function getMapCeiling()
-	local map = game.GetMap()
-	if IsMapRegistered()==false then print("This map no have Ceiling") return nil end 
+										  
+if S37K_mapbounds then
+	local stormtable = S37K_mapbounds[1]
 	
-	return MAP_BOUNDS[map][2].z
-end
+	function getMapCeiling()
+		local map = game.GetMap()
+		if IsMapRegistered()==false then print("This map no have Ceiling") return nil end 
 
-function getMapSkyBox()
-	if IsMapRegistered()==false then print("This map no have SkyBox") return nil end 
-	local bounds = getMapBounds()
-	local min    = bounds[1]
-	local max    = bounds[2]
-	
-	return { Vector(min.x, min.y, max.z), Vector(max.x, max.y, max.z) }
-end
+		return stormtable.skyZ
+	end
+
+	function getMapSkyBox()
+		if IsMapRegistered()==false then print("This map no have SkyBox") return nil end 
+		local bounds = getMapBounds()
+		local min    = bounds[1]
+		local max    = bounds[2]
+
+		return { Vector(min.x, min.y, max.z), Vector(max.x, max.y, max.z) }
+	end
+
+	function getMapCenterPos()
+		local map        = game.GetMap()
+		if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
+
+		local av         = ((Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ) + Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ)) / 2)
+		return ((Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ) + Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ)) / 2)
+	end
 
 
-function getMapCenterPos()
-	local map        = game.GetMap()
-	if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
-	
-	local av         = (MAP_BOUNDS[map][1] + MAP_BOUNDS[map][2])  / 2 
-	return ((MAP_BOUNDS[map][1] + MAP_BOUNDS[map][2])  / 2)
-end
+	function getMapCenterFloorPos()
+		local map = game.GetMap()
+		if IsMapRegistered()==false then print("This map no have FloorPos") return nil end 
+
+		return Vector(0,0,-stormtable.skyZ)
+	end
+
+	function getMapBounds()
+		local map = game.GetMap()
+		if IsMapRegistered()==false then print("This map no have Bounds") return nil end 
+
+		return {Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ),Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ)}
+	end
+
+	function IsMapRegistered()
+		local map = game.GetMap()
+		if S37K_mapbounds==nil then return false else return true end 
+	end
+else
+	function getMapCeiling()
+		local map = game.GetMap()
+		if IsMapRegistered()==false then print("This map no have Ceiling") return nil end 
+
+		return MAP_BOUNDS[map][2].z
+	end
+
+	function getMapSkyBox()
+		if IsMapRegistered()==false then print("This map no have SkyBox") return nil end 
+		local bounds = getMapBounds()
+		local min    = bounds[1]
+		local max    = bounds[2]
+
+		return { Vector(min.x, min.y, max.z), Vector(max.x, max.y, max.z) }
+	end
 
 
-function getMapCenterFloorPos()
-	local map = game.GetMap()
-	if IsMapRegistered()==false then print("This map no have FloorPos") return nil end 
-	
-	return MAP_BOUNDS[map][3]
-end
+	function getMapCenterPos()
+		local map        = game.GetMap()
+		if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
 
-function getMapBounds()
-	local map = game.GetMap()
-	if IsMapRegistered()==false then print("This map no have Bounds") return nil end 
-	
-	return {MAP_BOUNDS[map][1],MAP_BOUNDS[map][2]}
-end
+		local av         = (MAP_BOUNDS[map][1] + MAP_BOUNDS[map][2])  / 2 
+		return ((MAP_BOUNDS[map][1] + MAP_BOUNDS[map][2])  / 2)
+	end
 
-function IsMapRegistered()
-	local map = game.GetMap()
-	if MAP_BOUNDS[map]==nil then return false else return true end 
+
+	function getMapCenterFloorPos()
+		local map = game.GetMap()
+		if IsMapRegistered()==false then print("This map no have FloorPos") return nil end 
+
+		return MAP_BOUNDS[map][3]
+	end
+
+	function getMapBounds()
+		local map = game.GetMap()
+		if IsMapRegistered()==false then print("This map no have Bounds") return nil end 
+
+		return {MAP_BOUNDS[map][1],MAP_BOUNDS[map][2]}
+	end
+
+	function IsMapRegistered()
+		local map = game.GetMap()
+		if MAP_BOUNDS[map]==nil then return false else return true end 
+	end
 end
 
 if (SERVER) then

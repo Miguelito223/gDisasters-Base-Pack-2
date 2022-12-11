@@ -10,20 +10,6 @@ if (SERVER) then
 			local map_center = getMapCenterPos()
 			local map_floorcenter = getMapCenterFloorPos()
 
-			if S37K_mapbounds then
-				stormtable = S37K_mapbounds[1]
-				stormtableSkyPos = Vector(math.random(stormtable.negativeX,stormtable.positiveX),math.random(stormtable.negativeY,stormtable.positiveY),stormtable.skyZ)
-			
-				local tr = util.TraceLine({
-					start = stormtableSkyPos,
-					endpos = stormtableSkyPos - Vector(0,0,50000),
-					mask = MASK_WATER + MASK_SOLID_BRUSHONLY
-				})
-
-				stormtableFloorPos = tr.HitPos
-				stormtableCenterPos = ((Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ) + Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ)) / 2)
-			end
-
 			local SkyPos = Vector(math.random(map_bounds[1].x,map_bounds[2].x),  math.random(map_bounds[1].y,map_bounds[2].y),  map_skybox[2].z)
 
 			local tr = util.TraceLine({
@@ -54,13 +40,8 @@ if (SERVER) then
 
 				local EF = ents.Create(table.Random(tornado))
 
-				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					EF:SetPos(SkyPos)
-				else
-					EF:SetPos( stormtableSkyPos )
-				end
-
 				EF:Spawn()
+				EF:SetPos(SkyPos)
 				EF:Activate()
 
 				for k, ply in pairs(player.GetAll()) do
@@ -128,45 +109,33 @@ if (SERVER) then
 				}
 
 				local dis = ents.Create(table.Random(disasters))
-					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						dis:SetPos(FloorPos)
-					else
-						dis:SetPos(stormtableFloorPos)
-					end
+
+					dis:SetPos(FloorPos)
+
 				for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
-					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						dis:SetPos(SkyPos)
-					else
-						dis:SetPos( stormtableSkyPos )
-					end
+
+					dis:SetPos(SkyPos)
+
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*spout")) do
-					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						dis:SetPos(SkyPos)
-					else
-						dis:SetPos( stormtableSkyPos )
-					end
+
+					dis:SetPos(SkyPos)
+
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_mfirenado")) do
-					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						dis:SetPos(SkyPos)
-					else
-						dis:SetPos( stormtableSkyPos )
-					end
+
+					dis:SetPos(SkyPos)
+
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
-					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						dis:SetPos(CenterPos)
-					else
-						dis:SetPos(stormtableCenterPos)
-					end
+
+					dis:SetPos(CenterPos)
+
 				end
 				for k, v in pairs(ents.FindByClass("gd_d10_neutron_star")) do
-					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						dis:SetPos(CenterPos)
-					else
-						dis:SetPos(stormtableCenterPos)
-					end
+					
+					dis:SetPos(CenterPos)
+
 				end
 
 				dis:Spawn()
@@ -259,13 +228,8 @@ if (SERVER) then
 
 				local wea = ents.Create(table.Random(weather))
 
-				if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-					wea:SetPos(SkyPos)
-				else	
-					wea:SetPos( stormtableSkyPos )
-				end
-
 				wea:Spawn()
+				wea:SetPos(SkyPos)
 				wea:Activate()
 
 				for k, ply in pairs(player.GetAll()) do
@@ -410,53 +374,39 @@ if (SERVER) then
 				local weadis = ents.Create(table.Random(weadisas))
 
 				for k, v in pairs(ents.FindByClass("gd_d*")) do
-					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						weadis:SetPos(FloorPos)
-					else
-						weadis:SetPos(stormtableFloorPos)
-					end
+
+					weadis:SetPos(FloorPos)
+
 				end
 				for k, v in pairs(ents.FindByClass("gd_w*")) do
-					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						weadis:SetPos(SkyPos)
-					else
-						weadis:SetPos( stormtableSkyPos )
-					end
+					
+					weadis:SetPos(SkyPos)
+
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
-					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						weadis:SetPos(SkyPos)
-					else
-						weadis:SetPos( stormtableSkyPos )
-					end
+
+					weadis:SetPos(SkyPos)
+
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*spout")) do
-					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						weadis:SetPos(SkyPos)
-					else
-						weadis:SetPos( stormtableSkyPos )
-					end
+
+					weadis:SetPos(SkyPos)
+
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_mfirenado")) do
-					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						weadis:SetPos(SkyPos)
-					else
-						weadis:SetPos( stormtableSkyPos )
-					end
+
+					weadis:SetPos(SkyPos)
+
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
-					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						weadis:SetPos(CenterPos)
-					else
-						weadis:SetPos(stormtableCenterPos)
-					end
+
+					weadis:SetPos(CenterPos)
+
 				end
 				for k, v in pairs(ents.FindByClass("gd_d10_neutron_star")) do
-					if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then
-						weadis:SetPos(CenterPos)
-					else
-						weadis:SetPos(stormtableCenterPos)
-					end
+
+					weadis:SetPos(CenterPos)
+
 				end
 
 
