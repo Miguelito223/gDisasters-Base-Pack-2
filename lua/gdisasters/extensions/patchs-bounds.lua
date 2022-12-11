@@ -953,7 +953,7 @@ function BoundsAndPatchFunctions()
 			return Vector(0,0,-stormtable.skyZ)
 		end
 
-	elseif MAP_BOUNDS then
+	else
 
 		function IsMapRegistered()
 			local map = game.GetMap()
@@ -999,12 +999,11 @@ function BoundsAndPatchFunctions()
 			return MAP_BOUNDS[map][3]
 		end
 
-	elseif MAP_PATHS then
-
-		function IsMapRegistered()
+		function IsMapPathsRegistered()
 			local map = game.GetMap()
 			if MAP_PATHS[map]==nil then return false else return true end 
 		end
+		
 		function getMapPath()
 			local map = game.GetMap()
 			if IsMapRegistered()==false then print("This map no have path, no work path tornados") return nil end 
