@@ -910,12 +910,6 @@ Vector(-2316,2100,67)
 
 
 }
-
-function getMapPath()
-	local map = game.GetMap()
-	if IsMapRegistered()==false then print("This map no have path, no work path tornados") return nil end 
-	return MAP_PATHS[map]
-end
 										  
 if S37K_mapbounds then
 	local stormtable = S37K_mapbounds[1]
@@ -961,6 +955,12 @@ if S37K_mapbounds then
 
 elseif MAP_BOUNDS then
 
+	function getMapPath()
+		local map = game.GetMap()
+		if IsMapRegistered()==false then print("This map no have path, no work path tornados") return nil end 
+		return MAP_PATHS[map]
+	end
+	
 	function IsMapRegistered()
 		local map = game.GetMap()
 		if MAP_BOUNDS[map]==nil then return false else return true end 
