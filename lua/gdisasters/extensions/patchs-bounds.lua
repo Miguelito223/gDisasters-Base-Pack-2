@@ -940,7 +940,7 @@ if S37K_mapbounds then
 		if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
 
 		local av         = ((Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ) + Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ)) / 2)
-		return ((Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ) + Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ)) / 2)
+		return av
 	end
 
 
@@ -981,10 +981,9 @@ else
 		local map        = game.GetMap()
 		if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
 
-		local av         = (MAP_BOUNDS[map][1] + MAP_BOUNDS[map][2])  / 2 
-		return ((MAP_BOUNDS[map][1] + MAP_BOUNDS[map][2])  / 2)
+		local av         = ((MAP_BOUNDS[map][1] + MAP_BOUNDS[map][2])  / 2)
+		return av
 	end
-
 
 	function getMapCenterFloorPos()
 		local map = game.GetMap()
