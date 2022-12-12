@@ -112,7 +112,7 @@ if (SERVER) then
 
 				for k, v in pairs(ents.FindByClass("gd_d*")) do
 
-					weadis:SetPos(FloorPos)
+					dis:SetPos(FloorPos)
 
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
