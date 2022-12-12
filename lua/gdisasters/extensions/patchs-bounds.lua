@@ -943,7 +943,7 @@ function BoundsAndPatchFunctions()
 		function getMapCenterPos()
 			if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
 
-			local av         = ((Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ) + Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ)) / 2)
+			local av         = ((Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ) + Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ)) / 2)
 			return av
 		end
 
