@@ -91,7 +91,7 @@ MAP_BOUNDS["gm_constructed"] = { Vector(-14303, 14303, 576), Vector(14303, -1430
 MAP_BOUNDS["freespace_gs"] = { Vector(15703, -15159, -3996), Vector(-14983, 15527, -3984), Vector(0, 0, -4430)}
 MAP_BOUNDS["gm_tornado_province_40"] = { Vector(16173, 16173, 128), Vector(-16173, -16173, -3984), Vector(0, 0, -8)}
 MAP_BOUNDS["gm_arid_valley_v2_day"] = { Vector(-14313, 14319, -206), Vector(14319, -14319, 15482), Vector(0, 0, -206)}
-MAP_BOUNDS["gm_flatgrass_2021"] = { Vector(-15359, -15359, 15359), Vector(15359, 15359, -15359), Vector(0, 0, -12914)}
+MAP_BOUNDS["gm_flatgrass_2021"] = { Vector(15359, 15359, -15359), Vector(-15359, -15359, 15359), Vector(0, 0, -12914)}
 
 MAP_PATHS = {}
 MAP_PATHS["gm_flatgrass"]    			  = { Vector(-13466,9319,-12795),
@@ -922,7 +922,7 @@ function BoundsAndPatchFunctions()
 		function getMapBounds()
 			if IsMapRegistered()==false then print("This map no have Bounds") return nil end 
 
-			return {Vector(stormtable.positiveX,stormtable.positiveY,-stormtable.skyZ),Vector(stormtable.negativeX,stormtable.negativeY,stormtable.skyZ)}
+			return {Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ),Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ)}
 		end
 
 		function getMapCeiling()
@@ -943,7 +943,7 @@ function BoundsAndPatchFunctions()
 		function getMapCenterPos()
 			if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
 
-			local av         = ((Vector(stormtable.positiveX,stormtable.positiveY,-stormtable.skyZ) + Vector(stormtable.negativeX,stormtable.negativeY,stormtable.skyZ)) / 2)
+			local av         = ((Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ) + Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ)) / 2)
 			return av
 		end
 
