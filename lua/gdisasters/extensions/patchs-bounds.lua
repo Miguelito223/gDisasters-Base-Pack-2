@@ -948,9 +948,17 @@ function BoundsAndPatchFunctions()
 		end
 
 		function getMapCenterFloorPos()
-			if IsMapRegistered()==false then print("This map no have FloorPos") return nil end 
+			if IsMapRegistered()==false then print("This map no have FloorPos") return nil end
+			
+			local bounds = getMapBounds()[1]
 
-			return Vector(0,0,-stormtable.skyZ)
+			local tr = util.TraceLine({
+				start = bounds,
+				endpos = bounds + Vector(0,0,50000),
+				mask = MASK_WATER + MASK_SOLID_BRUSHONLY
+			})
+
+			return Vector(0,0,tr.HitPos.z)
 		end
 
 	elseif MAP_BOUNDS then
