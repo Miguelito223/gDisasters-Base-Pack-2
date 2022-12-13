@@ -909,7 +909,7 @@ Vector(3975,1832,67),
 Vector(-2316,2100,67)
 }
 
-function BoundsAndPatchFunctions()								  
+hook.Add("Think", "BoundsAndPatch", function()							  
 	
 	if S37K_mapbounds then
 		
@@ -1021,8 +1021,8 @@ function BoundsAndPatchFunctions()
 		end
 
 	end
-end
-hook.Add("Think", "BoundsAndPatch", BoundsAndPatchFunctions)
+end)
+
 
 if (SERVER) then
 	concommand.Add("GPS", function(ply, cmd, args)
