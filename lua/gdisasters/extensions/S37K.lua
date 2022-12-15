@@ -3,11 +3,11 @@ hook.Add("Tick", "S37K", function()
 		local stormtable = S37K_mapbounds[1]
 		
 		local stormtableX = stormtable.positiveX
-		local negativestormtableX = stormtable.negativeX
+		local negative_stormtableX = stormtable.negativeX
 		local stormtableY = stormtable.positiveY
-		local negativestormtableY = stormtable.negativeY
+		local negative_stormtableY = stormtable.negativeY
 		local stormtableZ = stormtable.skyZ
-		local negativestormtableZ = -stormtable.skyZ
+		local negative_stormtableZ = -stormtable.skyZ
 
 		function IsMapRegistered()
 			if stormtable == nil or S37K_mapbounds == nil then return false else return true end 
@@ -15,7 +15,7 @@ hook.Add("Tick", "S37K", function()
 
 		function getMapBounds()
 			if IsMapRegistered()==false then print("S37k Can't found the Bounds") return nil end 
-			return {Vector(stormtableX,stormtableY,negativestormtableZ),Vector(negativestormtableX,negativestormtableY,stormtableZ)}
+			return {Vector(stormtableX,stormtableY,negative_stormtableZ),Vector(negative_stormtableX,negative_stormtableY,stormtableZ)}
 		end
 
 		function getMapCeiling()
@@ -36,14 +36,14 @@ hook.Add("Tick", "S37K", function()
 		function getMapCenterPos()
 			if IsMapRegistered()==false then print("S37k Can't found the CenterPos") return nil end 
 
-			local av         = ((Vector(stormtableX,stormtableY,negativestormtableZ) + Vector(negativestormtableX,negativestormtableY,stormtableZ)) / 2)
+			local av         = ((Vector(stormtableX,stormtableY,negative_stormtableZ) + Vector(negative_stormtableX,negative_stormtableY,stormtableZ)) / 2)
 			return av
 		end
 
 		function getMapCenterFloorPos()
 			if IsMapRegistered()==false then print("S37k Can't found the FloorPos") return nil end
 
-			local bounds = Vector(getMapCenterPos().x,getMapCenterPos().y,negativestormtableZ )
+			local bounds = Vector(getMapCenterPos().x,getMapCenterPos().y,negative_stormtableZ )
 
 			local tr = util.TraceLine({
 				start = bounds,
