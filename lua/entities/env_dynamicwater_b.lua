@@ -852,7 +852,7 @@ function ENT:OnWedgeEntry(ent)
 	
 	if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then 
 	
-		InflictDamage(ent, self, "cold")
+		InflictDamage(ent, self, "cold", 10)
 	
 	else
 		
