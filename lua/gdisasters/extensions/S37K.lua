@@ -1,5 +1,5 @@
 hook.Add("Tick", "S37K", function()
-	if S37K_mapbound then
+	if S37K_mapbounds then
 		local stormtable = S37K_mapbounds[1]
 
 		function IsMapRegistered()

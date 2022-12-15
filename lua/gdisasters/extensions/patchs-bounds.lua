@@ -1,5 +1,5 @@
 hook.Add("Tick", "gDisastersBounds", function()
-	if S37K_mapbound then return end
+	if S37K_mapbounds then return end
 
 	MAP_BOUNDS = {}
 	MAP_BOUNDS["gm_abstraction_extended"]     = { Vector(6125,-6126,6074),  		Vector(-7600,6127,-36),				Vector(0,0,0)       }
