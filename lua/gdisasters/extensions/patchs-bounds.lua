@@ -914,8 +914,6 @@ Vector(-2316,2100,67)
 }
 
 hook.Add("Tick", "gDisastersBounds", function()
-	if S37K_mapbounds then return end
-
 	function IsMapRegistered()
 		local map = game.GetMap()
 		if MAP_BOUNDS[map]==nil then return false else return true end 
