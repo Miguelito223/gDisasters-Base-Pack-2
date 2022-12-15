@@ -3,23 +3,24 @@ hook.Add("Tick", "S37K", function()
 		local stormtable = S37K_mapbounds[1]
 
 		function IsMapRegistered()
-			if stormtable == nil then return false else return true end 
+			if stormtable == nil or S37K_mapbounds == nil then return false else return true end 
 		end
 
 		function getMapBounds()
-			if IsMapRegistered()==false then print("This map no have Bounds") return nil end 
+			if IsMapRegistered()==false then print("S37k Can't found the Bounds") return nil end 
+			
 
-			return {Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ),Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ)}
+			return {Vector(stormtable.positiveX,stormtable.positiveY,-stormtable.skyZ),Vector(stormtable.negativeX,stormtable.negativeY,stormtable.skyZ)}
 		end
 
 		function getMapCeiling()
-			if IsMapRegistered()==false then print("This map no have Ceiling") return nil end 
+			if IsMapRegistered()==false then print("S37k Can't found the Ceiling") return nil end 
 
 			return stormtable.skyZ
 		end
 
 		function getMapSkyBox()
-			if IsMapRegistered()==false then print("This map no have SkyBox") return nil end 
+			if IsMapRegistered()==false then print("S37k Can't found the SkyBox") return nil end 
 			local bounds = getMapBounds()
 			local min    = bounds[1]
 			local max    = bounds[2]
@@ -28,14 +29,14 @@ hook.Add("Tick", "S37K", function()
 		end
 
 		function getMapCenterPos()
-			if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
+			if IsMapRegistered()==false then print("S37k Can't found the CenterPos") return nil end 
 
 			local av         = ((Vector(stormtable.negativeX,stormtable.negativeY,-stormtable.skyZ) + Vector(stormtable.positiveX,stormtable.positiveY,stormtable.skyZ)) / 2)
 			return av
 		end
 
 		function getMapCenterFloorPos()
-			if IsMapRegistered()==false then print("This map no have FloorPos") return nil end
+			if IsMapRegistered()==false then print("S37k Can't found the FloorPos") return nil end
 
 			local bounds = Vector(getMapCenterPos().x,getMapCenterPos().y,-stormtable.skyZ)
 

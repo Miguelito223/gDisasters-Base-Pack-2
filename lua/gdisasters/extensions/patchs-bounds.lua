@@ -968,6 +968,7 @@ function getMapCenterFloorPos()
 	return MAP_BOUNDS[map][3]
 end
 
+
 if (SERVER) then
 	concommand.Add("GPS", function(ply, cmd, args)
 		local pos = ply:GetPos()
