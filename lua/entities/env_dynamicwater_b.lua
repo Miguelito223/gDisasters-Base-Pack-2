@@ -1123,7 +1123,7 @@ if (CLIENT) then
 	function DrawTsunami()
 	
 		
-		if IsMapRegistered() then
+		if IsMapRegistered() == true then
 		
 			env_dynamicwater_b_DrawWater()
 			

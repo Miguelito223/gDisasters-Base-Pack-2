@@ -422,7 +422,7 @@ if (CLIENT) then
 	function DrawFlood()
 	
 		
-		if IsMapRegistered() then
+		if IsMapRegistered() == true then
 		
 			env_dynamicwater_DrawWater()
 			

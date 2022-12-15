@@ -1045,7 +1045,7 @@ if (CLIENT) then
 	function DrawTsunamiLava()
 	
 		
-		if IsMapRegistered() then
+		if IsMapRegistered() == true then
 		
 			env_dynamiclava_b_DrawLava()
 			

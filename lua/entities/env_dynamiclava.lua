@@ -371,7 +371,7 @@ end
 
 if (CLIENT) then
 	hook.Add("PreDrawTranslucentRenderables", "DRAWlava", function()
-		if IsMapRegistered() then
+		if IsMapRegistered() == true then
 			env_dynamiclava_Drawlava()
 		end
 		
