@@ -51,7 +51,7 @@ function ENT:Initialize()
 		self.Data.Parent = self
 			
 		local effect = self.Data.Effect[1]
-	self.OriginalEffect = effect
+		self.OriginalEffect = effect
 		createTornado(table.Copy(self.Data))
 		
 	end
