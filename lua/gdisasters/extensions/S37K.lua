@@ -1,4 +1,4 @@
-function S37kmapbounds()
+hook.Add("Think", "S37K", function()
 	if S37K_mapbounds then
 		local stormtable = S37K_mapbounds[1]
 		
@@ -54,6 +54,4 @@ function S37kmapbounds()
 			return tr.HitPos
 		end
 	end
-end
-hook.Add("Think", "S37K_mapbounds", S37kmapbounds)
-S37kmapbounds()
+end)
