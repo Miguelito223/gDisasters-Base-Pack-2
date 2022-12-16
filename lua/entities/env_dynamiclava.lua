@@ -69,20 +69,20 @@ function createlava(maxheight, parent)
 
 	if IsMapRegistered() == true then
 	
-	for k, v in pairs(ents.FindByClass("env_dynamicwater", "env_dynamiclava")) do
-		v:Remove()
-	end
-	
-	local lava = ents.Create("env_dynamiclava")
-	lava:SetPos(getMapCenterFloorPos())
-	lava:Spawn()
-	lava:Activate()
+		for k, v in pairs(ents.FindByClass("env_dynamicwater", "env_dynamiclava")) do
+			v:Remove()
+		end
 
-	lava:EFire("Parent", parent)
-	lava:EFire("MaxHeight", maxheight)
-	lava:EFire("Enable", true)
-	
-	return lava
+		local lava = ents.Create("env_dynamiclava")
+		lava:SetPos(getMapCenterFloorPos())
+		lava:Spawn()
+		lava:Activate()
+
+		lava:EFire("Parent", parent)
+		lava:EFire("MaxHeight", maxheight)
+		lava:EFire("Enable", true)
+
+		return lava
 	
 	end
 end

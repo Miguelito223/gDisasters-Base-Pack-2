@@ -43,6 +43,8 @@ function ENT:Initialize()
 		end 		
 		
 		self.NextPhysicsTime = CurTime()
+
+		if IsMapRegistered()==false then self:Remove() end 
 	
 	end
 end
@@ -922,24 +924,24 @@ function ENT:EFire(pointer, arg)
 end
 
 function createTsunamilava(parent, data)
-	
-	for k, v in pairs(ents.FindByClass( "env_dynamicwater_b","env_dynamiclava_b")) do
-		v:Remove();
+	if IsMapRegistered() == true then
+		for k, v in pairs(ents.FindByClass( "env_dynamicwater_b","env_dynamiclava_b")) do
+			v:Remove();
+		end
+
+		local tsunamilava = ents.Create("env_dynamiclava_b");
+		tsunamilava.Data  = data;
+
+
+		tsunamilava:SetPos(getMapCenterFloorPos());
+		tsunamilava:Spawn();
+		tsunamilava:Activate();
+
+		tsunamilava:EFire("Parent", parent);
+		tsunamilava:EFire("Enable", true);
+
+		return tsunamilava;
 	end
-	
-	local tsunamilava = ents.Create("env_dynamiclava_b");
-	tsunamilava.Data  = data;
-
-	
-	tsunamilava:SetPos(getMapCenterFloorPos());
-	tsunamilava:Spawn();
-	tsunamilava:Activate();
-
-	tsunamilava:EFire("Parent", parent);
-	tsunamilava:EFire("Enable", true);
-	
-	return tsunamilava;
-
 end
 
 function ENT:IsParentValid()
@@ -1042,8 +1044,7 @@ end
 
 
 if (CLIENT) then
-	function DrawTsunamiLava()
-	
+	hook.Add("PostDrawTranslucentRenderables", "DrawTsunamiLava", function()
 		
 		if IsMapRegistered() == true then
 		
@@ -1052,8 +1053,8 @@ if (CLIENT) then
 			
 		end
 		
-	end
-	hook.Add("PostDrawTranslucentRenderables", "DrawTsunamiLava", DrawTsunamiLava)
+	end)
+	
 
 	
 end

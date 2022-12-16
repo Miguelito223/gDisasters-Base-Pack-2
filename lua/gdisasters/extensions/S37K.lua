@@ -1,4 +1,4 @@
-hook.Add("Tick", "S37K", function()
+function S37kmapbounds()
 	if S37K_mapbounds then
 		local stormtable = S37K_mapbounds[1]
 		
@@ -54,4 +54,6 @@ hook.Add("Tick", "S37K", function()
 			return tr.HitPos
 		end
 	end
-end)
+end
+hook.Add("InitPostEntity", "S37K_mapbounds", S37kmapbounds)
+S37kmapbounds()

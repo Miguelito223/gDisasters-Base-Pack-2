@@ -41,6 +41,8 @@ function ENT:Initialize()
 		end 		
 		
 		self.NextPhysicsTime = CurTime()
+
+		if IsMapRegistered()==false then self:Remove() end 
 	
 	end
 end
@@ -1120,7 +1122,7 @@ end
 
 
 if (CLIENT) then
-	function DrawTsunami()
+	hook.Add("PostDrawTranslucentRenderables", "DrawTsunami", function()
 	
 		
 		if IsMapRegistered() == true then
@@ -1130,8 +1132,8 @@ if (CLIENT) then
 			
 		end
 		
-	end
-	hook.Add("PostDrawTranslucentRenderables", "DrawTsunami", DrawTsunami)
+	end)
+	
 
 	
 end

@@ -419,7 +419,7 @@ end
 
 
 if (CLIENT) then
-	function DrawFlood()
+	hook.Add("PreDrawTranslucentRenderables", "DRAWFLOOD", function()
 	
 		
 		if IsMapRegistered() == true then
@@ -429,8 +429,8 @@ if (CLIENT) then
 			
 		end
 		
-	end
-	hook.Add("PreDrawTranslucentRenderables", "DRAWFLOOD", DrawFlood)
+	end)
+	
 	
 end
 
