@@ -1,4 +1,6 @@
 hook.Add("Think", "S37K", function()
+	if !S37K_mapbounds then return end
+
 	if S37K_mapbounds then
 		local stormtable = S37K_mapbounds[1]
 		

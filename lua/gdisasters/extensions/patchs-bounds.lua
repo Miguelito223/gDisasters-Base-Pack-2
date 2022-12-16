@@ -928,48 +928,51 @@ hook.Add("Think", "MapBounds", function()
 	
 	if S37K_mapbounds then return end
 
-	function IsMapRegistered()
-		local map = game.GetMap()
-		if MAP_BOUNDS[map]==nil then return false else return true end 
-	end
+	if !S37K_mapbounds then
 
-	function getMapBounds()
-		local map = game.GetMap()
-		if IsMapRegistered()==false then print("This map no have Bounds") return nil end 
+		function IsMapRegistered()
+			local map = game.GetMap()
+			if MAP_BOUNDS[map]==nil then return false else return true end 
+		end
 
-		return {MAP_BOUNDS[map][1],MAP_BOUNDS[map][2]}
-	end
+		function getMapBounds()
+			local map = game.GetMap()
+			if IsMapRegistered()==false then print("This map no have Bounds") return nil end 
 
-	function getMapCeiling()
-		local map = game.GetMap()
-		if IsMapRegistered()==false then print("This map no have Ceiling") return nil end 
+			return {MAP_BOUNDS[map][1],MAP_BOUNDS[map][2]}
+		end
 
-		return MAP_BOUNDS[map][2].z
-	end
+		function getMapCeiling()
+			local map = game.GetMap()
+			if IsMapRegistered()==false then print("This map no have Ceiling") return nil end 
 
-	function getMapSkyBox()
-		if IsMapRegistered()==false then print("This map no have SkyBox") return nil end 
-		local bounds = getMapBounds()
-		local min    = bounds[1]
-		local max    = bounds[2]
+			return MAP_BOUNDS[map][2].z
+		end
 
-		return { Vector(min.x, min.y, max.z), Vector(max.x, max.y, max.z) }
-	end
+		function getMapSkyBox()
+			if IsMapRegistered()==false then print("This map no have SkyBox") return nil end 
+			local bounds = getMapBounds()
+			local min    = bounds[1]
+			local max    = bounds[2]
+
+			return { Vector(min.x, min.y, max.z), Vector(max.x, max.y, max.z) }
+		end
 
 
-	function getMapCenterPos()
-		local map        = game.GetMap()
-		if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
+		function getMapCenterPos()
+			local map        = game.GetMap()
+			if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
 
-		local av         = ((MAP_BOUNDS[map][1] + MAP_BOUNDS[map][2])  / 2)
-		return av
-	end
+			local av         = ((MAP_BOUNDS[map][1] + MAP_BOUNDS[map][2])  / 2)
+			return av
+		end
 
-	function getMapCenterFloorPos()
-		local map = game.GetMap()
-		if IsMapRegistered()==false then print("This map no have FloorPos") return nil end 
+		function getMapCenterFloorPos()
+			local map = game.GetMap()
+			if IsMapRegistered()==false then print("This map no have FloorPos") return nil end 
 
-		return MAP_BOUNDS[map][3]
+			return MAP_BOUNDS[map][3]
+		end
 	end
 
 end)
