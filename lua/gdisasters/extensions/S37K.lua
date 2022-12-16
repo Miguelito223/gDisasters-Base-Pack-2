@@ -55,5 +55,5 @@ function S37kmapbounds()
 		end
 	end
 end
-hook.Add("InitPostEntity", "S37K_mapbounds", S37kmapbounds)
+hook.Add("Think", "S37K_mapbounds", S37kmapbounds)
 S37kmapbounds()
