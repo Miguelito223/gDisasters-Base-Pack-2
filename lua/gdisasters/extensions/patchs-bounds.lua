@@ -925,10 +925,8 @@ hook.Add("Think", "MapBounds", function()
 		if IsMapPathRegistered()==false then print("This map no have path, no work path tornados") return nil end 
 		return MAP_PATHS[map]
 	end
-	
-	if S37K_mapbounds then return end
 
-	if !S37K_mapbounds then
+	if S37K_mapbounds == nil or table.Empty(S37K_mapbounds) then
 
 		function IsMapRegistered()
 			local map = game.GetMap()
