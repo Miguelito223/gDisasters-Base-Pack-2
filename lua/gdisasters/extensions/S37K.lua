@@ -10,9 +10,8 @@ hook.Add("Think", "S37KMapBounds", function()
 		local stormtableZ = stormtable.skyZ
 		local negative_stormtableZ = -stormtable.skyZ
 		
-		
 		function IsMapRegistered()
-			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then return false else return true end 
+			if stormtable == nil or table.IsEmpty(stormtable) then return false else return true end 
 		end
 
 		function getMapBounds()

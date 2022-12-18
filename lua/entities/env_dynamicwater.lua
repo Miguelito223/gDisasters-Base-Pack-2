@@ -422,7 +422,7 @@ if (CLIENT) then
 	hook.Add("PreDrawTranslucentRenderables", "DRAWFLOOD", function()
 	
 		
-		if IsMapRegistered() == true then
+		if IsMapRegistered() then
 		
 			env_dynamicwater_DrawWater()
 			
