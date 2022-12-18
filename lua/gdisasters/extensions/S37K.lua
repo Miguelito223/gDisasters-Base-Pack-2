@@ -1,5 +1,6 @@
-hook.Add("Think", "S37K", function()
-	if S37K_mapbounds then
+hook.Add("Think", "S37KMapBounds", function()
+	if S37K_mapbounds and GetConVar("gdisasters_enable_S37K"):GetInt() >= 1 then
+
 		local stormtable = S37K_mapbounds[1]
 		
 		local stormtableX = stormtable.positiveX
@@ -11,7 +12,7 @@ hook.Add("Think", "S37K", function()
 		
 		
 		function IsMapRegistered()
-			if table.Empty(S37K_mapbounds) or S37K_mapbounds == nil then return false else return true end 
+			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then return false else return true end 
 		end
 
 		function getMapBounds()
