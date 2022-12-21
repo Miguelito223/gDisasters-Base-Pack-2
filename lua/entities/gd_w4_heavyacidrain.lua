@@ -125,17 +125,20 @@ function ENT:AffectPlayers()
 end
 
 function ENT:AffectNpcs()
+	
 	for k, v in pairs(ents.GetAll()) do
-		if v:IsNPC() or v:IsNextBot() then 
-			if math.random(1,50)== 1 then
-				InflictDamage(v, self, "acid", math.random	(1, 3))
-			end	
-		else 
-			if math.random(1,50)== 1 then
-				InflictDamage(v, self, "acid", math.random	(1, 3))
-			end	
-		end
-	end	
+		if v.IsOutdoor then
+			if v:IsNPC() or v:IsNextBot() then 
+				if math.random(1,50)== 1 then
+					InflictDamage(v, self, "acid", math.random(1, 3))
+				end	
+			else 
+				if math.random(1,50)== 1 then
+					InflictDamage(v, self, "acid", 0.5)
+				end	
+			end
+		end	
+	end
 end
 
 function ENT:Think()
