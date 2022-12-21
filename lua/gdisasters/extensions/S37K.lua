@@ -29,7 +29,7 @@ hook.Add("Think", "S37KMapBounds", function()
 
 		function getMapBounds()
 			if IsMapRegistered()==false then print("S37k Can't found the Bounds") return nil end 
-			return {Vector(stormtableX,stormtableY,negative_stormtableZ),Vector(negative_stormtableX,negative_stormtableY,stormtableZ)}
+			return {Vector(stormtableX,stormtableY,negative_stormtableZ), Vector(negative_stormtableX,negative_stormtableY,stormtableZ)}
 		end
 
 		function getMapCeiling()
@@ -44,7 +44,7 @@ hook.Add("Think", "S37KMapBounds", function()
 			local min    = bounds[1]
 			local max    = bounds[2]
 
-			return {Vector(min.x, min.y, max.z),Vector(max.x, max.y, max.z)}
+			return {Vector(min.x, min.y, max.z), Vector(max.x, max.y, max.z)}
 		end
 
 		function getMapCenterPos()
