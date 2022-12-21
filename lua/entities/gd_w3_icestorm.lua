@@ -243,6 +243,7 @@ function ENT:Think()
 		if !self:IsValid() then return end
 		self:AffectPlayers()
 		self:AffectNpcs()
+		self:SpawnIce()
 		self:NextThink(CurTime() + 0.001)
 		return true
 	end
