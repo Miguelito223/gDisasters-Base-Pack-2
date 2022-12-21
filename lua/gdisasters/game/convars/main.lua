@@ -65,10 +65,10 @@ CreateConVar( "gdisasters_antilag_maximum_safe_collisions_per_second_per_prop", 
 CreateConVar( "gdisasters_antilag_post_damage_no_collide_base_time", "400", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_antilag_mode", "1", {FCVAR_ARCHIVE}, "" )
 
-CreateConVar( "gdisasters_dnc_enabled", "1", { FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY }, "Day & Night enabled." )
+CreateConVar( "gdisasters_dnc_enabled", "0", { FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY }, "Day & Night enabled." )
 CreateConVar( "gdisasters_dnc_paused", "0", { FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY }, "Day & Night time progression enabled." )
 CreateConVar( "gdisasters_dnc_realtime", "0", { FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY }, "Whether or not Day & Night progresses based on the servers time zone." );
 CreateConVar( "gdisasters_dnc_log", "0", { FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED, FCVAR_NOTIFY }, "Turn Day & Night logging to console on or off." )
 
-CreateConVar( "gdisasters_dnc_length_day", "3600", { FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED }, "The duration modifier of daytime in seconds." )
-CreateConVar( "gdisasters_dnc_length_night", "3600", { FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED }, "The duration modifier of nighttime in seconds." )
+CreateConVar( "gdisasters_dnc_length_day", "600", { FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED }, "The duration modifier of daytime in seconds." )
+CreateConVar( "gdisasters_dnc_length_night", "600", { FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED }, "The duration modifier of nighttime in seconds." )
