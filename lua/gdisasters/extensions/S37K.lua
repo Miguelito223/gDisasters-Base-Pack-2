@@ -1,19 +1,30 @@
 hook.Add("Think", "S37KMapBounds", function()
 	if GetConVar("gdisasters_enable_S37K"):GetInt() >= 1 then
+		
+		local function toint(n)
+			local s = tostring(n)
+			local i, j = s:find('%.')
+			if i then
+				return tonumber(s:sub(1, i-1))
+			else
+				return n
+			end
+		end
 
 		function IsMapRegistered()
 			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then return false else return true end 
 		end
 
 		if IsMapRegistered() == true then
+
 			stormtable = S37K_mapbounds[1]
 			
-			stormtableX = stormtable.positiveX
-			negative_stormtableX = stormtable.negativeX
-			stormtableY = stormtable.positiveY
-			negative_stormtableY = stormtable.negativeY
-			stormtableZ = stormtable.skyZ
-			negative_stormtableZ = -stormtable.skyZ
+			stormtableX = toint(stormtable.positiveX)
+			negative_stormtableX = toint(stormtable.negativeX)
+			stormtableY = toint(stormtable.positiveY)
+			negative_stormtableY = toint(stormtable.negativeY)
+			stormtableZ = toint(stormtable.skyZ)
+			negative_stormtableZ = toint(-stormtable.skyZ)
 		end
 
 		function getMapBounds()
@@ -54,7 +65,7 @@ hook.Add("Think", "S37KMapBounds", function()
 				mask = MASK_WATER + MASK_SOLID_BRUSHONLY
 			})
 
-			return tr.HitPos
+			return Vector(tr.HitPos.x, tr.HitPos.y, toint(tr.HitPos.z))
 		end
 	end
 end)
