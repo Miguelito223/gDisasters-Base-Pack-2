@@ -1,17 +1,19 @@
 hook.Add("Think", "S37KMapBounds", function()
-	if S37K_mapbounds and GetConVar("gdisasters_enable_S37K"):GetInt() >= 1 then
+	if GetConVar("gdisasters_enable_S37K"):GetInt() >= 1 then
 
-		local stormtable = S37K_mapbounds[1]
-		
-		local stormtableX = stormtable.positiveX
-		local negative_stormtableX = stormtable.negativeX
-		local stormtableY = stormtable.positiveY
-		local negative_stormtableY = stormtable.negativeY
-		local stormtableZ = stormtable.skyZ
-		local negative_stormtableZ = -stormtable.skyZ
-		
 		function IsMapRegistered()
-			if stormtable == nil or table.IsEmpty(stormtable) then return false else return true end 
+			if S37K_mapbounds == nil or table.IsEmpty(S37K_mapbounds) then return false else return true end 
+		end
+
+		if IsMapRegistered() == true then
+			stormtable = S37K_mapbounds[1]
+			
+			stormtableX = stormtable.positiveX
+			negative_stormtableX = stormtable.negativeX
+			stormtableY = stormtable.positiveY
+			negative_stormtableY = stormtable.negativeY
+			stormtableZ = stormtable.skyZ
+			negative_stormtableZ = -stormtable.skyZ
 		end
 
 		function getMapBounds()
