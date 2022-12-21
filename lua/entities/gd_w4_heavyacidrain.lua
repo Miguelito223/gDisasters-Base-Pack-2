@@ -125,7 +125,6 @@ function ENT:AffectPlayers()
 end
 
 function ENT:AffectNpcs()
-	
 	for k, v in pairs(ents.GetAll()) do
 		if v.IsOutdoor then
 			if v:IsNPC() or v:IsNextBot() then 
