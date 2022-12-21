@@ -1,7 +1,7 @@
 if (SERVER) then
     
     function gDisasters_ProcessOxygen()
-        if GetConVar("gdisasters_oxygen_enable"):GetInt() == 0 then return end 
+        if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() == 0 then return end 
         for k, v in pairs(player.GetAll()) do 
         
             v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
