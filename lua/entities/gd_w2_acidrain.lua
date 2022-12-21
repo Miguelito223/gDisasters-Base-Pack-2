@@ -132,7 +132,7 @@ function ENT:AffectNpcs()
 		if v.IsOutdoor then
 			if v:IsNPC() or v:IsNextBot() then 
 				if math.random(1,50)== 1 then
-					InflictDamage(v, self, "acid", math.random	(1, 3))
+					InflictDamage(v, self, "acid", math.random(1, 3))
 				end	
 			else 
 				if math.random(1,50)== 1 then
