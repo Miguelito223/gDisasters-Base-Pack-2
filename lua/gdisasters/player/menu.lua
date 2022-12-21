@@ -103,7 +103,7 @@ local function gDisastersSVSettings( CPanel )
 	lb3:SetTextColor(Color( 0, 0, 0))
 	lb3:SetSize(500, 500)
 	
-	CreateTickboxConVariable(CPanel, "Enable Body Oxygen" ,"gdisasters_oxygen_enable");
+	CreateTickboxConVariable(CPanel, "Enable Body Oxygen" ,"gdisasters_hud_oxygen_enable");
 	CreateTickboxConVariable(CPanel, "Enable Body Oxygen Related Damage" ,"gdisasters_hud_oxygen_damage");
 end
 
