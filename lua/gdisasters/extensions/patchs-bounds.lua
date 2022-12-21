@@ -926,7 +926,7 @@ hook.Add("Think", "gDisastersMapBounds", function()
 		return MAP_PATHS[map]
 	end
 
-	if GetConVar("gdisasters_enable_S37K"):GetInt() <= 0 then  
+	if GetConVar("gdisasters_advanced_S37K"):GetInt() <= 0 then  
 
 		function IsMapRegistered()
 			local map = game.GetMap()

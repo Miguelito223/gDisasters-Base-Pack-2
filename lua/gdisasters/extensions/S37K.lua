@@ -1,5 +1,5 @@
 hook.Add("Think", "S37KMapBounds", function()
-	if GetConVar("gdisasters_enable_S37K"):GetInt() >= 1 then
+	if GetConVar("gdisasters_advanced_S37K"):GetInt() >= 1 then
 		
 		local function toint(n)
 			local s = tostring(n)

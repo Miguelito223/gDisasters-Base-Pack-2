@@ -239,9 +239,9 @@ if (SERVER) then
 	function setMapLight(light)
 		local light_env = ents.FindByClass("light_environment")[1]
 
-		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
+		if GetConVar("gdisasters_graphics_atmosphere"):GetInt() <= 0 then return end
 
-		if GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then 
+		if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 then 
 
 		
 			if light_env != nil then 
@@ -265,9 +265,9 @@ if (SERVER) then
 
 	function GetLightLevel(player)
 
-		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
+		if GetConVar("gdisasters_graphics_atmosphere"):GetInt() <= 0 then return end
 
-		if GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then 
+		if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 then 
 
 			net.Start("gd_ambientlight")
 			net.Send(player)
@@ -278,9 +278,9 @@ if (SERVER) then
 	-- --]]
 	function paintSky_Fade(data_to, fraction) -- fade from one skypaint setting to another
 
-		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
+		if GetConVar("gdisasters_graphics_atmosphere"):GetInt() <= 0 then return end
 
-		if GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then 
+		if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 then 
 
 			local self          = ents.FindByClass("env_skypaint")[1]
 
@@ -344,10 +344,10 @@ if (SERVER) then
 
 	function paintSky(data)
 
-		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
+		if GetConVar("gdisasters_graphics_atmosphere"):GetInt() <= 0 then return end
 
 
-		if GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then 
+		if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 then 
 
 		
 		
@@ -402,9 +402,9 @@ if (SERVER) then
 
 	function skyPaint_Reset()
 
-		if GetConVar("gdisasters_atmosphere"):GetInt() <= 0 then return end
+		if GetConVar("gdisasters_graphics_atmosphere"):GetInt() <= 0 then return end
 
-		if GetConVar("gdisasters_atmosphere"):GetInt() >= 1 then 
+		if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 then 
 		
 			local self          = ents.FindByClass("env_skypaint")[1]
 			local TopColor      = Vector(0.20,0.50,1.00)
@@ -1242,9 +1242,9 @@ if (CLIENT) then
 				if soundtype == "mono" then
 					surface.PlaySound( soundpath )
 				elseif soundtype == "stereo" then
-					LocalPlayer():EmitSound( soundpath, 100, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_sound_soundwave_manual_level"):GetFloat() )
+					LocalPlayer():EmitSound( soundpath, 100, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_volume_soundwave"):GetFloat() )
 				elseif soundtype == "3d" then
-					sound.Play( soundpath,  epicenter, 170, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_sound_soundwave_manual_level"):GetFloat() )
+					sound.Play( soundpath,  epicenter, 170, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_volume_soundwave"):GetFloat() )
 				end		
 			end
 		end)

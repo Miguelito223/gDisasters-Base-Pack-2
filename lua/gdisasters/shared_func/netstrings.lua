@@ -260,9 +260,9 @@ if (CLIENT) then
 		if stype == "mono" then
 			surface.PlaySound( s )
 		elseif stype == "stereo" then
-			LocalPlayer():EmitSound( s, 100, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_sound_soundwave_manual_level"):GetFloat() )
+			LocalPlayer():EmitSound( s, 100, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_volume_soundwave"):GetFloat() )
 		elseif stype == "3d" then
-			sound.Play( s,  pos, 150, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_sound_soundwave_manual_level"):GetFloat() )
+			sound.Play( s,  pos, 150, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_volume_soundwave"):GetFloat() )
 		end
 
 

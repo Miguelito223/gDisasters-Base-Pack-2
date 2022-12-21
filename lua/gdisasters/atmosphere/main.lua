@@ -40,7 +40,7 @@ if (SERVER) then
 	
 	function stormfox2()
 	
-	    if GetConVar("gdisasters_stormfox_enable"):GetInt() >= 1 then 
+	    if GetConVar("gdisasters_graphics_stormfox"):GetInt() >= 1 then 
 	   		if Stormfox and StormFox.Version < 2 then 
 				    for k, v in pairs(player.GetAll()) do 
 				    	v:ChatPrint("StormFox 1 is no compatible with gDisasters. Please install stormfox 2")
@@ -385,7 +385,7 @@ if (CLIENT) then
 		
 		local local_wind    = LocalPlayer():GetNWFloat("LocalWind")
 		local outside_fac   = LocalPlayer().gDisasters.Outside.OutsideFactor/100 
-		local wind_weak_vol = math.Clamp( ( (math.Clamp((( math.Clamp(local_wind / 20, 0, 1) * 5)^2) * local_wind, 0, local_wind)) / 20), 0, GetConVar("gdisasters_sound_Light_Wind"):GetFloat()) 
+		local wind_weak_vol = math.Clamp( ( (math.Clamp((( math.Clamp(local_wind / 20, 0, 1) * 5)^2) * local_wind, 0, local_wind)) / 20), 0, GetConVar("gdisasters_volume_Light_Wind"):GetFloat()) 
 		
 		
 		if LocalPlayer().gDisasters.Outside.IsOutside then
@@ -394,8 +394,8 @@ if (CLIENT) then
 			wind_weak_vol   = wind_weak_vol * math.Clamp(outside_fac , 0.1, 1)
 		end
 		
-		local wind_mod_vol  = math.Clamp( ( (local_wind-20) / 60), 0, GetConVar("gdisasters_sound_Moderate_Wind"):GetFloat()) * outside_fac 		
-		local wind_str_vol  = math.Clamp( ( (local_wind-80) / 120), 0, GetConVar("gdisasters_sound_Heavy_Wind"):GetFloat()) * outside_fac 	
+		local wind_mod_vol  = math.Clamp( ( (local_wind-20) / 60), 0, GetConVar("gdisasters_volume_Moderate_Wind"):GetFloat()) * outside_fac 		
+		local wind_str_vol  = math.Clamp( ( (local_wind-80) / 120), 0, GetConVar("gdisasters_volume_Heavy_Wind"):GetFloat()) * outside_fac 	
 		
 		if LocalPlayer().Sounds["Wind_Heavy"] == nil then
 			

@@ -168,7 +168,7 @@ end)
 if (SERVER) then
 
 	hook.Add( "Initialize", "gDisastersInitFix", function()
-		if GetConVar("gdisasters_atmosphere"):GetInt() >= 1 or GetConVar("gdisasters_dnc_enabled"):GetInt() >= 1 then 
+		if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 or GetConVar("gdisasters_dnc_enabled"):GetInt() >= 1 then 
 
 			if #ents.FindByClass("env_skypaint")<1 then
 				local ent = ents.Create("env_skypaint")
@@ -189,7 +189,7 @@ if (SERVER) then
 
 
 	hook.Add( "InitPostEntity", "gDisastersInitPostEvo", function()
-		if GetConVar("gdisasters_atmosphere"):GetInt() >= 1 or GetConVar("gdisasters_dnc_enabled"):GetInt() >= 1 then 
+		if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 or GetConVar("gdisasters_dnc_enabled"):GetInt() >= 1 then 
 
 			local oldCleanUpMap = game.CleanUpMap
 		

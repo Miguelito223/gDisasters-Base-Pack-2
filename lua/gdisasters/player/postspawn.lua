@@ -22,8 +22,8 @@ if (CLIENT) then
 		
 		local function gDisasters_SetupHUDConvars()
 		
-			CreateConVar( "gdisasters_hud_heartbeat_volume", 0.1, {FCVAR_ARCHIVE}	, "" )
-			CreateConVar( "gdisasters_hud_warning_volume", 0.1, {FCVAR_ARCHIVE}	, "" )
+			CreateConVar( "gdisasters_volume_hud_heartbeat", 0.1, {FCVAR_ARCHIVE}	, "" )
+			CreateConVar( "gdisasters_volume_hud_warning", 0.1, {FCVAR_ARCHIVE}	, "" )
 			CreateConVar( "gdisasters_hud_enabled", 1, {FCVAR_ARCHIVE}	, "" )
 			CreateConVar( "gdisasters_hud_type", 1, {FCVAR_ARCHIVE}	, "" )
 			CreateConVar( "gdisasters_hud_windtype", "km/h", {FCVAR_ARCHIVE}	, "" )
@@ -43,10 +43,10 @@ if (CLIENT) then
 			CreateConVar( "gdisasters_graphics_number_of_screen_particles", 1, {FCVAR_ARCHIVE}, "")
 			CreateConVar( "gdisasters_graphics_shakescreen_enable", 1,{FCVAR_ARCHIVE}, "")
 			CreateConVar( "gdisasters_graphics_experimental_overdraw", 1, {FCVAR_ARCHIVE}, "sexy " )
-			CreateConVar( "gdisasters_sound_soundwave_manual_level", 1, {FCVAR_ARCHIVE}, " " )
-			CreateConVar( "gdisasters_sound_Light_Wind", 1, {FCVAR_ARCHIVE}, " " )
-			CreateConVar( "gdisasters_sound_Moderate_Wind", 1, {FCVAR_ARCHIVE}, " " )
-			CreateConVar( "gdisasters_sound_Heavy_Wind", 1, {FCVAR_ARCHIVE}, " " )
+			CreateConVar( "gdisasters_volume_soundwave", 1, {FCVAR_ARCHIVE}, " " )
+			CreateConVar( "gdisasters_volume_Light_Wind", 1, {FCVAR_ARCHIVE}, " " )
+			CreateConVar( "gdisasters_volume_Moderate_Wind", 1, {FCVAR_ARCHIVE}, " " )
+			CreateConVar( "gdisasters_volume_Heavy_Wind", 1, {FCVAR_ARCHIVE}, " " )
 		
 		end
 	

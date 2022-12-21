@@ -48,7 +48,7 @@ function ENT:Initialize()
 
 		end	
 			
-	if GetConVar("gdisasters_atmosphere"):GetInt() >= 1 and #ents.FindByClass("gd_w*") == 0 then 
+	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 and #ents.FindByClass("gd_w*") == 0 then 
 	
 		
 		self.Original_SkyData = {}
@@ -197,7 +197,7 @@ function ENT:OnRemove()
 		
 	end		
 		
-	if GetConVar("gdisasters_atmosphere"):GetInt() >= 1 and #ents.FindByClass("gd_w*") == 0 then 
+	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 and #ents.FindByClass("gd_w*") == 0 then 
 		
 		
 	local resetdata = self.Reset_SkyData

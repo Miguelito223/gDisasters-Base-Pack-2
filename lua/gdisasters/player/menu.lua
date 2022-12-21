@@ -104,7 +104,7 @@ local function gDisastersSVSettings( CPanel )
 	lb3:SetSize(500, 500)
 	
 	CreateTickboxConVariable(CPanel, "Enable Body Oxygen" ,"gdisasters_oxygen_enable");
-	CreateTickboxConVariable(CPanel, "Enable Body Oxygen Related Damage" ,"gdisasters_oxygen_damage");
+	CreateTickboxConVariable(CPanel, "Enable Body Oxygen Related Damage" ,"gdisasters_hud_oxygen_damage");
 end
 
 -- ADVANCED SV MENU
@@ -120,7 +120,7 @@ local function gDisastersSVADVSettings( CPanel )
 	lb2_5:SetTextColor(Color( 0, 0, 0))
 	lb2_5:SetSize(500, 500)
 	
-	CreateTickboxConVariable(CPanel, "Enable S37K Map Bounds" ,"gdisasters_enable_S37K");
+	CreateTickboxConVariable(CPanel, "Enable S37K Map Bounds" ,"gdisasters_advanced_S37K");
 	
 	local lb3 = AddControlLabel( CPanel, "Simulation Option: Change the quality of simulation.")
 	lb3:SetTextColor(Color( 0, 0, 0))
@@ -179,10 +179,10 @@ local function gDisastersServerGraphics( CPanel )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_atmosphere");
-	CreateTickboxConVariable(CPanel, "Enable GFX effect"  , "gdisasters_gfx_enable");
-	CreateTickboxConVariable(CPanel, "Enable Fog Effect"  , "gdisasters_fog_enable");
-	CreateTickboxConVariable(CPanel, "Enable Stormfox2 Compatibility"  , "gdisasters_stormfox_enable");
+	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_graphics_atmosphere");
+	CreateTickboxConVariable(CPanel, "Enable GFX effect"  , "gdisasters_graphics_gfx");
+	CreateTickboxConVariable(CPanel, "Enable Fog Effect"  , "gdisasters_graphics_fog");
+	CreateTickboxConVariable(CPanel, "Enable Stormfox2 Compatibility"  , "gdisasters_graphics_stormfox");
 
 	local lb2 = AddControlLabel( CPanel, "Antilag Collision Options:" )
 	local lb3 = AddControlLabel( CPanel, "PD NC BT: Post Damage No Collide Base Time\n\nCPPPS: Collisions Per Prop Per Second\n\nCAPS:Collisions Average Per Second" )
@@ -264,17 +264,17 @@ local function gDisastersAudioSettings( CPanel )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 	
-	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1,1, "gdisasters_sound_Light_Wind" );
-	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1,1, "gdisasters_sound_Moderate_Wind" );
-	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,1,"gdisasters_sound_Heavy_Wind" );
-	CreateSliderConVariable(CPanel, "SoundWave Volume", 0,1,1,"gdisasters_sound_soundwave_manual_level" );
+	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1,1, "gdisasters_volume_Light_Wind" );
+	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1,1, "gdisasters_volume_Moderate_Wind" );
+	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,1,"gdisasters_volume_Heavy_Wind" );
+	CreateSliderConVariable(CPanel, "SoundWave Volume", 0,1,1,"gdisasters_volume_soundwave" );
 	
 	local lb2 =  AddControlLabel( CPanel, "Hud Audio Options: " )
 	lb2:SetTextColor(Color( 0, 0, 0))
 	lb2:SetSize(500, 500)
 	
-	CreateSliderConVariable(CPanel, "hud Hearth Volume", 0,1,1, "gdisasters_hud_heartbeat_volume" );
-	CreateSliderConVariable(CPanel, "hud Warning Volume", 0,1,1, "gdisasters_hud_warning_volume" );
+	CreateSliderConVariable(CPanel, "hud Hearth Volume", 0,1,1, "gdisasters_volume_hud_heartbeat" );
+	CreateSliderConVariable(CPanel, "hud Warning Volume", 0,1,1, "gdisasters_volume_hud_warning" );
 end
 
 local function gDisastersAutospawn( CPanel )
@@ -292,7 +292,7 @@ local function gDisastersAutospawn( CPanel )
 	lb2:SetTextColor(Color( 0, 0, 0))
 	lb2:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "Disable Map Tornadoes "  , "gdisasters_getridmaptor");
+	CreateTickboxConVariable(CPanel, "Disable Map Tornadoes "  , "gdisasters_autospawn_getridmaptor");
 	CreateTickboxConVariable(CPanel, "Enable Chat Messages"  , "gdisasters_autospawn_chat");
 	
 	CreateTickboxConVariable(CPanel, "Enable Autospawn "  , "gdisasters_autospawn_enable");
