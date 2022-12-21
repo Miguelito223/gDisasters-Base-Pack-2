@@ -136,7 +136,7 @@ function ENT:AffectNpcs()
 				end	
 			else 
 				if math.random(1,50)== 1 then
-					InflictDamage(v, self, "acid", 0.5)
+					InflictDamage(v, self, "acid", 1)
 				end	
 			end
 		end	

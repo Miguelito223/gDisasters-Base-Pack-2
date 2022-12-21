@@ -94,13 +94,13 @@ function ENT:AffectPlayers()
 	for k, v in pairs(player.GetAll()) do
 
 		if v.gDisasters.Area.IsOutdoor then
-				
-				net.Start("gd_clParticles")
-				net.WriteString("localized_acid_rain_effect", Angle(0,math.random(1,40),0))
-				net.Send(v)
-				net.Start("gd_clParticles_ground")
-				net.WriteString("rain_splash_effect")
-				net.Send(v)	
+			
+			net.Start("gd_clParticles")
+			net.WriteString("localized_acid_rain_effect", Angle(0,math.random(1,40),0))
+			net.Send(v)
+			net.Start("gd_clParticles_ground")
+			net.WriteString("rain_splash_effect")
+			net.Send(v)	
 				
 			
 			if math.random(1,12) == 1 then
@@ -133,7 +133,7 @@ function ENT:AffectNpcs()
 				end	
 			else 
 				if math.random(1,50)== 1 then
-					InflictDamage(v, self, "acid", 0.5)
+					InflictDamage(v, self, "acid", 1)
 				end	
 			end
 		end	
