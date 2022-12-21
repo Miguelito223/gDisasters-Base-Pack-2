@@ -101,7 +101,42 @@ function ENT:SpawnFunction( ply, tr )
 	return ent
 end
 
+function ENT:SpawnSand()
 
+	if HitChance(2) then
+	
+		local bounds    = getMapSkyBox()
+		local min       = bounds[1]
+		local max       = bounds[2]
+		
+		local startpos  = Vector(   math.random(min.x,max.x)      ,  math.random(min.y,max.y) ,   max.z )
+
+			
+		local tr = util.TraceLine( {
+			start = startpos,
+			endpos = startpos - Vector(0,0,50000),
+		} )
+
+		local endpos   = tr.HitPos
+		
+		if #ents.FindByClass("gd_d1_quicksand") < 10 then
+			
+
+			local ice = ents.Create("gd_d1_quicksand")
+			ice:Spawn()
+			ice:Activate()	
+			ice:SetPos( tr.HitPos )
+			ice:SetAngles( (tr.HitNormal:Angle()) - Angle(-90,0,0) ) 
+			
+			timer.Simple( math.random(10,20), function()
+				if ice:IsValid() then ice:Remove() end
+				
+			end)
+		
+		end
+	
+	end
+end
 
 function ENT:AffectPlayers()
 	for k, v in pairs(player.GetAll()) do
@@ -185,6 +220,7 @@ function ENT:Think()
 		if !self:IsValid() then return end
 
 		self:AffectPlayers()
+		self:SpawnSand()
 		
 		self:NextThink(CurTime() + 0.01)
 		return true
