@@ -1125,7 +1125,7 @@ if (CLIENT) then
 	hook.Add("PostDrawTranslucentRenderables", "DrawTsunami", function()
 	
 		
-		if IsMapRegistered() then
+		if IsMapRegistered() == true then
 		
 			env_dynamicwater_b_DrawWater()
 			

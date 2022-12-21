@@ -1046,7 +1046,7 @@ end
 if (CLIENT) then
 	hook.Add("PostDrawTranslucentRenderables", "DrawTsunamiLava", function()
 		
-		if IsMapRegistered() then
+		if IsMapRegistered() == true  then
 		
 			env_dynamiclava_b_DrawLava()
 			
