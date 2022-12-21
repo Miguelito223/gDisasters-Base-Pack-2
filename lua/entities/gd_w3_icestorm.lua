@@ -151,10 +151,10 @@ function ENT:SpawnIce()
 
 		local endpos   = tr.HitPos
 		
-		if #ents.FindByClass("gd_d2_blackiceover") < 10 then
+		if #ents.FindByClass("gd_d1_ice") < 10 then
 			
 
-			local ice = ents.Create("gd_d2_blackiceover")
+			local ice = ents.Create("gd_d1_ice")
 			ice:Spawn()
 			ice:Activate()	
 			ice:SetPos( tr.HitPos )
