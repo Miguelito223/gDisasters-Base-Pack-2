@@ -55,28 +55,28 @@ function ENT:SpawnDeath()
 		local min       = bounds[1]
 		local max       = bounds[2]
 		
-		local startpos  = Vector(   math.random(min.x,max.x)      ,  math.random(min.y,max.y) ,   max.z )
+		local startpos  = Vector(math.random(min.x,max.x), math.random(min.y,max.y), max.z )
 
 			
 		local tr = util.TraceLine( {
-		start  = startpos,
-		endpos    = startpos + Vector(0,0,90000),
+			start  = startpos,
+			endpos    = startpos + Vector(0,0,90000),
 		} )
 		
 
-			local moite = ents.Create("gd_d6_meteor_ch")
+		local moite = ents.Create("gd_d6_meteor_ch")
+		
+		moite:SetPos( tr.HitPos - Vector(0,0,0) )
+		moite:Spawn()
+		moite:Activate()
+		moite:GetPhysicsObject():EnableMotion(true)
+		moite:GetPhysicsObject():SetVelocity( Vector(0,0,math.random(0,-10000))  )
+		moite:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
+		
+		timer.Simple( math.random(14,18), function()
+			if moite:IsValid() then moite:Remove() end
 			
-			moite:SetPos( tr.HitPos - Vector(0,0,0) )
-			moite:Spawn()
-			moite:Activate()
-			moite:GetPhysicsObject():EnableMotion(true)
-			moite:GetPhysicsObject():SetVelocity( Vector(0,0,math.random(0,-10000))  )
-			moite:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
-			
-			timer.Simple( math.random(14,18), function()
-				if moite:IsValid() then moite:Remove() end
-				
-			end)
+		end)
 			
 	
 	end

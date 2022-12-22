@@ -4,8 +4,8 @@ if (SERVER) then
 	
 	AddCSLuaFile("gdisasters/shared_func/main.lua")
 	AddCSLuaFile("gdisasters/shared_func/netstrings.lua")
-	AddCSLuaFile("gdisasters/extensions/patchs-bounds.lua")
 	AddCSLuaFile("gdisasters/extensions/S37K.lua")
+	AddCSLuaFile("gdisasters/extensions/patchs-bounds.lua")
 	AddCSLuaFile("gdisasters/game/convars/main.lua")
 	AddCSLuaFile("gdisasters/player/menu.lua")
 	AddCSLuaFile("gdisasters/player/postspawn.lua")
@@ -25,8 +25,8 @@ if (SERVER) then
 
 	include("gdisasters/shared_func/main.lua")	
 	include("gdisasters/shared_func/netstrings.lua")
-	include("gdisasters/extensions/patchs-bounds.lua")
 	include("gdisasters/extensions/S37K.lua")
+	include("gdisasters/extensions/patchs-bounds.lua")
 	include("gdisasters/game/antilag/main.lua")
 	include("gdisasters/game/water_physics.lua")
 	include("gdisasters/game/world_init.lua")
@@ -59,8 +59,8 @@ if (CLIENT) then
 
 	AddCSLuaFile("gdisasters/shared_func/main.lua")
 	AddCSLuaFile("gdisasters/shared_func/netstrings.lua")
-	AddCSLuaFile("gdisasters/extensions/patchs-bounds.lua")
 	AddCSLuaFile("gdisasters/extensions/S37K.lua")
+	AddCSLuaFile("gdisasters/extensions/patchs-bounds.lua")
 	AddCSLuaFile("gdisasters/game/convars/main.lua")
 	AddCSLuaFile("gdisasters/player/menu.lua")
 	AddCSLuaFile("gdisasters/player/postspawn.lua")
@@ -81,20 +81,17 @@ if (CLIENT) then
 	include("gdisasters/player/menu.lua")
 	include("gdisasters/shared_func/main.lua")	
 	include("gdisasters/shared_func/netstrings.lua")
+	include("gdisasters/extensions/S37K.lua")
 	include("gdisasters/extensions/patchs-bounds.lua")
-	include("gdisasters/extensions/S37K.lua")		
-	
 	include("gdisasters/player/postspawn.lua")
 	include("gdisasters/player/process_gfx.lua")
 	include("gdisasters/player/process_temp.lua")
 	include("gdisasters/player/process_oxygen.lua")
-	
 	include("gdisasters/atmosphere/main.lua")
 	include("gdisasters/hud/main.lua")
 	include("gdisasters/game/autospawn.lua")
 	include("gdisasters/spawnlist/menu/main.lua")
 	include("gdisasters/spawnlist/menu/populate.lua")
-
 	include("gdisasters/game/decals.lua")
 	include("gdisasters/game/antilag/main.lua")
 	include("gdisasters/game/damagetypes.lua")

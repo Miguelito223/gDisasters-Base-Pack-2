@@ -51,7 +51,7 @@ function ENT:CreateMeteorite()
 	local min       = bounds[1]
 	local max       = bounds[2]
 		
-	local startpos  = Vector(   self:GetPos().x     ,  self:GetPos().y ,   max.z )
+	local startpos  = Vector(self:GetPos().x, self:GetPos().y, max.z )
 
 	local startpos  = startpos
 	

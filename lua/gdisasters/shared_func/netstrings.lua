@@ -126,17 +126,18 @@ if (CLIENT) then
 		if bool then return end
 		bool = true
 
-
 		for i=0, 25 do
 		
 			local bounds    = getMapSkyBox()
 			local min       = bounds[1]
 			local max       = bounds[2]
 
-			local startpos  = Vector(   math.random(min.x,max.x)      ,  math.random(min.y,max.y) ,  max.z )
+			local startpos  = Vector(math.random(min.x,max.x), math.random(min.y,max.y), max.z )
+			
 			local tr = util.TraceLine( {
 				start = startpos,
 				endpos = startpos - Vector(0,0,50000),
+				mask = MASK_SOLID_BRUSHONLY
 			} )	
 
 			util.Decal(decal, tr.HitPos + tr.HitNormal,  tr.HitPos - tr.HitNormal)

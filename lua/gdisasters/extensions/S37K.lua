@@ -40,6 +40,7 @@ hook.Add("Think", "S37KMapBounds", function()
 
 		function getMapSkyBox()
 			if IsMapRegistered()==false then print("S37k Can't found the SkyBox") return nil end 
+			
 			local bounds = getMapBounds()
 			local min    = bounds[1]
 			local max    = bounds[2]
