@@ -130,12 +130,15 @@ end
 
 function ENT:AffectNpcs()
 	for k, v in pairs(ents.GetAll()) do
-		if v:IsNPC() or v:IsNextBot() then 
-			if math.random(1,5)== 1 then
+		if v.IsOutdoor then
+			if v:IsNPC() or v:IsNextBot() then 
 				
-				InflictDamage(v, self, "fire", math.random	(15,20))
-
-			end	
+				if math.random(1,5)== 1 then
+					
+					InflictDamage(v, self, "fire", math.random	(15,20))
+				
+				end	
+			end
 		end
 	end	
 end	

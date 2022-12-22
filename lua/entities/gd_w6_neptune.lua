@@ -85,12 +85,14 @@ end
 
 function ENT:AffectNpcs()
 	for k, v in pairs(ents.GetAll()) do
-		if v:IsNPC() then 
-			if math.random(1,2)== 1 then
-				
-				InflictDamage(v, self, "cold", math.random	(2,5))
+		if v.IsOutdoor then
+			if v:IsNPC() then 
+				if math.random(1,2)== 1 then
 
-			end	
+					InflictDamage(v, self, "cold", math.random	(2,5))
+
+				end	
+			end
 		end
 	end	
 end	
