@@ -93,6 +93,30 @@ if (SERVER) then
 
 	end)
 
+
+end
+	
+if (CLIENT) then
+
+	net.Receive("gd_ambientlight", function()
+
+		local tr = util.TraceLine( {
+			start = LocalPlayer():GetPos(),
+			endpos = LocalPlayer():GetPos() - Vector(0,0,100),
+			filter = function( ent ) if ( ent:GetClass() == "prop_physics" ) then return true end end
+		} )
+
+		if tr.Entity:IsValid() then LocalPlayer().AmbientLight = Vector(0,0,0) return end 
+
+		LocalPlayer().AmbientLight = render.ComputeLighting(  tr.HitPos, tr.HitNormal )
+
+		net.Start("gd_ambientlight")
+		net.WriteEntity(LocalPlayer())
+		net.WriteVector(LocalPlayer().AmbientLight)
+		net.SendToServer()
+
+	end)
+
 	net.Receive("gd_createdecals", function()
 		if GetConVar("gdisasters_graphics_experimental_overdraw"):GetInt() != 1 then return end
 
@@ -118,30 +142,6 @@ if (SERVER) then
 
 			util.Decal(decal, tr.HitPos + tr.HitNormal,  tr.HitPos - tr.HitNormal)
 		end
-	end)
-
-
-end
-	
-if (CLIENT) then
-
-	net.Receive("gd_ambientlight", function()
-
-		local tr = util.TraceLine( {
-			start = LocalPlayer():GetPos(),
-			endpos = LocalPlayer():GetPos() - Vector(0,0,100),
-			filter = function( ent ) if ( ent:GetClass() == "prop_physics" ) then return true end end
-		} )
-
-		if tr.Entity:IsValid() then LocalPlayer().AmbientLight = Vector(0,0,0) return end 
-
-		LocalPlayer().AmbientLight = render.ComputeLighting(  tr.HitPos, tr.HitNormal )
-
-		net.Start("gd_ambientlight")
-		net.WriteEntity(LocalPlayer())
-		net.WriteVector(LocalPlayer().AmbientLight)
-		net.SendToServer()
-
 	end)
 
 	net.Receive("gd_clParticles", function()
