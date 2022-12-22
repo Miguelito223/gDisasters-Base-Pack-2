@@ -6,23 +6,7 @@ if (SERVER) then
         
             v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
             
-            if v:WaterLevel() >= 3 then 
-                v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen - engine.TickInterval(), 0,10) 
-            
-                if v.gDisasters.Body.Oxygen <= 0 then
-                
-                    if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
-                
-    				if math.random(1, 50)==1 then
-    				    local dmg = DamageInfo()
-    				    dmg:SetDamage( math.random(1,25) )
-    				    dmg:SetAttacker( v )
-    				    dmg:SetDamageType( DMG_DROWN  )
-                    
-    				    v:TakeDamageInfo(  dmg)
-                    end
-    		    end
-            elseif v.IsInWater then
+            if v:WaterLevel() >= 3 or v.IsInWater then 
                 v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen - engine.TickInterval(), 0,10) 
             
                 if v.gDisasters.Body.Oxygen <= 0 then
