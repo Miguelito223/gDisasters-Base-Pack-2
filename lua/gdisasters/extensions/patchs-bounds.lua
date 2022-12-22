@@ -1,4 +1,3 @@
-
 MAP_BOUNDS = {}
 MAP_BOUNDS["gm_abstraction_extended"]     = { Vector(6125,-6126,6074),  		Vector(-7600,6127,-36),				Vector(0,0,0)       }
 MAP_BOUNDS["gm_arid_valley_v1"]           = { Vector(-12941,-13415,-1972),		Vector(14201,14191,15061),  		Vector(0,0,-1972)       }
