@@ -100,18 +100,14 @@ function ENT:Touch( entity )
 	if entity:IsNPC() or entity:IsPlayer() or entity:IsNextBot() then
 		
 		if entity:IsPlayer() then
-			entity:TakeDamage(10, self, self)
-			entity:Ignite(15)
+			InflictDamage(entity, self, "acid", 10)
 		else
-			entity:TakeDamage(10, self, self)
-			entity:Ignite(15)
-			
+			InflictDamage(entity, self, "acid", 10)			
 		end
 		
 	
 	else
-		entity:TakeDamage(10)
-		entity:Ignite(15)
+		InflictDamage(entity, self, "acid", 10)
 	end
 	
 end
