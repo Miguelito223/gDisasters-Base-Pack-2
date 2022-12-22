@@ -16,6 +16,7 @@ if (SERVER) then
 		Humidity()
 		AtmosphereFadeControl()
 		stormfox2()
+		vFire()
 		gDisasters_GlobalBreathingEffect()
 		gDisasters_ProcessTemperature()
 		gDisasters_ProcessOxygen()
@@ -78,6 +79,20 @@ if (SERVER) then
 		else
 			GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
 			GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
+		end
+	end
+
+	function vFire()	
+		if !vFireInstalled then return end
+	
+		for k, v in pairs(ents.GetAll()) do
+			if (v:GetClass() == "vfire") then
+				if v:IsValid() then 
+					if v.isOutdoor and #ents.FindByClass("gd_w*") > 0 or v.IsInWater or v.IsInlava then
+						v:SoftExtinguish(10)
+					end
+				end
+			end
 		end
 	end
 	

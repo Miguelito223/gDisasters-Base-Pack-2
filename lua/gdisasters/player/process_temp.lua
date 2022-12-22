@@ -217,7 +217,9 @@ if (SERVER) then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.002
 					elseif wl==3 then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
-					elseif wl2==true then
+					end
+					
+					if wl2==true then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
 					elseif lv==true then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.002
@@ -230,7 +232,9 @@ if (SERVER) then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.002
 					elseif wl==3 then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
-					elseif wl2==true then
+					end
+					
+					if wl2==true then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
 					elseif lv==true then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.008
@@ -243,7 +247,9 @@ if (SERVER) then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.002
 					elseif wl==3 then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
-					elseif wl2==true then
+					end
+					
+					if wl2==true then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
 					elseif lv==true then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.004

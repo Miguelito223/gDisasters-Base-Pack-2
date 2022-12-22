@@ -6,7 +6,7 @@ if (SERVER) then
         
             v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
             
-            if v:WaterLevel() >= 3 or v.IsInWater then 
+            if v:WaterLevel() >= 3 or v.IsInWater or v.IsInlava then 
                 v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen - engine.TickInterval(), 0,10) 
             
                 if v.gDisasters.Body.Oxygen <= 0 then
