@@ -115,12 +115,6 @@ local function gDisastersSVADVSettings( CPanel )
 	lb:SetTextColor(Color( 255, 0, 0))
 	lb2:SetTextColor(Color( 0, 0, 0))
 	lb2:SetSize(500, 500)
-
-	local lb2_5 = AddControlLabel( CPanel, "Map Bounds Options: ")
-	lb2_5:SetTextColor(Color( 0, 0, 0))
-	lb2_5:SetSize(500, 500)
-	
-	CreateTickboxConVariable(CPanel, "Enable S37K Map Bounds" ,"gdisasters_advanced_S37K");
 	
 	local lb3 = AddControlLabel( CPanel, "Simulation Option: Change the quality of simulation.")
 	lb3:SetTextColor(Color( 0, 0, 0))
