@@ -50,7 +50,8 @@ CreateConVar( "gdisasters_hud_oxygen_enable", "1", {FCVAR_ARCHIVE}, "" )
 
 CreateConVar( "gdisasters_autospawn_getridmaptor", "0", {FCVAR_ARCHIVE}, "" )
 
-CreateConVar( "gdisasters_autospawn_timer", "120", { FCVAR_ARCHIVE,FCVAR_SERVER_CAN_EXECUTE,FCVAR_PROTECTED}, "How often do you want to run the tornado spawn?")
+CreateConVar( "gdisasters_autospawn_spawn_timer", "120", { FCVAR_ARCHIVE,FCVAR_SERVER_CAN_EXECUTE,FCVAR_PROTECTED}, "How often do you want to run the tornado spawn?")
+CreateConVar( "gdisasters_autospawn_remove_timer", "300", { FCVAR_ARCHIVE,FCVAR_SERVER_CAN_EXECUTE,FCVAR_PROTECTED}, "How often do you want to run the tornado spawn?")
 CreateConVar( "gdisasters_autospawn_spawn_chance", "3", { FCVAR_ARCHIVE,FCVAR_SERVER_CAN_EXECUTE,FCVAR_PROTECTED}, "What is the chance that a tornado will spawn?")
 CreateConVar( "gdisasters_autospawn_enable", "0", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_autospawn_chat", "1", {FCVAR_ARCHIVE}, "")

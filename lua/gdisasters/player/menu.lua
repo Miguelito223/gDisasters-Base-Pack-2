@@ -277,7 +277,8 @@ local function gDisastersAutospawn( CPanel )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 	
-	CreateSliderConVariable(CPanel, "Autospawn Time", 1, 1000, 0, "gdisasters_autospawn_timer" )
+	CreateSliderConVariable(CPanel, "Autospawn Spawn Time", 1, 1000, 0, "gdisasters_autospawn_spawn_timer" )
+	CreateSliderConVariable(CPanel, "Autospawn Remove Time", 1, 1000, 0, "gdisasters_autospawn_remove_timer" )
 	CreateSliderConVariable(CPanel, "Autospawn Chance", 0, 1000, 0, "gdisasters_autospawn_spawn_chance" )
 
 	AddComboBox( CPanel, "Autospawn Type", {"Disasters", "Weather", "Tornado", "Weather/Disasters"}, "gdisasters_autospawn_type")

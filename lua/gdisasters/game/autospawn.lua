@@ -149,7 +149,7 @@ if (SERVER) then
 					ply:ChatPrint("the disaster that is happening now: " .. dis.PrintName .. ", Position: " .. tostring(dis:GetPos()) )
 				end
 
-				timer.Simple(GetConVar( "gdisasters_autospawn_timer" ):GetInt(), function()
+				timer.Simple(GetConVar( "gdisasters_autospawn_remove_timer" ):GetInt(), function()
 					if dis:IsValid() then dis:Remove() end
 				end)
 			
@@ -240,7 +240,7 @@ if (SERVER) then
 					ply:ChatPrint("the weather that is happening now: " .. wea.PrintName .. ", Position: " .. tostring(wea:GetPos()) )
 				end
 
-				timer.Simple(GetConVar( "gdisasters_autospawn_timer" ):GetInt(), function()
+				timer.Simple(GetConVar( "gdisasters_autospawn_remove_timer" ):GetInt(), function()
 					if wea:IsValid() then wea:Remove() end
 				end)
 
@@ -421,13 +421,13 @@ if (SERVER) then
 					ply:ChatPrint("the weather or disaster that is happening now: " .. weadis.PrintName .. ", Position: " .. tostring(weadis:GetPos()))
 				end
 
-				timer.Simple(GetConVar( "gdisasters_autospawn_timer" ):GetInt(), function()
+				timer.Simple(GetConVar( "gdisasters_autospawn_remove_timer" ):GetInt(), function()
 					if weadis:IsValid() then weadis:Remove() end
 				end)
 			end
 		end
 
-		timer.Create( "Autospawn_Timer", GetConVar( "gdisasters_autospawn_timer" ):GetInt(), 0, function()
+		timer.Create( "Autospawn_Timer", GetConVar( "gdisasters_autospawn_spawn_timer" ):GetInt(), 0, function()
 			if GetConVar("gdisasters_autospawn_enable"):GetInt() >= 1 then 
 				if IsMapRegistered() == true then 
 					if math.random(0,GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt()) == GetConVar( "gdisasters_autospawn_spawn_chance" ):GetInt() then
