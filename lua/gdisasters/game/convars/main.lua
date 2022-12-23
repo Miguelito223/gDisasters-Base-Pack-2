@@ -56,10 +56,6 @@ CreateConVar( "gdisasters_autospawn_enable", "0", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_autospawn_chat", "1", {FCVAR_ARCHIVE}, "")
 CreateConVar( "gdisasters_autospawn_type", "Tornado", {FCVAR_ARCHIVE}, "" )
 
-CreateConVar( "gdisasters_advanced_S37K", "0", {FCVAR_ARCHIVE}, "" )
-
-
-
 --graphics
 
 CreateConVar( "gdisasters_graphics_atmosphere", "1", {FCVAR_ARCHIVE}, "" )
