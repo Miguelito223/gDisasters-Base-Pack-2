@@ -54,7 +54,7 @@ AddToGDSpawnMenu("Doppler Radar", "gd_equip_wradar" , "Equipment", "Standard", f
 AddToGDSpawnMenu("Supercooled Ice" , "gd_equip_supercooledice"		, "Equipment", "Survival", false)
 AddToGDSpawnMenu("Campfire" , "gd_equip_campfire"		, "Equipment", "Survival", false)
 AddToGDSpawnMenu("Dry Ice", "gd_equip_dryice", "Equipment", "Others", false)
-AddToGDSpawnMenu("Hail"        , "gd_d1_hail" , "Equipment", "Nature", false)
+
 
 --[[
     Misc
@@ -209,6 +209,8 @@ AddToGDSpawnMenu("Rainbow" , "gd_d1_rainbow"		, "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Geyser"        , "gd_d1_geyser" , "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Whirlpool (Small)" , "gd_d1_whirlpool" , "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Steam devil", "gd_d1_steamdevil", "Disasters", "Tier 1", false)
+AddToGDSpawnMenu("Hail"        , "gd_d1_hail" , "Disasters", "Tier 1", false)
+
 --[[
 DISASTERS 
 TIER TWO
