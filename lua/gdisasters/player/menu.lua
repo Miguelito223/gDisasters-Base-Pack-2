@@ -318,14 +318,14 @@ end
 
 hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVADSettings", "Advanced", "", "", gDisastersSVADVSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersAutospawn", "Autospawn", "", "", gDisastersAutospawn )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersServerGraphics", "Server Graphics", "", "", gDisastersServerGraphics )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Server", "gDisastersDayAndNightCycle", "Day and Night Cycle", "", "", gDisastersDayAndNightCycle)
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersAudioSettings", "Volume", "", "", gDisastersAudioSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "ggDisastersHudSettings", "Hud", "", "", gDisastersHudSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived Edition", "Client", "gDisastersGraphicsSettings", "Graphics", "", "", gDisastersGraphicsSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVADSettings", "Advanced", "", "", gDisastersSVADVSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAutospawn", "Autospawn", "", "", gDisastersAutospawn )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersServerGraphics", "Server Graphics", "", "", gDisastersServerGraphics )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersDayAndNightCycle", "Day and Night Cycle", "", "", gDisastersDayAndNightCycle)
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersAudioSettings", "Volume", "", "", gDisastersAudioSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "ggDisastersHudSettings", "Hud", "", "", gDisastersHudSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersGraphicsSettings", "Graphics", "", "", gDisastersGraphicsSettings )
 
 end );
