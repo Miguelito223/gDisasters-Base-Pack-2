@@ -62,7 +62,7 @@ concommand.Add("gdisasters_smite", function()
 	
 	
 	
-	local startpos  = Vector(  5000,5000 ,  max.z )
+	local startpos  = Vector(math.random(min.x, max.x), math.random(min.y, max.y), max.z)
 	local tr = util.TraceLine( {
 		start = startpos,
 		endpos = startpos - Vector(0,0,50000),
