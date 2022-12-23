@@ -15,8 +15,8 @@ if (SERVER) then
 		Pressure()
 		Humidity()
 		AtmosphereFadeControl()
-		stormfox2()
-		vFire()
+		gDisasters_stormfox2()
+		gDisasters_Vfire()
 		gDisasters_GlobalBreathingEffect()
 		gDisasters_ProcessTemperature()
 		gDisasters_ProcessOxygen()
@@ -39,7 +39,7 @@ if (SERVER) then
 	
 	end
 	
-	function stormfox2()
+	function gDisasters_stormfox2()
 	
 	    if GetConVar("gdisasters_graphics_stormfox"):GetInt() >= 1 then 
 	   		if Stormfox and StormFox.Version < 2 then 
@@ -82,14 +82,15 @@ if (SERVER) then
 		end
 	end
 
-	function vFire()	
+	function gDisasters_Vfire()	
 		if !vFireInstalled then return end
 	
 		for k, v in pairs(ents.GetAll()) do
 			if (v:GetClass() == "vfire") then
+				if !v:IsValid() then return end
 				if v:IsValid() then 
-					if v.isOutdoor and #ents.FindByClass("gd_w*") > 0 or v.IsInWater or v.IsInlava then
-						v:SoftExtinguish(10)
+					if (v.IsOutdoor and #ents.FindByClass("gd_w*") > 0) or v.IsInWater or v.IsInlava then
+						v:SoftExtinguish(1)
 					end
 				end
 			end
