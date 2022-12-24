@@ -862,7 +862,9 @@ if (SERVER) then
 		local wl2 = ply.IsInWater
 		local lv = ply.IsInlava
 
-		if wl >= 3 or wl2==true or lv==true then
+		if wl >= 3 then
+			return true
+		elseif wl2 == true or lv == true then
 			return true
 		else
 			return false
