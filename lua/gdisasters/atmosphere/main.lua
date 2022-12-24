@@ -16,7 +16,7 @@ if (SERVER) then
 		Humidity()
 		AtmosphereFadeControl()
 		gDisasters_stormfox2()
-		gDisasters_Vfire()
+		gDisasters_vFire()
 		gDisasters_GlobalBreathingEffect()
 		gDisasters_ProcessTemperature()
 		gDisasters_ProcessOxygen()
@@ -82,7 +82,7 @@ if (SERVER) then
 		end
 	end
 
-	function gDisasters_Vfire()	
+	function gDisasters_vFire()	
 		if vFireInstalled then  
 			for k, v in pairs(ents.FindByClass("vfire")) do
 				if v:IsValid() then 
@@ -103,6 +103,7 @@ if (SERVER) then
 			end 
 		end
 	end
+	
 	
 	
 	function Humidity()
