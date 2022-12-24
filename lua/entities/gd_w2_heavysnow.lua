@@ -128,18 +128,6 @@ function ENT:AffectPlayers()
 	end
 end
 
-function ENT:AffectNpcs()
-	for k, v in pairs(ents.GetAll()) do
-		if v.IsOutdoor then
-			if v:IsNPC() or v:IsNextBot() then 
-				if math.random(1,100)==2 then
-					InflictDamage(v, self, "cold", math.random	(1, 3))
-				end	
-			end
-		end
-	end	
-end
-
 function ENT:CreateSnowDecals()
 	for k, v in pairs(player.GetAll()) do
 		net.Start("gd_createdecals")
@@ -153,7 +141,6 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		self:AffectPlayers()
-		self:AffectNpcs()
 		self:NextThink(CurTime() + 0.001)
 		return true
 	end

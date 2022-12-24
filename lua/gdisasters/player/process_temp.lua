@@ -133,7 +133,7 @@ if (SERVER) then
 		end
 		
 		
-		local function damagePlayers()
+		local function damagePlayersAndNpc()
 			
 			if GetConVar("gdisasters_hud_temp_damage"):GetInt() == 0 then return end
 			
@@ -269,6 +269,116 @@ if (SERVER) then
 				
 				
 			end
+			for k, v in pairs(ents.FindByClass("npc_*")) do
+				local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
+				local outdoor           = v.IsOutdoor
+				local wl = v:WaterLevel()
+				local wl2 = v.IsInWater
+				local lv = v.IsInlava		
+				
+				
+				if temp <= -100 and outdoor then
+					if math.random(1,25) == 25 then
+						InflictDamage(v, v, "cold", 10)
+					end
+				elseif temp <= -100 then
+					if math.random(1,25) == 25 then
+						InflictDamage(v, v, "cold", 100)
+					end
+				elseif temp >= 250 and outdoor then
+					if math.random(1,25) == 25 then
+						InflictDamage(v, v, "heat", 10)
+					end
+				elseif temp >= 250 then
+					if math.random(1,25) == 25 then
+						InflictDamage(v, v, "heat", 100)
+					end
+				end
+
+			
+				if temp >= -273.3 and temp <= 4 then
+					if wl==0 then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 1)
+						end
+					elseif wl==1 then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 5)
+						end
+					elseif wl==2 then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 10)
+						end
+					elseif wl==3 then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 15)
+						end
+					end
+					
+					if wl2==true then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 15)
+						end
+					elseif lv==true then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 15)
+						end
+					end
+				elseif temp >= 37 and  temp >= 5 then
+					if wl==0 then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "heat", 1)
+						end
+					elseif wl==1 then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 2)
+						end
+					elseif wl==2 then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 4)
+						end
+					elseif wl==3 then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 8)
+						end
+					end
+					
+					if wl2==true then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 8)
+						end
+					elseif lv==true then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 8)
+						end
+					end
+				elseif temp < 37 and temp >= 5 then
+					if wl==0 then
+					elseif wl==1 then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 5)
+						end
+					elseif wl==2 then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 10)
+						end
+					elseif wl==3 then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 15)
+						end
+					end
+					
+					if wl2==true then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 15)
+						end
+					elseif lv==true then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 15)
+						end
+					end
+				end
+			end
 		
 		end
 		
@@ -300,7 +410,7 @@ if (SERVER) then
 		end
 		subzero_Effect()
 		updateVars()
-		damagePlayers()
+		damagePlayersAndNpc()
 	end
 	
 	function gDisasters_GlobalBreathingEffect()

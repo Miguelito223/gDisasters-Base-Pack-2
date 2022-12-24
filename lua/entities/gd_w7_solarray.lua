@@ -128,20 +128,7 @@ function ENT:AffectPlayers()
 	end
 end
 
-function ENT:AffectNpcs()
-	for k, v in pairs(ents.GetAll()) do
-		if v.IsOutdoor then
-			if v:IsNPC() or v:IsNextBot() then 
-				
-				if math.random(1,5)== 1 then
-					
-					InflictDamage(v, self, "fire", math.random	(15,20))
-				
-				end	
-			end
-		end
-	end	
-end	
+
 
 function ENT:Think()
 
@@ -153,7 +140,6 @@ function ENT:Think()
 		if !self:IsValid() then return end
 		self:AffectPlayers()
 		self:SetFire()
-		self:AffectNpcs()
 		self:NextThink(CurTime() + 0.01)
 		return true
 	end
