@@ -89,7 +89,7 @@ if (SERVER) then
 			if (v:GetClass() == "vfire") then
 				if !v:IsValid() then return end
 				if v:IsValid() then 
-					if (v.IsOutdoor and #ents.FindByClass("gd_w*") > 0) or v.IsInWater or v.IsInlava then
+					if (isOutdoor(v, true) and #ents.FindByClass("gd_w*") > 0) or v.IsInWater or v.IsInlava then
 						v:SoftExtinguish(1)
 					end
 				end

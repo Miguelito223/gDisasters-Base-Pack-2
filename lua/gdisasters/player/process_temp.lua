@@ -271,7 +271,7 @@ if (SERVER) then
 			end
 			for k, v in pairs(ents.FindByClass("npc_*")) do
 				local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
-				local outdoor           = v.IsOutdoor
+				local outdoor           = isOutdoor(v, true)
 				local wl = v:WaterLevel()
 				local wl2 = v.IsInWater
 				local lv = v.IsInlava		
