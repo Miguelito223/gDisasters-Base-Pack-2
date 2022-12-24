@@ -96,6 +96,7 @@ MAP_BOUNDS["gm_flatgrass_2021"] = { Vector(15359, 15359, -15359), Vector(-15359,
 MAP_BOUNDS["gm_warmap_v5"] = { Vector(-31.4, 0.4, -14334), Vector(-4.3, 16167.5, -14336), Vector(0, 0, -12914)}
 MAP_BOUNDS["gm_warmap_v5_snow"] = { Vector(-31.4, 0.4, -14334), Vector(-4.3, 16167.5, -14336), Vector(0, 0, -12914)}
 MAP_BOUNDS["gm_warmap_v5_night"] = { Vector(-31.4, 0.4, -14334), Vector(-4.3, 16167.5, -14336), Vector(0, 0, -12914)}
+MAP_BOUNDS["gm_infmap"] = { Vector(16255, 16255, -16255), Vector(-16255, -16255, 16255), Vector(0, 0, -38)}
 
 MAP_PATHS = {}
 MAP_PATHS["gm_flatgrass"]    			  = { Vector(-13466,9319,-12795),
