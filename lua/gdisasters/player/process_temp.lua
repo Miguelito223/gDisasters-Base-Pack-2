@@ -321,7 +321,7 @@ if (SERVER) then
 						end
 					elseif lv==true then
 						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 15)
+							InflictDamage(v, v, "heat", 15)
 						end
 					end
 				elseif temp >= 37 and  temp >= 5 then
@@ -349,7 +349,7 @@ if (SERVER) then
 						end
 					elseif lv==true then
 						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 8)
+							InflictDamage(v, v, "heat", 8)
 						end
 					end
 				elseif temp < 37 and temp >= 5 then
@@ -374,7 +374,7 @@ if (SERVER) then
 						end
 					elseif lv==true then
 						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 15)
+							InflictDamage(v, v, "heat", 15)
 						end
 					end
 				end
