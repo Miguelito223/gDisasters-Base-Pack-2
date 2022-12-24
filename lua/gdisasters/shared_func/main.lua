@@ -857,6 +857,18 @@ if (SERVER) then
 		end
 	end
 
+	function isinWaterOrLava(ply)
+		local wl = ply:WaterLevel()
+		local wl2 = ply.IsInWater
+		local lv = ply.IsInlava
+
+		if wl >= 3 or wl2 or lv then
+			return true
+		else
+			return false
+		end
+	end
+
 	function windPressure(windspeed)
 		return (windspeed*windspeed)*0.00256
 	end
