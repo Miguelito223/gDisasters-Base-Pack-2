@@ -857,14 +857,21 @@ if (SERVER) then
 		end
 	end
 
-	function isinWaterOrLava(ply)
+	function isinWater(ply)
 		local wl = ply:WaterLevel()
 		local wl2 = ply.IsInWater
+
+		if wl >= 3 or wl2==true then
+			return true
+		else
+			return false
+		end
+	end
+	
+	function isinLava(ply)
 		local lv = ply.IsInlava
 
-		if wl >= 3 then
-			return true
-		elseif wl2 == true or lv == true then
+		if lv==true then
 			return true
 		else
 			return false
