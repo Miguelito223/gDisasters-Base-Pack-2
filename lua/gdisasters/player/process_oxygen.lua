@@ -7,7 +7,7 @@ if (SERVER) then
         
             v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
             
-            if isinWaterOrLava(v) then 
+            if isinWater(v) then 
                 v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen - engine.TickInterval(), 0,10) 
             
                 if v.gDisasters.Body.Oxygen <= 0 then
@@ -29,7 +29,7 @@ if (SERVER) then
         end
     end
     for k, v in pairs(ents.FindByClass("npc_*")) do           
-        if isinWaterOrLava(v) then 
+        if isinWater(v) then 
             timer.Simple(5, function()
                 if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
                 
