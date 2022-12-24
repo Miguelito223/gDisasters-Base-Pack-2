@@ -85,9 +85,9 @@ if (SERVER) then
 	function gDisasters_vFire()	
 		if vFireInstalled then  
 			for k, v in pairs(ents.GetAll()) do
-				if v:IsValid() then 
-					if isinWater(v) or (isOutdoor(v, true) and #ents.FindByClass("gd_w*") > 0)  then
-						if v:IsOnFire() then
+				if (v:GetClass() == "vfire") then
+					if v:IsValid() then 
+						if isinWater(v) or (isOutdoor(v, true) and #ents.FindByClass("gd_w*") > 0)  then		
 							v:Extinguish()
 						end
 					end
