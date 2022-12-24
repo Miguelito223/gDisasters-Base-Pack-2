@@ -83,15 +83,22 @@ if (SERVER) then
 	end
 
 	function gDisasters_Vfire()	
-		if !vFireInstalled then return end
-	
-		for k, v in pairs(ents.FindByClass("vfire")) do
-			if v:IsValid() then 
-				if isinWaterOrLava(v) or (isOutdoor(v, true) and #ents.FindByClass("gd_w*") > 0)  then
-					print("lol")
-					v:SoftExtinguish(1)
+		if vFireInstalled then  
+			for k, v in pairs(ents.FindByClass("vfire")) do
+				if v:IsValid() then 
+					if isinWaterOrLava(v) or (isOutdoor(v, true) and #ents.FindByClass("gd_w*") > 0)  then
+						v:SoftExtinguish(1)
+					end
 				end
 			end
+		else
+			for k, v in pairs(ents.FindByClass("entityflame")) do
+				if v:IsValid() then 
+					if isinWaterOrLava(v) or (isOutdoor(v, true) and #ents.FindByClass("gd_w*") > 0)  then
+						v:SoftExtinguish(1)
+					end
+				end
+			end 
 		end
 	end
 	
