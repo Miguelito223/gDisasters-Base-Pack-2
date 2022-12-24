@@ -39,7 +39,7 @@ if (SERVER) then
                     dmg:SetAttacker( v )
                     dmg:SetDamageType( DMG_DROWN  )
             
-                    v:TakeDamageInfo(  dmg)
+                    v:TakeDamageInfo(dmg)
                 end
             end)
 

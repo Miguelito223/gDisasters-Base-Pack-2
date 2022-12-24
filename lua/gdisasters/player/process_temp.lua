@@ -147,7 +147,7 @@ if (SERVER) then
 			
 				local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
 				local tempbody            = v.gDisasters.Body.Temperature
-				local outdoor           = v.gDisasters.Area.IsOutdoor
+				local outdoor           = isOutdoor(v)
 				local alpha_hot  =  1-((44-math.Clamp(tempbody,39,44))/5)
 				local alpha_cold =  ((35-math.Clamp(tempbody,24,35))/11)
 				local wl = v:WaterLevel()
