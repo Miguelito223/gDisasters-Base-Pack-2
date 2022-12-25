@@ -86,8 +86,7 @@ if (SERVER) then
 		if vFireInstalled then  
 			for k, v in pairs(ents.FindByClass("vfire")) do
 				if v:IsValid() then 
-					if isinWater(v) or (isOutdoor(v, true) and #ents.FindByClass("gd_w*") > 0)  then		
-						print("lol")
+					if isinWater(v) or (isOutdoor(v, true) and #ents.FindByClass("gd_w*") > 0)  then
 						v:Extinguish()
 					end
 				end
