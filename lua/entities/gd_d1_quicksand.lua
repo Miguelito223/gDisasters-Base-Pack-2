@@ -89,7 +89,7 @@ function ENT:Touch( entity )
 					local dmg = DamageInfo()
 					dmg:SetDamage( 100 )
 					dmg:SetAttacker( entity )
-					dmg:SetDamageType( DMG_BURN  )
+					dmg:SetDamageType( DMG_DROWN  )
 					
 					entity:TakeDamageInfo(  dmg)
 				end
@@ -104,7 +104,7 @@ function ENT:Touch( entity )
 					local dmg = DamageInfo()
 					dmg:SetDamage( 100 )
 					dmg:SetAttacker( entity )
-					dmg:SetDamageType( DMG_BURN  )
+					dmg:SetDamageType( DMG_DROWN  )
 					
 					entity:TakeDamageInfo(  dmg)
 				end
