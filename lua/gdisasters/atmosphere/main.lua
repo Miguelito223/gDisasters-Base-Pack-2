@@ -79,7 +79,6 @@ if (SERVER) then
 	end
 	
 	function Humidity()
-	
 		SetGlobalFloat("gDisasters_Humidity", GLOBAL_SYSTEM["Atmosphere"]["Humidity"])
 	end
 	
