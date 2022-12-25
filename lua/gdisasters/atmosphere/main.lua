@@ -16,7 +16,6 @@ if (SERVER) then
 		Humidity()
 		AtmosphereFadeControl()
 		gDisasters_stormfox2()
-		gDisasters_vFire()
 		gDisasters_GlobalBreathingEffect()
 		gDisasters_ProcessTemperature()
 		gDisasters_ProcessOxygen()
@@ -78,30 +77,6 @@ if (SERVER) then
 	   		end
 		end
 	end
-
-	function gDisasters_vFire()	
-		if vFireInstalled then  
-			for k, v in pairs(ents.FindByClass("vfire")) do
-				if v:IsValid() then 
-					if isinWater(v) or (isOutdoor(v, true) and #ents.FindByClass("gd_w*") > 0)  then
-						v:Extinguish()
-					end
-				end
-			end 
-		else
-			for k, v in pairs(ents.GetAll()) do
-				if v:IsValid() then 
-					if isinWater(v) or (isOutdoor(v, true) and #ents.FindByClass("gd_w*") > 0)  then
-						if v:IsOnFire() then
-							v:Extinguish()
-						end
-					end
-				end
-			end 
-		end
-	end
-	
-	
 	
 	function Humidity()
 	
