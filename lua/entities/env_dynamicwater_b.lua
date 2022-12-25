@@ -307,6 +307,10 @@ function ENT:ProcessEntitiesInWater()
 						
 						local resultant_vel = v:GetVelocity() * friction
 						local final_vel     = Vector(resultant_vel.x * wr,resultant_vel.y * wr, resultant_vel.z * friction)
+
+						if v:IsOnFire() or v:GetClass == "vfire" or v:GetClass == "entityflame" then
+							v:Extinguish()
+						end
 			
 						if #ents.FindByClass("gd_d2_minivolcano*") >= 1 then return end
 						if #ents.FindByClass("gd_d8_volcano*") >= 1 then return end

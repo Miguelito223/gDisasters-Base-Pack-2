@@ -224,6 +224,10 @@ function ENT:ProcessFlood(scalar, t)
 					if v:IsVehicle() and v:GetClass()!="prop_vehicle_airboat" then 
 						v:Fire("TurnOff", 0.1, 0)
 					end 
+
+					if v:IsOnFire() or v:GetClass == "vfire" or v:GetClass == "entityflame" then
+						v:Extinguish()
+					end
 					
 					if (v.isWacAircraft) then
 						v:setEngine(false)
