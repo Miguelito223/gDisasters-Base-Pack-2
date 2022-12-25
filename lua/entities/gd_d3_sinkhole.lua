@@ -86,7 +86,7 @@ function ENT:Touch( entity )
 			entity:SetPos( entity:GetPos() - Vector(0,0,5))
 
 			timer.Simple(5, function()
-				if self:IsValid() then 
+				if self:IsValid() and entity:GetPos():Distance(self:GetPos()) <= 1000 then 
 					local dmg = DamageInfo()
 					dmg:SetDamage( 100 )
 					dmg:SetAttacker( entity )
@@ -101,7 +101,7 @@ function ENT:Touch( entity )
 			entity:SetPos( entity:GetPos() - Vector(0,0,166))
 
 			timer.Simple(5, function()
-				if self:IsValid() then 
+				if self:IsValid() and entity:GetPos():Distance(self:GetPos()) <= 1000 then 
 					local dmg = DamageInfo()
 					dmg:SetDamage( 100 )
 					dmg:SetAttacker( entity )
