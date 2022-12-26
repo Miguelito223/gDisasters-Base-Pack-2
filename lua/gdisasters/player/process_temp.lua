@@ -146,13 +146,13 @@ if (SERVER) then
 				--]]
 			
 				local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
+				local humidity = GLOBAL_SYSTEM["Atmosphere"]["Humidity"]
 				local tempbody            = v.gDisasters.Body.Temperature
 				local outdoor           = isOutdoor(v)
 				local alpha_hot  =  1-((44-math.Clamp(tempbody,39,44))/5)
 				local alpha_cold =  ((35-math.Clamp(tempbody,24,35))/11)
-				local wl = v:WaterLevel()
-				local wl2 = v.IsInWater
-				local lv = v.IsInlava
+				local wl = isinWater(v)	
+				local lv = isinLava(v)	
 				
 				if math.random(1,25) == 25 then
 					if alpha_cold != 0 then
@@ -196,9 +196,9 @@ if (SERVER) then
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.01
 				end
 			
-				if GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 50 and temp >= 37 and temp >= 5 then
+				if humidity >= 50 and temp >= 37 and temp >= 5 then
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.001
-				elseif GLOBAL_SYSTEM["Atmosphere"]["Humidity"] >= 50 and temp >= -273.3 and temp <= 4 then
+				elseif humidity >= 50 and temp >= -273.3 and temp <= 4 then
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
 				end
 				
@@ -210,49 +210,25 @@ if (SERVER) then
 				
 			
 				if temp >= -273.3 and temp <= 4 then
-					if wl==0 then
-					elseif wl==1 then
-						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
-					elseif wl==2 then
-						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.002
-					elseif wl==3 then
-						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
-					end
-					
-					if wl2==true then
-						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
-					elseif lv==true then
-						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.002
-					end
-				elseif temp >= 37 and  temp >= 5 then
-					if wl==0 then
-					elseif wl==1 then
-						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
-					elseif wl==2 then
-						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.002
-					elseif wl==3 then
-						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
-					end
-					
-					if wl2==true then
-						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
-					elseif lv==true then
-						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.008
-					end
-				elseif temp < 37 and temp >= 5 then
-					if wl==0 then
-					elseif wl==1 then			
-						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001
-					elseif wl==2 then
-						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.002
-					elseif wl==3 then
-						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
-					end
-					
-					if wl2==true then
-						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
+					if wl==false then
 					elseif lv==true then
 						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.004
+					else
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
+					end
+				elseif temp >= 37 and  temp >= 5 then
+					if wl==false then
+					elseif lv==true then
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.004
+					else
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
+					end
+				elseif temp < 37 and temp >= 5 then
+					if wl==false then
+					elseif lv==true then
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.004
+					else
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
 					end
 				end
 				
@@ -272,9 +248,8 @@ if (SERVER) then
 			for k, v in pairs(ents.FindByClass("npc_*")) do
 				local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
 				local outdoor           = isOutdoor(v, true)
-				local wl = v:WaterLevel()
-				local wl2 = v.IsInWater
-				local lv = v.IsInlava		
+				local wl = isinWater(v)
+				local lv = isinLava(v)
 				
 				
 				if temp <= -100 and outdoor then
@@ -297,84 +272,46 @@ if (SERVER) then
 
 			
 				if temp >= -273.3 and temp <= 4 then
-					if wl==0 and outdoor then
+					if wl==false then
 						if math.random(1,25) == 25 then
 							InflictDamage(v, v, "cold", 1)
 						end
-					elseif wl==1 then
+					elseif lv==true then
 						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 5)
+							InflictDamage(v, v, "heat", 10)
 						end
-					elseif wl==2 then
-						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 10)
-						end
-					elseif wl==3 then
+					else
 						if math.random(1,25) == 25 then
 							InflictDamage(v, v, "cold", 15)
 						end
 					end
 					
-					if wl2==true then
-						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 15)
-						end
-					elseif lv==true then
-						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "heat", 15)
-						end
-					end
 				elseif temp >= 37 and  temp >= 5 then
-					if wl==0 and outdoor then
+					if wl==false then
 						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "heat", 1)
-						end
-					elseif wl==1 then
-						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 2)
-						end
-					elseif wl==2 then
-						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 4)
-						end
-					elseif wl==3 then
-						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 8)
-						end
-					end
-					
-					if wl2==true then
-						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 8)
+							InflictDamage(v, v, "cold", 1)
 						end
 					elseif lv==true then
 						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "heat", 8)
+							InflictDamage(v, v, "heat", 20)
+						end
+					else
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 8)
 						end
 					end
 				elseif temp < 37 and temp >= 5 then
-					if wl==0 and outdoor then
-					elseif wl==1 then
+					if wl==false then
 						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 5)
-						end
-					elseif wl==2 then
-						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 10)
-						end
-					elseif wl==3 then
-						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 15)
-						end
-					end
-					
-					if wl2==true then
-						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 15)
+							InflictDamage(v, v, "cold", 1)
 						end
 					elseif lv==true then
 						if math.random(1,25) == 25 then
 							InflictDamage(v, v, "heat", 15)
+						end
+					else
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 15)
 						end
 					end
 				end
