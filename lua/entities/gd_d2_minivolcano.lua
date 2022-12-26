@@ -122,43 +122,30 @@ function ENT:LavaControl()
 end
 
 function ENT:GetEntitiesInsideLava()
-	local lpos  = self:GetLavaLevelPosition()
+
+
 	local lents = {} 
-	for k, v in pairs(ents.FindInSphere(self:GetLavaLevelPosition() - Vector(0,0,200), 360)) do
+	local lents2 = {}
+	
+	local lpos  = self:GetLavaLevelPosition() 
+
+	for k, v in pairs(ents.FindInSphere(lpos - Vector(0,0,200), 360)) do
+	
 		local pos = v:GetPos()
 		local phys = v:GetPhysicsObject()
+		
 		if pos.z <= lpos.z and v:GetClass()!="worldspawn" and v != self and phys:IsValid() then
 			
 			
 			table.insert(lents, v)
-			
+			lents2[v] = true
 		
 		end
 	
 	
 	end
 
-	return lents
-end
-
-function ENT:GetEntitiesInsideLava2()
-	local lpos  = self:GetLavaLevelPosition()
-	local lents = {} 
-	for k, v in pairs(ents.FindInSphere(self:GetLavaLevelPosition() - Vector(0,0,200), 360)) do
-		local pos = v:GetPos()
-		local phys = v:GetPhysicsObject()
-		if pos.z <= lpos.z and v:GetClass()!="worldspawn" and v != self and phys:IsValid() then
-			
-			lents[v] = true
-			
-			
-		
-		end
-	
-	
-	end
-
-	return lents
+	return lents, lents2
 end
 
 
