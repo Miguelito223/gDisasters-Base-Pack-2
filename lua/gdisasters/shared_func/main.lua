@@ -862,9 +862,7 @@ if (SERVER) then
 		local wl2 = ply.IsInWater
 		local wl3 = inWater(ply:GetPos())
 
-		if wl >= 3 or wl2==true then
-			return true
-		elseif wl3 then
+		if wl >= 3 or wl2==true or wl3 then
 			return true
 		else
 			return false
