@@ -876,7 +876,6 @@ if (SERVER) then
 		local volcano = ents.FindByClass("gd_d*_*volcano", "gd_d*_volcano")
 		local lv2 = volcano:GetEntitiesInsideLava()
 		local lents, lents2 = lv2
-		print(lv2)
 
 		if lv==true or lents2[ply]==true then
 			return true
