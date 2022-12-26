@@ -19,6 +19,7 @@ if (SERVER) then
 			})
 
 			local FloorPos = tr.HitPos
+			local FloodPos = map_floorcenter
 			local CenterPos = map_center
 
 
@@ -115,19 +116,29 @@ if (SERVER) then
 					dis:SetPos(FloorPos)
 
 				end
-				for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
+				for k, v in pairs(ents.FindByClass("env_tornado")) do
 
 					dis:SetPos(SkyPos)
 
 				end
-				for k, v in pairs(ents.FindByClass("gd_d*_*spout")) do
+				for k, v in pairs(ents.FindByClass("env_dynamicwater")) do
 
-					dis:SetPos(SkyPos)
+					dis:SetPos(FloodPos)
 
 				end
-				for k, v in pairs(ents.FindByClass("gd_d*_mfirenado")) do
+				for k, v in pairs(ents.FindByClass("env_dynamicwater_b")) do
 
-					dis:SetPos(SkyPos)
+					dis:SetPos(FloodPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("env_dynamiclava")) do
+
+					dis:SetPos(FloodPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("env_dynamiclava_b")) do
+
+					dis:SetPos(FloodPos)
 
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
@@ -386,19 +397,29 @@ if (SERVER) then
 					weadis:SetPos(SkyPos)
 
 				end
-				for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
+				for k, v in pairs(ents.FindByClass("env_tornado")) do
 
 					weadis:SetPos(SkyPos)
 
 				end
-				for k, v in pairs(ents.FindByClass("gd_d*_*spout")) do
+				for k, v in pairs(ents.FindByClass("env_dynamicwater")) do
 
-					weadis:SetPos(SkyPos)
+					weadis:SetPos(FloodPos)
 
 				end
-				for k, v in pairs(ents.FindByClass("gd_d*_mfirenado")) do
+				for k, v in pairs(ents.FindByClass("env_dynamicwater_b")) do
 
-					weadis:SetPos(SkyPos)
+					weadis:SetPos(FloodPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("env_dynamiclava")) do
+
+					weadis:SetPos(FloodPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("env_dynamiclava_b")) do
+
+					weadis:SetPos(FloodPos)
 
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
