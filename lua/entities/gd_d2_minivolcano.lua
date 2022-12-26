@@ -145,12 +145,13 @@ function ENT:GetEntitiesInsideLava()
 	
 	end
 
+
 	return lents, lents2
 end
 
 
 function ENT:InsideLavaEffect()
-	local lents = self:GetEntitiesInsideLava()
+	local lents, lents2 = self:GetEntitiesInsideLava()
 	
 	if self.OldEntitiesInsideLava != lents then
 		for k, v in pairs(lents) do
@@ -190,7 +191,7 @@ function ENT:InsideLavaEffect()
 		
 	end
 	
-	self.OldEntitiesInsideLava = self:GetEntitiesInsideLava2()
+	self.OldEntitiesInsideLava = lents2
 end
 
 
