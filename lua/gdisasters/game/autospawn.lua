@@ -180,7 +180,7 @@ if (SERVER) then
 					dis:SetPos(CenterPos)
 
 				end
-				for k, v in pairs(ents.FindByClass("gd_d10_neutron_star")) do
+				for k, v in pairs(ents.FindByClass("gd_d*_neutron_star")) do
 					
 					dis:SetPos(CenterPos)
 
@@ -495,7 +495,7 @@ if (SERVER) then
 					weadis:SetPos(CenterPos)
 
 				end
-				for k, v in pairs(ents.FindByClass("gd_d10_neutron_star")) do
+				for k, v in pairs(ents.FindByClass("gd_d*_neutron_star")) do
 
 					weadis:SetPos(CenterPos)
 
