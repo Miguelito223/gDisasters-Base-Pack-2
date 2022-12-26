@@ -874,7 +874,10 @@ if (SERVER) then
 	function isinLava(ply)
 		local lv = ply.IsInlava
 
-		if lv==true then
+		local volcano = ents.FindByClass("gd_d*_*volcano", "gd_d*_volcano")
+		local lv2 = volcano:GetEntitiesInsideLava()[2]
+
+		if lv==true or lv2 == true then
 			return true
 		else
 			return false

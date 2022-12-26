@@ -98,8 +98,8 @@ gDisasters.Game.AntiLag.CollisionsLoop = function()
 end
 
 gDisasters.Game.AntiLag.MainLoop  = function()
-	if CurTime() < gDisasters.Game.AntiLag.NextThink then return end 
 	if GetConVar("gdisasters_antilag_enabled"):GetInt() == 0 then return end
+	if CurTime() < gDisasters.Game.AntiLag.NextThink then return end 
 	
 	gDisasters.Game.AntiLag.Collisions.PerSecond = 0 
 	gDisasters.Game.AntiLag.Collisions.PerSecondPerProp = 0  
