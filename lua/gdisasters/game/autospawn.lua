@@ -103,7 +103,6 @@ if (SERVER) then
 	    	    	"gd_d1_steamdevil",
 	    	    	"gd_d3_landslide",
 	    	    	"gd_d2_waterspout",
-					"gd_d2_gustnado",
 	    	    	"gd_d7_lavaflood",
 	    	    	"gd_d8_combineinv",
 	    	    	"gd_d8_lavatsunami"
@@ -117,6 +116,21 @@ if (SERVER) then
 
 				end
 				for k, v in pairs(ents.FindByClass("env_tornado")) do
+
+					dis:SetPos(SkyPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
+
+					dis:SetPos(SkyPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("gd_d*_*spout")) do
+
+					dis:SetPos(SkyPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("gd_d*_*nado")) do
 
 					dis:SetPos(SkyPos)
 
@@ -139,6 +153,26 @@ if (SERVER) then
 				for k, v in pairs(ents.FindByClass("env_dynamiclava_b")) do
 
 					dis:SetPos(FloodPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("gd_d*_*tsunami")) do
+
+					dis:SetPos(SkyPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("gd_d*_tsunami")) do
+
+					dis:SetPos(SkyPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("gd_d*_*flood")) do
+
+					dis:SetPos(SkyPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("gd_d*_flood")) do
+
+					dis:SetPos(SkyPos)
 
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
@@ -259,7 +293,6 @@ if (SERVER) then
 				recent = true
 				local weadisas = {
 					"gd_w1_lightbreeze",
-					"gd_d2_gustnado",
 					"gd_w2_mildbreeze", 
 					"gd_w3_strongbreeze", 
 					"gd_w4_intensebreeze", 
@@ -402,6 +435,21 @@ if (SERVER) then
 					weadis:SetPos(SkyPos)
 
 				end
+				for k, v in pairs(ents.FindByClass("gd_d*_ef*")) do
+
+					weadis:SetPos(SkyPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("gd_d*_*spout")) do
+
+					weadis:SetPos(SkyPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("gd_d*_*nado")) do
+
+					weadis:SetPos(SkyPos)
+
+				end
 				for k, v in pairs(ents.FindByClass("env_dynamicwater")) do
 
 					weadis:SetPos(FloodPos)
@@ -420,6 +468,26 @@ if (SERVER) then
 				for k, v in pairs(ents.FindByClass("env_dynamiclava_b")) do
 
 					weadis:SetPos(FloodPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("gd_d*_*tsunami")) do
+
+					weadis:SetPos(SkyPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("gd_d*_tsunami")) do
+
+					weadis:SetPos(SkyPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("gd_d*_*flood")) do
+
+					weadis:SetPos(SkyPos)
+
+				end
+				for k, v in pairs(ents.FindByClass("gd_d*_flood")) do
+
+					weadis:SetPos(SkyPos)
 
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
