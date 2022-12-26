@@ -157,22 +157,22 @@ if (SERVER) then
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*tsunami")) do
 
-					dis:SetPos(SkyPos)
+					dis:SetPos(FloodPos)
 
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_tsunami")) do
 
-					dis:SetPos(SkyPos)
+					dis:SetPos(FloodPos)
 
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*flood")) do
 
-					dis:SetPos(SkyPos)
+					dis:SetPos(FloodPos)
 
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_flood")) do
 
-					dis:SetPos(SkyPos)
+					dis:SetPos(FloodPos)
 
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
@@ -472,22 +472,22 @@ if (SERVER) then
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*tsunami")) do
 
-					weadis:SetPos(SkyPos)
+					weadis:SetPos(FloodPos)
 
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_tsunami")) do
 
-					weadis:SetPos(SkyPos)
+					weadis:SetPos(FloodPos)
 
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*flood")) do
 
-					weadis:SetPos(SkyPos)
+					weadis:SetPos(FloodPos)
 
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_flood")) do
 
-					weadis:SetPos(SkyPos)
+					weadis:SetPos(FloodPos)
 
 				end
 				for k, v in pairs(ents.FindByClass("gd_d*_*hole")) do
