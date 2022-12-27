@@ -190,9 +190,9 @@ if (SERVER) then
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.1
 				elseif temp <= -100 then
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.01
-				elseif temp >= 250 and outdoor then
+				elseif temp >= 100 and outdoor then
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.1
-				elseif temp >= 250 then
+				elseif temp >= 100 then
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.01
 				end
 			
@@ -260,11 +260,11 @@ if (SERVER) then
 					if math.random(1,25) == 25 then
 						InflictDamage(v, v, "cold", 100)
 					end
-				elseif temp >= 250 and outdoor then
+				elseif temp >= 100 and outdoor then
 					if math.random(1,25) == 25 then
 						InflictDamage(v, v, "heat", 10)
 					end
-				elseif temp >= 250 then
+				elseif temp >= 100 then
 					if math.random(1,25) == 25 then
 						InflictDamage(v, v, "heat", 100)
 					end
