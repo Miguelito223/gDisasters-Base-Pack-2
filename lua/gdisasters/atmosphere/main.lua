@@ -50,10 +50,15 @@ if (SERVER) then
 	
 	   		local temp = StormFox2.Temperature.Get()
 	   		local wind = StormFox2.Wind.GetForce()
-	
+			local wind_direction = StormFox2.Wind.GetYaw()
+			local wind_direction_y = math.cos(wind_direction)
+			local wind_direction_x = math.sin(wind_direction)
+			
+			
 	   		GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = temp
 			GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = wind
-	   		GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]
+			GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector( wind_direction_x, wind_direction_y, 0)
+	   		
 	
 	
 	   		if !StormFox2.Weather.IsRaining() and !StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
