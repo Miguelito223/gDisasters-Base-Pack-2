@@ -51,8 +51,8 @@ if (SERVER) then
 	   		local temp = StormFox2.Temperature.Get()
 	   		local wind = StormFox2.Wind.GetForce()
 			local wind_direction = math.rad(StormFox2.Wind.GetYaw())
-			local wind_direction_y = math.cos(wind_direction)
-			local wind_direction_x = math.sin(wind_direction)
+			local wind_direction_y = math.sin(wind_direction)
+			local wind_direction_x = math.cos(wind_direction)
 			
 			
 	   		GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = temp
