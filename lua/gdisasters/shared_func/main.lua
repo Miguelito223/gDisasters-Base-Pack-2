@@ -847,7 +847,14 @@ if (SERVER) then
 	function isinWater(ply)
 		local wl = ply:WaterLevel()
 		local wl2 = ply.IsInWater
+		
 		if InfMap then
+			InfMap.water_height = InfMap.water_height
+
+			local function inWater(pos)
+    			return pos[3] < InfMap.water_height
+			end
+
 			wl3 = inWater(ply:GetPos())
 		end
 
