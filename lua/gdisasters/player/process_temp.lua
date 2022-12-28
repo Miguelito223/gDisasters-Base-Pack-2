@@ -252,64 +252,68 @@ if (SERVER) then
 				local lv = isinLava(v)
 				
 				
-				if temp <= -100 and outdoor then
-					if math.random(1,25) == 25 then
-						InflictDamage(v, v, "cold", 10)
-					end
-				elseif temp <= -100 then
-					if math.random(1,25) == 25 then
-						InflictDamage(v, v, "cold", 100)
-					end
-				elseif temp >= 100 and outdoor then
-					if math.random(1,25) == 25 then
-						InflictDamage(v, v, "heat", 10)
+				if temp <= -100 then
+					if outdoor then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 100)
+						end
+					else
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 10)
+						end				
 					end
 				elseif temp >= 100 then
-					if math.random(1,25) == 25 then
-						InflictDamage(v, v, "heat", 100)
+					if outdoor then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "heat", 100)
+						end
+					else
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "heat", 10)
+						end				
 					end
 				end
 
 			
 				if temp >= -273.3 and temp <= 4 then
-					if wl==false then
+					if wl==true then
 						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 1)
+							InflictDamage(v, v, "cold", 7)
 						end
 					elseif lv==true then
 						if math.random(1,25) == 25 then
 							InflictDamage(v, v, "heat", 3)
 						end
-					else
+					elseif wl==false and outdoor then
 						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 7)
+							InflictDamage(v, v, "cold", 1)
 						end
 					end
 					
 				elseif temp >= 37 and  temp >= 5 then
-					if wl==false then
+					if wl==true then
 						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "heat", 1)
+							InflictDamage(v, v, "cold", 3)
 						end
 					elseif lv==true then
 						if math.random(1,25) == 25 then
 							InflictDamage(v, v, "heat", 7)
 						end
-					else
+					elseif wl==false and outdoor then
 						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 3)
+							InflictDamage(v, v, "heat", 1)
 						end
 					end
 				elseif temp < 37 and temp >= 5 then
-					if wl==false then
+					if wl==true then
+						if math.random(1,25) == 25 then
+							InflictDamage(v, v, "cold", 5)
+						end
 					elseif lv==true then
 						if math.random(1,25) == 25 then
 							InflictDamage(v, v, "heat", 5)
 						end
-					else
-						if math.random(1,25) == 25 then
-							InflictDamage(v, v, "cold", 5)
-						end
+					elseif wl==false and outdoor then
 					end
 				end
 			end
