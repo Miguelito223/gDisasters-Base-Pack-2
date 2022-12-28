@@ -849,9 +849,8 @@ if (SERVER) then
 		local wl2 = ply.IsInWater
 		
 		if InfMap then
-			InfMap.water_height = InfMap.water_height
-
 			local function inWater(pos)
+				if !InfMap.water_height then return end
     			return pos[3] < InfMap.water_height
 			end
 
