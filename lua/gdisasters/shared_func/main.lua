@@ -860,7 +860,9 @@ if (SERVER) then
 	function isinWater(ply)
 		local wl = ply:WaterLevel()
 		local wl2 = ply.IsInWater
-		local wl3 = inWater(ply:GetPos())
+		if InfMap then
+			wl3 = inWater(ply:GetPos())
+		end
 
 		if wl >= 3 or wl2==true or wl3 then
 			return true
@@ -871,11 +873,8 @@ if (SERVER) then
 	
 	function isinLava(ply)
 		local lv = ply.IsInlava
-		local volcano = ents.FindByClass("gd_d*_*volcano", "gd_d*_volcano")
-		local lv2 = volcano:GetEntitiesInsideLava()
-		local lents, lents2 = lv2
 
-		if lv==true or lents2[ply]==true then
+		if lv==true then
 			return true
 		else
 			return false
