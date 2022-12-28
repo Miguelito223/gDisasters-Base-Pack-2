@@ -1012,10 +1012,9 @@ if (CLIENT) then
 	function gfx_Underwater()
 	
 		if LocalPlayer():GetNWBool("IsUnderwater", false)==true then
-			if LocalPlayer().LastIsUnderwater==false and LocalPlayer():GetNWBool("IsUnderwater", false)==true then
+			if LocalPlayer().LastIsUnderwater==false then
 				LocalPlayer():EmitSound("Underwater", 100, 100)
 				LocalPlayer().LastIsUnderwater=true
-			
 			end
 			
 			local flood  = ents.FindByClass("env_dynamicwater")[1] or  ents.FindByClass("env_dynamicwater_b")[1]
@@ -1056,11 +1055,8 @@ if (CLIENT) then
 				render.SetMaterial( mat_Overlay )
 				render.DrawScreenQuad()
 			end
-		end
-		
-		if  LocalPlayer():GetNWBool("IsUnderwater", false)==false then -- FIX NULL ERROR
+		elseif LocalPlayer():GetNWBool("IsUnderwater", false)==false then -- FIX NULL ERROR 
 			LocalPlayer():StopSound("Underwater")
-		
 		end
 		LocalPlayer().LastIsUnderwater = LocalPlayer():GetNWBool("IsUnderwater")
 	
@@ -1110,7 +1106,7 @@ if (CLIENT) then
 	function gfx_UnderLava()
 	
 		if LocalPlayer():GetNWBool("IsUnderlava", false)==true then
-			if LocalPlayer().LastIsUnderlava==false and LocalPlayer():GetNWBool("IsUnderlava", false)==true then
+			if LocalPlayer().LastIsUnderlava==false then
 				LocalPlayer():EmitSound("Underwater", 100, 100)
 				LocalPlayer().LastIsUnderlava=true
 			end
@@ -1148,9 +1144,7 @@ if (CLIENT) then
 				render.SetMaterial( mat_Overlay )
 				render.DrawScreenQuad()
 			end
-		end
-		
-		if  LocalPlayer():GetNWBool("IsUnderlava", false)==false then -- FIX NULL ERROR
+		elseif LocalPlayer():GetNWBool("IsUnderlava", false)==false then -- FIX NULL ERROR
 			LocalPlayer():StopSound("Underwater")
 		
 		end
