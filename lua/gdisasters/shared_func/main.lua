@@ -809,18 +809,6 @@ if (SERVER) then
 
 		end
 
-		local function isBelowWater(ply)
-
-			local tr, trace={},{}
-
-			tr.start = ply:GetPos()
-			tr.endpos = tr.start + Vector(0,0,48000)
-			tr.filter = { ply }
-			tr.mask = MASK_WATER
-			trace = util.TraceLine( tr )
-			return trace.HitWorld
-
-		end
 
 		local hitLeft    = performTrace(ply, Vector(1,0,0))
 		local hitRight   = performTrace(ply, Vector(-1,0,0))
@@ -832,9 +820,8 @@ if (SERVER) then
 		local inTunnel = ((hitLeft and hitRight) and ( (hitForward and hitBehind) == false)) or (((hitLeft and hitRight)==false) and ( (hitForward and hitBehind) == true))
 		
 		local hitSky     = isBelowSky(ply)
-		local hitWater     = isBelowWater(ply)
 		
-		if hitWater then
+		if isinWater(ply) or isinLava(ply) then
 			if isprop == nil then
 				net.Start("gd_isOutdoor")
 				net.WriteBool(false)
