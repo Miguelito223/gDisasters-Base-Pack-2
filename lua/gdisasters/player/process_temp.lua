@@ -243,9 +243,6 @@ if (SERVER) then
 				if tempbody >= 44 or tempbody <= 24 then
 					if v:Alive() then v:Kill() end
 				end
-			
-				
-				
 			end
 			for k, v in pairs(ents.FindByClass("npc_*")) do
 				local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
@@ -319,7 +316,6 @@ if (SERVER) then
 					end
 				end
 			end
-		
 		end
 		
 		local function subzero_Effect()
