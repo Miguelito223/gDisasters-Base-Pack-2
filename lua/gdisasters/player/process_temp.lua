@@ -184,16 +184,18 @@ if (SERVER) then
 					end
 				end
 				
-				
-				
-				if temp <= -100 and outdoor then
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.1
-				elseif temp <= -100 then
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.01
-				elseif temp >= 100 and outdoor then
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.1
+				if temp <= -100 then
+					if outdoor then
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.1
+					else
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.01	
+					end
 				elseif temp >= 100 then
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.01
+					if outdoor then
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.1
+					else
+						v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.01			
+					end
 				end
 			
 				if humidity >= 50 and temp >= 37 and temp >= 5 then
