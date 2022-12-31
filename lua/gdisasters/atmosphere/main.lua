@@ -9,21 +9,18 @@ if (SERVER) then
 		local scale                                = (1/engine.TickInterval()) / 66
 		GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Temperature"],-273.3, 273.3)
 		GLOBAL_SYSTEM["Atmosphere"]["Humidity"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Humidity"],0, 100)
+		GLOBAL_SYSTEM["Atmosphere"]["Pressure"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Pressure"], 0, math.huge)
 	
 
 		Wind()
 		Pressure()
 		Humidity()
 		AtmosphereFadeControl()
-		gDisasters_stormfox2()
 		gDisasters_GlobalBreathingEffect()
 		gDisasters_ProcessTemperature()
 		gDisasters_ProcessOxygen()
+		gDisasters_stormfox2()
 		
-	
-	
-	
-
 	end
 	hook.Add("Tick", "atmosphericLoop", Atmosphere)
 	
@@ -34,66 +31,71 @@ if (SERVER) then
 		GLOBAL_SYSTEM["Atmosphere"]["Pressure"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Pressure"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"])
 		GLOBAL_SYSTEM["Atmosphere"]["Temperature"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Temperature"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"])
 		GLOBAL_SYSTEM["Atmosphere"]["Humidity"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Humidity"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"])
-		GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = LerpVector(0.005, GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"], GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"])
+		GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]=LerpVector(0.005, GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"], GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"])
 	
-	end
-	
-	function gDisasters_stormfox2()
-	
-	    if GetConVar("gdisasters_graphics_stormfox"):GetInt() >= 1 then 
-	   		if Stormfox and StormFox.Version < 2 then 
-				    for k, v in pairs(player.GetAll()) do 
-				    	v:ChatPrint("StormFox 1 is no compatible with gDisasters. Please install stormfox 2")
-				    end
-	   		    return
-	   		end
-	
-	   		local temp = StormFox2.Temperature.Get()
-	   		local wind = StormFox2.Wind.GetForce()
-			local wind_direction = math.rad(StormFox2.Wind.GetYaw())
-			local wind_direction_y = -math.sin(wind_direction)
-			local wind_direction_x = -math.cos(wind_direction)
-			
-			
-	   		GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = temp
-			GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = wind
-			GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector( wind_direction_x, wind_direction_y, 0)
-	   		
-	
-	
-	   		if !StormFox2.Weather.IsRaining() and !StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
-	   		    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 0
-	   		    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 102000
-	   		elseif StormFox2.Weather.IsRaining() and StormFox2.Weather.GetRainAmount(1) then
-	   		    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
-	   		    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
-	   		elseif StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0)then
-	   		    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
-	   		    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
-	   		else
-	   		    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 0
-	   		    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 102000
-	   		end
-	
-	   		if StormFox2.Thunder.IsThundering() then
-	   		    local ent = ents.FindByClass("gd_d3_lightningstorm")[1]
-	   		    if !ent then return end
-	   		    if ent:IsValid() then ent:Remove() end
-	   		end
-		end
 	end
 	
 	function Humidity()
 		SetGlobalFloat("gDisasters_Humidity", GLOBAL_SYSTEM["Atmosphere"]["Humidity"])
 	end
 	
-	
 	function Pressure()
-		GLOBAL_SYSTEM["Atmosphere"]["Pressure"] = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Pressure"], 0, math.huge)
-		local pressure = GLOBAL_SYSTEM["Atmosphere"]["Pressure"]
-		SetGlobalFloat("gDisasters_Pressure", pressure)
-		
-		
+		SetGlobalFloat("gDisasters_Pressure", GLOBAL_SYSTEM["Atmosphere"]["Pressure"])
+	end
+
+	function gDisasters_stormfox2()
+	    if GetConVar("gdisasters_graphics_stormfox"):GetInt() >= 1 then 
+	   		if Stormfox then 
+	   			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox.GetTemperature()
+				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = StormFox.GetNetworkData("Wind",0) * 0.75
+				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = StormFox.GetWindVector()
+	   			
+				if !StormFox.IsRaining() then
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 0
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 102000
+	   			else
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
+	   			end
+			
+	   			if StormFox.IsThunder() then
+	   			    local ent = ents.FindByClass("gd_d3_lightningstorm")[1]
+	   			    if !ent then return end
+	   			    if ent:IsValid() then ent:Remove() end
+	   			end
+			elseif StormFox2 then
+				local wind_direction = math.rad(StormFox2.Wind.GetYaw())
+				local wind_direction_y = -math.sin(wind_direction)
+				local wind_direction_x = -math.cos(wind_direction)
+				
+				
+	   			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox2.Temperature.Get()
+				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = StormFox.GetNetworkData("Wind",0) * 0.75
+				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector( wind_direction_x, wind_direction_y, 0)
+				
+				
+				
+	   			if !StormFox2.Weather.IsRaining() and !StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 0
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 102000
+	   			elseif StormFox2.Weather.IsRaining() and StormFox2.Weather.GetRainAmount(1) then
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
+	   			elseif StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0)then
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
+	   			else
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 0
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 102000
+	   			end
+			
+	   			if StormFox2.Thunder.IsThundering() then
+	   			    local ent = ents.FindByClass("gd_d3_lightningstorm")[1]
+	   			    if !ent then return end
+	   			    if ent:IsValid() then ent:Remove() end
+	   			end
+	   		end
+		end
 	end
 	
 	function WindUnweld(ent)
