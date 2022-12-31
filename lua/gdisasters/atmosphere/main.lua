@@ -48,7 +48,7 @@ if (SERVER) then
 	   		if Stormfox then 
 	   			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox.GetTemperature()
 				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = StormFox.GetNetworkData("Wind",0) * 0.75
-				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = StormFox.GetWindVector()
+				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(-StormFox.GetWindVector().x, -StormFox.GetWindVector().y, 0)
 	   			
 				if !StormFox.IsRaining() then
 	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 0
@@ -64,14 +64,9 @@ if (SERVER) then
 	   			    if ent:IsValid() then ent:Remove() end
 	   			end
 			elseif StormFox2 then
-				local wind_direction = math.rad(StormFox2.Wind.GetYaw())
-				local wind_direction_y = -math.sin(wind_direction)
-				local wind_direction_x = -math.cos(wind_direction)
-				
-				
 	   			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox2.Temperature.Get()
-				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = StormFox.GetNetworkData("Wind",0) * 0.75
-				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector( wind_direction_x, wind_direction_y, 0)
+				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = StormFox2.Wind.GetForce()
+				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(-StormFox2.Wind.GetVector().x, -StormFox2.Wind.GetVector().y, 0)
 				
 				
 				
