@@ -1,3 +1,5 @@
+
+
 gDisasters_gDisastersSetupTime = CurTime()
 
 local function AddControlCB(CPanel, label, command)
@@ -26,14 +28,16 @@ local function CreateTickboxConVariable(CPanel, desc, convarname)
 	CB.OnChange = function( panel, bVal ) 
 	if (CurTime() - gDisasters_gDisastersSetupTime) < 1 then return end 
 
-		if( ( bVal and 1 or 0 ) == cvars.Number( convarname ) ) then return end
-		net.Start( "gd_clmenu_vars" );
-		net.WriteString( convarname );
-		net.WriteFloat( bVal and 1 or 0 );
-		net.SendToServer();
-
+		if( (LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() )and !Created ) then
+			if( ( bVal and 1 or 0 ) == cvars.Number( convarname ) ) then return end
+			net.Start( "gd_clmenu_vars" );
+			net.WriteString( convarname );
+			net.WriteFloat( bVal and 1 or 0 );
+			net.SendToServer();
+		end
 	end
 	timer.Simple(0.1, function()
+	
 		if( CB ) then
 			CB:SetValue( GetConVar(( convarname )):GetFloat() );
 		end
@@ -49,16 +53,21 @@ local function CreateSliderConVariable(CPanel, desc, minvar, maxvar, dp, convarn
  	CB.Scratch.ConVarChanged = function() end	
 	CB.OnValueChanged = function( panel, val )
 		if (CurTime() - gDisasters_gDisastersSetupTime) < 1 then return end 
-
-		if ( tonumber(val) ) == cvars.Number( convarname )  then return end
-		net.Start( "gd_clmenu_vars" );
-		net.WriteString( convarname );
-		net.WriteFloat(tonumber(val) );
-		net.SendToServer();
-
+		
+		
+		if( (LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() )and !Created ) then
+			if ( tonumber(val) ) == cvars.Number( convarname )  then return end
+			net.Start( "gd_clmenu_vars" );
+			net.WriteString( convarname );
+			net.WriteFloat(tonumber(val) );
+			net.SendToServer();
+		end
 		
 	end
+		
+
 	timer.Simple(0.1, function()
+		
 		if( CB ) then
 			CB:SetValue( GetConVar(( convarname )):GetFloat() );
 		end
@@ -67,16 +76,10 @@ local function CreateSliderConVariable(CPanel, desc, minvar, maxvar, dp, convarn
 	return CB
 end
 
---Server Menu
+--SV MENU 
 
 local function gDisastersSVSettings( CPanel )
-	if !LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin() then 
-		local lb2 = AddControlLabel( CPanel, "Only the admin has access to this" )
-		lb2:SetTextColor(Color( 255, 0, 0))
-		lb2:SetSize(500, 500)
-		return
-	end
-	
+
 	local lb = AddControlLabel( CPanel, "Wind/Tornado/Water Related Damage Options: " )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
@@ -104,17 +107,9 @@ local function gDisastersSVSettings( CPanel )
 	
 	CreateTickboxConVariable(CPanel, "Enable Body Oxygen" ,"gdisasters_hud_oxygen_enable");
 	CreateTickboxConVariable(CPanel, "Enable Body Oxygen Related Damage" ,"gdisasters_hud_oxygen_damage");
-	
-	
 end
 
 local function gDisastersSVADVSettings( CPanel )
-	if !LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin() then 
-		local lb2 = AddControlLabel( CPanel, "Only the admin has access to this" )
-		lb2:SetTextColor(Color( 255, 0, 0))
-		lb2:SetSize(500, 500)
-		return
-	end
 
 	local lb = AddControlLabel( CPanel, "Don't mess with these settings unless you know what you're doing.")
 	local lb2 = AddControlLabel( CPanel, "Advanced Options: ")
@@ -169,20 +164,12 @@ local function gDisastersSVADVSettings( CPanel )
 	CreateSliderConVariable(CPanel, "Tornado Lifetime min", 1, 1000, 1, "gdisasters_envtornado_lifetime_min" );
 	CreateSliderConVariable(CPanel, "Tornado Lifetime max", 1, 1000, 1, "gdisasters_envtornado_lifetime_max" );
 	CreateSliderConVariable(CPanel, "Tornado Damage", 0, 5000, 1, "gdisasters_envtornado_damage" );
-
-
 	
 	
 end
 
 local function gDisastersServerGraphics( CPanel )
-	if !LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin() then 
-		local lb2 = AddControlLabel( CPanel, "Only the admin has access to this" )
-		lb2:SetTextColor(Color( 255, 0, 0))
-		lb2:SetSize(500, 500)
-		return
-	end
-	
+
 	local lb = AddControlLabel( CPanel, "Main Server Graphics: " )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
@@ -207,19 +194,11 @@ local function gDisastersServerGraphics( CPanel )
 	lb4:SetSize(500, 500)
 	
 	--CreateSliderConVariable(CPanel,"Antilag Mode (s)", 0, 2, 0,"gdisasters_antilag_mode" );
-	CreateTickboxConVariable(CPanel,"Enable Antilag", "gdisasters_antilag_enabled" );	
-
+	CreateTickboxConVariable(CPanel,"Enable Antilag", "gdisasters_antilag_enabled" );
 	
 end
 
 local function gDisastersDayAndNightCycle( CPanel )
-	if !LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin() then 
-		local lb2 = AddControlLabel( CPanel, "Only the admin has access to this" )
-		lb2:SetTextColor(Color( 255, 0, 0))
-		lb2:SetSize(500, 500)
-		return
-	end
-
 	local lb = AddControlLabel( CPanel, "DNC Options:" )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
@@ -235,17 +214,9 @@ local function gDisastersDayAndNightCycle( CPanel )
 
 	CreateSliderConVariable(CPanel, "Length day", 1, 3600, 0, "gdisasters_dnc_length_day" )
 	CreateSliderConVariable(CPanel, "Length night", 1, 3600, 0, "gdisasters_dnc_length_night" )
-
 end
 
-
 local function gDisastersAutospawn( CPanel )
-	if !LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin() then 
-		local lb2 = AddControlLabel( CPanel, "Only the admin has access to this" )
-		lb2:SetTextColor(Color( 255, 0, 0))
-		lb2:SetSize(500, 500)
-		return
-	end
 
 	local lb = AddControlLabel( CPanel, "Autospawn Options: " )
 	lb:SetTextColor(Color( 0, 0, 0))
@@ -265,11 +236,29 @@ local function gDisastersAutospawn( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Chat Messages"  , "gdisasters_autospawn_chat");
 	
 	CreateTickboxConVariable(CPanel, "Enable Autospawn "  , "gdisasters_autospawn_enable");
-	
 
+	
 end
 
---Client menu
+local function gDisastersADVGraphicsSettings( CPanel )			
+	local lb = AddControlLabel( CPanel, "Advanced Graphics Options:" )
+	lb:SetTextColor(Color( 0, 0, 0))
+	lb:SetSize(500, 500)
+
+	CreateSliderConVariable(CPanel,  "Water Quality", 1, 3, 0, "gdisasters_graphics_water_quality" );
+	CreateSliderConVariable(CPanel,   "Fog Quality", 1, 4, 0, "gdisasters_graphics_fog_quality" );
+
+	local lb2 = AddControlLabel( CPanel, "Section dedicated to Doppler Radar.\nUse with caution." )
+	lb2:SetTextColor(Color( 255, 0, 0))
+
+	AddComboBox( CPanel, "Resolution", {"4x4","8x8","16x16","32x32","64x64","48x48","128x128"}, "gdisasters_graphics_dr_resolution")
+	AddComboBox( CPanel, "Monochromatic Mode", {"false", "true"}, "gdisasters_graphics_dr_monochromatic")
+
+	CreateSliderConVariable(CPanel,"Max Render Distance", 1, 600, 0, "gdisasters_graphics_dr_maxrenderdistance" );
+	CreateSliderConVariable(CPanel,"Refresh Rate (Hz)", 1, 16, 0, "gdisasters_graphics_dr_refreshrate" );
+	CreateSliderConVariable(CPanel,"Update  Rate (Hz)", 1, 16, 0, "gdisasters_graphics_dr_updaterate" );
+	
+end
 
 local function gDisastersGraphicsSettings( CPanel )
 
@@ -325,26 +314,6 @@ local function gDisastersAudioSettings( CPanel )
 	
 	CreateSliderConVariable(CPanel, "hud Hearth Volume", 0,1,1, "gdisasters_volume_hud_heartbeat" );
 	CreateSliderConVariable(CPanel, "hud Warning Volume", 0,1,1, "gdisasters_volume_hud_warning" );
-end
-
-local function gDisastersADVGraphicsSettings( CPanel )			
-	local lb = AddControlLabel( CPanel, "Advanced Graphics Options:" )
-	lb:SetTextColor(Color( 0, 0, 0))
-	lb:SetSize(500, 500)
-
-	CreateSliderConVariable(CPanel,  "Water Quality", 1, 3, 0, "gdisasters_graphics_water_quality" );
-	CreateSliderConVariable(CPanel,   "Fog Quality", 1, 4, 0, "gdisasters_graphics_fog_quality" );
-
-	local lb2 = AddControlLabel( CPanel, "Section dedicated to Doppler Radar.\nUse with caution." )
-	lb2:SetTextColor(Color( 255, 0, 0))
-
-	AddComboBox( CPanel, "Resolution", {"4x4","8x8","16x16","32x32","64x64","48x48","128x128"}, "gdisasters_graphics_dr_resolution")
-	AddComboBox( CPanel, "Monochromatic Mode", {"false", "true"}, "gdisasters_graphics_dr_monochromatic")
-
-	CreateSliderConVariable(CPanel,"Max Render Distance", 1, 600, 0, "gdisasters_graphics_dr_maxrenderdistance" );
-	CreateSliderConVariable(CPanel,"Refresh Rate (Hz)", 1, 16, 0, "gdisasters_graphics_dr_refreshrate" );
-	CreateSliderConVariable(CPanel,"Update  Rate (Hz)", 1, 16, 0, "gdisasters_graphics_dr_updaterate" );
-	
 end
 
 
