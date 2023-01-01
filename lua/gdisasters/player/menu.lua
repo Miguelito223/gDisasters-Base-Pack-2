@@ -216,6 +216,8 @@ local function gDisastersDayAndNightCycle( CPanel )
 	CreateSliderConVariable(CPanel, "Length night", 1, 3600, 0, "gdisasters_dnc_length_night" )
 end
 
+--CL MENU 
+
 local function gDisastersAutospawn( CPanel )
 
 	local lb = AddControlLabel( CPanel, "Autospawn Options: " )
