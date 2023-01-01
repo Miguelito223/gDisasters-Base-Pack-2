@@ -29,9 +29,7 @@ if (SERVER) then
     util.AddNetworkString( "gd_dnc_message" );
 	
 
-	net.Receive( "gd_clmenu_vars", function( len, pl ) 
-		if !pl:IsAdmin() or !pl:IsSuperAdmin() then return end
-
+	net.Receive( "gd_clmenu_vars", function( len, pl )
 		local cvar = net.ReadString();
 		local val = net.ReadFloat();
 
