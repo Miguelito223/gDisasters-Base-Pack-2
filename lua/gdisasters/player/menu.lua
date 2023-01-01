@@ -293,7 +293,7 @@ local function gDisastersHudSettings( CPanel )
 	lb:SetSize(500, 500)
 	lb2:SetTextColor(Color( 0, 47, 255))
 
-	CreateTickboxConVariable(CPanel, "Enable Hud"  , "gdisasters_hud_enabled");
+	CreateTickboxConVariable(CPanel, "Enable Hud", "gdisasters_hud_enabled");
 	CreateSliderConVariable(CPanel, "Hud Type", 1, 3, 0, "gdisasters_hud_type" );
 
 	AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
