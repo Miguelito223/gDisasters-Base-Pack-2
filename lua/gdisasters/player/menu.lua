@@ -70,7 +70,7 @@ end
 --Server Menu
 
 local function gDisastersSVSettings( CPanel )
-	if ((!LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin())) then 
+	if !LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin() then 
 		local lb2 = AddControlLabel( CPanel, "Only the admin has access to this" )
 		lb2:SetTextColor(Color( 255, 0, 0))
 		lb2:SetSize(500, 500)
@@ -109,7 +109,7 @@ local function gDisastersSVSettings( CPanel )
 end
 
 local function gDisastersSVADVSettings( CPanel )
-	if ((!LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin())) then 
+	if !LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin() then 
 		local lb2 = AddControlLabel( CPanel, "Only the admin has access to this" )
 		lb2:SetTextColor(Color( 255, 0, 0))
 		lb2:SetSize(500, 500)
@@ -176,7 +176,7 @@ local function gDisastersSVADVSettings( CPanel )
 end
 
 local function gDisastersServerGraphics( CPanel )
-	if ((!LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin())) then 
+	if !LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin() then 
 		local lb2 = AddControlLabel( CPanel, "Only the admin has access to this" )
 		lb2:SetTextColor(Color( 255, 0, 0))
 		lb2:SetSize(500, 500)
@@ -213,7 +213,7 @@ local function gDisastersServerGraphics( CPanel )
 end
 
 local function gDisastersDayAndNightCycle( CPanel )
-	if ((!LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin())) then 
+	if !LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin() then 
 		local lb2 = AddControlLabel( CPanel, "Only the admin has access to this" )
 		lb2:SetTextColor(Color( 255, 0, 0))
 		lb2:SetSize(500, 500)
@@ -240,7 +240,7 @@ end
 
 
 local function gDisastersAutospawn( CPanel )
-	if ((!LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin())) then 
+	if !LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin() then 
 		local lb2 = AddControlLabel( CPanel, "Only the admin has access to this" )
 		lb2:SetTextColor(Color( 255, 0, 0))
 		lb2:SetSize(500, 500)
