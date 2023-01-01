@@ -1,5 +1,3 @@
-
--- SV MENU 
 gDisasters_gDisastersSetupTime = CurTime()
 
 local function AddControlCB(CPanel, label, command)
@@ -69,6 +67,8 @@ local function CreateSliderConVariable(CPanel, desc, minvar, maxvar, dp, convarn
 	return CB
 end
 
+--Server Menu
+
 local function gDisastersSVSettings( CPanel )
 	if ((!LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin())) then 
 		local lb2 = AddControlLabel( CPanel, "Only the admin has access to this" )
@@ -108,7 +108,6 @@ local function gDisastersSVSettings( CPanel )
 	
 end
 
--- ADVANCED SV MENU
 local function gDisastersSVADVSettings( CPanel )
 	if ((!LocalPlayer():IsAdmin() or !LocalPlayer():IsSuperAdmin())) then 
 		local lb2 = AddControlLabel( CPanel, "Only the admin has access to this" )
@@ -269,6 +268,8 @@ local function gDisastersAutospawn( CPanel )
 	
 
 end
+
+--Client menu
 
 local function gDisastersGraphicsSettings( CPanel )
 
