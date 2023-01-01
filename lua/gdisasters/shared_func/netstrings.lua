@@ -39,7 +39,7 @@ if (SERVER) then
 		if( GetConVar( tostring( cvar ) ):GetInt() == tonumber( val ) ) then return end
 
 		game.ConsoleCommand( tostring( cvar ) .." ".. tostring( val ) .."\n" );
-	end);
+	end)
 
 	net.Receive("gd_ambientlight", function()
 		local ent = net.ReadEntity()
