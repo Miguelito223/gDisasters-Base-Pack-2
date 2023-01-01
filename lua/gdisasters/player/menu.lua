@@ -28,7 +28,7 @@ local function CreateTickboxConVariable(CPanel, desc, convarname)
 	CB.OnChange = function( panel, bVal ) 
 	if (CurTime() - gDisasters_gDisastersSetupTime) < 1 then return end 
 
-		if( (LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() )and !Created ) then
+		if( (LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() ) and !Created ) then
 			if( ( bVal and 1 or 0 ) == cvars.Number( convarname ) ) then return end
 			net.Start( "gd_clmenu_vars" );
 			net.WriteString( convarname );
@@ -55,7 +55,7 @@ local function CreateSliderConVariable(CPanel, desc, minvar, maxvar, dp, convarn
 		if (CurTime() - gDisasters_gDisastersSetupTime) < 1 then return end 
 		
 		
-		if( (LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() )and !Created ) then
+		if( (LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() ) and !Created ) then
 			if ( tonumber(val) ) == cvars.Number( convarname )  then return end
 			net.Start( "gd_clmenu_vars" );
 			net.WriteString( convarname );
