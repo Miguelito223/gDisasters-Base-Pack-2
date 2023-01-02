@@ -33,7 +33,7 @@ search.AddProvider(
 						nicename = v.PrintName or v.ClassName,
 						spawnname = v.ClassName,
 						material = "entities/" .. v.ClassName .. ".png",
-						admin = v.AdminOnly
+						admin = v.AdminOnly or false
 					}),
 					words = {v}
 				}
