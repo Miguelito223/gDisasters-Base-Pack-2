@@ -52,14 +52,10 @@ gDisasters.Game.AntiLag.Collisions.PostPerPropCollisions = function(prop, collis
 	end
 end
 
-
---
 gDisasters.Game.AntiLag.Collisions.AppendNumberOfCollisions = function(number)
 	gDisasters.Game.AntiLag.Collisions.PerSecond = gDisasters.Game.AntiLag.Collisions.PerSecond + number
 end
 
-
---
 
 gDisasters.Game.AntiLag.CollisionsLoop = function()
 
