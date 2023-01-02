@@ -8,6 +8,9 @@ end
 local function AddControlLabel( CPanel, label )
 	return  CPanel:Help( label )
 end
+local function AddControlSlider( CPanel, label, command, min, max, dp  )
+	return  CPanel:NumSlider( label, command, min, max, dp );
+end
 
 local function AddComboBox( CPanel, title, listofitems, convar)
 		
@@ -48,7 +51,7 @@ local function CreateTickboxConVariable(CPanel, desc, convarname)
 end
 
 local function CreateSliderConVariable(CPanel, desc, minvar, maxvar, dp, convarname)
-	local CB = CPanel:NumSlider(desc, convarname, minvar, maxvar, dp);
+	local CB = AddControlSlider( CPanel, desc, convarname, minvar, maxvar, dp  )
 	
 
 	CB.OnValueChanged = function( panel, val )
