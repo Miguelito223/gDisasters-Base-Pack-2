@@ -102,7 +102,7 @@ if (SERVER) then
 	    	    	"gd_d1_steamdevil",
 	    	    	"gd_d3_landslide",
 	    	    	"gd_d2_waterspout",
-	    	    	"gd_d7_lavaflood",
+	    	    	"gd_d3_lavaflood",
 	    	    	"gd_d8_combineinv",
 	    	    	"gd_d8_lavatsunami"
 				}
@@ -244,11 +244,11 @@ if (SERVER) then
 					"gd_w5_microburst",
 					"gd_w5_downburst",
 					"gd_w5_macroburst",
-					"gd_w6_martianduststorm",
-					"gd_w6_martiansnow",
+					"gd_w7_martianduststorm",
+					"gd_w7_martiansnow",
 					"gd_w7_solarray",
 					"gd_w4_growingstorm",
-					"gd_w6_freezeray", 
+					"gd_w7_freezeray", 
 					"gd_w3_drought",
 					"gd_w1_citysnow",
 					"gd_w2_chinese_smog",
@@ -269,8 +269,9 @@ if (SERVER) then
 					"gd_w5_pyrocum",
 					"gd_d1_cldy_irid",
 					"gd_d1_aurora",
-					"gd_w6_neptune",
-					"gd_w6_redspot"
+					"gd_w7_neptune",
+					"gd_w7_redspot",
+					"gd_w7_hypercane"
 				}
 
 				local wea = ents.Create(table.Random(weather))
@@ -335,11 +336,11 @@ if (SERVER) then
 					"gd_w5_microburst",
 					"gd_w5_downburst",
 					"gd_w5_macroburst",
-					"gd_w6_martianduststorm",
-					"gd_w6_martiansnow",
+					"gd_w7_martianduststorm",
+					"gd_w7_martiansnow",
 					"gd_w7_solarray",
 					"gd_w5_weather",
-					"gd_w6_freezeray", 
+					"gd_w7_freezeray", 
 					"gd_w3_drought",
 					"gd_w1_citysnow",
 					"gd_w2_chinese_smog",
@@ -360,8 +361,9 @@ if (SERVER) then
 					"gd_w5_silenthill",
 					"gd_w2_haboob",
 					"gd_w5_pyrocum",
-					"gd_w6_neptune",
-					"gd_w6_redspot",
+					"gd_w7_neptune",
+					"gd_w7_redspot",
+					"gd_w7_hypercane",
 					"gd_d1_rs1eq", 
 					"gd_d2_rs2eq", 
 					"gd_d3_rs3eq", 
@@ -411,7 +413,7 @@ if (SERVER) then
 					"gd_d1_steamdevil",
 					"gd_d3_landslide",
 					"gd_d2_waterspout",
-					"gd_d7_lavaflood",
+					"gd_d3_lavaflood",
 					"gd_d8_combineinv",
 					"gd_d8_lavatsunami"
 				}
