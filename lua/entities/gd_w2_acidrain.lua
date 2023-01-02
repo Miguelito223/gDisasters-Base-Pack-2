@@ -106,10 +106,10 @@ function ENT:SpawnAcid()
 
 		local endpos   = tr.HitPos
 		
-		if #ents.FindByClass("gd_d2_acidpuddle") < 10 then
+		if #ents.FindByClass("gd_d3_acidpuddle") < 10 then
 			
 
-			local ice = ents.Create("gd_d2_acidpuddle")
+			local ice = ents.Create("gd_d3_acidpuddle")
 			ice:Spawn()
 			ice:Activate()	
 			ice:SetPos( tr.HitPos )

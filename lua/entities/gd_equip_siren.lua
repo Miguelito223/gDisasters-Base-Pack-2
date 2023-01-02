@@ -313,7 +313,7 @@ function ENT:Think()
 			end 
 			
 		end
-		for k, v in pairs(ents.FindByClass("gd_w6_downburst")) do 
+		for k, v in pairs(ents.FindByClass("gd_w5_downburst")) do 
 			
 			
 			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 

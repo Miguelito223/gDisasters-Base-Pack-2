@@ -36,6 +36,12 @@ function ENT:Initialize()
 		if (phys:IsValid()) then
 			phys:SetMass(self.Mass)
 		end 
+		if IsMapRegistered() == false then
+			self:Remove()
+			for k, v in pairs(player.GetAll()) do 
+				v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
+			end 
+		end
 		
 		self.Original_SkyData = {}
 			self.Original_SkyData["TopColor"]    = Vector(0.1, 0.1, 0.1)
@@ -57,7 +63,7 @@ function ENT:Initialize()
 		
 		setMapLight("d")		
 	
-		self:SetNoDraw(true)
+
 
 		local data = {}
 			data.Color = Color(145,144,185)
@@ -127,6 +133,7 @@ function ENT:LightRaining()
 
 	for k, v in pairs(player.GetAll()) do
 
+		
 
 		if v.gDisasters.Area.IsOutdoor then
 			
@@ -143,12 +150,13 @@ function ENT:LightRaining()
 					net.Send(v)	
 					net.Start("gd_clParticles_ground")
 					net.WriteString("snow_ground_effect")
-					net.Send(v)		
+					net.Send(v)	
+
 				else
 					if HitChance(10) then					
 						net.Start("gd_clParticles")
 						net.WriteString("downburst_light_rain_main")
-						net.Send(v)
+						net.Send(v)	
 						net.Start("gd_clParticles_ground")
 						net.WriteString("rain_splash_effect")
 						net.Send(v)		
@@ -394,7 +402,6 @@ end
 
 function ENT:SpawnFunction( ply, tr )
 	if ( !tr.Hit ) then return end
-
 
 	self.OWNER = ply
 	local ent = ents.Create( self.ClassName )

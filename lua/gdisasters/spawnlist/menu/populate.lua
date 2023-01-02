@@ -163,10 +163,10 @@ AddToGDSpawnMenu("Category 5 Hurricane", "gd_w5_catfivehurricane", "Weather", "T
 AddToGDSpawnMenu("Beaufort 8 Wind (Gale, Fresh Gale)", "gd_w5_beaufort8", "Weather", "Tier 5", false)
 AddToGDSpawnMenu("Beaufort 9 Wind (Strong Gale, Severe Gale)", "gd_w5_beaufort9", "Weather", "Tier 5",false)
 AddToGDSpawnMenu("Extreme Breeze" , "gd_w6_extremebreeze" , "Weather", "Tier 5", false)
-AddToGDSpawnMenu("Downburst" , "gd_w6_downburst"    , "Weather", "Tier 5", false)
+AddToGDSpawnMenu("Downburst" , "gd_w5_downburst"    , "Weather", "Tier 5", false)
 AddToGDSpawnMenu("Microburst" , "gd_w5_microburst"    , "Weather", "Tier 5", false)
 AddToGDSpawnMenu("Macroburst" , "gd_w5_macroburst"    , "Weather", "Tier 5", false)
-AddToGDSpawnMenu("Silent Hill (sp00ky)"           , "gd_d5_silenthill"           , "Weather", "Tier 5", false)
+AddToGDSpawnMenu("Silent Hill (sp00ky)"           , "gd_w5_silenthill"           , "Weather", "Tier 5", false)
 AddToGDSpawnMenu("Pyrocumulus" , "gd_w5_pyrocum"    , "Weather", "Tier 5", false)
 
 --[[
@@ -183,13 +183,13 @@ AddToGDSpawnMenu("Beaufort 12 Wind (Hurricane Force)", "gd_w6_beaufort12", "Weat
 WEATHER TIER 7
 --]]
 
-AddToGDSpawnMenu("Martian Snow Storm", "gd_w6_martiansnow", "Weather", "Tier 7", false)
+AddToGDSpawnMenu("Martian Snow Storm", "gd_w7_martiansnow", "Weather", "Tier 7", false)
 AddToGDSpawnMenu("Solar Ray", "gd_w7_solarray", "Weather", "Tier 7", false)
-AddToGDSpawnMenu("Freeze Ray", "gd_w6_freezeray", "Weather", "Tier 7", false)
-AddToGDSpawnMenu("Martian Dust Storm", "gd_w6_martianduststorm", "Weather", "Tier 7", false)
-AddToGDSpawnMenu("Hypercane", "gd_w6_hypercane", "Weather", "Tier 7", false)
-AddToGDSpawnMenu("Jupiter Red Spot", "gd_w6_redspot", "Weather", "Tier 7", false)
-AddToGDSpawnMenu("Neptune", "gd_w6_neptune", "Weather", "Tier 7", false)
+AddToGDSpawnMenu("Freeze Ray", "gd_w7_freezeray", "Weather", "Tier 7", false)
+AddToGDSpawnMenu("Martian Dust Storm", "gd_w7_martianduststorm", "Weather", "Tier 7", false)
+AddToGDSpawnMenu("Hypercane", "gd_w7_hypercane", "Weather", "Tier 7", false)
+AddToGDSpawnMenu("Jupiter Red Spot", "gd_w7_redspot", "Weather", "Tier 7", false)
+AddToGDSpawnMenu("Neptune", "gd_w7_neptune", "Weather", "Tier 7", false)
 
 --[[
 DISASTERS 
@@ -246,8 +246,8 @@ AddToGDSpawnMenu("≈3.0 Magnitude Earthquake" , "gd_d3_rs3eq"         , "Disast
 AddToGDSpawnMenu("EF0 Tornado"        , "gd_d3_ef0"              , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("EF0 Tornado (Smart)"        , "gd_d3_ef0_pathed"              , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("Landslide" , "gd_d3_landslide"         , "Disasters", "Tier 3", false)
-AddToGDSpawnMenu("acid puddle", "gd_d2_acidpuddle" , "Disasters", "Tier 3", false)
-AddToGDSpawnMenu("Lava flood" , "gd_d7_lavaflood"         , "Disasters", "Tier 3", false)
+AddToGDSpawnMenu("acid puddle", "gd_d3_acidpuddle" , "Disasters", "Tier 3", false)
+AddToGDSpawnMenu("Lava flood" , "gd_d3_lavaflood"         , "Disasters", "Tier 3", false)
 
 
 --[[
