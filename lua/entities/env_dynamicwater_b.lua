@@ -313,8 +313,9 @@ function ENT:ProcessEntitiesInWater()
 						end
 			
 						if #ents.FindByClass("gd_d2_minivolcano*") >= 1 then return end
-						if #ents.FindByClass("gd_d8_volcano*") >= 1 then return end
-						if #ents.FindByClass("gd_d4_volcano*") >= 1 then return end
+						if #ents.FindByClass("gd_d8_ancientvolcano*") >= 1 then return end
+						if #ents.FindByClass("gd_d4_youngvolcano*") >= 1 then return end
+						if #ents.FindByClass("gd_d5_maturevolcano*") >= 1 then return end
 			
 						
 						phys:SetVelocity( final_vel)

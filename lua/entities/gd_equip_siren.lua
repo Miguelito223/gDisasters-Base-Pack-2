@@ -649,7 +649,7 @@ function ENT:Think()
 			end 
 			
 		end
-		for k, v in pairs(ents.FindByClass("gd_d8_volcano")) do 
+		for k, v in pairs(ents.FindByClass("gd_d8_ancientvolcano")) do 
 			
 			
 			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 

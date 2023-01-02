@@ -258,7 +258,7 @@ AddToGDSpawnMenu("Landspout", "gd_d4_landspout", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("≈4.0 Magnitude Earthquake" , "gd_d4_rs4eq"         , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("EF1 Tornado"        , "gd_d4_ef1"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Megacryometeor"        , "gd_d4_mcryometeor"              , "Disasters", "Tier 4", false)
-AddToGDSpawnMenu("Young Volcano"        , "gd_d4_volcano"              , "Disasters", "Tier 4", false)
+AddToGDSpawnMenu("Young Volcano"        , "gd_d4_youngvolcano"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("EF1 Tornado (Smart)"        , "gd_d4_ef1_pathed"              , "Disasters", "Tier 4", false)
 
 
@@ -313,7 +313,7 @@ TIER EIGHT
 AddToGDSpawnMenu("EF5 Tornado"           , "gd_d8_ef5"           , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("EF5 Tornado (Smart)"   , "gd_d8_ef5_pathed"    , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("≈8.0 Magnitude Earthquake" , "gd_d8_rs8eq"         , "Disasters", "Tier 8", false)
-AddToGDSpawnMenu("Acient Volcano" , "gd_d8_volcano"         , "Disasters", "Tier 8", false)
+AddToGDSpawnMenu("Acient Volcano" , "gd_d8_ancientvolcano"         , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("Combine Invasion" , "gd_d8_combineinv"         , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("Lava Tsunami" , "gd_d8_lavatsunami"         , "Disasters", "Tier 8", false)
 
