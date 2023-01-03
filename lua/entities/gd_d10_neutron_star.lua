@@ -193,6 +193,10 @@ function ENT:NewtonianGravity()
 				v:SetVelocity( FsR )
 				v:SetMoveType( MOVETYPE_FLY)
 			else
+				phys:Wake()
+				phys:EnableMotion(true)
+				constraint.RemoveAll( v )
+				
 				phys:AddVelocity(Fg + (p1:Cross(p2)))
 			end
 			

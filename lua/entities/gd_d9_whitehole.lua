@@ -113,10 +113,9 @@ function ENT:NewtonianGravityWhiteHole()
 				v:SetMoveType( MOVETYPE_FLY )
 			else
 				if r <= 10000 and v:IsValid() then
-					if !phys:IsValid() then return end
-					constraint.RemoveAll( v )
 					phys:Wake()
 					phys:EnableMotion(true)
+					constraint.RemoveAll( v )
 				end
 				phys:AddVelocity( Fg )
 			end
@@ -143,11 +142,13 @@ function ENT:OnRemove()
 end
 
 function ENT:Think()
-	if !self:IsValid() then return end
-	self:Rotate()
-    self:NewtonianGravityWhiteHole()
-	self:NextThink(CurTime() + 0.01)
-    return true	
+	if (SERVER) then
+		if !self:IsValid() then return end
+		self:Rotate()
+    	self:NewtonianGravityWhiteHole()
+		self:NextThink(CurTime() + 0.01)
+    	return true	
+	end
 end
 
 function ENT:Draw()
