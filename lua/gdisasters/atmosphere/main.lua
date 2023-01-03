@@ -111,39 +111,39 @@ if (SERVER) then
 			
 			if can_play_sound then
 			
-			local windspeed  = table_wind["Speed"]
+				local windspeed  = table_wind["Speed"]
 			
 			
 			
-			if windspeed > 60 then 
+				if windspeed > 60 then 
 				
 					local material_type = GetMaterialType(ent)
-				
-				if material_type == "wood" then 
-					sound.Play(table.Random(Break_Sounds.Wood), ent:GetPos(), 80, math.random(90,110), 1)
-				
-				elseif material_type == "metal" then 
-					sound.Play(table.Random(Break_Sounds.Metal), ent:GetPos(), 80, math.random(90,110), 1)
-				
-				elseif material_type == "plastic" then 
-					sound.Play(table.Random(Break_Sounds.Plastic), ent:GetPos(), 80, math.random(90,110), 1)
 					
-				elseif material_type == "rock" then 
-					sound.Play(table.Random(Break_Sounds.Rock), ent:GetPos(), 80, math.random(90,110), 1)
+					if material_type == "wood" then 
+						sound.Play(table.Random(Break_Sounds.Wood), ent:GetPos(), 80, math.random(90,110), 1)
 					
-				elseif material_type == "glass" then 
-					sound.Play(table.Random(Break_Sounds.Glass), ent:GetPos(), 80, math.random(90,110), 1)
+					elseif material_type == "metal" then 
+						sound.Play(table.Random(Break_Sounds.Metal), ent:GetPos(), 80, math.random(90,110), 1)
 					
-				elseif material_type == "ice" then 
-					sound.Play(table.Random(Break_Sounds.Ice), ent:GetPos(), 80, math.random(90,110), 1)
-				
-				else
-					sound.Play(table.Random(Break_Sounds.Generic), ent:GetPos(), 80, math.random(90,110), 1)
-				
-				end
-				
-				constraint.RemoveAll( ent )
-				ent:GetPhysicsObject():EnableMotion( true )
+					elseif material_type == "plastic" then 
+						sound.Play(table.Random(Break_Sounds.Plastic), ent:GetPos(), 80, math.random(90,110), 1)
+						
+					elseif material_type == "rock" then 
+						sound.Play(table.Random(Break_Sounds.Rock), ent:GetPos(), 80, math.random(90,110), 1)
+						
+					elseif material_type == "glass" then 
+						sound.Play(table.Random(Break_Sounds.Glass), ent:GetPos(), 80, math.random(90,110), 1)
+						
+					elseif material_type == "ice" then 
+						sound.Play(table.Random(Break_Sounds.Ice), ent:GetPos(), 80, math.random(90,110), 1)
+					
+					else
+						sound.Play(table.Random(Break_Sounds.Generic), ent:GetPos(), 80, math.random(90,110), 1)
+					
+					end
+					
+					constraint.RemoveAll( ent )
+					ent:GetPhysicsObject():EnableMotion( true )
 				
 				end
 			end
@@ -287,31 +287,25 @@ if (SERVER) then
 						
 						if windvel_cap > 0 then
 						
-						if windspeed > 25 then 
-						
-						if mass < 80 then 
-						
-						v:SetVelocity( ((v:GetVelocity() - windvel_new) - v:GetVelocity()) * 5  )
-						
-						end
+							if windspeed > 25 then 
 							
-						end	
-							
-						if windspeed >= 80 then 	
-							
-						if mass > 80 and mass < 2000 then
-						
-						v:SetVelocity( ((v:GetVelocity() - windvel_new) - v:GetVelocity()) * 3 )
-						
-						else
-						
-						if mass > 2000 then 
-						
-						v:SetVelocity( ((v:GetVelocity() - windvel_new) - v:GetVelocity()) )
-						
+								if mass < 80 then 
+								
+									v:SetVelocity( ((v:GetVelocity() - windvel_new) - v:GetVelocity()) * 5  )
+								
+								end
+
+								if windspeed >= 80 then 	
+
+									if mass > 80 and mass < 2000 then
+									
+										v:SetVelocity( ((v:GetVelocity() - windvel_new) - v:GetVelocity()) * 3 )
+									
+									elseif mass > 2000 then 
+									
+										v:SetVelocity( ((v:GetVelocity() - windvel_new) - v:GetVelocity()) )
 										
-										
-										end
+									end
 									
 									
 								end
@@ -322,39 +316,39 @@ if (SERVER) then
 								
 					end
 						
-						local area    = Area(v)
-						local mass    = phys:GetMass()
-						
-						local force_mul_area     = math.Clamp((area/680827),0,1) -- bigger the area >> higher the f multiplier is
-						local friction_mul       = math.Clamp((mass/50000),0,1) -- lower the mass  >> lower frictional force 
-						local avrg_mul           = (force_mul_area + friction_mul) / 2 
-				
-						
-						
-						local windvel           = convert_MetoSU(convert_KMPHtoMe(windspeed / 2.9225)) * winddir 
-						local frictional_scalar = math.Clamp(windvel:Length(), 0, mass)
-						local frictional_velocity = frictional_scalar * -windvel:GetNormalized()
-						local windvel_new         = (windvel + frictional_velocity) * -1
-						
-						local windvel_cap         = windvel_new:Length() - v:GetVelocity():Length() 
-						
-						if windvel_cap > 0 then
-						
-						phys:AddVelocity(  windvel_new )
-						
-						end
+					local area    = Area(v)
+					local mass    = phys:GetMass()
 					
-						
-						if windconstraints_remove then 
-							WindUnweld(v)
-						
-						end
+					local force_mul_area     = math.Clamp((area/680827),0,1) -- bigger the area >> higher the f multiplier is
+					local friction_mul       = math.Clamp((mass/50000),0,1) -- lower the mass  >> lower frictional force 
+					local avrg_mul           = (force_mul_area + friction_mul) / 2 
+			
+					
+					
+					local windvel           = convert_MetoSU(convert_KMPHtoMe(windspeed / 2.9225)) * winddir 
+					local frictional_scalar = math.Clamp(windvel:Length(), 0, mass)
+					local frictional_velocity = frictional_scalar * -windvel:GetNormalized()
+					local windvel_new         = (windvel + frictional_velocity) * -1
+					
+					local windvel_cap         = windvel_new:Length() - v:GetVelocity():Length() 
+					
+					if windvel_cap > 0 then
+					
+						phys:AddVelocity(  windvel_new )
 					
 					end
-				end
 				
+					
+					if windconstraints_remove then 
+						WindUnweld(v)
+					
+					end
+					
+				end
 			end
+				
 		end
+	end
 		
 end
 
