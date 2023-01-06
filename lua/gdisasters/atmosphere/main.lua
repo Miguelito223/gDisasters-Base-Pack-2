@@ -76,7 +76,7 @@ if (SERVER) then
 	   			elseif StormFox2.Weather.IsRaining() and StormFox2.Weather.GetRainAmount(1) then
 	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
 	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
-	   			elseif StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0)then
+	   			elseif StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
 	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
 	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
 	   			else
