@@ -858,7 +858,7 @@ if (SERVER) then
 			wl3 = inWater(ply:GetPos())
 		end
 
-		if wl >= 2 or wl1 or wl2 or wl3 then
+		if wl > 0 or wl1 or wl2 or wl3 then
 			return true
 		else
 			return false
