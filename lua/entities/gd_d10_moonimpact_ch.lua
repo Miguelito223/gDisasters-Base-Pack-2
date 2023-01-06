@@ -193,12 +193,12 @@ function ENT:Think()
 	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
 		
 	if (SERVER) then
-		if bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER or self:WaterLevel() > 0 or self.IsInWater then
+		if isinWater(self) then
 			self:Explode()
 			local ent = ents.Create("gd_d7_tsunami")
 			ent:Spawn()
 			ent:Activate()
-		elseif self.IsInlava then
+		elseif isinLava(self) then
 			self:Explode()
 			local ent = ents.Create("gd_d8_lavatsunami")
 			ent:Spawn()

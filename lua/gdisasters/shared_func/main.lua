@@ -846,6 +846,7 @@ if (SERVER) then
 
 	function isinWater(ply)
 		local wl = ply:WaterLevel()
+		local wl1 = ( bit.band( util.PointContents(ply:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER )
 		local wl2 = ply.IsInWater
 		
 		if InfMap then
@@ -857,7 +858,7 @@ if (SERVER) then
 			wl3 = inWater(ply:GetPos())
 		end
 
-		if wl >= 3 or wl2==true or wl3 then
+		if wl >= 2 or wl1 or wl2 or wl3 then
 			return true
 		else
 			return false

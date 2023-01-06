@@ -162,19 +162,19 @@ function ENT:Explode()
 end
 
 function ENT:Think()
-		if (CLIENT) then
-		
-			self:Fix()
+	if (CLIENT) then
 	
-		end
-	
-		local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
-		
-		if (SERVER) then
+		self:Fix()
 
-		if bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER  or self:WaterLevel() > 0 or self.IsInWater then 
-			self:Remove()
-		elseif self.IsInlava then
+	end
+
+	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
+		
+	if (SERVER) then
+
+		if isinWater(self) then 
+			self:Remove() 
+		elseif isinLava(self) then
 			self:Remove()
 		end
 		

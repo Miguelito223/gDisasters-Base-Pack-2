@@ -167,9 +167,9 @@ function ENT:Think()
 		if !self:IsValid() then return end
 		local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1
 		
-		if bit.band(util.PointContents(self:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER or self:WaterLevel() > 0 or self.IsInWater then 
+		if isinWater(self) then 
 			self:Remove() 
-		elseif self.IsInlava then
+		elseif isinLava(self) then
 			self:Remove()
 		end
 
