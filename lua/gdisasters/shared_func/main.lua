@@ -868,7 +868,7 @@ if (SERVER) then
 	function isinLava(ply)
 		local lv = ply.IsInlava
 
-		if lv==true then
+		if lv then
 			return true
 		else
 			return false
