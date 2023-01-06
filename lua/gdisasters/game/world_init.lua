@@ -151,6 +151,14 @@ concommand.Add("gdisasters_setbody_temp", function(cmd, args, temp)
 	end
 end)
 
+concommand.Add("gdisasters_setbody_oxygen", function(cmd, args, O2)
+	for k, v in pairs(player.GetAll()) do
+		local Oxygen = O2[1]
+		v.gDisasters.Body.Oxygen = tonumber(Oxygen)
+	
+	end
+end)
+
 concommand.Add("gdisasters_setpressure", function(cmd, args, pressure)
 	local press = pressure[1]
 	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = tonumber(press)
