@@ -16,10 +16,10 @@ if (SERVER) then
 		Pressure()
 		Humidity()
 		AtmosphereFadeControl()
+		gDisasters_stormfox2()
 		gDisasters_GlobalBreathingEffect()
 		gDisasters_ProcessTemperature()
 		gDisasters_ProcessOxygen()
-		gDisasters_stormfox2()
 		
 	end
 	hook.Add("Tick", "atmosphericLoop", Atmosphere)
@@ -44,8 +44,9 @@ if (SERVER) then
 	end
 
 	function gDisasters_stormfox2()
-	    if GetConVar("gdisasters_graphics_stormfox"):GetInt() >= 1 then 
-	   		if Stormfox then 
+		if GetConVar("gdisasters_graphics_stormfox"):GetInt() >= 1 then 
+	   		
+			if Stormfox then 
 	   			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox.GetTemperature()
 				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = StormFox.GetNetworkData("Wind",0) * 0.75
 				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(-StormFox.GetWindVector().x, -StormFox.GetWindVector().y, 0)
@@ -64,15 +65,14 @@ if (SERVER) then
 	   			    if ent:IsValid() then ent:Remove() end
 	   			end
 			elseif StormFox2 then
-	   			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox2.Temperature.Get()
+	   			
+				GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox2.Temperature.Get()
 				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = StormFox2.Wind.GetForce()
 				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(-StormFox2.Wind.GetVector().x, -StormFox2.Wind.GetVector().y, 0)
 				
-				
-				
 	   			if !StormFox2.Weather.IsRaining() and !StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
-	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 0
-	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 102000
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
 	   			elseif StormFox2.Weather.IsRaining() and StormFox2.Weather.GetRainAmount(1) then
 	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
 	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
@@ -80,8 +80,8 @@ if (SERVER) then
 	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
 	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
 	   			else
-	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 0
-	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 102000
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
 	   			end
 			
 	   			if StormFox2.Thunder.IsThundering() then
