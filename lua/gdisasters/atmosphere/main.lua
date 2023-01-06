@@ -52,11 +52,11 @@ if (SERVER) then
 				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(-StormFox.GetWindVector().x, -StormFox.GetWindVector().y, 0)
 	   			
 				if !StormFox.IsRaining() then
-	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 0
-	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 102000
-	   			else
 	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
 	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
+	   			else
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
+	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
 	   			end
 			
 	   			if StormFox.IsThunder() then
