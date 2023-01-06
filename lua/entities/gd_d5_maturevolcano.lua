@@ -243,12 +243,18 @@ function ENT:Erupt()
 		ent:Activate()
 	end)		  
     timer.Simple(50, function()
+		
 	    local ent = ents.Create("gd_w2_acidrain")
 		ent:Spawn()
 		ent:Activate()
+		
+		local ent2 = ents.FindByClass("gd_w2_volcano_ash")
+		if !ent2:IsValid() then return end
+		if ent2:IsValid() then ent2:Remove() end
 	end)
 	timer.Simple(100, function()
 	    local ent = ents.FindByClass("gd_w2_acidrain")[1]
+		if !ent:IsValid() then return end
 		if ent:IsValid() then ent:Remove() end
 	end)
 	

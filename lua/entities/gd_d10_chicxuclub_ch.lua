@@ -160,35 +160,41 @@ function ENT:Explode()
 	
 	util.BlastDamage( self, self, self:GetPos()+Vector(0,0,12), 5000000, math.random( 100000, 400000 ) )
 	
-	if self:IsValid() then
-		timer.Simple(2, function()
-			local ent = ents.Create("gd_w3_heavyashstorm")
-			local ent2 = ents.Create("gd_d10_meteorshower")
-			local ent3 = ents.Create("gd_d10_meteoriteshower")
-			ent:Spawn()
-			ent:Activate()
-			ent2:Spawn()
-			ent2:Activate()
-			ent3:Spawn()
-			ent3:Activate()
 
-		end)
-		timer.Simple(45, function()
-			local ent4 = ents.Create("gd_w4_heavyacidrain")
-			ent4:Spawn()
-			ent4:Activate()
-		end)
-		timer.Simple(80, function()
-			local ent1 = ents.FindByClass("gd_d10_meteorshower")[1]
-			local ent2 = ents.FindByClass("gd_d10_meteoriteshower")[1]
-			if ent1:IsValid() then ent1:Remove() end
-			if ent2:IsValid() then ent2:Remove() end
-		end)
-		timer.Simple(120, function()
-			local ent1 = ents.FindByClass("gd_w4_heavyacidrain")[1]
-			if ent1:IsValid() then ent1:Remove() end
-		end)
-	end
+	timer.Simple(2, function()
+		local ent = ents.Create("gd_w2_ashstorm")
+		local ent2 = ents.Create("gd_d10_meteorshower")
+		local ent3 = ents.Create("gd_d10_meteoriteshower")
+		ent:Spawn()
+		ent:Activate()
+		ent2:Spawn()
+		ent2:Activate()
+		ent3:Spawn()
+		ent3:Activate()
+
+	end)
+	timer.Simple(120, function()
+		local ent4 = ents.Create("gd_w4_heavyacidrain")
+		ent4:Spawn()
+		ent4:Activate()
+		
+		local ent1 = ents.FindByClass("gd_w2_ashstorm")[1]
+		if !ent1:IsValid() then return end
+		if ent1:IsValid() then ent1:Remove() end
+	end)
+	timer.Simple(160, function()
+		local ent1 = ents.FindByClass("gd_d10_meteorshower")[1]
+		local ent2 = ents.FindByClass("gd_d10_meteoriteshower")[1]
+		if !ent1:IsValid() or !ent2:IsValid() then return end
+		if ent1:IsValid() then ent1:Remove() end
+		if ent2:IsValid() then ent2:Remove() end
+	end)
+	timer.Simple(200, function()
+		local ent1 = ents.FindByClass("gd_w4_heavyacidrain")[1]
+		if !ent1:IsValid() then return end
+		if ent1:IsValid() then ent1:Remove() end
+	end)
+	
 
 	self:Remove()
 

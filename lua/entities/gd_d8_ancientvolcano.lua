@@ -251,7 +251,6 @@ function ENT:Erupt()
 	
 	
 	timer.Simple(22, function()
-		if !self:IsValid() then return end
 		local ent = ents.Create("gd_w2_ashstorm")
 		local ent2 = ents.Create("gd_d10_lavabombshower")
 		ent:SetPos(pos - Vector(0,0,5000))
@@ -263,20 +262,23 @@ function ENT:Erupt()
 	end)
 	
 	timer.Simple(120, function()
-		if !self:IsValid() then return end
-		local ent = ents.FindByClass("gd_w2_ashstorm")[1]
-		local ent2 = ents.FindByClass("gd_d10_lavabombshower")[1]
-		if ent:IsValid() then ent:Remove() end
-		if ent2:IsValid() then ent2:Remove() end
-		
+
 		local ent3 = ents.Create("gd_w4_heavyacidrain")
 		ent3:Spawn()
 		ent3:Activate()
 		
+		local ent = ents.FindByClass("gd_w2_ashstorm")[1]
+		local ent2 = ents.FindByClass("gd_d10_lavabombshower")[1]
+		if !ent:IsValid() or !ent2:IsValid() then return end
+		if ent:IsValid() then ent:Remove() end
+		if ent2:IsValid() then ent2:Remove() end
+	
+		
 	end)
 	timer.Simple(200, function()
-		local ent1 = ents.FindByClass("gd_w4_heavyacidrain")[1]
-		if ent1:IsValid() then ent1:Remove() end
+		local ent = ents.FindByClass("gd_w4_heavyacidrain")[1]
+		if !ent:IsValid() then return end
+		if ent:IsValid() then ent1:Remove() end
 	end)
 	
 end
