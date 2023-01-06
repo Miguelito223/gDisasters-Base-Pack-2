@@ -15,7 +15,7 @@ if (SERVER) then
 			local tr = util.TraceLine({
 				start = SkyPos,
 				endpos = SkyPos - Vector(0,0,50000),
-				mask = MASK_WATER + MASK_SOLID_BRUSHONLY
+				mask = MASK_SOLID_BRUSHONLY
 			})
 
 			local FloorPos = tr.HitPos
