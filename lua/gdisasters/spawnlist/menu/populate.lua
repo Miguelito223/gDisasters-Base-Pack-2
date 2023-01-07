@@ -1,7 +1,7 @@
 if !CLIENT then return end 
 
 --[[
-Ammo
+Ammo/Weapons
 --]]
 
 AddToGDSpawnMenu("Hammer", "gd_wea_hammer" , "Weapons", "Weapons", false)
@@ -11,6 +11,7 @@ AddToGDSpawnMenu("Seismograph", "gd_wea_seismograph" , "Weapons", "Measurer", fa
 AddToGDSpawnMenu("Tornado Radar", "gd_wea_radar" , "Weapons", "Measurer", false)
 AddToGDSpawnMenu("Hygrometer", "gd_wea_hygrometer" , "Weapons", "Measurer", false)
 AddToGDSpawnMenu("Anemometer", "gd_wea_anemometer" , "Weapons", "Measurer", false)
+AddToGDSpawnMenu("Oxygen Meter", "gd_wea_oxygen_meter" , "Weapons", "Measurer", false)
 
 --[[ 
 Buildings
