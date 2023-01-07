@@ -22,7 +22,7 @@ SWEP.Primary.Ammo = "none"
 SWEP.Primary.Damage = 0
 SWEP.Primary.Delay = 1
 SWEP.Primary.Automatic = false
-SWEP.Primary.Distance = 75 
+SWEP.Primary.Distance = 100
 
 SWEP.Secondary.Ammo = "none"
 SWEP.Secondary.Damage = 0
@@ -38,11 +38,24 @@ function SWEP:PrimaryAttack()
 	if CLIENT then return end
 	local ply = self:GetOwner()
 	local wind_speed = math.Round(GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"],1)
-	ply:PrintMessage(HUD_PRINTCENTER,"The global wind velocity is: " .. wind_speed .. " Km/h")
+	local local_wind_speed = math.Round(ply:GetNWFloat("LocalWind"),1)
+	ply:PrintMessage(HUD_PRINTCENTER, "Your local wind velocity is: " .. local_wind_speed .. " Km/h, The global wind velocity is: " .. wind_speed .. " Km/h")
 end
 
 function SWEP:SecondaryAttack()
+	if CLIENT then return end
 	local ply = self:GetOwner()
-	local local_wind_speed = math.Round(ply:GetNWFloat("LocalWind"),1)
-	ply:PrintMessage(HUD_PRINTCENTER,"The local wind velocity is: " .. local_wind_speed .. " Km/h")
+	local plypos = ply:GetPos()
+	for k, v in pairs(ents.GetAll()) do
+		if plypos:Distance(v:GetPos()) <= self.Secondary.Distance then
+			if v != ply then
+				if v:IsPlayer() then
+					local local_wind_speed = math.Round(v:GetNWFloat("LocalWind"),1)
+					ply:PrintMessage(HUD_PRINTCENTER,"The Local Wind of player ".. v:GetName() .." Is: ".. local_wind_speed .." Km/h")
+				elseif v:IsNPC() or v:IsNextBot() then
+					ply:PrintMessage(HUD_PRINTCENTER, "No Work With Npcs or Nextbot")
+				end
+			end
+		end
+	end
 end
