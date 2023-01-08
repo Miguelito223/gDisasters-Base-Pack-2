@@ -381,7 +381,9 @@ function ENT:RemoveLandSpoutInWaterOrSnow()
 	if !entity then return end
 
 	if isOnSolid == true then
-	elseif isOnSolid == false or isOnSnow == true  then
+	elseif isOnSolid == false then
+		if entity then entity:Remove() end
+	elseif isOnSnow == true then
 		if entity then entity:Remove() end
 	end
 
