@@ -1,7 +1,7 @@
 if (SERVER) then
 
 	local function Autospawn_Timer()
-		recent = false
+		local recent = false
 
 		local function Autospawn()
 
