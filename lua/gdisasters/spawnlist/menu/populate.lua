@@ -350,7 +350,7 @@ AddToGDSpawnMenu("Firenado (Smart)", "gd_d10_mfirenado_pathed", "Disasters", "Ti
 AddToGDSpawnMenu("Meteor Shower", "gd_d10_meteorshower", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Meteorite Shower", "gd_d10_meteoriteshower", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Black Hole"  , "gd_d10_blackhole" , "Disasters", "Tier ELE", false)
-AddToGDSpawnMenu("Chicxuclub"  , "gd_d10_chicxuclub" , "Disasters", "Tier ELE", false)
+AddToGDSpawnMenu("Big Asteroid"  , "gd_d10_bigasteroid" , "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Moon Impact"  , "gd_d10_moonimpact" , "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("EF7 Tornado", "gd_d10_ef7", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("EF7 Tornado (Smart)", "gd_d10_ef7_pathed", "Disasters", "Tier ELE", false)

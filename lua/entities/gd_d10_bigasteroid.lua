@@ -5,7 +5,7 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "chicxuclub"
+ENT.PrintName		                 =  "big asteroid"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
@@ -65,7 +65,7 @@ function ENT:CreateMeteorite()
 	} )
 
 
-	local moite = ents.Create("gd_d10_chicxuclub_ch")
+	local moite = ents.Create("gd_d10_bigasteroid_ch")
 			
 	moite:SetPos( tr.HitPos - Vector(0,0,3000) )
 	moite:Spawn()
