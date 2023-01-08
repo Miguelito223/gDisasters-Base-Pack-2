@@ -390,8 +390,6 @@ function ENT:RemoveLandSpoutInWaterOrSnow()
 
 end
 
-
-
 function ENT:RemoveSnownadoIsNotInSnow()
 	local isOnSnow   = self:OverSnow()
 	local entity = ents.FindByClass("gd_d3_snownado", "gd_d3_snownado_pathed")[1]
