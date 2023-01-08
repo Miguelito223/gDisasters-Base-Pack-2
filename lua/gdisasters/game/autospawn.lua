@@ -197,6 +197,7 @@ if (SERVER) then
 
 				timer.Simple(GetConVar( "gdisasters_autospawn_remove_timer" ):GetInt(), function()
 					if dis:IsValid() then dis:Remove() end
+					recent = false
 				end)
 			
 			elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Weather" then
@@ -289,6 +290,7 @@ if (SERVER) then
 
 				timer.Simple(GetConVar( "gdisasters_autospawn_remove_timer" ):GetInt(), function()
 					if wea:IsValid() then wea:Remove() end
+					recent = false
 				end)
 
 			elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Weather/Disasters" then
@@ -514,6 +516,7 @@ if (SERVER) then
 
 				timer.Simple(GetConVar( "gdisasters_autospawn_remove_timer" ):GetInt(), function()
 					if weadis:IsValid() then weadis:Remove() end
+					recent = false
 				end)
 			end
 		end
