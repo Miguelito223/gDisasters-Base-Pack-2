@@ -232,6 +232,7 @@ AddToGDSpawnMenu("Shooting Star"         , "gd_d2_shootingstar"			, "Disasters",
 AddToGDSpawnMenu("Shooting Star Shower (No Climate Change)", "gd_d2_shootingstarshower", "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Hail Stone"         , "gd_d2_hail"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Waterspout", "gd_d2_waterspout" , "Disasters", "Tier 2", false)
+AddToGDSpawnMenu("Waterspout (Smart)", "gd_d2_waterspout_pathed" , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Sinkhole" , "gd_d3_sinkhole"         , "Disasters", "Tier 2", false)
 
 
@@ -250,6 +251,7 @@ AddToGDSpawnMenu("Landslide" , "gd_d3_landslide"         , "Disasters", "Tier 3"
 AddToGDSpawnMenu("acid puddle", "gd_d3_acidpuddle" , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("Lava flood" , "gd_d3_lavaflood"         , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("Snownado" , "gd_d3_snownado"         , "Disasters", "Tier 3", false)
+AddToGDSpawnMenu("Snownado (Smart)" , "gd_d3_snownado_pathed"         , "Disasters", "Tier 3", false)
 
 
 --[[
@@ -257,6 +259,7 @@ DISASTERS
 TIER FOUR
 --]]
 AddToGDSpawnMenu("Landspout", "gd_d4_landspout", "Disasters", "Tier 4", false)
+AddToGDSpawnMenu("Landspout (Smart)", "gd_d4_landspout_pathed", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("≈4.0 Magnitude Earthquake" , "gd_d4_rs4eq"         , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("EF1 Tornado"        , "gd_d4_ef1"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Megacryometeor"        , "gd_d4_mcryometeor"              , "Disasters", "Tier 4", false)

@@ -1049,6 +1049,7 @@ function ENT:Think()
 		self:IsParentValid()
 		self:RemoveWaterSpoutInSolid()
 		self:RemoveLandSpoutInWater()
+		self:RemoveSnownadoisnotinsnow()
 		
 
 		self:NextThink(CurTime() + 0.025)
