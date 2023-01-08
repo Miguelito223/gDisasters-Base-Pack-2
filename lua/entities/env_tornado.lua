@@ -272,12 +272,9 @@ end
 
 function ENT:SetupMoveType()
 	
-	if self.Data.ShouldFollowPath == true then
+	if self.Data.ShouldFollowPath == true and IsMapPathRegistered() then
 		self.MType = "follow_path" 
-		self:PostShouldFollowPath()
-		
-		if IsMapPathRegistered() == false then self:Remove() end 
-		
+		self:PostShouldFollowPath()	
 	else
 		self.MType = "random" 
 		self:PostRandomMovementType()
