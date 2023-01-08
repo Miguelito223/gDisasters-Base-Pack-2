@@ -15,7 +15,7 @@ ENT.Data                             = {GroundSpeed = {}, MaxFunnel = {}, MinFun
 ENT.Data.Effect                      = {"har_landspout"}
 ENT.Data.Parent                      = nil
 ENT.Data.ShouldFollowPath            = false
-ENT.Data.EnhancedFujitaScale         = "EF1"
+ENT.Data.EnhancedFujitaScale         = "EF0"
 
 ENT.Data.MaxFunnel.Height 			 = 5000
 ENT.Data.MaxFunnel.Radius 			 = 3300 -- funnel radius at max height
