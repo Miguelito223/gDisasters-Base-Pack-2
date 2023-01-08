@@ -49,7 +49,7 @@ if (SERVER) then
 			if Stormfox then 
 	   			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox.GetTemperature()
 				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = StormFox.GetNetworkData("Wind",0) * 0.75
-				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(-StormFox.GetWindVector().x, -StormFox.GetWindVector().y, 0)
+				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(-StormFox.GetWindVector().x, -StormFox.GetWindVector().y, -StormFox.GetWindVector().z)
 	   			
 				if !StormFox.IsRaining() then
 	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
@@ -68,7 +68,7 @@ if (SERVER) then
 	   			
 				GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox2.Temperature.Get()
 				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = StormFox2.Wind.GetForce()
-				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(-StormFox2.Wind.GetVector().x, -StormFox2.Wind.GetVector().y, 0)
+				GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(-StormFox2.Wind.GetVector().x, -StormFox2.Wind.GetVector().y, -StormFox2.Wind.GetVector().z)
 				
 	   			if !StormFox2.Weather.IsRaining() and !StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
 	   			    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
