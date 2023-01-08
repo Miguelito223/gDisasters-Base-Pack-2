@@ -150,11 +150,11 @@ function ENT:SetGroundSpeed()
 
 	if GetConVar( "gdisasters_envtornado_manualspeed" ):GetInt() >= 1 then 
 	
-	self.GroundSpeed = GetConVar( "gdisasters_envtornado_speed" ):GetInt()
+		self.GroundSpeed = GetConVar( "gdisasters_envtornado_speed" ):GetInt()
 	
 	else
 	
-	self.GroundSpeed = math.random(self.Data.GroundSpeed.Min,self.Data.GroundSpeed.Max)
+		self.GroundSpeed = math.random(self.Data.GroundSpeed.Min,self.Data.GroundSpeed.Max)
 	
 	end
 end
