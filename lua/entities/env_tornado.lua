@@ -376,21 +376,22 @@ function ENT:RemoveWaterSpoutInSolid()
 
 end
 
-function ENT:RemoveLandSpoutInWater()
+function ENT:RemoveLandSpoutInWaterOrSnow()
 	local isOnSolid   = self:OverSolid()
+	local isOnSnow   = self:OverSnow()
 	local entity = ents.FindByClass("gd_d4_landspout")[1]
 	local ply = self.OWNER
 
 	if !entity then return end
 
 	if isOnSolid == true then
-	elseif isOnSolid == false then
+	elseif isOnSolid == false or isOnSnow == true  then
 		if entity then entity:Remove() end
 	end
 
 end
 
-function ENT:RemoveSnownadoisnotinsnow()
+function ENT:RemoveSnownadoIsNotInSnow()
 	local isOnSnow   = self:OverSnow()
 	local entity = ents.FindByClass("gd_d3_snownado")[1]
 	local ply = self.OWNER
@@ -1048,8 +1049,8 @@ function ENT:Think()
 		self:Physics()
 		self:IsParentValid()
 		self:RemoveWaterSpoutInSolid()
-		self:RemoveLandSpoutInWater()
-		self:RemoveSnownadoisnotinsnow()
+		self:RemoveLandSpoutInWaterOrSnow()
+		self:RemoveSnownadoIsNotInSnow()
 		
 
 		self:NextThink(CurTime() + 0.025)
