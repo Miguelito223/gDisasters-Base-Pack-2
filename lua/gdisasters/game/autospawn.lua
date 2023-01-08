@@ -26,8 +26,9 @@ if (SERVER) then
 			if GetConVar("gdisasters_autospawn_type"):GetString() == "Tornado" then
 				recent = true
 				local tornado = {
-				"gd_d2_waterspout", 
+				"gd_d2_waterspout",
 				"gd_d2_gustnado",
+				"gd_d3_snownado", 
 				"gd_d3_ef0", 
 				"gd_d4_ef1", 
 				"gd_d4_landspout", 
@@ -64,6 +65,7 @@ if (SERVER) then
 					"gd_d9_rs9eq", 
 					"gd_d10_rs10eq", 
 					"gd_d10_meteorshower", 
+					"gd_d3_snownado", 
 					"gd_d7_tsunami", 
 					"gd_d10_meteoriteshower", 
 					"gd_d6_cryoshower", 
@@ -381,6 +383,7 @@ if (SERVER) then
 					"gd_d8_ancientvolcano", 
 					"gd_d5_maturevolcano", 
 					"gd_d4_youngvolcano",
+					"gd_d3_snownado", 
 					"gd_d2_minivolcano",
 					"gd_d3_lightningstorm", 
 					"gd_d2_flashflood", 
