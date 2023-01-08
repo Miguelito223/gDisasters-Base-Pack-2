@@ -364,8 +364,7 @@ end
 
 function ENT:RemoveWaterSpoutInSolid()
 	local isOnWater    = self:OverWater()
-	local entity = ents.FindByClass("gd_d2_waterspout")[1]
-	local ply = self.OWNER
+	local entity = ents.FindByClass("gd_d2_waterspout", "gd_d2_waterspout_pathed")[1]
 
 	if !entity then return end
 
@@ -379,8 +378,8 @@ end
 function ENT:RemoveLandSpoutInWaterOrSnow()
 	local isOnSolid   = self:OverSolid()
 	local isOnSnow   = self:OverSnow()
-	local entity = ents.FindByClass("gd_d4_landspout")[1]
-	local ply = self.OWNER
+	local entity = ents.FindByClass("gd_d4_landspout", "gd_d4_landspout_pathed")[1]
+
 
 	if !entity then return end
 
@@ -391,10 +390,12 @@ function ENT:RemoveLandSpoutInWaterOrSnow()
 
 end
 
+
+
 function ENT:RemoveSnownadoIsNotInSnow()
 	local isOnSnow   = self:OverSnow()
-	local entity = ents.FindByClass("gd_d3_snownado")[1]
-	local ply = self.OWNER
+	local entity = ents.FindByClass("gd_d3_snownado", "gd_d3_snownado_pathed")[1]
+
 
 	if !entity then return end
 
@@ -404,7 +405,6 @@ function ENT:RemoveSnownadoIsNotInSnow()
 	end
 
 end
-
 
 function ENT:CalculateVolumeOfTornado()
 	return self.Volume
@@ -1052,6 +1052,7 @@ function ENT:Think()
 		self:RemoveLandSpoutInWaterOrSnow()
 		self:RemoveSnownadoIsNotInSnow()
 		
+		
 
 		self:NextThink(CurTime() + 0.025)
 		
@@ -1108,7 +1109,7 @@ function ENT:AttachParticleEffect()
 	self.Data.Effect = table.Random(self.Data.Effect)
 	timer.Simple(0.1, function()
 	
-	ParticleEffectAttach(self.Data.Effect, PATTACH_POINT_FOLLOW, self, 0)
+		ParticleEffectAttach(self.Data.Effect, PATTACH_POINT_FOLLOW, self, 0)
 	end)
 end
 
