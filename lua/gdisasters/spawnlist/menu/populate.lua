@@ -258,6 +258,7 @@ AddToGDSpawnMenu("Snownado (Smart)" , "gd_d3_snownado_pathed"         , "Disaste
 DISASTERS 
 TIER FOUR
 --]]
+
 AddToGDSpawnMenu("Landspout", "gd_d4_landspout", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Landspout (Smart)", "gd_d4_landspout_pathed", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("≈4.0 Magnitude Earthquake" , "gd_d4_rs4eq"         , "Disasters", "Tier 4", false)
