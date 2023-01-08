@@ -87,6 +87,8 @@ PrecacheParticleSystem("h1_EF1")
 
 PrecacheParticleSystem("har_landspout")
 PrecacheParticleSystem("har_landspout_nocloud")
+PrecacheParticleSystem("har_snownado")
+PrecacheParticleSystem("har_snownado_nocloud")
 PrecacheParticleSystem("har_waterspout")
 PrecacheParticleSystem("har_waterspout_nocloud")
 -- ef2

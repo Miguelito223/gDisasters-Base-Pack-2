@@ -249,6 +249,7 @@ AddToGDSpawnMenu("EF0 Tornado (Smart)"        , "gd_d3_ef0_pathed"              
 AddToGDSpawnMenu("Landslide" , "gd_d3_landslide"         , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("acid puddle", "gd_d3_acidpuddle" , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("Lava flood" , "gd_d3_lavaflood"         , "Disasters", "Tier 3", false)
+AddToGDSpawnMenu("Snownado" , "gd_d3_snownado"         , "Disasters", "Tier 3", false)
 
 
 --[[

@@ -5,14 +5,14 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Waterspout"
+ENT.PrintName		                 =  "snownado"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"                      
 
 ENT.Data                             = {GroundSpeed = {}, MaxFunnel = {}, MinFunnel = {}, Life={}, MaxGroundFunnel={}, MinGroundFunnel={}}
-ENT.Data.Effect                      = {"har_waterspout"}
+ENT.Data.Effect                      = {"har_snownado"}
 ENT.Data.Parent                      = nil
 ENT.Data.ShouldFollowPath            = false
 ENT.Data.EnhancedFujitaScale         = "EF0"
@@ -57,23 +57,17 @@ function ENT:Initialize()
 	end
 end
 
+
 function ENT:SpawnFunction( ply, tr )
-	local tr = util.TraceLine( {
-		start  =  ply:GetPos(),
-		endpos = ply:GetPos() + ply:GetAimVector() * 500,
-		mask   = MASK_WATER
-	} )
-	if tr.Hit then
-		self.OWNER = ply
-		local ent = ents.Create( self.ClassName )
-		ent:SetPhysicsAttacker(ply)
-		ent:SetPos( tr.HitPos + tr.HitNormal * 16) 
-		ent:Spawn()
-		ent:Activate()
-		return ent
-	else
-		ply:ChatPrint("It must be spawned on water...")
-	end
+	if ( !tr.Hit ) then return end
+
+	self.OWNER = ply
+	local ent = ents.Create( self.ClassName )
+	ent:SetPhysicsAttacker(ply)
+	ent:SetPos( tr.HitPos + tr.HitNormal * 16 ) 
+	ent:Spawn()
+	ent:Activate()
+	return ent
 end
 
 
@@ -81,6 +75,7 @@ function ENT:Think()
 
 	if (SERVER) then
 		if !self:IsValid() then return end
+
 		self:NextThink(CurTime() + 1)
 		return true
 	end

@@ -332,6 +332,21 @@ function ENT:OverWater()
 	
 end
 
+function ENT:OverSnow()
+
+	local tr = util.TraceLine( {
+		start = self:GetPos(),
+		endpos = self:GetPos() - Vector(0,0,11),
+		mask   = MASK_SOLID_BRUSHONLY
+	})
+	
+	--print(self:GetPos())
+	--print(tr.HitPos)
+
+	return (tr.MatType == 74)
+	
+end
+
 function ENT:OverSolid()
 
 	local tr = util.TraceLine({
@@ -350,7 +365,7 @@ end
 function ENT:RemoveWaterSpoutInSolid()
 	local isOnWater    = self:OverWater()
 	local entity = ents.FindByClass("gd_d2_waterspout")[1]
-	ply = self.OWNER
+	local ply = self.OWNER
 
 	if !entity then return end
 
@@ -364,12 +379,26 @@ end
 function ENT:RemoveLandSpoutInWater()
 	local isOnSolid   = self:OverSolid()
 	local entity = ents.FindByClass("gd_d4_landspout")[1]
-	ply = self.OWNER
+	local ply = self.OWNER
 
 	if !entity then return end
 
 	if isOnSolid == true then
 	elseif isOnSolid == false then
+		if entity then entity:Remove() end
+	end
+
+end
+
+function ENT:RemoveSnownadoisnotinsnow()
+	local isOnSnow   = self:OverSnow()
+	local entity = ents.FindByClass("gd_d3_snownado")[1]
+	local ply = self.OWNER
+
+	if !entity then return end
+
+	if isOnSnow == true then
+	elseif isOnSnow == false then
 		if entity then entity:Remove() end
 	end
 
