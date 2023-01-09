@@ -215,12 +215,12 @@ end
 function ENT:RandomMove()
 
 	local selfpos    = self:GetPos()
-	local selfpos_2D = Vector(selfpos.x, selfpos.y, 0)
+	local selfpos_2D = Vec2D(selfpos)
 	
 	local dist       = selfpos_2D:Distance(self.TargetPosition)
 	local dir        = (self.TargetPosition - selfpos_2D):GetNormalized()
 	
-	
+
 
 	if dist < 50 then 
 		self:AddToPositionsCache(selfpos)
@@ -237,10 +237,10 @@ function ENT:RandomMove()
 	
 		self:SetPos( tr.HitPos + Vector(0,0,10) )
 		
-		
-	
-		
 		self:BounceFromWalls(dir)
+		self:Waterspout(dir)
+		self:Landspout(dir)
+		self:Snownado(dir)
 			
 		
 	
@@ -292,8 +292,6 @@ function ENT:PathedMove()
 	local nextpos = self:GetPos() + (dir * self.GroundSpeed)
 
 	self:SetPos(nextpos)
-	
-	
 
 	if distance_to_next_point < 100 then self.NextPathIndex = self.NextPathIndex + 1 end 
 
@@ -314,91 +312,74 @@ function ENT:PreCalculateVolume()
 	
 end
 
-function ENT:OverWater()
-
-	local tr = util.TraceLine( {
-		start = self:GetPos(),
-		endpos = self:GetPos() - Vector(0,0,11),
-		mask   = MASK_WATER
-	})
+function ENT:Waterspout(dir)
 	
-	--print(self:GetPos())
-	--print(tr.HitPos)
-
-	return tr.HitWorld
-	
-end
-
-function ENT:OverSnow()
-
 	local tr = util.TraceLine( {
 		start = self:GetPos(),
 		endpos = self:GetPos() - Vector(0,0,11),
 		mask   = MASK_SOLID_BRUSHONLY
 	})
-	
-	--print(self:GetPos())
-	--print(tr.HitPos)
 
-	return (tr.MatType == 74)
-	
-end
-
-function ENT:OverSolid()
-
-	local tr = util.TraceLine({
-		start = self:GetPos(),
-		endpos = self:GetPos() - Vector(0,0,11),
-		mask   = MASK_SOLID_BRUSHONLY
-	})
-	
-	--print(self:GetPos())
-	--print(tr.HitPos)
-	
-	return tr.HitWorld
-	
-end
-
-function ENT:RemoveWaterSpoutInSolid()
-	local isOnWater    = self:OverWater()
+	local isOnSolid    = tr.Hit
 	local entity = ents.FindByClass("gd_d2_waterspout", "gd_d2_waterspout_pathed")[1]
 
 	if !entity then return end
 
-	if isOnWater == true then
-	elseif isOnWater == false then
-		if entity then entity:Remove() end
+	if isOnSolid then
+		local new_target = self:GetPos() + ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
+		self.TargetPosition = Vec2D(new_target)
 	end
 
 end
 
-function ENT:RemoveLandSpoutInWaterOrSnow()
-	local isOnSolid   = self:OverSolid()
-	local isOnSnow   = self:OverSnow()
+function ENT:Landspout(dir)
+	
+	local tr = util.TraceLine({
+		start = self:GetPos(),
+		endpos = self:GetPos() - Vector(0,0,11),
+		mask   = MASK_WATER
+	})
+	local tr2 = util.TraceLine({
+		start = self:GetPos(),
+		endpos = self:GetPos() - Vector(0,0,11),
+		mask   = MASK_SOLID_BRUSHONLY
+	})
+
+
+	local IsOnWater   = tr.Hit
+	local isOnSnow   =  tr2.Hit and (tr2.MatType == 74)
 	local entity = ents.FindByClass("gd_d4_landspout", "gd_d4_landspout_pathed")[1]
 
 
 	if !entity then return end
 
-	if isOnSolid == true then
-	elseif isOnSolid == false then
-		if entity then entity:Remove() end
-	elseif isOnSnow == true then
-		if entity then entity:Remove() end
+	if IsOnWater then
+		local new_target = self:GetPos() + ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
+		self.TargetPosition = Vec2D(new_target)
+	elseif isOnSnow then
+		local new_target = self:GetPos() + ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
+		self.TargetPosition = Vec2D(new_target)
 	end
 
 end
 
-function ENT:RemoveSnownadoIsNotInSnow()
-	local isOnSnow   = self:OverSnow()
+function ENT:Snownado(dir)
+	
+	local tr = util.TraceLine( {
+		start = self:GetPos(),
+		endpos = self:GetPos() - Vector(0,0,11),
+		mask   = MASK_SOLID_BRUSHONLY
+	})
+
+	local isOnSnow   = tr.Hit and (tr.MatType != 74)
 	local entity = ents.FindByClass("gd_d3_snownado", "gd_d3_snownado_pathed")[1]
 
 
 	if !entity then return end
 
-	if isOnSnow == true then
-	elseif isOnSnow == false then
-		if entity then entity:Remove() end
+	if isOnSnow then
+		local new_target = self:GetPos() + ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
+		self.TargetPosition = Vec2D(new_target)
 	end
 
 end
@@ -1045,9 +1026,7 @@ function ENT:Think()
 		self:Move()
 		self:Physics()
 		self:IsParentValid()
-		self:RemoveWaterSpoutInSolid()
-		self:RemoveLandSpoutInWaterOrSnow()
-		self:RemoveSnownadoIsNotInSnow()
+
 		
 		
 
