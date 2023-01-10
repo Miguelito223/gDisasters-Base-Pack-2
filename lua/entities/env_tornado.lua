@@ -322,14 +322,13 @@ function ENT:Waterspout(dir)
 
 	local isOnSolid    = tr.Hit
 	local entity = ents.FindByClass("gd_d2_waterspout", "gd_d2_waterspout_pathed")[1]
-
-	if !entity then return end
-
-	if isOnSolid then
-		local new_target = tr.HitPos - ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
-		self.TargetPosition = Vec2D(new_target)
+	
+	if entity then
+		if isOnSolid then
+			local new_target = tr.HitPos - ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
+			self.TargetPosition = Vec2D(new_target)
+		end
 	end
-
 end
 
 function ENT:Landspout(dir)
@@ -351,16 +350,15 @@ function ENT:Landspout(dir)
 	local isOnSnow   =  tr2.Hit and (tr2.MatType == 74)
 	local entity = ents.FindByClass("gd_d4_landspout", "gd_d4_landspout_pathed")[1]
 
-	if !entity then return end
-
-	if IsOnWater then
-		local new_target = tr.HitPos - ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
-		self.TargetPosition = Vec2D(new_target)
-	elseif isOnSnow then
-		local new_target = tr.HitPos - ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
-		self.TargetPosition = Vec2D(new_target)
+	if entity then  
+		if IsOnWater then
+			local new_target = tr.HitPos - ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
+			self.TargetPosition = Vec2D(new_target)
+		elseif isOnSnow then
+			local new_target = tr.HitPos - ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
+			self.TargetPosition = Vec2D(new_target)
+		end
 	end
-
 end
 
 function ENT:Snownado(dir)
@@ -374,13 +372,12 @@ function ENT:Snownado(dir)
 	local isNotOnSnow   = tr.Hit and (tr.MatType != 74)
 	local entity = ents.FindByClass("gd_d3_snownado", "gd_d3_snownado_pathed")[1]
 
-	if !entity then return end
-
-	if isNotOnSnow then
-		local new_target = tr.HitPos - ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
-		self.TargetPosition = Vec2D(new_target)
+	if entity then  
+		if isNotOnSnow then
+			local new_target = tr.HitPos - ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
+			self.TargetPosition = Vec2D(new_target)
+		end
 	end
-
 end
 
 function ENT:CalculateVolumeOfTornado()
