@@ -326,7 +326,7 @@ function ENT:Waterspout(dir)
 	if !entity then return end
 
 	if isOnSolid then
-		local new_target = self:GetPos() + ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
+		local new_target = tr.HitPos - ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
 		self.TargetPosition = Vec2D(new_target)
 	end
 
@@ -339,6 +339,7 @@ function ENT:Landspout(dir)
 		endpos = self:GetPos() - Vector(0,0,11),
 		mask   = MASK_WATER
 	})
+	
 	local tr2 = util.TraceLine({
 		start = self:GetPos(),
 		endpos = self:GetPos() - Vector(0,0,11),
@@ -350,14 +351,13 @@ function ENT:Landspout(dir)
 	local isOnSnow   =  tr2.Hit and (tr2.MatType == 74)
 	local entity = ents.FindByClass("gd_d4_landspout", "gd_d4_landspout_pathed")[1]
 
-
 	if !entity then return end
 
 	if IsOnWater then
-		local new_target = self:GetPos() + ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
+		local new_target = tr.HitPos - ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
 		self.TargetPosition = Vec2D(new_target)
 	elseif isOnSnow then
-		local new_target = self:GetPos() + ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
+		local new_target = tr.HitPos - ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
 		self.TargetPosition = Vec2D(new_target)
 	end
 
@@ -371,14 +371,13 @@ function ENT:Snownado(dir)
 		mask   = MASK_SOLID_BRUSHONLY
 	})
 
-	local isOnSnow   = tr.Hit and (tr.MatType != 74)
+	local isNotOnSnow   = tr.Hit and (tr.MatType != 74)
 	local entity = ents.FindByClass("gd_d3_snownado", "gd_d3_snownado_pathed")[1]
-
 
 	if !entity then return end
 
-	if isOnSnow then
-		local new_target = self:GetPos() + ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
+	if isNotOnSnow then
+		local new_target = tr.HitPos - ( dir - 2 * ( dir:Dot(tr.HitNormal)) * tr.HitNormal) * Vec2D(self:GetPos()):Distance(Vec2D(self.TargetPosition))
 		self.TargetPosition = Vec2D(new_target)
 	end
 
