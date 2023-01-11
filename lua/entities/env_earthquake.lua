@@ -2,7 +2,7 @@ AddCSLuaFile()
 DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
-ENT.PrintName		                 =  "env_earthquake"
+ENT.PrintName		                 =  "Earthquake"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
