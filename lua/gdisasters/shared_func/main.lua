@@ -1402,6 +1402,21 @@ function convert_MetoKMPH(me)
 	return (me*3600 / 1000)
 end
 
+function convert_KMPHtoMPH(kmph)
+	return (kmph * 0.621)
+end
+function convert_MPHtoKMPH(mph)
+	return (mph * 1609)
+end
+
+function convert_CelciustoFahrenheit(celcius)
+	return ((celcius * 9 / 5) + 32)
+end
+
+function convert_FahrenheittoCelcius(Fahrenheit)
+	return ((Fahrenheit - 32) * 5 / 9 )
+end
+
 function FixedSortedPairsByMemberValue( pTable, pValueName, Desc )
 
 	pTable = table.Copy( pTable )

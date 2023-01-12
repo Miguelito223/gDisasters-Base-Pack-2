@@ -211,12 +211,10 @@ if (CLIENT) then
 		local windspd   = math.Round(GetGlobalFloat("gDisasters_Wind"),1)
 		local lwindspd  = math.Round(LocalPlayer():GetNWFloat("LocalWind"),1)
 
-		local air_temp   =  tostring( air_tmp ).."°C"
-		local body_temp  =  tostring( body_tmp ).."°C"
-		local body_Oxy  =  tostring( body_Oxygen ).."%"
-		local air_tempf   =  tostring( air_tmp ).."°F"
-		local body_tempf  =  tostring( body_tmp ).."°F"
-		local humidity   =  tostring( hm).."%"
+		local air_temp   =  tostring( air_tmp )
+		local body_temp  =  tostring( body_tmp )
+		local body_Oxy  =  tostring( body_Oxygen )
+		local humidity   =  tostring( hm)
 		
 		
 		local function windspeed_Format(speed)
@@ -233,9 +231,9 @@ if (CLIENT) then
 			elseif speed > 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "km/h" then
 				strspeed = table.Random({chr1..chr2..chr3..chr4.." km/h", "ERROR"})
 			elseif speed <= 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "mph" then
-				strspeed = chr1..chr2..chr3..chr4.." mph"
+				strspeed = convert_KMPHtoMPH(chr1..chr2..chr3..chr4).." mph"
 			elseif speed > 256 and GetConVar("gdisasters_hud_windtype"):GetString() == "mph" then
-				strspeed = table.Random({chr1..chr2..chr3..chr4.." mph", "ERROR"})
+				strspeed = table.Random({convert_KMPHtoMPH(chr1..chr2..chr3..chr4).." mph", "ERROR"})
 			end
 			
 			return strspeed
@@ -258,15 +256,15 @@ if (CLIENT) then
 		local function drawText()
 
 			if GetConVar("gdisasters_hud_temptype"):GetString() == "c" then
-				draw.DrawText( "Air Temperature: "..air_temp, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
-				draw.DrawText( "Body Temperature: "..body_temp, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_temperature.x , pos_body_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+				draw.DrawText( "Air Temperature: "..air_temp.."°C", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+				draw.DrawText( "Body Temperature: "..body_temp.."°C", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_temperature.x , pos_body_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			elseif GetConVar("gdisasters_hud_temptype"):GetString() == "f" then
-                draw.DrawText( "Air Temperature: "..air_tempf, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
-				draw.DrawText( "Body Temperature: "..body_tempf, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_temperature.x , pos_body_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+                draw.DrawText( "Air Temperature: "..convert_CelciustoFahrenheit(air_temp).."°F", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+				draw.DrawText( "Body Temperature: "..convert_CelciustoFahrenheit(body_temp).."°F", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_temperature.x , pos_body_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			end
 			
-			draw.DrawText( "Body Oxygen: "..body_Oxy, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_oxygen.x , pos_body_oxygen.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
-			draw.DrawText( "Humidity: "..humidity, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_humidity.x , pos_humidity.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+			draw.DrawText( "Body Oxygen: "..body_Oxy.."%", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_oxygen.x , pos_body_oxygen.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+			draw.DrawText( "Humidity: "..humidity.."%", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_humidity.x , pos_humidity.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			
 
 			local color  = Color(255,255,255,255)

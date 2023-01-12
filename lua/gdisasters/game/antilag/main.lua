@@ -94,14 +94,15 @@ gDisasters.Game.AntiLag.CollisionsLoop = function()
 end
 
 gDisasters.Game.AntiLag.MainLoop  = function()
-	if GetConVar("gdisasters_antilag_enabled"):GetInt() == 0 then return end
-	if CurTime() < gDisasters.Game.AntiLag.NextThink then return end 
-	
-	gDisasters.Game.AntiLag.Collisions.PerSecond = 0 
-	gDisasters.Game.AntiLag.Collisions.PerSecondPerProp = 0  
-	
-	gDisasters.Game.AntiLag.NextThink = CurTime() + 1 
-	gDisasters.Game.AntiLag.CollisionsLoop()	
+	if GetConVar("gdisasters_antilag_enabled"):GetInt() == 1 then  
+		if CurTime() < gDisasters.Game.AntiLag.NextThink then return end 
+		
+		gDisasters.Game.AntiLag.Collisions.PerSecond = 0 
+		gDisasters.Game.AntiLag.Collisions.PerSecondPerProp = 0  
+		
+		gDisasters.Game.AntiLag.NextThink = CurTime() + 1 
+		gDisasters.Game.AntiLag.CollisionsLoop()
+	end	
 end
 hook.Add("Think", "gDisasters.Game.AntiLag.MainLoop", gDisasters.Game.AntiLag.MainLoop)
 
