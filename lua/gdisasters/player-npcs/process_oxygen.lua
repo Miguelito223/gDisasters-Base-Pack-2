@@ -4,7 +4,7 @@ if (SERVER) then
         if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() == 0 then return end 
         
         for k, v in pairs(player.GetAll()) do
-            if isinWater(v) or isinLava(v) then 
+            if isUnderWater(v) or isUnderLava(v) then 
                 v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen - 0.01, 0,10) 
                 
                 if v.gDisasters.Body.Oxygen <= 0 then

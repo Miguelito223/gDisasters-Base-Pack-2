@@ -864,9 +864,39 @@ if (SERVER) then
 			return false
 		end
 	end
+
+	function isUnderWater(ply)
+		local wl = ply:WaterLevel()
+		local wl2 = ply:GetNWBool("IsUnderwater", false)==true
+		
+		if InfMap then
+			local function inWater(pos)
+				if !InfMap.water_height then return end
+    			return pos[3] < InfMap.water_height
+			end
+
+			wl3 = inWater(ply:GetPos())
+		end
+
+		if wl >= 3 or wl2 or wl3 then
+			return true
+		else
+			return false
+		end
+	end
 	
 	function isinLava(ply)
 		local lv = ply.IsInlava
+
+		if lv then
+			return true
+		else
+			return false
+		end
+	end
+
+	function isUnderLava(ply)
+		local lv = ply:GetNWBool("IsUnderlava", false)==true
 
 		if lv then
 			return true
