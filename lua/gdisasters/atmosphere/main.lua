@@ -4,6 +4,7 @@ if (SERVER) then
 	SetGlobalFloat("gDisasters_Pressure", 0)
 	SetGlobalFloat("gDisasters_Humidity", 0)
 	SetGlobalFloat("gDisasters_Wind", 0)
+	SetGlobalVector("gDisasters_Wind_Direction", Vector(0,0,0))
 
 	function Atmosphere()
 		local scale                                = (1/engine.TickInterval()) / 66
@@ -161,6 +162,7 @@ if (SERVER) then
 	
 		
 		SetGlobalFloat("gDisasters_Wind", windspeed)
+		SetGlobalVector("gDisasters_Wind_Direction", winddir)
 		
 	
 		

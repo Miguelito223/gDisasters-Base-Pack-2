@@ -202,19 +202,22 @@ if (CLIENT) then
 		local pos_body_oxygen        	  = Vector(280 * xscale, 920 * yscale, 0)
 		local pos_humidity                 = Vector(280 * xscale, 950 * yscale , 0)
 		local pos_windspeed                = Vector(280 * xscale, 980 * yscale , 0)
-		local pos_lwindspeed                = Vector(280 * xscale, 1010 * yscale , 0)
+		local pos_lwindspeed                = Vector(280 * xscale, 1013 * yscale , 0)
+		local pos_winddir               = Vector(280 * xscale, 1045 * yscale , 0)
 		
 		local air_tmp   = math.Round(GetGlobalFloat("gDisasters_Temperature"),1)
 		local body_tmp  = math.Round(LocalPlayer():GetNWFloat("BodyTemperature"),1)
 		local body_Oxygen  = math.Round(LocalPlayer():GetNWFloat("BodyOxygen"))
 		local hm        = math.Round(GetGlobalFloat("gDisasters_Humidity"))
 		local windspd   = math.Round(GetGlobalFloat("gDisasters_Wind"),1)
+		local winddir   = GetGlobalVector("gDisasters_Wind_Direction")
 		local lwindspd  = math.Round(LocalPlayer():GetNWFloat("LocalWind"),1)
 
 		local air_temp   =  tostring( air_tmp )
 		local body_temp  =  tostring( body_tmp )
 		local body_Oxy  =  tostring( body_Oxygen )
 		local humidity   =  tostring( hm)
+		local Wind_Direction   =  tostring( winddir)
 		
 		
 		local function windspeed_Format(speed)
@@ -247,7 +250,7 @@ if (CLIENT) then
 	
 		local function drawFrame()
 		
-			draw.RoundedBox( 12 * scale, 270 * xscale, 855 * yscale, 560 * xscale, 200 * yscale, Color( 30, 30, 30, 100 ) ) -- main box
+			draw.RoundedBox( 12 * scale, 270 * xscale, 855 * yscale, 560 * xscale, 220 * yscale, Color( 30, 30, 30, 100 ) ) -- main box
 			draw.RoundedBox( 6 * scale, 565 * xscale, 865 * yscale, 255 * xscale, 180 * yscale, Color( 30, 30, 30, 100 ) ) -- main box right
 			draw.RoundedBox( 6 * scale, 680 * xscale, 890 * yscale, 128 * xscale, 128 * yscale, Color( 30, 30, 30, 150 + (math.sin(CurTime()) * 50) ) ) 
 			
@@ -277,7 +280,7 @@ if (CLIENT) then
 			
 			draw.DrawText( "Wind Speed: "..wind_speed, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_windspeed.x , pos_windspeed.y, color, TEXT_ALIGN_LEFT )
 			draw.DrawText( "Local Wind Speed: "..local_wspeed, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_lwindspeed.x , pos_lwindspeed.y, color2, TEXT_ALIGN_LEFT )
-	
+			draw.DrawText( "Wind Direction: "..Wind_Direction, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_winddir.x , pos_winddir.y, color, TEXT_ALIGN_LEFT )
 			
 		end
 		
