@@ -98,6 +98,7 @@ if (SERVER) then
 	
 		local table_wind = GLOBAL_SYSTEM["Atmosphere"]["Wind"]
 		local wind_mul   = (math.Clamp(table_wind["Speed"],200, 256) -200) / 10
+		local phys = ent:GetPhysicsObject()
 		
 	
 		if HitChance(0.01 + wind_mul ) then
@@ -106,7 +107,7 @@ if (SERVER) then
 			
 			if #constraint.GetTable( ent ) != 0 then
 				can_play_sound = true 
-			elseif ent:GetPhysicsObject():IsMotionEnabled()==false then
+			elseif phys:IsMotionEnabled()==false then
 				can_play_sound = true 
 			end	
 			
@@ -119,6 +120,7 @@ if (SERVER) then
 				if windspeed > 60 then 
 				
 					local material_type = GetMaterialType(ent)
+					
 					
 					if material_type == "wood" then 
 						sound.Play(table.Random(Break_Sounds.Wood), ent:GetPos(), 80, math.random(90,110), 1)
@@ -143,8 +145,8 @@ if (SERVER) then
 					
 					end
 					
-					ent:GetPhysicsObject():EnableMotion(true)
-					ent:GetPhysicsObject():Wake()
+					phys:EnableMotion(true)
+					phys:Wake()
 					constraint.RemoveAll( ent )
 
 				
