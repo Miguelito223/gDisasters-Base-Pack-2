@@ -1423,7 +1423,6 @@ function convert_MetoSU(metres)
 	return (metres * 39.37) / 0.75
 end
 	
-	
 function convert_KMPHtoMe(kmph)
 	return (kmph*1000)/3600
 end

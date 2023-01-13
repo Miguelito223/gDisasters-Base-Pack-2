@@ -268,88 +268,86 @@ if (SERVER) then
 					local blocked = IsSomethingBlockingWind(v)
 					
 					if blocked==false and outdoor==true then
-					
-					if v:IsNPC() or v:IsNextBot() then
-					
-						local pos        	  = v:GetPos()
-						local hitLeft   	  = performTrace(v, Vector(1,0,0))
-						local hitRight   	  = performTrace(v, Vector(-1,0,0))
 						
-						local hitForward 	  = performTrace(v, Vector(0,1,0))
-						local hitBehind       = performTrace(v, Vector(0,-1,0))		
+						if v:IsNPC() or v:IsNextBot() then
 						
-						local area            = ((hitLeft:Distance(hitRight) * pos:Distance(hitForward))) + (0.5 *(hitLeft:Distance(hitRight) * pos:Distance(hitBehind)))  
-						local area_percentage = math.Clamp(area / 5000000, 0, 1)
-						local mass    = phys:GetMass()
-						
-						local wind 				=  area_percentage * windspeed
-						
-						local windvel           = (convert_MetoSU(convert_KMPHtoMe( ( (math.Clamp((( math.Clamp( wind / 256, 0, 1) * 5)^2) * wind , 0, wind ) ) / 2.9225))) ) * winddir 
-						local frictional_scalar = math.Clamp(windvel:Length(),-400, 400) 
-						local frictional_velocity = frictional_scalar * -windvel:GetNormalized()
-						local windvel_new         = ( windvel  + frictional_velocity ) * 2
-						
-						local windvel_cap         = windvel_new:Length() - v:GetVelocity():Length() 
-						
-						if windvel_cap > 0 then
-						
-							if windspeed > 25 then 
+							local pos        	  = v:GetPos()
+							local hitLeft   	  = performTrace(v, Vector(1,0,0))
+							local hitRight   	  = performTrace(v, Vector(-1,0,0))
+
+							local hitForward 	  = performTrace(v, Vector(0,1,0))
+							local hitBehind       = performTrace(v, Vector(0,-1,0))		
+
+							local area            = ((hitLeft:Distance(hitRight) * pos:Distance(hitForward))) + (0.5 *(hitLeft:Distance(hitRight) * pos:Distance(hitBehind)))  
+							local area_percentage = math.Clamp(area / 5000000, 0, 1)
+							local mass    = phys:GetMass()
+
+							local wind 				=  area_percentage * windspeed
+
+							local windvel           = (convert_MetoSU(convert_KMPHtoMe( ( (math.Clamp((( math.Clamp( wind / 256, 0, 1) * 5)^2) * wind , 0, wind ) ) / 2.9225))) ) * winddir 
+							local frictional_scalar = math.Clamp(windvel:Length(),-400, 400) 
+							local frictional_velocity = frictional_scalar * -windvel:GetNormalized()
+							local windvel_new         = ( windvel  + frictional_velocity ) * 2
+
+							local windvel_cap         = windvel_new:Length() - v:GetVelocity():Length() 
+
+							if windvel_cap > 0 then
 							
-								if mass < 80 then 
+								if windspeed > 25 then 
 								
-									v:SetVelocity( ((v:GetVelocity() - windvel_new) - v:GetVelocity()) * 5  )
-								
-								end
-
-								if windspeed >= 80 then 	
-
-									if mass > 80 and mass < 2000 then
+									if mass < 80 then 
 									
-										v:SetVelocity( ((v:GetVelocity() - windvel_new) - v:GetVelocity()) * 3 )
+										v:SetVelocity( ((v:GetVelocity() - windvel_new) - v:GetVelocity()) * 5  )
 									
-									elseif mass > 2000 then 
-									
-										v:SetVelocity( ((v:GetVelocity() - windvel_new) - v:GetVelocity()) )
-										
 									end
-									
-									
+
+									if windspeed >= 80 then 	
+
+										if mass > 80 and mass < 2000 then
+										
+											v:SetVelocity( ((v:GetVelocity() - windvel_new) - v:GetVelocity()) * 3 )
+										
+										elseif mass > 2000 then 
+										
+											v:SetVelocity( ((v:GetVelocity() - windvel_new) - v:GetVelocity()) )
+
+										end
+
+
+									end
+								
 								end
 							
 							end
+
+						end
+
+						local area    = Area(v)
+						local mass    = phys:GetMass()
+
+						local force_mul_area     = math.Clamp((area/680827),0,1) -- bigger the area >> higher the f multiplier is
+						local friction_mul       = math.Clamp((mass/50000),0,1) -- lower the mass  >> lower frictional force 
+						local avrg_mul           = (force_mul_area + friction_mul) / 2 
+
+						local windvel           = convert_MetoSU(convert_KMPHtoMe(windspeed / 2.9225)) * winddir 
+						local frictional_scalar = math.Clamp(windvel:Length(), 0, mass)
+						local frictional_velocity = frictional_scalar * -windvel:GetNormalized()
+						local windvel_new         = (windvel + frictional_velocity) * -1
+
+						local windvel_cap         = windvel_new:Length() - v:GetVelocity():Length() 
+
+						if windvel_cap > 0 then
+						
+							phys:AddVelocity(  windvel_new )
 						
 						end
-								
-					end
-						
-					local area    = Area(v)
-					local mass    = phys:GetMass()
-					
-					local force_mul_area     = math.Clamp((area/680827),0,1) -- bigger the area >> higher the f multiplier is
-					local friction_mul       = math.Clamp((mass/50000),0,1) -- lower the mass  >> lower frictional force 
-					local avrg_mul           = (force_mul_area + friction_mul) / 2 
-			
-					
-					
-					local windvel           = convert_MetoSU(convert_KMPHtoMe(windspeed / 2.9225)) * winddir 
-					local frictional_scalar = math.Clamp(windvel:Length(), 0, mass)
-					local frictional_velocity = frictional_scalar * -windvel:GetNormalized()
-					local windvel_new         = (windvel + frictional_velocity) * -1
-					
-					local windvel_cap         = windvel_new:Length() - v:GetVelocity():Length() 
-					
-					if windvel_cap > 0 then
-					
-						phys:AddVelocity(  windvel_new )
-					
-					end
 				
-					
-					if windconstraints_remove then 
-						WindUnweld(v)
-					
+
+						if windconstraints_remove then 
+							WindUnweld(v)
+						
+						end
 					end
-					
 				end
 			end
 				
