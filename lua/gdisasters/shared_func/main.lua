@@ -1446,6 +1446,26 @@ function convert_FahrenheittoCelcius(Fahrenheit)
 	return ((Fahrenheit - 32) * 5 / 9 )
 end
 
+function convert_VectorToAngle(vector)
+	x = vector.x
+	y = vector.y
+	return math.atan2(y,x)
+end
+
+function convert_AngleToDegrees(angle)
+	return math.deg(angle)
+end
+
+function convert_DegreesToAngle(degrees)
+	return math.rad(degrees)
+end
+
+function convert_AngleToVector(angle)
+	x = math.cos(angle)
+	y = math.sin(angle)
+	return Vector(x, y, 0)
+end
+
 function FixedSortedPairsByMemberValue( pTable, pValueName, Desc )
 
 	pTable = table.Copy( pTable )

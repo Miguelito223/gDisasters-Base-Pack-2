@@ -217,8 +217,7 @@ if (CLIENT) then
 		local body_temp  =  tostring( body_tmp )
 		local body_Oxy  =  tostring( body_Oxygen )
 		local humidity   =  tostring( hm)
-		local Wind_Direction   =  tostring( winddir)
-		
+		local Wind_Direction   =  convert_AngleToDegrees(convert_VectorToAngle(winddir))
 		
 		local function windspeed_Format(speed)
 			local strspeed = tostring(speed)
@@ -280,7 +279,7 @@ if (CLIENT) then
 			
 			draw.DrawText( "Wind Speed: "..wind_speed, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_windspeed.x , pos_windspeed.y, color, TEXT_ALIGN_LEFT )
 			draw.DrawText( "Local Wind Speed: "..local_wspeed, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_lwindspeed.x , pos_lwindspeed.y, color2, TEXT_ALIGN_LEFT )
-			draw.DrawText( "Wind Direction: "..Wind_Direction, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_winddir.x , pos_winddir.y, color, TEXT_ALIGN_LEFT )
+			draw.DrawText( "Wind Direction: "..Wind_Direction.."°", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_winddir.x , pos_winddir.y, color, TEXT_ALIGN_LEFT )
 			
 		end
 		
