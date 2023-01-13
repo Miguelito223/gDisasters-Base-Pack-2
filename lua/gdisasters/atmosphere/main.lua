@@ -337,8 +337,8 @@ if (SERVER) then
 						local windvel_cap         = windvel_new:Length() - v:GetVelocity():Length() 
 
 						if windvel_cap > 0 then
-						
-							phys:AddVelocity(  windvel_new )
+							
+							phys:AddVelocity(windvel_new )
 						
 						end
 				
@@ -354,10 +354,6 @@ if (SERVER) then
 		end
 	end
 		
-end
-
-
-
 
 end
 
