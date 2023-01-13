@@ -143,8 +143,10 @@ if (SERVER) then
 					
 					end
 					
+					ent:GetPhysicsObject():EnableMotion(true)
+					ent:GetPhysicsObject():Wake()
 					constraint.RemoveAll( ent )
-					ent:GetPhysicsObject():EnableMotion( true )
+
 				
 				end
 			end
