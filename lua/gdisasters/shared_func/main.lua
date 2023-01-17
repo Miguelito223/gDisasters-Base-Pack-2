@@ -844,66 +844,7 @@ if (SERVER) then
 		end
 	end
 
-	function isinWater(ply)
-		local wl = ply:WaterLevel()
-		local wl1 = ( bit.band( util.PointContents(ply:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER )
-		local wl2 = ply.IsInWater
-		
-		if InfMap then
-			local function inWater(pos)
-				if !InfMap.water_height then return end
-    			return pos[3] < InfMap.water_height
-			end
 
-			wl3 = inWater(ply:GetPos())
-		end
-
-		if wl > 0 or wl1 or wl2 or wl3 then
-			return true
-		else
-			return false
-		end
-	end
-
-	function isUnderWater(ply)
-		local wl = ply:WaterLevel()
-		local wl2 = ply:GetNWBool("IsUnderwater", false)==true
-		
-		if InfMap then
-			local function inWater(pos)
-				if !InfMap.water_height then return end
-    			return pos[3] < InfMap.water_height
-			end
-
-			wl3 = inWater(ply:GetPos())
-		end
-
-		if wl >= 3 or wl2 or wl3 then
-			return true
-		else
-			return false
-		end
-	end
-	
-	function isinLava(ply)
-		local lv = ply.IsInlava
-
-		if lv then
-			return true
-		else
-			return false
-		end
-	end
-
-	function isUnderLava(ply)
-		local lv = ply:GetNWBool("IsUnderlava", false)==true
-
-		if lv then
-			return true
-		else
-			return false
-		end
-	end
 
 	function windPressure(windspeed)
 		return (windspeed*windspeed)*0.00256
@@ -1043,12 +984,12 @@ if (CLIENT) then
 		level = 80,
 		pitch = { 20, 49 },
 		sound = "ambient/water/underwater.wav"
-	} )
+	})
 	
 	
 	function gfx_Underwater()
 	
-		if LocalPlayer():GetNWBool("IsUnderwater", false)==true then
+		if isUnderWater(LocalPlayer())==true then
 			if LocalPlayer().LastIsUnderwater==false then
 				LocalPlayer():EmitSound("Underwater", 100, 100)
 				LocalPlayer().LastIsUnderwater=true
@@ -1092,7 +1033,7 @@ if (CLIENT) then
 				render.SetMaterial( mat_Overlay )
 				render.DrawScreenQuad()
 			end
-		elseif LocalPlayer():GetNWBool("IsUnderwater", false)==false then -- FIX NULL ERROR 
+		elseif isUnderWater(LocalPlayer())==false then -- FIX NULL ERROR 
 			LocalPlayer():StopSound("Underwater")
 		end
 		LocalPlayer().LastIsUnderwater = LocalPlayer():GetNWBool("IsUnderwater")
@@ -1142,8 +1083,8 @@ if (CLIENT) then
 		
 	function gfx_UnderLava()
 	
-		if LocalPlayer():GetNWBool("IsUnderlava", false)==true then
-			if LocalPlayer().LastIsUnderlava==false then
+		if isUnderLava(LocalPlayer())==true then
+			if math.random(1,100)==1 and  then
 				LocalPlayer():EmitSound("Underwater", 100, 100)
 				LocalPlayer().LastIsUnderlava=true
 			end
@@ -1181,7 +1122,7 @@ if (CLIENT) then
 				render.SetMaterial( mat_Overlay )
 				render.DrawScreenQuad()
 			end
-		elseif LocalPlayer():GetNWBool("IsUnderlava", false)==false then -- FIX NULL ERROR
+		elseif isUnderLava(LocalPlayer())==false then -- FIX NULL ERROR
 			LocalPlayer():StopSound("Underwater")
 		
 		end
@@ -1333,6 +1274,67 @@ if (CLIENT) then
 	
 	end
 
+end
+
+function isinWater(ply)
+	local wl = ply:WaterLevel()
+	local wl1 = ( bit.band( util.PointContents(ply:GetPos()), CONTENTS_WATER ) == CONTENTS_WATER )
+	local wl2 = ply.IsInWater
+	
+	if InfMap then
+		local function inWater(pos)
+			if !InfMap.water_height then return end
+			return pos[3] < InfMap.water_height
+		end
+
+		wl3 = inWater(ply:GetPos())
+	end
+
+	if wl > 0 or wl1 or wl2 or wl3 then
+		return true
+	else
+		return false
+	end
+end
+
+function isUnderWater(ply)
+	local wl = ply:WaterLevel()
+	local wl2 = ply:GetNWBool("IsUnderwater", false)==true
+	
+	if InfMap then
+		local function inWater(pos)
+			if !InfMap.water_height then return end
+			return pos[3] < InfMap.water_height
+		end
+
+		wl3 = inWater(ply:GetPos())
+	end
+
+	if wl >= 3 or wl2 or wl3 then
+		return true
+	else
+		return false
+	end
+end
+
+function isinLava(ply)
+	local lv = ply.IsInlava
+
+	if lv then
+		return true
+	else
+		return false
+	end
+end
+
+function isUnderLava(ply)
+	local lv = ply:GetNWBool("IsUnderlava", false)==true
+
+	if lv then
+		return true
+	else
+		return false
+	end
 end
 
 function GetUnweldChanceFromEFCategory(category)
