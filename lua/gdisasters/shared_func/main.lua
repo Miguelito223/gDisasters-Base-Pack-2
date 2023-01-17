@@ -988,11 +988,12 @@ if (CLIENT) then
 	
 	
 	function gfx_Underwater()
-	
+		
+		
 		if isUnderWater(LocalPlayer())==true then
-			if LocalPlayer().LastIsUnderwater==false then
+			if LocalPlayer().LastIsUnderwater == false then
 				LocalPlayer():EmitSound("Underwater", 100, 100)
-				LocalPlayer().LastIsUnderwater=true
+				LocalPlayer().LastIsUnderwater = true
 			end
 			
 			local flood  = ents.FindByClass("env_dynamicwater")[1] or  ents.FindByClass("env_dynamicwater_b")[1]
@@ -1083,10 +1084,10 @@ if (CLIENT) then
 		
 	function gfx_UnderLava()
 	
-		if isUnderLava(LocalPlayer())==true then
-			if math.random(1,100)==1 and  then
+		if isUnderLava(LocalPlayer())==true then	
+			if LocalPlayer().LastIsUnderlava == false then
 				LocalPlayer():EmitSound("Underwater", 100, 100)
-				LocalPlayer().LastIsUnderlava=true
+				LocalPlayer().LastIsUnderwater = true
 			end
 		
 			
@@ -1124,9 +1125,9 @@ if (CLIENT) then
 			end
 		elseif isUnderLava(LocalPlayer())==false then -- FIX NULL ERROR
 			LocalPlayer():StopSound("Underwater")
-		
 		end
 		LocalPlayer().LastIsUnderlava = LocalPlayer():GetNWBool("IsUnderwater")
+		
 	
 	end
 	hook.Add("RenderScreenspaceEffects", "gfx_UnderLava", gfx_UnderLava )
