@@ -734,7 +734,7 @@ if (SERVER) then
 		net.Send(ply)
 	end
 
-	function clStopSound(ply, sound, pitch, volume)
+	function clStopSound(ply, sound)
 
 		net.Start("gd_stopsound")
 		net.WriteString(sound or "")
