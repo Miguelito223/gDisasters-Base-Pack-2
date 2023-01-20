@@ -268,6 +268,25 @@ if (CLIENT) then
 	
 	end)
 
+	net.Receive("gd_soundwave_stop", function()
+
+		local s 	 = net.ReadString()
+		local stype 	 = net.ReadString() -- "mono or stereo or 3d"
+		local pos  		 = net.ReadVector() or LocalPlayer():GetPos() -- epicenter
+		local pitchrange = net.ReadTable() or {100,100}
+
+		if stype == "mono" then
+
+		elseif stype == "stereo" then
+			LocalPlayer():StopSound(s)
+		elseif stype == "3d" then
+
+		end
+
+
+	
+	end)
+
 
 
 
@@ -292,6 +311,15 @@ if (CLIENT) then
 		local pitch  = net.ReadFloat() or 100
 		local volume = net.ReadFloat() or 1
 		LocalPlayer():EmitSound(sound, 100, pitch, volume)
+
+
+	
+	end)
+
+	net.Receive("gd_stopsound", function()
+
+		local sound  = net.ReadString()
+		LocalPlayer():StopSound(sound)
 
 
 	

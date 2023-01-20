@@ -491,6 +491,33 @@ if (SERVER) then
 			end)
 		end
 	end
+	function StopSoundWave(soundpath, epicenter, soundtype, speed, pitchrange, shakeduration) -- SPEED MUST BE IN MS^-1
+
+
+		for k, v in pairs(player.GetAll()) do
+			local distance = v:GetPos():Distance(epicenter) -- distance from player and epicenter
+			local t        = distance / convert_MetoSU(speed)  -- speed of sound = 340.29 m/s
+			timer.Simple(t, function()
+				if v:IsValid() then
+				
+					net.Start("gd_soundwave")
+					net.WriteString(soundpath)
+					net.WriteString(soundtype)
+					net.WriteVector(epicenter)
+					net.WriteTable(pitchrange)
+					net.Send(v)			
+
+					if shakeduration > 0 then
+
+						net.Start("gd_shakescreen")
+						net.WriteFloat(shakeduration)
+						net.Send(v)
+					
+					end
+				end
+			end)
+		end
+	end
 
 
 
@@ -707,6 +734,13 @@ if (SERVER) then
 		net.Send(ply)
 	end
 
+	function clStopSound(ply, sound, pitch, volume)
+
+		net.Start("gd_stopsound")
+		net.WriteString(sound or "")
+		net.Send(ply)
+	end
+
 	function SetOffsetAngles(player, offset)
 		net.Start("gd_seteyeangles_cl")
 		net.WriteAngle(offset)
@@ -901,6 +935,15 @@ if (CLIENT) then
 		
 	end
 	
+	function StopLoopedSound(client, sound)
+		local sound = Sound(sound)
+	
+		CSPatch = CreateSound(client, sound)
+		CSPatch:Stop()
+		return CSPatch
+		
+	end
+	
 	
 	
 	function gfx_screenParticles()
@@ -976,23 +1019,15 @@ if (CLIENT) then
 		return current_target, self:GetPos():Distance(current_target:GetPos())
 	
 	end
-	
-	sound.Add( {
-		name = "Underwater",
-		channel = CHAN_STATIC,
-		volume = 1.0,
-		level = 80,
-		pitch = { 20, 49 },
-		sound = "ambient/water/underwater.wav"
-	})
+
 	
 	
-	function gfx_Underwater()
+	hook.Add("RenderScreenspaceEffects", "gfx_Underwater", function() 
 		
 		
 		if isUnderWater(LocalPlayer())==true then
 			if LocalPlayer().LastIsUnderwater == false then
-				LocalPlayer():EmitSound("Underwater", 100, 100)
+				LocalPlayer():EmitSound("ambient/water/underwater.wav", 100, 100)
 				LocalPlayer().LastIsUnderwater = true
 			end
 			
@@ -1035,14 +1070,14 @@ if (CLIENT) then
 				render.DrawScreenQuad()
 			end
 		elseif isUnderWater(LocalPlayer())==false then -- FIX NULL ERROR 
-			LocalPlayer():StopSound("Underwater")
+			LocalPlayer():StopSound("ambient/water/underwater.wav")
 		end
 		LocalPlayer().LastIsUnderwater = LocalPlayer():GetNWBool("IsUnderwater")
 	
-	end
-	hook.Add("RenderScreenspaceEffects", "gfx_Underwater", gfx_Underwater )
+	end)
+	
 		
-	function gfx_Underlava()
+	hook.Add("RenderScreenspaceEffects", "gfx_Underlava", function() 
 		
 		if LocalPlayer().LavaIntensity == nil then LocalPlayer().LavaIntensity = 0 end
 		LocalPlayer().LavaIntensity = math.Clamp(LocalPlayer().LavaIntensity - (FrameTime()/4), 0, 1)
@@ -1078,11 +1113,11 @@ if (CLIENT) then
 			
 		end
 		DrawLava()
-	end
-	hook.Add("RenderScreenspaceEffects", "gfx_Underlava", gfx_Underlava )
+	end)
+	
 		
 		
-	function gfx_UnderLava()
+	hook.Add("RenderScreenspaceEffects", "gfx_UnderLava", function() 
 	
 		if isUnderLava(LocalPlayer())==true then	
 			if LocalPlayer().LastIsUnderlava == false then
@@ -1129,8 +1164,8 @@ if (CLIENT) then
 		LocalPlayer().LastIsUnderlava = LocalPlayer():GetNWBool("IsUnderwater")
 		
 	
-	end
-	hook.Add("RenderScreenspaceEffects", "gfx_UnderLava", gfx_UnderLava )
+	end)
+	
 		
 		
 		
@@ -1229,6 +1264,33 @@ if (CLIENT) then
 					LocalPlayer():EmitSound( soundpath, 100, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_volume_soundwave"):GetFloat() )
 				elseif soundtype == "3d" then
 					sound.Play( soundpath,  epicenter, 170, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_volume_soundwave"):GetFloat() )
+				end		
+			end
+		end)
+	
+	end
+
+	function StopSoundWave(soundpath, epicenter, soundtype, speed, pitchrange, shakeduration) -- SPEED MUST BE IN MS^-1
+	
+	
+		local distance = LocalPlayer():GetPos():Distance(epicenter) -- distance from player and epicenter
+		local t        = distance / convert_MetoSU(speed)  -- speed of sound = 340.29 m/s
+	
+		timer.Simple(t, function()
+			if LocalPlayer():IsValid() then
+			
+				if shakeduration > 0 then
+				
+					util.ScreenShake( LocalPlayer():GetPos(), 1, 15, 1, 10000 )
+				
+				end
+			
+				if soundtype == "mono" then
+					
+				elseif soundtype == "stereo" then
+					LocalPlayer():StopSound(soundpath)
+				elseif soundtype == "3d" then
+
 				end		
 			end
 		end)
