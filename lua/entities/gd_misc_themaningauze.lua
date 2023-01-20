@@ -47,7 +47,7 @@ function ENT:Initialize()
 			self:Remove()
 		end)
 		
-		CreateSoundWave("streams/disasters/wtf/kingramses.mp3", self:GetPos(), "3d" ,340.29/2, {100,100}, 10)
+		CreateSoundWave("streams/disasters/wtf/kingramses.mp3", self:GetPos(), "stereo" ,340.29/2, {100,100}, 10)
 
 		
 	end
@@ -99,6 +99,7 @@ function ENT:Think()
 end
 
 function ENT:OnRemove()
+	StopSoundWave("streams/disasters/wtf/kingramses.mp3")
 end
 
 function ENT:Draw()

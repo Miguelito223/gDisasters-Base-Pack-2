@@ -271,18 +271,9 @@ if (CLIENT) then
 	net.Receive("gd_soundwave_stop", function()
 
 		local s 	 = net.ReadString()
-		local stype 	 = net.ReadString() -- "mono or stereo or 3d"
 
-		if stype == "mono" then
+		LocalPlayer():StopSound(s)
 
-		elseif stype == "stereo" then
-			LocalPlayer():StopSound(s)
-		elseif stype == "3d" then
-
-		end
-
-
-	
 	end)
 
 

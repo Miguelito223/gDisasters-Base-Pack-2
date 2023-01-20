@@ -491,31 +491,15 @@ if (SERVER) then
 			end)
 		end
 	end
-	function StopSoundWave(soundpath, epicenter, soundtype, speed, pitchrange, shakeduration) -- SPEED MUST BE IN MS^-1
-
-
+	function StopSoundWave(soundpath, soundtype) -- SPEED MUST BE IN MS^-1
 		for k, v in pairs(player.GetAll()) do
-			local distance = v:GetPos():Distance(epicenter) -- distance from player and epicenter
-			local t        = distance / convert_MetoSU(speed)  -- speed of sound = 340.29 m/s
-			timer.Simple(t, function()
-				if v:IsValid() then
-				
-					net.Start("gd_soundwave")
-					net.WriteString(soundpath)
-					net.WriteString(soundtype)
-					net.WriteVector(epicenter)
-					net.WriteTable(pitchrange)
-					net.Send(v)			
 
-					if shakeduration > 0 then
+			if v:IsValid() then
+				net.Start("gd_soundwave_stop")
+				net.WriteString(soundpath)
+				net.Send(v)			
+			end
 
-						net.Start("gd_shakescreen")
-						net.WriteFloat(shakeduration)
-						net.Send(v)
-					
-					end
-				end
-			end)
 		end
 	end
 
@@ -1121,7 +1105,7 @@ if (CLIENT) then
 	
 		if isUnderLava(LocalPlayer())==true then	
 			if LocalPlayer().LastIsUnderlava == false then
-				LocalPlayer():EmitSound("Underwater", 100, 100)
+				LocalPlayer():EmitSound("ambient/water/underwater.wav", 100, 100)
 				LocalPlayer().LastIsUnderwater = true
 			end
 		
@@ -1159,7 +1143,7 @@ if (CLIENT) then
 				render.DrawScreenQuad()
 			end
 		elseif isUnderLava(LocalPlayer())==false then -- FIX NULL ERROR
-			LocalPlayer():StopSound("Underwater")
+			LocalPlayer():StopSound("ambient/water/underwater.wav")
 		end
 		LocalPlayer().LastIsUnderlava = LocalPlayer():GetNWBool("IsUnderwater")
 		
@@ -1270,31 +1254,12 @@ if (CLIENT) then
 	
 	end
 
-	function StopSoundWave(soundpath, epicenter, soundtype, speed, pitchrange, shakeduration) -- SPEED MUST BE IN MS^-1
-	
-	
-		local distance = LocalPlayer():GetPos():Distance(epicenter) -- distance from player and epicenter
-		local t        = distance / convert_MetoSU(speed)  -- speed of sound = 340.29 m/s
-	
-		timer.Simple(t, function()
-			if LocalPlayer():IsValid() then
-			
-				if shakeduration > 0 then
-				
-					util.ScreenShake( LocalPlayer():GetPos(), 1, 15, 1, 10000 )
-				
-				end
-			
-				if soundtype == "mono" then
-					
-				elseif soundtype == "stereo" then
-					LocalPlayer():StopSound(soundpath)
-				elseif soundtype == "3d" then
+	function StopSoundWave(soundpath) -- SPEED MUST BE IN MS^-1
 
-				end		
-			end
-		end)
-	
+		if LocalPlayer():IsValid() then
+			LocalPlayer():StopSound(soundpath)
+		end
+		
 	end
 	
 	function AddCeilingWaterDrops(effect_nm, ieffect_nm, delay, offset_range, angle)
