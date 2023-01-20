@@ -272,8 +272,6 @@ if (CLIENT) then
 
 		local s 	 = net.ReadString()
 		local stype 	 = net.ReadString() -- "mono or stereo or 3d"
-		local pos  		 = net.ReadVector() or LocalPlayer():GetPos() -- epicenter
-		local pitchrange = net.ReadTable() or {100,100}
 
 		if stype == "mono" then
 
