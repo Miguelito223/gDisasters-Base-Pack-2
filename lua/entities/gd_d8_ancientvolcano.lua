@@ -153,6 +153,7 @@ function ENT:GetEntitiesInsideLava()
 			
 			table.insert(lents, v)
 			lents2[v] = true
+			v.IsInlava = true
 		
 		end
 	
@@ -191,9 +192,11 @@ function ENT:InsideLavaEffect()
 			
 				local eye = v:EyePos()	
 					
-				if eye.z <= (self:GetLavaLevelPosition() - Vector(0,0,200)).z then
-
+				if eye.z <= self:GetLavaLevelPosition().z then
+					v:SetNWBool("IsUnderlava", true)
 					v:SendLua("LocalPlayer().LavaIntensity=LocalPlayer().LavaIntensity + (FrameTime()*8)")
+				else
+					v:SetNWBool("IsUnderlava", false)
 				end
 			end
 			v:Ignite(15)

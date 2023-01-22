@@ -1110,7 +1110,7 @@ if (CLIENT) then
 			end
 		
 			
-			local flood2  = ents.FindByClass("env_dynamiclava")[1] or  ents.FindByClass("env_dynamiclava_b")[1]
+			local flood2  = ents.FindByClass("env_dynamiclava")[1] or ents.FindByClass("env_dynamiclava_b")[1]
 			
 			if flood2==nil then return end 
 			
