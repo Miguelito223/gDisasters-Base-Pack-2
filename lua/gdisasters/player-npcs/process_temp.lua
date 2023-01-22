@@ -100,8 +100,8 @@ if (SERVER) then
 			for k, v in pairs(plytbl) do
 			
 				local closest_vfire, distance  = FindNearestEntity(v, "vfire") -- find closest fire entity
-				local closest_ice,  distance_2  = FindNearestEntity(v, "gd_equip_supercooledice") -- find closest ice entity
-				local closest_fire, distance_3 = FindNearestEntity(v, "entityflame")
+				local closest_fire, distance_2 = FindNearestEntity(v, "entityflame")
+				local closest_ice,  distance_3  = FindNearestEntity(v, "gd_equip_supercooledice") -- find closest ice entity
 				
 				local heatscale               = 0
 				local coolscale               = 0
@@ -109,9 +109,11 @@ if (SERVER) then
 				if closest_vfire != nil then
 					heatscale = math.Clamp(200/distance^2, 0,1)
 				elseif closest_fire != nil then
-					heatscale = math.Clamp(1000/distance_3^2, 0,1)
-				elseif closest_ice != nil then
-					coolscale = math.Clamp(500/distance_2^2, 0,1) * -1 -- inverse square law
+					heatscale = math.Clamp(1000/distance_2^2, 0,1)
+				end
+				
+				if closest_ice != nil then
+					coolscale = math.Clamp(500/distance_3^2, 0,1) * -1 -- inverse square law
 				end
 				
 				
