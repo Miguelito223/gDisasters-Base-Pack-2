@@ -28,8 +28,8 @@ CreateConVar( "gdisasters_wind_postdamage_nocollide_basetimeout", "1", {FCVAR_AR
 CreateConVar( "gdisasters_wind_postdamage_nocollide_basetimeout_spread", "1", {FCVAR_ARCHIVE}, " " )
 CreateConVar( "gdisasters_wind_postdamage_reducemass_enabled", "1", {FCVAR_ARCHIVE}, " " )
 
-CreateConVar( "gdisasters_volcano_weatherchange", "0", {FCVAR_ARCHIVE}, "")
-CreateConVar( "gdisasters_weather_acidraindamageprops", "0", {FCVAR_ARCHIVE}, "")
+CreateConVar( "gdisasters_volcano_weatherchange", "1", {FCVAR_ARCHIVE}, "")
+CreateConVar( "gdisasters_weather_acidraindamageprops", "1", {FCVAR_ARCHIVE}, "")
 
 
 --hud
