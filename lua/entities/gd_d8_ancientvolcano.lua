@@ -281,7 +281,7 @@ function ENT:Erupt()
 	timer.Simple(200, function()
 		local ent = ents.FindByClass("gd_w4_heavyacidrain")[1]
 		if !ent:IsValid() then return end
-		if ent:IsValid() then ent1:Remove() end
+		if ent:IsValid() then ent:Remove() end
 	end)
 	
 end
