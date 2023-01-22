@@ -141,6 +141,18 @@ local function gDisastersSVADVSettings( CPanel )
 
 	CreateTickboxConVariable(CPanel, "Enable earthquake change collision group" ,"gdisasters_envearthquake_change_collision_group");
 
+	local lb41 = AddControlLabel( CPanel, "Volcano/Moon/Asteroid Options: " )
+	lb41:SetTextColor(Color( 0, 0, 0))
+	lb41:SetSize(500, 500)
+
+	CreateTickboxConVariable(CPanel, "Enable volcano/moon/asteroid climate change" ,"gdisasters_volcano_weatherchange");
+
+	local lb41 = AddControlLabel( CPanel, "Weather Options: " )
+	lb41:SetTextColor(Color( 0, 0, 0))
+	lb41:SetSize(500, 500)
+
+	CreateTickboxConVariable(CPanel, "Enable Acid Rain damage props" ,"gdisasters_weather_acidraindamageprops");
+
 	local lb5 = AddControlLabel( CPanel, "Water/Lava and Flood/Tsunami Options: " )
 	lb5:SetTextColor(Color( 0, 0, 0))
 	lb5:SetSize(500, 500)

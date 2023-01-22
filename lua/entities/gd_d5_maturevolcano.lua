@@ -239,6 +239,8 @@ function ENT:Erupt()
 		CreateSoundWave("streams/disasters/nature/krakatoa_explosion.mp3", self:GetPos(), "3d" ,340.29/2, {100,100}, 5)
 	end)
 	self:CreateRocks( 20, {8,10} )
+
+	if GetConVar("gdisasters_volcano_weatherchange"):GetInt() <= 0 then return end
 	
 	timer.Simple(10, function()
 	    local ent = ents.Create("gd_w2_volcano_ash")

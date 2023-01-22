@@ -160,6 +160,7 @@ function ENT:Explode()
 	
 	util.BlastDamage( self, self, self:GetPos()+Vector(0,0,12), 5000000, math.random( 100000, 400000 ) )
 	
+	if GetConVar("gdisasters_volcano_weatherchange"):GetInt() <= 0 then return end
 
 	timer.Simple(2, function()
 		local ent = ents.Create("gd_w2_ashstorm")

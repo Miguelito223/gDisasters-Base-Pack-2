@@ -251,7 +251,7 @@ function ENT:Erupt()
 
 	ParticleEffect("volcano_eruption_dusty_main", self:GetLavaLevelPosition() - Vector(0,0,100), Angle(0,0,0), nil)
 	
-	
+	if GetConVar("gdisasters_volcano_weatherchange"):GetInt() <= 0 then return end
 	
 	timer.Simple(22, function()
 		local ent = ents.Create("gd_w2_ashstorm")
