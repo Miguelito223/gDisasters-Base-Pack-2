@@ -1323,12 +1323,16 @@ function isinWater(ply)
 		wl3 = inWater(ply:GetPos())
 	end
 
-	return wl > 0 or wl1 or wl2 or wl3
+	if wl > 0 or wl1 or wl2 or wl3 then
+		return true
+	else
+		return false
+	end
 end
 
 function isUnderWater(ply)
 	local wl = ply:WaterLevel()
-	local wl2 = ply:GetNWBool("IsUnderwater")
+	local wl2 = ply:GetNWBool("IsUnderwater", false)==true
 	
 	if InfMap then
 		local function inWater(pos)
@@ -1339,19 +1343,32 @@ function isUnderWater(ply)
 		wl3 = inWater(ply:GetPos())
 	end
 
-	return wl >= 3 or wl2 or wl3
+	if wl >= 3 or wl2 or wl3 then
+		return true
+	else
+		return false
+	end
 end
 
 function isinLava(ply)
 	local lv = ply.IsInlava
 
-	return lv
+	if lv then
+		return true
+	else
+		return false
+	end
 end
 
 function isUnderLava(ply)
 	local lv = ply:GetNWBool("IsUnderlava")
 
-	return lv
+
+	if lv then
+		return true
+	else
+		return false
+	end
 end
 
 function GetUnweldChanceFromEFCategory(category)
