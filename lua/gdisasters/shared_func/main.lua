@@ -920,9 +920,7 @@ if (CLIENT) then
 	end
 	
 	function StopLoopedSound(client, sound)
-		local sound = Sound(sound)
-	
-		CSPatch = CreateSound(client, sound)
+		CSPatch = CreateLoopedSound(client, sound)
 		CSPatch:Stop()
 		return CSPatch
 		
@@ -1007,11 +1005,11 @@ if (CLIENT) then
 	
 	
 	hook.Add("RenderScreenspaceEffects", "gfx_Underwater", function() 
+		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 		
-		
-		if isUnderWater(LocalPlayer())==true then
+		if isUnderWater(LocalPlayer()) then
 			if LocalPlayer().LastIsUnderwater == false then
-				CreateLoopedSound(LocalPlayer(), "ambient/water/underwater.wav")
+				LocalPlayer().Sounds["Underwater"] = CreateLoopedSound(LocalPlayer(), "ambient/water/underwater.wav")
 				LocalPlayer().LastIsUnderwater = true
 			end
 			
@@ -1053,8 +1051,11 @@ if (CLIENT) then
 				render.SetMaterial( mat_Overlay )
 				render.DrawScreenQuad()
 			end
-		elseif isUnderWater(LocalPlayer())==false then -- FIX NULL ERROR 
-			StopLoopedSound(LocalPlayer(), "ambient/water/underwater.wav")
+		else
+			if LocalPlayer().Sounds["Underwater"] !=nil then 
+				LocalPlayer().Sounds["Underwater"]:Stop()
+				LocalPlayer().Sounds["Underwater"] = nil 
+			end
 		end
 		LocalPlayer().LastIsUnderwater = LocalPlayer():GetNWBool("IsUnderwater")
 	
@@ -1102,10 +1103,11 @@ if (CLIENT) then
 		
 		
 	hook.Add("RenderScreenspaceEffects", "gfx_UnderLava", function() 
-	
-		if isUnderLava(LocalPlayer())==true then	
+		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
+
+		if isUnderLava(LocalPlayer()) then	
 			if LocalPlayer().LastIsUnderlava == false then
-				CreateLoopedSound(LocalPlayer(), "ambient/water/underwater.wav")
+				LocalPlayer().Sounds["Underlava"] = CreateLoopedSound(LocalPlayer(), "ambient/water/underwater.wav")
 				LocalPlayer().LastIsUnderwater = true
 			end
 		
@@ -1142,8 +1144,11 @@ if (CLIENT) then
 				render.SetMaterial( mat_Overlay )
 				render.DrawScreenQuad()
 			end
-		elseif isUnderLava(LocalPlayer())==false then -- FIX NULL ERROR
-			StopLoopedSound(LocalPlayer(), "ambient/water/underwater.wav")
+		else
+			if LocalPlayer().Sounds["Underlava"] !=nil then 
+				LocalPlayer().Sounds["Underlava"]:Stop()
+				LocalPlayer().Sounds["Underlava"] = nil 
+			end
 		end
 		LocalPlayer().LastIsUnderlava = LocalPlayer():GetNWBool("IsUnderlava")
 		
@@ -1318,11 +1323,7 @@ function isinWater(ply)
 		wl3 = inWater(ply:GetPos())
 	end
 
-	if wl > 0 or wl1 or wl2 or wl3 then
-		return true
-	else
-		return false
-	end
+	return wl > 0 or wl1 or wl2 or wl3
 end
 
 function isUnderWater(ply)
@@ -1338,31 +1339,19 @@ function isUnderWater(ply)
 		wl3 = inWater(ply:GetPos())
 	end
 
-	if wl >= 3 or wl2 or wl3 then
-		return true
-	else
-		return false
-	end
+	return wl >= 3 or wl2 or wl3
 end
 
 function isinLava(ply)
 	local lv = ply.IsInlava
 
-	if lv then
-		return true
-	else
-		return false
-	end
+	return lv
 end
 
 function isUnderLava(ply)
-	local lv = ply:GetNWBool("IsUnderlava", false)==true
+	local lv = ply:GetNWBool("IsUnderlava")
 
-	if lv then
-		return true
-	else
-		return false
-	end
+	return lv
 end
 
 function GetUnweldChanceFromEFCategory(category)
