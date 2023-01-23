@@ -1328,7 +1328,7 @@ end
 
 function isUnderWater(ply)
 	local wl = ply:WaterLevel()
-	local wl2 = ply:GetNWBool("IsUnderwater", false)==true
+	local wl2 = ply:GetNWBool("IsUnderwater")
 	
 	if InfMap then
 		local function inWater(pos)
