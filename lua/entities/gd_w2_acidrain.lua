@@ -174,10 +174,10 @@ function ENT:AffectNpcs()
 				if math.random(1,50)== 1 then
 					InflictDamage(v, self, "acid", math.random(1, 3))
 				end	
-			else 
-				if GetConVar("gdisasters_weather_acidraindamageprops"):GetInt() <= 0 then return end
+			else	
 				if math.random(1,50)== 1 then
-					InflictDamage(v, self, "acid", 1)
+					if GetConVar("gdisasters_weather_acidraindamageprops"):GetInt() <= 0 then return end
+					InflictDamage(v, self, "acid", math.random(1, 3))
 				end	
 			end
 		end	
