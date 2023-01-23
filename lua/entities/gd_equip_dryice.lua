@@ -18,14 +18,9 @@ ENT.Model                           = "models/ramses/models/nature/blockofice.md
 
 function ENT:Initialize()	
     
-	local bool self.isNotSubmerged = true
-    local bool self.isFeetSubmerged = false
-	local bool self.isWaistSubmerged = false
-	local bool self.isCompletlySubmerged = false
-	
-	local bool self.hasActivatedLowFog = false
-	local bool self.hasActivatedMedFog = false
-	local bool self.hasActivatedExplosion = false
+	local bool self.isnotinwater = true
+    local bool self.isinwater = false
+	local bool self.isunderwater = false
 	
 	self.SpawnTime = CurTime()
 	
@@ -120,59 +115,50 @@ function ENT:Think()
 		return true
 	end
 	
-	-- Water Detection Stuff
-	if(self:WaterLevel() == 0) then -- if not submerged 
-	self.isNotSubmerged = true;
-	self.isCompletlySubmerged = false;
-	self.isWaistSubmerged = false;
-	self.isFeetSubmerged = false;
+	if isinWater(self) == nil then return end
+
+	if isinWater(self) == false then
+		self.isnotinwater = true;
+		self.isinwater = false;
+		self.isunderwater = false;
 	end
 	
-	if(self:WaterLevel() == 1) then --if feet submerged 
-	self.isNotSubmerged = false;
-	self.isCompletlySubmerged = false;
-	self.isWaistSubmerged = false;
-	self.isFeetSubmerged = true;
+	if isinWater(self) == true then 
+		self.isnotinwater = false;
+		self.isinwater = true;
+		self.isunderwater = false;
 	end
-	
-	if(self:WaterLevel() == 2) then --if waist submerged 
-	self.isNotSubmerged = false;
-	self.isCompletlySubmerged = false;
-	self.isWaistSubmerged = true;
-	self.isFeetSubmerged = false;
-	end
-	
-	if(self:WaterLevel() == 3) then --if completly submerged 
-	self.isNotSubmerged = false;
-	self.isCompletlySubmerged = true;
-	self.isWaistSubmerged = false;
-	self.isFeetSubmerged = false;
+
+	if isUnderWater(self) == true then 
+		self.isnotinwater = false;
+		self.isinwater = true;
+		self.isunderwater = true;
 	end
 	
 	
 	-- Particle Stuff
-	if(self.isFeetSubmerged && !self.hasActivatedLowFog) then  --spawn low fog
-	ParticleEffectAttach("dryice_lowfog_crawler", PATTACH_POINT_FOLLOW, self, 2)
-	self:StopParticlesNamed("dryice_medfog_crawler")
-	self:StopParticlesNamed("dryice_deepfog_crawler")
-	self:StopParticlesNamed("dryice_fog_explosion")
-	self.hasActivatedLowFog = true
+	if (self.isinwater && !self.hasActivatedLowFog) then  --spawn low fog
+		ParticleEffectAttach("dryice_lowfog_crawler", PATTACH_POINT_FOLLOW, self, 2)
+		self:StopParticlesNamed("dryice_medfog_crawler")
+		self:StopParticlesNamed("dryice_deepfog_crawler")
+		self:StopParticlesNamed("dryice_fog_explosion")
+		self.hasActivatedLowFog = true
 	end
 	
-	if(self.isWaistSubmerged && !self.hasActivatedMedFog) then --spawn medium fog
-	ParticleEffectAttach("dryice_medfog_crawler", PATTACH_POINT_FOLLOW, self, 2)
-	self:StopParticlesNamed("dryice_lowfog_crawler")
-	self:StopParticlesNamed("dryice_deepfog_crawler")
-	self:StopParticlesNamed("dryice_fog_explosion")
-	self.hasActivatedMedFog = true
+	if (self.isinwater  && !self.hasActivatedMedFog) then --spawn medium fog
+		ParticleEffectAttach("dryice_medfog_crawler", PATTACH_POINT_FOLLOW, self, 2)
+		self:StopParticlesNamed("dryice_lowfog_crawler")
+		self:StopParticlesNamed("dryice_deepfog_crawler")
+		self:StopParticlesNamed("dryice_fog_explosion")
+		self.hasActivatedMedFog = true
 	end
 	
-	if(self.isCompletlySubmerged && !self.hasActivatedExplosion) then --explode
-	ParticleEffectAttach("dryice_deepfog_crawler", PATTACH_POINT_FOLLOW, self, 2)
-	ParticleEffectAttach("dryice_fog_explosion", PATTACH_POINT_FOLLOW, self, 2)
-	self:StopParticlesNamed("dryice_medfog_crawler")
-	self:StopParticlesNamed("dryice_lowfog_crawler")
-	self.hasActivatedExplosion = true
+	if (self.isunderwater && !self.hasActivatedExplosion) then --explode
+		ParticleEffectAttach("dryice_deepfog_crawler", PATTACH_POINT_FOLLOW, self, 2)
+		ParticleEffectAttach("dryice_fog_explosion", PATTACH_POINT_FOLLOW, self, 2)
+		self:StopParticlesNamed("dryice_medfog_crawler")
+		self:StopParticlesNamed("dryice_lowfog_crawler")
+		self.hasActivatedExplosion = true
 	
 	end
 	
