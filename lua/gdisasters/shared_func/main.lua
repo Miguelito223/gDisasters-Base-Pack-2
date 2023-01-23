@@ -910,7 +910,7 @@ end
 
 if (CLIENT) then 
 	
-	function createLoopedSound(client, sound)
+	function CreateLoopedSound(client, sound)
 		local sound = Sound(sound)
 	
 		CSPatch = CreateSound(client, sound)
@@ -1011,7 +1011,7 @@ if (CLIENT) then
 		
 		if isUnderWater(LocalPlayer())==true then
 			if LocalPlayer().LastIsUnderwater == false then
-				LocalPlayer():EmitSound("ambient/water/underwater.wav", 100, 100)
+				CreateLoopedSound(LocalPlayer(), "ambient/water/underwater.wav")
 				LocalPlayer().LastIsUnderwater = true
 			end
 			
@@ -1054,7 +1054,7 @@ if (CLIENT) then
 				render.DrawScreenQuad()
 			end
 		elseif isUnderWater(LocalPlayer())==false then -- FIX NULL ERROR 
-			LocalPlayer():StopSound("ambient/water/underwater.wav")
+			StopLoopedSound(LocalPlayer(), "ambient/water/underwater.wav")
 		end
 		LocalPlayer().LastIsUnderwater = LocalPlayer():GetNWBool("IsUnderwater")
 	
@@ -1105,7 +1105,7 @@ if (CLIENT) then
 	
 		if isUnderLava(LocalPlayer())==true then	
 			if LocalPlayer().LastIsUnderlava == false then
-				LocalPlayer():EmitSound("ambient/water/underwater.wav", 100, 100)
+				CreateLoopedSound(LocalPlayer(), "ambient/water/underwater.wav")
 				LocalPlayer().LastIsUnderwater = true
 			end
 		
@@ -1143,9 +1143,9 @@ if (CLIENT) then
 				render.DrawScreenQuad()
 			end
 		elseif isUnderLava(LocalPlayer())==false then -- FIX NULL ERROR
-			LocalPlayer():StopSound("ambient/water/underwater.wav")
+			StopLoopedSound(LocalPlayer(), "ambient/water/underwater.wav")
 		end
-		LocalPlayer().LastIsUnderlava = LocalPlayer():GetNWBool("IsUnderwater")
+		LocalPlayer().LastIsUnderlava = LocalPlayer():GetNWBool("IsUnderlava")
 		
 	
 	end)

@@ -14,7 +14,7 @@ function ENT:Initialize()
 	if (CLIENT) then
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 		if LocalPlayer().Sounds["Earthquake"]==nil then
-			LocalPlayer().Sounds["Earthquake"] = {  ["sound"] = createLoopedSound(LocalPlayer(), "streams/disasters/earthquake/earthquake.wav"), ["volume"] = 0 }
+			LocalPlayer().Sounds["Earthquake"] = {  ["sound"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/earthquake/earthquake.wav"), ["volume"] = 0 }
 			LocalPlayer().Sounds["Earthquake"]["sound"]:ChangeVolume(0,0)
 		end
 	end
@@ -437,7 +437,7 @@ function ENT:MagnitudeModulateSound()
 	volmod = volmod * distance_mod
 	if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 	if LocalPlayer().Sounds["Earthquake"]==nil then
-		LocalPlayer().Sounds["Earthquake"] = {  ["sound"] = createLoopedSound(LocalPlayer(), "streams/disasters/earthquake/earthquake.wav"), ["volume"] = 0 }
+		LocalPlayer().Sounds["Earthquake"] = {  ["sound"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/earthquake/earthquake.wav"), ["volume"] = 0 }
 		LocalPlayer().Sounds["Earthquake"]["sound"]:ChangeVolume(volmod,0)
 	else
 		LocalPlayer().Sounds["Earthquake"]["sound"]:ChangeVolume(volmod,0)
@@ -460,7 +460,7 @@ function ENT:OnRemove()
 	if (CLIENT) then
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 		if LocalPlayer().Sounds["Earthquake"]==nil then
-			LocalPlayer().Sounds["Earthquake"] = {  ["sound"] = createLoopedSound(LocalPlayer(), "streams/disasters/earthquake/earthquake.wav"), ["volume"] = 0 }
+			LocalPlayer().Sounds["Earthquake"] = {  ["sound"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/earthquake/earthquake.wav"), ["volume"] = 0 }
 			LocalPlayer().Sounds["Earthquake"]["sound"]:ChangeVolume(0,0)
 		else
 			LocalPlayer().Sounds["Earthquake"]["sound"]:ChangeVolume(0,0)

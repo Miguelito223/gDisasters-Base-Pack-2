@@ -21,8 +21,8 @@ function ENT:Initialize()
 	if !self:IsValid() then return end
 	
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
-		LocalPlayer().Sounds["Rainstorm_IDLE"]         = createLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop.wav")
-		LocalPlayer().Sounds["Rainstorm_muffled_IDLE"] = createLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop_muffled.wav")
+		LocalPlayer().Sounds["Rainstorm_IDLE"]         = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop.wav")
+		LocalPlayer().Sounds["Rainstorm_muffled_IDLE"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop_muffled.wav")
 		
 		end)
 	end

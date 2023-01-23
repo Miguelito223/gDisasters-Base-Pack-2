@@ -391,9 +391,9 @@ if (CLIENT) then
 		if LocalPlayer().Sounds["Wind_Heavy"] == nil then
 			
 			
-			LocalPlayer().Sounds["Wind_Light"]         = createLoopedSound(LocalPlayer(), "streams/disasters/nature/wind_weak.wav")
-			LocalPlayer().Sounds["Wind_Moderate"]      = createLoopedSound(LocalPlayer(), "streams/disasters/nature/wind_moderate.wav")
-			LocalPlayer().Sounds["Wind_Heavy"]         = createLoopedSound(LocalPlayer(), "streams/disasters/nature/wind_heavy.wav")
+			LocalPlayer().Sounds["Wind_Light"]         = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/wind_weak.wav")
+			LocalPlayer().Sounds["Wind_Moderate"]      = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/wind_moderate.wav")
+			LocalPlayer().Sounds["Wind_Heavy"]         = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/wind_heavy.wav")
 			
 			LocalPlayer().Sounds["Wind_Light"]:ChangeVolume(0, 0)
 			LocalPlayer().Sounds["Wind_Moderate"]:ChangeVolume(0, 0)

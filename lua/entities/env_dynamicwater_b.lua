@@ -21,7 +21,7 @@ function ENT:Initialize()
 
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 		
-		LocalPlayer().Sounds["Tsunami"]         = createLoopedSound(LocalPlayer(), self.WedgeSound)
+		LocalPlayer().Sounds["Tsunami"]         = CreateLoopedSound(LocalPlayer(), self.WedgeSound)
 		
 		
 	end

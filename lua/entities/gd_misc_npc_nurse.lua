@@ -25,8 +25,8 @@ function ENT:Initialize()
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 		if LocalPlayer().Sounds["Nurse_Idle"]==nil or LocalPlayer().Sounds["Nurse_Chasing"]==nil then
 		
-			LocalPlayer().Sounds["Nurse_Idle"]         = {  ["sound"] = createLoopedSound(LocalPlayer(), "streams/disasters/silenthill/nurse_nearby.wav"), ["volume"] = 0 }
-			LocalPlayer().Sounds["Nurse_Chasing"]      = {  ["sound"] = createLoopedSound(LocalPlayer(), "streams/disasters/silenthill/nurse_attack.wav"), ["volume"] = 0 }
+			LocalPlayer().Sounds["Nurse_Idle"]         = {  ["sound"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/silenthill/nurse_nearby.wav"), ["volume"] = 0 }
+			LocalPlayer().Sounds["Nurse_Chasing"]      = {  ["sound"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/silenthill/nurse_attack.wav"), ["volume"] = 0 }
 			LocalPlayer().Sounds["Nurse_Idle"]["sound"]:ChangeVolume(0,0)
 			LocalPlayer().Sounds["Nurse_Chasing"]["sound"]:ChangeVolume(0,0)
 		end

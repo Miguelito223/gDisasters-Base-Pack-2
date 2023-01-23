@@ -274,7 +274,7 @@ function ENT:UpdateTransmitState()
 end
 
 if (CLIENT) then
-	function createLoopedSound(client, sound)
+	function CreateLoopedSound(client, sound)
 		local sound = Sound(sound)
 
 		CSPatch = CreateSound(client, sound)
