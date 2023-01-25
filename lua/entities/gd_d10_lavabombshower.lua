@@ -59,24 +59,24 @@ function ENT:SpawnDeath()
 
 			
 		local tr = util.TraceLine( {
-		start  = startpos,
-		endpos    = startpos + Vector(0,0,50000),
+			start  = startpos,
+			endpos    = startpos + Vector(0,0,50000),
 		} )
 		
 
-			local moite = ents.Create("gd_d5_lavabomb_ch")
+		local moite = ents.Create("gd_d5_lavabomb_ch")
+		
+		moite:SetPos( tr.HitPos - Vector(0,0,5000) )
+		moite:Spawn()
+		moite:Activate()
+		moite:GetPhysicsObject():EnableMotion(true)
+		moite:GetPhysicsObject():SetVelocity( Vector(0,0,math.random(-5000,-10000))  )
+		moite:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
+		
+		timer.Simple( math.random(14,18), function()
+			if moite:IsValid() then moite:Remove() end
 			
-			moite:SetPos( tr.HitPos - Vector(0,0,5000) )
-			moite:Spawn()
-			moite:Activate()
-			moite:GetPhysicsObject():EnableMotion(true)
-			moite:GetPhysicsObject():SetVelocity( Vector(0,0,math.random(-5000,-10000))  )
-			moite:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
-			
-			timer.Simple( math.random(14,18), function()
-				if moite:IsValid() then moite:Remove() end
-				
-			end)
+		end)
 			
 	
 	end
