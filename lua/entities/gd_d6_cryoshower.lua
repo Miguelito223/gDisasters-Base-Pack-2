@@ -131,7 +131,7 @@ end
 
 function ENT:SpawnDeath()
 
-	if HitChance(4) then
+	if HitChance(math.Clamp(50 / ( (#player.GetAll()) ),5,50)) then
 		
 		local bounds    = getMapSkyBox()
 		local min       = bounds[1]
@@ -139,29 +139,30 @@ function ENT:SpawnDeath()
 		
 		local startpos  = Vector(   math.random(min.x,max.x)      ,  math.random(min.y,max.y) ,   max.z )
 
-			
+
 		local tr = util.TraceLine( {
 			start  = startpos,
 			endpos    = startpos + Vector(0,0,50000),
 		} )
-		
+
 
 		local moite = ents.Create("gd_d4_mcryometeor_ch")
-		
+
 		moite:SetPos( tr.HitPos - Vector(0,0,5000) )
 		moite:Spawn()
 		moite:Activate()
 		moite:GetPhysicsObject():EnableMotion(true)
 		moite:GetPhysicsObject():SetVelocity( Vector(0,0,math.random(-5000,-10000))  )
 		moite:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
-		
+
 		timer.Simple( math.random(14,18), function()
 			if moite:IsValid() then moite:Remove() end
-			
+
 		end)
-			
-	
+		
 	end
+	
+
 	
 
 end
