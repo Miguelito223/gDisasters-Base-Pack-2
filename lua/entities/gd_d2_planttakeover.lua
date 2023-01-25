@@ -57,73 +57,72 @@ function ENT:SpawnTrees()
 
 			
 		local tr = util.TraceLine( {
-		start  = startpos,
-		endpos    = startpos - Vector(0,0,50000),
+			start  = startpos,
+			endpos    = startpos - Vector(0,0,50000),
 		} )
 		
 		
-			local tree = ents.Create("gd_takeover")
-			if ( !IsValid( tree ) ) then return end
-			if tree:WaterLevel() >= 2 then return end
-			tree:Spawn()
-			tree:Activate()	
-			tree:SetModelScale(0.1, 0)
-			tree:SetModelScale(1.0, 5)
-			tree:SetPos( tr.HitPos )
-			table.insert(self.TreeBirds, tree)
+		local tree = ents.Create("gd_takeover")
+		if ( !IsValid( tree ) ) then return end
+		if tree:WaterLevel() >= 2 then return end
+		tree:Spawn()
+		tree:Activate()	
+		tree:SetModelScale(0.1, 0)
+		tree:SetModelScale(1.0, 5)
+		tree:SetPos( tr.HitPos )
+		table.insert(self.TreeBirds, tree)
 			
 		
 		
-		end
+	end
 	
 	for k, v in pairs(ents.GetAll()) do
 	
 		if (v:GetClass() == "prop_physics") then
-		if !self:IsValid() or !v:IsValid() then return end
-		
-		if HitChance(0.02) then
-		
-		print(v:GetModel())
-		
-		v:SetMaterial(mat)
-		
-		timer.Simple( math.random(4,8), function()
-		if !v:IsValid() or !self:IsValid() then return end
-		
-		v:SetColor( Color( 155, 155, 155, 255 ) )
-		
-		timer.Simple( math.random(4,6), function()
-		if !v:IsValid() or !self:IsValid() then return end
-		if string.gmatch( tostring(v:GetModel()), "models/props_phx/construct/wood/*" ) then v:Remove() end
-		end)
-		
-		--[[local endswith = string.EndsWith( tostring(v:GetModel()), "1x1.mdl" or "2x2.mdl" or "3x3.mdl" or "4x4.mdl" )
-		if endswith and v:GetClass() == "prop_physics" then --just in case
-		
-		 v:Remove()
-		 
-		end--]]
+			if !self:IsValid() or !v:IsValid() then return end
+			
+			if HitChance(0.02) then
+			
+				print(v:GetModel())
+					
+				v:SetMaterial(mat)
+					
+				timer.Simple( math.random(4,8), function()
+				if !v:IsValid() or !self:IsValid() then return end
 				
-		end)
-		
-		
-		end
+				v:SetColor( Color( 155, 155, 155, 255 ) )
+				
+				timer.Simple( math.random(4,6), function()
+					if !v:IsValid() or !self:IsValid() then return end
+					if string.gmatch( tostring(v:GetModel()), "models/props_phx/construct/wood/*" ) then v:Remove() end
+				
+					--[[local endswith = string.EndsWith( tostring(v:GetModel()), "1x1.mdl" or "2x2.mdl" or "3x3.mdl" or "4x4.mdl" )
+					if endswith and v:GetClass() == "prop_physics" then --just in case
+					
+						v:Remove()
+					
+					end--]]
+						
+				end)
+				
+			
+			end
 	
 		end
 	
 		if v:IsNPC() and (v:GetClass()!= "npc_crow" and v:GetClass()!= "npc_pigeon"  and v:GetClass()!= "npc_seagull" and v:GetClass()!= "npc_zombie" and v:GetClass()!="npc_fastzombie" and v:GetClass()!="npc_zombie_torso" and v:GetClass()!="npc_fastzombie_torso") then 
-		if !self:IsValid() then return end
-		v:Remove()
+			if !self:IsValid() then return end
+			v:Remove()
 		
 		end
 	
 		if v:IsVehicle() then 
-		if !self:IsValid() then return end
-		v:Fire("TurnOff", 0.1, 0)
+			if !self:IsValid() then return end
+			v:Fire("TurnOff", 0.1, 0)
 		
 		end 
 		
-	 end 
+	end 
 	 
 	 
 end

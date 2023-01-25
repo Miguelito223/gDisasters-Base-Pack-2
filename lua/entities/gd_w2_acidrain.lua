@@ -171,11 +171,13 @@ function ENT:AffectNpcs()
 	for k, v in pairs(ents.GetAll()) do
 		if isOutdoor(v, true) then
 			if v:IsNPC() or v:IsNextBot() then 
-				if math.random(1,50)== 1 then
-					InflictDamage(v, self, "acid", math.random(1, 3))
-				end	
-			else	
-				if GetConVar("gdisasters_weather_acidraindamageprops"):GetInt() >= 1 then 
+				if v:IsValid() then
+					if math.random(1,50)== 1 then
+						InflictDamage(v, self, "acid", math.random(1, 3))
+					end	
+				end
+			else
+				if GetConVar("gdisasters_weather_acidraindamageprops"):GetInt() >= 1 and v:IsValid() then 
 					if math.random(1,50)== 1 then
 						InflictDamage(v, self, "acid", math.random(1, 3))
 					end	

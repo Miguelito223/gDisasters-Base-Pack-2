@@ -96,54 +96,59 @@ function ENT:SpawnCombine()
 
 			
 		local tr = util.TraceLine( {
-		start  = startpos,
-		endpos    = startpos - Vector(0,0,50000),
+			start  = startpos,
+			endpos    = startpos - Vector(0,0,50000),
 		} )
 		
 	
-			local com = ents.Create( table.Random({"npc_combine_s","npc_clawscanner","npc_cscanner","npc_strider","npc_combinegunship","npc_helicopter","npc_metropolice"}) )
-			if ( !IsValid( self ) )  then return end
-			com:Spawn()
-			com:SetPos( tr.HitPos + Vector(0,0,456) )
-			com:SetSchedule( SCHED_AISCRIPT )
-			table.insert(self.Combines, com)
+		local com = ents.Create( table.Random({"npc_combine_s","npc_clawscanner","npc_cscanner","npc_strider","npc_combinegunship","npc_helicopter","npc_metropolice"}) )
+		if ( !IsValid( self ) )  then return end
+		com:Spawn()
+		com:SetPos( tr.HitPos + Vector(0,0,456) )
+		com:SetSchedule( SCHED_AISCRIPT )
+		table.insert(self.Combines, com)
 			
 		
 		
-		end
+	end
 	
 	for k, v in pairs(ents.GetAll()) do
 	
-		if v:IsNPC() then 
-		if !IsValid( v ) or ( !IsValid( self ) ) or (v:GetClass()== "npc_combine_s" or v:GetClass()== "npc_metropolice" or v:GetClass()== "npc_strider" or v:GetClass()== "npc_clawscanner") then return end
+		if v:IsNPC() or v:IsNextBot() then 
+			if !IsValid( v ) or ( !IsValid( self ) ) or (v:GetClass()== "npc_combine_s" or v:GetClass()== "npc_metropolice" or v:GetClass()== "npc_strider" or v:GetClass()== "npc_clawscanner") then return end
+			
+			local npcpos = v:GetPos()
+			local com = ents.Create( table.Random({"npc_combine_s","npc_metropolice"}) )
+			
+			if ( !IsValid( v ) ) then return end
+
+			local ang = v:GetAngles()
+			v:Remove()
+			com:Spawn()
+			com:SetPos ( npcpos + Vector(0,0,456) )
+			com:SetAngles(ang)
+			com:SetSchedule( SCHED_AISCRIPT )
 		
-		local npcpos = v:GetPos()
-		local com = ents.Create( table.Random({"npc_combine_s","npc_metropolice"}) )
-		if ( !IsValid( v ) ) then return end
-		local ang = v:GetAngles()
-		v:Remove()
-		com:Spawn()
-		com:SetPos ( npcpos + Vector(0,0,456) )
-		com:SetAngles(ang)
-		com:SetSchedule( SCHED_AISCRIPT )
-		
-						end
-			end
+		end
+	end
 
 end
 
 function ENT:FogSpawn()
 
 	local ent = ents.Create("edit_fog")
-		ent:SetPos(Vector(0,0,-100000))
-		ent:Spawn()
-		ent:Activate()
-		ent:SetNoDraw(true)
-		local FogColor = Vector(0.374,0.5,0.584)	
-		local FogDensity = 0.74
-		ent:SetFogColor( FogColor )
-		ent:SetDensity( FogDensity )
-		table.insert(self.Combines, ent)
+
+	ent:SetPos(Vector(0,0,-100000))
+	ent:Spawn()
+	ent:Activate()
+	ent:SetNoDraw(true)
+
+	local FogColor = Vector(0.374,0.5,0.584)	
+	local FogDensity = 0.74
+	
+	ent:SetFogColor( FogColor )
+	ent:SetDensity( FogDensity )
+	table.insert(self.Combines, ent)
 
 end
 

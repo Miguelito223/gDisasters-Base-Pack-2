@@ -96,54 +96,60 @@ function ENT:SpawnZombies()
 
 			
 		local tr = util.TraceLine( {
-		start  = startpos,
-		endpos    = startpos - Vector(0,0,50000),
+			start  = startpos,
+			endpos    = startpos - Vector(0,0,50000),
 		} )
 		
 	
-			local zom = ents.Create( table.Random({"npc_zombie","npc_fastzombie","npc_zombie_torso","npc_fastzombie_torso"}) )
-			if ( !IsValid( self ) )  then return end
-			zom:Spawn()
-			zom:SetPos( tr.HitPos + Vector(0,0,2) )
-			zom:SetSchedule( SCHED_AISCRIPT )
-			table.insert(self.Zombies, zom)
+		local zom = ents.Create( table.Random({"npc_zombie","npc_fastzombie","npc_zombie_torso","npc_fastzombie_torso"}) )
+		if ( !IsValid( self ) )  then return end
+		zom:Spawn()
+		zom:SetPos( tr.HitPos + Vector(0,0,2) )
+		zom:SetSchedule( SCHED_AISCRIPT )
+		table.insert(self.Zombies, zom)
 			
 		
 		
-		end
+	end
 	
 	for k, v in pairs(ents.GetAll()) do
 	
 		if v:IsNPC() or v:IsNextBot() then 
-		if !IsValid( v ) or ( !IsValid( self ) ) or (v:GetClass()== "npc_zombie" or v:GetClass()== "npc_fastzombie" or v:GetClass()== "npc_zombie_torso" or v:GetClass()== "npc_fastzombie_torso") then return end
-		
-		local npcpos = v:GetPos()
-		local zom = ents.Create( table.Random({"npc_zombie","npc_fastzombie"}) )
-		if ( !IsValid( v ) ) then return end
-		local ang = v:GetAngles()
-		v:Remove()
-		zom:Spawn()
-		zom:SetPos ( npcpos + Vector(0,0,2) )
-		zom:SetAngles(ang)
-		zom:SetSchedule( SCHED_AISCRIPT )
-		
-						end
-			end
+			if !IsValid( v ) or ( !IsValid( self ) ) or (v:GetClass()== "npc_zombie" or v:GetClass()== "npc_fastzombie" or v:GetClass()== "npc_zombie_torso" or v:GetClass()== "npc_fastzombie_torso") then return end
+			
+			local npcpos = v:GetPos()
+			local zom = ents.Create( table.Random({"npc_zombie","npc_fastzombie"}) )
+			
+			if ( !IsValid( v ) ) then return end
+			
+			local ang = v:GetAngles()
+			v:Remove()
+			zom:Spawn()
+			zom:SetPos ( npcpos + Vector(0,0,2) )
+			zom:SetAngles(ang)
+			zom:SetSchedule( SCHED_AISCRIPT )
+		end
+	
+	end	
+
 
 end
 
 function ENT:FogSpawn()
 
 	local ent = ents.Create("edit_fog")
-		ent:SetPos(Vector(0,0,-100000))
-		ent:Spawn()
-		ent:Activate()
-		ent:SetNoDraw(true)
-		local FogColor = Vector(0.25,0.05,0.05)	
-		local FogDensity = 0.56
-		ent:SetFogColor( FogColor )
-		ent:SetDensity( FogDensity )
-		table.insert(self.Zombies, ent)
+	
+	ent:SetPos(Vector(0,0,-100000))
+	ent:Spawn()
+	ent:Activate()
+	ent:SetNoDraw(true)
+
+	local FogColor = Vector(0.25,0.05,0.05)	
+	local FogDensity = 0.56
+
+	ent:SetFogColor( FogColor )
+	ent:SetDensity( FogDensity )
+	table.insert(self.Zombies, ent)
 
 end
 
