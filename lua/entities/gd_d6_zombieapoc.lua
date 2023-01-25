@@ -100,12 +100,19 @@ function ENT:SpawnZombies()
 			endpos    = startpos - Vector(0,0,50000),
 		} )
 		
-	
-		local zom = ents.Create( table.Random({"npc_zombie","npc_fastzombie","npc_zombie_torso","npc_fastzombie_torso"}) )
+
 		if ( !IsValid( self ) )  then return end
+
+		if BA2_CustomInfs then
+			zom = ents.Create( table.Random({"nb_ba2_infected_citizen","nb_ba2_infected_combine","nb_ba2_infected_police","nb_ba2_infected_rebel"}) )
+		else
+			zom = ents.Create( table.Random({"npc_zombie","npc_fastzombie","npc_zombie_torso","npc_fastzombie_torso"}) )
+			zom:SetSchedule( SCHED_AISCRIPT )
+		end
+
+		
 		zom:Spawn()
 		zom:SetPos( tr.HitPos + Vector(0,0,2) )
-		zom:SetSchedule( SCHED_AISCRIPT )
 		table.insert(self.Zombies, zom)
 			
 		
@@ -115,19 +122,25 @@ function ENT:SpawnZombies()
 	for k, v in pairs(ents.GetAll()) do
 	
 		if v:IsNPC() or v:IsNextBot() then 
-			if !IsValid( v ) or ( !IsValid( self ) ) or (v:GetClass()== "npc_zombie" or v:GetClass()== "npc_fastzombie" or v:GetClass()== "npc_zombie_torso" or v:GetClass()== "npc_fastzombie_torso") then return end
+			if !IsValid( v ) or ( !IsValid( self ) ) or (v:GetClass()== "npc_zombie" or v:GetClass()== "npc_fastzombie" or v:GetClass()== "npc_zombie_torso" or v:GetClass()== "npc_fastzombie_torso" or v:GetClass()== "nb_ba2_infected_citizen" or v:GetClass()== "nb_ba2_infected_combine" or v:GetClass()== "nb_ba2_infected_police" or v:GetClass()== "nb_ba2_infected_rebel") then return end
 			
 			local npcpos = v:GetPos()
-			local zom = ents.Create( table.Random({"npc_zombie","npc_fastzombie"}) )
+			local ang = v:GetAngles()
 			
 			if ( !IsValid( v ) ) then return end
 			
-			local ang = v:GetAngles()
+			if BA2_CustomInfs then
+				zom = ents.Create( table.Random({"nb_ba2_infected_citizen","nb_ba2_infected_combine","nb_ba2_infected_police","nb_ba2_infected_rebel"}) )
+			else
+				zom = ents.Create( table.Random({"npc_zombie","npc_fastzombie","npc_zombie_torso","npc_fastzombie_torso"}) )
+				zom:SetSchedule( SCHED_AISCRIPT )
+			end
+			
 			v:Remove()
 			zom:Spawn()
 			zom:SetPos ( npcpos + Vector(0,0,2) )
 			zom:SetAngles(ang)
-			zom:SetSchedule( SCHED_AISCRIPT )
+			
 		end
 	
 	end	

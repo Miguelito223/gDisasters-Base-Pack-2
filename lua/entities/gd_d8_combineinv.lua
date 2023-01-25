@@ -118,11 +118,11 @@ function ENT:SpawnCombine()
 			if !IsValid( v ) or ( !IsValid( self ) ) or (v:GetClass()== "npc_combine_s" or v:GetClass()== "npc_metropolice" or v:GetClass()== "npc_strider" or v:GetClass()== "npc_clawscanner") then return end
 			
 			local npcpos = v:GetPos()
-			local com = ents.Create( table.Random({"npc_combine_s","npc_metropolice"}) )
+			local ang = v:GetAngles()
 			
 			if ( !IsValid( v ) ) then return end
-
-			local ang = v:GetAngles()
+			
+			local com = ents.Create( table.Random({"npc_combine_s","npc_metropolice"}) )
 			v:Remove()
 			com:Spawn()
 			com:SetPos ( npcpos + Vector(0,0,456) )
