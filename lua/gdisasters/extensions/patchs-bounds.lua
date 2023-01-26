@@ -929,9 +929,9 @@ function getMapPath()
 	if IsMapPathRegistered()==false then print("This map no have path, no work path tornados") return nil end 
 	return MAP_PATHS[map]
 end
-	
+
 if GetConVar("gdisasters_mapbounds_S37K"):GetInt() >= 1 then
-	
+
 	local S37K = S37K_mapbounds[1]
 
 	function IsMapRegistered()

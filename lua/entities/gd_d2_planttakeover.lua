@@ -88,24 +88,25 @@ function ENT:SpawnTrees()
 				v:SetMaterial(mat)
 					
 				timer.Simple( math.random(4,8), function()
-				if !v:IsValid() or !self:IsValid() then return end
-				
-				v:SetColor( Color( 155, 155, 155, 255 ) )
-				
-				timer.Simple( math.random(4,6), function()
 					if !v:IsValid() or !self:IsValid() then return end
-					if string.gmatch( tostring(v:GetModel()), "models/props_phx/construct/wood/*" ) then v:Remove() end
+					
+					v:SetColor( Color( 155, 155, 155, 255 ) )
 				
-					--[[local endswith = string.EndsWith( tostring(v:GetModel()), "1x1.mdl" or "2x2.mdl" or "3x3.mdl" or "4x4.mdl" )
-					if endswith and v:GetClass() == "prop_physics" then --just in case
+					timer.Simple( math.random(4,6), function()
+						if !v:IsValid() or !self:IsValid() then return end
+						if string.gmatch( tostring(v:GetModel()), "models/props_phx/construct/wood/*" ) then v:Remove() end
 					
-						v:Remove()
-					
-					end--]]
+						--[[local endswith = string.EndsWith( tostring(v:GetModel()), "1x1.mdl" or "2x2.mdl" or "3x3.mdl" or "4x4.mdl" )
+						if endswith and v:GetClass() == "prop_physics" then --just in case
 						
-				end)
+							v:Remove()
+						
+						end--]]
+
+					end)
 				
 			
+				end)
 			end
 	
 		end
