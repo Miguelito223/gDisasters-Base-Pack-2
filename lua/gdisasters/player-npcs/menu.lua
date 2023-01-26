@@ -157,7 +157,7 @@ local function gDisastersSVADVSettings( CPanel )
 	lb4:SetTextColor(Color( 0, 0, 0))
 	lb4:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "Enable S37K Map Bounds (Only work in server)", "gdisasters_mapbounds_S37K");
+	CreateTickboxConVariable(CPanel, "Enable S37K Map Bounds (Only work in server so it may have errors if you are a client)", "gdisasters_mapbounds_S37K");
 
 	local lb5 = AddControlLabel( CPanel, "Water/Lava and Flood/Tsunami Options: " )
 	lb5:SetTextColor(Color( 0, 0, 0))
