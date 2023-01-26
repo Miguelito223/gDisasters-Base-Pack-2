@@ -153,6 +153,12 @@ local function gDisastersSVADVSettings( CPanel )
 
 	CreateTickboxConVariable(CPanel, "Enable Acid Rain damage props" ,"gdisasters_weather_acidraindamageprops");
 
+	local lb4 = AddControlLabel( CPanel, "Map Bounds options: " )
+	lb4:SetTextColor(Color( 0, 0, 0))
+	lb4:SetSize(500, 500)
+
+	CreateTickboxConVariable(CPanel, "Enable S37K Map Bounds (Only work in server)", "gdisasters_mapbounds_S37K");
+
 	local lb5 = AddControlLabel( CPanel, "Water/Lava and Flood/Tsunami Options: " )
 	lb5:SetTextColor(Color( 0, 0, 0))
 	lb5:SetSize(500, 500)

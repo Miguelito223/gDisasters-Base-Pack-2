@@ -930,48 +930,103 @@ function getMapPath()
 	return MAP_PATHS[map]
 end
 
-function IsMapRegistered()
-	local map = game.GetMap()
-	if MAP_BOUNDS[map]==nil then return false else return true end 
-end
+if S37K_mapbounds and GetConVar("gdisasters_mapbounds_S37K"):GetInt() >= 1 then
 
-function getMapBounds()
-	local map = game.GetMap()
-	if IsMapRegistered()==false then print("This map no have Bounds") return nil end 
+	hook.Add("Think", "gdisasters_S37K", function()
+		local S37K = S37K_mapbounds[1]
 
-	return {MAP_BOUNDS[map][1],MAP_BOUNDS[map][2]}
-end
+		function IsMapRegistered()
+			if S37K==nil then return false else return true end 
+		end
 
-function getMapCeiling()
-	local map = game.GetMap()
-	if IsMapRegistered()==false then print("This map no have Ceiling") return nil end 
+		function getMapBounds()
+			if IsMapRegistered()==false then print("This map no have Bounds") return nil end
 
-	return MAP_BOUNDS[map][2].z
-end
+			local floorpos = Vector(0, 0, -S37K.skyZ)
 
-function getMapSkyBox()
-	if IsMapRegistered()==false then print("This map no have SkyBox") return nil end 
-	local bounds = getMapBounds()
-	local min    = bounds[1]
-	local max    = bounds[2]
+			local tr = util.TraceLine({
+				start = floorpos,
+				endpos = floorpos + Vector(0,0,50000),
+				mask = MASK_SOLID_BRUSHONLY
+			})
 
-	return { Vector(min.x, min.y, max.z), Vector(max.x, max.y, max.z) }
-end
+			return {Vector(S37K.negativeX, S37K.negativeY, -S37K.skyZ), Vector(S37K.positiveX, S37K.positiveY, S37K.skyZ), tr.HitPos}
+		end
+
+		function getMapCeiling()
+			if IsMapRegistered()==false then print("This map no have Ceiling") return nil end 
+
+			return getMapBounds()[2].z
+		end
+
+		function getMapSkyBox()
+			if IsMapRegistered()==false then print("This map no have SkyBox") return nil end 
+			local bounds = getMapBounds()
+			local min    = bounds[1]
+			local max    = bounds[2]
+
+			return { Vector(min.x, min.y, max.z), Vector(max.x, max.y, max.z) }
+		end
 
 
-function getMapCenterPos()
-	local map        = game.GetMap()
-	if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
+		function getMapCenterPos()
+			if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
 
-	local av         = ((MAP_BOUNDS[map][1] + MAP_BOUNDS[map][2])  / 2)
-	return av
-end
+			local av         = ((getMapBounds()[1] + getMapBounds()[2])  / 2)
+			return av
+		end
 
-function getMapCenterFloorPos()
-	local map = game.GetMap()
-	if IsMapRegistered()==false then print("This map no have FloorPos") return nil end 
+		function getMapCenterFloorPos()
+			if IsMapRegistered()==false then print("This map no have FloorPos") return nil end 
 
-	return MAP_BOUNDS[map][3]
+			return getMapBounds()[3]
+		end
+	end)
+
+else
+
+
+	function IsMapRegistered()
+		local map = game.GetMap()
+		if MAP_BOUNDS[map]==nil then return false else return true end 
+	end
+
+	function getMapBounds()
+		local map = game.GetMap()
+		if IsMapRegistered()==false then print("This map no have Bounds") return nil end 
+
+		return {MAP_BOUNDS[map][1],MAP_BOUNDS[map][2],MAP_BOUNDS[map][3]}
+	end
+
+	function getMapCeiling()
+		if IsMapRegistered()==false then print("This map no have Ceiling") return nil end 
+
+		return getMapBounds()[2].z
+	end
+
+	function getMapSkyBox()
+		if IsMapRegistered()==false then print("This map no have SkyBox") return nil end 
+		local bounds = getMapBounds()
+		local min    = bounds[1]
+		local max    = bounds[2]
+
+		return { Vector(min.x, min.y, max.z), Vector(max.x, max.y, max.z) }
+	end
+
+
+	function getMapCenterPos()
+		if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
+
+		local av         = ((getMapBounds()[1] + getMapBounds()[2])  / 2)
+		return av
+	end
+
+	function getMapCenterFloorPos()
+		if IsMapRegistered()==false then print("This map no have FloorPos") return nil end 
+
+		return getMapBounds()[3]
+	end
+
 end
 
 if (SERVER) then
