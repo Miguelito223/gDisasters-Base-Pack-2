@@ -936,7 +936,11 @@ if S37K_mapbounds and GetConVar("gdisasters_mapbounds_S37K"):GetInt() >= 1 then
 		local S37K = S37K_mapbounds[1]
 
 		function IsMapRegistered()
-			if S37K==nil then return false else return true end 
+			if S37K==nil then 
+				return false 
+			else 
+				return true 
+			end 
 		end
 
 		function getMapBounds()
@@ -988,7 +992,12 @@ else
 
 	function IsMapRegistered()
 		local map = game.GetMap()
-		if MAP_BOUNDS[map]==nil then return false else return true end 
+		
+		if MAP_BOUNDS[map]==nil then 
+			return false 
+		else 
+			return true 
+		end 
 	end
 
 	function getMapBounds()
