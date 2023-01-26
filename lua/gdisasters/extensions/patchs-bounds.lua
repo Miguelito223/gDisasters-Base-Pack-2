@@ -930,7 +930,7 @@ function getMapPath()
 	return MAP_PATHS[map]
 end
 	
-if S37K_mapbounds and GetConVar("gdisasters_mapbounds_S37K"):GetInt() >= 1 then
+if GetConVar("gdisasters_mapbounds_S37K"):GetInt() >= 1 then
 	local S37K = S37K_mapbounds[1]
 
 	function IsMapRegistered()
