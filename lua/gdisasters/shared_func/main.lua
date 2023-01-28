@@ -839,7 +839,7 @@ if (SERVER) then
 		
 		local hitSky     = isBelowSky(ply)
 		
-		if isinWater(ply) or isinLava(ply) then
+		if isUnderWater(ply) or isUnderLava(ply) then
 			if isprop == nil then
 				net.Start("gd_isOutdoor")
 				net.WriteBool(false)
@@ -1488,11 +1488,11 @@ function convert_VectorToAngle(vector)
 	return math.atan2(y,x)
 end
 
-function convert_AngleToDegrees(angle)
-	return math.deg(angle)
+function convert_RadiantsToDegrees(radiants)
+	return math.deg(radiants)
 end
 
-function convert_DegreesToAngle(degrees)
+function convert_DegreesToRadiants(degrees)
 	return math.rad(degrees)
 end
 
@@ -1832,20 +1832,20 @@ end
 
 function gDisasters_GetMoonAngleInRadians()
 
-	return math.acos(vector_up:Dot(gDisasters_GetSunDir()))
+	return convert_DegreesToRadiants(gDisasters_GetMoonDir())
 end
 
 function gDisasters_GetMoonAngleInDegs()
 
-	return math.deg(gDisasters_GetMoonAngleInRadians())
+	return convert_RadiantsToDegrees(gDisasters_GetMoonDir())
 end
 
 function gDisasters_GetSunAngleInRadians()
-	return math.acos((vector_up*-1):Dot(gDisasters_GetSunDir()))
+	return convert_DegreesToRadiants(gDisasters_GetSunDir())
 end
 
 function gDisasters_GetSunAngleInDegs()
-	return math.deg(gDisasters_GetSunAngleInRadians)
+	return convert_RadiantsToDegrees(gDisasters_GetSunDir())
 end
 
 function gDisasters_GetMoonDir()
@@ -1865,6 +1865,8 @@ function gDisasters_EntityExists(entname)
 		net.Start("gd_entity_exists_on_server")
 		net.WriteString("sky_camera")
 		net.SendToServer()
+		
+		return false
 	else
 		return true 
 	end
@@ -1877,7 +1879,7 @@ function gDisasters_Is3DSkybox()
 
 	if (SERVER) then 
 	
-		if not(gDisasters.Cached.SkyCamera) then gDisasters.Cached.SkyCamera = ents.FindByClass("sky_camera") end 
+		if not (gDisasters.Cached.SkyCamera) then gDisasters.Cached.SkyCamera = ents.FindByClass("sky_camera") end 
 		if #gDisasters.Cached.SkyCamera > 0 then return true else return IsValid(gDisasters.Cached.SkyCamera[1]) end 
 		
 	elseif (CLIENT) then

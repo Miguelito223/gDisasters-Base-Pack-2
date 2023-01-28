@@ -192,10 +192,65 @@ if (SERVER) then
             self.m_OldSkyName = GetConVar("sv_skyname"):GetString();
 
             self:Hook( "Think" );
+            hook.Add("PostDrawSkyBox", "DrawMoon", RenderMoon )
 
             gdisasters_dnc_log( "Day & Night version %s initializing.", tostring( gdisasters_dnc_version ) );
 
         end,
+
+        RenderMoon = function()
+
+            self.Texture1                          = "atmosphere/moon/1"
+            self.Texture2                          = "atmosphere/moon/2"
+            self.Texture3                          = "atmosphere/moon/3"
+            self.Texture4                          = "atmosphere/moon/4"
+            self.Texture5                          = "atmosphere/moon/5"
+            self.Texture6                          = "atmosphere/moon/6"
+            self.Texture7                          = "atmosphere/moon/7"
+            self.Texture8                          = "atmosphere/moon/8"
+            self.Texture9                          = "atmosphere/moon/9"
+            self.Texture10                         = "atmosphere/moon/10"
+            self.Texture11                         = "atmosphere/moon/11"
+            self.Texture12                         = "atmosphere/moon/12"
+            self.Texture13                         = "atmosphere/moon/13"
+            self.Texture14                         = "atmosphere/moon/14"
+            self.Texture15                         = "atmosphere/moon/15"
+            self.Texture16                         = "atmosphere/moon/16"
+            
+            local moonAlpha = 0;
+            local moonMat = Material( self.Texture9  );
+            moonMat:SetInt( "$additive", 0 );
+            moonMat:SetInt( "$translucent", 0 );
+
+            print("lol")
+
+            if ( self.m_Time < TIME_DAWN_START or self.m_Time > TIME_DUSK_END ) then
+
+
+                local moonAng = Angle(-1,0,0)
+                local moonSize = 5;
+                local moonPos = gDisasters_GetMoonDir();
+                local moonNormal = ( vector_origin - moonPos ):GetNormal();
+
+                moonAlpha = Lerp( FrameTime() * 1, moonAlpha, 255 );
+
+                cam.Start3D( vector_origin, angle_zero );
+                    render.OverrideDepthEnable( true, false );
+                    render.SetMaterial( moonMat );
+                    render.DrawQuadEasy( moonPos, moonNormal, moonSize, moonSize, Color( 255, 255, 255, moonAlpha ), -180 );
+                    render.OverrideDepthEnable( false, false );
+                cam.End3D();
+            else
+                if ( moonAlpha != 0 ) then
+                
+                    moonAlpha = 0;
+                
+                end
+            end
+
+            
+        end,
+
 
         InitEntities = function( self )
 
@@ -356,10 +411,13 @@ if (SERVER) then
             -- env_sun
             if ( IsValid( self.m_EnvSun ) ) then
                 if ( self.m_Time >= TIME_DAWN_START and self.m_Time <= TIME_DUSK_END ) then
+                    
                     local sunfrac = 1 - ( ( self.m_Time - TIME_DAWN_START ) / ( TIME_DUSK_END - TIME_DAWN_START ) );
                     local angle = Angle( -180 * sunfrac, 15, 0 );
 
                     self.m_EnvSun:SetKeyValue( "sun_dir", tostring( angle:Forward() ) );
+                    SetGlobalAngle("gdSunDir", angle:Forward() )
+
                 end
             end
 
