@@ -192,7 +192,7 @@ if (SERVER) then
             self.m_OldSkyName = GetConVar("sv_skyname"):GetString();
 
             self:Hook( "Think" );
-            hook.Add("PostDrawSkyBox", "DrawMoon", RenderMoon )
+           
 
             gdisasters_dnc_log( "Day & Night version %s initializing.", tostring( gdisasters_dnc_version ) );
 
@@ -529,6 +529,12 @@ if (SERVER) then
         gdisasters_dnc:Initialize();
 
     end );
+
+    hook.Add("PostDrawSkyBox", "DrawMoon", function() 
+        
+        gdisasters_dnc:RenderMoon()
+    
+    end)
 
     concommand.Add( "gdisasters_dnc_pause", function( pl, cmd, args )
 
