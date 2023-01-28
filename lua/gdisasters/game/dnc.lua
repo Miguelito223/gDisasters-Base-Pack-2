@@ -522,7 +522,7 @@ if (SERVER) then
     };
 
     -- global handle for debugging
-    gdisasters_dncGlobal = gdisasters_dnc;
+    gdisasters_dnc_Global = gdisasters_dnc;
 
     hook.Add( "Initialize", "gdisasters_dnc_Init", function()
 
@@ -530,9 +530,9 @@ if (SERVER) then
 
     end );
 
-    hook.Add("PostDrawSkyBox", "DrawMoon", function() 
+    hook.Add("PostDrawSkyBox", "gdisasters_dnc_DrawMoon", function() 
         
-        gdisasters_dnc:RenderMoon()
+        gdisasters_dnc:RenderMoon();
     
     end)
 
