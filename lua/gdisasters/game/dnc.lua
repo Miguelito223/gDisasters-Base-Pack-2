@@ -198,7 +198,7 @@ if (SERVER) then
 
         end,
 
-        RenderMoon = function()
+        RenderMoon = function( self )
 
             self.Texture1                          = "atmosphere/moon/1"
             self.Texture2                          = "atmosphere/moon/2"
