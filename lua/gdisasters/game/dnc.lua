@@ -141,7 +141,7 @@ if (SERVER) then
 
     };
 
-    local gDisasters.DayNightSystem.Start =
+    gDisasters.DayNightSystem.Start =
     {
         m_InitEntities = false,
         m_OldSkyName = "unknown",
@@ -321,7 +321,7 @@ if (SERVER) then
                 timeLen = gDisasters.DayNightSystem.InternalVars.length_day:GetInt();
             end
 
-            if ( !self.m_Paused and gdisasters.daynightsystem.internalvars.paused:GetInt() <= 0)  then
+            if ( !self.m_Paused and gDisasters.DayNightSystem.InternalVars.paused:GetInt() <= 0)  then
                 if ( gDisasters.DayNightSystem.InternalVars.realtime:GetInt() <= 0 ) then
                     self.m_Time = self.m_Time + ( 24 / timeLen ) * FrameTime();
                     if ( self.m_Time > 24 ) then
@@ -519,7 +519,7 @@ if (SERVER) then
     };
 
     -- global handle for debugging
-    gdisasters.daynightsystem.internalvars.Global = gDisasters.DayNightSystem.Start;
+    gDisasters.DayNightSystem.InternalVars.Global = gDisasters.DayNightSystem.Start;
 
     hook.Add( "Initialize", "gdisasters_dnc_Init", function()
 
@@ -621,11 +621,11 @@ if (SERVER) then
 
     -- adds support for saving and restoring day & night values
     saverestore.AddSaveHook( "gdisasters_dnc_Save", function( save )
-        local gdisasters.daynightsystem.InternalVars.Data = {
-            gdisasters.daynightsystem.InternalVars.time = gDisasters.DayNightSystem.Start.m_Time
+        local gdisasters_dnc_data = {
+            gdisasters_dnc_time = gDisasters.DayNightSystem.Start.m_Time
         }
 
-        saverestore.WriteTable(gDisasters.DayNightSystem.InternalVars.Data, save);
+        saverestore.WriteTable(gdisasters_dnc_data, save);
 
         print("Day & Night save hook called!\n");
     end);
@@ -633,8 +633,8 @@ if (SERVER) then
     saverestore.AddRestoreHook( "gdisasters_dnc_Restore", function( save )
         local tbl = saverestore.ReadTable( save );
 
-        if (tbl.gDisasters.DayNightSystem.InternalVars.time != nil) then
-            gdisasters_dnc:SetTime(tbl.gDisasters.DayNightSystem.InternalVars.time);
+        if (tbl.gdisasters_dnc_time != nil) then
+            gDisasters.DayNightSystem.Start:SetTime(tbl.gdisasters_dnc_time);
         end
 
         print("Day & Night saverestore hook called!\n");
