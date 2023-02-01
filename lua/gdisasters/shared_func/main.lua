@@ -1,7 +1,5 @@
 gDisasters = {}
 gDisasters.CachedExists          = {}
-gDisasters.DayNightSystem        = {}
-gDisasters.DayNightSystem.InternalVars = {}
 gDisasters.Game                  = {}
 
 Break_Sounds = {
@@ -1832,7 +1830,7 @@ end
 
 function gDisasters_GetMoonAngleInRadians()
 
-	return math.acos(vector_up:Dot(gDisasters_GetSunDir()))
+	return math.acos(vector_up:Dot(gDisasters_GetMoonDir()))
 end
 
 function gDisasters_GetMoonAngleInDegs()

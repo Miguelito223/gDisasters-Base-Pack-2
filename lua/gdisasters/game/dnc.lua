@@ -1,19 +1,22 @@
-gdisasters_dnc_enabled = GetConVar("gdisasters_dnc_enabled")
-gdisasters_dnc_paused =  GetConVar("gdisasters_dnc_paused")
-gdisasters_dnc_realtime =  GetConVar("gdisasters_dnc_realtime")
-gdisasters_dnc_logging =  GetConVar("gdisasters_dnc_log")
+gDisasters.DayNightSystem        = {}
+gDisasters.DayNightSystem.InternalVars = {}
 
-gdisasters_dnc_length_day = GetConVar( "gdisasters_dnc_length_day")
-gdisasters_dnc_length_night = GetConVar( "gdisasters_dnc_length_night")
+gDisasters.DayNightSystem.InternalVars.enabled = GetConVar("gdisasters_dnc_enabled")
+gDisasters.DayNightSystem.InternalVars.paused =  GetConVar("gdisasters_dnc_paused")
+gDisasters.DayNightSystem.InternalVars.realtime =  GetConVar("gdisasters_dnc_realtime")
+gDisasters.DayNightSystem.InternalVars.logging =  GetConVar("gdisasters_dnc_log")
 
-gdisasters_dnc_version = 2.0;
-gdisasters_dnc_dev = false;
+gDisasters.DayNightSystem.InternalVars.length_day = GetConVar( "gdisasters_dnc_length_day")
+gDisasters.DayNightSystem.InternalVars.length_night = GetConVar( "gdisasters_dnc_length_night")
 
-gdisasters_dnc_HeightMin = 300;
+gDisasters.DayNightSystem.InternalVars.version = 2.0;
+gDisasters.DayNightSystem.InternalVars.dev = false;
+
+gDisasters.DayNightSystem.InternalVars.HeightMin = 300;
 
 function gdisasters_dnc_log( ... )
 
-    if ( gdisasters_dnc_logging:GetInt() < 1 ) then return end
+    if ( gDisasters.DayNightSystem.InternalVars.logging:GetInt() < 1 ) then return end
 
     print( "[day and night] " .. string.format( ... ) .. "\n" );
 
@@ -30,7 +33,7 @@ function gdisasters_dnc_Outside( pos )
 
         local tr = util.TraceLine( trace );
 
-        gdisasters_dnc_HeightMin = ( tr.HitPos - trace.start ):Length();
+        gDisasters.DayNightSystem.InternalVars.HeightMin = ( tr.HitPos - trace.start ):Length();
 
         if ( tr.StartSolid ) then return false end
         if ( tr.HitSky ) then return true end
@@ -50,7 +53,7 @@ end
 -- usergroup support
 local meta = FindMetaTable( "Player" )
 
-function meta:gdisasters_dncAdmin()
+function meta:gdisasters_dnc_Admin()
 
     return self:IsSuperAdmin() or self:IsAdmin();
 
@@ -138,7 +141,7 @@ if (SERVER) then
 
     };
 
-    local gdisasters_dnc =
+    local gDisasters.DayNightSystem.Start =
     {
         m_InitEntities = false,
         m_OldSkyName = "unknown",
@@ -164,7 +167,7 @@ if (SERVER) then
 
             if ( tostring( self.m_LastStyle ) == tostring( style ) and (force == nil or force == false) ) then return end
 
-            --gdisasters_dnc_log( "LightStyle set to " .. tostring(style) .. " " .. tostring(self.m_LastStyle) .. " " .. tostring(force) );
+            --gdisasters.daynightsystem.internalvars.log( "LightStyle set to " .. tostring(style) .. " " .. tostring(self.m_LastStyle) .. " " .. tostring(force) );
 
             if ( IsValid( self.m_LightEnvironment ) ) then
 
@@ -194,7 +197,7 @@ if (SERVER) then
             self:Hook( "Think" );
            
 
-            gdisasters_dnc_log( "Day & Night version %s initializing.", tostring( gdisasters_dnc_version ) );
+            gdisasters_dnc_log( "Day & Night version %s initializing.", tostring( gDisasters.DayNightSystem.InternalVars.version ) );
 
         end,
 
@@ -308,18 +311,18 @@ if (SERVER) then
 
         Think = function( self )
 
-            if ( gdisasters_dnc_enabled:GetInt() < 1 ) then return end
+            if ( gDisasters.DayNightSystem.InternalVars.enabled:GetInt() < 1 ) then return end
             if ( !self.m_InitEntities ) then self:InitEntities(); end
 
             local timeLen = 3600;
             if (self.m_Time > TIME_DUSK_START or self.m_Time < TIME_DAWN_END) then
-                timeLen = gdisasters_dnc_length_night:GetInt();
+                timeLen = gDisasters.DayNightSystem.InternalVars.length_night:GetInt();
             else
-                timeLen = gdisasters_dnc_length_day:GetInt();
+                timeLen = gDisasters.DayNightSystem.InternalVars.length_day:GetInt();
             end
 
-            if ( !self.m_Paused and gdisasters_dnc_paused:GetInt() <= 0)  then
-                if ( gdisasters_dnc_realtime:GetInt() <= 0 ) then
+            if ( !self.m_Paused and gdisasters.daynightsystem.internalvars.paused:GetInt() <= 0)  then
+                if ( gDisasters.DayNightSystem.InternalVars.realtime:GetInt() <= 0 ) then
                     self.m_Time = self.m_Time + ( 24 / timeLen ) * FrameTime();
                     if ( self.m_Time > 24 ) then
                         self.m_Time = 0;
@@ -510,39 +513,39 @@ if (SERVER) then
 
         GetTime = function( self )
 
-            return (gdisasters_dnc_realtime:GetInt() <= 0 and self.m_Time or self:GetRealTime());
+            return (gdisasters.daynightsystem.internalvars.realtime:GetInt() <= 0 and self.m_Time or self:GetRealTime());
 
         end,
     };
 
     -- global handle for debugging
-    gdisasters_dnc_Global = gdisasters_dnc;
+    gdisasters.daynightsystem.internalvars.Global = gDisasters.DayNightSystem.Start;
 
     hook.Add( "Initialize", "gdisasters_dnc_Init", function()
 
-        gdisasters_dnc:Initialize();
+       gDisasters.DayNightSystem.Start:Initialize();
 
     end );
 
     hook.Add("PostDrawSkyBox", "gdisasters_dnc_DrawMoon", function() 
         
-        gdisasters_dnc:RenderMoon();
+        gDisasters.DayNightSystem.Start:RenderMoon();
     
     end)
 
     concommand.Add( "gdisasters_dnc_pause", function( pl, cmd, args )
 
-        if ( !IsValid( pl ) or !pl:gdisasters_dncAdmin() ) then return end
+        if ( !IsValid( pl ) or !pl:gdisasters_dnc_Admin() ) then return end
 
-        gdisasters_dnc:TogglePause();
+        gDisasters.DayNightSystem.Start:TogglePause();
 
         if ( IsValid( pl ) ) then
 
-            pl:PrintMessage( HUD_PRINTCONSOLE, "DNC is " .. (gdisasters_dnc.m_Paused and "paused" or "no longer paused") );
+            pl:PrintMessage( HUD_PRINTCONSOLE, "DNC is " .. (gDisasters.DayNightSystem.varinterval.m_Paused and "paused" or "no longer paused") );
 
         else
 
-            print( "DNC is " .. (gdisasters_dnc.m_Paused and "paused" or "no longer paused") );
+            print( "DNC is " .. (gDisasters.DayNightSystem.Start.m_Paused and "paused" or "no longer paused") );
 
         end
 
@@ -550,15 +553,15 @@ if (SERVER) then
 
     concommand.Add( "gdisasters_dnc_settime", function( pl, cmd, args )
 
-        if ( !IsValid( pl ) or !pl:gdisasters_dncAdmin() ) then return end
+        if ( !IsValid( pl ) or !pl:gdisasters_dnc_Admin() ) then return end
 
-        gdisasters_dnc:SetTime( tonumber( args[1] or "0" ) );
+        gDisasters.DayNightSystem.Start:SetTime( tonumber( args[1] or "0" ) );
 
     end );
 
     concommand.Add( "gdisasters_dnc_time", function( pl, cmd, args )
 
-        local time = gdisasters_dnc:GetTime();
+        local time = gDisasters.DayNightSystem.Start:GetTime();
         local hours = math.floor( time );
         local minutes = ( time - hours ) * 60;
 
@@ -596,13 +599,13 @@ if (SERVER) then
 
     concommand.Add( "gdisasters_dnc_reset", function( pl, cmd, args )
 
-        if ( IsValid( pl ) and !pl:gdisasters_dncAdmin() ) then return end
+        if ( IsValid( pl ) and !pl:gdisasters_dnc_Admin() ) then return end
 
-        game.ConsoleCommand( "gdisasters_dnc_enabled 1\n" );
-        game.ConsoleCommand( "gdisasters_dnc_paused 0\n" );
-        game.ConsoleCommand( "gdisasters_dnc_realtime 0\n" );
-        game.ConsoleCommand( "gdisasters_dnc_length_day 3600\n" );
-        game.ConsoleCommand( "gdisasters_dnc_length_night 3600\n" );
+        game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.enabled 1\n" );
+        game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.paused 0\n" );
+        game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.realtime 0\n" );
+        game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.length_day 3600\n" );
+        game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.length_night 3600\n" );
 
         if ( IsValid( pl ) ) then
 
@@ -617,21 +620,21 @@ if (SERVER) then
     end );
 
     -- adds support for saving and restoring day & night values
-    saverestore.AddSaveHook( "gdisasters_dncSave", function( save )
-        local gdisasters_dncData = {
-            gdisasters_dnc_time = gdisasters_dnc.m_Time
+    saverestore.AddSaveHook( "gdisasters_dnc_Save", function( save )
+        local gdisasters.daynightsystem.InternalVars.Data = {
+            gdisasters.daynightsystem.InternalVars.time = gDisasters.DayNightSystem.Start.m_Time
         }
 
-        saverestore.WriteTable(gdisasters_dncData, save);
+        saverestore.WriteTable(gDisasters.DayNightSystem.InternalVars.Data, save);
 
         print("Day & Night save hook called!\n");
     end);
 
-    saverestore.AddRestoreHook( "gdisasters_dncRestore", function( save )
+    saverestore.AddRestoreHook( "gdisasters_dnc_Restore", function( save )
         local tbl = saverestore.ReadTable( save );
 
-        if (tbl.gdisasters_dnc_time != nil) then
-            gdisasters_dnc:SetTime(tbl.gdisasters_dnc_time);
+        if (tbl.gDisasters.DayNightSystem.InternalVars.time != nil) then
+            gdisasters_dnc:SetTime(tbl.gDisasters.DayNightSystem.InternalVars.time);
         end
 
         print("Day & Night saverestore hook called!\n");
