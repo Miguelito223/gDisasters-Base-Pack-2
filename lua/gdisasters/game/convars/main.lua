@@ -88,3 +88,4 @@ CreateConVar( "gdisasters_dnc_log", "0", { FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_R
 
 CreateConVar( "gdisasters_dnc_length_day", "600", { FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED }, "The duration modifier of daytime in seconds." )
 CreateConVar( "gdisasters_dnc_length_night", "600", { FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED }, "The duration modifier of nighttime in seconds." )
+CreateConVar( "gdisasters_dnc_moonsize", "5", { FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_REPLICATED }, "Moon Size" )

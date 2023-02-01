@@ -224,6 +224,8 @@ local function gDisastersDayAndNightCycle( CPanel )
 	CreateTickboxConVariable(CPanel, "Pause DNC"  , "gdisasters_dnc_paused");
 	CreateTickboxConVariable(CPanel, "Real Time"  , "gdisasters_dnc_realtime");
 	CreateTickboxConVariable(CPanel, "Log"  , "gdisasters_dnc_log");
+
+	CreateSliderConVariable(CPanel, "Moon Size", 1, 500, 0, "gdisasters_dnc_moonsize" )
 	
 	local lb2 = AddControlLabel( CPanel, "DNC Length Options:" )
 	lb2:SetTextColor(Color( 0, 0, 0))

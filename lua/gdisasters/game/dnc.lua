@@ -226,11 +226,11 @@ if (SERVER) then
 
             if ( self.m_Time < TIME_DAWN_START or self.m_Time > TIME_DUSK_END ) then
 
-
-                local moonAng = Angle(-1,0,0)
-                local moonSize = 5;
+                local moonSize = GetConVar("gdisasters_dnc_moonsize"):GetFloat();
                 local moonPos = gDisasters_GetMoonDir();
                 local moonNormal = ( vector_origin - moonPos ):GetNormal();
+
+                
 
                 moonAlpha = Lerp( FrameTime() * 1, moonAlpha, 255 );
 
@@ -334,10 +334,9 @@ if (SERVER) then
             local duskMidPoint = ( TIME_DUSK_END + TIME_DUSK_START ) / 2;
 
             -- dawn/dusk/night events
-            if ( self.m_Time >= TIME_DUSK_END and IsValid( self.m_EnvSun ) ) then
+            if ( self.m_Time >= TIME_DUSK_END) then
+                
                 if ( self.m_LastPeriod != NIGHT ) then
-                    self.m_EnvSun:Fire( "TurnOff", "", 0 );
-
                     self.m_LastPeriod = NIGHT;
                 end
 
@@ -386,10 +385,8 @@ if (SERVER) then
                     self.m_LastPeriod = DAWN;
                 end
 
-            elseif ( self.m_Time >= TIME_DAWN_START and IsValid( self.m_EnvSun ) ) then
+            elseif ( self.m_Time >= TIME_DAWN_START) then
                 if ( self.m_LastPeriod != DAY ) then
-                    self.m_EnvSun:Fire( "TurnOn", "", 0 );
-
                     self.m_LastPeriod = DAY;
                 end
 
@@ -410,15 +407,12 @@ if (SERVER) then
 
             -- env_sun
             if ( IsValid( self.m_EnvSun ) ) then
-                if ( self.m_Time >= TIME_DAWN_START and self.m_Time <= TIME_DUSK_END ) then
-                    
-                    local sunfrac = 1 - ( ( self.m_Time - TIME_DAWN_START ) / ( TIME_DUSK_END - TIME_DAWN_START ) );
-                    local angle = Angle( -180 * sunfrac, 15, 0 );
+                local sunfrac = 1 - ( ( self.m_Time - TIME_DAWN_START ) / ( TIME_DUSK_END - TIME_DAWN_START ) );
+                local angle = Angle( -180 * sunfrac, 15, 0 );
 
-                    self.m_EnvSun:SetKeyValue( "sun_dir", tostring( angle:Forward() ) );
-                    SetGlobalAngle("gdSunDir", angle:Forward() )
+                self.m_EnvSun:SetKeyValue( "sun_dir", tostring( angle:Forward() ) );
+                SetGlobalAngle("gdSunDir", angle:Forward() )
 
-                end
             end
 
             -- env_skypaint
