@@ -203,25 +203,25 @@ if (SERVER) then
 
         RenderMoon = function( self )
 
-            self.Texture1                          = "atmosphere/moon/1"
-            self.Texture2                          = "atmosphere/moon/2"
-            self.Texture3                          = "atmosphere/moon/3"
-            self.Texture4                          = "atmosphere/moon/4"
-            self.Texture5                          = "atmosphere/moon/5"
-            self.Texture6                          = "atmosphere/moon/6"
-            self.Texture7                          = "atmosphere/moon/7"
-            self.Texture8                          = "atmosphere/moon/8"
-            self.Texture9                          = "atmosphere/moon/9"
-            self.Texture10                         = "atmosphere/moon/10"
-            self.Texture11                         = "atmosphere/moon/11"
-            self.Texture12                         = "atmosphere/moon/12"
-            self.Texture13                         = "atmosphere/moon/13"
-            self.Texture14                         = "atmosphere/moon/14"
-            self.Texture15                         = "atmosphere/moon/15"
-            self.Texture16                         = "atmosphere/moon/16"
+            Texture1                          = "atmosphere/moon/1"
+            Texture2                          = "atmosphere/moon/2"
+            Texture3                          = "atmosphere/moon/3"
+            Texture4                          = "atmosphere/moon/4"
+            Texture5                          = "atmosphere/moon/5"
+            Texture6                          = "atmosphere/moon/6"
+            Texture7                          = "atmosphere/moon/7"
+            Texture8                          = "atmosphere/moon/8"
+            Texture9                          = "atmosphere/moon/9"
+            Texture10                         = "atmosphere/moon/10"
+            Texture11                         = "atmosphere/moon/11"
+            Texture12                         = "atmosphere/moon/12"
+            Texture13                         = "atmosphere/moon/13"
+            Texture14                         = "atmosphere/moon/14"
+            Texture15                         = "atmosphere/moon/15"
+            Texture16                         = "atmosphere/moon/16"
             
             local moonAlpha = 0;
-            local moonMat = Material( self.Texture9  );
+            local moonMat = Material( Texture9  );
             moonMat:SetInt( "$additive", 0 );
             moonMat:SetInt( "$translucent", 0 );
 
@@ -232,8 +232,6 @@ if (SERVER) then
                 local moonSize = GetConVar("gdisasters_dnc_moonsize"):GetFloat();
                 local moonPos = gDisasters_GetMoonDir();
                 local moonNormal = ( vector_origin - moonPos ):GetNormal();
-
-                
 
                 moonAlpha = Lerp( FrameTime() * 1, moonAlpha, 255 );
 
