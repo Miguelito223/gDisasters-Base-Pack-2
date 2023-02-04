@@ -376,7 +376,7 @@ gDisasters.DayNightSystem.Start =
         -- env_sun
         if ( IsValid( self.m_EnvSun ) ) then
             local sunfrac = 1 - ( ( self.m_Time - TIME_DAWN_START ) / ( TIME_DUSK_END - TIME_DAWN_START ) );
-            local angle = Angle( -180 * sunfrac, 0, 0 );
+            local angle = Angle( -180 * sunfrac, 15, 0 );
 
             self.m_EnvSun:SetKeyValue( "sun_dir", tostring( angle:Forward() ) );
             SetGlobalAngle("gdSunDir", angle:Forward() )
