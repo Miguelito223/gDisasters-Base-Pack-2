@@ -56,10 +56,11 @@ function meta:gdisasters_dnc_Admin()
 
 end
 
-local TIME_NOON			= 12;		-- 12:00pm
-local TIME_MIDNIGHT		= 0;		-- 12:00am
+
+local TIME_MIDNIGHT		= 0;		-- 12:00pm
 local TIME_DAWN_START	= 4;		-- 4:00am
 local TIME_DAWN_END		= 6.5;		-- 6:30am
+local TIME_NOON			= 12;		-- 12:00am
 local TIME_DUSK_START	= 19;		-- 7:00pm;
 local TIME_DUSK_END		= 20.5;		-- 8:30pm;
 
@@ -254,12 +255,6 @@ gDisasters.DayNightSystem.Start =
         self.m_EnvSkyPaint = ents.FindByClass( "env_skypaint" )[1];
         self.m_RelayDawn = ents.FindByName( "dawn" )[1];
         self.m_RelayDusk = ents.FindByName( "dusk" )[1];
-        self.m_RelayCloudy = ents.FindByName( "cloudy" )[1];
-
-        -- put the sun on the horizon initially
-        if ( IsValid( self.m_EnvSun ) ) then
-            self.m_EnvSun:SetKeyValue( "sun_dir", "1 0 0" );
-        end
 
         -- log found entities
         -- HACK: Fixes prop lighting since the first pattern change fails to update it.
@@ -275,6 +270,8 @@ gDisasters.DayNightSystem.Start =
         end
 
         if ( IsValid( self.m_EnvSun ) ) then
+            self.m_EnvSun:SetKeyValue( "sun_dir", "1 0 0" );
+
             gdisasters_dnc_log( "Found env_sun" );
         else
             gDisasters_EntityExists("env_sun")
@@ -284,10 +281,10 @@ gDisasters.DayNightSystem.Start =
         if ( IsValid( self.m_EnvSkyPaint ) ) then
 
             gdisasters_dnc_log( "Found env_skypaint" );
+
+            if (CLIENT) then return end
             
-            if (SERVER) then
-                self.m_EnvSkyPaint:SetStarTexture( "skybox/starfield" );
-            end
+            self.m_EnvSkyPaint:SetStarTexture( "skybox/starfield" );
 
         else
 
@@ -311,6 +308,21 @@ gDisasters.DayNightSystem.Start =
         else
             timeLen = gDisasters.DayNightSystem.InternalVars.length_day:GetInt();
         end
+
+        local sunfrac = 1 - ( ( self.m_Time - TIME_DAWN_START ) / ( TIME_DUSK_END - TIME_DAWN_START ) );
+        local moonfrac;
+
+        if self.m_Time > TIME_DUSK_END then
+            moonfrac = 1 - ( ( self.m_Time + TIME_DAWN_START ) / ( TIME_NOON - TIME_DAWN_START ) );
+        else
+            moonfrac = 1 - ( ( self.m_Time - TIME_DAWN_START ) / ( TIME_NOON - TIME_DAWN_START ) );
+        end
+
+        local angle = Angle( 180 * sunfrac, 0, 0 );
+        local angle2 = Angle( 180 * moonfrac, 0, 0 );
+
+        SetGlobalAngle("gdSunDir", -angle:Forward() )
+        SetGlobalAngle("gdMoonDir", angle2:Forward() )
 
         if ( !self.m_Paused and gDisasters.DayNightSystem.InternalVars.paused:GetInt() <= 0)  then
             if ( gDisasters.DayNightSystem.InternalVars.realtime:GetInt() <= 0 ) then
@@ -374,13 +386,7 @@ gDisasters.DayNightSystem.Start =
 
         -- env_sun
         if ( IsValid( self.m_EnvSun ) ) then
-            local sunfrac = 1 - ( ( self.m_Time - TIME_DAWN_START ) / ( TIME_DUSK_END - TIME_DAWN_START ) );
-            local angle = Angle( -180 * sunfrac, 15, 0 );
-
-            self.m_EnvSun:SetKeyValue( "sun_dir", tostring( angle:Forward() ) );
-            SetGlobalAngle("gdSunDir", angle:Forward() )
-            SetGlobalAngle("gdMoonDir", angle:Forward() * -1 )
-
+            self.m_EnvSun:SetKeyValue( "sun_dir", tostring(gDisasters_GetSunDir()));
         end
 
         -- env_skypaint
@@ -425,6 +431,8 @@ gDisasters.DayNightSystem.Start =
                 cur = DAY;
                 next = DAY;
             end
+
+            if (CLIENT) then return end
 
             self.m_EnvSkyPaint:SetTopColor( LerpVector( frac, SKYPAINT[cur].TopColor, SKYPAINT[next].TopColor ) );
             self.m_EnvSkyPaint:SetBottomColor( LerpVector( frac, SKYPAINT[cur].BottomColor, SKYPAINT[next].BottomColor ) );
@@ -478,7 +486,7 @@ gDisasters.DayNightSystem.Start =
 
     GetTime = function( self )
 
-        return (gdisasters.daynightsystem.internalvars.realtime:GetInt() <= 0 and self.m_Time or self:GetRealTime());
+        return (gDisasters.DayNightSystem.InternalVars.realtime:GetInt() <= 0 and self.m_Time or self:GetRealTime());
 
     end,
 };
