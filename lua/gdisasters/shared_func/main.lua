@@ -1842,11 +1842,11 @@ function gDisasters_GetMoonAngleInDegs()
 end
 
 function gDisasters_GetSunAngleInRadians()
-	return math.acos((vector_up*-1):Dot(gDisasters_GetSunDir()))
+	return math.acos(vector_up:Dot(gDisasters_GetSunDir()))
 end
 
 function gDisasters_GetSunAngleInDegs()
-	return convert_RadiantsToDegrees(gDisasters_GetSunAngleInRadians)
+	return convert_RadiantsToDegrees(gDisasters_GetSunAngleInRadians())
 end
 
 function gDisasters_GetMoonDir()
