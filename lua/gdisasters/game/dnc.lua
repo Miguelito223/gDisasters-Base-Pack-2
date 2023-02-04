@@ -143,7 +143,6 @@ gDisasters.DayNightSystem.Start =
     m_Time = 6.5,
     m_LastPeriod = NIGHT,
     m_LastStyle = '.',
-    m_Cloudy = false,
     m_Paused = false,
 
     -- to easily hook functions within our own object instance
@@ -286,8 +285,10 @@ gDisasters.DayNightSystem.Start =
         if ( IsValid( self.m_EnvSkyPaint ) ) then
 
             gdisasters_dnc_log( "Found env_skypaint" );
-
-            self.m_EnvSkyPaint:SetStarTexture( "skybox/starfield" );
+            
+            if (SERVER) then
+                self.m_EnvSkyPaint:SetStarTexture( "skybox/starfield" );
+            end
 
         else
 
@@ -340,19 +341,6 @@ gDisasters.DayNightSystem.Start =
                     self.m_RelayDusk:Fire( "Trigger", "" );
                 end
 
-                -- disabled because the clouds at night look pretty awful..
-                --self.m_Cloudy = math.random() > 0.5;
-                self.m_Cloudy = false;
-
-                -- at dawn select if we should display clouds for night or not (50% chance)
-                if ( IsValid( self.m_EnvSkyPaint ) ) then
-                    if ( self.m_Cloudy ) then
-                        self.m_EnvSkyPaint:SetStarTexture( "skybox/clouds" );
-                    else
-                        self.m_EnvSkyPaint:SetStarTexture( "skybox/starfield" );
-                    end
-                end
-
                 self.m_LastPeriod = DUSK;
             end
 
@@ -360,20 +348,6 @@ gDisasters.DayNightSystem.Start =
             if ( self.m_LastPeriod != DAWN ) then
                 if ( IsValid( self.m_RelayDawn ) ) then
                     self.m_RelayDawn:Fire( "Trigger", "" );
-                end
-
-                -- disabled because clouds during transitions looks pretty awful, too
-                --self.m_Cloudy = math.random() > 0.5;
-                self.m_Cloudy = false;
-
-                -- at dawn select if we should display clouds for day or not (50% chance)
-                if ( IsValid( self.m_EnvSkyPaint ) ) then
-                    if ( self.m_Cloudy ) then
-                        self.m_EnvSkyPaint:SetStarTexture( "skybox/clouds" );
-                        SKYPAINT[DAY].StarFade = 1.5;
-                    else
-                        SKYPAINT[DAY].StarFade = 0;
-                    end
                 end
 
                 self.m_LastPeriod = DAWN;
