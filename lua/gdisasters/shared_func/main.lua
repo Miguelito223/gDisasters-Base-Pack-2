@@ -1,5 +1,8 @@
 gDisasters = {}
-gDisasters.CachedExists          = {}
+gDisasters.CachedExists     = {}
+gDisasters.Cached         = {}
+gDisasters.DayNightSystem        = {}
+gDisasters.DayNightSystem.InternalVars = {}
 gDisasters.Game                  = {}
 
 Break_Sounds = {
@@ -1848,7 +1851,7 @@ end
 
 function gDisasters_GetMoonDir()
 
-	return GetGlobalAngle("gdSunDir")*-1
+	return GetGlobalAngle("gdMoonDir")
 end
 
 function gDisasters_GetSunDir()
@@ -1861,10 +1864,9 @@ function gDisasters_EntityExists(entname)
 	if not (gDisasters.CachedExists[entname]) then 
 	
 		net.Start("gd_entity_exists_on_server")
-		net.WriteString("sky_camera")
+		net.WriteString(entname)
 		net.SendToServer()
-		
-		return false
+
 	else
 		return true 
 	end
@@ -1877,8 +1879,13 @@ function gDisasters_Is3DSkybox()
 
 	if (SERVER) then 
 	
-		if not (gDisasters.Cached.SkyCamera) then gDisasters.Cached.SkyCamera = ents.FindByClass("sky_camera") end 
-		if #gDisasters.Cached.SkyCamera > 0 then return true else return IsValid(gDisasters.Cached.SkyCamera[1]) end 
+		gDisasters.Cached.SkyCamera = ents.FindByClass("sky_camera")
+
+		if #gDisasters.Cached.SkyCamera > 0 then 
+			return true 
+		else 
+			return IsValid(gDisasters.Cached.SkyCamera[1]) 
+		end 
 		
 	elseif (CLIENT) then
 		
