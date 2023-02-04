@@ -227,7 +227,7 @@ gDisasters.DayNightSystem.Start =
         Texture15                         = "atmosphere/moon/15"
         Texture16                         = "atmosphere/moon/16"
         
-
+        local moonAlpha = 0;
         local moonMat = Material( Texture9  );
         moonMat:SetInt( "$additive", 0 );
         moonMat:SetInt( "$translucent", 0 );
@@ -236,10 +236,12 @@ gDisasters.DayNightSystem.Start =
         local moonPos = gDisasters_GetMoonDir() * ( self.LastFarZ * 0.900 );
         local moonNormal = ( vector_origin - moonPos ):GetNormal();
 
+        moonAlpha = Lerp( FrameTime() * 1, moonAlpha, 255 );
+
         cam.Start3D(vector_origin, self.LastSceneAngles);
             render.OverrideDepthEnable( true, false );
             render.SetMaterial( moonMat );
-            render.DrawQuadEasy( moonPos, moonNormal, moonSize, moonSize, Color( 255, 255, 255, 255 ), -180 );
+            render.DrawQuadEasy( moonPos, moonNormal, moonSize, moonSize, Color( 255, 255, 255, moonAlpha ), -180 );
             render.OverrideDepthEnable( false, false );
         cam.End3D();
 
