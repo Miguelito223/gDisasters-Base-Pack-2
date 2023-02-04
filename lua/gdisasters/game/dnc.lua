@@ -198,6 +198,16 @@ gDisasters.DayNightSystem.Start =
 
     end,
 
+    RenderScene = function( self, origin, angles, fov )
+	    self.LastSceneOrigin = origin;
+	    self.LastSceneAngles = angles;
+    end,
+
+    CalcView = function( self, pl, pos, ang, fov, nearZ, farZ )
+        self.LastNearZ = nearZ;
+	    self.LastFarZ = farZ;
+    end,
+
     RenderMoon = function( self )
 
         Texture1                          = "atmosphere/moon/1"
@@ -217,21 +227,19 @@ gDisasters.DayNightSystem.Start =
         Texture15                         = "atmosphere/moon/15"
         Texture16                         = "atmosphere/moon/16"
         
-        local moonAlpha = 0;
+
         local moonMat = Material( Texture9  );
         moonMat:SetInt( "$additive", 0 );
         moonMat:SetInt( "$translucent", 0 );
 
         local moonSize = GetConVar("gdisasters_dnc_moonsize"):GetFloat();
-        local moonPos = gDisasters_GetMoonDir();
+        local moonPos = gDisasters_GetMoonDir() * ( self.LastFarZ * 0.900 );
         local moonNormal = ( vector_origin - moonPos ):GetNormal();
 
-        moonAlpha = Lerp( FrameTime() * 1, moonAlpha, 255 );
-
-        cam.Start3D();
+        cam.Start3D(vector_origin, self.LastSceneAngles);
             render.OverrideDepthEnable( true, false );
             render.SetMaterial( moonMat );
-            render.DrawQuadEasy( moonPos, moonNormal, moonSize, moonSize, Color( 255, 255, 255, moonAlpha ), -180 );
+            render.DrawQuadEasy( moonPos, moonNormal, moonSize, moonSize, Color( 255, 255, 255, 255 ), -180 );
             render.OverrideDepthEnable( false, false );
         cam.End3D();
 
@@ -527,6 +535,18 @@ end );
 hook.Add("PostDrawSkyBox", "gdisasters_dnc_DrawMoon", function() 
 
     gDisasters.DayNightSystem.Start:RenderMoon();
+
+end)
+
+hook.Add("RenderScene", "gdisasters_dnc_RenderScene", function(origin, angles, fov) 
+
+    gDisasters.DayNightSystem.Start:RenderScene(origin, angles, fov);
+
+end)
+
+hook.Add("CalcView", "gdisasters_dnc_CalcView", function(pl, pos, ang, fov, nearZ, farZ) 
+
+    gDisasters.DayNightSystem.Start:CalcView(pl, pos, ang, fov, nearZ, farZ );
 
 end)
 
