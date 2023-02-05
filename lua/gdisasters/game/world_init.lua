@@ -159,6 +159,22 @@ concommand.Add("gdisasters_setbody_oxygen", function(cmd, args, O2)
 	end
 end)
 
+concommand.Add("gdisasters_dnc_getsundir", function(cmd, args, O2)
+	print(gDisasters_GetSunDir())
+end)
+
+concommand.Add("gdisasters_dnc_getmoondir", function(cmd, args, O2)
+	print(gDisasters_GetMoonDir())
+end)
+
+concommand.Add("gdisasters_dnc_getmoondirindegrees", function(cmd, args, O2)
+	print(gDisasters_GetMoonAngleInDegs())
+end)
+
+concommand.Add("gdisasters_dnc_getsundirindegrees", function(cmd, args, O2)
+	print(gDisasters_GetSunAngleInDegs())
+end)
+
 concommand.Add("gdisasters_setpressure", function(cmd, args, pressure)
 	local press = pressure[1]
 	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = tonumber(press)
