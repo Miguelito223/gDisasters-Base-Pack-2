@@ -919,18 +919,20 @@ Vector(3975,1832,67),
 Vector(-2316,2100,67)
 }
 
-function IsMapPathRegistered()
-	local map = game.GetMap()
-	if MAP_PATHS[map]==nil then return false else return true end 
-end
-
-function getMapPath()
-	local map = game.GetMap()
-	if IsMapPathRegistered()==false then print("This map no have path, no work path tornados") return nil end 
-	return MAP_PATHS[map]
-end
-
 hook.Add("Think", "gDisasters_S37K", function()
+
+	function IsMapPathRegistered()
+		local map = game.GetMap()
+		if MAP_PATHS[map]==nil then return false else return true end 
+	end
+	
+	function getMapPath()
+		local map = game.GetMap()
+		if IsMapPathRegistered()==false then print("This map no have path, no work path tornados") return nil end 
+		return MAP_PATHS[map]
+	end
+
+
 	if GetConVar("gdisasters_mapbounds_S37K"):GetInt() >= 1 and S37K_mapbounds then
 
 		local S37K = S37K_mapbounds[1]
@@ -1038,6 +1040,7 @@ hook.Add("Think", "gDisasters_S37K", function()
 		end
 
 	end
+	
 end)
 
 if (SERVER) then
