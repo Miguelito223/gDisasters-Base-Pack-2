@@ -7,7 +7,8 @@ if (CLIENT) then
 	
 end
 
-if (SERVER) then	
+if (SERVER) then
+	
 	AddCSLuaFile("gdisasters/server/spawnlist/menu/main.lua")
 	AddCSLuaFile("gdisasters/server/spawnlist/menu/populate.lua")
 	AddCSLuaFile("gdisasters/server/player-npcs/process_oxygen.lua")
