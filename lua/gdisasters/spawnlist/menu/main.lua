@@ -1,3 +1,5 @@
+if !CLIENT then return end 
+
 search.AddProvider(
 	function(str)
 		local results = {}

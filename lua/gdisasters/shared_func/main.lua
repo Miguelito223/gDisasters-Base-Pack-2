@@ -1,6 +1,8 @@
 gDisasters = {}
 gDisasters.CachedExists     = {}
 gDisasters.Cached         = {}
+gDisasters.DayNightSystem        = {}
+gDisasters.DayNightSystem.InternalVars = {}
 gDisasters.Game                  = {}
 
 Break_Sounds = {

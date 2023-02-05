@@ -1,3 +1,5 @@
+if !CLIENT then return end 
+
 --[[
 Ammo/Weapons
 --]]
