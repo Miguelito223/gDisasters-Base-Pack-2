@@ -265,10 +265,18 @@ gDisasters.DayNightSystem.Start =
 
             self:LightStyle( "a", true );
         else
-            gdisasters_dnc_log( "No light_environment, Creating" );
+            if GetConVar("gdisasters_dnc_enablecreatinglightenvironment"):GetInt() <= 0 then
+                gdisasters_dnc_log( "No light_environment, using engine.LightStyle instead." );
 
-            gDisasters_EntityExists("light_environment")
-            gdisasters_dnc_log( "Created light_environment" );
+                -- a is too dark for use with engine.LightStyle, bugs out
+                STYLE_LOW = string.byte( "b" );
+                self:LightStyle( "b", true );
+            else
+                gdisasters_dnc_log( "No light_environment, Creating" );
+
+                gDisasters_EntityExists("light_environment")
+                gdisasters_dnc_log( "Created light_environment" );
+            end
         end
 
         if ( IsValid( self.m_EnvSun ) ) then

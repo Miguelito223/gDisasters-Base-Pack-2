@@ -224,6 +224,7 @@ local function gDisastersDayAndNightCycle( CPanel )
 	CreateTickboxConVariable(CPanel, "Pause DNC"  , "gdisasters_dnc_paused");
 	CreateTickboxConVariable(CPanel, "Real Time"  , "gdisasters_dnc_realtime");
 	CreateTickboxConVariable(CPanel, "Log"  , "gdisasters_dnc_log");
+	CreateTickboxConVariable(CPanel, "Enable Creating light_environment"  , "gdisasters_dnc_enablecreatinglightenvironment");
 
 	CreateSliderConVariable(CPanel, "Moon Size", 1, 3000, 0, "gdisasters_dnc_moonsize" )
 	
