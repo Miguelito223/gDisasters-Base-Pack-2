@@ -1,3 +1,6 @@
+gDisasters.DayNightSystem        = {}
+gDisasters.DayNightSystem.InternalVars = {}
+
 gDisasters.DayNightSystem.InternalVars.enabled = GetConVar("gdisasters_dnc_enabled")
 gDisasters.DayNightSystem.InternalVars.paused =  GetConVar("gdisasters_dnc_paused")
 gDisasters.DayNightSystem.InternalVars.realtime =  GetConVar("gdisasters_dnc_realtime")
