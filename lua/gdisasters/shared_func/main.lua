@@ -1497,6 +1497,10 @@ function convert_DegreesToRadiants(degrees)
 	return math.rad(degrees)
 end
 
+function convert_AngleToRadiants(angle)
+	return math.acos(vector_up:Dot(angle))
+end
+
 function convert_AngleToVector(angle)
 	x = math.cos(angle)
 	y = math.sin(angle)
@@ -1833,7 +1837,7 @@ end
 
 function gDisasters_GetMoonAngleInRadians()
 
-	return math.acos(vector_up:Dot(gDisasters_GetMoonDir()))
+	return convert_AngleToRadiants(gDisasters_GetMoonDir())
 end
 
 function gDisasters_GetMoonAngleInDegs()
@@ -1842,7 +1846,7 @@ function gDisasters_GetMoonAngleInDegs()
 end
 
 function gDisasters_GetSunAngleInRadians()
-	return math.acos(vector_up:Dot(gDisasters_GetSunDir()))
+	return convert_AngleToRadiants(gDisasters_GetSunDir())
 end
 
 function gDisasters_GetSunAngleInDegs()
