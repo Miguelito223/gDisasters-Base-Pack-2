@@ -210,6 +210,8 @@ gDisasters.DayNightSystem.Start =
 
     RenderMoon = function( self )
 
+        if ( gDisasters.DayNightSystem.InternalVars.enabled:GetInt() < 1 ) then return end
+
         Texture1                          = "atmosphere/moon/1"
         Texture2                          = "atmosphere/moon/2"
         Texture3                          = "atmosphere/moon/3"
