@@ -1,3 +1,4 @@
+
 gDisasters_gDisastersSetupTime = CurTime()
 
 local function AddControlCB(CPanel, label, command)
