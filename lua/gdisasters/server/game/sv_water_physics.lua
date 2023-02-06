@@ -106,9 +106,6 @@ Buoyancy_Lookup = {
 
 }
 
-					
-
-
 function GetBuoyancyMod(entity)
 	if entity:GetPhysicsObject():IsValid()==false then return 0.2 end
 	if Buoyancy_Lookup[entity:GetPhysicsObject():GetMaterial()] == nil then return 0.2 end 
