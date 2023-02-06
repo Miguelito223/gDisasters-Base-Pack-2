@@ -73,7 +73,7 @@ gDisasters.DayNightSystem.SKYPAINT =
         SunColor		= Vector( 0.83, 0.45, 0.11 ),
         SunSize			= 0.34,
     },
-    [NIGHT] =
+    [gDisasters.DayNightSystem.NIGHT] =
     {
         TopColor		= Vector( 0.00, 0.00, 0.00 ),
         BottomColor		= Vector(  0.00, 0.00, 0.00 ),
@@ -96,7 +96,7 @@ gDisasters.DayNightSystem.Start =
     m_InitEntities = false,
     m_OldSkyName = "unknown",
     m_Time = 6.5,
-    m_LastPeriod = NIGHT,
+    m_LastPeriod = gDisasters.DayNightSystem.NIGHT,
     m_LastStyle = '.',
     m_Paused = false,
 
@@ -275,10 +275,10 @@ gDisasters.DayNightSystem.Start =
             timeLen = gDisasters.DayNightSystem.InternalVars.length_day:GetInt();
         end
 
-        local sunfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( TIME_DUSK_END - gDisasters.DayNightSystem.TIME_DAWN_START ) );
+        local sunfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_DUSK_END - gDisasters.DayNightSystem.TIME_DAWN_START ) );
         local moonfrac;
 
-        if self.m_Time > TIME_DUSK_END then
+        if self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END then
             moonfrac = 1 - ( ( self.m_Time + gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
         else
             moonfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
@@ -303,13 +303,13 @@ gDisasters.DayNightSystem.Start =
 
         -- since our dawn/dusk periods last several hours find the mid point of them
         local dawnMidPoint = ( gDisasters.DayNightSystem.TIME_DAWN_END + gDisasters.DayNightSystem.TIME_DAWN_START ) / 2;
-        local duskMidPoint = ( TIME_DUSK_END + gDisasters.DayNightSystem.TIME_DUSK_START	  ) / 2;
+        local duskMidPoint = ( gDisasters.DayNightSystem.TIME_DUSK_END + gDisasters.DayNightSystem.TIME_DUSK_START	  ) / 2;
 
         -- dawn/dusk/night events
-        if ( self.m_Time >= TIME_DUSK_END) then
+        if ( self.m_Time >= gDisasters.DayNightSystem.TIME_DUSK_END) then
             
-            if ( self.m_LastPeriod != NIGHT ) then
-                self.m_LastPeriod = NIGHT;
+            if ( self.m_LastPeriod != gDisasters.DayNightSystem.NIGHT ) then
+                self.m_LastPeriod = gDisasters.DayNightSystem.NIGHT;
             end
 
         elseif ( self.m_Time >= duskMidPoint ) then
@@ -362,8 +362,8 @@ gDisasters.DayNightSystem.Start =
                 self.m_EnvSkyPaint:SetSunNormal( self.m_EnvSun:GetInternalVariable( "m_vDirection" ) );
             end
 
-            local cur = NIGHT;
-            local next = NIGHT;
+            local cur = gDisasters.DayNightSystem.NIGHT;
+            local next = gDisasters.DayNightSystem.NIGHT;
             local frac = 0;
             local ease = 0.3;
 
@@ -378,7 +378,7 @@ gDisasters.DayNightSystem.Start =
             data.EndMaxCurrent  = 0   
 
             if ( self.m_Time >= gDisasters.DayNightSystem.TIME_DAWN_START and self.m_Time < dawnMidPoint ) then
-                cur = NIGHT;
+                cur = gDisasters.DayNightSystem.NIGHT;
                 next = gDisasters.DayNightSystem.DAWN;
                 frac = math.EaseInOut( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( dawnMidPoint - gDisasters.DayNightSystem.TIME_DAWN_START ), ease, ease );
             elseif ( self.m_Time >= dawnMidPoint and self.m_Time < gDisasters.DayNightSystem.TIME_DAWN_END ) then
@@ -389,11 +389,11 @@ gDisasters.DayNightSystem.Start =
                 cur = gDisasters.DayNightSystem.DAY;
                 next = gDisasters.DayNightSystem.DUSK;
                 frac = math.EaseInOut( ( self.m_Time - gDisasters.DayNightSystem.TIME_DUSK_START	  ) / ( duskMidPoint - gDisasters.DayNightSystem.TIME_DUSK_START	  ), ease, ease );
-            elseif ( self.m_Time >= duskMidPoint and self.m_Time < TIME_DUSK_END ) then
+            elseif ( self.m_Time >= duskMidPoint and self.m_Time < gDisasters.DayNightSystem.TIME_DUSK_END ) then
                 cur = gDisasters.DayNightSystem.DUSK;
-                next = NIGHT;
-                frac = math.EaseInOut( ( self.m_Time - duskMidPoint ) / ( TIME_DUSK_END - duskMidPoint ), ease, ease );
-            elseif ( self.m_Time >= gDisasters.DayNightSystem.TIME_DAWN_END and self.m_Time <= TIME_DUSK_END ) then
+                next = gDisasters.DayNightSystem.NIGHT;
+                frac = math.EaseInOut( ( self.m_Time - duskMidPoint ) / ( gDisasters.DayNightSystem.TIME_DUSK_END - duskMidPoint ), ease, ease );
+            elseif ( self.m_Time >= gDisasters.DayNightSystem.TIME_DAWN_END and self.m_Time <= gDisasters.DayNightSystem.TIME_DUSK_END ) then
                 cur = gDisasters.DayNightSystem.DAY;
                 next = gDisasters.DayNightSystem.DAY;
             end
