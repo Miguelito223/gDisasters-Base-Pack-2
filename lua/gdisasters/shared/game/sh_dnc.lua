@@ -11,70 +11,24 @@ gDisasters.DayNightSystem.InternalVars.dev = false;
 
 gDisasters.DayNightSystem.InternalVars.HeightMin = 300;
 
-function gdisasters_dnc_log( ... )
+gDisasters.DayNightSystem.TIME_MIDNIGHT		= 0;		-- 12:00pm
+gDisasters.DayNightSystem.TIME_DAWN_START	          = 4;		-- 4:00am
+gDisasters.DayNightSystem.TIME_DAWN_END		= 6.5;		-- 6:30am
+gDisasters.DayNightSystem.TIME_NOON			= 12;		-- 12:00am
+gDisasters.DayNightSystem.TIME_DUSK_START	 	= 19;		-- 7:00pm;
+gDisasters.DayNightSystem.TIME_DUSK_END	 	= 20.5;		-- 8:30pm;
 
-    if ( gDisasters.DayNightSystem.InternalVars.logging:GetInt() < 1 ) then return end
+gDisasters.DayNightSystem.STYLE_LOW 			= string.byte( 'a' );		-- style for night time
+gDisasters.DayNightSystem.STYLE_HIGH		= string.byte( 'm' );		-- style for day time
 
-    print( "[day and night] " .. string.format( ... ) .. "\n" );
+gDisasters.DayNightSystem.NIGHT			= 0;
+gDisasters.DayNightSystem.DAWN				= 1;
+gDisasters.DayNightSystem.DAY				= 2;
+gDisasters.DayNightSystem.DUSK				= 3;
 
-end
-
-function gdisasters_dnc_Outside( pos )
-
-    if ( pos != nil ) then
-
-        local trace = { };
-        trace.start = pos;
-        trace.endpos = trace.start + Vector( 0, 0, 32768 );
-        trace.mask = MASK_BLOCKLOS;
-
-        local tr = util.TraceLine( trace );
-
-        gDisasters.DayNightSystem.InternalVars.HeightMin = ( tr.HitPos - trace.start ):Length();
-
-        if ( tr.StartSolid ) then return false end
-        if ( tr.HitSky ) then return true end
-
-    end
-
-    return false;
-
-end
-
-function gdisasters_dnc_outside( pos )
-
-    return gdisasters_dnc_Outside( pos );
-
-end
-
--- usergroup support
-local meta = FindMetaTable( "Player" )
-
-function meta:gdisasters_dnc_Admin()
-
-    return self:IsSuperAdmin() or self:IsAdmin();
-
-end
-
-
-local TIME_MIDNIGHT		= 0;		-- 12:00pm
-local TIME_DAWN_START	= 4;		-- 4:00am
-local TIME_DAWN_END		= 6.5;		-- 6:30am
-local TIME_NOON			= 12;		-- 12:00am
-local TIME_DUSK_START	= 19;		-- 7:00pm;
-local TIME_DUSK_END		= 20.5;		-- 8:30pm;
-
-local STYLE_LOW			= string.byte( 'a' );		-- style for night time
-local STYLE_HIGH		= string.byte( 'm' );		-- style for day time
-
-local NIGHT				= 0;
-local DAWN				= 1;
-local DAY				= 2;
-local DUSK				= 3;
-
-local SKYPAINT =
+gDisasters.DayNightSystem.SKYPAINT =
 {
-    [DAWN] =
+    [gDisasters.DayNightSystem.DAWN] =
     {
         TopColor		= Vector( 0.20,0.50,1.00 ),
         BottomColor		= Vector(  1, 0.48, 0  ),
@@ -89,7 +43,7 @@ local SKYPAINT =
         SunColor		= Vector( 0.2, 0.1, 0 ),
         SunSize			= 0.34,
     },
-    [DAY] =
+    [gDisasters.DayNightSystem.DAY] =
     {
         TopColor		= Vector(0.20,0.50,1.00),
         BottomColor		= Vector(0.80,1.00,1.00),
@@ -104,7 +58,7 @@ local SKYPAINT =
         SunColor		= Vector(0.20,0.10,0.00 ),
         SunSize			= 2.00,
     },
-    [DUSK] =
+    [gDisasters.DayNightSystem.DUSK] =
     {
         TopColor		= Vector( 0.20,0.50,1.00 ),
         BottomColor		= Vector( 1, 0.48, 0 ),
@@ -271,7 +225,7 @@ gDisasters.DayNightSystem.Start =
                 gdisasters_dnc_log( "No light_environment, using engine.LightStyle instead." );
 
                 -- a is too dark for use with engine.LightStyle, bugs out
-                STYLE_LOW = string.byte( "b" );
+                gDisasters.DayNightSystem.STYLE_LOW  = string.byte( "b" );
                 self:LightStyle( "b", true );
             else
                 gdisasters_dnc_log( "No light_environment, Creating" );
@@ -315,19 +269,19 @@ gDisasters.DayNightSystem.Start =
         if ( !self.m_InitEntities ) then self:InitEntities(); end
 
         local timeLen = 3600;
-        if (self.m_Time > TIME_DUSK_START or self.m_Time < TIME_DAWN_END) then
+        if (self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_START	  or self.m_Time < gDisasters.DayNightSystem.TIME_DAWN_END) then
             timeLen = gDisasters.DayNightSystem.InternalVars.length_night:GetInt();
         else
             timeLen = gDisasters.DayNightSystem.InternalVars.length_day:GetInt();
         end
 
-        local sunfrac = 1 - ( ( self.m_Time - TIME_DAWN_START ) / ( TIME_DUSK_END - TIME_DAWN_START ) );
+        local sunfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( TIME_DUSK_END - gDisasters.DayNightSystem.TIME_DAWN_START ) );
         local moonfrac;
 
         if self.m_Time > TIME_DUSK_END then
-            moonfrac = 1 - ( ( self.m_Time + TIME_DAWN_START ) / ( TIME_NOON - TIME_DAWN_START ) );
+            moonfrac = 1 - ( ( self.m_Time + gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
         else
-            moonfrac = 1 - ( ( self.m_Time - TIME_DAWN_START ) / ( TIME_NOON - TIME_DAWN_START ) );
+            moonfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
         end
 
         local angle = Angle( 180 * sunfrac, 0, 0 );
@@ -348,8 +302,8 @@ gDisasters.DayNightSystem.Start =
         end
 
         -- since our dawn/dusk periods last several hours find the mid point of them
-        local dawnMidPoint = ( TIME_DAWN_END + TIME_DAWN_START ) / 2;
-        local duskMidPoint = ( TIME_DUSK_END + TIME_DUSK_START ) / 2;
+        local dawnMidPoint = ( gDisasters.DayNightSystem.TIME_DAWN_END + gDisasters.DayNightSystem.TIME_DAWN_START ) / 2;
+        local duskMidPoint = ( TIME_DUSK_END + gDisasters.DayNightSystem.TIME_DUSK_START	  ) / 2;
 
         -- dawn/dusk/night events
         if ( self.m_Time >= TIME_DUSK_END) then
@@ -359,26 +313,26 @@ gDisasters.DayNightSystem.Start =
             end
 
         elseif ( self.m_Time >= duskMidPoint ) then
-            if ( self.m_LastPeriod != DUSK ) then
+            if ( self.m_LastPeriod != gDisasters.DayNightSystem.DUSK ) then
                 if ( IsValid( self.m_RelayDusk ) ) then
                     self.m_RelayDusk:Fire( "Trigger", "" );
                 end
 
-                self.m_LastPeriod = DUSK;
+                self.m_LastPeriod = gDisasters.DayNightSystem.DUSK;
             end
 
         elseif ( self.m_Time >= dawnMidPoint ) then
-            if ( self.m_LastPeriod != DAWN ) then
+            if ( self.m_LastPeriod != gDisasters.DayNightSystem.DAWN ) then
                 if ( IsValid( self.m_RelayDawn ) ) then
                     self.m_RelayDawn:Fire( "Trigger", "" );
                 end
 
-                self.m_LastPeriod = DAWN;
+                self.m_LastPeriod = gDisasters.DayNightSystem.DAWN;
             end
 
-        elseif ( self.m_Time >= TIME_DAWN_START) then
-            if ( self.m_LastPeriod != DAY ) then
-                self.m_LastPeriod = DAY;
+        elseif ( self.m_Time >= gDisasters.DayNightSystem.TIME_DAWN_START) then
+            if ( self.m_LastPeriod != gDisasters.DayNightSystem.DAY ) then
+                self.m_LastPeriod = gDisasters.DayNightSystem.DAY;
             end
 
         end
@@ -386,13 +340,13 @@ gDisasters.DayNightSystem.Start =
         -- light_environment
         local lightfrac = 0;
 
-        if ( self.m_Time >= dawnMidPoint and self.m_Time < TIME_NOON ) then
-            lightfrac = math.EaseInOut( ( self.m_Time - dawnMidPoint ) / ( TIME_NOON - dawnMidPoint ), 0, 1 );
-        elseif ( self.m_Time >= TIME_NOON and self.m_Time < duskMidPoint ) then
-            lightfrac = 1 - math.EaseInOut( ( self.m_Time - TIME_NOON ) / ( duskMidPoint - TIME_NOON ), 1, 0 );
+        if ( self.m_Time >= dawnMidPoint and self.m_Time < gDisasters.DayNightSystem.TIME_NOON ) then
+            lightfrac = math.EaseInOut( ( self.m_Time - dawnMidPoint ) / ( gDisasters.DayNightSystem.TIME_NOON - dawnMidPoint ), 0, 1 );
+        elseif ( self.m_Time >= gDisasters.DayNightSystem.TIME_NOON and self.m_Time < duskMidPoint ) then
+            lightfrac = 1 - math.EaseInOut( ( self.m_Time - gDisasters.DayNightSystem.TIME_NOON ) / ( duskMidPoint - gDisasters.DayNightSystem.TIME_NOON ), 1, 0 );
         end
 
-        local style = string.char( math.floor( Lerp( lightfrac, STYLE_LOW, STYLE_HIGH ) + 0.5 ) );
+        local style = string.char( math.floor( Lerp( lightfrac, gDisasters.DayNightSystem.STYLE_LOW , gDisasters.DayNightSystem.STYLE_HIGH ) + 0.5 ) );
 
         self:LightStyle( style );
 
@@ -423,43 +377,43 @@ gDisasters.DayNightSystem.Start =
             data.EndMinCurrent  = 0
             data.EndMaxCurrent  = 0   
 
-            if ( self.m_Time >= TIME_DAWN_START and self.m_Time < dawnMidPoint ) then
+            if ( self.m_Time >= gDisasters.DayNightSystem.TIME_DAWN_START and self.m_Time < dawnMidPoint ) then
                 cur = NIGHT;
-                next = DAWN;
-                frac = math.EaseInOut( ( self.m_Time - TIME_DAWN_START ) / ( dawnMidPoint - TIME_DAWN_START ), ease, ease );
-            elseif ( self.m_Time >= dawnMidPoint and self.m_Time < TIME_DAWN_END ) then
-                cur = DAWN;
-                next = DAY;
-                frac = math.EaseInOut( ( self.m_Time - dawnMidPoint ) / ( TIME_DAWN_END - dawnMidPoint ), ease, ease );
-            elseif ( self.m_Time >= TIME_DUSK_START and self.m_Time < duskMidPoint ) then
-                cur = DAY;
-                next = DUSK;
-                frac = math.EaseInOut( ( self.m_Time - TIME_DUSK_START ) / ( duskMidPoint - TIME_DUSK_START ), ease, ease );
+                next = gDisasters.DayNightSystem.DAWN;
+                frac = math.EaseInOut( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( dawnMidPoint - gDisasters.DayNightSystem.TIME_DAWN_START ), ease, ease );
+            elseif ( self.m_Time >= dawnMidPoint and self.m_Time < gDisasters.DayNightSystem.TIME_DAWN_END ) then
+                cur = gDisasters.DayNightSystem.DAWN;
+                next = gDisasters.DayNightSystem.DAY;
+                frac = math.EaseInOut( ( self.m_Time - dawnMidPoint ) / ( gDisasters.DayNightSystem.TIME_DAWN_END - dawnMidPoint ), ease, ease );
+            elseif ( self.m_Time >= gDisasters.DayNightSystem.TIME_DUSK_START	  and self.m_Time < duskMidPoint ) then
+                cur = gDisasters.DayNightSystem.DAY;
+                next = gDisasters.DayNightSystem.DUSK;
+                frac = math.EaseInOut( ( self.m_Time - gDisasters.DayNightSystem.TIME_DUSK_START	  ) / ( duskMidPoint - gDisasters.DayNightSystem.TIME_DUSK_START	  ), ease, ease );
             elseif ( self.m_Time >= duskMidPoint and self.m_Time < TIME_DUSK_END ) then
-                cur = DUSK;
+                cur = gDisasters.DayNightSystem.DUSK;
                 next = NIGHT;
                 frac = math.EaseInOut( ( self.m_Time - duskMidPoint ) / ( TIME_DUSK_END - duskMidPoint ), ease, ease );
-            elseif ( self.m_Time >= TIME_DAWN_END and self.m_Time <= TIME_DUSK_END ) then
-                cur = DAY;
-                next = DAY;
+            elseif ( self.m_Time >= gDisasters.DayNightSystem.TIME_DAWN_END and self.m_Time <= TIME_DUSK_END ) then
+                cur = gDisasters.DayNightSystem.DAY;
+                next = gDisasters.DayNightSystem.DAY;
             end
 
             if (CLIENT) then return end
 
-            self.m_EnvSkyPaint:SetTopColor( LerpVector( frac, SKYPAINT[cur].TopColor, SKYPAINT[next].TopColor ) );
-            self.m_EnvSkyPaint:SetBottomColor( LerpVector( frac, SKYPAINT[cur].BottomColor, SKYPAINT[next].BottomColor ) );
-            self.m_EnvSkyPaint:SetSunColor( LerpVector( frac, SKYPAINT[cur].SunColor, SKYPAINT[next].SunColor ) );
-            self.m_EnvSkyPaint:SetDuskColor( LerpVector( frac, SKYPAINT[cur].DuskColor, SKYPAINT[next].DuskColor ) );
-            self.m_EnvSkyPaint:SetFadeBias( Lerp( frac, SKYPAINT[cur].FadeBias, SKYPAINT[next].FadeBias ) );
-            self.m_EnvSkyPaint:SetHDRScale( Lerp( frac, SKYPAINT[cur].HDRScale, SKYPAINT[next].HDRScale ) );
-            self.m_EnvSkyPaint:SetDuskScale( Lerp( frac, SKYPAINT[cur].DuskScale, SKYPAINT[next].DuskScale ) );
-            self.m_EnvSkyPaint:SetDuskIntensity( Lerp( frac, SKYPAINT[cur].DuskIntensity, SKYPAINT[next].DuskIntensity ) );
-            self.m_EnvSkyPaint:SetSunSize( (Lerp( frac, SKYPAINT[cur].SunSize, SKYPAINT[next].SunSize )) );
+            self.m_EnvSkyPaint:SetTopColor( LerpVector( frac, gDisasters.DayNightSystem.SKYPAINT[cur].TopColor, gDisasters.DayNightSystem.SKYPAINT[next].TopColor ) );
+            self.m_EnvSkyPaint:SetBottomColor( LerpVector( frac, gDisasters.DayNightSystem.SKYPAINT[cur].BottomColor, gDisasters.DayNightSystem.SKYPAINT[next].BottomColor ) );
+            self.m_EnvSkyPaint:SetSunColor( LerpVector( frac, gDisasters.DayNightSystem.SKYPAINT[cur].SunColor, gDisasters.DayNightSystem.SKYPAINT[next].SunColor ) );
+            self.m_EnvSkyPaint:SetDuskColor( LerpVector( frac, gDisasters.DayNightSystem.SKYPAINT[cur].DuskColor, gDisasters.DayNightSystem.SKYPAINT[next].DuskColor ) );
+            self.m_EnvSkyPaint:SetFadeBias( Lerp( frac, gDisasters.DayNightSystem.SKYPAINT[cur].FadeBias, gDisasters.DayNightSystem.SKYPAINT[next].FadeBias ) );
+            self.m_EnvSkyPaint:SetHDRScale( Lerp( frac, gDisasters.DayNightSystem.SKYPAINT[cur].HDRScale, gDisasters.DayNightSystem.SKYPAINT[next].HDRScale ) );
+            self.m_EnvSkyPaint:SetDuskScale( Lerp( frac, gDisasters.DayNightSystem.SKYPAINT[cur].DuskScale, gDisasters.DayNightSystem.SKYPAINT[next].DuskScale ) );
+            self.m_EnvSkyPaint:SetDuskIntensity( Lerp( frac, gDisasters.DayNightSystem.SKYPAINT[cur].DuskIntensity, gDisasters.DayNightSystem.SKYPAINT[next].DuskIntensity ) );
+            self.m_EnvSkyPaint:SetSunSize( (Lerp( frac, gDisasters.DayNightSystem.SKYPAINT[cur].SunSize, gDisasters.DayNightSystem.SKYPAINT[next].SunSize )) );
             
 
-            self.m_EnvSkyPaint:SetStarFade( SKYPAINT[next].StarFade );
-            self.m_EnvSkyPaint:SetStarScale( SKYPAINT[next].StarScale );
-            self.m_EnvSkyPaint:SetStarSpeed( SKYPAINT[next].StarSpeed );
+            self.m_EnvSkyPaint:SetStarFade( gDisasters.DayNightSystem.SKYPAINT[next].StarFade );
+            self.m_EnvSkyPaint:SetStarScale( gDisasters.DayNightSystem.SKYPAINT[next].StarScale );
+            self.m_EnvSkyPaint:SetStarSpeed( gDisasters.DayNightSystem.SKYPAINT[next].StarSpeed );
 
         end
 
@@ -483,7 +437,7 @@ gDisasters.DayNightSystem.Start =
         -- FIXME: we're bypassing the dusk/dawn events
         if ( IsValid( self.m_EnvSkyPaint ) ) then
             self.m_EnvSkyPaint:SetStarTexture( "skybox/starfield" );
-            SKYPAINT[DAY].StarFade = 0;
+            gDisasters.DayNightSystem.SKYPAINT[gDisasters.DayNightSystem.DAY].StarFade = 0;
         end
 
     end,
@@ -636,6 +590,51 @@ saverestore.AddRestoreHook( "gdisasters_dnc_Restore", function( save )
 
     print("Day & Night saverestore hook called!\n");
 end);
+
+function gdisasters_dnc_log( ... )
+
+    if ( gDisasters.DayNightSystem.InternalVars.logging:GetInt() < 1 ) then return end
+
+    print( "[day and night] " .. string.format( ... ) .. "\n" );
+
+end
+
+function gdisasters_dnc_Outside( pos )
+
+    if ( pos != nil ) then
+
+        local trace = { };
+        trace.start = pos;
+        trace.endpos = trace.start + Vector( 0, 0, 32768 );
+        trace.mask = MASK_BLOCKLOS;
+
+        local tr = util.TraceLine( trace );
+
+        gDisasters.DayNightSystem.InternalVars.HeightMin = ( tr.HitPos - trace.start ):Length();
+
+        if ( tr.StartSolid ) then return false end
+        if ( tr.HitSky ) then return true end
+
+    end
+
+    return false;
+
+end
+
+function gdisasters_dnc_outside( pos )
+
+    return gdisasters_dnc_Outside( pos );
+
+end
+
+-- usergroup support
+local meta = FindMetaTable( "Player" )
+
+function meta:gdisasters_dnc_Admin()
+
+    return self:IsSuperAdmin() or self:IsAdmin();
+
+end
 
 
 
