@@ -1,15 +1,16 @@
 if (SERVER) then
 
+	AddCSLuaFile("gdisasters/server/game/antilag/sv_main.lua")
 	AddCSLuaFile("gdisasters/server/player-npcs/sv_process_oxygen.lua")
 	AddCSLuaFile("gdisasters/server/game/sv_autospawn.lua")
 	AddCSLuaFile("gdisasters/server/game/sv_damagetypes.lua")
 	AddCSLuaFile("gdisasters/server/game/sv_water_physics.lua")
 	AddCSLuaFile("gdisasters/server/game/sv_world_init.lua")
 
+	include("gdisasters/server/game/antilag/sv_main.lua")
 	include("gdisasters/server/player-npcs/sv_process_oxygen.lua")
 	include("gdisasters/server/game/sv_autospawn.lua")
 	include("gdisasters/server/game/sv_damagetypes.lua")
-	include("gdisasters/server/game/antilag/sv_main.lua")
 	include("gdisasters/server/game/sv_water_physics.lua")
 	include("gdisasters/server/game/sv_world_init.lua")
 	

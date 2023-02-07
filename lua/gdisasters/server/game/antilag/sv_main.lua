@@ -35,7 +35,7 @@ end
 gDisasters.Game.AntiLag.Collisions.PostPerPropCollisions = function(prop, collisions)
 	if prop:IsValid() then 
 
-		--if gDisasters.Game.AntiLag.Collisions.PerSecond > 0 then print(gDisasters.Game.AntiLag.NumberOfProps /  gDisasters.Game.AntiLag.Collisions.PerSecond  ) end 
+		if gDisasters.Game.AntiLag.Collisions.PerSecond > 0 then print(gDisasters.Game.AntiLag.NumberOfProps /  gDisasters.Game.AntiLag.Collisions.PerSecond  ) end 
 
 
 		if collisions >= GetConVar("gdisasters_antilag_maximum_safe_collisions_per_second_per_prop"):GetInt() then 
