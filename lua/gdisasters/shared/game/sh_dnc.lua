@@ -182,11 +182,24 @@ gDisasters.DayNightSystem.Start =
         Texture14                         = "atmosphere/moon/14"
         Texture15                         = "atmosphere/moon/15"
         Texture16                         = "atmosphere/moon/16"
+
+        
         
         local moonAlpha = 0;
         local moonMat = Material( Texture9  );
         moonMat:SetInt( "$additive", 0 );
         moonMat:SetInt( "$translucent", 0 );
+
+        local moonfrac;
+
+        if self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END then
+            moonfrac = 1 - ( ( self.m_Time + gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
+        else
+            moonfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
+        end
+
+        local angle = Angle( 180 * moonfrac, 0, 0 );
+        SetGlobalAngle("gdMoonDir", angle:Forward() )
 
         local moonSize = GetConVar("gdisasters_dnc_moonsize"):GetFloat();
         local moonPos = gDisasters_GetMoonDir() * ( self.LastFarZ * 0.900 );
@@ -275,21 +288,6 @@ gDisasters.DayNightSystem.Start =
             timeLen = gDisasters.DayNightSystem.InternalVars.length_day:GetInt();
         end
 
-        local sunfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_DUSK_END - gDisasters.DayNightSystem.TIME_DAWN_START ) );
-        local moonfrac;
-
-        if self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END then
-            moonfrac = 1 - ( ( self.m_Time + gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
-        else
-            moonfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
-        end
-
-        local angle = Angle( 180 * sunfrac, 0, 0 );
-        local angle2 = Angle( 180 * moonfrac, 0, 0 );
-
-        SetGlobalAngle("gdSunDir", -angle:Forward() )
-        SetGlobalAngle("gdMoonDir", angle2:Forward() )
-
         if ( !self.m_Paused and gDisasters.DayNightSystem.InternalVars.paused:GetInt() <= 0)  then
             if ( gDisasters.DayNightSystem.InternalVars.realtime:GetInt() <= 0 ) then
                 self.m_Time = self.m_Time + ( 24 / timeLen ) * FrameTime();
@@ -352,6 +350,10 @@ gDisasters.DayNightSystem.Start =
 
         -- env_sun
         if ( IsValid( self.m_EnvSun ) ) then
+            local sunfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_DUSK_END - gDisasters.DayNightSystem.TIME_DAWN_START ) );
+            local angle = Angle( 180 * sunfrac, 0, 0 );
+            
+            SetGlobalAngle("gdSunDir", -angle:Forward() )
             self.m_EnvSun:SetKeyValue( "sun_dir", tostring(gDisasters_GetSunDir()));
         end
 
