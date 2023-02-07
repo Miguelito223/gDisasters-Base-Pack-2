@@ -21,7 +21,6 @@ function ENT:Initialize()
 		self:SetMoveType( MOVETYPE_VPHYSICS )
 		self:SetUseType( ONOFF_USE )
 
-		
 		local phys = self:GetPhysicsObject()
 		
 		if (phys:IsValid()) then
@@ -29,6 +28,8 @@ function ENT:Initialize()
 			phys:EnableMotion(false)
 			
 		end
+
+		self:Timer()
 
 		self.IsGoingTolandslide = false
     end
@@ -59,11 +60,11 @@ function ENT:LandslideAction()
 end
 
 function ENT:Timer()
-	timer.Simple(math.random(100, 500), function()
+	timer.Create("LandSlideAction", math.random(100, 500), 0, function()
 		if self.IsGoingTolandslide == false then
 			self.IsGoingTolandslide = true
-			timer.Simple(math.random(50, 70), function()
-				self:LandslideAction()
+			self:LandslideAction()
+			timer.Simple(1, function()
 				self.IsGoingTolandslide = false
 			end)
 		end
@@ -90,7 +91,6 @@ function ENT:Think()
         self:SetPos(self:GetPos())
 		self:GetPhysicsObject():EnableMotion(false)
 		self:SetAngles(self:GetAngles())
-		self:Timer()
 
         self:NextThink(CurTime() + t)
         return true	
