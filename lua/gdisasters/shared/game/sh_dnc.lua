@@ -190,7 +190,7 @@ gDisasters.DayNightSystem.Start =
 
         local moonSize = GetConVar("gdisasters_dnc_moonsize"):GetFloat();
         local moonPos = gDisasters_GetMoonDir() * ( self.LastFarZ * 0.900 );
-        local moonNormal = ( vector_origin - moonPos ):GetNormal();
+        local moonNormal = (vector_origin - moonPos):GetNormal();
 
         moonAlpha = Lerp( FrameTime() * 1, moonAlpha, 255 );
 
@@ -466,12 +466,6 @@ hook.Add( "Initialize", "gdisasters_dnc_Init", function()
 
 end );
 
-hook.Add("PostDrawSkyBox", "gdisasters_dnc_DrawMoon", function() 
-
-    gDisasters.DayNightSystem.Start:RenderMoon();
-
-end)
-
 hook.Add("RenderScene", "gdisasters_dnc_RenderScene", function(origin, angles, fov) 
 
     gDisasters.DayNightSystem.Start:RenderScene(origin, angles, fov);
@@ -481,6 +475,12 @@ end)
 hook.Add("CalcView", "gdisasters_dnc_CalcView", function(pl, pos, ang, fov, nearZ, farZ) 
 
     gDisasters.DayNightSystem.Start:CalcView(pl, pos, ang, fov, nearZ, farZ );
+
+end)
+
+hook.Add("PostDrawSkyBox", "gdisasters_dnc_DrawMoon", function() 
+
+    gDisasters.DayNightSystem.Start:RenderMoon();
 
 end)
 
