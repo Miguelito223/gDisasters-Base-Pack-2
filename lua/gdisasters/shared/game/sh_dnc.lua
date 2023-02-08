@@ -241,6 +241,8 @@ gDisasters.DayNightSystem.Start =
                 gDisasters.DayNightSystem.STYLE_LOW  = string.byte( "b" );
                 self:LightStyle( "b", true );
             else
+                if (SERVER) then return end
+
                 gdisasters_dnc_log( "No light_environment, Creating" );
 
                 gDisasters_EntityExists("light_environment")
@@ -249,10 +251,13 @@ gDisasters.DayNightSystem.Start =
         end
 
         if ( IsValid( self.m_EnvSun ) ) then
-            self.m_EnvSun:SetKeyValue( "sun_dir", "1 0 0" );
 
             gdisasters_dnc_log( "Found env_sun" );
+            
+            self.m_EnvSun:SetKeyValue( "sun_dir", "1 0 0" );
         else
+            if (SERVER) then return end
+
             gDisasters_EntityExists("env_sun")
             gdisasters_dnc_log( "Created env_sun" );
         end
@@ -266,6 +271,7 @@ gDisasters.DayNightSystem.Start =
             self.m_EnvSkyPaint:SetStarTexture( "skybox/starfield" );
 
         else
+           if (SERVER) then return end
 
            gDisasters_EntityExists("env_skypaint")
            gdisasters_dnc_log( "Created env_skypaint" );
