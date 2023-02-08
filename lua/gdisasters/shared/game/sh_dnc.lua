@@ -11,6 +11,51 @@ gDisasters.DayNightSystem.InternalVars.dev = false;
 
 gDisasters.DayNightSystem.InternalVars.HeightMin = 300;
 
+function gdisasters_dnc_log( ... )
+
+    if ( gDisasters.DayNightSystem.InternalVars.logging:GetInt() < 1 ) then return end
+
+    print( "[day and night] " .. string.format( ... ) .. "\n" );
+
+end
+
+function gdisasters_dnc_Outside( pos )
+
+    if ( pos != nil ) then
+
+        local trace = { };
+        trace.start = pos;
+        trace.endpos = trace.start + Vector( 0, 0, 32768 );
+        trace.mask = MASK_BLOCKLOS;
+
+        local tr = util.TraceLine( trace );
+
+        gDisasters.DayNightSystem.InternalVars.HeightMin = ( tr.HitPos - trace.start ):Length();
+
+        if ( tr.StartSolid ) then return false end
+        if ( tr.HitSky ) then return true end
+
+    end
+
+    return false;
+
+end
+
+function gdisasters_dnc_outside( pos )
+
+    return gdisasters_dnc_Outside( pos );
+
+end
+
+-- usergroup support
+local meta = FindMetaTable( "Player" )
+
+function meta:gdisasters_dnc_Admin()
+
+    return self:IsSuperAdmin() or self:IsAdmin();
+
+end
+
 gDisasters.DayNightSystem.TIME_MIDNIGHT		= 0;		-- 12:00pm
 gDisasters.DayNightSystem.TIME_DAWN_START	          = 4;		-- 4:00am
 gDisasters.DayNightSystem.TIME_DAWN_END		= 6.5;		-- 6:30am
@@ -190,29 +235,35 @@ gDisasters.DayNightSystem.Start =
         moonMat:SetInt( "$additive", 0 );
         moonMat:SetInt( "$translucent", 0 );
 
-        local moonfrac;
+        if ( self.m_Time < gDisasters.DayNightSystem.TIME_DAWN_START or self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END ) then
+            local moonfrac;
 
-        if self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END then
-            moonfrac = 1 - ( ( self.m_Time + gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
+            if self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END then
+                moonfrac = 1 - ( ( self.m_Time + gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
+            else
+                moonfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
+            end
+
+            local angle = Angle( 180 * moonfrac, 0, 0 );
+            SetGlobalAngle("gdMoonDir", angle:Forward() )
+
+            local moonSize = GetConVar("gdisasters_dnc_moonsize"):GetFloat();
+            local moonPos = gDisasters_GetMoonDir() * ( self.LastFarZ * 0.900 );
+            local moonNormal = (vector_origin - moonPos):GetNormal();
+
+            moonAlpha = Lerp( FrameTime() * 1, moonAlpha, 255 );
+
+            cam.Start3D(vector_origin, self.LastSceneAngles);
+                render.OverrideDepthEnable( true, false );
+                render.SetMaterial( moonMat );
+                render.DrawQuadEasy( moonPos, moonNormal, moonSize, moonSize, Color( 255, 255, 255, moonAlpha ), -180 );
+                render.OverrideDepthEnable( false, false );
+            cam.End3D();
         else
-            moonfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
+            if moonAlpha != 0 then
+                moonAlpha = 0;
+            end
         end
-
-        local angle = Angle( 180 * moonfrac, 0, 0 );
-        SetGlobalAngle("gdMoonDir", angle:Forward() )
-
-        local moonSize = GetConVar("gdisasters_dnc_moonsize"):GetFloat();
-        local moonPos = gDisasters_GetMoonDir() * ( self.LastFarZ * 0.900 );
-        local moonNormal = (vector_origin - moonPos):GetNormal();
-
-        moonAlpha = Lerp( FrameTime() * 1, moonAlpha, 255 );
-
-        cam.Start3D(vector_origin, self.LastSceneAngles);
-            render.OverrideDepthEnable( true, false );
-            render.SetMaterial( moonMat );
-            render.DrawQuadEasy( moonPos, moonNormal, moonSize, moonSize, Color( 255, 255, 255, moonAlpha ), -180 );
-            render.OverrideDepthEnable( false, false );
-        cam.End3D();
 
 
         
@@ -310,9 +361,9 @@ gDisasters.DayNightSystem.Start =
         local duskMidPoint = ( gDisasters.DayNightSystem.TIME_DUSK_END + gDisasters.DayNightSystem.TIME_DUSK_START	  ) / 2;
 
         -- dawn/dusk/night events
-        if ( self.m_Time >= gDisasters.DayNightSystem.TIME_DUSK_END) then
-            
+        if ( self.m_Time >= gDisasters.DayNightSystem.TIME_DUSK_END and IsValid( self.m_EnvSun)) then
             if ( self.m_LastPeriod != gDisasters.DayNightSystem.NIGHT ) then
+                self.m_EnvSun:Fire( "TurnOff", "", 0 );
                 self.m_LastPeriod = gDisasters.DayNightSystem.NIGHT;
             end
 
@@ -334,8 +385,9 @@ gDisasters.DayNightSystem.Start =
                 self.m_LastPeriod = gDisasters.DayNightSystem.DAWN;
             end
 
-        elseif ( self.m_Time >= gDisasters.DayNightSystem.TIME_DAWN_START) then
+        elseif ( self.m_Time >= gDisasters.DayNightSystem.TIME_DAWN_START and IsValid( self.m_EnvSun)) then
             if ( self.m_LastPeriod != gDisasters.DayNightSystem.DAY ) then
+                self.m_EnvSun:Fire( "TurnOn", "", 0 );
                 self.m_LastPeriod = gDisasters.DayNightSystem.DAY;
             end
 
@@ -356,11 +408,13 @@ gDisasters.DayNightSystem.Start =
 
         -- env_sun
         if ( IsValid( self.m_EnvSun ) ) then
-            local sunfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_DUSK_END - gDisasters.DayNightSystem.TIME_DAWN_START ) );
-            local angle = Angle( 180 * sunfrac, 0, 0 );
+            if ( self.m_Time >= gDisasters.DayNightSystem.TIME_DAWN_START and self.m_Time <= gDisasters.DayNightSystem.TIME_DUSK_END ) then
+                local sunfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_DUSK_END - gDisasters.DayNightSystem.TIME_DAWN_START ) );
+                local angle = Angle( 180 * sunfrac, 0, 0 );
             
-            SetGlobalAngle("gdSunDir", -angle:Forward() )
-            self.m_EnvSun:SetKeyValue( "sun_dir", tostring(gDisasters_GetSunDir()));
+                SetGlobalAngle("gdSunDir", -angle:Forward() )
+                self.m_EnvSun:SetKeyValue( "sun_dir", tostring(gDisasters_GetSunDir()));
+            end
         end
 
         -- env_skypaint
@@ -474,24 +528,6 @@ hook.Add( "Initialize", "gdisasters_dnc_Init", function()
 
 end );
 
-hook.Add("RenderScene", "gdisasters_dnc_RenderScene", function(origin, angles, fov) 
-
-    gDisasters.DayNightSystem.Start:RenderScene(origin, angles, fov);
-
-end)
-
-hook.Add("CalcView", "gdisasters_dnc_CalcView", function(pl, pos, ang, fov, nearZ, farZ) 
-
-    gDisasters.DayNightSystem.Start:CalcView(pl, pos, ang, fov, nearZ, farZ );
-
-end)
-
-hook.Add("PostDrawSkyBox", "gdisasters_dnc_DrawMoon", function() 
-
-    gDisasters.DayNightSystem.Start:RenderMoon();
-
-end)
-
 concommand.Add( "gdisasters_dnc_pause", function( pl, cmd, args )
 
     if ( !IsValid( pl ) or !pl:gdisasters_dnc_Admin() ) then return end
@@ -599,55 +635,26 @@ saverestore.AddRestoreHook( "gdisasters_dnc_Restore", function( save )
     print("Day & Night saverestore hook called!\n");
 end);
 
-function gdisasters_dnc_log( ... )
-
-    if ( gDisasters.DayNightSystem.InternalVars.logging:GetInt() < 1 ) then return end
-
-    print( "[day and night] " .. string.format( ... ) .. "\n" );
-
-end
-
-function gdisasters_dnc_Outside( pos )
-
-    if ( pos != nil ) then
-
-        local trace = { };
-        trace.start = pos;
-        trace.endpos = trace.start + Vector( 0, 0, 32768 );
-        trace.mask = MASK_BLOCKLOS;
-
-        local tr = util.TraceLine( trace );
-
-        gDisasters.DayNightSystem.InternalVars.HeightMin = ( tr.HitPos - trace.start ):Length();
-
-        if ( tr.StartSolid ) then return false end
-        if ( tr.HitSky ) then return true end
-
-    end
-
-    return false;
-
-end
-
-function gdisasters_dnc_outside( pos )
-
-    return gdisasters_dnc_Outside( pos );
-
-end
-
--- usergroup support
-local meta = FindMetaTable( "Player" )
-
-function meta:gdisasters_dnc_Admin()
-
-    return self:IsSuperAdmin() or self:IsAdmin();
-
-end
-
-
-
 
 if (CLIENT) then
+
+    hook.Add("RenderScene", "gdisasters_dnc_RenderScene", function(origin, angles, fov) 
+
+        gDisasters.DayNightSystem.Start:RenderScene(origin, angles, fov);
+
+    end)
+
+    hook.Add("CalcView", "gdisasters_dnc_CalcView", function(pl, pos, ang, fov, nearZ, farZ) 
+
+        gDisasters.DayNightSystem.Start:CalcView(pl, pos, ang, fov, nearZ, farZ );
+
+    end)
+
+    hook.Add("PostDrawSkyBox", "gdisasters_dnc_DrawMoon", function() 
+
+        gDisasters.DayNightSystem.Start:RenderMoon();
+
+    end)
     
 	hook.Add( "InitPostEntity", "gDisastersFirstJoinLightmaps", function()
 
