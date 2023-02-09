@@ -235,7 +235,7 @@ gDisasters.DayNightSystem.Start =
         moonMat:SetInt( "$additive", 0 );
         moonMat:SetInt( "$translucent", 0 );
 
-        if ( self.m_Time < gDisasters.DayNightSystem.TIME_DAWN_START or self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END ) then
+        if ( self.m_Time < gDisasters.DayNightSystem.TIME_DAWN_START and self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END ) then
             local moonfrac;
 
             if self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END then
