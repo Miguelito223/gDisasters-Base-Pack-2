@@ -197,78 +197,6 @@ gDisasters.DayNightSystem.Start =
 
     end,
 
-    RenderScene = function( self, origin, angles, fov )
-	    self.LastSceneOrigin = origin;
-	    self.LastSceneAngles = angles;
-    end,
-
-    CalcView = function( self, pl, pos, ang, fov, nearZ, farZ )
-        self.LastNearZ = nearZ;
-	    self.LastFarZ = farZ;
-    end,
-
-    RenderMoon = function( self )
-
-        if ( gDisasters.DayNightSystem.InternalVars.enabled:GetInt() < 1 ) then return end
-
-        Texture1                          = "atmosphere/moon/1"
-        Texture2                          = "atmosphere/moon/2"
-        Texture3                          = "atmosphere/moon/3"
-        Texture4                          = "atmosphere/moon/4"
-        Texture5                          = "atmosphere/moon/5"
-        Texture6                          = "atmosphere/moon/6"
-        Texture7                          = "atmosphere/moon/7"
-        Texture8                          = "atmosphere/moon/8"
-        Texture9                          = "atmosphere/moon/9"
-        Texture10                         = "atmosphere/moon/10"
-        Texture11                         = "atmosphere/moon/11"
-        Texture12                         = "atmosphere/moon/12"
-        Texture13                         = "atmosphere/moon/13"
-        Texture14                         = "atmosphere/moon/14"
-        Texture15                         = "atmosphere/moon/15"
-        Texture16                         = "atmosphere/moon/16"
-
-        
-        
-        local moonAlpha = 0;
-        local moonMat = Material( Texture9  );
-        moonMat:SetInt( "$additive", 0 );
-        moonMat:SetInt( "$translucent", 0 );
-
-        if ( self.m_Time < gDisasters.DayNightSystem.TIME_DAWN_START and self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END ) then
-            local moonfrac;
-
-            if self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END then
-                moonfrac = 1 - ( ( self.m_Time + gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
-            else
-                moonfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
-            end
-
-            local angle = Angle( 180 * moonfrac, 0, 0 );
-            SetGlobalAngle("gdMoonDir", angle:Forward() )
-
-            local moonSize = GetConVar("gdisasters_dnc_moonsize"):GetFloat();
-            local moonPos = gDisasters_GetMoonDir() * ( self.LastFarZ * 0.900 );
-            local moonNormal = (vector_origin - moonPos):GetNormal();
-
-            moonAlpha = Lerp( FrameTime() * 1, moonAlpha, 255 );
-
-            cam.Start3D(vector_origin, self.LastSceneAngles);
-                render.OverrideDepthEnable( true, false );
-                render.SetMaterial( moonMat );
-                render.DrawQuadEasy( moonPos, moonNormal, moonSize, moonSize, Color( 255, 255, 255, moonAlpha ), -180 );
-                render.OverrideDepthEnable( false, false );
-            cam.End3D();
-        else
-            if moonAlpha != 0 then
-                moonAlpha = 0;
-            end
-        end
-
-
-        
-    end,
-
 
     InitEntities = function( self )
 
@@ -481,6 +409,78 @@ gDisasters.DayNightSystem.Start =
 
     end,
 
+    RenderScene = function( self, origin, angles, fov )
+	    self.LastSceneOrigin = origin;
+	    self.LastSceneAngles = angles;
+    end,
+
+    CalcView = function( self, pl, pos, ang, fov, nearZ, farZ )
+        self.LastNearZ = nearZ;
+	    self.LastFarZ = farZ;
+    end,
+
+    RenderMoon = function( self )
+
+        if ( gDisasters.DayNightSystem.InternalVars.enabled:GetInt() < 1 ) then return end
+
+        Texture1                          = "atmosphere/moon/1"
+        Texture2                          = "atmosphere/moon/2"
+        Texture3                          = "atmosphere/moon/3"
+        Texture4                          = "atmosphere/moon/4"
+        Texture5                          = "atmosphere/moon/5"
+        Texture6                          = "atmosphere/moon/6"
+        Texture7                          = "atmosphere/moon/7"
+        Texture8                          = "atmosphere/moon/8"
+        Texture9                          = "atmosphere/moon/9"
+        Texture10                         = "atmosphere/moon/10"
+        Texture11                         = "atmosphere/moon/11"
+        Texture12                         = "atmosphere/moon/12"
+        Texture13                         = "atmosphere/moon/13"
+        Texture14                         = "atmosphere/moon/14"
+        Texture15                         = "atmosphere/moon/15"
+        Texture16                         = "atmosphere/moon/16"
+
+        
+        
+        local moonAlpha = 0;
+        local moonMat = Material( Texture9  );
+        moonMat:SetInt( "$additive", 0 );
+        moonMat:SetInt( "$translucent", 0 );
+
+        if ( self.m_Time < gDisasters.DayNightSystem.TIME_DAWN_START and self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END ) then
+            local moonfrac;
+
+            if self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END then
+                moonfrac = 1 - ( ( self.m_Time + gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
+            else
+                moonfrac = 1 - ( ( self.m_Time - gDisasters.DayNightSystem.TIME_DAWN_START ) / ( gDisasters.DayNightSystem.TIME_NOON - gDisasters.DayNightSystem.TIME_DAWN_START ) );
+            end
+
+            local angle = Angle( 180 * moonfrac, 0, 0 );
+            SetGlobalAngle("gdMoonDir", angle:Forward() )
+
+            local moonSize = GetConVar("gdisasters_dnc_moonsize"):GetFloat();
+            local moonPos = gDisasters_GetMoonDir() * ( self.LastFarZ * 0.900 );
+            local moonNormal = (vector_origin - moonPos):GetNormal();
+
+            moonAlpha = Lerp( FrameTime() * 1, moonAlpha, 255 );
+
+            cam.Start3D(vector_origin, self.LastSceneAngles);
+                render.OverrideDepthEnable( true, false );
+                render.SetMaterial( moonMat );
+                render.DrawQuadEasy( moonPos, moonNormal, moonSize, moonSize, Color( 255, 255, 255, moonAlpha ), -180 );
+                render.OverrideDepthEnable( false, false );
+            cam.End3D();
+        else
+            if moonAlpha != 0 then
+                moonAlpha = 0;
+            end
+        end
+
+
+        
+    end,
+
     TogglePause = function( self )
 
         self.m_Paused = !self.m_Paused;
@@ -650,7 +650,7 @@ if (CLIENT) then
 
     end)
 
-    hook.Add("PostDrawSkyBox", "gdisasters_dnc_DrawMoon", function() 
+    hook.Add("PostDrawSkyBox", "gdisasters_dnc_RenderMoon", function() 
 
         gDisasters.DayNightSystem.Start:RenderMoon();
 
