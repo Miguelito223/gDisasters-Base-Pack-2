@@ -1,0 +1,401 @@
+function CreateLoopedSound(client, sound)
+	local sound = Sound(sound)
+
+	CSPatch = CreateSound(client, sound)
+	CSPatch:Play()
+	return CSPatch
+	
+end
+
+function StopLoopedSound(client, sound)
+	CSPatch = CreateLoopedSound(client, sound)
+	CSPatch:Stop()
+	return CSPatch
+	
+end
+
+
+
+function gfx_screenParticles()
+	if LocalPlayer().ScreenParticles==nil then return end
+
+	
+	
+
+
+	
+	for k, v in pairs(LocalPlayer().ScreenParticles) do
+	
+		local t    = v["Life"]
+		local size = v["Size"]
+		local tex  = v["Texture"]
+		local mat  = v["Material"]
+		local isref = v["Refracting"]
+		local pos   = v["Pos"]
+		local pvel  = v["Velocity"]
+		
+		local vel   = LocalPlayer():GetVelocity()/50
+		local velnrl= LocalPlayer():GetVelocity():GetNormalized()
+		local dot   = (LocalPlayer():GetAimVector():Dot(LocalPlayer():GetVelocity())/10) -- dot product between aim vec and vel
+		
+		
+		
+		local fdir = (Vector(ScrW()/2, ScrH()/2, 0) - LocalPlayer().ScreenParticles[k]["Pos"]):GetNormalized() * (dot/25)
+	
+		if CurTime()<=t then 
+			mat:SetFloat( "$refractamount", 0.4 )
+			render.UpdateScreenEffectTexture()
+		
+			surface.SetTexture(tex)
+			surface.SetDrawColor( 255, 255, 255, math.Clamp( (t - CurTime()), 0, 1 )*255 )
+			surface.DrawTexturedRect( pos.x, pos.y,size, size )
+			LocalPlayer().ScreenParticles[k]["Pos"] = LocalPlayer().ScreenParticles[k]["Pos"] - fdir + pvel + Vector(0,velnrl.z*8,0) 
+			
+		
+		
+			
+		else
+			LocalPlayer().ScreenParticles[k] = nil 
+		end
+		
+		
+	end
+	
+
+	
+end
+
+function FindNearestEntity(self, class)
+
+	if ents.FindByClass(class)[1] == nil then return nil end
+
+	local current_target          = ents.FindByClass(class)[1]
+
+
+	for k, v in pairs(ents.FindByClass(class)) do
+	
+		local dis   = current_target:GetPos():Distance(self:GetPos()) -- from current target to self
+		local dis2  = v:GetPos():Distance(self:GetPos()) -- from new target to self 
+	
+	
+		if dis2 <= dis then
+			current_target = v
+		
+		
+		end
+	
+	end
+
+	return current_target, self:GetPos():Distance(current_target:GetPos())
+
+end
+
+
+
+hook.Add("RenderScreenspaceEffects", "gfx_Underwater", function() 
+	if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
+	
+	if isUnderWater(LocalPlayer()) then
+		if LocalPlayer().LastIsUnderwater == false then
+			LocalPlayer().Sounds["Underwater"] = CreateLoopedSound(LocalPlayer(), "ambient/water/underwater.wav")
+			LocalPlayer().LastIsUnderwater = true
+		end
+		
+		local flood  = ents.FindByClass("env_dynamicwater")[1] or  ents.FindByClass("env_dynamicwater_b")[1]
+		
+		if flood==nil then return end 
+		
+		if flood:IsValid() then 
+		
+		
+		
+			local z_diff = math.abs(LocalPlayer():GetNWInt("ZWaterDepth", 0))
+			local alpha  =  math.Clamp( z_diff,0,800) / 800
+			
+			
+		
+			local tab = {}
+				tab[ "$pp_colour_addr" ] = 0
+				tab[ "$pp_colour_addg" ] = 0
+				tab[ "$pp_colour_addb" ] = 0
+				tab[ "$pp_colour_brightness" ] = 0 - ( alpha * 0.7 )
+				tab[ "$pp_colour_contrast" ] = 1 - ( alpha * 0.25 )
+				tab[ "$pp_colour_colour" ] = 1 - ( alpha * 0.25 )
+				tab[ "$pp_colour_mulr" ] = 0
+				tab[ "$pp_colour_mulg" ] = -1 * alpha
+				tab[ "$pp_colour_mulb" ] = -1 * alpha
+			
+			DrawColorModify( tab )
+		
+			
+			local mat_Overlay = Material("effects/water_warp01")
+			render.UpdateScreenEffectTexture()
+		
+			mat_Overlay:SetFloat( "$envmap", 0 )
+			mat_Overlay:SetFloat( "$envmaptint", 0 )
+			mat_Overlay:SetFloat( "$refractamount", 0.1 )
+			mat_Overlay:SetInt( "$ignorez", 1 )
+		
+			render.SetMaterial( mat_Overlay )
+			render.DrawScreenQuad()
+		end
+	else
+		if LocalPlayer().Sounds["Underwater"] !=nil then 
+			LocalPlayer().Sounds["Underwater"]:Stop()
+			LocalPlayer().Sounds["Underwater"] = nil 
+		end
+	end
+	LocalPlayer().LastIsUnderwater = LocalPlayer():GetNWBool("IsUnderwater")
+
+end)
+
+	
+hook.Add("RenderScreenspaceEffects", "gfx_Underlava", function() 
+	
+	if LocalPlayer().LavaIntensity == nil then LocalPlayer().LavaIntensity = 0 end
+	LocalPlayer().LavaIntensity = math.Clamp(LocalPlayer().LavaIntensity - (FrameTime()/4), 0, 1)
+	local intensity = LocalPlayer().LavaIntensity 
+	
+	local function DrawLava()
+			
+		local tab = {}
+			tab[ "$pp_colour_addr" ] = intensity * 4
+			tab[ "$pp_colour_addg" ] = intensity * 2
+			tab[ "$pp_colour_addb" ] = -intensity
+			tab[ "$pp_colour_brightness" ] = 0
+			tab[ "$pp_colour_contrast" ] = 1
+			tab[ "$pp_colour_colour" ] = 1
+			tab[ "$pp_colour_mulr" ] = intensity
+			tab[ "$pp_colour_mulg" ] = -intensity
+			tab[ "$pp_colour_mulb" ] = -intensity
+		
+		DrawColorModify( tab )
+		if intensity > 0 then
+			
+			local mat_Overlay = Material("effects/water_warp01")
+			render.UpdateScreenEffectTexture()
+		
+			mat_Overlay:SetFloat( "$envmap", 0 )
+			mat_Overlay:SetFloat( "$envmaptint", 0 )
+			mat_Overlay:SetFloat( "$refractamount", intensity )
+			mat_Overlay:SetInt( "$ignorez", 1 )
+		
+			render.SetMaterial( mat_Overlay )
+			render.DrawScreenQuad()
+		end
+		
+	end
+	DrawLava()
+end)
+
+	
+	
+hook.Add("RenderScreenspaceEffects", "gfx_UnderLava", function() 
+	if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
+
+	if isUnderLava(LocalPlayer()) then	
+		if LocalPlayer().LastIsUnderlava == false then
+			LocalPlayer().Sounds["Underlava"] = CreateLoopedSound(LocalPlayer(), "ambient/water/underwater.wav")
+			LocalPlayer().LastIsUnderwater = true
+		end
+	
+		
+		local flood2  = ents.FindByClass("env_dynamiclava")[1] or ents.FindByClass("env_dynamiclava_b")[1]
+		
+		if flood2==nil then return end 
+		
+		if flood2:IsValid() then 
+			
+			local z_diff2 = math.abs(LocalPlayer():GetNWInt("ZlavaDepth", 0))
+			local alpha2  =  math.Clamp( z_diff2,0,800) / 800
+		
+			local tab = {}
+				tab[ "$pp_colour_addr" ] = alpha2 * 4
+				tab[ "$pp_colour_addg" ] = alpha2 * 2
+				tab[ "$pp_colour_addb" ] = -alpha2
+				tab[ "$pp_colour_brightness" ] = 0
+				tab[ "$pp_colour_contrast" ] = 1
+				tab[ "$pp_colour_colour" ] = 1
+				tab[ "$pp_colour_mulr" ] = alpha2
+				tab[ "$pp_colour_mulg" ] = -alpha2
+				tab[ "$pp_colour_mulb" ] = -alpha2
+			DrawColorModify( tab )
+			
+			local mat_Overlay = Material("effects/water_warp01")
+			render.UpdateScreenEffectTexture()
+		
+			mat_Overlay:SetFloat( "$envmap", 0 )
+			mat_Overlay:SetFloat( "$envmaptint", 0 )
+			mat_Overlay:SetFloat( "$refractamount", alpha2 )
+			mat_Overlay:SetInt( "$ignorez", 1 )
+		
+			render.SetMaterial( mat_Overlay )
+			render.DrawScreenQuad()
+		end
+	else
+		if LocalPlayer().Sounds["Underlava"] !=nil then 
+			LocalPlayer().Sounds["Underlava"]:Stop()
+			LocalPlayer().Sounds["Underlava"] = nil 
+		end
+	end
+	LocalPlayer().LastIsUnderlava = LocalPlayer():GetNWBool("IsUnderlava")
+	
+
+end)
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+--[[
+
+Function Name: 		 FindInCylinder
+Function Purpose:    Find entities in a vertical cylinder
+Function parameters: 
+					
+					[1] Starting position
+					[2] Radius of the cylinder (                 constant                        )
+					[3] Max height gain        (         local to starting position              )
+					[4] Min height gain        (         local to starting position              )
+					[5] Physics ents only      ( filters out non-physics entities if true (bool) )
+
+					
+Function notes:
+	Cylinder always is vertical 
+
+--]]
+
+
+function FindInCylinder(pos, radius, top, bottom)
+
+	local entities = {}
+	local selfpos_normalized = Vector(pos.x, pos.y, 0)
+	
+	local z_max, z_min = pos.z + top, pos.z + bottom 
+	
+	for k, v in pairs(ents.GetAll()) do
+	
+		local vpos            = v:GetPos() 
+		local vpos_normalized = Vector(vpos.x, vpos.y, 0)
+		
+		local dist            = vpos_normalized:Distance(selfpos_normalized)
+		local zdiff           = vpos.z - pos.z 
+		
+		
+		
+		if dist <= radius then 
+				
+			if zdiff > 0 then -- v is higher than me 
+				if zdiff <= top then
+					table.insert(entities, v)
+				end
+				
+			elseif zdiff == 0 then -- same position
+				table.insert(entities, v)
+				
+			elseif zdiff < 0 then -- v is below us
+			
+				if zdiff >= bottom then
+					table.insert(entities, v)
+				end
+			
+			end
+			
+		
+		end
+			
+				
+	
+	
+	end
+	
+	return entities 
+end
+
+
+function CreateSoundWave(soundpath, epicenter, soundtype, speed, pitchrange, shakeduration) -- SPEED MUST BE IN MS^-1
+
+
+	local distance = LocalPlayer():GetPos():Distance(epicenter) -- distance from player and epicenter
+	local t        = distance / convert_MetoSU(speed)  -- speed of sound = 340.29 m/s
+
+	timer.Simple(t, function()
+		if LocalPlayer():IsValid() then
+		
+			if shakeduration > 0 then
+			
+				util.ScreenShake( LocalPlayer():GetPos(), 1, 15, 1, 10000 )
+			
+			end
+		
+			if soundtype == "mono" then
+				surface.PlaySound( soundpath )
+			elseif soundtype == "stereo" then
+				LocalPlayer():EmitSound( soundpath, 100, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_volume_soundwave"):GetFloat() )
+			elseif soundtype == "3d" then
+				sound.Play( soundpath,  epicenter, 170, math.random(pitchrange[1], pitchrange[2]), GetConVar("gdisasters_volume_soundwave"):GetFloat() )
+			end		
+		end
+	end)
+
+end
+
+function StopSoundWave(soundpath) -- SPEED MUST BE IN MS^-1
+
+	if LocalPlayer():IsValid() then
+		LocalPlayer():StopSound(soundpath)
+	end
+	
+end
+
+function AddCeilingWaterDrops(effect_nm, ieffect_nm, delay, offset_range, angle)
+	if (SERVER) then return end 
+	if GetConVar("gdisasters_graphics_draw_ceiling_effects"):GetInt() <= 0 then return end 
+	
+	local offset = Vector(math.random(-1 * offset_range,1  * offset_range),math.random(-1 * offset_range,1  * offset_range),0, 0)
+	local fallback_angle = Angle(0,0,0)	
+
+	
+	local fromGroundToCeiling_TR = util.TraceLine( {
+			start  = LocalPlayer():GetPos() + offset,
+			endpos = LocalPlayer():GetPos() + offset + Vector(0,0,8000) ,
+			filter = LocalPlayer()
+	} )
+	
+	local fromCeilingToGround_TR = util.TraceLine( {
+			start  = fromGroundToCeiling_TR.HitPos,
+			endpos = fromGroundToCeiling_TR.HitPos - Vector(0,0,8000),
+			filter = LocalPlayer()
+	} )
+	
+	local d = fromGroundToCeiling_TR.HitPos:Distance(fromCeilingToGround_TR.HitPos)
+	local t = d / 500 
+		
+	if not(fromGroundToCeiling_TR.Hit or fromCeilingToGround_TR.Hit) then return end 
+
+	
+	ParticleEffect(effect_nm or "nil", fromGroundToCeiling_TR.HitPos, angle or fallback_angle ,nil)
+
+	timer.Simple(delay + t, function()
+		
+		ParticleEffect(ieffect_nm or "nil", fromCeilingToGround_TR.HitPos, angle or fallback_angle ,nil)
+		
+	end)
+
+	
+
+
+
+end
+
+
+
+
+

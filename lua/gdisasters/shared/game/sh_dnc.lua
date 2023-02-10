@@ -11,6 +11,51 @@ gDisasters.DayNightSystem.InternalVars.dev = false;
 
 gDisasters.DayNightSystem.InternalVars.HeightMin = 300;
 
+function gdisasters_dnc_log( ... )
+
+    if ( gDisasters.DayNightSystem.InternalVars.logging:GetInt() < 1 ) then return end
+
+    print( "[day and night] " .. string.format( ... ) .. "\n" );
+
+end
+
+function gdisasters_dnc_Outside( pos )
+
+    if ( pos != nil ) then
+
+        local trace = { };
+        trace.start = pos;
+        trace.endpos = trace.start + Vector( 0, 0, 32768 );
+        trace.mask = MASK_BLOCKLOS;
+
+        local tr = util.TraceLine( trace );
+
+        gDisasters.DayNightSystem.InternalVars.HeightMin = ( tr.HitPos - trace.start ):Length();
+
+        if ( tr.StartSolid ) then return false end
+        if ( tr.HitSky ) then return true end
+
+    end
+
+    return false;
+
+end
+
+function gdisasters_dnc_outside( pos )
+
+    return gdisasters_dnc_Outside( pos );
+
+end
+
+-- usergroup support
+local meta = FindMetaTable( "Player" )
+
+function meta:gdisasters_dnc_Admin()
+
+    return self:IsSuperAdmin() or self:IsAdmin();
+
+end
+
 gDisasters.DayNightSystem.TIME_MIDNIGHT		= 0;		-- 12:00pm
 gDisasters.DayNightSystem.TIME_DAWN_START	          = 4;		-- 4:00am
 gDisasters.DayNightSystem.TIME_DAWN_END		= 6.5;		-- 6:30am
@@ -151,6 +196,8 @@ gDisasters.DayNightSystem.Start =
         gdisasters_dnc_log( "Day & Night version %s initializing.", tostring( gDisasters.DayNightSystem.InternalVars.version ) );
 
     end,
+
+ 
 
 
     InitEntities = function( self )
@@ -431,9 +478,6 @@ gDisasters.DayNightSystem.Start =
                 moonAlpha = 0;
             end
         end
-
-
-        
     end,
 
     TogglePause = function( self )
@@ -474,194 +518,136 @@ gDisasters.DayNightSystem.Start =
     end,
 };
 
-if (SERVER) then
-    
-    function gdisasters_dnc_log( ... )
+-- global handle for debugging
+gDisasters.DayNightSystem.InternalVars.Global = gDisasters.DayNightSystem.Start;
 
-        if ( gDisasters.DayNightSystem.InternalVars.logging:GetInt() < 1 ) then return end
+hook.Add( "Initialize", "gdisasters_dnc_Init", function()
 
-        print( "[day and night] " .. string.format( ... ) .. "\n" );
+    gDisasters.DayNightSystem.Start:Initialize();
 
-    end
+end );
 
-    function gdisasters_dnc_Outside( pos )
+hook.Add("RenderScene", "gdisasters_dnc_RenderScene", function(origin, angles, fov) 
 
-        if ( pos != nil ) then
+    gDisasters.DayNightSystem.Start:RenderScene(origin, angles, fov);
 
-            local trace = { };
-            trace.start = pos;
-            trace.endpos = trace.start + Vector( 0, 0, 32768 );
-            trace.mask = MASK_BLOCKLOS;
+end)
 
-            local tr = util.TraceLine( trace );
+hook.Add("CalcView", "gdisasters_dnc_CalcView", function(pl, pos, ang, fov, nearZ, farZ) 
 
-            gDisasters.DayNightSystem.InternalVars.HeightMin = ( tr.HitPos - trace.start ):Length();
+    gDisasters.DayNightSystem.Start:CalcView(pl, pos, ang, fov, nearZ, farZ );
 
-            if ( tr.StartSolid ) then return false end
-            if ( tr.HitSky ) then return true end
+end)
 
-        end
+hook.Add("PostDrawSkyBox", "gdisasters_dnc_DrawMoon", function() 
 
-        return false;
+    gDisasters.DayNightSystem.Start:RenderMoon();
 
-    end
+end)
 
-    function gdisasters_dnc_outside( pos )
+concommand.Add( "gdisasters_dnc_pause", function( pl, cmd, args )
 
-        return gdisasters_dnc_Outside( pos );
+    if ( !IsValid( pl ) or !pl:gdisasters_dnc_Admin() ) then return end
 
-    end
+    gDisasters.DayNightSystem.Start:TogglePause();
 
-    -- usergroup support
-    local meta = FindMetaTable( "Player" )
+    if ( IsValid( pl ) ) then
 
-    function meta:gdisasters_dnc_Admin()
+        pl:PrintMessage( HUD_PRINTCONSOLE, "DNC is " .. (gDisasters.DayNightSystem.varinterval.m_Paused and "paused" or "no longer paused") );
 
-        return self:IsSuperAdmin() or self:IsAdmin();
+    else
+
+        print( "DNC is " .. (gDisasters.DayNightSystem.Start.m_Paused and "paused" or "no longer paused") );
 
     end
 
-    -- global handle for debugging
-    gDisasters.DayNightSystem.InternalVars.Global = gDisasters.DayNightSystem.Start;
+end );
 
-    hook.Add( "Initialize", "gdisasters_dnc_Init", function()
+concommand.Add( "gdisasters_dnc_settime", function( pl, cmd, args )
 
-        gDisasters.DayNightSystem.Start:Initialize();
+    if ( !IsValid( pl ) or !pl:gdisasters_dnc_Admin() ) then return end
 
-    end );
+    gDisasters.DayNightSystem.Start:SetTime( tonumber( args[1] or "0" ) );
 
-    concommand.Add( "gdisasters_dnc_pause", function( pl, cmd, args )
+end );
 
-        if ( !IsValid( pl ) or !pl:gdisasters_dnc_Admin() ) then return end
+concommand.Add( "gdisasters_dnc_time", function( pl, cmd, args )
 
-        gDisasters.DayNightSystem.Start:TogglePause();
+    local time = gDisasters.DayNightSystem.Start:GetTime();
+    local hours = math.floor( time );
+    local minutes = ( time - hours ) * 60;
 
-        if ( IsValid( pl ) ) then
+    if ( IsValid( pl ) ) then
 
-            pl:PrintMessage( HUD_PRINTCONSOLE, "DNC is " .. (gDisasters.DayNightSystem.varinterval.m_Paused and "paused" or "no longer paused") );
+        pl:PrintMessage( HUD_PRINTCONSOLE, string.format( "The current time is %s", string.format( "%02i:%02i", hours, minutes ) ) );
 
-        else
+    else
 
-            print( "DNC is " .. (gDisasters.DayNightSystem.Start.m_Paused and "paused" or "no longer paused") );
-
-        end
-
-    end );
-
-    concommand.Add( "gdisasters_dnc_settime", function( pl, cmd, args )
-
-        if ( !IsValid( pl ) or !pl:gdisasters_dnc_Admin() ) then return end
-
-        gDisasters.DayNightSystem.Start:SetTime( tonumber( args[1] or "0" ) );
-
-    end );
-
-    concommand.Add( "gdisasters_dnc_time", function( pl, cmd, args )
-
-        local time = gDisasters.DayNightSystem.Start:GetTime();
-        local hours = math.floor( time );
-        local minutes = ( time - hours ) * 60;
-
-        if ( IsValid( pl ) ) then
-
-            pl:PrintMessage( HUD_PRINTCONSOLE, string.format( "The current time is %s", string.format( "%02i:%02i", hours, minutes ) ) );
-
-        else
-
-            print( string.format( "The current time is %s", string.format( "%02i:%02i", hours, minutes ) ) );
-
-        end
-
-    end );
-
-    function gdisasters_dnc_Message( pl, ... )
-
-        net.Start( "gd_dnc_message" );
-        net.WriteTable( { ... } );
-        net.Send( pl );
+        print( string.format( "The current time is %s", string.format( "%02i:%02i", hours, minutes ) ) );
 
     end
 
-    function gdisasters_dnc_MessageAll( ... )
+end );
 
-        net.Start( "gd_dnc_message" );
-        net.WriteTable( { ... } );
-        net.Broadcast();
+function gdisasters_dnc_Message( pl, ... )
 
-    end
+    net.Start( "gd_dnc_message" );
+    net.WriteTable( { ... } );
+    net.Send( pl );
 
-    -- Net
-
-    -- Hacky workaround to make it possible for admins to change server cvars on dedicated servers
-
-    concommand.Add( "gdisasters_dnc_reset", function( pl, cmd, args )
-
-        if ( IsValid( pl ) and !pl:gdisasters_dnc_Admin() ) then return end
-
-        game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.enabled 1\n" );
-        game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.paused 0\n" );
-        game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.realtime 0\n" );
-        game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.length_day 3600\n" );
-        game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.length_night 3600\n" );
-
-        if ( IsValid( pl ) ) then
-
-            pl:PrintMessage( HUD_PRINTCONSOLE, "Day & Night server settings reset." );
-
-        else
-
-            print( "Day & Night server settings reset." );
-
-        end
-
-    end );
-
-    -- adds support for saving and restoring day & night values
-    saverestore.AddSaveHook( "gdisasters_dnc_Save", function( save )
-        local gdisasters_dnc_data = {
-            gdisasters_dnc_time = gDisasters.DayNightSystem.Start.m_Time
-        }
-
-        saverestore.WriteTable(gdisasters_dnc_data, save);
-
-        print("Day & Night save hook called!\n");
-    end);
-
-    saverestore.AddRestoreHook( "gdisasters_dnc_Restore", function( save )
-        local tbl = saverestore.ReadTable( save );
-
-        if (tbl.gdisasters_dnc_time != nil) then
-            gDisasters.DayNightSystem.Start:SetTime(tbl.gdisasters_dnc_time);
-        end
-
-        print("Day & Night saverestore hook called!\n");
-    end);
 end
 
-if (CLIENT) then
+function gdisasters_dnc_MessageAll( ... )
 
-    hook.Add("RenderScene", "gdisasters_dnc_RenderScene", function(origin, angles, fov) 
-
-        gDisasters.DayNightSystem.Start:RenderScene(origin, angles, fov);
-
-    end)
-
-    hook.Add("CalcView", "gdisasters_dnc_CalcView", function(pl, pos, ang, fov, nearZ, farZ) 
-
-        gDisasters.DayNightSystem.Start:CalcView(pl, pos, ang, fov, nearZ, farZ );
-
-    end)
-
-    hook.Add("PostDrawSkyBox", "gdisasters_dnc_RenderMoon", function() 
-
-        gDisasters.DayNightSystem.Start:RenderMoon();
-
-    end)
-    
-	hook.Add( "InitPostEntity", "gDisastersFirstJoinLightmaps", function()
-
-    	render.RedownloadAllLightmaps()
-
-    end)
+    net.Start( "gd_dnc_message" );
+    net.WriteTable( { ... } );
+    net.Broadcast();
 
 end
+
+-- Net
+
+-- Hacky workaround to make it possible for admins to change server cvars on dedicated servers
+
+concommand.Add( "gdisasters_dnc_reset", function( pl, cmd, args )
+
+    if ( IsValid( pl ) and !pl:gdisasters_dnc_Admin() ) then return end
+
+    game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.enabled 1\n" );
+    game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.paused 0\n" );
+    game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.realtime 0\n" );
+    game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.length_day 3600\n" );
+    game.ConsoleCommand( "gdisasters.daynightsystem.internalvars.length_night 3600\n" );
+
+    if ( IsValid( pl ) ) then
+
+        pl:PrintMessage( HUD_PRINTCONSOLE, "Day & Night server settings reset." );
+
+    else
+
+        print( "Day & Night server settings reset." );
+
+    end
+
+end );
+
+-- adds support for saving and restoring day & night values
+saverestore.AddSaveHook( "gdisasters_dnc_Save", function( save )
+    local gdisasters_dnc_data = {
+        gdisasters_dnc_time = gDisasters.DayNightSystem.Start.m_Time
+    }
+
+    saverestore.WriteTable(gdisasters_dnc_data, save);
+
+    print("Day & Night save hook called!\n");
+end);
+
+saverestore.AddRestoreHook( "gdisasters_dnc_Restore", function( save )
+    local tbl = saverestore.ReadTable( save );
+
+    if (tbl.gdisasters_dnc_time != nil) then
+        gDisasters.DayNightSystem.Start:SetTime(tbl.gdisasters_dnc_time);
+    end
+
+    print("Day & Night saverestore hook called!\n");
+end);
