@@ -197,9 +197,6 @@ gDisasters.DayNightSystem.Start =
 
     end,
 
- 
-
-
     InitEntities = function( self )
 
         self.m_LightEnvironment = ents.FindByClass( "light_environment" )[1];
