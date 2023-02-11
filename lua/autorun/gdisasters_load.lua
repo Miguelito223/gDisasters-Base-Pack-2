@@ -57,7 +57,7 @@ if (CLIENT) then
 	AddCSLuaFile("gdisasters/client/spawnlist/menu/cl_populate.lua")
 	AddCSLuaFile("gdisasters/client/toolmenu/cl_menu.lua")
 	AddCSLuaFile("gdisasters/client/hud/cl_main.lua")
-	AddCSLuaFile("gdisasters/client/game/cl_world_init")
+	AddCSLuaFile("gdisasters/client/game/cl_world_init.lua")
 	AddCSLuaFile("gdisasters/client/player-npcs/cl_postspawn.lua")
 	AddCSLuaFile("gdisasters/client/player-npcs/sv_process_gfx.lua")
 	AddCSLuaFile("gdisasters/client/player-npcs/sv_process_temp.lua")
