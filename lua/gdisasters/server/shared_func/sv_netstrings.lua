@@ -25,8 +25,6 @@ util.AddNetworkString( "gd_creategfx" )
 util.AddNetworkString( "gd_removegfxfog" )
 util.AddNetworkString( "gd_resetoutsidefactor" )
 
-util.AddNetworkString( "gd_dnc_message" );
-
 
 net.Receive( "gd_clmenu_vars", function( len, pl )
 	if !pl:IsAdmin() or !pl:IsSuperAdmin() then return end
