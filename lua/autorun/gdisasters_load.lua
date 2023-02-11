@@ -64,9 +64,9 @@ if (CLIENT) then
 	AddCSLuaFile("gdisasters/client/player-npcs/sv_process_gfx.lua")
 	AddCSLuaFile("gdisasters/client/player-npcs/sv_process_temp.lua")
 	AddCSLuaFile("gdisasters/client/atmosphere/cl_main.lua")
-	AddCSLuaFile("gdisasters/client/game/cl_world_init.lua")
-	
-	include("gdisasters/client/game/cl_world_init.lua")
+	AddCSLuaFile("gdisasters/client/game/cl_dnc.lua")
+
+	include("gdisasters/client/game/cl_dnc.lua")
 	include("gdisasters/client/atmosphere/cl_main.lua")
 	include("gdisasters/client/shared_func/cl_main.lua")
 	include("gdisasters/client/shared_func/cl_netstrings.lua")

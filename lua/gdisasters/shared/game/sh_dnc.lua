@@ -446,7 +446,11 @@ gDisasters.DayNightSystem.Start =
         moonMat:SetInt( "$additive", 0 );
         moonMat:SetInt( "$translucent", 0 );
 
+        
+
         if ( self.m_Time < gDisasters.DayNightSystem.TIME_DAWN_START and self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END ) then
+            print("lol")
+
             local moonfrac;
 
             if self.m_Time > gDisasters.DayNightSystem.TIME_DUSK_END then
@@ -523,24 +527,6 @@ hook.Add( "Initialize", "gdisasters_dnc_Init", function()
     gDisasters.DayNightSystem.Start:Initialize();
 
 end );
-
-hook.Add("RenderScene", "gdisasters_dnc_RenderScene", function(origin, angles, fov) 
-
-    gDisasters.DayNightSystem.Start:RenderScene(origin, angles, fov);
-
-end)
-
-hook.Add("CalcView", "gdisasters_dnc_CalcView", function(pl, pos, ang, fov, nearZ, farZ) 
-
-    gDisasters.DayNightSystem.Start:CalcView(pl, pos, ang, fov, nearZ, farZ );
-
-end)
-
-hook.Add("PostDrawSkyBox", "gdisasters_dnc_DrawMoon", function() 
-
-    gDisasters.DayNightSystem.Start:RenderMoon();
-
-end)
 
 concommand.Add( "gdisasters_dnc_pause", function( pl, cmd, args )
 
@@ -648,3 +634,4 @@ saverestore.AddRestoreHook( "gdisasters_dnc_Restore", function( save )
 
     print("Day & Night saverestore hook called!\n");
 end);
+
