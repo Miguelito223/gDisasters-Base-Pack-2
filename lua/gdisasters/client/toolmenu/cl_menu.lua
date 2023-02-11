@@ -216,27 +216,6 @@ local function gDisastersServerGraphics( CPanel )
 	
 end
 
-local function gDisastersDayAndNightCycle( CPanel )
-	local lb = AddControlLabel( CPanel, "DNC Options:" )
-	lb:SetTextColor(Color( 0, 0, 0))
-	lb:SetSize(500, 500)
-
-	CreateTickboxConVariable(CPanel, "Enable DNC"  , "gdisasters_dnc_enabled");
-	CreateTickboxConVariable(CPanel, "Pause DNC"  , "gdisasters_dnc_paused");
-	CreateTickboxConVariable(CPanel, "Real Time"  , "gdisasters_dnc_realtime");
-	CreateTickboxConVariable(CPanel, "Log"  , "gdisasters_dnc_log");
-	CreateTickboxConVariable(CPanel, "Enable Creating light_environment"  , "gdisasters_dnc_enablecreatinglightenvironment");
-
-	CreateSliderConVariable(CPanel, "Moon Size", 1, 3000, 0, "gdisasters_dnc_moonsize" )
-	
-	local lb2 = AddControlLabel( CPanel, "DNC Length Options:" )
-	lb2:SetTextColor(Color( 0, 0, 0))
-	lb2:SetSize(500, 500)
-
-	CreateSliderConVariable(CPanel, "Length day", 1, 3600, 0, "gdisasters_dnc_length_day" )
-	CreateSliderConVariable(CPanel, "Length night", 1, 3600, 0, "gdisasters_dnc_length_night" )
-end
-
 
 
 local function gDisastersAutospawn( CPanel )
@@ -348,7 +327,6 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAutospawn", "Autospawn", "", "", gDisastersAutospawn )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersServerGraphics", "Server Graphics", "", "", gDisastersServerGraphics )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersDayAndNightCycle", "Day and Night Cycle", "", "", gDisastersDayAndNightCycle)
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersAudioSettings", "Volume", "", "", gDisastersAudioSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "ggDisastersHudSettings", "Hud", "", "", gDisastersHudSettings )

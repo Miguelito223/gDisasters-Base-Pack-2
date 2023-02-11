@@ -139,18 +139,6 @@ net.Receive("gd_lightning_bolt", function()
 
 end)
 
-net.Receive( "gd_dnc_message", function( len )
-
-	local tab = net.ReadTable();
-
-	if ( #tab > 0 ) then
-
-		chat.AddText( unpack( tab ) );
-
-	end
-
-end );
-
 net.Receive("gd_soundwave", function()
 
 	local s 	 = net.ReadString()
@@ -177,9 +165,6 @@ net.Receive("gd_soundwave_stop", function()
 	LocalPlayer():StopSound(s)
 
 end)
-
-
-
 
 net.Receive("gd_shakescreen", function()
 
