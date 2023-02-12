@@ -409,6 +409,8 @@ end
 function convert_VectorToAngle(vector)
 	x = vector.x
 	y = vector.y
+	z = vector.z
+	
 	return math.atan2(y,x)
 end
 
