@@ -249,8 +249,8 @@ local function gDisastersDNC( CPanel )
 	lb:SetSize(500, 500)
 	
 	CreateTickboxConVariable(CPanel, "DNC Enable"  , "gdisasters_dnc_enabled");
-	CreateTickboxConVariable(CPanel, "DNC Paused"  , "gdisasters_dnc_realtime");
-	CreateTickboxConVariable(CPanel, "DNC Realtime "  , "gdisasters_dnc_paused");
+	CreateTickboxConVariable(CPanel, "DNC Paused"  , "gdisasters_dnc_paused");
+	CreateTickboxConVariable(CPanel, "DNC Realtime "  , "gdisasters_dnc_realtime");
 	
 	CreateSliderConVariable(CPanel, "Length Day", 1, 3600, 0, "gdisasters_dnc_length_day" )
 	CreateSliderConVariable(CPanel, "Length Night", 1, 3600, 0, "gdisasters_dnc_length_night" )
