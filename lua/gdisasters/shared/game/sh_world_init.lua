@@ -585,7 +585,7 @@ end)
 
 concommand.Add( "gdisasters_dnc_pause", function( pl, cmd, args )
 
-	if ( !IsValid( pl ) or !pl:AtmosAdmin() ) then return end
+	if ( !IsValid( pl ) or !pl:IsAdmin() and !IsSuperAdmin() ) then return end
 
 	gDisasters.DayNightSystem.TogglePause()
 
