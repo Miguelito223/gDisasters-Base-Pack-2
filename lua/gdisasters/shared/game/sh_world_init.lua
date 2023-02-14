@@ -213,7 +213,7 @@ gDisasters.DayNightSystem.initEntities_Function = function()
 end
 
 gDisasters.DayNightSystem.Think = function()
-	if gDisasters.DayNightSystem.InternalVars.Enabled:GetInt() <= 0 then return end
+	if gDisasters.DayNightSystem.InternalVars.Enabled:GetInt() < 1 then return end
 	if ( !gDisasters.DayNightSystem.initEntities ) then gDisasters.DayNightSystem.initEntities_Function() end
 
 	local timeLen = 3600;
