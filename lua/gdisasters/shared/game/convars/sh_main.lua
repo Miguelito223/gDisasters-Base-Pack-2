@@ -78,3 +78,13 @@ CreateConVar( "gdisasters_antilag_maximum_safe_collisions_per_second_average", "
 CreateConVar( "gdisasters_antilag_maximum_safe_collisions_per_second_per_prop", "400", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_antilag_post_damage_no_collide_base_time", "400", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_antilag_mode", "0", {FCVAR_ARCHIVE}, "" )
+
+--dnc
+CreateConVar( "gdisasters_dnc_enabled", "0", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gdisasters_dnc_realtime", "0", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gdisasters_dnc_paused", "0", {FCVAR_ARCHIVE}, "" )
+
+CreateConVar( "gdisasters_dnc_Moon_Size", "3000", {FCVAR_ARCHIVE}, "" )
+
+CreateConVar( "gDisasters_dnc_length_day", "600", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gDisasters_dnc_length_night", "600", {FCVAR_ARCHIVE}, "" )

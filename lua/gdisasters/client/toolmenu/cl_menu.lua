@@ -242,6 +242,21 @@ local function gDisastersAutospawn( CPanel )
 	
 end
 
+local function gDisastersDNC( CPanel )
+
+	local lb = AddControlLabel( CPanel, "DNC Options: " )
+	lb:SetTextColor(Color( 0, 0, 0))
+	lb:SetSize(500, 500)
+	
+	CreateTickboxConVariable(CPanel, "DNC Enable"  , "gdisasters_dnc_enabled");
+	CreateTickboxConVariable(CPanel, "DNC Paused"  , "gdisasters_dnc_realtime");
+	CreateTickboxConVariable(CPanel, "DNC Realtime "  , "gdisasters_dnc_paused");
+	
+	CreateSliderConVariable(CPanel, "Length Day", 1, 1000, 0, "gdisasters_dnc_length_day" )
+	CreateSliderConVariable(CPanel, "Length Night", 1, 1000, 0, "gdisasters_dnc_length_night" )
+	
+end
+
 --CL MENU 
 
 local function gDisastersADVGraphicsSettings( CPanel )			
@@ -326,6 +341,7 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVADSettings", "Advanced", "", "", gDisastersSVADVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAutospawn", "Autospawn", "", "", gDisastersAutospawn )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisasterDNC", "DNC", "", "", gDisastersDNC )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersServerGraphics", "Server Graphics", "", "", gDisastersServerGraphics )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersAudioSettings", "Volume", "", "", gDisastersAudioSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )

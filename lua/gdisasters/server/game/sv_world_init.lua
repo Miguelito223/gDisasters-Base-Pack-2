@@ -1,5 +1,5 @@
 hook.Add( "Initialize", "gDisastersInitFix", function()
-	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 then 
+	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 or gDisasters.DayNightSystem.InternalVars.Enable:GetInt() >= 1 then 
 
 		if #ents.FindByClass("env_skypaint")<1 then
 			local ent = ents.Create("env_skypaint")
@@ -17,10 +17,8 @@ hook.Add( "Initialize", "gDisastersInitFix", function()
 	end
 end )
 
-
-
 hook.Add( "InitPostEntity", "gDisastersInitPostEvo", function()
-	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 then 
+	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 or gDisasters.DayNightSystem.InternalVars.Enable:GetInt() >= 1 then 
 
 		local oldCleanUpMap = game.CleanUpMap
 	
@@ -39,8 +37,6 @@ hook.Add( "InitPostEntity", "gDisastersInitPostEvo", function()
 	end
 
 end )
-
-
 
 
 
