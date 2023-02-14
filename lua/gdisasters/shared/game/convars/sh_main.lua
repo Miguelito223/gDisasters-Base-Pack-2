@@ -80,11 +80,14 @@ CreateConVar( "gdisasters_antilag_post_damage_no_collide_base_time", "400", {FCV
 CreateConVar( "gdisasters_antilag_mode", "0", {FCVAR_ARCHIVE}, "" )
 
 --dnc
-CreateConVar( "gdisasters_dnc_enabled", "0", {FCVAR_ARCHIVE}, "" )
-CreateConVar( "gdisasters_dnc_realtime", "0", {FCVAR_ARCHIVE}, "" )
-CreateConVar( "gdisasters_dnc_paused", "0", {FCVAR_ARCHIVE}, "" )
 
-CreateConVar( "gdisasters_dnc_Moon_Size", "3000", {FCVAR_ARCHIVE}, "" )
+gDisasters.DayNightSystem.InternalVars.Enabled = CreateConVar( "gdisasters_dnc_enabled", "0", {FCVAR_ARCHIVE}, "" )
+gDisasters.DayNightSystem.InternalVars.RealTime = CreateConVar( "gdisasters_dnc_realtime", "0", {FCVAR_ARCHIVE}, "" )
+gDisasters.DayNightSystem.InternalVars.Paused = CreateConVar( "gdisasters_dnc_paused", "0", {FCVAR_ARCHIVE}, "" )
 
-CreateConVar( "gDisasters_dnc_length_day", "600", {FCVAR_ARCHIVE}, "" )
-CreateConVar( "gDisasters_dnc_length_night", "600", {FCVAR_ARCHIVE}, "" )
+gDisasters.DayNightSystem.InternalVars.Length_Day = CreateConVar( "gDisasters_dnc_length_day", "600", {FCVAR_ARCHIVE}, "" )
+gDisasters.DayNightSystem.InternalVars.Length_Night = CreateConVar( "gDisasters_dnc_length_night", "600", {FCVAR_ARCHIVE}, "" )
+
+gDisasters.DayNightSystem.InternalVars.MoonSize = CreateConVar( "gdisasters_dnc_Moon_Size", "3000", {FCVAR_ARCHIVE}, "" )
+
+

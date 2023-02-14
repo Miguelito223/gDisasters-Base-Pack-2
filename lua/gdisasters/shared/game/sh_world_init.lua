@@ -54,13 +54,6 @@ GLOBAL_SYSTEM_ORIGINAL = {
 				}
 
 
-gDisasters.DayNightSystem.InternalVars.Enabled = GetConVar("gdisasters_dnc_enabled")
-gDisasters.DayNightSystem.InternalVars.RealTime = GetConVar("gdisasters_dnc_realtime")
-gDisasters.DayNightSystem.InternalVars.Paused = GetConVar("gdisasters_dnc_paused")
-
-gDisasters.DayNightSystem.InternalVars.Length_Day = GetConVar("gdisasters_dnc_length_day")
-gDisasters.DayNightSystem.InternalVars.Length_Night = GetConVar("gdisasters_dnc_length_night")
-
 gDisasters.DayNightSystem.InternalVars.time = {}
 
 gDisasters.DayNightSystem.InternalVars.time.Noon = 12
@@ -151,6 +144,7 @@ gDisasters.DayNightSystem.Initialize = function()
 
 	hook.Add("Think", "think", gDisasters.DayNightSystem.Think)
 end
+hook.Add("Initialize", "gDisastersinitialize", gDisasters.DayNightSystem.Initialize)
 
 gDisasters.DayNightSystem.LightStyle = function(style, force)
 	if ( tostring( gDisasters.DayNightSystem.LastStyle ) == tostring( style ) and (force == nil or force == false) ) then return end
@@ -341,19 +335,22 @@ gDisasters.DayNightSystem.Think = function()
 			next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Day;
 		end
 
-		gDisasters.DayNightSystem.EnvSkyPaint:SetTopColor( LerpVector( frac, cur.TopColor, next.TopColor ) );
-		gDisasters.DayNightSystem.EnvSkyPaint:SetBottomColor( LerpVector( frac, cur.BottomColor, next.BottomColor ) );
-		gDisasters.DayNightSystem.EnvSkyPaint:SetSunColor( LerpVector( frac, cur.SunColor, next.SunColor ) );
-		gDisasters.DayNightSystem.EnvSkyPaint:SetDuskColor( LerpVector( frac, cur.DuskColor, next.DuskColor ) );
-		gDisasters.DayNightSystem.EnvSkyPaint:SetFadeBias( Lerp( frac, cur.FadeBias, next.FadeBias ) );
-		gDisasters.DayNightSystem.EnvSkyPaint:SetHDRScale( Lerp( frac, cur.HDRScale, next.HDRScale ) );
-		gDisasters.DayNightSystem.EnvSkyPaint:SetDuskScale( Lerp( frac, cur.DuskScale, next.DuskScale ) );
-		gDisasters.DayNightSystem.EnvSkyPaint:SetDuskIntensity( Lerp( frac, cur.DuskIntensity, next.DuskIntensity ) );
-		gDisasters.DayNightSystem.EnvSkyPaint:SetSunSize( (Lerp( frac, cur.SunSize, next.SunSize )) );
+		if (SERVER) then
 
-		gDisasters.DayNightSystem.EnvSkyPaint:SetStarFade( next.StarFade );
-		gDisasters.DayNightSystem.EnvSkyPaint:SetStarScale( next.StarScale );
-		gDisasters.DayNightSystem.EnvSkyPaint:SetStarSpeed( next.StarSpeed );
+			gDisasters.DayNightSystem.EnvSkyPaint:SetTopColor( LerpVector( frac, cur.TopColor, next.TopColor ) );
+			gDisasters.DayNightSystem.EnvSkyPaint:SetBottomColor( LerpVector( frac, cur.BottomColor, next.BottomColor ) );
+			gDisasters.DayNightSystem.EnvSkyPaint:SetSunColor( LerpVector( frac, cur.SunColor, next.SunColor ) );
+			gDisasters.DayNightSystem.EnvSkyPaint:SetDuskColor( LerpVector( frac, cur.DuskColor, next.DuskColor ) );
+			gDisasters.DayNightSystem.EnvSkyPaint:SetFadeBias( Lerp( frac, cur.FadeBias, next.FadeBias ) );
+			gDisasters.DayNightSystem.EnvSkyPaint:SetHDRScale( Lerp( frac, cur.HDRScale, next.HDRScale ) );
+			gDisasters.DayNightSystem.EnvSkyPaint:SetDuskScale( Lerp( frac, cur.DuskScale, next.DuskScale ) );
+			gDisasters.DayNightSystem.EnvSkyPaint:SetDuskIntensity( Lerp( frac, cur.DuskIntensity, next.DuskIntensity ) );
+			gDisasters.DayNightSystem.EnvSkyPaint:SetSunSize( (Lerp( frac, cur.SunSize, next.SunSize )) );
+
+			gDisasters.DayNightSystem.EnvSkyPaint:SetStarFade( next.StarFade );
+			gDisasters.DayNightSystem.EnvSkyPaint:SetStarScale( next.StarScale );
+			gDisasters.DayNightSystem.EnvSkyPaint:SetStarSpeed( next.StarSpeed );
+		end
 	end
 end
 
@@ -388,7 +385,85 @@ gDisasters.DayNightSystem.GetTime = function()
 
 end
 
-hook.Add("Initialize", "initialize", gDisasters.DayNightSystem.Initialize)
+gDisasters.DayNightSystem.CalcView = function(pl, pos, ang, fov, nearZ, farZ)
+	LastNearZ = nearZ;
+	LastFarZ = farZ;
+end
+
+gDisasters.DayNightSystem.RenderScene = function(origin, angles, fov)
+	LastSceneOrigin = origin;
+	LastSceneAngles = angles;
+end
+
+gDisasters.DayNightSystem.RenderMoon = function()
+	local moonAlpha = 0;
+	local moonMat = Material( "atmosphere/moon/9" );
+	moonMat:SetInt( "$additive", 0 );
+	moonMat:SetInt( "$translucent", 0 );
+
+	time = gDisasters.DayNightSystem.Time
+	night = time < 4 or time > 20.5
+	
+	if ( night ) then
+
+		local mul;
+
+		if ( time > 20.5 ) then
+
+			mul = 1 - ( time + 4 ) / 8;
+
+		else
+
+			mul = 1 - ( time - 4 ) / 8;
+
+		end
+
+		local angle = Angle( -180 * mul, 0, 0 );
+		SetGlobalAngle("gdMoonDir", angle:Forward() )
+
+        local moonPos = gDisasters_GetMoonDir() * ( LastFarZ * 0.900 );
+        local moonNormal = ( vector_origin - moonPos ):GetNormal();
+
+        moonAlpha = Lerp( FrameTime() * 1, moonAlpha, 255 );
+	
+        local moonSize = gDisasters.DayNightSystem.InternalVars.MoonSize:GetFloat();
+
+        cam.Start3D(vector_origin, LastSceneAngles);
+            render.OverrideDepthEnable( true, false );
+            render.SetMaterial( moonMat );
+            render.DrawQuadEasy( moonPos, moonNormal, moonSize, moonSize, Color( 255, 255, 255, moonAlpha ), -180 );
+            render.OverrideDepthEnable( false, false );
+        cam.End3D();
+
+	else
+
+		if ( moonAlpha != 0 ) then
+
+			moonAlpha = 0;
+
+		end
+
+	end
+end
+
+
+hook.Add( "CalcView", "gdisastersCalcView", function( pl, pos, ang, fov, nearZ, farZ )
+	
+	gDisasters.DayNightSystem.CalcView(pl, pos, ang, fov, nearZ, farZ)
+	
+end );
+
+hook.Add( "RenderScene", "gDisastersRenderScene", function( origin, angles, fov )
+
+	gDisasters.DayNightSystem.RenderScene(origin, angles, fov)
+
+end );
+
+hook.Add( "PostDrawSkyBox", "gDisastersPostDrawSkyBox", function()
+
+	gDisasters.DayNightSystem.RenderMoon()
+
+end)
 
 concommand.Add("gdisasters_smite", function()
 

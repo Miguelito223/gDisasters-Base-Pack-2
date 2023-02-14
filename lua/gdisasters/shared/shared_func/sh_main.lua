@@ -780,7 +780,7 @@ end
 
 function gDisasters_GetMoonDir()
 
-	return GetGlobalAngle("gdSunDir")*-1
+	return GetGlobalAngle("gdMoonDir")
 end
 
 function gDisasters_GetSunDir()
