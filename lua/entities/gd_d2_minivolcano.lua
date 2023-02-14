@@ -10,7 +10,7 @@ ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
     
-ENT.Mass                             =  50000
+ENT.Mass                             =  100
 ENT.Model                            =  "models/ramses/models/nature/volcano.mdl"
 ENT.AutomaticFrameAdvance            = true 
 
