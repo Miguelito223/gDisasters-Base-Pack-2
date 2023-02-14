@@ -367,7 +367,7 @@ gDisasters.DayNightSystem.SetTime = function(time)
 
 	if ( IsValid( gDisasters.DayNightSystem.EnvSkyPaint ) ) then
 		gDisasters.DayNightSystem.EnvSkyPaint:SetStarTexture( "skybox/starfield" );
-		gDisasters.DayNightSystem.InternalVars.SkyPaint.day.StarFade = 0;
+		gDisasters.DayNightSystem.InternalVars.SkyPaint.Day.StarFade = 0;
 	end
 end
 
@@ -432,7 +432,7 @@ gDisasters.DayNightSystem.RenderMoon = function()
         cam.Start3D(vector_origin, LastSceneAngles);
             render.OverrideDepthEnable( true, false );
             render.SetMaterial( moonMat );
-            render.DrawQuadEasy( moonPos, moonNormal, moonSize, moonSize, Color( 255, 255, 255, 255 ), -180 );
+            render.DrawQuadEasy( moonPos, moonNormal, moonSize, moonSize, Color( 255, 255, 255, moonAlpha ), -180 );
             render.OverrideDepthEnable( false, false );
         cam.End3D();
 
@@ -603,7 +603,7 @@ end );
 
 concommand.Add( "gdisasters_dnc_settime", function( pl, cmd, args )
 
-	if ( !IsValid( pl ) or !pl:AtmosAdmin() ) then return end
+	if ( !IsValid( pl ) or !pl:IsAdmin() and !IsSuperAdmin() ) then return end
 
 	gDisasters.DayNightSystem.SetTime( tonumber( args[1] or "0" ) );
 
