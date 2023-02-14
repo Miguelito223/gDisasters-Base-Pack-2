@@ -431,7 +431,7 @@ gDisasters.DayNightSystem.RenderMoon = function()
         cam.Start3D(vector_origin, LastSceneAngles);
             render.OverrideDepthEnable( true, false );
             render.SetMaterial( moonMat );
-            render.DrawQuadEasy( moonPos, moonNormal, moonSize, moonSize, Color( 255, 255, 255, moonAlpha ), -180 );
+            render.DrawQuadEasy( moonPos, moonNormal, moonSize, moonSize, Color( 255, 255, 255, 255 ), -180 );
             render.OverrideDepthEnable( false, false );
         cam.End3D();
 
