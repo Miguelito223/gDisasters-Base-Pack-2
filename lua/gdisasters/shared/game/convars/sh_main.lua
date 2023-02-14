@@ -88,6 +88,6 @@ gDisasters.DayNightSystem.InternalVars.Paused = CreateConVar( "gdisasters_dnc_pa
 gDisasters.DayNightSystem.InternalVars.Length_Day = CreateConVar( "gDisasters_dnc_length_day", "600", {FCVAR_ARCHIVE}, "" )
 gDisasters.DayNightSystem.InternalVars.Length_Night = CreateConVar( "gDisasters_dnc_length_night", "600", {FCVAR_ARCHIVE}, "" )
 
-gDisasters.DayNightSystem.InternalVars.MoonSize = CreateConVar( "gdisasters_dnc_Moon_Size", "3000", {FCVAR_ARCHIVE}, "" )
+gDisasters.DayNightSystem.InternalVars.MoonSize = CreateConVar( "gdisasters_dnc_moon_size", "3000", {FCVAR_ARCHIVE}, "" )
 
 
