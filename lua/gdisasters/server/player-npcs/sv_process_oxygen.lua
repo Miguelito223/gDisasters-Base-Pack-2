@@ -1,5 +1,3 @@
-
-    
 function gDisasters_ProcessOxygen()
     if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() == 0 then return end 
     
