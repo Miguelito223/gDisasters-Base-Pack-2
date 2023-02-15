@@ -920,7 +920,7 @@ Vector(3975,1832,67),
 Vector(-2316,2100,67)
 }
 
-hook.Add("Think", "gDisasters_S37K", function()
+hook.Add("Think", "gDisastersmapbounds", function()
 
 	function IsMapPathRegistered()
 		local map = game.GetMap()
