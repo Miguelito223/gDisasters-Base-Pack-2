@@ -16,10 +16,9 @@ ENT.AutomaticFrameAdvance            = true
 
 function ENT:Initialize()	
 	self:DrawShadow( false)
+	self:SetModelScale(1.5,0)
 	
 	if (SERVER) then
-		self:SetModelScale(1.5,0)
-
 		self:SetModel(self.Model)
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
@@ -63,6 +62,18 @@ function ENT:Initialize()
 	end
 	
 	self:CreateLoop()
+end
+
+function ENT:SetMDScale(scale)
+	local mat = Matrix()
+	mat:Scale(scale)
+	self:EnableMatrix("RenderMultiply", mat)
+end
+
+function ENT:SetParticleScale(scale)
+	local mat = Matrix()
+	mat:Scale(scale)
+	self:EnableMatrix("RenderMultiply", mat)
 end
 
 function ENT:PressureIncrement()

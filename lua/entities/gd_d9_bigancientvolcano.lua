@@ -16,10 +16,9 @@ ENT.AutomaticFrameAdvance            = true
 
 function ENT:Initialize()	
 	self:DrawShadow( false)
+	self:SetModelScale(2,0)
 	
 	if (SERVER) then
-		self:SetModelScale(2,0)
-		
 		self:SetAngles( Angle(0,math.random(-180, 180),0))
 		
 		self:SetModel(self.Model)
@@ -55,6 +54,18 @@ function ENT:Initialize()
 	end
 	
 	self:CreateLoop()
+end
+
+function ENT:SetMDScale(scale)
+	local mat = Matrix()
+	mat:Scale(scale)
+	self:EnableMatrix("RenderMultiply", mat)
+end
+
+function ENT:SetParticleScale(scale)
+	local mat = Matrix()
+	mat:Scale(scale)
+	self:EnableMatrix("RenderMultiply", mat)
 end
 
 function ENT:VolcanicLavaEffects()
