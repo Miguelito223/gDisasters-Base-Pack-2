@@ -31,7 +31,9 @@ if (SERVER) then
 	AddCSLuaFile("gdisasters/server/player-npcs/sv_process_gfx.lua")
 	AddCSLuaFile("gdisasters/server/player-npcs/sv_process_temp.lua")
 	AddCSLuaFile("gdisasters/server/atmosphere/sv_main.lua")
+	AddCSLuaFile("gdisasters/shared/extensions/sv_patchs-bounds.lua")
 
+	include("gdisasters/shared/extensions/sv_patchs-bounds.lua")
 	include("gdisasters/server/shared_func/sv_main.lua")
 	include("gdisasters/server/shared_func/sv_netstrings.lua")
 	include("gdisasters/server/atmosphere/sv_main.lua")
