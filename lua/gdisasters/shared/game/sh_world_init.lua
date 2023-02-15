@@ -179,27 +179,27 @@ gDisasters.DayNightSystem.initEntities_Function = function()
 
 	if IsValid(gDisasters.DayNightSystem.EnvSun) then
 		gDisasters.DayNightSystem.EnvSun:SetKeyValue( "sun_dir", "1 0 0" )
+	else
+		gDisasters_EntityExists("env_sun" )
 	end
 
 	if IsValid( gDisasters.DayNightSystem.LightEnvironment ) then
 		gDisasters.DayNightSystem.LightStyle( "a", true )
 	else
-		gDisasters.DayNightSystem.InternalVars.Style_Low = string.byte( "b" )
-		gDisasters.DayNightSystem.LightStyle( "b", true )
+		if gDisasters.DayNightSystem.InternalVars.Createlight_environment:GetInt() <= 0 then
+			gDisasters.DayNightSystem.InternalVars.Style_Low = string.byte( "b" )
+			gDisasters.DayNightSystem.LightStyle( "b", true )
+		else
+			gDisasters_EntityExists( "light_environment" )
+		end
 	end
 
-	if  !IsValid( gDisasters.DayNightSystem.EnvSkyPaint )  then
-
-		local skyPaint = ents.Create( "env_skypaint" )
-		skyPaint:Spawn()
-		skyPaint:Activate()
-
-		gDisasters.DayNightSystem.EnvSkyPaint = skyPaint
-
-	end
-
-	if (SERVER) then
-		gDisasters.DayNightSystem.EnvSkyPaint:SetStarTexture( "skybox/starfield" )
+	if  IsValid( gDisasters.DayNightSystem.EnvSkyPaint )  then
+		if (SERVER) then
+			gDisasters.DayNightSystem.EnvSkyPaint:SetStarTexture( "skybox/starfield" )
+		end
+	else
+		gDisasters_EntityExists( "env_skypaint" )
 	end
 
 	gDisasters.DayNightSystem.initEntities = true

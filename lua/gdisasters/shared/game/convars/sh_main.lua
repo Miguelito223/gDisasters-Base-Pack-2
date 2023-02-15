@@ -90,4 +90,6 @@ gDisasters.DayNightSystem.InternalVars.Length_Night = CreateConVar( "gDisasters_
 
 gDisasters.DayNightSystem.InternalVars.MoonSize = CreateConVar( "gdisasters_dnc_moon_size", "3000", {FCVAR_ARCHIVE}, "" )
 
+gDisasters.DayNightSystem.InternalVars.Createlight_environment = CreateConVar( "gdisasters_dnc_create_light_environment", "1", {FCVAR_ARCHIVE}, "" )
+
 
