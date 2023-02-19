@@ -378,9 +378,9 @@ gDisasters.DayNightSystem.Think = function()
 			cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Day;
 			next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Day;
 		end
-		if (CLIENT)
+		if (CLIENT) then
 
-			local gDisasters.DayNightSystem.UpdateFog = false 
+			gDisasters.DayNightSystem.UpdateFog = false 
 
 			if ( gDisasters.DayNightSystem.CurrentFog == nil ) then
 
@@ -399,8 +399,9 @@ gDisasters.DayNightSystem.Think = function()
 				end
 			
 			end
-			
+
 			if ( gDisasters.DayNightSystem.UpdateFog ) then
+
 				gDisasters.DayNightSystem.CurrentFog.FogStart = Lerp( frac, gDisasters.DayNightSystem.CurrentFog.FogStart, gDisasters.DayNightSystem.NextFog.FogStart );
 				gDisasters.DayNightSystem.CurrentFog.FogEnd = Lerp( frac, gDisasters.DayNightSystem.CurrentFog.FogEnd, gDisasters.DayNightSystem.NextFog.FogEnd );
 				gDisasters.DayNightSystem.CurrentFog.FogDensity = Lerp( frac, gDisasters.DayNightSystem.CurrentFog.FogDensity, gDisasters.DayNightSystem.NextFog.FogDensity );
