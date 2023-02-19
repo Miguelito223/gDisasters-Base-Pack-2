@@ -399,6 +399,7 @@ gDisasters.DayNightSystem.Think = function()
 				end
 			
 			end
+			
 			if ( gDisasters.DayNightSystem.UpdateFog ) then
 				gDisasters.DayNightSystem.CurrentFog.FogStart = Lerp( frac, gDisasters.DayNightSystem.CurrentFog.FogStart, gDisasters.DayNightSystem.NextFog.FogStart );
 				gDisasters.DayNightSystem.CurrentFog.FogEnd = Lerp( frac, gDisasters.DayNightSystem.CurrentFog.FogEnd, gDisasters.DayNightSystem.NextFog.FogEnd );
