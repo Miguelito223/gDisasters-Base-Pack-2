@@ -390,8 +390,8 @@ gDisasters.DayNightSystem.Think = function()
 		if (CLIENT) then
 			gDisasters.DayNightSystem.Fog:SetFogStart( Lerp( frac, curfog.FogStart, nextfog.FogStart ) );
 			gDisasters.DayNightSystem.Fog:SetFogEnd( Lerp( frac, curfog.FogEnd, nextfog.FogEnd ) );
-			gDisasters.DayNightSystem.Fog:SetFogDensity( Lerp( frac,  curfog.FogDensity, nextfog.FogDensity ) );
 			gDisasters.DayNightSystem.Fog:SetFogColor( LerpVector( frac, curfog.FogColor, nextfog.FogColor ) );
+			gDisasters.DayNightSystem.Fog:SetDensity( Lerp( frac,  curfog.FogDensity, nextfog.FogDensity ) );
 		end
 		if (SERVER) then
 
