@@ -73,7 +73,7 @@ function ENT:SetupWorldFog()
 end
 
 function ENT:SetupSkyFog( scale )
-
+    
     render.FogMode( 1 );
     render.FogStart( self:GetFogStart() * scale );
     render.FogEnd( self:GetFogEnd() * scale );

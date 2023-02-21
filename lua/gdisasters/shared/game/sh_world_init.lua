@@ -212,7 +212,7 @@ gDisasters.DayNightSystem.initEntities_Function = function()
 		gDisasters.DayNightSystem.EnvFogController = ents.FindByClass( "env_fog_controller" )[1]
 		gDisasters.DayNightSystem.RelayDawn = ents.FindByName( "dawn" )[1]
 		gDisasters.DayNightSystem.RelayDusk = ents.FindByName( "dusk" )[1]
-		gDisasters.DayNightSystem.Fog = ents.Create("gd_fog")
+		gDisasters.DayNightSystem.Fog = Entity_Create("gd_fog")
 		
 
 		if IsValid(gDisasters.DayNightSystem.EnvSun) then
@@ -387,11 +387,13 @@ gDisasters.DayNightSystem.Think = function()
 			curfog = gDisasters.DayNightSystem.InternalVars.Fog.Day;
 			nextfog = gDisasters.DayNightSystem.InternalVars.Fog.Day;
 		end
+
 		if (CLIENT) then
-			gDisasters.DayNightSystem.Fog:SetFogStart(Lerp(frac, cur.FogStart, next.FogStart))
-			gDisasters.DayNightSystem.Fog:SetFogEnd(Lerp(frac, cur.FogEnd, next.FogEnd))
-			gDisasters.DayNightSystem.Fog:SetFogDensity(Lerp(frac, cur.FogDensity, next.FogDensity))
-			gDisasters.DayNightSystem.Fog:SetFogColor(LerpVector(frac, cur.FogColor, next.FogColor))
+			gDisasters.DayNightSystem.Fog:SetFogStart(Lerp(frac, curfog.FogStart, nextfog.FogStart))
+			gDisasters.DayNightSystem.Fog:SetFogEnd(Lerp(frac, curfog.FogEnd, nextfog.FogEnd))
+			gDisasters.DayNightSystem.Fog:SetFogDensity(Lerp(frac, curfog.FogDensity, nextfog.FogDensity))
+			gDisasters.DayNightSystem.Fog:SetFogColor(LerpVector(frac, curfog.FogColor, nextfog.FogColor))
+
 		end		
 		if (SERVER) then
 
