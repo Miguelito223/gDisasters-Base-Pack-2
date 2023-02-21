@@ -212,6 +212,7 @@ gDisasters.DayNightSystem.initEntities_Function = function()
 		gDisasters.DayNightSystem.EnvFogController = ents.FindByClass( "env_fog_controller" )[1]
 		gDisasters.DayNightSystem.RelayDawn = ents.FindByName( "dawn" )[1]
 		gDisasters.DayNightSystem.RelayDusk = ents.FindByName( "dusk" )[1]
+		
 		gDisasters.DayNightSystem.Fog = Entity_Create("gd_fog")
 		
 
