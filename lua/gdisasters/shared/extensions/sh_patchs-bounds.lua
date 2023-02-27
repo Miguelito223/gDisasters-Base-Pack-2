@@ -933,8 +933,10 @@ hook.Add("Think", "gDisastersmapbounds", function()
 		return MAP_PATHS[map]
 	end
 
-
-	if GetConVar("gdisasters_mapbounds_S37K"):GetInt() >= 1 and S37K_mapbounds then
+	
+	if GetConVar("gdisasters_mapbounds_S37K"):GetInt() >= 1 then
+		
+		if (CLIENT) then return end
 
 		local S37K = S37K_mapbounds[1]
 
