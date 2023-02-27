@@ -463,6 +463,8 @@ moonMat:SetInt( "$translucent", 0 );
 
 gDisasters.DayNightSystem.RenderMoon = function()
 
+	if gDisasters.DayNightSystem.InternalVars.Enabled:GetInt() < 1 then return end
+
 	time = gDisasters.DayNightSystem.Time
 	night = time < 4 or time > 20.5
 	
