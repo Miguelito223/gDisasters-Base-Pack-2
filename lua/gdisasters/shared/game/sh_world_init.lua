@@ -289,11 +289,6 @@ gDisasters.DayNightSystem.Think = function()
 			if ( IsValid( gDisasters.DayNightSystem.RelayDusk ) ) then
 				gDisasters.DayNightSystem.RelayDusk:Fire( "Trigger", "" );
 			end
-
-			-- disabled because the clouds at night look pretty awful..
-			--gDisasters.DayNightSystem.Cloudy = math.random() > 0.5;
-
-			-- at dawn select if we should display clouds for night or not (50% chance)
 			if ( IsValid( gDisasters.DayNightSystem.EnvSkyPaint ) ) then
 				gDisasters.DayNightSystem.EnvSkyPaint:SetStarTexture( "skybox/starfield" );	
 			end
@@ -305,8 +300,6 @@ gDisasters.DayNightSystem.Think = function()
 			if ( IsValid( gDisasters.DayNightSystem.RelayDawn ) ) then
 				gDisasters.DayNightSystem.RelayDawn:Fire( "Trigger", "" );
 			end
-
-			-- at dawn select if we should display clouds for day or not (50% chance)
 			if ( IsValid( gDisasters.DayNightSystem.EnvSkyPaint ) ) then
 				gDisasters.DayNightSystem.InternalVars.SkyPaint.Day.StarFade = 0;
 			end
@@ -486,7 +479,7 @@ gDisasters.DayNightSystem.RenderMoon = function()
 
 		end
 
-		local angle = Angle( 180 * mul, 0, 0 );
+		local angle = Angle( 180 * mul, 15, 0 );
 		SetGlobalAngle("gdMoonDir", angle:Forward() )
 
         local moonPos = gDisasters_GetMoonDir() * ( LastFarZ * 0.900 );
