@@ -948,7 +948,7 @@ hook.Add("Think", "gDisastersmapbounds", function()
 		end
 
 		function getMapBounds()
-			if IsMapRegistered()==false then print("This map no have Bounds") return nil end
+			if IsMapRegistered()==false then print("S37K no have Bounds") return nil end
 
 			local floorpos = Vector(0, 0, -S37K.skyZ)
 
@@ -962,13 +962,13 @@ hook.Add("Think", "gDisastersmapbounds", function()
 		end
 
 		function getMapCeiling()
-			if IsMapRegistered()==false then print("This map no have Ceiling") return nil end 
+			if IsMapRegistered()==false then print("S37K no have Ceiling") return nil end 
 
 			return getMapBounds()[2].z
 		end
 
 		function getMapSkyBox()
-			if IsMapRegistered()==false then print("This map no have SkyBox") return nil end 
+			if IsMapRegistered()==false then print("S37K no have SkyBox") return nil end 
 			local bounds = getMapBounds()
 			local min    = bounds[1]
 			local max    = bounds[2]
@@ -978,14 +978,14 @@ hook.Add("Think", "gDisastersmapbounds", function()
 
 
 		function getMapCenterPos()
-			if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
+			if IsMapRegistered()==false then print("S37K no have CenterPos") return nil end 
 
 			local av         = ((getMapBounds()[1] + getMapBounds()[2])  / 2)
 			return av
 		end
 
 		function getMapCenterFloorPos()
-			if IsMapRegistered()==false then print("This map no have FloorPos") return nil end 
+			if IsMapRegistered()==false then print("S37K no have FloorPos") return nil end 
 
 			return getMapBounds()[3]
 		end
