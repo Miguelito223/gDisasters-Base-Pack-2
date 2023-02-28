@@ -937,7 +937,7 @@ hook.Add("Think", "gDisastersmapbounds", function()
 	if GetConVar("gdisasters_mapbounds_S37K"):GetInt() >= 1 then
 		
 		if (CLIENT) then return end
-		if !S37K_mapbounds then return end
+		if !S37K_mapbounds then print("you dont have S37K mapbounds installed") return end
 
 		local S37K = S37K_mapbounds[1]
 
