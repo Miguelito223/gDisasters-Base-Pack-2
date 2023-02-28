@@ -180,26 +180,28 @@ end
 hook.Add("Initialize", "gDisastersinitialize", gDisasters.DayNightSystem.Initialize)
 
 gDisasters.DayNightSystem.LightStyle = function(style, force)
-	if ( tostring( gDisasters.DayNightSystem.LastStyle ) == tostring( style ) and (force == nil or force == false) ) then return end
+	if (SERVER) then 
+		if ( tostring( gDisasters.DayNightSystem.LastStyle ) == tostring( style ) and (force == nil or force == false) ) then return end
 
-	if ( IsValid( gDisasters.DayNightSystem.LightEnvironment ) ) then
+		if ( IsValid( gDisasters.DayNightSystem.LightEnvironment ) ) then
 
-		gDisasters.DayNightSystem.LightEnvironment:Fire( "FadeToPattern", tostring( style ) )
+			gDisasters.DayNightSystem.LightEnvironment:Fire( "FadeToPattern", tostring( style ) )
 
-	else
-		if (SERVER) then 
+		else
+
 			engine.LightStyle( 0, style )
 		
 			timer.Simple( 0.1, function()
-
+			
 				net.Start( "gd_maplight_cl" )
 				net.Broadcast()
-
+			
 			end )
+			
 		end
-	end
 
-	gDisasters.DayNightSystem.LastStyle = style;
+		gDisasters.DayNightSystem.LastStyle = style;
+	end
 end
 
 gDisasters.DayNightSystem.initEntities_Function = function()
