@@ -238,9 +238,9 @@ gDisasters.DayNightSystem.initEntities_Function = function()
 		end
 
 		if  IsValid( gDisasters.DayNightSystem.EnvSkyPaint )  then
-			if (SERVER) then
-				gDisasters.DayNightSystem.EnvSkyPaint:SetStarTexture( "skybox/starfield" )
-			end
+			
+			gDisasters.DayNightSystem.EnvSkyPaint:SetStarTexture( "skybox/starfield" )
+	
 		else
 			Entity_Create("env_skypaint")
 		end
@@ -390,6 +390,8 @@ gDisasters.DayNightSystem.Think = function()
 		end
 
 		if (CLIENT) then
+			gDisasters.DayNightSystem.Fog = gd_Fog
+
 			gDisasters.DayNightSystem.Fog:SetFogStart(Lerp(frac, curfog.FogStart, nextfog.FogStart))
 			gDisasters.DayNightSystem.Fog:SetFogEnd(Lerp(frac, curfog.FogEnd, nextfog.FogEnd))
 			gDisasters.DayNightSystem.Fog:SetFogDensity(Lerp(frac, curfog.FogDensity, nextfog.FogDensity))
