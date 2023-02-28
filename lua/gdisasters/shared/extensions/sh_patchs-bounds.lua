@@ -942,7 +942,7 @@ hook.Add("Think", "gDisastersmapbounds", function()
 		local S37K = S37K_mapbounds[1]
 
 		function IsMapRegistered()
-			if S37K==nil then 
+			if S37K==nil or !S37K_mapbounds or S37K_mapbounds==nil then
 				return false 
 			else 
 				return true 
@@ -995,7 +995,6 @@ hook.Add("Think", "gDisastersmapbounds", function()
 
 
 	else
-
 
 		function IsMapRegistered()
 			local map = game.GetMap()
