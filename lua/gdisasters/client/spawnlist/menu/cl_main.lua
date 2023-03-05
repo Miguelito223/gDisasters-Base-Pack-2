@@ -89,7 +89,7 @@ hook.Add( "PopulategDisasters_Weapons", "AddWeaponsContent", function( pnlConten
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		pnlContent:SwitchPanel(self.PropPanel)
+		--pnlContent:SwitchPanel(self.PropPanel)
 	end
 
 	local WeaponsCategories = {}
@@ -152,7 +152,7 @@ hook.Add( "PopulategDisasters_Equipment", "AddEquipmentContent", function( pnlCo
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		pnlContent:SwitchPanel(self.PropPanel)
+		--pnlContent:SwitchPanel(self.PropPanel)
 	end
 
 	local WeaponsCategories = {}
@@ -213,7 +213,7 @@ hook.Add( "PopulategDisasters_Disasters", "AddDisastersContent", function( pnlCo
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		pnlContent:SwitchPanel(self.PropPanel)
+		--pnlContent:SwitchPanel(self.PropPanel)
 	end
 
 	local WeaponsCategories = {}
@@ -276,7 +276,7 @@ hook.Add( "PopulategDisasters_Buildings", "AddBuildingsContent", function( pnlCo
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		pnlContent:SwitchPanel(self.PropPanel)
+		--pnlContent:SwitchPanel(self.PropPanel)
 	end
 
 	local WeaponsCategories = {}
@@ -338,7 +338,7 @@ hook.Add( "PopulategDisasters_Weather", "AddWeatherContent", function( pnlConten
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		pnlContent:SwitchPanel(self.PropPanel)
+		--pnlContent:SwitchPanel(self.PropPanel)
 	end
 
 	local WeaponsCategories = {}
@@ -400,7 +400,7 @@ hook.Add( "PopulategDisasters_Misc", "AddMiscContent", function( pnlContent, tre
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		pnlContent:SwitchPanel(self.PropPanel)
+		--pnlContent:SwitchPanel(self.PropPanel)
 	end
 
 	local WeaponsCategories = {}
