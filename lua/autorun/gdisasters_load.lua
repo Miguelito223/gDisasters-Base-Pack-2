@@ -1,7 +1,6 @@
 AddCSLuaFile("autorun/gdisasters_load.lua")
 AddCSLuaFile("autorun/precached_particles.lua")
 
-
 AddCSLuaFile("gdisasters/shared/extensions/sh_patchs-bounds.lua")
 AddCSLuaFile("gdisasters/shared/game/convars/sh_main.lua")
 AddCSLuaFile("gdisasters/shared/game/sh_world_init.lua")
@@ -13,9 +12,6 @@ include("gdisasters/shared/extensions/sh_patchs-bounds.lua")
 include("gdisasters/shared/game/sh_world_init.lua")
 include("gdisasters/shared/game/convars/sh_main.lua")
 include("gdisasters/shared/game/sh_decals.lua")
-
-
-
 
 if (SERVER) then
 
