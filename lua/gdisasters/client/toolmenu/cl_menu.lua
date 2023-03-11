@@ -211,7 +211,7 @@ local function gDisastersServerGraphics( CPanel )
 	lb4:SetTextColor(Color( 0, 0, 0))
 	lb4:SetSize(500, 500)
 	
-	--CreateSliderConVariable(CPanel,"Antilag Mode (s)", 0, 2, 0,"gdisasters_antilag_mode" );
+	CreateSliderConVariable(CPanel,"Antilag Mode (No Work)", 0, 2, 0,"gdisasters_antilag_mode" );
 	CreateTickboxConVariable(CPanel,"Enable Antilag", "gdisasters_antilag_enabled" );
 	
 end
