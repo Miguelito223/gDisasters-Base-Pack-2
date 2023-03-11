@@ -62,7 +62,7 @@ CreateConVar( "gdisasters_autospawn_type", "Tornado", {FCVAR_ARCHIVE}, "" )
 
 --S37K map bounds
 
-CreateConVar( "gdisasters_mapbounds_S37K", "1", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gdisasters_mapbounds_S37K", "0", {FCVAR_ARCHIVE}, "" )
 
 --graphics
 
