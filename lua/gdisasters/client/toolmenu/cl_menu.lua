@@ -117,7 +117,7 @@ local function gDisastersSVADVSettings( CPanel )
 	lb2:SetTextColor(Color( 0, 0, 0))
 	lb2:SetSize(500, 500)
 	
-	local lb3 = AddControlLabel( CPanel, "Simulation Option: Change the quality of simulation.")
+	local lb3 = AddControlLabel( CPanel, "Simulation Option (Change the quality of simulation): ")
 	lb3:SetTextColor(Color( 0, 0, 0))
 	lb3:SetSize(500, 500)
 	
@@ -146,19 +146,19 @@ local function gDisastersSVADVSettings( CPanel )
 	lb41:SetTextColor(Color( 0, 0, 0))
 	lb41:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "Enable volcano/moon/asteroid climate change" ,"gdisasters_volcano_weatherchange");
+	CreateTickboxConVariable(CPanel, "Enable volcano/moon/asteroid climate change (Can cause lag)" ,"gdisasters_volcano_weatherchange");
 
 	local lb41 = AddControlLabel( CPanel, "Weather Options: " )
 	lb41:SetTextColor(Color( 0, 0, 0))
 	lb41:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "Enable Acid Rain damage props" ,"gdisasters_weather_acidraindamageprops");
+	CreateTickboxConVariable(CPanel, "Enable Acid Rain damage props (Can cause lag)" ,"gdisasters_weather_acidraindamageprops");
 
 	local lb4 = AddControlLabel( CPanel, "Map Bounds options: " )
 	lb4:SetTextColor(Color( 0, 0, 0))
 	lb4:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "Enable S37K Map Bounds (Only work in server so it may have errors if you are a client)", "gdisasters_mapbounds_S37K");
+	CreateTickboxConVariable(CPanel, "Enable S37K Map Bounds (Works only on ServerSide)", "gdisasters_mapbounds_S37K");
 
 	local lb5 = AddControlLabel( CPanel, "Water/Lava and Flood/Tsunami Options: " )
 	lb5:SetTextColor(Color( 0, 0, 0))
