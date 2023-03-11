@@ -148,6 +148,9 @@ local function gDisastersSVADVSettings( CPanel )
 
 	CreateTickboxConVariable(CPanel, "Enable volcano/moon/asteroid climate change (Can cause lag)" ,"gdisasters_volcano_weatherchange");
 
+	CreateSliderConVariable(CPanel, "Volcano Presure increase", 0, 10, 2, "gdisasters_volcano_pressure_increase" );
+	CreateSliderConVariable(CPanel, "Volcano Presure decrease", 0, 10, 2, "gdisasters_volcano_pressure_decrease" );
+
 	local lb41 = AddControlLabel( CPanel, "Weather Options: " )
 	lb41:SetTextColor(Color( 0, 0, 0))
 	lb41:SetSize(500, 500)

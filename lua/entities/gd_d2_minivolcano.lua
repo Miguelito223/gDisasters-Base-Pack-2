@@ -79,10 +79,10 @@ end
 function ENT:PressureIncrement()
 	
 	if self.IsGoingToErupt==false and self.IsPressureLeaking == false then
-		self.Pressure = math.Clamp(self.Pressure + 0.1,0,100)
+		self.Pressure = math.Clamp(self.Pressure + GetConVar("gdisasters_volcano_pressure_increase"):GetFloat() ,0,100)
 		
 	elseif self.IsGoingToErupt == false and self.IsPressureLeaking == true then
-		self.Pressure = math.Clamp(self.Pressure - 0.15,0,100)
+		self.Pressure = math.Clamp(self.Pressure - GetConVar("gdisasters_volcano_pressure_decrease"):GetFloat() ,0,100)
 		if self.Pressure == 0 then self.IsPressureLeaking = false end
 	
 	end

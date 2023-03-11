@@ -29,10 +29,36 @@ function ENT:Initialize()
 			
 		end
 
-		self:Timer()
+		self.Pressure = 0
 
 		self.IsGoingTolandslide = false
+		self.IsPressureLeaking = false
     end
+end
+
+function ENT:PressureIncrement()
+	if self.IsGoingTolandslide==false and self.IsPressureLeaking == false then
+		self.Pressure = math.Clamp(self.Pressure + GetConVar("gdisasters_volcano_pressure_increase"):GetFloat() ,0,100)	
+	elseif self.IsGoingTolandslide == false and self.IsPressureLeaking == true then
+		self.Pressure = math.Clamp(self.Pressure - GetConVar("gdisasters_volcano_pressure_decrease"):GetFloat() ,0,100)
+		if self.Pressure == 0 then self.IsPressureLeaking = false end
+	end
+end
+
+function ENT:CheckPressure()
+	if self.Pressure >= 100 then
+		if self.IsGoingTolandslide == false then
+			self.IsGoingTolandslide = true
+			timer.Simple(math.random(10,20), function()
+				if self:IsValid() then
+					self:LandslideAction()
+					self.Pressure = 99
+					self.IsGoingTolandslide = false
+					self.IsPressureLeaking = true
+				end
+			end)
+		end
+	end
 end
 
 function ENT:CreateLandsliderocks(num, lifetime)
@@ -59,17 +85,7 @@ function ENT:LandslideAction()
 	self:CreateLandsliderocks(20, {8, 10})
 end
 
-function ENT:Timer()
-	timer.Create("LandSlideAction", math.random(100, 500), 0, function()
-		if self.IsGoingTolandslide == false then
-			self.IsGoingTolandslide = true
-			self:LandslideAction()
-			timer.Simple(1, function()
-				self.IsGoingTolandslide = false
-			end)
-		end
-	end)
-end
+
 
 function ENT:SpawnFunction( ply, tr )
 	if ( !tr.Hit ) then return end
@@ -91,6 +107,8 @@ function ENT:Think()
         self:SetPos(self:GetPos())
 		self:GetPhysicsObject():EnableMotion(false)
 		self:SetAngles(self:GetAngles())
+		self:PressureIncrement()
+		self:CheckPressure()
 
         self:NextThink(CurTime() + t)
         return true	
