@@ -50,6 +50,27 @@ function gDisasters_ProcessTemperature()
 		
 			
 		end
+		for k, v in pairs(ents.FindByClass("npc_*")) do
+			local closest_vfire, distance  = FindNearestEntity(v, "vfire") -- find closest fire entity
+			local closest_fire, distance_2 = FindNearestEntity(v, "entityflame")
+			local closest_ice,  distance_3  = FindNearestEntity(v, "gd_equip_supercooledice") -- find closest ice entity
+			
+			if closest_vfire != nil then
+				if distance <= 150 then
+					InflictDamage(v, v, "heat", 0.01)
+				end
+			elseif closest_fire != nil then
+				if distance_2 <= 150 then
+					InflictDamage(v, v, "heat", 0.01)
+				end
+			end
+			
+			if closest_ice != nil then
+				if distance_3 <= 150 then
+					InflictDamage(v, v, "cold", 0.01)
+				end
+			end
+		end
 	end
 	
 	
@@ -169,7 +190,6 @@ function gDisasters_ProcessTemperature()
 			local outdoor           = isOutdoor(v, true)
 			local wl = isinWater(v)
 			local lv = isinLava(v)
-			
 			
 			if temp <= -100 then
 				if outdoor then
