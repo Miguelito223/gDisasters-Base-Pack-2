@@ -50,27 +50,6 @@ function gDisasters_ProcessTemperature()
 		
 			
 		end
-		for k, v in pairs(ents.FindByClass("npc_*")) do
-			local closest_vfire, distance  = FindNearestEntity(v, "vfire") -- find closest fire entity
-			local closest_fire, distance_2 = FindNearestEntity(v, "entityflame")
-			local closest_ice,  distance_3  = FindNearestEntity(v, "gd_equip_supercooledice") -- find closest ice entity
-			
-			if closest_vfire != nil then
-				if distance <= 150 then
-					InflictDamage(v, v, "heat", 0.01)
-				end
-			elseif closest_fire != nil then
-				if distance_2 <= 150 then
-					InflictDamage(v, v, "heat", 0.01)
-				end
-			end
-			
-			if closest_ice != nil then
-				if distance_3 <= 150 then
-					InflictDamage(v, v, "cold", 0.01)
-				end
-			end
-		end
 	end
 	
 	
@@ -79,12 +58,6 @@ function gDisasters_ProcessTemperature()
 		if GetConVar("gdisasters_hud_temp_damage"):GetInt() == 0 then return end
 		
 		for k, v in pairs(plytbl) do
-		
-			--[[
-														Purpose		
-				This part basically calculates how much damage should be dealt to players 
-				
-			--]]
 		
 			local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
 			local humidity = GLOBAL_SYSTEM["Atmosphere"]["Humidity"]
@@ -191,6 +164,29 @@ function gDisasters_ProcessTemperature()
 			local wl = isinWater(v)
 			local lv = isinLava(v)
 			
+			local closest_vfire, distance  = FindNearestEntity(v, "vfire") -- find closest fire entity
+			local closest_fire, distance_2 = FindNearestEntity(v, "entityflame")
+			local closest_ice,  distance_3  = FindNearestEntity(v, "gd_equip_supercooledice") -- find closest ice entity
+			
+			if closest_vfire != nil then
+				if distance <= 100 and distance >= 30 then
+					InflictDamage(v, v, "heat", 0.01)
+				elseif distance <= 30 then
+					InflictDamage(v, v, "fire", 0.1)
+				end
+			elseif closest_fire != nil then
+				if distance_2 <= 100 and distance_2 >= 30 then
+					InflictDamage(v, v, "heat", 0.01)
+				elseif distance_2 <= 30 then
+					InflictDamage(v, v, "fire", 0.1)
+				end
+			end
+			if closest_ice != nil then
+				if distance_3 <= 50 then
+					InflictDamage(v, v, "cold", 0.01)
+				end
+			end
+
 			if temp <= -100 then
 				if outdoor then
 					if math.random(1,25) == 25 then
