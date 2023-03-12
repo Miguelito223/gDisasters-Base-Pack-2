@@ -1045,7 +1045,6 @@ end
 
 if (CLIENT) then
 	hook.Add("PostDrawTranslucentRenderables", "DrawTsunamiLava", function()
-		if GetConVar("gdisasters_mapbounds_S37K"):GetInt() >= 1 then return end
 
 		if IsMapRegistered() == true then
 
@@ -1054,7 +1053,7 @@ if (CLIENT) then
 
 
 		end
-
+		
 	end)
 	
 

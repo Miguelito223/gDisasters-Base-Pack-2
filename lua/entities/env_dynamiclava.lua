@@ -371,12 +371,11 @@ end
 
 if (CLIENT) then
 	hook.Add("PreDrawTranslucentRenderables", "DRAWlava", function()
-		if GetConVar("gdisasters_mapbounds_S37K"):GetInt() >= 1 then return end
-	
+
 		if IsMapRegistered() == true and !S37K_mapbounds then
-
+		
 			env_dynamiclava_Drawlava()
-
+		
 		end
 
 	end)

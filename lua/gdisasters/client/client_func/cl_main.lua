@@ -329,7 +329,7 @@ function StopSoundWave(soundpath) -- SPEED MUST BE IN MS^-1
 end
 
 function AddCeilingWaterDrops(effect_nm, ieffect_nm, delay, offset_range, angle)
-	if (SERVER) then return end 
+
 	if GetConVar("gdisasters_graphics_draw_ceiling_effects"):GetInt() <= 0 then return end 
 	
 	local offset = Vector(math.random(-1 * offset_range,1  * offset_range),math.random(-1 * offset_range,1  * offset_range),0, 0)
