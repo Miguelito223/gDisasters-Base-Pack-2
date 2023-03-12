@@ -16,7 +16,7 @@ ENT.Mass                             =  100
 function ENT:Initialize()		
 		
 	if (CLIENT) then
-		
+
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 		LocalPlayer().Sounds["Rainstorm_IDLE"]         = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop.wav")
 		LocalPlayer().Sounds["Rainstorm_muffled_IDLE"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop_muffled.wav")
@@ -122,8 +122,6 @@ end
 
 function ENT:Think()
 	if (CLIENT) then
-	
-		
 		local muffled_volume = math.Clamp(1 - ( LocalPlayer().gDisasters.Fog.Data.DensityCurrent/0.8), 0, 1) - 0.25
 		local idle_volume = math.Clamp(( LocalPlayer().gDisasters.Fog.Data.DensityCurrent/0.8)-0.25, 0, 1)
 		

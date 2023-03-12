@@ -23,6 +23,9 @@ PrecacheParticleSystem("mini_firenado")
 PrecacheParticleSystem("small_mini_firenado_hd_main")
 PrecacheParticleSystem("localized_firestorm_effect")--
 
+PrecacheParticleSystem("rain_ceiling_drops_effect")
+PrecacheParticleSystem("rain_ceiling_drop_ground_splash")
+
 PrecacheParticleSystem("downburst_light_rain_main")
 PrecacheParticleSystem("downburst_medium_rain_main")
 PrecacheParticleSystem("downburst_heavy_rain_main")
