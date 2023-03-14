@@ -17,7 +17,7 @@ function ENT:Initialize()
 		
 	if (CLIENT) then
 		timer.Create("CeilingWaterDrops", 10, 0, function()
-			AddCeilingWaterDrops("rain_ceiling_drops_effect", "rain_ceiling_drop_ground_splash", 1, 1, Angle(0,0,0))
+			AddCeilingWaterDrops("rain_ceiling_drops_effect", "rain_ceiling_drop_ground_splash", 2, 1, Angle(0,0,0))
 		end)
 		
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
