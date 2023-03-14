@@ -295,6 +295,7 @@ local function gDisastersGraphicsSettings( CPanel )
 
 	CreateTickboxConVariable(CPanel, "Enable Experimental Overdraw"  , "gdisasters_graphics_experimental_overdraw");
 	CreateTickboxConVariable(CPanel, "Enable Shake Screen"  , "gdisasters_graphics_shakescreen_enable");
+	CreateTickboxConVariable(CPanel, "Enable Draw ceiling drop effects"  , "gdisasters_graphics_draw_ceiling_effects");
 	
 	CreateTickboxConVariable(CPanel, "Enable GP"  , "gdisasters_graphics_enable_ground_particles");
 	CreateTickboxConVariable(CPanel, "Enable WP"  , "gdisasters_graphics_enable_weather_particles");
