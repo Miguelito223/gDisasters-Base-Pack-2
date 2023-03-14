@@ -16,7 +16,9 @@ ENT.Mass                             =  100
 function ENT:Initialize()		
 		
 	if (CLIENT) then
-		AddCeilingWaterDrops("rain_ceiling_drops_effect", "rain_ceiling_drop_ground_splash", 1, 1, Angle(0,0,0))
+		timer.Create("CeilingWaterDrops", 10, 0, function()
+			AddCeilingWaterDrops("rain_ceiling_drops_effect", "rain_ceiling_drop_ground_splash", 1, 1, Angle(0,0,0))
+		end)
 		
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 		LocalPlayer().Sounds["Rainstorm_IDLE"]         = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop.wav")
@@ -210,7 +212,9 @@ function ENT:OnRemove()
 	end
 	
 	if (CLIENT) then
-	
+		
+		timer.Stop("CeilingWaterDrops")
+		timer.Remove("CeilingWaterDrops")
 
 		if LocalPlayer().Sounds["Rainstorm_IDLE"]!=nil then 
 			LocalPlayer().Sounds["Rainstorm_IDLE"]:Stop()

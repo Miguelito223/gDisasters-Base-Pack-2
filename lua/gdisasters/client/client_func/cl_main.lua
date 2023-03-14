@@ -331,38 +331,33 @@ end
 function AddCeilingWaterDrops(effect_nm, ieffect_nm, delay, offset_range, angle)
 
 	if GetConVar("gdisasters_graphics_draw_ceiling_effects"):GetInt() <= 0 then return end 
+
+	local offset = Vector(math.random(-1 * offset_range,1  * offset_range),math.random(-1 * offset_range,1  * offset_range), 0)
+	local fallback_angle = Angle(0,0,0)	
+
+	local fromGroundToCeiling_TR = util.TraceLine( {
+		start  = LocalPlayer():GetPos() + offset,
+		endpos = LocalPlayer():GetPos() + offset + Vector(0,0,8000) ,
+		filter = LocalPlayer()
+	} )
 	
-	timer.Create("CeilingWater", delay, 0, function()
+	local fromCeilingToGround_TR = util.TraceLine( {
+		start  = fromGroundToCeiling_TR.HitPos,
+		endpos = fromGroundToCeiling_TR.HitPos - Vector(0,0,8000),
+		filter = LocalPlayer()
+	} )
 
-		local offset = Vector(math.random(-1 * offset_range,1  * offset_range), math.random(-1 * offset_range,1  * offset_range), 0)
-		local fallback_angle = Angle(0,0,0)	
+	local d = fromGroundToCeiling_TR.HitPos:Distance(fromCeilingToGround_TR.HitPos)
+	local t = d / 500 
 
-		local fromGroundToCeiling_TR = util.TraceLine( {
-			start  = LocalPlayer():GetPos() + offset,
-			endpos = LocalPlayer():GetPos() + offset + Vector(0,0,8000) ,
-			filter = LocalPlayer()
-		} )
-
-		local fromCeilingToGround_TR = util.TraceLine( {
-			start  = fromGroundToCeiling_TR.hitpos,
-			endpos = fromGroundToCeiling_TR.hitpos - Vector(0,0,8000),
-			filter = LocalPlayer()
-		} )
-
-		local d = fromGroundToCeiling_TR.HitPos:Distance(fromCeilingToGround_TR.HitPos)
-		local t = d / 500 
-
-		if not(fromGroundToCeiling_TR.Hit or fromCeilingToGround_TR.Hit) then return end 
+	if not(fromGroundToCeiling_TR.Hit or fromCeilingToGround_TR.Hit) then return end 
 
 
-		ParticleEffect(effect_nm or "nil", fromGroundToCeiling_TR.HitPos, angle or fallback_angle ,nil)
+	ParticleEffect(effect_nm or "nil", fromGroundToCeiling_TR.HitPos, angle or fallback_angle ,nil)
 
-		timer.Simple(delay + t, function()
+	timer.Simple(delay + t, function()
 
-			ParticleEffect(ieffect_nm or "nil", fromCeilingToGround_TR.HitPos, angle or fallback_angle ,nil)
-
-		end)
-
+		ParticleEffect(ieffect_nm or "nil", fromCeilingToGround_TR.HitPos, angle or fallback_angle ,nil)
 
 	end)
 
