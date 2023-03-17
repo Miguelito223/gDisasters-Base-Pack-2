@@ -956,7 +956,7 @@ hook.Add("Think", "gDisastersmapbounds", function()
 				mask = MASK_SOLID_BRUSHONLY
 			})
 
-			return {Vector(S37K.negativeX, S37K.negativeY, -S37K.skyZ), Vector(S37K.positiveX, S37K.positiveY, S37K.skyZ), tr.HitPos}
+			return {Vector(S37K.positiveX, S37K.positiveY, -S37K.skyZ), Vector(S37K.negativeX, S37K.negativeY, S37K.skyZ), tr.HitPos}
 		end
 
 		function getMapCeiling()
