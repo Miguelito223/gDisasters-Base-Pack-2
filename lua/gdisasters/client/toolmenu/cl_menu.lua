@@ -342,6 +342,9 @@ local function gDisastersAudioSettings( CPanel )
 	CreateSliderConVariable(CPanel, "hud Warning Volume", 0,1,1, "gdisasters_volume_hud_warning" );
 end
 
+hook.Add( "AddToolMenuTabs", "gDisasters_Tab", function()
+	spawnmenu.AddToolTab( "gDisasters Revived", "#gDisasters Revived", "icons/gdlogo.png" )
+end)
 
 hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 
