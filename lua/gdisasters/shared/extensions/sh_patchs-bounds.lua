@@ -937,11 +937,11 @@ hook.Add("Think", "gDisastersmapbounds", function()
 	if GetConVar("gdisasters_mapbounds_S37K"):GetInt() >= 1 then
 
 		function IsMapRegistered()
-			if !S37K_mapbounds or S37K_mapbounds==nil then
-				return false 
+			if S37K_mapbounds==nil or table.IsEmpty(S37K_mapbounds) then
+				return false
 			else 
 				S37K = S37K_mapbounds[1]
-				return true 
+				return true
 			end 
 		end
 
