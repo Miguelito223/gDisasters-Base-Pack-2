@@ -1,5 +1,7 @@
 SetGlobalFloat("gd_seismic_activity", 0)
 
+--Global_System table
+
 GLOBAL_SYSTEM = {
 				["Atmosphere"] 	= {
 						["Wind"]        = {
@@ -53,6 +55,7 @@ GLOBAL_SYSTEM_ORIGINAL = {
 				}
 				}
 
+--DNC System
 
 gDisasters.DayNightSystem.InternalVars.time = {}
 
@@ -514,6 +517,7 @@ gDisasters.DayNightSystem.RenderMoon = function()
 	end
 end
 
+--concommands
 
 concommand.Add("gdisasters_smite", function()
 
