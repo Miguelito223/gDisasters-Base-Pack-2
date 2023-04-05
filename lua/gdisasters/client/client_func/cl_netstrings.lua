@@ -75,8 +75,6 @@ end)
 
 net.Receive("gd_RemoveCeilingWaterDrops", function()
 
-	local name = net.ReadString()
-
 	timer.Stop("CeilingWaterDrops")
 	timer.Remove("CeilingWaterDrops")
 
