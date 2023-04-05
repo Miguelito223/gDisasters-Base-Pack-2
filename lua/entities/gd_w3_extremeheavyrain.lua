@@ -62,8 +62,8 @@ function ENT:Initialize()
 		
 
 		setMapLight("d")	
-		
-		for _ , ply in pairs(player.GetAll())
+
+		for _ , ply in pairs(player.GetAll()) do
 			net.Start("gd_CreateCeilingWaterDrops")
 			net.Send(ply)
 		end
@@ -221,7 +221,7 @@ function ENT:OnRemove()
 			end)
 		end
 		setMapLight("t")
-		for _ , ply in pairs(player.GetAll())
+		for _ , ply in pairs(player.GetAll()) do
 			net.Start("gd_RemoveCeilingWaterDrops")	
 			net.Send(ply)
 		end

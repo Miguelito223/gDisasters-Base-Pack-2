@@ -104,35 +104,35 @@ function ENT:AffectPlayers()
 			net.Start("gd_clParticles_ground")
 			net.WriteString("rain_splash_effect", Angle(0,math.random(1,40),0))
 			net.Send(v)
-
+		end
 			
-			if math.random(1,2) == 2 then
+		if math.random(1,2) == 2 then
 			net.Start("gd_clParticles")
 			net.WriteString("localized_light_rain_effect", Angle(0,math.random(1,40),0))
 			net.Send(v)
 			net.Start("gd_clParticles_ground")
 			net.WriteString("rain_splash_effect", Angle(0,math.random(1,40),0))
 			net.Send(v)
-			end
+		end
 			
-			if math.random(1,2) == 2 then
+		if math.random(1,2) == 2 then
 			net.Start("gd_clParticles")
 			net.WriteString("localized_light_rain_effect", Angle(0,math.random(1,40),0))
 			net.Send(v)
 			net.Start("gd_clParticles_ground")
 			net.WriteString("rain_splash_effect", Angle(0,math.random(1,40),0))
 			net.Send(v)
-			end
+		end
 
-			if math.random(1,20) == 20 then
-				net.Start("gd_screen_particles")
-				net.WriteString("hud/warp_ripple3")
-				net.WriteFloat(math.random(5,228))
-				net.WriteFloat(math.random(0,100)/100)
-				net.WriteFloat(math.random(0,1))
-				net.WriteVector(Vector(0,math.random(0,200)/100,0))
-				net.Send(v)	
-			end
+		if math.random(1,20) == 20 then
+			net.Start("gd_screen_particles")
+			net.WriteString("hud/warp_ripple3")
+			net.WriteFloat(math.random(5,228))
+			net.WriteFloat(math.random(0,100)/100)
+			net.WriteFloat(math.random(0,1))
+			net.WriteVector(Vector(0,math.random(0,200)/100,0))
+			net.Send(v)	
+		end
 			
 		end
 	end
