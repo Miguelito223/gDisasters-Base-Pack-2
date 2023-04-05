@@ -3,8 +3,6 @@ util.AddNetworkString( "gd_clmenu_vars" )
 util.AddNetworkString( "gd_isOutdoor" )
 util.AddNetworkString( "gd_clParticles" )
 util.AddNetworkString( "gd_clParticles_ground" )
-util.AddNetworkString( "gd_CreateCeilingWaterDrops" )		
-util.AddNetworkString( "gd_RemoveCeilingWaterDrops" )	
 util.AddNetworkString( "gd_screen_particles" )	
 util.AddNetworkString( "gd_maplight_cl")
 util.AddNetworkString( "gd_seteyeangles_cl")
@@ -18,6 +16,9 @@ util.AddNetworkString( "gd_sendsound"	)
 util.AddNetworkString( "gd_ambientlight"	)
 util.AddNetworkString( "gd_shakescreen"	)
 util.AddNetworkString( "gd_soundwave" )
+
+util.AddNetworkString( "gd_CreateCeilingWaterDrops" )		
+util.AddNetworkString( "gd_RemoveCeilingWaterDrops" )	
 
 util.AddNetworkString( "gd_entity_exists_on_server" )
 

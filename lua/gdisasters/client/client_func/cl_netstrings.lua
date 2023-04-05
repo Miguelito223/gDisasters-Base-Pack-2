@@ -66,13 +66,9 @@ net.Receive("gd_clParticles_ground", function()
 end)
 
 net.Receive("gd_CreateCeilingWaterDrops", function()
-	local name = net.ReadString()
-	local time = net.ReadFloat()
-	local delay = net.ReadInt()
-	local offset_range = net.ReadInt()
 
-	timer.Create(name, time, 0, function()
-		AddCeilingWaterDrops("rain_ceiling_drops_effect", "rain_ceiling_drop_ground_splash", delay, offset_range, Angle(0,0,0))
+	timer.Create("CeilingWaterDrops", 10, 0, function()
+		AddCeilingWaterDrops("rain_ceiling_drops_effect", "rain_ceiling_drop_ground_splash", 2, 1, Angle(0,0,0))
 	end)
 
 end)
@@ -81,8 +77,8 @@ net.Receive("gd_RemoveCeilingWaterDrops", function()
 
 	local name = net.ReadString()
 
-	timer.Stop(name)
-	timer.Remove(name)
+	timer.Stop("CeilingWaterDrops")
+	timer.Remove("CeilingWaterDrops")
 
 end)
 

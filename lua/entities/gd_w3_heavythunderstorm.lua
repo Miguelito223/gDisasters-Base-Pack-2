@@ -17,10 +17,6 @@ function ENT:Initialize()
 		
 	if (CLIENT) then
 		net.Start("gd_CreateCeilingWaterDrops")
-		net.WriteString("CeilingWaterDrops")
-		net.WriteFloat(10)
-		net.WriteInt(2)
-		net.WriteInt(1)
 
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 		LocalPlayer().Sounds["Rainstorm_IDLE"]         = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop.wav")
@@ -223,7 +219,6 @@ function ENT:OnRemove()
 	if (CLIENT) then
 	
 		net.Start("gd_RemoveCeilingWaterDrops")
-		net.WriteString("CeilingWaterDrops")
 		
 		if LocalPlayer().Sounds["Rainstorm_IDLE"]!=nil then 
 			LocalPlayer().Sounds["Rainstorm_IDLE"]:Stop()
