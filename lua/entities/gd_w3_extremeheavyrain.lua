@@ -221,6 +221,7 @@ function ENT:OnRemove()
 			end)
 		end
 		setMapLight("t")
+		
 		for _ , ply in pairs(player.GetAll()) do
 			net.Start("gd_RemoveCeilingWaterDrops")	
 			net.Send(ply)
