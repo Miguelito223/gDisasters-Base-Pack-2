@@ -16,7 +16,7 @@ ENT.Mass                             =  100
 function ENT:Initialize()		
 		
 	if (CLIENT) then
-		net.Start("gd_CreateCeilingWaterDrops")
+		
 
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 		LocalPlayer().Sounds["Rainstorm_IDLE"]         = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop.wav")
@@ -24,6 +24,8 @@ function ENT:Initialize()
 	end
 	
 	if (SERVER) then
+
+		
 	
 		GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(70,105),["Direction"]=Vector(-1,0,0)}, ["Pressure"]    = 95000, ["Temperature"] = math.random(14,18), ["Humidity"]    = math.random(60,85), ["BRadiation"]  = 0.1}}
 		
@@ -60,6 +62,12 @@ function ENT:Initialize()
 		
 
 		setMapLight("d")	
+		
+		for _ , ply in pairs(player.GetAll())
+			net.Start("gd_CreateCeilingWaterDrops")
+			net.Send(ply)
+		end
+		
 
 		self:SetNoDraw(true)
 	
@@ -202,8 +210,10 @@ end
 function ENT:OnRemove()
 
 	if (SERVER) then		
+
 		local resetdata = self.Reset_SkyData
 		GLOBAL_SYSTEM_TARGET=GLOBAL_SYSTEM_ORIGINAL
+		
 
 		for i=0, 40 do
 			timer.Simple(i/100, function()
@@ -211,12 +221,16 @@ function ENT:OnRemove()
 			end)
 		end
 		setMapLight("t")
+		for _ , ply in pairs(player.GetAll())
+			net.Start("gd_RemoveCeilingWaterDrops")	
+			net.Send(ply)
+		end
 
 		
 	end
 	
 	if (CLIENT) then
-		net.Start("gd_RemoveCeilingWaterDrops")
+		
 
 		if LocalPlayer().Sounds["Rainstorm_IDLE"]!=nil then 
 			LocalPlayer().Sounds["Rainstorm_IDLE"]:Stop()

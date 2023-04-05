@@ -16,7 +16,7 @@ ENT.Mass                             =  100
 function ENT:Initialize()		
 		
 	if (CLIENT) then
-		net.Start("gd_CreateCeilingWaterDrops")
+		
 
 		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 		LocalPlayer().Sounds["Rainstorm_IDLE"]         = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop.wav")
@@ -64,7 +64,12 @@ function ENT:Initialize()
 		end
 		
 		self:Lightning()
-		setMapLight("d")		
+		setMapLight("d")	
+		
+		for _ , ply in pairs(player.GetAll())
+			net.Start("gd_CreateCeilingWaterDrops")
+			net.Send(ply)
+		end
 	
 		self:SetNoDraw(true)
 
@@ -210,15 +215,18 @@ function ENT:OnRemove()
 				paintSky_Fade(resetdata,0.05)
 			end)
 		end
-		setMapLight("t")	
+		setMapLight("t")
+
+		for _ , ply in pairs(player.GetAll())
+			net.Start("gd_RemoveCeilingWaterDrops")	
+			net.Send(ply)
+		end
 		
 		for k, v in pairs(ents.FindByClass("gd_w3_heavythunderstorm_cl")) do v:Remove() end
 	
 	end
 	
 	if (CLIENT) then
-	
-		net.Start("gd_RemoveCeilingWaterDrops")
 		
 		if LocalPlayer().Sounds["Rainstorm_IDLE"]!=nil then 
 			LocalPlayer().Sounds["Rainstorm_IDLE"]:Stop()
