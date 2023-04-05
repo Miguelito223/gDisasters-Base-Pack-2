@@ -67,6 +67,8 @@ end)
 
 net.Receive("gd_CreateCeilingWaterDrops", function()
 
+	if GetConVar("gdisasters_graphics_draw_ceiling_effects"):GetInt() <= 0 then return end 
+
 	timer.Create("CeilingWaterDrops", 10, 0, function()
 		AddCeilingWaterDrops("rain_ceiling_drops_effect", "rain_ceiling_drop_ground_splash", 2, 1, Angle(0,0,0))
 	end)
@@ -74,6 +76,8 @@ net.Receive("gd_CreateCeilingWaterDrops", function()
 end)
 
 net.Receive("gd_RemoveCeilingWaterDrops", function()
+
+	if GetConVar("gdisasters_graphics_draw_ceiling_effects"):GetInt() <= 0 then return end 
 
 	timer.Stop("CeilingWaterDrops")
 	timer.Remove("CeilingWaterDrops")
