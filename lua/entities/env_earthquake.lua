@@ -59,6 +59,8 @@ function ENT:CreateEarthquakeWithParent()
 	earthquakes[8] = "gd_d8_rs8eq"
 	earthquakes[9] = "gd_d9_rs9eq"
 	earthquakes[10] = "gd_d10_rs10eq"
+	earthquakes[11] = "gd_d11_rs11eq"
+	earthquakes[12] = "gd_d12_rs12eq"
 	local decider = math.random(1,math.floor(self.Magnitude * 2)) == 1
 	if decider == false then
 		if  math.floor(self.Magnitude) > 1 then
@@ -98,7 +100,7 @@ function ENT:UpdateGlobalSeismicActivity()
 end
 function ENT:EFire(pointer, arg) 
 	if pointer == "Enable" then self.Enable = arg or false 
-	elseif pointer == "Magnitude" then self.Magnitude = math.Clamp(arg, 0,9) or 0 
+	elseif pointer == "Magnitude" then self.Magnitude = math.Clamp(arg, 0,12) or 0 
 	elseif pointer == "Parent" then self.Parent = arg 
 	end
 end
@@ -148,6 +150,10 @@ function ENT:ProcessMagnitude()
 		self:MagnitudeNine()
 	elseif mag >= 10 and mag < 11 then
 		self:MagnitudeTen()
+	elseif mag >= 11 and mag < 12 then
+		self:MagnitudeEleven()
+	elseif mag >= 12 and mag < 13 then
+		self:MagnitudeTwelve()
 	else
 
 	end
@@ -272,7 +278,7 @@ function ENT:MagnitudeNine()
 	self:DoPhysics()
 end
 function ENT:MagnitudeTen()
-	local percentage = math.Clamp(self.Magnitude/10,0,1)
+	local percentage = math.Clamp(self.Magnitude/10.99,0,1)
 	local bxa, bya   = math.random(-450,450)/100,math.random(-450,450)/100
 	local mxa, mya   = (math.random(-25, 25)/100) * percentage,   (math.random(-25, 25)/100) * percentage
 	local xa, ya     = bxa + mxa, bya +  mya
@@ -281,6 +287,29 @@ function ENT:MagnitudeTen()
 	end
 	self:DoPhysics()
 end
+
+function ENT:MagnitudeEleven()
+	local percentage = math.Clamp(self.Magnitude/11.99,0,1)
+	local bxa, bya   = math.random(-850,850)/100,math.random(-850,850)/100
+	local mxa, mya   = (math.random(-125, 125)/100) * percentage,   (math.random(-125, 125)/100) * percentage
+	local xa, ya     = bxa + mxa, bya +  mya
+	for k, v in pairs(player.GetAll()) do
+		if v:IsOnGround() then self:SendClientsideEffects( v, Angle(xa,ya,0), 38) end
+	end
+	self:DoPhysics()
+end
+
+function ENT:MagnitudeTwelve()
+	local percentage = math.Clamp(self.Magnitude/12,0,1)
+	local bxa, bya   = math.random(-1250,450)/100,math.random(-1250,1250)/100
+	local mxa, mya   = (math.random(-625, 625)/100) * percentage,   (math.random(-625, 625)/100) * percentage
+	local xa, ya     = bxa + mxa, bya +  mya
+	for k, v in pairs(player.GetAll()) do
+		if v:IsOnGround() then self:SendClientsideEffects( v, Angle(xa,ya,0), 38) end
+	end
+	self:DoPhysics()
+end
+
 function ENT:Unfreeze(phys, v, mag)
 	if math.random(1,1024 - math.floor((25.6*self.Magnitude)))==1 then
 		constraint.RemoveAll( v )
@@ -391,7 +420,23 @@ function ENT:DoPhysics()
 						phys:AddVelocity( ang_v * 12 )
 						self:Unfreeze(phys, v, mag)
 					end
-				end				
+				end	
+			elseif mag >= 11 and mag <= 12 then	
+				if mass <= 80000 then 
+					if math.random(1, 2) == 1 then
+						phys:AddAngleVelocity( ang_v * 36 )
+						phys:AddVelocity( ang_v * 24 )
+						self:Unfreeze(phys, v, mag)
+					end
+				end	
+			elseif mag >= 12 and mag <= 13 then			
+				if mass <= 100000 then 
+					if math.random(1, 2) == 1 then
+						phys:AddAngleVelocity( ang_v * 40 )
+						phys:AddVelocity( ang_v * 30 )
+						self:Unfreeze(phys, v, mag)
+					end
+				end	
 			end
 		end
 	end

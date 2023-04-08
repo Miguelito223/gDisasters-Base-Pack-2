@@ -65,18 +65,53 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 	-- available parent categories 
 	-- Disasters, Weather, Weapons, Buildings, Misc
 	if category == "Disasters" then 
-	
-		list.Set( "gDisasters_Disasters", class, {Name = name, Class = class, Category = subcategory, AdminOnly = adminonly, Offset = 0})
+		list.Set( "gDisasters_Disasters", class, {
+			Name = name, 
+			Class = class, 
+			Category = subcategory, 
+			AdminOnly = adminonly, 
+			Offset = 0
+		})
 	elseif category == "Weather" then 
-		list.Set( "gDisasters_Weather", class, {Name = name, Class = class, Category = subcategory, AdminOnly = adminonly, Offset = 0})
+		list.Set( "gDisasters_Weather", class, {
+			Name = name,
+			Class = class, 
+			Category = subcategory, 
+			AdminOnly = adminonly, 
+			Offset = 0
+		})
 	elseif category == "Weapons" then 
-		list.Set( "gDisasters_Weapons", class, {Name = name, Class = class, Category = subcategory, AdminOnly = adminonly, Offset = 0})
+		list.Set( "gDisasters_Weapons", class, {
+			Name = name,
+			Class = class, 
+			Category = subcategory, 
+			AdminOnly = adminonly, 
+			Offset = 0
+		})
 	elseif category == "Buildings" then
-		list.Set( "gDisasters_Buildings", class, {Name = name, Class = class, Category = subcategory, AdminOnly = adminonly, Offset = 0})
+		list.Set( "gDisasters_Buildings", class, {
+			Name = name, 
+			Class = class, 
+			Category = subcategory, 
+			AdminOnly = adminonly, 
+			Offset = 0
+		})
 	elseif category == "Equipment" then
-		list.Set( "gDisasters_Equipment", class, {Name = name, Class = class, Category = subcategory, AdminOnly = adminonly, Offset = 0})
+		list.Set( "gDisasters_Equipment", class, {
+			Name = name, 
+			Class = class, 
+			Category = subcategory, 
+			AdminOnly = adminonly,
+			Offset = 0
+		})
 	elseif category == "Misc" then
-		list.Set( "gDisasters_Misc", class, {Name = name, Class = class, Category = subcategory, AdminOnly = adminonly, Offset = 0})
+		list.Set( "gDisasters_Misc", class, {
+			Name = name, 
+			Class = class, 
+			Category = subcategory, 
+			AdminOnly = adminonly, 
+			Offset = 0
+		})
 	end
 
 end
@@ -89,7 +124,7 @@ hook.Add( "PopulategDisasters_Weapons", "AddWeaponsContent", function( pnlConten
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		--pnlContent:SwitchPanel(self.PropPanel)
+		pnlContent:SwitchPanel(self.PropPanel)
 	end
 
 	local WeaponsCategories = {}
@@ -152,19 +187,18 @@ hook.Add( "PopulategDisasters_Equipment", "AddEquipmentContent", function( pnlCo
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		--pnlContent:SwitchPanel(self.PropPanel)
+		pnlContent:SwitchPanel(self.PropPanel)
 	end
 
-	local WeaponsCategories = {}
-	local SpawnableWeaponsList = list.Get("gDisasters_Equipment")
-	if (SpawnableWeaponsList) then
-		for k, v in pairs(SpawnableWeaponsList) do
-
-			WeaponsCategories[v.Category] = WeaponsCategories[v.Category] or {}
-			table.insert(WeaponsCategories[v.Category], v)
+	local EquipmentCategories = {}
+	local SpawnableEquipmentList = list.Get("gDisasters_Equipment")
+	if (SpawnableEquipmentList) then
+		for k, v in pairs(SpawnableEquipmentList) do
+			EquipmentCategories[v.Category] = EquipmentCategories[v.Category] or {}
+			table.insert(EquipmentCategories[v.Category], v)
 		end
 	end
-	for CategoryName, v in SortedPairs(WeaponsCategories) do
+	for CategoryName, v in SortedPairs(EquipmentCategories) do
 	
 		local node = dtree:AddNode(CategoryName, "icons/equipment.png")
 		
@@ -213,19 +247,18 @@ hook.Add( "PopulategDisasters_Disasters", "AddDisastersContent", function( pnlCo
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		--pnlContent:SwitchPanel(self.PropPanel)
+		pnlContent:SwitchPanel(self.PropPanel)
 	end
 
-	local WeaponsCategories = {}
-	local SpawnableWeaponsList = list.Get("gDisasters_Disasters")
-	if (SpawnableWeaponsList) then
-		for k, v in pairs(SpawnableWeaponsList) do
-
-			WeaponsCategories[v.Category] = WeaponsCategories[v.Category] or {}
-			table.insert(WeaponsCategories[v.Category], v)
+	local DisastersCategories = {}
+	local SpawnableDisastersList = list.Get("gDisasters_Disasters")
+	if (SpawnableDisastersList) then
+		for k, v in pairs(SpawnableDisastersList) do
+			DisastersCategories[v.Category] = DisastersCategories[v.Category] or {}
+			table.insert(DisastersCategories[v.Category], v)
 		end
 	end
-	for CategoryName, v in SortedPairs(WeaponsCategories) do
+	for CategoryName, v in SortedPairs(DisastersCategories) do
 	
 		local node = dtree:AddNode(CategoryName, "icons/disasters.png")
 		
@@ -276,19 +309,18 @@ hook.Add( "PopulategDisasters_Buildings", "AddBuildingsContent", function( pnlCo
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		--pnlContent:SwitchPanel(self.PropPanel)
+		pnlContent:SwitchPanel(self.PropPanel)
 	end
 
-	local WeaponsCategories = {}
-	local SpawnableWeaponsList = list.Get("gDisasters_Buildings")
-	if (SpawnableWeaponsList) then
-		for k, v in pairs(SpawnableWeaponsList) do
-
-			WeaponsCategories[v.Category] = WeaponsCategories[v.Category] or {}
-			table.insert(WeaponsCategories[v.Category], v)
+	local BuildingsCategories = {}
+	local SpawnableBuildingsList = list.Get("gDisasters_Buildings")
+	if (SpawnableBuildingsList) then
+		for k, v in pairs(SpawnableBuildingsList) do
+			BuildingsCategories[v.Category] = BuildingsCategories[v.Category] or {}
+			table.insert(BuildingsCategories[v.Category], v)
 		end
 	end
-	for CategoryName, v in SortedPairs(WeaponsCategories) do
+	for CategoryName, v in SortedPairs(BuildingsCategories) do
 	
 		local node = dtree:AddNode(CategoryName, "icons/buildings.png")
 		
@@ -338,19 +370,19 @@ hook.Add( "PopulategDisasters_Weather", "AddWeatherContent", function( pnlConten
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		--pnlContent:SwitchPanel(self.PropPanel)
+		pnlContent:SwitchPanel(self.PropPanel)
 	end
 
-	local WeaponsCategories = {}
-	local SpawnableWeaponsList = list.Get("gDisasters_Weather")
-	if (SpawnableWeaponsList) then
-		for k, v in pairs(SpawnableWeaponsList) do
+	local WeatherCategories = {}
+	local SpawnableWeatherList = list.Get("gDisasters_Weather")
+	if (SpawnableWeatherList) then
+		for k, v in pairs(SpawnableWeatherList) do
 
-			WeaponsCategories[v.Category] = WeaponsCategories[v.Category] or {}
-			table.insert(WeaponsCategories[v.Category], v)
+			WeatherCategories[v.Category] = WeatherCategories[v.Category] or {}
+			table.insert(WeatherCategories[v.Category], v)
 		end
 	end
-	for CategoryName, v in SortedPairs(WeaponsCategories) do
+	for CategoryName, v in SortedPairs(WeatherCategories) do
 	
 		local node = dtree:AddNode(CategoryName, "icons/weather.png")
 		
@@ -400,19 +432,19 @@ hook.Add( "PopulategDisasters_Misc", "AddMiscContent", function( pnlContent, tre
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
 
 	function dtree:DoClick()
-		--pnlContent:SwitchPanel(self.PropPanel)
+		pnlContent:SwitchPanel(self.PropPanel)
 	end
 
-	local WeaponsCategories = {}
-	local SpawnableWeaponsList = list.Get("gDisasters_Misc")
-	if (SpawnableWeaponsList) then
-		for k, v in pairs(SpawnableWeaponsList) do
+	local MiscCategories = {}
+	local SpawnableMiscList = list.Get("gDisasters_Misc")
+	if (SpawnableMiscList) then
+		for k, v in pairs(SpawnableMiscList) do
 
-			WeaponsCategories[v.Category] = WeaponsCategories[v.Category] or {}
-			table.insert(WeaponsCategories[v.Category], v)
+			MiscCategories[v.Category] = MiscCategories[v.Category] or {}
+			table.insert(MiscCategories[v.Category], v)
 		end
 	end
-	for CategoryName, v in SortedPairs(WeaponsCategories) do
+	for CategoryName, v in SortedPairs(MiscCategories) do
 	
 		local node = dtree:AddNode(CategoryName, "icon16/monkey.png")
 		

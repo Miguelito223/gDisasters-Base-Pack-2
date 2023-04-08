@@ -311,7 +311,7 @@ AddToGDSpawnMenu("Tsunami" , "gd_d7_tsunami"         , "Disasters", "Tier 7", fa
 
 --[[
 DISASTERS 
-TIER EIGHT
+TIER EIGHTTE
 --]]
 
 AddToGDSpawnMenu("EF5 Tornado"           , "gd_d8_ef5"           , "Disasters", "Tier 8", false)
@@ -339,16 +339,31 @@ DISASTERS
 TIER TEN
 --]]
 
-AddToGDSpawnMenu("10.0 Magnitude Earthquake" , "gd_d10_rs10eq"         , "Disasters", "Tier ELE", false)
-AddToGDSpawnMenu("Neutron Star"  , "gd_d10_neutron_star" , "Disasters", "Tier ELE", false)
+
 AddToGDSpawnMenu("Martian Tornado"  , "gd_d10_martiantornado" , "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Martian Tornado (Smart)"  , "gd_d10_martiantornado_pathed" , "Disasters", "Tier ELE", false)
+AddToGDSpawnMenu("10.0 Magnitude Earthquake" , "gd_d10_rs10eq"         , "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Firenado"  , "gd_d10_mfirenado" , "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Firenado (Smart)", "gd_d10_mfirenado_pathed", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Meteor Shower", "gd_d10_meteorshower", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Meteorite Shower", "gd_d10_meteoriteshower", "Disasters", "Tier ELE", false)
-AddToGDSpawnMenu("Black Hole"  , "gd_d10_blackhole" , "Disasters", "Tier ELE", false)
-AddToGDSpawnMenu("Big Asteroid"  , "gd_d10_bigasteroid" , "Disasters", "Tier ELE", false)
-AddToGDSpawnMenu("Moon Impact"  , "gd_d10_moonimpact" , "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("EF5++ Tornado", "gd_d10_ef7", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("EF5++ Tornado (Smart)", "gd_d10_ef7_pathed", "Disasters", "Tier ELE", false)
+
+--[[
+DISASTERS 
+TIER ELEVEN
+--]]
+
+AddToGDSpawnMenu("Black Hole"  , "gd_d11_blackhole" , "Disasters", "Tier ELE 2", false)
+AddToGDSpawnMenu("11.0 Magnitude Earthquake" , "gd_d11_rs11eq"         , "Disasters", "Tier ELE 2", false)
+AddToGDSpawnMenu("Big Asteroid"  , "gd_d11_bigasteroid" , "Disasters", "Tier ELE 2", false)
+AddToGDSpawnMenu("Moon Impact"  , "gd_d11_moonimpact" , "Disasters", "Tier ELE 2", false)
+AddToGDSpawnMenu("Neutron Star"  , "gd_d11_neutron_star" , "Disasters", "Tier ELE 2", false)
+
+--[[
+DISASTERS 
+TIER TWELVE
+--]]
+
+AddToGDSpawnMenu("12.0 Magnitude Earthquake" , "gd_d12_rs12eq"         , "Disasters", "Tier ELE 3", false)

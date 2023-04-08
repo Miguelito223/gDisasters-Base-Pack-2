@@ -5,30 +5,13 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Moon"
+ENT.PrintName		                 =  "big asteroid"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 
 ENT.Mass                             =  100
 ENT.Model                            = "models/props_junk/PopCan01a.mdl"
-
-
-AddCSLuaFile()
-
-DEFINE_BASECLASS( "base_anim" )
-
-ENT.Spawnable		            	 = false        
-ENT.AdminSpawnable		             = false 
-
-ENT.PrintName		                 =  "Meteorite"
-ENT.Author			                 =  "Hmm"
-ENT.Contact		                     =  "Hmm"
-ENT.Category                         =  "Hmm"
-
-    
-ENT.Mass                             =  100
-ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 
 function ENT:Initialize()	
 
@@ -82,14 +65,14 @@ function ENT:CreateMeteorite()
 	} )
 
 
-	local moite = ents.Create("gd_d10_moonimpact_ch")
+	local moite = ents.Create("gd_d11_bigasteroid")
 			
 	moite:SetPos( tr.HitPos - Vector(0,0,3000) )
 	moite:Spawn()
 	moite:Activate()
 	moite:GetPhysicsObject():EnableMotion(true)
 	moite:GetPhysicsObject():SetVelocity( Vector(0,0,math.random(-0.0000000000000001, -1)))
-	moite:GetPhysicsObject():AddAngleVelocity( VectorRand() * 5 )
+	moite:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
 	self:Remove()
 	
 	

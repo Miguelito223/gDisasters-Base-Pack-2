@@ -53,12 +53,12 @@ function ENT:CreatePoleEndTracers()
 	local np_p            =  self:GetAttachment( 1 ).Pos
 	local sp_p            =  self:GetAttachment( 2 ).Pos
 
-	local tracer_north = ents.Create("gd_d10_neutron_star_ch")
+	local tracer_north = ents.Create("gd_d11_neutron_star_ch")
 	tracer_north:SetPos( np_p ) 
 	tracer_north:Spawn()
 	tracer_north:Activate()
 	
-	local tracer_south = ents.Create("gd_d10_neutron_star_ch")
+	local tracer_south = ents.Create("gd_d11_neutron_star_ch")
 	tracer_south:SetPos( sp_p ) 
 	tracer_south:Spawn()
 	tracer_south:Activate()	
