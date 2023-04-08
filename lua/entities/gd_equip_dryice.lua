@@ -108,7 +108,6 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		self:vfire()
-		
 		self:NextThink(CurTime() + 1)
 		return true
 	end
