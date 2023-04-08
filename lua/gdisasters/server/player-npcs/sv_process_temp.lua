@@ -28,7 +28,7 @@ function gDisasters_ProcessTemperature()
 				heatscale = math.Clamp(200/distance^2, 0,1)
 			end
 			if closest_fire != nil then
-				heatscale = math.Clamp(1000/distance_2^2, 0,1)
+				heatscale = math.Clamp(200/distance_2^2, 0,1)
 			end
 			if closest_envfire != nil then
 				heatscale = math.Clamp(200/distance_3^2, 0,1)
