@@ -126,9 +126,15 @@ function ENT:Think()
 		self.isunderwater = false;
 	end
 
-	if isUnderWater(self) == true then 
+	if isUnderWater(self) == true && isinWater(self) == true then 
 		self.isnotinwater = false;
 		self.isinwater = true;
+		self.isunderwater = true;
+	end
+
+	if isUnderWater(self) == true && isinWater(self) == false then 
+		self.isnotinwater = false;
+		self.isinwater = false;
 		self.isunderwater = true;
 	end
 	
