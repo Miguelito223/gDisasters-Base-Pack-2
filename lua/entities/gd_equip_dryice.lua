@@ -112,31 +112,33 @@ function ENT:Think()
 		return true
 	end
 	
-	if isinWater(self) == nil then return end
+	if isinWater(self) == nil or isUnderWater(self) == nil then return end
 
-	if isinWater(self) == false then
+	if isinWater(self) == false and isUnderWater(self) == false then
 		self.isnotinwater = true;
 		self.isinwater = false;
 		self.isunderwater = false;
 	end
 	
-	if isinWater(self) == true then 
+	if isinWater(self) == true and isUnderWater(self) == false then 
 		self.isnotinwater = false;
 		self.isinwater = true;
 		self.isunderwater = false;
 	end
+	
+	if isUnderWater(self) == true and isinWater(self) == false then 
+		self.isnotinwater = false;
+		self.isinwater = false;
+		self.isunderwater = true;
+	end
 
-	if isUnderWater(self) == true && isinWater(self) == true then 
+	if isUnderWater(self) == true and isinWater(self) == true then 
 		self.isnotinwater = false;
 		self.isinwater = true;
 		self.isunderwater = true;
 	end
 
-	if isUnderWater(self) == true && isinWater(self) == false then 
-		self.isnotinwater = false;
-		self.isinwater = false;
-		self.isunderwater = true;
-	end
+
 	
 	
 	-- Particle Stuff
