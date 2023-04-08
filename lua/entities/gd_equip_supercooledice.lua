@@ -67,15 +67,13 @@ end
 
 
 function ENT:Shrink()
-	self:SetMDScale(Vector(1,1,1) * math.Clamp( 1-( (CurTime() - self.SpawnTime)/20), 0,1))
+	self:SetModelScale(1 * math.Clamp( 1-( (CurTime() - self.SpawnTime)/20), 0,1))
 	
 end
 
 
 function ENT:Think()
-	if (CLIENT) then
-		self:Shrink()
-	end
+	self:Shrink()
 
 	if (SERVER) then
 		if !self:IsValid() then return end
