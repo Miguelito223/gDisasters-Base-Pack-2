@@ -30,7 +30,7 @@ function gDisasters_ProcessTemperature()
 				heatscale = math.Clamp(1000/distance_2^2, 0,1)
 			end
 			if closest_envfire != nil then
-				heatscale = math.Clamp(1000/distance_3^2, 0,1)
+				heatscale = math.Clamp(200/distance_3^2, 0,1)
 			end
 			if closest_ice != nil then
 				coolscale = math.Clamp(500/distance_4^2, 0,1) * -1 -- inverse square law
