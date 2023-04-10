@@ -103,7 +103,7 @@ function ENT:Explode()
 	
 	CreateSoundWave(metsound, self:GetPos(), "3d" ,340.29, {100,110}, 5)
 	
-	local earthquake = ents.Create("gd_d10_rs10eq")
+	local earthquake = ents.Create("gd_d12_rs12eq")
 	earthquake:Spawn()
 	earthquake:Activate()
 	earthquake:SetPos(self:GetPos())	
