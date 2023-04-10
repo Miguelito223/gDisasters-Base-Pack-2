@@ -544,7 +544,7 @@ function hud_DrawSeismoGraph()
 		surface.SetDrawColor( 0, 255, 0, 255 )
 		
 		local vel  = 66.666/(1/FrameTime())
-		local max_a= 0
+		local max_a = 0
 		for k, v in pairs(LocalPlayer().SeismoGraph_SamplePoints) do
 			
 			v["Pos"] = v["Pos"] - Vector(vel,0,0)
