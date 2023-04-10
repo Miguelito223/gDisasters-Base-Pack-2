@@ -100,7 +100,7 @@ function ENT:UpdateGlobalSeismicActivity()
 end
 function ENT:EFire(pointer, arg) 
 	if pointer == "Enable" then self.Enable = arg or false 
-	elseif pointer == "Magnitude" then self.Magnitude = math.Clamp(arg, 0,12) or 0 
+	elseif pointer == "Magnitude" then self.Magnitude = arg or 0 
 	elseif pointer == "Parent" then self.Parent = arg 
 	end
 end
