@@ -357,8 +357,7 @@ TIER ELEVEN
 
 AddToGDSpawnMenu("Black Hole"  , "gd_d11_blackhole" , "Disasters", "Tier ELE 2", false)
 AddToGDSpawnMenu("11.0 Magnitude Earthquake" , "gd_d11_rs11eq"         , "Disasters", "Tier ELE 2", false)
-AddToGDSpawnMenu("Big Asteroid"  , "gd_d11_bigasteroid" , "Disasters", "Tier ELE 2", false)
-AddToGDSpawnMenu("Moon Impact"  , "gd_d11_moonimpact" , "Disasters", "Tier ELE 2", false)
+
 AddToGDSpawnMenu("Neutron Star"  , "gd_d11_neutron_star" , "Disasters", "Tier ELE 2", false)
 
 --[[
@@ -367,3 +366,5 @@ TIER TWELVE
 --]]
 
 AddToGDSpawnMenu("12.0 Magnitude Earthquake" , "gd_d12_rs12eq"         , "Disasters", "Tier ELE 3", false)
+AddToGDSpawnMenu("Big Asteroid"  , "gd_d12_bigasteroid" , "Disasters", "Tier ELE 3", false)
+AddToGDSpawnMenu("Moon Impact"  , "gd_d12_moonimpact" , "Disasters", "Tier ELE 3", false)
