@@ -356,7 +356,11 @@ function ENT:UpdateTransmitState()
 end
 
 
-
+list.Set("NPC", "gd_misc_npc_nurse", {
+	Name = "Nurse",
+	Class = "gd_misc_npc_nurse",
+	Category = "gDisasters - NPCs"
+})
 
 
 

@@ -58,7 +58,7 @@ AddToGDSpawnMenu("Dry Ice", "gd_equip_dryice", "Equipment", "Others", false)
 --[[
     Misc
 -]]
-AddToGDSpawnMenu("Nurse" , "gd_misc_npc_nurse"         , "Misc", "NPCS", false)
+AddToGDSpawnMenu("Nurse" , "gd_misc_npc_nurse"         , "Misc", "NPCs", false)
 AddToGDSpawnMenu("♫ The Man In Gauze ♫"        , "gd_misc_themaningauze"              , "Misc", "Others", false)
 AddToGDSpawnMenu("tvirus" , "gb5_chemical_tvirus"         , "Misc", "gbomb 5 Infections", false)
 AddToGDSpawnMenu("tvirus cure"        , "gb5_chemical_tvirus_cure"              , "Misc", "gbomb 5 Infections", false)
