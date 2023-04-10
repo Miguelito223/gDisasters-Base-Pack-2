@@ -357,7 +357,6 @@ TIER ELEVEN
 
 AddToGDSpawnMenu("Black Hole"  , "gd_d11_blackhole" , "Disasters", "Tier ELE 2", false)
 AddToGDSpawnMenu("11.0 Magnitude Earthquake" , "gd_d11_rs11eq"         , "Disasters", "Tier ELE 2", false)
-
 AddToGDSpawnMenu("Neutron Star"  , "gd_d11_neutron_star" , "Disasters", "Tier ELE 2", false)
 
 --[[
