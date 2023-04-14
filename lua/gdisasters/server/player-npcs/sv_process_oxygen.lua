@@ -1,25 +1,30 @@
 function gDisasters_ProcessOxygen()
     if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() == 0 then return end 
-    
     for k, v in pairs(player.GetAll()) do
-        if isUnderWater(v) or isUnderLava(v) then 
-            v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen - 0.01, 0,10) 
-            
-            if v.gDisasters.Body.Oxygen <= 0 then
-            
-                if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
-            
-				if math.random(1, 50)==1 then
-				    local dmg = DamageInfo()
-				    dmg:SetDamage( math.random(1,25) )
-				    dmg:SetAttacker( v )
-				    dmg:SetDamageType( DMG_DROWN  )
+        if GetConVar("gdisasters_sb_enabled"):GetInt() <= 0 then
+            if isUnderWater(v) or isUnderLava(v) then 
+                v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen - 0.01, 0,10) 
+
+                if v.gDisasters.Body.Oxygen <= 0 then
                 
-				    v:TakeDamageInfo(  dmg)
+                    if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
+                
+                    if math.random(1, 50)==1 then
+                        local dmg = DamageInfo()
+                        dmg:SetDamage( math.random(1,25) )
+                        dmg:SetAttacker( v )
+                        dmg:SetDamageType( DMG_DROWN  )
+                    
+                        v:TakeDamageInfo(  dmg)
+                    end
+                
                 end
-		    end
+            
+            else
+                v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen + 0.1, 0,10)
+            end
         else
-            v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen + 0.1, 0,10)
+            v.gDisasters.Body.Oxygen = v.suit.air
         end
         v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
     end

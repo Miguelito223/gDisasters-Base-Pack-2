@@ -1,12 +1,21 @@
 function gDisasters_ProcessTemperature()
 
-	local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
+	
 	local compensation_max      = 10   -- degrees 
 	local body_heat_genK        = engine.TickInterval() -- basically 1 degree Celsius per second
 	local body_heat_genMAX      = 0.01/4
 	local fire_heat_emission    = 50
 	local plytbl                = player.GetAll()
-	
+
+	if GetConVar("gdisasters_sb_enabled"):GetInt() <= 0 then
+		temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
+	else
+		for k, v in pairs(player.GetAll()) do
+			if !v.environment or v.environment == nil then return end
+			temp = convert_KevintoCelcius(v.caf.custom.ls.temperature)
+		end
+	end
+
 	SetGlobalFloat("gDisasters_Temperature", temp)
 
 	if GetConVar("gdisasters_hud_temp_enable"):GetInt() == 0 then return end
@@ -51,8 +60,9 @@ function gDisasters_ProcessTemperature()
 				ambient_equilibrium          = 0
 			end
 			
+
 			v.gDisasters.Body.Temperature = math.Clamp(v.gDisasters.Body.Temperature + core_equilibrium  + heatsource_equilibrium + coldsource_equilibrium + ambient_equilibrium, 24, 44)
-		
+
 		
 			v:SetNWFloat("BodyTemperature", v.gDisasters.Body.Temperature)
 		
@@ -288,20 +298,17 @@ function gDisasters_ProcessTemperature()
 			end
 		end
 	end
-	subzero_Effect()
-	updateVars()
-	damagePlayersAndNpc()
-end
-
-function gDisasters_GlobalBreathingEffect()
-	local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
-	
-	if temp > 0 or GetConVar("gdisasters_hud_temp_breathing"):GetInt() == 0 then 
-		if timer.Exists("Breathing") then
-			timer.Destroy("Breathing")
+	function GlobalBreathingEffect()
+		if temp > 0 or GetConVar("gdisasters_hud_temp_breathing"):GetInt() == 0 then 
+			if timer.Exists("Breathing") then
+				timer.Destroy("Breathing")
+			end
 		end
 	end
-	
+	subzero_Effect()
+	GlobalBreathingEffect()
+	updateVars()
+	damagePlayersAndNpc()
 end
 
 

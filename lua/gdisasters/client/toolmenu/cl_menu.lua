@@ -263,6 +263,16 @@ local function gDisastersDNC( CPanel )
 	
 end
 
+local function gDisastersSB( CPanel )
+
+	local lb = AddControlLabel( CPanel, "SB Options: " )
+	lb:SetTextColor(Color( 0, 0, 0))
+	lb:SetSize(500, 500)
+	
+	CreateTickboxConVariable(CPanel, "SB Enable"  , "gdisasters_sb_enabled");
+	
+end
+
 --CL MENU 
 
 local function gDisastersADVGraphicsSettings( CPanel )			
@@ -352,6 +362,7 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAutospawn", "Autospawn", "", "", gDisastersAutospawn )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisasterDNC", "DNC", "", "", gDisastersDNC )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSB", "SB", "", "", gDisastersSB )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersServerGraphics", "Server Graphics", "", "", gDisastersServerGraphics )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersAudioSettings", "Volume", "", "", gDisastersAudioSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )

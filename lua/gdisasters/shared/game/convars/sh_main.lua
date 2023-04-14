@@ -95,3 +95,6 @@ gDisasters.DayNightSystem.InternalVars.MoonSize = CreateConVar( "gdisasters_dnc_
 gDisasters.DayNightSystem.InternalVars.Createlight_environment = CreateConVar( "gdisasters_dnc_create_light_environment", "1", {FCVAR_ARCHIVE}, "" )
 
 
+--SpaceBuild
+
+CreateConVar( "gdisasters_sb_enabled", "1", {FCVAR_ARCHIVE}, "" )

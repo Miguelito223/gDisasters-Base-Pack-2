@@ -16,7 +16,6 @@ function Atmosphere()
 	Humidity()
 	AtmosphereFadeControl()
 	gDisasters_stormfox2()
-	gDisasters_GlobalBreathingEffect()
 	gDisasters_ProcessTemperature()
 	gDisasters_ProcessOxygen()
 	

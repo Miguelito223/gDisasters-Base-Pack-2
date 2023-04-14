@@ -427,6 +427,14 @@ function convert_CelciustoFahrenheit(celcius)
 	return ((celcius * 9 / 5) + 32)
 end
 
+function convert_CelciustoKelvin(celcius)
+	return celcius + 273.15
+end
+
+function convert_KevintoCelcius(Kevin)
+	return Kevin - 273.15
+end
+
 function convert_FahrenheittoCelcius(Fahrenheit)
 	return ((Fahrenheit - 32) * 5 / 9 )
 end
