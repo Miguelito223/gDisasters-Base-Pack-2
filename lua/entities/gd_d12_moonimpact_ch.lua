@@ -195,12 +195,13 @@ function ENT:Think()
 	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
 		
 	if (SERVER) then
-		if isinWater(self) then
+		if isinWater(self) or isUnderWater(self) then
 			self:Explode()
 			local ent = ents.Create("gd_d7_tsunami")
 			ent:Spawn()
 			ent:Activate()
-		elseif isinLava(self) then
+		end
+		if isinLava(self) or isUnderLava(self) then
 			self:Explode()
 			local ent = ents.Create("gd_d8_lavatsunami")
 			ent:Spawn()
