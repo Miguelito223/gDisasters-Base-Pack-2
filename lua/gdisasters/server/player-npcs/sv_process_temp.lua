@@ -11,7 +11,6 @@ function gDisasters_ProcessTemperature()
 		temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
 	else
 		for k, v in pairs(player.GetAll()) do
-			if !v.environment or v.environment == nil then return end
 			temp = convert_KevintoCelcius(v.caf.custom.ls.temperature)
 		end
 	end
