@@ -13,9 +13,15 @@ ENT.MaxFloodLevel                    =  300
 ENT.Mass                             =  100
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 
+ENT.StartHeight                      =  1 
 ENT.StartWedgeConstant               =  0.5
+
+ENT.MiddleHeight                     =  500
 ENT.MiddleWedgeConstant              =  0.005 
+
+ENT.EndHeight                        =  100 
 ENT.EndWedgeConstant                 =  0.1
+ENT.Speed                            = convert_MetoSU(math.random(10,50)) -- argument is in metres 
 
 
 
@@ -39,25 +45,22 @@ function ENT:Initialize()
 		end 		
 		
 		local data = { 
-					StartHeight  = GetConVar("gdisasters_envdynamicwater_b_startlevel"):GetInt(),
+					StartHeight  = self.StartHeight,
 					StartWedge   = self.StartWedgeConstant,
 					
-					MiddleHeight = GetConVar("gdisasters_envdynamicwater_b_middellevel"):GetInt(),
+					MiddleHeight = self.MiddleHeight,
 					MiddleWedge  = self.MiddleWedgeConstant,
 					
-					EndHeight    = GetConVar("gdisasters_envdynamicwater_b_endlevel"):GetInt(),
+					EndHeight    = self.EndHeight,
 					EndWedge     = self.EndWedgeConstant,
-					Speed        = convert_MetoSU(GetConVar("gdisasters_envdynamicwater_b_speed"):GetInt())
+					Speed        = self.Speed
 					}
 					
-		if IsMapRegistered() == true then
-			self.Child = createTsunami(self, data)
-		else
-			self:Remove()
-			for k, v in pairs(player.GetAll()) do 
-				v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
-			end 
-		end
+
+		self.Child = createTsunami(self, data)
+		
+		
+			
 		
 	end
 end
@@ -72,8 +75,10 @@ function ENT:SpawnFunction( ply, tr )
 	ent:SetPhysicsAttacker(ply)
 	
 	if IsMapRegistered() == false then 
+		self:Remove()
 		ent:SetPos( tr.HitPos + tr.HitNormal * 1  )
 	else 
+		
 		ent:SetPos( getMapCenterFloorPos() )
 	end
 	

@@ -9,7 +9,6 @@ ENT.PrintName		                 =  "Flash Flood"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.MaxFloodLevel                    =  {400,550}
 ENT.Mass                             =  100
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 
@@ -32,9 +31,14 @@ function ENT:Initialize()
 			phys:SetMass(self.Mass)
 		end 		
 		
-
-		self.Child = createFlood(math.random(self.MaxFloodLevel[1], self.MaxFloodLevel[2]), self)
-		
+		if IsMapRegistered() == true then
+			self.Child = createFlood(math.random(GetConVar("gdisasters_envdynamicwater_level_min"):GetInt(),GetConVar("gdisasters_envdynamicwater_level_max"):GetInt()), self)
+		else
+			self:Remove()
+			for k, v in pairs(player.GetAll()) do 
+				v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
+			end 
+		end
 			
 		
 	end
@@ -50,8 +54,6 @@ function ENT:SpawnFunction( ply, tr )
 	ent:SetPhysicsAttacker(ply)
 	
 	if IsMapRegistered() == false then 
-		self:Remove()
-		print("current map isn't supported")
 		ent:SetPos( tr.HitPos + tr.HitNormal * 1  )
 	else 
 		

@@ -5,13 +5,26 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Flash Flood"
+ENT.PrintName		                 =  "Mega Tsunami"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.MaxFloodLevel                    =  {400,550}
+ENT.MaxFloodLevel                    =  1000
 ENT.Mass                             =  100
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
+
+ENT.StartHeight                      =  1 
+ENT.StartWedgeConstant               =  0.5
+
+ENT.MiddleHeight                     =  6000
+ENT.MiddleWedgeConstant              =  0.005 
+
+ENT.EndHeight                        =  1000 
+ENT.EndWedgeConstant                 =  0.1
+ENT.Speed                            =  convert_MetoSU(math.random(15,60)) -- argument is in metres 
+
+
+
 
 
 function ENT:Initialize()	
@@ -32,8 +45,23 @@ function ENT:Initialize()
 			phys:SetMass(self.Mass)
 		end 		
 		
+		local data = { 
+		
+					StartHeight  = self.StartHeight,
+					StartWedge   = self.StartWedgeConstant,
+					
+					MiddleHeight = self.MiddleHeight,
+					MiddleWedge  = self.MiddleWedgeConstant,
+					
+					EndHeight    = self.EndHeight,
+					EndWedge     = self.EndWedgeConstant,
+					Speed        = self.Speed
+					
+		}
+					
 
-		self.Child = createFlood(math.random(self.MaxFloodLevel[1], self.MaxFloodLevel[2]), self)
+		self.Child = createTsunami(self, data)
+		
 		
 			
 		
@@ -51,7 +79,6 @@ function ENT:SpawnFunction( ply, tr )
 	
 	if IsMapRegistered() == false then 
 		self:Remove()
-		print("current map isn't supported")
 		ent:SetPos( tr.HitPos + tr.HitNormal * 1  )
 	else 
 		

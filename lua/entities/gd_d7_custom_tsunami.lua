@@ -5,13 +5,19 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Flash Flood"
+ENT.PrintName		                 =  "Tsunami"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.MaxFloodLevel                    =  {400,550}
+ENT.MaxFloodLevel                    =  300
 ENT.Mass                             =  100
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
+
+ENT.StartWedgeConstant               =  0.5
+ENT.MiddleWedgeConstant              =  0.005 
+ENT.EndWedgeConstant                 =  0.1
+
+
 
 
 function ENT:Initialize()	
@@ -32,10 +38,26 @@ function ENT:Initialize()
 			phys:SetMass(self.Mass)
 		end 		
 		
-
-		self.Child = createFlood(math.random(self.MaxFloodLevel[1], self.MaxFloodLevel[2]), self)
-		
-			
+		local data = { 
+					StartHeight  = GetConVar("gdisasters_envdynamicwater_b_startlevel"):GetInt(),
+					StartWedge   = self.StartWedgeConstant,
+					
+					MiddleHeight = GetConVar("gdisasters_envdynamicwater_b_middellevel"):GetInt(),
+					MiddleWedge  = self.MiddleWedgeConstant,
+					
+					EndHeight    = GetConVar("gdisasters_envdynamicwater_b_endlevel"):GetInt(),
+					EndWedge     = self.EndWedgeConstant,
+					Speed        = convert_MetoSU(GetConVar("gdisasters_envdynamicwater_b_speed"):GetInt())
+					}
+					
+		if IsMapRegistered() == true then
+			self.Child = createTsunami(self, data)
+		else
+			self:Remove()
+			for k, v in pairs(player.GetAll()) do 
+				v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
+			end 
+		end
 		
 	end
 end
@@ -50,11 +72,8 @@ function ENT:SpawnFunction( ply, tr )
 	ent:SetPhysicsAttacker(ply)
 	
 	if IsMapRegistered() == false then 
-		self:Remove()
-		print("current map isn't supported")
 		ent:SetPos( tr.HitPos + tr.HitNormal * 1  )
 	else 
-		
 		ent:SetPos( getMapCenterFloorPos() )
 	end
 	
