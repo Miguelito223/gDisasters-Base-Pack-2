@@ -97,4 +97,4 @@ gDisasters.DayNightSystem.InternalVars.Createlight_environment = CreateConVar( "
 
 --SpaceBuild
 
-CreateConVar( "gdisasters_sb_enabled", "1", {FCVAR_ARCHIVE}, "" )
+CreateConVar( "gdisasters_sb_enabled", "0", {FCVAR_ARCHIVE}, "" )
