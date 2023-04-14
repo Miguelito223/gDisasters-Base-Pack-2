@@ -300,9 +300,9 @@ function ENT:MagnitudeEleven()
 end
 
 function ENT:MagnitudeTwelve()
-	local percentage = math.Clamp(self.Magnitude/12,0,1)
-	local bxa, bya   = math.random(-1250,450)/100,math.random(-1250,1250)/100
-	local mxa, mya   = (math.random(-625, 625)/100) * percentage,   (math.random(-625, 625)/100) * percentage
+	local percentage = math.Clamp(self.Magnitude/12.99,0,1)
+	local bxa, bya   = math.random(-1250,1250)/100,math.random(-1250,1250)/100
+	local mxa, mya   = (math.random(-425, 425)/100) * percentage,   (math.random(-425, 425)/100) * percentage
 	local xa, ya     = bxa + mxa, bya +  mya
 	for k, v in pairs(player.GetAll()) do
 		if v:IsOnGround() then self:SendClientsideEffects( v, Angle(xa,ya,0), 38) end
@@ -346,6 +346,10 @@ function ENT:DoPhysics()
 				v:SetVelocity( vec * 1.5)
 			elseif mag >= 10 and mag <= 11 then
 				v:SetVelocity( vec * 2)
+			elseif mag >= 11 and mag <= 12 then
+				v:SetVelocity( vec * 2.125)
+			elseif mag >= 12 and mag <= 13 then
+				v:SetVelocity( vec * 2.5)
 			end
 		end
 	end
