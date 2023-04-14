@@ -1,12 +1,5 @@
 function gDisasters_ProcessTemperature()
 
-	
-	local compensation_max      = 10   -- degrees 
-	local body_heat_genK        = engine.TickInterval() -- basically 1 degree Celsius per second
-	local body_heat_genMAX      = 0.01/4
-	local fire_heat_emission    = 50
-	local plytbl                = player.GetAll()
-
 	if GetConVar("gdisasters_sb_enabled"):GetInt() <= 0 then
 		temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
 	else
@@ -14,6 +7,15 @@ function gDisasters_ProcessTemperature()
 			temp = convert_KevintoCelcius(v.caf.custom.ls.temperature)
 		end
 	end
+
+	local humidity = GLOBAL_SYSTEM["Atmosphere"]["Humidity"]
+	local compensation_max      = 10   -- degrees 
+	local body_heat_genK        = engine.TickInterval() -- basically 1 degree Celsius per second
+	local body_heat_genMAX      = 0.01/4
+	local fire_heat_emission    = 50
+	local plytbl                = player.GetAll()
+
+
 
 	SetGlobalFloat("gDisasters_Temperature", temp)
 
@@ -76,14 +78,13 @@ function gDisasters_ProcessTemperature()
 		
 		for k, v in pairs(plytbl) do
 		
-			local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
-			local humidity = GLOBAL_SYSTEM["Atmosphere"]["Humidity"]
-			local tempbody            = v.gDisasters.Body.Temperature
+			local wl = isinWater(v)	
+			local lv = isinLava(v)
 			local outdoor           = isOutdoor(v)
+			local tempbody            = v.gDisasters.Body.Temperature
 			local alpha_hot  =  1-((44-math.Clamp(tempbody,39,44))/5)
 			local alpha_cold =  ((35-math.Clamp(tempbody,24,35))/11)
-			local wl = isinWater(v)	
-			local lv = isinLava(v)	
+	
 			
 			if math.random(1,25) == 25 then
 				if alpha_cold != 0 then
@@ -176,7 +177,7 @@ function gDisasters_ProcessTemperature()
 			end
 		end
 		for k, v in pairs(ents.FindByClass("npc_*")) do
-			local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
+
 			local outdoor           = isOutdoor(v, true)
 			local wl = isinWater(v)
 			local lv = isinLava(v)
