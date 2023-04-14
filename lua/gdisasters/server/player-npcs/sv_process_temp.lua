@@ -118,15 +118,15 @@ function gDisasters_ProcessTemperature()
 			
 			if temp <= -100 then
 				if outdoor then
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.1
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.01
 				else
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.01	
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.001	
 				end
 			elseif temp >= 100 then
 				if outdoor then
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.1
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.01
 				else
-					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.01			
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.001			
 				end
 			end
 		
