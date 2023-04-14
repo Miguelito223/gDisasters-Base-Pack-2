@@ -129,6 +129,19 @@ function gDisasters_ProcessTemperature()
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.001			
 				end
 			end
+			if temp <= -500 then
+				if outdoor then
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.1
+				else
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.01	
+				end
+			elseif temp >= 500 then
+				if outdoor then
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.1
+				else
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.01			
+				end
+			end
 		
 			if humidity >= 50 and temp >= 37 and temp >= 5 then
 				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.001
