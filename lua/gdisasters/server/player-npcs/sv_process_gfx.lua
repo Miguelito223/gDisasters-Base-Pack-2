@@ -1,10 +1,10 @@
 function gDisasters_CreateFog(ply, parent_entity, fogdata, override_quality)
-		if GetConVar("gdisasters_graphics_fog"):GetInt() <= 0 then return end
-		net.Start("gd_createfog")
-		net.WriteEntity(parent_entity)
-		net.WriteBool(override_quality)
-		net.WriteTable(fogdata)
-		net.Send(ply)
+	if GetConVar("gdisasters_graphics_fog"):GetInt() <= 0 then return end
+	net.Start("gd_createfog")
+	net.WriteEntity(parent_entity)
+	net.WriteBool(override_quality)
+	net.WriteTable(fogdata)
+	net.Send(ply)
 
 end
 
