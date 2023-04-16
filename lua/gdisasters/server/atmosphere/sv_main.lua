@@ -97,7 +97,17 @@ function gDisasters_spacebuild()
 	if CAF or LS then  
 		for k, v in pairs(player.GetAll()) do
 			v.gDisasters.Body.Oxygen = v.suit.air
+			v.gDisasters.Body.Energy = v.suit.energy
+			v.gDisasters.Body.Coolant = v.suit.coolant
+			v.gDisasters.Body.Temperature = 37
+
+			v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
+			v:SetNWFloat("BodyTemperature", v.gDisasters.Body.Temperature)
+			v:SetNWFloat("BodyEnergy", v.gDisasters.Body.Energy)
+			v:SetNWFloat("BodyCoolant", v.gDisasters.Body.Coolant)
+
 			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = convert_KevintoCelcius(v.caf.custom.ls.temperature)
+			
 		end
 	end
 end

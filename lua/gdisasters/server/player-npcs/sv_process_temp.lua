@@ -17,7 +17,8 @@ function gDisasters_ProcessTemperature()
 	local function updateVars()
 	
 		for k, v in pairs(plytbl) do
-		
+			if GetConVar("gdisasters_sb_enabled"):GetInt() >= 1 then return end
+
 			local closest_vfire, distance  = FindNearestEntity(v, "vfire") -- find closest fire entity
 			local closest_fire, distance_2 = FindNearestEntity(v, "entityflame")
 			local closest_envfire, distance_3 = FindNearestEntity(v, "env_fire")
@@ -57,8 +58,8 @@ function gDisasters_ProcessTemperature()
 
 			v.gDisasters.Body.Temperature = math.Clamp(v.gDisasters.Body.Temperature + core_equilibrium  + heatsource_equilibrium + coldsource_equilibrium + ambient_equilibrium, 24, 44)
 
-		
 			v:SetNWFloat("BodyTemperature", v.gDisasters.Body.Temperature)
+			
 		
 			
 		end

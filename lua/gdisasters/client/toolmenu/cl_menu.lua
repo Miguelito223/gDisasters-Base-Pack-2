@@ -320,13 +320,13 @@ end
 local function gDisastersHudSettings( CPanel )
 	
 	local lb = AddControlLabel( CPanel, "Hud Options: ")
-	local lb2 = AddControlLabel( CPanel, "1: body hud\n\n2: pressure hud\n\n3: earthquake hud")
+	local lb2 = AddControlLabel( CPanel, "1: body hud\n\n2: pressure hud\n\n3: earthquake hud\n\n4: SB hud")
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 	lb2:SetTextColor(Color( 0, 47, 255))
 
 	CreateTickboxConVariable(CPanel, "Enable Hud", "gdisasters_hud_enabled");
-	CreateSliderConVariable(CPanel, "Hud Type", 1, 3, 0, "gdisasters_hud_type" );
+	CreateSliderConVariable(CPanel, "Hud Type", 1, 4, 0, "gdisasters_hud_type" );
 
 	AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
 	AddComboBox( CPanel, "Hud Temperature Display", {"c", "f", "k"}, "gdisasters_hud_temptype")

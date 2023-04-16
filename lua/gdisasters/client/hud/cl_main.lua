@@ -42,19 +42,21 @@ end
 
 function hud_gDisastersINFO()
 	if GetConVar( "gdisasters_hud_enabled" ):GetInt()!=1 then return end
-	
+	 
 	if GetConVar( "gdisasters_hud_type" ):GetInt()==1 then 
-		
+
 		hud_DrawBasicINFO()
-		
+
 	elseif GetConVar( "gdisasters_hud_type" ):GetInt()==2 then
 	
 		hud_DrawBarometer()
-		
+
 	elseif GetConVar( "gdisasters_hud_type" ):GetInt()==3 then
 	
 		hud_DrawSeismoGraph()
+	elseif GetConVar( "gdisasters_hud_type" ):GetInt()==4 and GetConVar("gdisasters_hud_temp_enable"):GetInt() >= 1 then
 		
+		hud_DrawSpacebuildINFO()
 	end
 end
 hook.Add("HUDPaint", "gDisastersINFO", hud_gDisastersINFO)
@@ -192,7 +194,184 @@ function hud_DrawBarometer()
 end
 
 
+function hud_DrawSpacebuildINFO()
+	local xscale, yscale, scale        = ScrW()/1920, ScrH()/1080, (ScrH() + ScrW())/ 3000
 
+	local pos_air_temperature      	   = Vector(280 * xscale, 860 * yscale, 0) 
+	local pos_body_oxygen        	  = Vector(280 * xscale, 890 * yscale, 0)
+	local pos_body_energy       	  = Vector(280 * xscale, 920 * yscale, 0)
+	local pos_body_coolant       	  = Vector(280 * xscale, 950 * yscale, 0)
+
+	local air_tmp   = math.Round(GetGlobalFloat("gDisasters_Temperature"),1)
+	local body_oxygen = math.Round(LocalPlayer():GetNWFloat("BodyOxygen"))
+	local body_energy = math.Round(LocalPlayer():GetNWFloat("BodyEnergy"))
+	local body_Coolant = math.Round(LocalPlayer():GetNWFloat("BodyCoolant"))
+
+	local air_temp = tostring(air_tmp)
+	local body_o2 = tostring(body_oxygen)
+	local body_ener =  tostring(body_energy)
+	local body_cool =  tostring(body_Coolant)
+
+	local function drawFrame()
+	
+		draw.RoundedBox( 12 * scale, 270 * xscale, 855 * yscale, 560 * xscale, 220 * yscale, Color( 30, 30, 30, 100 ) ) -- main box
+		draw.RoundedBox( 6 * scale, 565 * xscale, 865 * yscale, 255 * xscale, 180 * yscale, Color( 30, 30, 30, 100 ) ) -- main box right
+
+	end
+	local function drawText()
+
+		if GetConVar("gdisasters_hud_temptype"):GetString() == "c" then
+			draw.DrawText( "Air Temperature: "..air_temp.."°C", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+		elseif GetConVar("gdisasters_hud_temptype"):GetString() == "f" then
+			draw.DrawText( "Air Temperature: "..convert_CelciustoFahrenheit(air_temp).."°F", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+		elseif GetConVar("gdisasters_hud_temptype"):GetString() == "k" then
+			draw.DrawText( "Air Temperature: "..convert_CelciustoKelvin(air_temp).."°K", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+		end
+		
+		draw.DrawText( "Body Oxygen: "..body_o2.."%", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_oxygen.x , pos_body_oxygen.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+		draw.DrawText( "Body Energy: "..body_ener.."%", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_energy.x , pos_body_energy.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+		draw.DrawText( "Body Coolant: "..body_cool.."%", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_coolant.x , pos_body_coolant.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+	end
+	local function drawBars()
+		local oxygen_min, oxygen_max   = 100,   200
+		local energy_min, energy_max   = 100,   200
+		local coolant_min, coolant_max   = 100,   200
+
+		
+		local r, g, b                   = 0, 0, 0
+		local r2, g2, b2                = 0, 0, 0
+		local r3, g3, b3               = 0, 0, 0
+		local r4, g4, b4              = 0, 0, 0
+
+		local function drawAirBar()
+			if air_tmp >= -273.3 and air_tmp <= 0 then 
+				
+				if air_tmp <= -136.65 then
+					local p = (air_tmp+273.3) / 136.65
+					r = 0
+					g = 255 * p
+					b = 255
+				else 
+					local p = (air_tmp+136.65) / 136.65
+					
+					r = 0
+					g = 255 
+					b = 255 * (1 - p)
+				end
+				
+			elseif air_tmp > 5 and air_tmp < 38 then
+				r = 0
+				g = 255 
+				b = 0
+			elseif air_tmp >= 38 and air_tmp <= 273.3 then 
+			
+				if air_tmp <= 136.65 then
+
+					local p = (air_tmp-38) / 98.65
+					r = 255 * p
+					g = 255 
+					b = 0
+				else 
+					local p = (air_tmp-136.65) / 136.65
+	
+					r = 255
+					g = 255 * (1 - p)
+					b = 0
+				end
+			end
+			
+			drawPercentageBox( 0, 600, 1020, 22, 150, -1000, 1000, air_tmp, Color( r, g, b, 200))
+
+		end
+		local function drawEnergyBar()
+			if body_energy >= energy_max then
+				r2 = 243 
+				g2 = 255
+				b2 = 0
+			elseif body_energy < energy_max and body_energy >= energy_min then 
+				r2 = 106
+				g2 = 133
+				b2 = 0
+			elseif body_energy < energy_min then
+				r2 = 106
+				g2 = 133
+				b2 = 0
+			end
+			
+			drawPercentageBox( 0, 624, 1020, 22, 150, 0, 200, body_ener, Color( r2, g2, b2, 200))
+
+		end
+		local function drawCoolentBar()
+			if body_Coolant >= coolant_max then
+				r3 = 0
+				g3 = 255
+				b3 = 255
+			elseif body_Coolant < coolant_max and body_Coolant >= coolant_min then 
+				r3 = 0
+				g3 = 205
+				b3 = 205
+			elseif body_Coolant < coolant_min then
+				r3 = 0
+				g3 = 148
+				b3 = 148
+			end
+			
+			drawPercentageBox( 0, 648, 1020, 22, 150, 0, 200, body_cool, Color( r3, g3, b3, 200))
+
+		end
+		local function drawOxygenBar()
+			if body_oxygen >= oxygen_max then
+				r4 = 0
+				g4 = 139
+				b4 = 255
+			elseif body_oxygen < oxygen_max and body_oxygen >= oxygen_min then 
+				r4 = 0
+				g4 = 139
+				b4 = 205
+			elseif body_oxygen < oxygen_min then
+				r = 0
+				g = 139
+				b = 148
+			end
+			
+			drawPercentageBox( 0, 577, 1020, 22, 150, 0, 200, body_o2, Color( r4, g4, b4, 200))
+
+		end
+		drawAirBar()
+		drawEnergyBar()
+		drawCoolentBar()
+		drawOxygenBar()
+	end
+	local function drawIcons()
+		surface.SetDrawColor( 255, 255,255, 255 )
+		local oxygen     = surface.GetTextureID( "icons/oxygen" )
+		local coolent    = surface.GetTextureID( "icons/ice" )
+		local energy    = surface.GetTextureID( "icons/lighting")
+		local airtemp      = surface.GetTextureID( "icons/airtemp" )
+		local w, h   = 16 * scale, 16 * scale
+		
+		local x, y   = 605, 1025
+		surface.SetTexture( airtemp )
+		surface.DrawTexturedRect(  x * xscale, y * yscale, w * xscale, h * yscale )
+
+		local x, y   = 580, 1025
+		surface.SetTexture( oxygen )
+		surface.DrawTexturedRect(  x * xscale, y * yscale, w * xscale, h * yscale )
+		
+		local x, y   = 624, 1025
+		surface.SetTexture( energy )
+		surface.DrawTexturedRect(  x * xscale, y * yscale, w * xscale, h * yscale )
+	
+		local x, y   = 650, 1025
+		surface.SetTexture( coolent )
+		surface.DrawTexturedRect(  x * xscale, y * yscale, w * xscale, h * yscale )
+	end
+	drawFrame()
+	drawBars()
+	drawIcons()
+	drawText()
+	
+end
 
 function hud_DrawBasicINFO()
 	local xscale, yscale, scale        = ScrW()/1920, ScrH()/1080, (ScrH() + ScrW())/ 3000
@@ -394,7 +573,7 @@ function hud_DrawBasicINFO()
 
 		local function drawOxygenBar()
 
-			if body_Oxygen <= oxygen_min then
+			if body_Oxygen <= oxygen_min and body_Oxygen > 2 then
 				r3 = 34
 				g3 = 113
 				b3 = 179
@@ -459,7 +638,7 @@ function hud_DrawBasicINFO()
 		surface.SetTexture( humidity )
 		surface.DrawTexturedRect(  x * xscale, y * yscale, w * xscale, h * yscale )
 
-		local x, y   = 580, 1025
+		local x, y   = 577, 1025
 		surface.SetTexture( oxygen )
 		surface.DrawTexturedRect(  x * xscale, y * yscale, w * xscale, h * yscale )
 		

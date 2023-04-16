@@ -2,7 +2,6 @@ function gDisasters_ProcessOxygen()
     if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() <= 0 then return end
 
     for k, v in pairs(player.GetAll()) do
-        v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
         if GetConVar("gdisasters_sb_enabled"):GetInt() >= 1 then return end
 
         if isUnderWater(v) or isUnderLava(v) then 
@@ -22,7 +21,8 @@ function gDisasters_ProcessOxygen()
                 end
             
             end
-        
+
+            v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
         else
             v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen + 0.1, 0,10)
         end
