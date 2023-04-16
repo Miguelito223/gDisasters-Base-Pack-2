@@ -329,9 +329,9 @@ function hud_DrawSpacebuildINFO()
 				g4 = 139
 				b4 = 205
 			elseif body_oxygen < oxygen_min then
-				r = 0
-				g = 139
-				b = 148
+				r4 = 0
+				g4 = 139
+				b4 = 148
 			end
 			
 			drawPercentageBox( 0, 577, 1020, 22, 150, 0, 200, body_o2, Color( r4, g4, b4, 200))
