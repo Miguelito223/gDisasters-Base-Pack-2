@@ -54,7 +54,7 @@ function hud_gDisastersINFO()
 	elseif GetConVar( "gdisasters_hud_type" ):GetInt()==3 then
 	
 		hud_DrawSeismoGraph()
-	elseif GetConVar( "gdisasters_hud_type" ):GetInt()==4 and GetConVar("gdisasters_hud_temp_enable"):GetInt() >= 1 then
+	elseif GetConVar( "gdisasters_hud_type" ):GetInt()==4 and GetConVar("gdisasters_sb_enabled"):GetInt() >= 1 then
 		
 		hud_DrawSpacebuildINFO()
 	end
