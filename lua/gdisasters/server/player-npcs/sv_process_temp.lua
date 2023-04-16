@@ -1,5 +1,5 @@
 function gDisasters_ProcessTemperature()
-	
+
 	local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
 	local humidity = GLOBAL_SYSTEM["Atmosphere"]["Humidity"]
 	local compensation_max      = 10   -- degrees 
@@ -133,6 +133,19 @@ function gDisasters_ProcessTemperature()
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.1
 				else
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.01			
+				end
+			end
+			if temp <= -1000 then
+				if outdoor then
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 1
+				else
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.1	
+				end
+			elseif temp >= 1000 then
+				if outdoor then
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 1
+				else
+					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.1			
 				end
 			end
 		
