@@ -97,7 +97,6 @@ function gDisasters_spacebuild()
 	if CAF or LS then  
 		for k, v in pairs(player.GetAll()) do
 			v.gDisasters.Body.Oxygen = v.suit.air
-
 			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = convert_KevintoCelcius(v.caf.custom.ls.temperature)
 		end
 	end
