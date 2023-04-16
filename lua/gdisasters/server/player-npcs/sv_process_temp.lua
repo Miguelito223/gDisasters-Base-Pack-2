@@ -1,13 +1,6 @@
 function gDisasters_ProcessTemperature()
-
-	if GetConVar("gdisasters_sb_enabled"):GetInt() <= 0 then
-		temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
-	else
-		for k, v in pairs(player.GetAll()) do
-			temp = convert_KevintoCelcius(v.caf.custom.ls.temperature)
-		end
-	end
-
+	
+	local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
 	local humidity = GLOBAL_SYSTEM["Atmosphere"]["Humidity"]
 	local compensation_max      = 10   -- degrees 
 	local body_heat_genK        = engine.TickInterval() -- basically 1 degree Celsius per second

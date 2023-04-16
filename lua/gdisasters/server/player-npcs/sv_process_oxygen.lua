@@ -1,32 +1,31 @@
 function gDisasters_ProcessOxygen()
-    if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() == 0 then return end 
-    for k, v in pairs(player.GetAll()) do
-        if GetConVar("gdisasters_sb_enabled"):GetInt() <= 0 then
-            if isUnderWater(v) or isUnderLava(v) then 
-                v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen - 0.01, 0,10) 
+    if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() <= 0 then return end
 
-                if v.gDisasters.Body.Oxygen <= 0 then
+    for k, v in pairs(player.GetAll()) do
+        v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
+        if GetConVar("gdisasters_sb_enabled"):GetInt() >= 1 then return end
+
+        if isUnderWater(v) or isUnderLava(v) then 
+            v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen - 0.01, 0,10) 
+
+            if v.gDisasters.Body.Oxygen <= 0 then
+            
+                if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
+            
+                if math.random(1, 50)==1 then
+                    local dmg = DamageInfo()
+                    dmg:SetDamage( math.random(1,25) )
+                    dmg:SetAttacker( v )
+                    dmg:SetDamageType( DMG_DROWN  )
                 
-                    if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
-                
-                    if math.random(1, 50)==1 then
-                        local dmg = DamageInfo()
-                        dmg:SetDamage( math.random(1,25) )
-                        dmg:SetAttacker( v )
-                        dmg:SetDamageType( DMG_DROWN  )
-                    
-                        v:TakeDamageInfo(  dmg)
-                    end
-                
+                    v:TakeDamageInfo(  dmg)
                 end
             
-            else
-                v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen + 0.1, 0,10)
             end
+        
         else
-            v.gDisasters.Body.Oxygen = v.suit.air
+            v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen + 0.1, 0,10)
         end
-        v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
     end
     for k, v in pairs(ents.FindByClass("npc_*")) do           
         if isinWater(v) or isinLava(v) then 

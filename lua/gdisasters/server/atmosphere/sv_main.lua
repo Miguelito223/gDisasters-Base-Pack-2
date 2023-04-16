@@ -16,6 +16,7 @@ function Atmosphere()
 	Humidity()
 	AtmosphereFadeControl()
 	gDisasters_stormfox2()
+	gDisasters_spacebuild()
 	gDisasters_ProcessTemperature()
 	gDisasters_ProcessOxygen()
 	
@@ -87,6 +88,17 @@ function gDisasters_stormfox2()
 				if !ent then return end
 				if ent:IsValid() then ent:Remove() end
 			end
+		end
+	end
+end
+
+function gDisasters_spacebuild()
+	if GetConVar("gdisasters_sb_enabled"):GetInt() <= 0 then return end
+	if CAF or LS then  
+		for k, v in pairs(player.GetAll()) do
+			v.gDisasters.Body.Oxygen = v.suit.air
+
+			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = convert_KevintoCelcius(v.caf.custom.ls.temperature)
 		end
 	end
 end
