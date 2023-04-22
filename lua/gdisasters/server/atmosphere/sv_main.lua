@@ -464,11 +464,11 @@ function gDisasters_ProcessOxygen()
                 end
             
             end
-
-            v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
         else
             v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen + 0.1, 0,10)
         end
+		
+		v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
     end
     for k, v in pairs(ents.FindByClass("npc_*")) do           
         if isinWater(v) or isinLava(v) then 
