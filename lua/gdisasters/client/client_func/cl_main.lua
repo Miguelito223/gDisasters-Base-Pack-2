@@ -282,7 +282,7 @@ hook.Add("RenderScreenspaceEffects", "gfx_TempEffect", function()
 	DrawMotionBlur( 0.1, blur_alpha_cold, 0.05)
 
 
-)
+end)
 	
 	
 	
