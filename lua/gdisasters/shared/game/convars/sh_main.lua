@@ -49,9 +49,6 @@ CreateConVar( "gdisasters_hud_oxygen_damage", "1", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_hud_oxygen_enable", "1", {FCVAR_ARCHIVE}, "" )
 
 
-
-
-
 --autospawn
 
 CreateConVar( "gdisasters_autospawn_getridmaptor", "0", {FCVAR_ARCHIVE}, "" )
