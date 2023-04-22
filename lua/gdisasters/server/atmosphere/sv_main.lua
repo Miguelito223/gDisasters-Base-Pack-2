@@ -121,8 +121,6 @@ function gDisasters_ProcessTemperature()
 	local fire_heat_emission    = 50
 	local plytbl                = player.GetAll()
 
-
-
 	SetGlobalFloat("gDisasters_Temperature", temp)
 
 	if GetConVar("gdisasters_hud_temp_enable"):GetInt() == 0 then return end
