@@ -15,10 +15,9 @@ function gDisasters_ProcessTemperature()
 	if GetConVar("gdisasters_hud_temp_enable"):GetInt() == 0 then return end
 				
 	local function updateVars()
-	
+		if GetConVar("gdisasters_hud_temp_value"):GetInt() <= 0 then return end
+		
 		for k, v in pairs(plytbl) do
-			if GetConVar("gdisasters_sb_enabled"):GetInt() >= 1 then return end
-
 			local closest_vfire, distance  = FindNearestEntity(v, "vfire") -- find closest fire entity
 			local closest_fire, distance_2 = FindNearestEntity(v, "entityflame")
 			local closest_envfire, distance_3 = FindNearestEntity(v, "env_fire")

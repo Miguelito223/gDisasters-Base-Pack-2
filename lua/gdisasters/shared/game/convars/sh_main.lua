@@ -38,6 +38,7 @@ CreateConVar( "gdisasters_weather_acidraindamageprops", "1", {FCVAR_ARCHIVE}, ""
 
 CreateConVar( "gdisasters_hud_temp_damage", "1", {FCVAR_ARCHIVE}	, "" )
 CreateConVar( "gdisasters_hud_temp_player_speed", "1", {FCVAR_ARCHIVE}	, "" )
+CreateConVar( "gdisasters_hud_temp_value", "1", {FCVAR_ARCHIVE}	, "" )
 CreateConVar( "gdisasters_hud_temp_breathing", "1", {FCVAR_ARCHIVE}	, "" )
 CreateConVar( "gdisasters_hud_temp_vomit", "1", {FCVAR_ARCHIVE}	, "" )
 CreateConVar( "gdisasters_hud_temp_sneeze", "1", {FCVAR_ARCHIVE}	, "" )
