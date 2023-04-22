@@ -5,7 +5,7 @@ function Atmosphere()
 	
 end
 hook.Add("Tick", "atmosphericLoop", Atmosphere)
-hook.Add("RenderScreenspaceEffects", "TemperatureEffects", gDisasters_Atmosphere)
+hook.Add("RenderScreenspaceEffects", "TemperatureEffects", Atmosphere)
 
 
 function gDisasters_WindControl()
