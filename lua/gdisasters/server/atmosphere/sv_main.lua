@@ -92,6 +92,25 @@ function gDisasters_stormfox2()
 	end
 end
 
+function gDisasters_spacebuild()
+	if GetConVar("gdisasters_sb_enabled"):GetInt() <= 0 then return end
+	if CAF or LS then  
+		for k, v in pairs(player.GetAll()) do
+			v.gDisasters.Body.Oxygen = v.suit.air
+			v.gDisasters.Body.Energy = v.suit.energy
+			v.gDisasters.Body.Coolant = v.suit.coolant
+
+			v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
+			v:SetNWFloat("BodyTemperature", v.gDisasters.Body.Temperature)
+			v:SetNWFloat("BodyEnergy", v.gDisasters.Body.Energy)
+			v:SetNWFloat("BodyCoolant", v.gDisasters.Body.Coolant)
+
+			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = convert_KevintoCelcius(v.caf.custom.ls.temperature)
+			
+		end
+	end
+end
+
 function gDisasters_ProcessTemperature()
 
 	local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
@@ -471,25 +490,6 @@ function gDisasters_ProcessOxygen()
         end
     
     end
-end
-
-function gDisasters_spacebuild()
-	if GetConVar("gdisasters_sb_enabled"):GetInt() <= 0 then return end
-	if CAF or LS then  
-		for k, v in pairs(player.GetAll()) do
-			v.gDisasters.Body.Oxygen = v.suit.air
-			v.gDisasters.Body.Energy = v.suit.energy
-			v.gDisasters.Body.Coolant = v.suit.coolant
-
-			v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
-			v:SetNWFloat("BodyTemperature", v.gDisasters.Body.Temperature)
-			v:SetNWFloat("BodyEnergy", v.gDisasters.Body.Energy)
-			v:SetNWFloat("BodyCoolant", v.gDisasters.Body.Coolant)
-
-			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = convert_KevintoCelcius(v.caf.custom.ls.temperature)
-			
-		end
-	end
 end
 
 function WindUnweld(ent)
