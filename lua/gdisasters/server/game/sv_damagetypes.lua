@@ -1,7 +1,3 @@
-
-
-
-	
 local gDisasters_DamageTypes = {}
 
 gDisasters_DamageTypes["acid"] = function(ent)
