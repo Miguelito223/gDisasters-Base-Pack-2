@@ -15,10 +15,10 @@ function Atmosphere()
 	Pressure()
 	Humidity()
 	AtmosphereFadeControl()
-	gDisasters_stormfox2()
-	gDisasters_spacebuild()
-	gDisasters_ProcessTemperature()
-	gDisasters_ProcessOxygen()
+	stormfox2()
+	spacebuild()
+	Temperature()
+	Oxygen()
 	
 end
 hook.Add("Tick", "atmosphericLoop", Atmosphere)
@@ -42,7 +42,7 @@ function Pressure()
 	SetGlobalFloat("gDisasters_Pressure", GLOBAL_SYSTEM["Atmosphere"]["Pressure"])
 end
 
-function gDisasters_stormfox2()
+function stormfox2()
 	if GetConVar("gdisasters_graphics_stormfox"):GetInt() >= 1 then 
 		
 		if Stormfox then 
@@ -92,7 +92,7 @@ function gDisasters_stormfox2()
 	end
 end
 
-function gDisasters_spacebuild()
+function spacebuild()
 	if GetConVar("gdisasters_sb_enabled"):GetInt() <= 0 then return end
 	if CAF or LS then  
 		for k, v in pairs(player.GetAll()) do
@@ -111,7 +111,7 @@ function gDisasters_spacebuild()
 	end
 end
 
-function gDisasters_ProcessTemperature()
+function Temperature()
 
 	local temp = GLOBAL_SYSTEM["Atmosphere"]["Temperature"]
 	local humidity = GLOBAL_SYSTEM["Atmosphere"]["Humidity"]
@@ -180,7 +180,10 @@ function gDisasters_ProcessTemperature()
 		
 		if GetConVar("gdisasters_hud_temp_damage"):GetInt() == 0 then return end
 		
+		
 		for k, v in pairs(plytbl) do
+
+			if GetConVar("gdisasters_hud_temp_value"):GetInt() <= 0 then return end
 		
 			local wl = isinWater(v)	
 			local lv = isinLava(v)
@@ -441,7 +444,7 @@ function gDisasters_ProcessTemperature()
 	damagePlayersAndNpc()
 end
 
-function gDisasters_ProcessOxygen()
+function Oxygen()
     if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() <= 0 then return end
 
     for k, v in pairs(player.GetAll()) do
@@ -467,7 +470,7 @@ function gDisasters_ProcessOxygen()
         else
             v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen + 0.1, 0,10)
         end
-		
+
 		v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
     end
     for k, v in pairs(ents.FindByClass("npc_*")) do           
