@@ -590,7 +590,7 @@ function hud_DrawBasicINFO()
 				g3 = 224
 				b3 = 245
 			end
-			drawPercentageBox( 0, 577, 1020, 22, 150, 0, 10, body_Oxygen, Color( r3, g3, b3, 200))
+			drawPercentageBox( 0, 577, 1020, 22, 150, 0, 100, body_Oxygen, Color( r3, g3, b3, 200))
 		end
 		drawHumidityBar()
 		drawOxygenBar()	

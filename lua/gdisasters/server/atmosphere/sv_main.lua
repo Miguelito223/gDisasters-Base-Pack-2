@@ -451,7 +451,7 @@ function Oxygen()
         if GetConVar("gdisasters_sb_enabled"):GetInt() >= 1 then return end
 
         if isUnderWater(v) or isUnderLava(v) then 
-            v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen - 0.01, 0,10) 
+            v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.05 ,0,100 ) 
 
             if v.gDisasters.Body.Oxygen <= 0 then
             
@@ -468,7 +468,7 @@ function Oxygen()
             
             end
         else
-            v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen + 0.1, 0,10)
+            v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen + 0.5 , 0,100 )
         end
 
 		v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)

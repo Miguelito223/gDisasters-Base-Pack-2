@@ -4,7 +4,7 @@ function gDisasters_PostSpawn(ply)
 	local function gDisasters_SetupBodyVariables()
 		ply.gDisasters.Body = {}
 		ply.gDisasters.Body.Temperature = 37
-		ply.gDisasters.Body.Oxygen      = 10
+		ply.gDisasters.Body.Oxygen      = 100
 		
 	end
 	local function gDisasters_SetupAreaVariables()
@@ -30,6 +30,6 @@ hook.Add( "PlayerInitialSpawn", "gDisasters_PostSpawn", gDisasters_PostSpawn )
 
 function gDisasters_OnSpawn_Reset( ply )
 	ply.gDisasters.Body.Temperature = 37 
-	ply.gDisasters.Body.Oxygen      = 10
+	ply.gDisasters.Body.Oxygen      = 100
 end
 hook.Add( "PlayerSpawn", "gDisasters_OnSpawn_Reset", gDisasters_OnSpawn_Reset )
