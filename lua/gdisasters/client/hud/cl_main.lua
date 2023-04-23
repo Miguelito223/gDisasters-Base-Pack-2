@@ -573,7 +573,7 @@ function hud_DrawBasicINFO()
 
 		local function drawOxygenBar()
 
-			if body_Oxygen <= oxygen_min and body_Oxygen > 2 then
+			if body_Oxygen <= oxygen_min and body_Oxygen > 5 then
 				r3 = 34
 				g3 = 113
 				b3 = 179
@@ -581,7 +581,7 @@ function hud_DrawBasicINFO()
 				r3 = 0
 				g3 = 170
 				b3 = 228
-			elseif body_Oxygen <= 2 then
+			elseif body_Oxygen <= 5 then
 				r3 = 37
 				g3 = 40
 				b3 = 80
