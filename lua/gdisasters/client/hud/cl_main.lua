@@ -470,7 +470,7 @@ function hud_DrawBasicINFO()
 		local hypo_min, hypo_max     = 24,   36.5
 		local safe_c_min, safe_c_max = 35.5, 38
 		local hyper_min, hyper_max   = 38,   44
-		local oxygen_min, oxygen_max   = 5,   10
+		local oxygen_min, oxygen_max   = 10,   50
 		
 		local r, g, b                   = 0, 0, 0
 		local r2, g2, b2                = 0, 0, 0
