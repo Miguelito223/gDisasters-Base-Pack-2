@@ -123,11 +123,12 @@ function Temperature()
 
 	SetGlobalFloat("gDisasters_Temperature", temp)
 
-	if GetConVar("gdisasters_hud_temp_enable"):GetInt() == 0 then return end
-				
+	if GetConVar("gdisasters_hud_temp_enable"):GetInt() <= 0 then return end
+
 	local function updateVars()
+
 		if GetConVar("gdisasters_hud_temp_value"):GetInt() <= 0 then return end
-		
+
 		for k, v in pairs(plytbl) do
 			local closest_vfire, distance  = FindNearestEntity(v, "vfire") -- find closest fire entity
 			local closest_fire, distance_2 = FindNearestEntity(v, "entityflame")
@@ -178,7 +179,7 @@ function Temperature()
 	
 	local function damagePlayersAndNpc()
 		
-		if GetConVar("gdisasters_hud_temp_damage"):GetInt() == 0 then return end
+		if GetConVar("gdisasters_hud_temp_damage"):GetInt() <= 0 then return end
 		
 		
 		for k, v in pairs(plytbl) do

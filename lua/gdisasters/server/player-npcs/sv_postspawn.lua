@@ -5,6 +5,12 @@ function gDisasters_PostSpawn(ply)
 		ply.gDisasters.Body = {}
 		ply.gDisasters.Body.Temperature = 37
 		ply.gDisasters.Body.Oxygen      = 100
+
+		if GetConVar("gdisasters_hud_temp_enable"):GetInt() <= 0 or GetConVar("gdisasters_hud_temp_value"):GetInt() <= 0 then 
+			ply:SetNWFloat("BodyTemperature", v.gDisasters.Body.Temperature)
+		elseif GetConVar("gdisasters_hud_oxygen_enable"):GetInt() <= 0 then
+			ply:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
+		end
 		
 	end
 	local function gDisasters_SetupAreaVariables()
@@ -31,5 +37,11 @@ hook.Add( "PlayerInitialSpawn", "gDisasters_PostSpawn", gDisasters_PostSpawn )
 function gDisasters_OnSpawn_Reset( ply )
 	ply.gDisasters.Body.Temperature = 37 
 	ply.gDisasters.Body.Oxygen      = 100
+
+	if GetConVar("gdisasters_hud_temp_enable"):GetInt() <= 0 or GetConVar("gdisasters_hud_temp_value"):GetInt() <= 0 then 
+		ply:SetNWFloat("BodyTemperature", v.gDisasters.Body.Temperature)
+	elseif GetConVar("gdisasters_hud_oxygen_enable"):GetInt() <= 0 then
+		ply:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
+	end
 end
 hook.Add( "PlayerSpawn", "gDisasters_OnSpawn_Reset", gDisasters_OnSpawn_Reset )
