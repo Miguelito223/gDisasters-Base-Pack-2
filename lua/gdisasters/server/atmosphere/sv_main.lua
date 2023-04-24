@@ -52,7 +52,6 @@ end
 
 function BRadiation()
 	local BRadiation = GLOBAL_SYSTEM["Atmosphere"]["BRadiation"]
-	
 	SetGlobalFloat("gDisasters_BRadiation", BRadiation)
 
 	function DamagePlayer()
