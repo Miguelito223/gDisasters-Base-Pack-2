@@ -56,7 +56,7 @@ function BRadiation()
 	SetGlobalFloat("gDisasters_BRadiation", BRadiation)
 
 	function DamagePlayer()
-		for k , v in pairs(player.GetAll)
+		for k , v in pairs(player.GetAll) do
 			if BRadiation >= 80 then
 				if HitChance(0.5) then
 					InflictDamage(v, v, "acid", 4)
