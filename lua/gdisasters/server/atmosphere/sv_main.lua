@@ -403,7 +403,7 @@ end
 function Oxygen()
 
 	local oxygen = GLOBAL_SYSTEM["Atmosphere"]["Oxygen"]
-	SetGlobalFloat("gDisasters_Temperature", oxygen)
+	SetGlobalFloat("gDisasters_Oxygen", oxygen)
 
     if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() <= 0 then return end
 
