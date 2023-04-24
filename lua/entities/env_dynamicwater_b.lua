@@ -181,7 +181,7 @@ end
 function ENT:PlayerOxygen(v, scalar, t)
 	if v.IsInWater then
 		
-		gDisasters_ProcessOxygen()
+		Oxygen()
 	
 	end
 end
