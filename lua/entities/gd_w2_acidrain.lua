@@ -156,34 +156,9 @@ function ENT:AffectPlayers()
 				net.WriteVector(Vector(0,math.random(0,200)/100,0))
 				net.Send(v)	
 			end
-			
-			if HitChance(0.5) then
-			
-				InflictDamage(v, self, "acid", 4)
-			
-			end
+		
 			
 		end
-	end
-end
-
-function ENT:AffectNpcs()
-	for k, v in pairs(ents.GetAll()) do
-		if isOutdoor(v, true) then
-			if v:IsNPC() or v:IsNextBot() then 
-				if v:IsValid() then
-					if math.random(1,50)== 1 then
-						InflictDamage(v, self, "acid", math.random(1, 3))
-					end	
-				end
-			else
-				if GetConVar("gdisasters_weather_acidraindamageprops"):GetInt() >= 1 and v:IsValid() then 
-					if math.random(1,50)== 1 then
-						InflictDamage(v, self, "acid", math.random(1, 3))
-					end	
-				end
-			end
-		end	
 	end
 end
 
@@ -214,7 +189,6 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		self:AffectPlayers()		
-		self:AffectNpcs()
 		self:SpawnAcid()
 		self:NextThink(CurTime() + 0.01)
 		return true
