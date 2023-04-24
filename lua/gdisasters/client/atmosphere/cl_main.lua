@@ -1,13 +1,13 @@
 function Atmosphere()
 	
-	gDisasters_WindControl()
+	WindControl()
 	
 end
 hook.Add("Tick", "atmosphericLoop", Atmosphere)
 
 
 
-function gDisasters_WindControl()
+function WindControl()
 	if LocalPlayer().gDisasters == nil then return end
 	if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 	
