@@ -428,7 +428,7 @@ function Oxygen()
             
             end
 		elseif oxygen <= 20 then
-			v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.001 ,0,100 ) 
+			v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.01 ,0,100 ) 
 			
 			if v.NextChokeOnAsh == nil then v.NextChokeOnAsh = CurTime() end
 	
@@ -442,7 +442,14 @@ function Oxygen()
 			end
 			
             if v.gDisasters.Body.Oxygen <= 0 then    
-                if v:Alive() then v:Kill() end
+                if math.random(1, 50)==1 then
+                    local dmg = DamageInfo()
+                    dmg:SetDamage( math.random(1,25) )
+                    dmg:SetAttacker( v )
+                    dmg:SetDamageType( DMG_DROWN  )
+                
+                    v:TakeDamageInfo(  dmg)
+                end
             end
         else
             v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen + 0.5 , 0,100 )
