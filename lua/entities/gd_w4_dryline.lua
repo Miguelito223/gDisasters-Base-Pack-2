@@ -155,7 +155,7 @@ function ENT:StateProcessor()
 end
 
 function ENT:IncomingOutflow()
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(15,25),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 98000, ["Temperature"] = math.random(34,38), ["Humidity"]    = math.random(34,40), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(15,25),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 98000, ["Temperature"] = math.random(34,38), ["Humidity"]    = math.random(34,40), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 	
 	setMapLight("z")
 	
@@ -167,7 +167,7 @@ end
 			
 			
 function ENT:PassageStart()
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(27,29),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 124000, ["Temperature"] = math.random(48,51), ["Humidity"]    = math.random(7,15), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(27,29),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 124000, ["Temperature"] = math.random(48,51), ["Humidity"]    = math.random(7,15), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
     setMapLight("d")
 
@@ -210,7 +210,7 @@ end
 
 function ENT:PassOver()
 
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(25,29),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 66000, ["Temperature"] = math.random(26,29), ["Humidity"]    = math.random(12,16), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(25,29),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 66000, ["Temperature"] = math.random(26,29), ["Humidity"]    = math.random(12,16), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 		
 	setMapLight("a")
 	
@@ -283,7 +283,7 @@ function ENT:PassOver()
 
 function ENT:AfterFront()
 
-    GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(2,3),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 3000, ["Temperature"] = math.random(8,14), ["Humidity"]    = math.random(4,11), ["BRadiation"]  = 0.1}}
+    GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(2,3),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 3000, ["Temperature"] = math.random(8,14), ["Humidity"]    = math.random(4,11), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 	
     setMapLight("z")
 	

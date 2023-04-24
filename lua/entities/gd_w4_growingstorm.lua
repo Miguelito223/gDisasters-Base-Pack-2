@@ -144,7 +144,7 @@ function ENT:StateProcessor()
 end
 
 function ENT:Cloudy()
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(2,5),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 98000, ["Temperature"] = math.random(20,21), ["Humidity"]    = math.random(42,45), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(2,5),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 98000, ["Temperature"] = math.random(20,21), ["Humidity"]    = math.random(42,45), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
 	
 end
@@ -195,7 +195,7 @@ end
 			
 			
 function ENT:Squall()
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(34,38),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 97000, ["Temperature"] = math.random(14,16), ["Humidity"]    = math.random(62,75), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(34,38),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 97000, ["Temperature"] = math.random(14,16), ["Humidity"]    = math.random(62,75), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
 	for k, v in pairs(player.GetAll()) do
 
@@ -241,7 +241,7 @@ end
 
 function ENT:LightRaining()
 
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(34,38),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 96000, ["Temperature"] = math.random(13,16), ["Humidity"]    = math.random(72,76), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(34,38),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 96000, ["Temperature"] = math.random(13,16), ["Humidity"]    = math.random(72,76), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
  
 	for k, v in pairs(player.GetAll()) do
@@ -291,7 +291,7 @@ end
 
 function ENT:LRHRT()
 
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(12,27),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 95000, ["Temperature"] = math.random(8,11), ["Humidity"]    = math.random(92,93), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(12,27),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 95000, ["Temperature"] = math.random(8,11), ["Humidity"]    = math.random(92,93), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
 	
 	for k, v in pairs(player.GetAll()) do
@@ -380,7 +380,7 @@ function ENT:HeavyRain()
 
 
 
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(27,30),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 90000, ["Temperature"] = math.random(10,13), ["Humidity"]    = math.random(82,85), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(27,30),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 90000, ["Temperature"] = math.random(10,13), ["Humidity"]    = math.random(82,85), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
     
 
 	for k, v in pairs(player.GetAll()) do
@@ -457,7 +457,7 @@ function ENT:TornadoForm()
 
     
 
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(45,67),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 90000, ["Temperature"] = math.random(10,13), ["Humidity"]    = math.random(82,85), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(45,67),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 90000, ["Temperature"] = math.random(10,13), ["Humidity"]    = math.random(82,85), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 	if(!recentTor) then
 	Tornadospawn()
 	return end

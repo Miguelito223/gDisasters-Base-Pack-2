@@ -130,7 +130,7 @@ function ENT:OnStateChange(next_state)
 		setMapLight("z")
 		gDisasters_ResetGlobalOutsideFactor()
 		gDisasters_CreateGlobalGFX("heatwave", self)
-		GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(64,81),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 100000, ["Temperature"] = math.random(43,49), ["Humidity"]    = math.random(0,1), ["BRadiation"]  = 0.1}}
+		GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(64,81),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 100000, ["Temperature"] = math.random(43,49), ["Humidity"]    = math.random(0,1), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
 	end
 	
@@ -176,7 +176,7 @@ function ENT:StateProcessor()
 end
 
 function ENT:LightRaining()
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(8,10),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 98000, ["Temperature"] = math.random(15,16), ["Humidity"]    = math.random(42,45), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(8,10),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 98000, ["Temperature"] = math.random(15,16), ["Humidity"]    = math.random(42,45), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
 	for k, v in pairs(player.GetAll()) do
 
@@ -287,7 +287,7 @@ end
 			
 			
 function ENT:LRTF()
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(24,28),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 99000, ["Temperature"] = math.random(17,19), ["Humidity"]    = math.random(32,25), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(24,28),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 99000, ["Temperature"] = math.random(17,19), ["Humidity"]    = math.random(32,25), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
 	for k, v in pairs(player.GetAll()) do
 
@@ -335,7 +335,7 @@ end
 
 function ENT:MediumWind()
 
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(44,51),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 100000, ["Temperature"] = math.random(25,33), ["Humidity"]    = math.random(15,13), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(44,51),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 100000, ["Temperature"] = math.random(25,33), ["Humidity"]    = math.random(15,13), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
 	
 	

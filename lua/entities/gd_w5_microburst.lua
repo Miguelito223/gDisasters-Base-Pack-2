@@ -129,7 +129,7 @@ function ENT:StateProcessor()
 end
 
 function ENT:LightRaining()
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(8,10),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 98000, ["Temperature"] = math.random(18,20), ["Humidity"]    = math.random(42,45), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(8,10),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 98000, ["Temperature"] = math.random(18,20), ["Humidity"]    = math.random(42,45), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
 	for k, v in pairs(player.GetAll()) do
 
@@ -240,7 +240,7 @@ end
 			
 			
 function ENT:LRMRTransition()
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(24,28),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 97000, ["Temperature"] = math.random(14,16), ["Humidity"]    = math.random(62,75), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(24,28),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 97000, ["Temperature"] = math.random(14,16), ["Humidity"]    = math.random(62,75), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
 	for k, v in pairs(player.GetAll()) do
 
@@ -306,7 +306,7 @@ end
 
 function ENT:ModerateRaining()
 
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(44,68),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 96000, ["Temperature"] = math.random(10,13), ["Humidity"]    = math.random(82,85), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(44,68),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 96000, ["Temperature"] = math.random(10,13), ["Humidity"]    = math.random(82,85), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
 	for k, v in pairs(player.GetAll()) do
 
@@ -352,7 +352,7 @@ end
 
 function ENT:HeavyRaining()
 
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(98,100),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 20000, ["Temperature"] = math.random(6,12), ["Humidity"]    = math.random(95,98), ["BRadiation"]  = 0.1}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(98,100),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 20000, ["Temperature"] = math.random(6,12), ["Humidity"]    = math.random(95,98), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
 	
 	for k, v in pairs(player.GetAll()) do

@@ -24,7 +24,7 @@ if (CLIENT) then
 	
 	if (SERVER) then
 	
-		GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(1,3),["Direction"]=Vector(0,0,0)}, ["Pressure"]    = 103000, ["Temperature"] = math.random(5,10), ["Humidity"]    = math.random(10,25), ["BRadiation"]  = 0.1}}
+		GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(1,3),["Direction"]=Vector(0,0,0)}, ["Pressure"]    = 103000, ["Temperature"] = math.random(5,10), ["Humidity"]    = math.random(10,25), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
 			
 		self:SetModel(self.Model)
