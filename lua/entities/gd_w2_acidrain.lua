@@ -24,7 +24,7 @@ function ENT:Initialize()
 	
 	if (SERVER) then
 
-		GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(5,15),["Direction"]=Vector(1,0,0)}, ["Pressure"]    = 96000, ["Temperature"] = math.random(10,25), ["Humidity"]    = math.random(10,45), ["BRadiation"]  = 100}}
+		GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(5,15),["Direction"]=Vector(1,0,0)}, ["Pressure"]    = 96000, ["Temperature"] = math.random(10,25), ["Humidity"]    = math.random(10,45), ["BRadiation"]  = 100, ["Oxygen"]  = 100}}
 
 		self:SetModel(self.Model)
 		self:PhysicsInit( SOLID_VPHYSICS )
