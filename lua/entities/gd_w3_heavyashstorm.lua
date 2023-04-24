@@ -26,7 +26,7 @@ function ENT:Initialize()
 	
 	if (SERVER) then
 	
-		GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=50,["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 101000, ["Temperature"] = math.random(35,38), ["Humidity"]    = math.random(2,5), ["BRadiation"]  = 0.1}}
+		GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=50,["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 101000, ["Temperature"] = math.random(35,38), ["Humidity"]    = math.random(2,5), ["BRadiation"]  = 0.1, ["Oxygen"] = 5}}
 		
 		self:SetModel(self.Model)
 		self:PhysicsInit( SOLID_VPHYSICS )
@@ -102,22 +102,7 @@ function ENT:SpawnFunction( ply, tr )
 end
 
 
-function ENT:TryChokeOnAsh(v)
-	
-	if v.NextChokeOnAsh == nil then v.NextChokeOnAsh = CurTime() end
-	
-	if CurTime() >= v.NextChokeOnAsh then 
-		local mouth_attach = v:LookupAttachment("mouth")
-		ParticleEffectAttach( "cough_ash", PATTACH_POINT_FOLLOW, v, mouth_attach )
-		v:TakeDamage( math.random(8,10), self, self)
-		clPlaySound(v, "streams/disasters/player/cough.wav", math.random(80,120), 1)
-		
-		v.NextChokeOnAsh = CurTime() + math.random(3,7)
-	else
-	
-	end
-	
-end
+
 
 function ENT:AffectPlayers()
 
@@ -127,8 +112,7 @@ function ENT:AffectPlayers()
 	
 	for k, v in pairs(player.GetAll()) do
 		
-		
-		self:TryChokeOnAsh(v)
+	
 
 		if v.gDisasters.Area.IsOutdoor then
 			

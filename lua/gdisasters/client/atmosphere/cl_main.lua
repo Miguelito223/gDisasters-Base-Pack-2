@@ -1,7 +1,5 @@
 function Atmosphere()
-	
 	WindControl()
-	
 end
 hook.Add("Tick", "atmosphericLoop", Atmosphere)
 
@@ -44,8 +42,6 @@ function WindControl()
 	
 	
 end
-
-	
 
 	
 	

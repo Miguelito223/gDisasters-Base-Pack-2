@@ -2,18 +2,24 @@ SetGlobalFloat("gDisasters_Temperature", 0)
 SetGlobalFloat("gDisasters_Pressure", 0)
 SetGlobalFloat("gDisasters_Humidity", 0)
 SetGlobalFloat("gDisasters_Wind", 0)
+SetGlobalFloat("gDisasters_BRadiation", 0)
+SetGlobalFloat("gDisasters_Oxygen", 0)
 SetGlobalVector("gDisasters_Wind_Direction", Vector(0,0,0))
 
 function Atmosphere()
 	local scale                                = (1/engine.TickInterval()) / 66
 	GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Temperature"],-273.3, 273.3)
 	GLOBAL_SYSTEM["Atmosphere"]["Humidity"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Humidity"],0, 100)
+	GLOBAL_SYSTEM["Atmosphere"]["BRadiation"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["BRadiation"],0, 100)
+	GLOBAL_SYSTEM["Atmosphere"]["Oxygen"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Oxygen"],0, 100)
 	GLOBAL_SYSTEM["Atmosphere"]["Pressure"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Pressure"], 0, math.huge)
+	
 
 
 	Wind()
 	Pressure()
 	Humidity()
+	BRadiation()
 	AtmosphereFadeControl()
 	stormfox2()
 	spacebuild()
@@ -27,10 +33,12 @@ hook.Add("Tick", "atmosphericLoop", Atmosphere)
 function AtmosphereFadeControl()
 
 	GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"])
+	GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]=LerpVector(0.005, GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"], GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"])
 	GLOBAL_SYSTEM["Atmosphere"]["Pressure"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Pressure"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"])
+	GLOBAL_SYSTEM["Atmosphere"]["Oxygen"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Oxygen"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Oxygen"])
 	GLOBAL_SYSTEM["Atmosphere"]["Temperature"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Temperature"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"])
 	GLOBAL_SYSTEM["Atmosphere"]["Humidity"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Humidity"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"])
-	GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]=LerpVector(0.005, GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"], GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"])
+	GLOBAL_SYSTEM["Atmosphere"]["BRadiation"]    = Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["BRadiation"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["BRadiation"])
 
 end
 
@@ -42,71 +50,18 @@ function Pressure()
 	SetGlobalFloat("gDisasters_Pressure", GLOBAL_SYSTEM["Atmosphere"]["Pressure"])
 end
 
-function stormfox2()
-	if GetConVar("gdisasters_graphics_stormfox"):GetInt() >= 1 then 
-		
-		if Stormfox then 
-			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox.GetTemperature()
-			GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = convert_MetoKMPH(StormFox.GetNetworkData("Wind",0) * 0.75)
-			GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(-StormFox.GetWindVector().x, -StormFox.GetWindVector().y, 0)
-			
-			if !StormFox.IsRaining() then
-				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
-				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
-			else
-				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
-				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
-			end
-		
-			if StormFox.IsThunder() then
-				local ent = ents.FindByClass("gd_d3_lightningstorm")[1]
-				if !ent then return end
-				if ent:IsValid() then ent:Remove() end
-			end
-		elseif StormFox2 then
-			
-			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox2.Temperature.Get()
-			GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = convert_MetoKMPH(StormFox2.Wind.GetForce())
-			GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(-StormFox2.Wind.GetVector().x, -StormFox2.Wind.GetVector().y, 0)
-			
-			if !StormFox2.Weather.IsRaining() and !StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
-				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
-				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
-			elseif StormFox2.Weather.IsRaining() and StormFox2.Weather.GetRainAmount(1) then
-				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
-				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
-			elseif StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
-				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
-				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
-			else
-				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
-				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
-			end
-		
-			if StormFox2.Thunder.IsThundering() then
-				local ent = ents.FindByClass("gd_d3_lightningstorm")[1]
-				if !ent then return end
-				if ent:IsValid() then ent:Remove() end
-			end
-		end
-	end
-end
+function BRadiation()
+	local BRadiation = GLOBAL_SYSTEM["Atmosphere"]["BRadiation"]
+	
+	SetGlobalFloat("gDisasters_BRadiation", BRadiation)
 
-function spacebuild()
-	if GetConVar("gdisasters_sb_enabled"):GetInt() <= 0 then return end
-	if CAF or LS then  
-		for k, v in pairs(player.GetAll()) do
-			v.gDisasters.Body.Oxygen = v.suit.air
-			v.gDisasters.Body.Energy = v.suit.energy
-			v.gDisasters.Body.Coolant = v.suit.coolant
-
-			v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
-			v:SetNWFloat("BodyTemperature", v.gDisasters.Body.Temperature)
-			v:SetNWFloat("BodyEnergy", v.gDisasters.Body.Energy)
-			v:SetNWFloat("BodyCoolant", v.gDisasters.Body.Coolant)
-
-			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = convert_KevintoCelcius(v.caf.custom.ls.temperature)
-			
+	function DamagePlayer()
+		for k , v in pairs(player.GetAll)
+			if BRadiation >= 80 then
+				if HitChance(0.5) then
+					InflictDamage(v, v, "acid", 4)
+				end
+			end
 		end
 	end
 end
@@ -446,6 +401,10 @@ function Temperature()
 end
 
 function Oxygen()
+
+	local oxygen = GLOBAL_SYSTEM["Atmosphere"]["Oxygen"]
+	SetGlobalFloat("gDisasters_Temperature", oxygen)
+
     if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() <= 0 then return end
 
     for k, v in pairs(player.GetAll()) do
@@ -467,6 +426,23 @@ function Oxygen()
                     v:TakeDamageInfo(  dmg)
                 end
             
+            end
+		elseif oxygen <= 20 then
+			v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.001 ,0,100 ) 
+			
+			if v.NextChokeOnAsh == nil then v.NextChokeOnAsh = CurTime() end
+	
+			if CurTime() >= v.NextChokeOnAsh then 
+				local mouth_attach = v:LookupAttachment("mouth")
+				ParticleEffectAttach( "cough_ash", PATTACH_POINT_FOLLOW, v, mouth_attach )
+				v:TakeDamage( math.random(9,14), self, self)
+				clPlaySound(v, "streams/disasters/player/cough.wav", math.random(80,120), 1)
+		
+				v.NextChokeOnAsh = CurTime() + math.random(3,8)
+			end
+			
+            if v.gDisasters.Body.Oxygen <= 0 then    
+                if v:Alive() then v:Kill() end
             end
         else
             v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen + 0.5 , 0,100 )
@@ -754,3 +730,71 @@ function Wind()
 	end
 end
 		
+function stormfox2()
+	if GetConVar("gdisasters_graphics_stormfox"):GetInt() >= 1 then 
+		
+		if Stormfox then 
+			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox.GetTemperature()
+			GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = convert_MetoKMPH(StormFox.GetNetworkData("Wind",0) * 0.75)
+			GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(-StormFox.GetWindVector().x, -StormFox.GetWindVector().y, 0)
+			
+			if !StormFox.IsRaining() then
+				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
+				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
+			else
+				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
+				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
+			end
+		
+			if StormFox.IsThunder() then
+				local ent = ents.FindByClass("gd_d3_lightningstorm")[1]
+				if !ent then return end
+				if ent:IsValid() then ent:Remove() end
+			end
+		elseif StormFox2 then
+			
+			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox2.Temperature.Get()
+			GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = convert_MetoKMPH(StormFox2.Wind.GetForce())
+			GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = Vector(-StormFox2.Wind.GetVector().x, -StormFox2.Wind.GetVector().y, 0)
+			
+			if !StormFox2.Weather.IsRaining() and !StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
+				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
+				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
+			elseif StormFox2.Weather.IsRaining() and StormFox2.Weather.GetRainAmount(1) then
+				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
+				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
+			elseif StormFox2.Weather.IsSnowing() and StormFox2.Weather.GetRainAmount(0) then
+				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = 100
+				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = 96000
+			else
+				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
+				GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
+			end
+		
+			if StormFox2.Thunder.IsThundering() then
+				local ent = ents.FindByClass("gd_d3_lightningstorm")[1]
+				if !ent then return end
+				if ent:IsValid() then ent:Remove() end
+			end
+		end
+	end
+end
+
+function spacebuild()
+	if GetConVar("gdisasters_sb_enabled"):GetInt() <= 0 then return end
+	if CAF or LS then  
+		for k, v in pairs(player.GetAll()) do
+			v.gDisasters.Body.Oxygen = v.suit.air
+			v.gDisasters.Body.Energy = v.suit.energy
+			v.gDisasters.Body.Coolant = v.suit.coolant
+
+			v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
+			v:SetNWFloat("BodyTemperature", v.gDisasters.Body.Temperature)
+			v:SetNWFloat("BodyEnergy", v.gDisasters.Body.Energy)
+			v:SetNWFloat("BodyCoolant", v.gDisasters.Body.Coolant)
+
+			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = convert_KevintoCelcius(v.caf.custom.ls.temperature)
+			
+		end
+	end
+end

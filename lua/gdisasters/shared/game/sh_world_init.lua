@@ -18,6 +18,8 @@ GLOBAL_SYSTEM = {
 						["Humidity"]    = 25,
 					
 						["BRadiation"]  = 0.1
+
+						["Oxygen"]  = 100
 				}
 				}
 				
@@ -35,6 +37,8 @@ GLOBAL_SYSTEM_TARGET = {
 						["Humidity"]    = 25,
 					
 						["BRadiation"]  = 0.1
+
+						["Oxygen"]  = 100
 				}
 				}
 				
@@ -52,6 +56,8 @@ GLOBAL_SYSTEM_ORIGINAL = {
 						["Humidity"]    = 25,
 					
 						["BRadiation"]  = 0.1
+
+						["Oxygen"]  = 100
 				}
 				}
 
