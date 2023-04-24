@@ -64,6 +64,7 @@ function BRadiation()
 			end
 		end
 	end
+	DamagePlayer()
 end
 
 function Temperature()
