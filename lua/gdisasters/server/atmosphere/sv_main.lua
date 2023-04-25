@@ -64,6 +64,13 @@ function BRadiation()
 				end
 			end
 		end
+		for k, v in pairs(ents.FindByClass("npc_*")) do           
+			if BRadiation >= 80 then
+				if HitChance(0.5) then
+					InflictDamage(v, v, "acid", 4)
+				end
+			end
+		end
 	end
 	DamagePlayer()
 end
@@ -134,7 +141,7 @@ function Temperature()
 	end
 	
 	
-	local function damagePlayersAndNpc()
+	local function DamagePlayer()
 		
 		if GetConVar("gdisasters_hud_temp_damage"):GetInt() <= 0 then return end
 		
@@ -399,84 +406,105 @@ function Temperature()
 	subzero_Effect()
 	GlobalBreathingEffect()
 	updateVars()
-	damagePlayersAndNpc()
+	DamagePlayer()
 end
 
 function Oxygen()
 
 	local oxygen = GLOBAL_SYSTEM["Atmosphere"]["Oxygen"]
 	SetGlobalFloat("gDisasters_Oxygen", oxygen)
-
-    if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() <= 0 then return end
-
-    for k, v in pairs(player.GetAll()) do
-        if GetConVar("gdisasters_sb_enabled"):GetInt() >= 1 then return end
-
-        if isUnderWater(v) or isUnderLava(v) then 
-            v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.05 ,0,100 ) 
-
-            if v.gDisasters.Body.Oxygen <= 0 then
-            
-                if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
-            
-                if math.random(1, 50)==1 then
-                    local dmg = DamageInfo()
-                    dmg:SetDamage( math.random(1,25) )
-                    dmg:SetAttacker( v )
-                    dmg:SetDamageType( DMG_DROWN  )
-                
-                    v:TakeDamageInfo(  dmg)
-                end
-            
-            end
-		elseif oxygen <= 20 then
-			v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.01 ,0,100 ) 
-			
-			if v.NextChokeOnAsh == nil then v.NextChokeOnAsh = CurTime() end
-	
-			if CurTime() >= v.NextChokeOnAsh then 
-				local mouth_attach = v:LookupAttachment("mouth")
-				ParticleEffectAttach( "cough_ash", PATTACH_POINT_FOLLOW, v, mouth_attach )
-				v:TakeDamage( math.random(9,14), self, self)
-				clPlaySound(v, "streams/disasters/player/cough.wav", math.random(80,120), 1)
-		
-				v.NextChokeOnAsh = CurTime() + math.random(3,8)
-			end
-			
-            if v.gDisasters.Body.Oxygen <= 0 then    
-                if math.random(1, 50)==1 then
-                    local dmg = DamageInfo()
-                    dmg:SetDamage( math.random(1,25) )
-                    dmg:SetAttacker( v )
-                    dmg:SetDamageType( DMG_DROWN  )
-                
-                    v:TakeDamageInfo(  dmg)
-                end
-            end
-        else
-            v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen + 0.5 , 0,100 )
-        end
-
-		v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
-    end
-    for k, v in pairs(ents.FindByClass("npc_*")) do           
-        if isinWater(v) or isinLava(v) then 
-            timer.Simple(5, function()
-                if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
-                
-				if math.random(1, 50)==1 and v:IsValid() then
-				    local dmg = DamageInfo()
-				    dmg:SetDamage( math.random(1,25) )
-				    dmg:SetAttacker( v )
-				    dmg:SetDamageType( DMG_DROWN  )
-                
-				    v:TakeDamageInfo(  dmg)
-                end
-            end)
-        
-        end
     
-    end
+	function DamagePlayer()
+
+		if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() <= 0 then return end
+
+		for k, v in pairs(player.GetAll()) do
+			if GetConVar("gdisasters_sb_enabled"):GetInt() >= 1 then return end
+		
+			if isUnderWater(v) or isUnderLava(v) then 
+				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.05 ,0,100 ) 
+			
+				if v.gDisasters.Body.Oxygen <= 0 then
+				
+					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
+				
+					if math.random(1, 50)==1 then
+						local dmg = DamageInfo()
+						dmg:SetDamage( math.random(1,25) )
+						dmg:SetAttacker( v )
+						dmg:SetDamageType( DMG_DROWN  )
+					
+						v:TakeDamageInfo(  dmg)
+					end
+				
+				end
+			elseif oxygen <= 20 then
+				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.01 ,0,100 ) 
+
+				if v.gDisasters.Body.Oxygen <= 0 then 
+
+					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end   
+
+					if math.random(1, 50)==1 then
+						local dmg = DamageInfo()
+						dmg:SetDamage( math.random(1,25) )
+						dmg:SetAttacker( v )
+						dmg:SetDamageType( DMG_DROWN  )
+					
+						v:TakeDamageInfo(  dmg)
+					end
+				end
+			else
+				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen + 0.5 , 0,100 )
+			end
+		
+			v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
+		end
+		for k, v in pairs(ents.FindByClass("npc_*")) do           
+			if isinWater(v) or isinLava(v) then 
+				timer.Simple(5, function()
+					
+					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
+
+					if math.random(1, 50)==1 and v:IsValid() then
+						local dmg = DamageInfo()
+						dmg:SetDamage( math.random(1,25) )
+						dmg:SetAttacker( v )
+						dmg:SetDamageType( DMG_DROWN  )
+					
+						v:TakeDamageInfo(  dmg)
+					end
+				end)
+			elseif oxygen <= 20 then
+
+				if v.NextChokeOnAsh == nil then v.NextChokeOnAsh = CurTime() end
+		
+				if CurTime() >= v.NextChokeOnAsh then 
+					local mouth_attach = v:LookupAttachment("mouth")
+					ParticleEffectAttach( "cough_ash", PATTACH_POINT_FOLLOW, v, mouth_attach )
+					v:TakeDamage( math.random(9,14), self, self)
+					clPlaySound(v, "streams/disasters/player/cough.wav", math.random(80,120), 1)
+			
+					v.NextChokeOnAsh = CurTime() + math.random(3,8)
+				end
+
+				timer.Simple(50, function()
+					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
+
+					if math.random(1, 50)==1 and v:IsValid() then
+						local dmg = DamageInfo()
+						dmg:SetDamage( math.random(1,25) )
+						dmg:SetAttacker( v )
+						dmg:SetDamageType( DMG_DROWN  )
+					
+						v:TakeDamageInfo(  dmg)
+					end
+				end)
+			end
+		
+		end
+	end
+	DamagePlayer()
 end
 
 function WindUnweld(ent)
