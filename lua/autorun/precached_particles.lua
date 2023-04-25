@@ -94,6 +94,8 @@ PrecacheParticleSystem("har_snownado")
 PrecacheParticleSystem("har_snownado_nocloud")
 PrecacheParticleSystem("har_waterspout")
 PrecacheParticleSystem("har_waterspout_nocloud")
+PrecacheParticleSystem("alien_tornado")
+
 -- ef2
 PrecacheParticleSystem("h_ef2")
 PrecacheParticleSystem("temp_EF2")

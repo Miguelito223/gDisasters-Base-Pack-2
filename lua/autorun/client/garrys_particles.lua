@@ -62,6 +62,8 @@ game.AddParticles( "particles/waterspout_effect.pcf" )
 game.AddParticles( "particles/waterspout_nocloud_effect.pcf" )
 game.AddParticles( "particles/landspout_effect.pcf" )
 game.AddParticles( "particles/landspout_nocloud_effect.pcf" )
+game.AddParticles( "particles/snownado_effect.pcf" )
+game.AddParticles( "particles/snownado_nocloud_effect.pcf" )
 game.AddParticles( "particles/tornado_effects_01.pcf") 
 game.AddParticles( "particles/tornado_effects_02.pcf") 
 game.AddParticles( "particles/tornado_effects_03.pcf")
@@ -75,6 +77,7 @@ game.AddParticles( "particles/firenado_hd.pcf")
 game.AddParticles( "particles/firenado_hf.pcf") 
 game.AddParticles( "particles/steam_devil.pcf")
 game.AddParticles( "particles/tornadoes.pcf")
+game.AddParticles( "particles/alien_tornado.pcf") 
 
 
 
