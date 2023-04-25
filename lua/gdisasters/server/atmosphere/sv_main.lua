@@ -62,14 +62,14 @@ function BRadiation()
 			if IsPlayer() or IsNPC() then
 				if BRadiation >= 80 and outdoor then
 					if HitChance(0.5) then
-					InflictDamage(v, v, "acid", 4)
+						InflictDamage(v, v, "acid", 4)
 					end
 				end
 			else
 				if GetConVar("gdisasters_weather_acidraindamageprops"):GetInt() >= 1 then return end 
 				if BRadiation >= 80 and outdoor then
 					if HitChance(0.5) then
-					InflictDamage(v, v, "acid", 4)
+						InflictDamage(v, v, "acid", 4)
 					end
 				end
 			end
