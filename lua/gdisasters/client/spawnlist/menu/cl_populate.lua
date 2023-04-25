@@ -261,6 +261,8 @@ TIER FOUR
 
 AddToGDSpawnMenu("Landspout", "gd_d4_landspout", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Landspout (Smart)", "gd_d4_landspout_pathed", "Disasters", "Tier 4", false)
+AddToGDSpawnMenu("Alien Tornado", "gd_d4_alien_tornado", "Disasters", "Tier 4", false)
+AddToGDSpawnMenu("Alien Tornado (Smart)", "gd_d4_alien_tornado_pathed", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("≈4.0 Magnitude Earthquake" , "gd_d4_rs4eq"         , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("EF1 Tornado"        , "gd_d4_ef1"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Megacryometeor"        , "gd_d4_mcryometeor"              , "Disasters", "Tier 4", false)
