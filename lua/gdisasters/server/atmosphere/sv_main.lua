@@ -71,6 +71,14 @@ function BRadiation()
 				end
 			end
 		end
+		for k, v in pairs(ents.GetAll()) do  
+			if GetConVar("gdisasters_weather_acidraindamageprops"):GetInt() >= 1 then return end     
+			if BRadiation >= 80 then
+				if HitChance(0.5) then
+					InflictDamage(v, v, "acid", 4)
+				end
+			end
+		end
 	end
 	DamagePlayer()
 end
