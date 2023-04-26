@@ -41,6 +41,7 @@ local function Autospawn_Timer()
 			}
 
 			local EF = ents.Create(table.Random(tornado))
+			if EF==nil then return end
 
 			EF:Spawn()
 			EF:SetPos(SkyPos)
@@ -110,9 +111,10 @@ local function Autospawn_Timer()
 			}
 
 			local dis = ents.Create(table.Random(disasters))
+			if dis==nil then return end
 
 			for k, v in pairs(ents.FindByClass("gd_d*")) do
-
+				
 				dis:SetPos(FloorPos)
 
 			end
@@ -277,6 +279,7 @@ local function Autospawn_Timer()
 			}
 
 			local wea = ents.Create(table.Random(weather))
+			if wea==nil then return end
 
 			wea:Spawn()
 			wea:SetPos(SkyPos)
@@ -421,6 +424,7 @@ local function Autospawn_Timer()
 			}
 
 			local weadis = ents.Create(table.Random(weadisas))
+			if weadis==nil then return end
 
 			for k, v in pairs(ents.FindByClass("gd_d*")) do
 
