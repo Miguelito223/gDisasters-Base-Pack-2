@@ -74,7 +74,7 @@ function BRadiation()
 			end
 		end
 		for k, v in pairs(ents.GetAll()) do 
-			if GetConVar("gdisasters_weather_acidraindamageprops"):GetInt() >= 1 then return end 
+			if GetConVar("gdisasters_weather_acidraindamageprops"):GetInt() <= 0 then return end 
 			local outdoor = isOutdoor(v)
 			if BRadiation >= 80 and outdoor then
 				if HitChance(0.5) then
