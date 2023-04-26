@@ -57,23 +57,30 @@ function BRadiation()
 	SetGlobalFloat("gDisasters_BRadiation", BRadiation)
 
 	function DamagePlayer()
-		for k, v in pairs(ents.GetAll()) do 
-			local outdoor = isOutdoor(v) 
-			if IsPlayer() or IsNPC() then
-				if BRadiation >= 80 and outdoor then
-					if HitChance(0.5) then
-						InflictDamage(v, v, "acid", 4)
-					end
-				end
-			else
-				if GetConVar("gdisasters_weather_acidraindamageprops"):GetInt() >= 1 then return end 
-				if BRadiation >= 80 and outdoor then
-					if HitChance(0.5) then
-						InflictDamage(v, v, "acid", 4)
-					end
+		for k, v in pairs(player.GetAll) do
+			local outdoor = isOutdoor(v)
+			if BRadiation >= 80 and outdoor then
+				if HitChance(0.5) then
+					InflictDamage(v, v, "acid", 4)
 				end
 			end
-			
+		end
+		for k, v in pairs(ents.FindByClass("npc_")) do
+			local outdoor = isOutdoor(v)
+			if BRadiation >= 80 and outdoor then
+				if HitChance(0.5) then
+					InflictDamage(v, v, "acid", 4)
+				end
+			end
+		end
+		for k, v in pairs(ents.GetAll()) do 
+			if GetConVar("gdisasters_weather_acidraindamageprops"):GetInt() >= 1 then return end 
+			local outdoor = isOutdoor(v)
+			if BRadiation >= 80 and outdoor then
+				if HitChance(0.5) then
+					InflictDamage(v, v, "acid", 4)
+				end
+			end
 		end
 	end
 	DamagePlayer()
