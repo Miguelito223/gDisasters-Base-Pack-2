@@ -162,6 +162,7 @@ AddToGDSpawnMenu("Category 5 Hurricane", "gd_w5_catfivehurricane", "Weather", "T
 AddToGDSpawnMenu("Beaufort 8 Wind (Gale, Fresh Gale)", "gd_w5_beaufort8", "Weather", "Tier 5", false)
 AddToGDSpawnMenu("Beaufort 9 Wind (Strong Gale, Severe Gale)", "gd_w5_beaufort9", "Weather", "Tier 5",false)
 AddToGDSpawnMenu("Extreme Breeze" , "gd_w6_extremebreeze" , "Weather", "Tier 5", false)
+AddToGDSpawnMenu("Wet Pyrocumulus" , "gd_w5_pyrocum_wet" , "Weather", "Tier 5", false)
 AddToGDSpawnMenu("Downburst" , "gd_w5_downburst"    , "Weather", "Tier 5", false)
 AddToGDSpawnMenu("Microburst" , "gd_w5_microburst"    , "Weather", "Tier 5", false)
 AddToGDSpawnMenu("Macroburst" , "gd_w5_macroburst"    , "Weather", "Tier 5", false)
@@ -228,7 +229,8 @@ AddToGDSpawnMenu("Micro Firenado"        , "gd_d2_mfirenado"              , "Dis
 AddToGDSpawnMenu("Gustnado (Smart)"         , "gd_d2_gustnado_pathed"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Plant Appocolapse"         , "gd_d2_planttakeover"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Shooting Star"         , "gd_d2_shootingstar"			, "Disasters", "Tier 2", false)
-AddToGDSpawnMenu("Shooting Star Shower (No Climate Change)", "gd_d2_shootingstarshower", "Disasters", "Tier 2", false)
+AddToGDSpawnMenu("Shooting Star"         , "gd_d2_shootingstar"			, "Disasters", "Tier 2", false)
+AddToGDSpawnMenu("Funnel", "gd_d2_funnel", "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Hail Stone"         , "gd_d2_hail"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Waterspout", "gd_d2_waterspout" , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Waterspout (Smart)", "gd_d2_waterspout_pathed" , "Disasters", "Tier 2", false)
@@ -261,8 +263,6 @@ TIER FOUR
 
 AddToGDSpawnMenu("Landspout", "gd_d4_landspout", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Landspout (Smart)", "gd_d4_landspout_pathed", "Disasters", "Tier 4", false)
-AddToGDSpawnMenu("Alien Tornado", "gd_d4_alien_tornado", "Disasters", "Tier 4", false)
-AddToGDSpawnMenu("Alien Tornado (Smart)", "gd_d4_alien_tornado_pathed", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("≈4.0 Magnitude Earthquake" , "gd_d4_rs4eq"         , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("EF1 Tornado"        , "gd_d4_ef1"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Megacryometeor"        , "gd_d4_mcryometeor"              , "Disasters", "Tier 4", false)
@@ -275,6 +275,8 @@ DISASTERS
 TIER FIVE
 --]]
 
+AddToGDSpawnMenu("Alien Tornado", "gd_d5_alien_tornado", "Disasters", "Tier 5", false)
+AddToGDSpawnMenu("Alien Tornado (Smart)", "gd_d5_alien_tornado_pathed", "Disasters", "Tier 5", false)
 AddToGDSpawnMenu("EF2 Tornado"           , "gd_d5_ef2"           , "Disasters", "Tier 5", false)
 AddToGDSpawnMenu("≈5.0 Magnitude Earthquake" , "gd_d5_rs5eq"         , "Disasters", "Tier 5", false)
 AddToGDSpawnMenu("Mini Firenado" , "gd_d5_mfirenado"         , "Disasters", "Tier 5", false)
