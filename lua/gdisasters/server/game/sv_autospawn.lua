@@ -422,7 +422,9 @@ local function Autospawn_Timer()
 				"gd_d2_waterspout",
 				"gd_d3_lava_flashflood",
 				"gd_d8_combineinv",
-				"gd_d8_lava_tsunami"
+				"gd_d8_lava_tsunami",
+				"gd_d10_megatsunami",
+				"gd_d10_lava_megatsunami"
 			}
 
 			local weadis = ents.Create(table.Random(weadisas))
