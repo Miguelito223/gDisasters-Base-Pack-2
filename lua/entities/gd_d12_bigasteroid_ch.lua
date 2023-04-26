@@ -214,13 +214,13 @@ function ENT:Think()
 	if (SERVER) then
 		if isinWater(self) or isUnderWater(self) then
 			self:Explode()
-			local ent = ents.Create("gd_d7_tsunami")
+			local ent = ents.Create("gd_d10_megatsunami")
 			ent:Spawn()
 			ent:Activate()
 		end
 		if isinLava(self) or isUnderLava(self) then
 			self:Explode()
-			local ent = ents.Create("gd_d8_lavatsunami")
+			local ent = ents.Create("gd_d10_lava_megatsunami")
 			ent:Spawn()
 			ent:Activate()
 		end		
