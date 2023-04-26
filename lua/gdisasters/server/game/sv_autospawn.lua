@@ -105,9 +105,11 @@ local function Autospawn_Timer()
 				"gd_d1_steamdevil",
 				"gd_d3_landslide",
 				"gd_d2_waterspout",
-				"gd_d3_lavaflood",
+				"gd_d3_lava_flashflood",
 				"gd_d8_combineinv",
-				"gd_d8_lavatsunami"
+				"gd_d8_lava_tsunami",
+				"gd_d10_megatsunami",
+				"gd_d10_lava_megatsunami"
 			}
 
 			local dis = ents.Create(table.Random(disasters))
@@ -418,9 +420,9 @@ local function Autospawn_Timer()
 				"gd_d1_steamdevil",
 				"gd_d3_landslide",
 				"gd_d2_waterspout",
-				"gd_d3_lavaflood",
+				"gd_d3_lava_flashflood",
 				"gd_d8_combineinv",
-				"gd_d8_lavatsunami"
+				"gd_d8_lava_tsunami"
 			}
 
 			local weadis = ents.Create(table.Random(weadisas))
