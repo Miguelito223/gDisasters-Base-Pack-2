@@ -57,7 +57,7 @@ function BRadiation()
 	SetGlobalFloat("gDisasters_BRadiation", BRadiation)
 
 	function DamagePlayer()
-		for k, v in pairs(player.GetAll) do
+		for k, v in pairs(player.GetAll()) do
 			local outdoor = isOutdoor(v)
 			if BRadiation >= 80 and outdoor then
 				if HitChance(0.5) then
