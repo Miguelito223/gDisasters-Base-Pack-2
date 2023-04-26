@@ -39,7 +39,7 @@ function SWEP:PrimaryAttack()
 	local ply = self:GetOwner()
 	local airoxygen = math.Round(GLOBAL_SYSTEM["Atmosphere"]["Oxygen"],1)
 	local oxygen = math.Round(ply.gDisasters.Body.Oxygen,1)
-	ply:PrintMessage(HUD_PRINTCENTER, "Your Oxygen is: " .. oxygen .. " % Air Oxygen is: " .. airoxygen .. " %" )
+	ply:PrintMessage(HUD_PRINTCENTER, "Your Oxygen is: " .. oxygen .. " %, Air Oxygen is: " .. airoxygen .. " %" )
 end
 
 function SWEP:SecondaryAttack()
