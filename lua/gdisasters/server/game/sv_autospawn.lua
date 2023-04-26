@@ -48,7 +48,7 @@ local function Autospawn_Timer()
 
 			for k, ply in pairs(player.GetAll()) do
 				if GetConVar("gdisasters_autospawn_chat"):GetInt() <= 0 then return end
-				ply:ChatPrint("the disaster that is happening now: " .. EF.PrintName )
+				ply:PrintMessage(HUD_PRINTCENTER,"the disaster that is happening now: " .. EF.PrintName )
 			end
 
 		elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Disasters" then
@@ -192,7 +192,7 @@ local function Autospawn_Timer()
 
 			for k, ply in pairs(player.GetAll()) do
 				if GetConVar("gdisasters_autospawn_chat"):GetInt() <= 0 then return end
-				ply:ChatPrint("the disaster that is happening now: " .. dis.PrintName .. ", Position: " .. tostring(dis:GetPos()) )
+				ply:PrintMessage(HUD_PRINTCENTER,"the disaster that is happening now: " .. dis.PrintName .. ", Position: " .. tostring(dis:GetPos()) )
 			end
 
 			timer.Simple(GetConVar( "gdisasters_autospawn_remove_timer" ):GetInt(), function()
@@ -284,7 +284,7 @@ local function Autospawn_Timer()
 
 			for k, ply in pairs(player.GetAll()) do
 				if GetConVar("gdisasters_autospawn_chat"):GetInt() <= 0 then return end
-				ply:ChatPrint("the weather that is happening now: " .. wea.PrintName .. ", Position: " .. tostring(wea:GetPos()) )
+				ply:PrintMessage(HUD_PRINTCENTER,"the weather that is happening now: " .. wea.PrintName .. ", Position: " .. tostring(wea:GetPos()) )
 			end
 
 			timer.Simple(GetConVar( "gdisasters_autospawn_remove_timer" ):GetInt(), function()
@@ -509,7 +509,7 @@ local function Autospawn_Timer()
 
 			for k, ply in pairs(player.GetAll()) do
 				if GetConVar("gdisasters_autospawn_chat"):GetInt() <= 0 then return end
-				ply:ChatPrint("the weather or disaster that is happening now: " .. weadis.PrintName .. ", Position: " .. tostring(weadis:GetPos()))
+				ply:PrintMessage(HUD_PRINTCENTER,"the weather or disaster that is happening now: " .. weadis.PrintName .. ", Position: " .. tostring(weadis:GetPos()))
 			end
 
 			timer.Simple(GetConVar( "gdisasters_autospawn_remove_timer" ):GetInt(), function()
