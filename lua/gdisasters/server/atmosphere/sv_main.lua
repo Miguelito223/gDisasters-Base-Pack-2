@@ -451,22 +451,24 @@ function Oxygen()
 				end
 			elseif oxygen <= 20 then
 				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.01 ,0,100 ) 
+				
+				if v.NextChokeOnAsh == nil then v.NextChokeOnAsh = CurTime() end
+				
+				if CurTime() >= v.NextChokeOnAsh then 
+					local mouth_attach = v:LookupAttachment("mouth")
+					ParticleEffectAttach( "cough_ash", PATTACH_POINT_FOLLOW, v, mouth_attach )
+					v:TakeDamage( math.random(9,14), self, self)
+					clPlaySound(v, "streams/disasters/player/cough.wav", math.random(80,120), 1)
+				
+					v.NextChokeOnAsh = CurTime() + math.random(3,8)
+				end
 
 				if v.gDisasters.Body.Oxygen <= 0 then 
 
 					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end   
 					
-					if v.NextChokeOnAsh == nil then v.NextChokeOnAsh = CurTime() end
-					
-					if CurTime() >= v.NextChokeOnAsh then 
-						local mouth_attach = v:LookupAttachment("mouth")
-						ParticleEffectAttach( "cough_ash", PATTACH_POINT_FOLLOW, v, mouth_attach )
-						v:TakeDamage( math.random(9,14), self, self)
-						clPlaySound(v, "streams/disasters/player/cough.wav", math.random(80,120), 1)
-					
-						v.NextChokeOnAsh = CurTime() + math.random(3,8)
-					end
-					
+
+
 					if math.random(1, 50)==1 then
 						local dmg = DamageInfo()
 						dmg:SetDamage( math.random(1,25) )
