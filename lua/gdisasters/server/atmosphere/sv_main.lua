@@ -466,8 +466,6 @@ function Oxygen()
 				if v.gDisasters.Body.Oxygen <= 0 then 
 
 					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end   
-					
-
 
 					if math.random(1, 50)==1 then
 						local dmg = DamageInfo()
