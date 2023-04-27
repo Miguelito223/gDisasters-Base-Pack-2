@@ -458,7 +458,7 @@ function Oxygen()
 					local mouth_attach = v:LookupAttachment("mouth")
 					ParticleEffectAttach( "cough_ash", PATTACH_POINT_FOLLOW, v, mouth_attach )
 					v:TakeDamage( math.random(9,14), self, self)
-					clPlaySound(v, "streams/disasters/player/cough.wav", math.random(80,120), 1)
+					v:EmitSound("streams/disasters/player/cough.wav", 80, 100, 0.2)
 				
 					v.NextChokeOnAsh = CurTime() + math.random(3,8)
 				end
@@ -507,7 +507,7 @@ function Oxygen()
 					local mouth_attach = v:LookupAttachment("mouth")
 					ParticleEffectAttach( "cough_ash", PATTACH_POINT_FOLLOW, v, mouth_attach )
 					v:TakeDamage( math.random(9,14), self, self)
-					clPlaySound(v, "streams/disasters/player/cough.wav", math.random(80,120), 1)
+					v:EmitSound("streams/disasters/player/cough.wav", 80, 100, 0.2)
 			
 					v.NextChokeOnAsh = CurTime() + math.random(3,8)
 				end
