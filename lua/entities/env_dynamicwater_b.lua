@@ -178,14 +178,6 @@ function ENT:Expand()
 
 end
 
-function ENT:PlayerOxygen(v, scalar, t)
-	if v.IsInWater then
-		
-		Oxygen()
-	
-	end
-end
-
 
 function ENT:SetDistanceTravelled(float)
 
@@ -246,7 +238,6 @@ function ENT:ProcessEntitiesInWater()
 					if eye.z >= minz and eye.z <= zmax then
 						v:SetNWBool("IsUnderwater", true)		
 						v:SetNWFloat("ZWaterDepth",  math.Round(diff))
-						self:PlayerOxygen(v, scalar, 1)
 						
 						--v:SetMoveType(MOVETYPE_WALK)
 						
@@ -556,40 +547,6 @@ function ENT:StateHeightGain(alpha)
 	
 end
 
-
-
-function ENT:PlayerOxygen(v, scalar, t)
-
-	local sim_quality     = GetConVar( "gdisasters_envdynamicwater_simquality" ):GetFloat() --  original water simulation is based on a value of 0.01 ( which is alright but not for big servers ) 
-	local sim_quality_mod = sim_quality / 0.01
-
-	local overall_mod     = sim_quality_mod * scalar 
-	
-	if v.IsInWater then
-		if v.gDisasters.Body.Oxygen == nil then v.gDisasters.Body.Oxygen = 5 end 
-		
-		
-		v.gDisasters.Body.Oxygen = math.Clamp(v.gDisasters.Body.Oxygen - (engine.TickInterval() * overall_mod ), 0,10)
-		
-		
-		
-		if v.gDisasters.Body.Oxygen <= 0 then
-
-			if math.random(1,math.floor((100/overall_mod)))==1 then
-				
-				local dmg = DamageInfo()
-				dmg:SetDamage( math.random(1,25) )
-				dmg:SetAttacker( v )
-				dmg:SetDamageType( DMG_DROWN  )
-
-				v:TakeDamageInfo(  dmg)
-			end
-		
-		end
-	else
-		v.gDisasters.Body.Oxygen = 5
-	end
-end
 
 function ENT:StateWedgeDecreaseMain(alpha)
 

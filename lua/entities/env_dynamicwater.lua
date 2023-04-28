@@ -102,13 +102,6 @@ function ENT:FloodHeightIncrement(scalar, t)
 	self:SetNWFloat("FloodHeight", self.FloodHeight)
 end
 
-
-function ENT:PlayerOxygen(v, scalar, t)
-	if v.IsInWater then
-		Oxygen()
-	end
-end
-
 local ignore_ents ={
 ["phys_constraintsystem"]=true,
 ["phys_constraint"]=true,
@@ -145,8 +138,6 @@ function ENT:ProcessFlood(scalar, t)
 				
 				if eye.z >= pos.z and eye.z <= zmax then
 					v:SetNWBool("IsUnderwater", true)		
-					
-					self:PlayerOxygen(v, scalar, t)
 					v:SetNWInt("ZWaterDepth", diff)
 					
 					
