@@ -310,6 +310,7 @@ TIER SEVEN
 --]]
 
 AddToGDSpawnMenu("EF4 Tornado"           , "gd_d7_ef4"           , "Disasters", "Tier 7", false)
+AddToGDSpawnMenu("EF4 Tornado (Small)"           , "gd_d7_ef4_small"           , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("EF4 Tornado (Smart)"           , "gd_d7_ef4_pathed"           , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("≈7.0  Magnitude Earthquake" , "gd_d7_rs7eq"         , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("Custom Tsunami" , "gd_d7_custom_tsunami"         , "Disasters", "Tier 7", false)
@@ -322,6 +323,7 @@ TIER EIGHTTE
 --]]
 
 AddToGDSpawnMenu("EF5 Tornado"           , "gd_d8_ef5"           , "Disasters", "Tier 8", false)
+AddToGDSpawnMenu("EF5 Tornado (Small)"           , "gd_d8_ef5_small"           , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("EF5 Tornado (Smart)"   , "gd_d8_ef5_pathed"    , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("≈8.0 Magnitude Earthquake" , "gd_d8_rs8eq"         , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("Acient Volcano" , "gd_d8_ancientvolcano"         , "Disasters", "Tier 8", false)
