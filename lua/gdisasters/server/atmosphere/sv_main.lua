@@ -73,7 +73,7 @@ function BRadiation()
 				end
 			end
 		end
-		for k, v in pairs(ents.GetAll()) do 
+		for k, v in pairs(ents.FindByClass("prop_*")) do 
 			if GetConVar("gdisasters_weather_acidraindamageprops"):GetInt() <= 0 then return end 
 			local outdoor = isOutdoor(v, true)
 			if BRadiation >= 80 and outdoor then
