@@ -66,7 +66,7 @@ function BRadiation()
 			end
 		end
 		for k, v in pairs(ents.FindByClass("npc_")) do
-			local outdoor = isOutdoor(v)
+			local outdoor = isOutdoor(v, true)
 			if BRadiation >= 80 and outdoor then
 				if HitChance(0.5) then
 					InflictDamage(v, v, "acid", 4)
