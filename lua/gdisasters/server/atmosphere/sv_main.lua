@@ -65,7 +65,7 @@ function BRadiation()
 				end
 			end
 		end
-		for k, v in pairs(ents.FindByClass("npc_")) do
+		for k, v in pairs(ents.FindByClass("npc_*")) do
 			local outdoor = isOutdoor(v, true)
 			if BRadiation >= 80 and outdoor then
 				if HitChance(0.5) then
