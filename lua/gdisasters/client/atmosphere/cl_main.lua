@@ -1,7 +1,7 @@
 function Atmosphere()
 	WindControl()
 end
-hook.Add("Tick", "atmosphericLoop", Atmosphere)
+hook.Add("Think", "atmosphericLoop", Atmosphere)
 
 
 

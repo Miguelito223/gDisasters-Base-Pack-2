@@ -9,7 +9,6 @@ SetGlobalVector("gDisasters_Wind_Direction", Vector(0,0,0))
 
 
 function Atmosphere()
-	local scale                                = (1/engine.TickInterval()) / 66
 	GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Temperature"],-273.3, 273.3)
 	GLOBAL_SYSTEM["Atmosphere"]["Humidity"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Humidity"],0, 100)
 	GLOBAL_SYSTEM["Atmosphere"]["BRadiation"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["BRadiation"],0, 100)
@@ -29,7 +28,7 @@ function Atmosphere()
 	Oxygen()
 	
 end
-hook.Add("Tick", "atmosphericLoop", Atmosphere)
+hook.Add("Think", "atmosphericLoop", Atmosphere)
 
 
 function AtmosphereFadeControl()
