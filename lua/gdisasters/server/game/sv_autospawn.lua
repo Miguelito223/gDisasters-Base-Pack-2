@@ -286,7 +286,8 @@ local function Autospawn_Timer()
 				"gd_d1_aurora",
 				"gd_w7_neptune",
 				"gd_w7_redspot",
-				"gd_w7_hypercane"
+				"gd_w7_hypercane",
+				"gd_w5_pyrocum_wet"
 			}
 
 			local wea = ents.Create(table.Random(weather))
