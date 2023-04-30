@@ -947,16 +947,16 @@ hook.Add("Think", "gDisastersmapbounds", function()
 
 		function getMapBounds()
 			if IsMapRegistered()==false then print("S37K no have Bounds") return nil end
-
-			local floorpos = Vector(0, 0, -S37K.skyZ)
+			local map = game.GetMap()
+			local floorpos = Vector(0, 0, S37K.skyZ)
 
 			local tr = util.TraceLine({
-				start = floorpos,
-				endpos = floorpos + Vector(0,0,50000),
+				start = Vector(S37K.negativeX, S37K.negativeY, S37K.skyZ),
+				endpos = Vector(S37K.positiveX, S37K.positiveY, -S37K.skyZ),
 				mask = MASK_SOLID_BRUSHONLY
 			})
 
-			return {Vector(S37K.positiveX, S37K.positiveY, -S37K.skyZ), Vector(S37K.negativeX, S37K.negativeY, S37K.skyZ), tr.HitPos}
+			return { Vector(S37K.positiveX, S37K.positiveY, -S37K.skyZ), Vector(S37K.negativeX, S37K.negativeY, S37K.skyZ), tr.HitPos }
 		end
 
 		function getMapCeiling()
