@@ -441,7 +441,7 @@ function Temperature()
 	local function GlobalBreathingEffect()
 		if temp > 0 or GetConVar("gdisasters_hud_temp_breathing"):GetInt() == 0 then 
 			if timer.Exists("Breathing") then
-				timer.Destroy("Breathing")
+				timer.Remove("Breathing")
 			end
 		end
 	end
