@@ -527,68 +527,6 @@ function Oxygen()
 	DamagePlayer()
 end
 
-function WindUnweld(ent)
-
-	local table_wind = GLOBAL_SYSTEM["Atmosphere"]["Wind"]
-	local wind_mul   = (math.Clamp(table_wind["Speed"],200, 256) -200) / 10
-	local phys = ent:GetPhysicsObject()
-	
-
-	if HitChance(0.01 + wind_mul ) then
-		local can_play_sound = false
-		
-		
-		if #constraint.GetTable( ent ) != 0 then
-			can_play_sound = true 
-		elseif phys:IsMotionEnabled()==false then
-			can_play_sound = true 
-		end	
-		
-		if can_play_sound then
-		
-			local windspeed  = table_wind["Speed"]
-		
-		
-		
-			if windspeed > 60 then 
-			
-				local material_type = GetMaterialType(ent)
-				
-				
-				if material_type == "wood" then 
-					sound.Play(table.Random(Break_Sounds.Wood), ent:GetPos(), 80, math.random(90,110), 1)
-				
-				elseif material_type == "metal" then 
-					sound.Play(table.Random(Break_Sounds.Metal), ent:GetPos(), 80, math.random(90,110), 1)
-				
-				elseif material_type == "plastic" then 
-					sound.Play(table.Random(Break_Sounds.Plastic), ent:GetPos(), 80, math.random(90,110), 1)
-					
-				elseif material_type == "rock" then 
-					sound.Play(table.Random(Break_Sounds.Rock), ent:GetPos(), 80, math.random(90,110), 1)
-					
-				elseif material_type == "glass" then 
-					sound.Play(table.Random(Break_Sounds.Glass), ent:GetPos(), 80, math.random(90,110), 1)
-					
-				elseif material_type == "ice" then 
-					sound.Play(table.Random(Break_Sounds.Ice), ent:GetPos(), 80, math.random(90,110), 1)
-				
-				else
-					sound.Play(table.Random(Break_Sounds.Generic), ent:GetPos(), 80, math.random(90,110), 1)
-				
-				end
-				
-				phys:EnableMotion(true)
-				phys:Wake()
-				constraint.RemoveAll( ent )
-
-			
-			end
-		end
-	end
-
-end
-
 function Wind()
 
 	local table_wind = GLOBAL_SYSTEM["Atmosphere"]["Wind"]
@@ -601,7 +539,61 @@ function Wind()
 	SetGlobalFloat("gDisasters_Wind", windspeed)
 	SetGlobalVector("gDisasters_Wind_Direction", winddir)
 	
+	local function WindUnweld(ent)
 
+		local wind_mul   = (math.Clamp(table_wind["Speed"],200, 256) -200) / 10
+		local phys = ent:GetPhysicsObject()
+
+
+		if HitChance(0.01 + wind_mul ) then
+			local can_play_sound = false
+
+
+			if #constraint.GetTable( ent ) != 0 then
+				can_play_sound = true 
+			elseif phys:IsMotionEnabled()==false then
+				can_play_sound = true 
+			end	
+
+			if can_play_sound then
+				if windspeed > 60 then 
+				
+					local material_type = GetMaterialType(ent)
+
+
+					if material_type == "wood" then 
+						sound.Play(table.Random(Break_Sounds.Wood), ent:GetPos(), 80, math.random(90,110), 1)
+					
+					elseif material_type == "metal" then 
+						sound.Play(table.Random(Break_Sounds.Metal), ent:GetPos(), 80, math.random(90,110), 1)
+					
+					elseif material_type == "plastic" then 
+						sound.Play(table.Random(Break_Sounds.Plastic), ent:GetPos(), 80, math.random(90,110), 1)
+
+					elseif material_type == "rock" then 
+						sound.Play(table.Random(Break_Sounds.Rock), ent:GetPos(), 80, math.random(90,110), 1)
+
+					elseif material_type == "glass" then 
+						sound.Play(table.Random(Break_Sounds.Glass), ent:GetPos(), 80, math.random(90,110), 1)
+
+					elseif material_type == "ice" then 
+						sound.Play(table.Random(Break_Sounds.Ice), ent:GetPos(), 80, math.random(90,110), 1)
+					
+					else
+						sound.Play(table.Random(Break_Sounds.Generic), ent:GetPos(), 80, math.random(90,110), 1)
+					
+					end
+
+					phys:EnableMotion(true)
+					phys:Wake()
+					constraint.RemoveAll( ent )
+
+				
+				end
+			end
+		end
+
+	end
 	
 	local function performTrace(ply, direction)
 	
