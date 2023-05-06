@@ -535,15 +535,12 @@ function Wind()
 	local windphysics_enabled = GetConVar( "gdisasters_wind_physics_enabled" ):GetInt() == 1 
 	local windconstraints_remove = GetConVar( "gdisasters_wind_candamageconstraints" ):GetInt() == 1
 
-	
 	SetGlobalFloat("gDisasters_Wind", windspeed)
 	SetGlobalVector("gDisasters_Wind_Direction", winddir)
 	
 	local function WindUnweld(ent)
-
 		local wind_mul   = (math.Clamp(table_wind["Speed"],200, 256) -200) / 10
 		local phys = ent:GetPhysicsObject()
-
 
 		if HitChance(0.01 + wind_mul ) then
 			local can_play_sound = false
