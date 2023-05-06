@@ -165,6 +165,28 @@ function Temperature()
 			local tempbody            = v.gDisasters.Body.Temperature
 			local alpha_hot  =  1-((44-math.Clamp(tempbody,39,44))/5)
 			local alpha_cold =  ((35-math.Clamp(tempbody,24,35))/11)
+
+			local closest_vfire, distance  = FindNearestEntity(v, "vfire") -- find closest fire entity
+			local closest_fire, distance_2 = FindNearestEntity(v, "entityflame")
+			local closest_envfire, distance_3 = FindNearestEntity(v, "env_fire")
+
+			if math.random(1,5) == 5 then
+				if closest_vfire != nil then
+					if distance <= 30 then
+						InflictDamage(v, v, "fire", 0.1)
+					end
+				end
+				if closest_fire != nil then
+					if distance_2 <= 30 then
+						InflictDamage(v, v, "fire", 0.1)
+					end
+				end
+				if closest_envfire != nil then
+					if distance_3 <= 30 then
+						InflictDamage(v, v, "fire", 0.1)
+					end
+				end
+			end
 	
 			
 			if math.random(1,25) == 25 then
@@ -291,24 +313,35 @@ function Temperature()
 			
 			local closest_vfire, distance  = FindNearestEntity(v, "vfire") -- find closest fire entity
 			local closest_fire, distance_2 = FindNearestEntity(v, "entityflame")
-			local closest_ice,  distance_3  = FindNearestEntity(v, "gd_equip_supercooledice") -- find closest ice entity
+			local closest_envfire, distance_3 = FindNearestEntity(v, "env_fire")
+			local closest_ice,  distance_4  = FindNearestEntity(v, "gd_equip_supercooledice") -- find closest ice entity
 			
-			if closest_vfire != nil then
-				if distance <= 100 and distance >= 30 then
-					InflictDamage(v, v, "heat", 0.01)
-				elseif distance <= 30 then
-					InflictDamage(v, v, "fire", 0.1)
+			if math.random(1,5) == 5 then
+				if closest_vfire != nil then
+					if distance <= 100 and distance >= 30 then
+						InflictDamage(v, v, "heat", 0.01)
+					elseif distance <= 30 then
+						InflictDamage(v, v, "fire", 0.1)
+					end
 				end
-			elseif closest_fire != nil then
-				if distance_2 <= 100 and distance_2 >= 30 then
-					InflictDamage(v, v, "heat", 0.01)
-				elseif distance_2 <= 30 then
-					InflictDamage(v, v, "fire", 0.1)
+				if closest_fire != nil then
+					if distance_2 <= 100 and distance_2 >= 30 then
+						InflictDamage(v, v, "heat", 0.01)
+					elseif distance_2 <= 30 then
+						InflictDamage(v, v, "fire", 0.1)
+					end
 				end
-			end
-			if closest_ice != nil then
-				if distance_3 <= 50 then
-					InflictDamage(v, v, "cold", 0.01)
+				if closest_envfire != nil then
+					if distance_3 <= 100 and distance_3 >= 30 then
+						InflictDamage(v, v, "heat", 0.01)
+					elseif distance_2 <= 30 then
+						InflictDamage(v, v, "fire", 0.1)
+					end
+				end
+				if closest_ice != nil then
+					if distance_4 <= 50 then
+						InflictDamage(v, v, "cold", 0.01)
+					end
 				end
 			end
 
