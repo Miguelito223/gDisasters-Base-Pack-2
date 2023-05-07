@@ -246,10 +246,12 @@ local function gDisastersAutospawn( CPanel )
 end
 
 local function gDisastersDNC( CPanel )
-
-	local lb = AddControlLabel( CPanel, "DNC Options: " )
-	lb:SetTextColor(Color( 0, 0, 0))
-	lb:SetSize(500, 500)
+	local lb1 = AddControlLabel( CPanel, "DNC: Day And Night Cycle" )
+	local lb2 = AddControlLabel( CPanel, "DNC Options: " )
+	lb1:SetTextColor(Color( 0, 47, 255))
+	lb1:SetSize(500, 500)
+	lb2:SetTextColor(Color( 0, 0, 0))
+	lb2:SetSize(500, 500)
 	
 	CreateTickboxConVariable(CPanel, "DNC Enable"  , "gdisasters_dnc_enabled");
 	CreateTickboxConVariable(CPanel, "DNC Paused"  , "gdisasters_dnc_paused");
