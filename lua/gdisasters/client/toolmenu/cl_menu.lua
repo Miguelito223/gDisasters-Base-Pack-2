@@ -249,7 +249,6 @@ local function gDisastersDNC( CPanel )
 	local lb1 = AddControlLabel( CPanel, "DNC: Day And Night Cycle" )
 	local lb2 = AddControlLabel( CPanel, "DNC Options: " )
 	lb1:SetTextColor(Color( 0, 47, 255))
-	lb1:SetSize(500, 500)
 	lb2:SetTextColor(Color( 0, 0, 0))
 	lb2:SetSize(500, 500)
 	
