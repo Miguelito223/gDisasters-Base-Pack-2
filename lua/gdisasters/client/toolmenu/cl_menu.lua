@@ -263,17 +263,13 @@ local function gDisastersDNC( CPanel )
 	
 end
 
-local function gDisastersSB( CPanel )
+local function gDisastersAddonsCompatibility( CPanel )
 
-	local lb = AddControlLabel( CPanel, "SB Options: " )
+	local lb = AddControlLabel( CPanel, "Spacebuild Options: " )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 	
-	CreateTickboxConVariable(CPanel, "Enable SB"  , "gdisasters_sb_enabled");
-	
-end
-
-local function gDisastersStormfox( CPanel )
+	CreateTickboxConVariable(CPanel, "Enable Spacebuild Compatibility"  , "gdisasters_spacebuild_enabled");
 
 	local lb = AddControlLabel( CPanel, "Stormfox Options: " )
 	lb:SetTextColor(Color( 0, 0, 0))
@@ -282,6 +278,7 @@ local function gDisastersStormfox( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Stormfox"  , "gdisasters_stormfox_enabled");
 	
 end
+
 
 --CL MENU 
 
@@ -330,7 +327,7 @@ end
 local function gDisastersHudSettings( CPanel )
 	
 	local lb = AddControlLabel( CPanel, "Hud Options: ")
-	local lb2 = AddControlLabel( CPanel, "1: body hud\n\n2: pressure hud\n\n3: earthquake hud\n\n4: SB hud")
+	local lb2 = AddControlLabel( CPanel, "1: body hud\n\n2: pressure hud\n\n3: earthquake hud\n\n4: SpaceBuild hud")
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 	lb2:SetTextColor(Color( 0, 47, 255))
@@ -372,8 +369,7 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAutospawn", "Autospawn", "", "", gDisastersAutospawn )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisasterDNC", "DNC", "", "", gDisastersDNC )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSB", "SB", "", "", gDisastersSB )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersStormfox", "Stormfox", "", "", gDisastersStormfox )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAddonsCompatibility", "Addons", "", "", gDisastersAddonsCompatibility )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersServerGraphics", "Server Graphics", "", "", gDisastersServerGraphics )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersAudioSettings", "Volume", "", "", gDisastersAudioSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )

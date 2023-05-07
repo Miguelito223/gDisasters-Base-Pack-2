@@ -461,7 +461,7 @@ function Oxygen()
 		if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() <= 0 then return end
 
 		for k, v in pairs(player.GetAll()) do
-			if GetConVar("gdisasters_sb_enabled"):GetInt() >= 1 then return end
+			if GetConVar("gdisasters_spacebuild_enabled"):GetInt() >= 1 then return end
 		
 			if isUnderWater(v) or isUnderLava(v) then 
 				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.05 ,0,100 ) 
@@ -860,7 +860,7 @@ function stormfox2()
 end
 
 function spacebuild()
-	if GetConVar("gdisasters_sb_enabled"):GetInt() <= 0 then return end
+	if GetConVar("gdisasters_spacebuild_enabled"):GetInt() <= 0 then return end
 	if CAF or LS then  
 		for k, v in pairs(player.GetAll()) do
 			v.gDisasters.Body.Oxygen = v.suit.air
