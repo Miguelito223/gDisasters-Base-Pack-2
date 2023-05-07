@@ -277,7 +277,7 @@ local function gDisastersAddonsCompatibility( CPanel )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 	
-	CreateTickboxConVariable(CPanel, "Enable Stormfox"  , "gdisasters_stormfox_enabled");
+	CreateTickboxConVariable(CPanel, "Enable Stormfox Compatibility"  , "gdisasters_stormfox_enabled");
 	
 end
 
