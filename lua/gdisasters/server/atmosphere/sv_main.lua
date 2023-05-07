@@ -868,7 +868,6 @@ function spacebuild()
 			v.gDisasters.Body.Coolant = v.suit.coolant
 
 			v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
-			v:SetNWFloat("BodyTemperature", v.gDisasters.Body.Temperature)
 			v:SetNWFloat("BodyEnergy", v.gDisasters.Body.Energy)
 			v:SetNWFloat("BodyCoolant", v.gDisasters.Body.Coolant)
 
