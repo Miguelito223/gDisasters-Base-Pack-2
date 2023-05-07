@@ -199,7 +199,6 @@ local function gDisastersServerGraphics( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_graphics_atmosphere");
 	CreateTickboxConVariable(CPanel, "Enable GFX effect"  , "gdisasters_graphics_gfx");
 	CreateTickboxConVariable(CPanel, "Enable Fog Effect"  , "gdisasters_graphics_fog");
-	CreateTickboxConVariable(CPanel, "Enable Stormfox2 Compatibility"  , "gdisasters_graphics_stormfox");
 
 	local lb2 = AddControlLabel( CPanel, "Antilag Collision Options:" )
 	local lb3 = AddControlLabel( CPanel, "PD NC BT: Post Damage No Collide Base Time\n\nCPPPS: Collisions Per Prop Per Second\n\nCAPS:Collisions Average Per Second" )
@@ -270,7 +269,17 @@ local function gDisastersSB( CPanel )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 	
-	CreateTickboxConVariable(CPanel, "SB Enable"  , "gdisasters_sb_enabled");
+	CreateTickboxConVariable(CPanel, "Enable SB"  , "gdisasters_sb_enabled");
+	
+end
+
+local function gDisastersStormfox( CPanel )
+
+	local lb = AddControlLabel( CPanel, "Stormfox Options: " )
+	lb:SetTextColor(Color( 0, 0, 0))
+	lb:SetSize(500, 500)
+	
+	CreateTickboxConVariable(CPanel, "Enable Stormfox"  , "gdisasters_stormfox_enabled");
 	
 end
 
@@ -364,6 +373,7 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAutospawn", "Autospawn", "", "", gDisastersAutospawn )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisasterDNC", "DNC", "", "", gDisastersDNC )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSB", "SB", "", "", gDisastersSB )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersStormfox", "Stormfox", "", "", gDisastersStormfox )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersServerGraphics", "Server Graphics", "", "", gDisastersServerGraphics )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersAudioSettings", "Volume", "", "", gDisastersAudioSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )

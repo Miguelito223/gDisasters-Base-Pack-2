@@ -810,7 +810,7 @@ function Wind()
 end
 		
 function stormfox2()
-	if GetConVar("gdisasters_graphics_stormfox"):GetInt() >= 1 then 
+	if GetConVar("gdisasters_stormfox_enabled"):GetInt() >= 1 then 
 		
 		if Stormfox then 
 			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox.GetTemperature()

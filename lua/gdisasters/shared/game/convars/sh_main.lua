@@ -69,7 +69,6 @@ CreateConVar( "gdisasters_mapbounds_S37K", "0", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_graphics_atmosphere", "1", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_graphics_gfx", "1", {FCVAR_ARCHIVE}, "" )
 CreateConVar( "gdisasters_graphics_fog", "1", {FCVAR_ARCHIVE}, "" )
-CreateConVar( "gdisasters_graphics_stormfox", "0", {FCVAR_ARCHIVE}, "")
 
 
 
@@ -96,3 +95,7 @@ gDisasters.DayNightSystem.InternalVars.Createlight_environment = CreateConVar( "
 --SpaceBuild
 
 CreateConVar( "gdisasters_sb_enabled", "0", {FCVAR_ARCHIVE}, "" )
+
+--stormfox
+
+CreateConVar( "gdisasters_stormfox_enabled", "0", {FCVAR_ARCHIVE}, "")
