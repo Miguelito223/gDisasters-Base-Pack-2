@@ -176,10 +176,7 @@ function ENT:Think()
 			self:Remove() 
 		elseif isinLava(self) then
 			self:Remove()
-		end
-		
-		ParticleEffect( "meteorite_skyripple", self:GetPos() - Vector(0,0,30), Angle( 0, 0, 90 ) )
-		
+		end	
 	
 		self:NextThink(CurTime() + t)
 		return true
