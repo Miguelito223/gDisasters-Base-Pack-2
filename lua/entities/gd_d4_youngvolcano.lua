@@ -134,7 +134,7 @@ function ENT:GetEntitiesInsideLava()
 	local lents = {} 
 	local lents2 = {}
 	
-	local lpos  = self:GetLavaLevelPosition() - Vector(0,0,200)
+	local lpos  = self:GetLavaLevelPosition()
 
 	for k, v in pairs(ents.FindInSphere(lpos, 360)) do
 	
