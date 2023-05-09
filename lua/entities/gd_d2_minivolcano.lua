@@ -123,12 +123,10 @@ end
 
 
 function ENT:GetLavaLevelPosition()
-	local crater = self:GetAttachment(self:LookupAttachment("crater")).Pos
-	return Vector(crater.x, crater.y, crater.z + self:GetNWFloat("LavaLevel"))
+	return self:GetPos() + Vector(0, 0, self.LavaLevel)
 end
 
 function ENT:LavaControl()
-	
 	self:SetLavaLevel( (250/100) * self.Pressure )
 end
 
@@ -138,15 +136,16 @@ function ENT:GetEntitiesInsideLava()
 	local lents = {} 
 	local lents2 = {}
 	
-	local lpos  = self:GetLavaLevelPosition()  - Vector(0,0,200) - (self:GetForward() * -100)
-	local zrange_min, zrange_max = self:GetLavaLevelPosition() - Vector(0,0,600), self:GetLavaLevelPosition() - Vector(0,0,200)
+	local lpos  = self:GetLavaLevelPosition()
+
+	print(lpos)
 
 	for k, v in pairs(ents.FindInSphere(lpos, 260)) do
 	
 		local pos = v:GetPos()
 		local phys = v:GetPhysicsObject()
 		
-		if (pos.z <= zrange_max.z and pos.z >= zrange_min.z) and v:GetClass()!="worldspawn" and v != self and phys:IsValid() then
+		if (pos.z <= lpos.z) and v:GetClass()!="worldspawn" and v != self and phys:IsValid() then
 			
 			
 			table.insert(lents, v)
@@ -190,15 +189,13 @@ function ENT:InsideLavaEffect()
 			if v:IsPlayer() then
 			
 				local eye = v:EyePos()
-				local zrange_min, zrange_max = self:GetLavaLevelPosition() - Vector(0,0,600), self:GetLavaLevelPosition() - Vector(0,0,200)
 					
-				if eye.z <= zrange_max.z and eye.z >= zrange_min.z then
+				if eye.z <= self:GetLavaLevelPosition().z then
 					v:SetNWBool("IsUnderlava", true)
 					v:SendLua("LocalPlayer().LavaIntensity=LocalPlayer().LavaIntensity + (FrameTime()*8)")
 				else
 					v:SetNWBool("IsUnderlava", false)
 				end
-
 			end
 			v:Ignite(15)
 			v:TakeDamage(10, self, self)
