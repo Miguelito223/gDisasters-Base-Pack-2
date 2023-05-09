@@ -141,8 +141,6 @@ function ENT:GetEntitiesInsideLava()
 	local lpos  = self:GetLavaLevelPosition() - Vector(0,0,100) - (self:GetForward() * -100)
 	local zrange_min, zrange_max = self:GetLavaLevelPosition() - Vector(0,0,600), self:GetLavaLevelPosition() - Vector(0,0,200)
 
-
-	
 	for k, v in pairs(ents.FindInSphere(lpos, 1400)) do
 	
 		local pos = v:GetPos()
@@ -154,7 +152,9 @@ function ENT:GetEntitiesInsideLava()
 			table.insert(lents, v)
 			lents2[v] = true
 			v.IsInlava = true
-		
+		else
+			lents2[v] = false
+			v.IsInlava = false	
 		end
 	
 	
@@ -190,14 +190,16 @@ function ENT:InsideLavaEffect()
 			
 			if v:IsPlayer() then
 			
-				local eye = v:EyePos()	
+				local eye = v:EyePos()
+				local zrange_min, zrange_max = self:GetLavaLevelPosition() - Vector(0,0,600), self:GetLavaLevelPosition() - Vector(0,0,200)
 					
-				if eye.z <= self:GetLavaLevelPosition().z and v:Alive() then
+				if eye.z <= zrange_max.z and eye.z >= zrange_min.z then
 					v:SetNWBool("IsUnderlava", true)
 					v:SendLua("LocalPlayer().LavaIntensity=LocalPlayer().LavaIntensity + (FrameTime()*8)")
 				else
 					v:SetNWBool("IsUnderlava", false)
 				end
+
 			end
 			v:Ignite(15)
 			v:TakeDamage(1, self, self)
