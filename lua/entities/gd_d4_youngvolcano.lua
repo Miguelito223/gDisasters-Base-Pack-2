@@ -135,9 +135,10 @@ function ENT:GetEntitiesInsideLava()
 	local lents = {} 
 	local lents2 = {}
 	
-	local lpos  = self:GetLavaLevelPosition() 
+	local lpos  = self:GetLavaLevelPosition() - Vector(0,0,200) - (self:GetForward() * -100)
+	local scale = self:GetModelScale()
 
-	for k, v in pairs(ents.FindInSphere(lpos - Vector(0,0,200), 360)) do
+	for k, v in pairs(ents.FindInSphere(lpos, 360 * scale)) do
 	
 		local pos = v:GetPos()
 		local phys = v:GetPhysicsObject()
@@ -185,7 +186,7 @@ function ENT:InsideLavaEffect()
 			
 				local eye = v:EyePos()	
 					
-				if eye.z <= self:GetLavaLevelPosition().z and v:Alive() then
+				if eye.z <= self:GetLavaLevelPosition().z and v:Alive()  then
 					v:SetNWBool("IsUnderlava", true)
 					v:SendLua("LocalPlayer().LavaIntensity=LocalPlayer().LavaIntensity + (FrameTime()*8)")
 				else

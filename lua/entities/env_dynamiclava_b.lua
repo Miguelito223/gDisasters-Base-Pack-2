@@ -242,7 +242,8 @@ function ENT:ProcessEntitiesInLava()
 						v:SetNWFloat("ZlavaDepth",  math.Round(diff))
 						
 						--v:SetMoveType(MOVETYPE_WALK)
-						
+					else
+						v:SetNWBool("IsUnderlava", false)	
 					end 
 					
 					
@@ -375,7 +376,8 @@ function ENT:ProcessEntitiesInWedgeLava()
 						--self:PlayerOxygen(v, scalar, t)
 						
 						--v:SetMoveType(MOVETYPE_WALK)
-						
+					else
+						v:SetNWBool("IsUnderlava", false)
 					end 
 					
 					
@@ -746,8 +748,8 @@ function ENT:OnRemove()
 		
 		for k, v in pairs(player.GetAll()) do
 		
-		v.IsInlava = false 
-		v:SetNWBool("IsUnderlava", false)
+			v.IsInlava = false 
+			v:SetNWBool("IsUnderlava", false)
 		
 		end
 	end
