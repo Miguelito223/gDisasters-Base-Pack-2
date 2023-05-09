@@ -139,7 +139,7 @@ function ENT:GetEntitiesInsideLava()
 	
 	local lpos  = self:GetLavaLevelPosition() - (self:GetForward() * -100)
 
-	for k, v in pairs(ents.FindInSphere(lpos, 2000 )) do
+	for k, v in pairs(ents.FindInSphere(lpos, 4000 )) do
 	
 		local pos = v:GetPos()
 		local phys = v:GetPhysicsObject()
