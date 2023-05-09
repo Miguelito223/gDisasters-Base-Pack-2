@@ -165,6 +165,28 @@ function Temperature()
 			local tempbody            = v.gDisasters.Body.Temperature
 			local alpha_hot  =  1-((44-math.Clamp(tempbody,39,44))/5)
 			local alpha_cold =  ((35-math.Clamp(tempbody,24,35))/11)
+
+			local closest_vfire, distance  = FindNearestEntity(v, "vfire") -- find closest fire entity
+			local closest_fire, distance_2 = FindNearestEntity(v, "entityflame")
+			local closest_envfire, distance_3 = FindNearestEntity(v, "env_fire")
+
+			if math.random(1,5) == 5 then
+				if closest_vfire != nil then
+					if distance <= 30 then
+						InflictDamage(v, v, "fire", 0.1)
+					end
+				end
+				if closest_fire != nil then
+					if distance_2 <= 30 then
+						InflictDamage(v, v, "fire", 0.1)
+					end
+				end
+				if closest_envfire != nil then
+					if distance_3 <= 30 then
+						InflictDamage(v, v, "fire", 0.1)
+					end
+				end
+			end
 	
 			
 			if math.random(1,25) == 25 then
@@ -291,24 +313,35 @@ function Temperature()
 			
 			local closest_vfire, distance  = FindNearestEntity(v, "vfire") -- find closest fire entity
 			local closest_fire, distance_2 = FindNearestEntity(v, "entityflame")
-			local closest_ice,  distance_3  = FindNearestEntity(v, "gd_equip_supercooledice") -- find closest ice entity
+			local closest_envfire, distance_3 = FindNearestEntity(v, "env_fire")
+			local closest_ice,  distance_4  = FindNearestEntity(v, "gd_equip_supercooledice") -- find closest ice entity
 			
-			if closest_vfire != nil then
-				if distance <= 100 and distance >= 30 then
-					InflictDamage(v, v, "heat", 0.01)
-				elseif distance <= 30 then
-					InflictDamage(v, v, "fire", 0.1)
+			if math.random(1,5) == 5 then
+				if closest_vfire != nil then
+					if distance <= 100 and distance >= 30 then
+						InflictDamage(v, v, "heat", 0.01)
+					elseif distance <= 30 then
+						InflictDamage(v, v, "fire", 0.1)
+					end
 				end
-			elseif closest_fire != nil then
-				if distance_2 <= 100 and distance_2 >= 30 then
-					InflictDamage(v, v, "heat", 0.01)
-				elseif distance_2 <= 30 then
-					InflictDamage(v, v, "fire", 0.1)
+				if closest_fire != nil then
+					if distance_2 <= 100 and distance_2 >= 30 then
+						InflictDamage(v, v, "heat", 0.01)
+					elseif distance_2 <= 30 then
+						InflictDamage(v, v, "fire", 0.1)
+					end
 				end
-			end
-			if closest_ice != nil then
-				if distance_3 <= 50 then
-					InflictDamage(v, v, "cold", 0.01)
+				if closest_envfire != nil then
+					if distance_3 <= 100 and distance_3 >= 30 then
+						InflictDamage(v, v, "heat", 0.01)
+					elseif distance_2 <= 30 then
+						InflictDamage(v, v, "fire", 0.1)
+					end
+				end
+				if closest_ice != nil then
+					if distance_4 <= 50 then
+						InflictDamage(v, v, "cold", 0.01)
+					end
 				end
 			end
 
@@ -405,10 +438,10 @@ function Temperature()
 			end
 		end
 	end
-	function GlobalBreathingEffect()
+	local function GlobalBreathingEffect()
 		if temp > 0 or GetConVar("gdisasters_hud_temp_breathing"):GetInt() == 0 then 
 			if timer.Exists("Breathing") then
-				timer.Destroy("Breathing")
+				timer.Remove("Breathing")
 			end
 		end
 	end
@@ -428,7 +461,7 @@ function Oxygen()
 		if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() <= 0 then return end
 
 		for k, v in pairs(player.GetAll()) do
-			if GetConVar("gdisasters_sb_enabled"):GetInt() >= 1 then return end
+			if GetConVar("gdisasters_spacebuild_enabled"):GetInt() >= 1 then return end
 		
 			if isUnderWater(v) or isUnderLava(v) then 
 				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.05 ,0,100 ) 
@@ -527,68 +560,6 @@ function Oxygen()
 	DamagePlayer()
 end
 
-function WindUnweld(ent)
-
-	local table_wind = GLOBAL_SYSTEM["Atmosphere"]["Wind"]
-	local wind_mul   = (math.Clamp(table_wind["Speed"],200, 256) -200) / 10
-	local phys = ent:GetPhysicsObject()
-	
-
-	if HitChance(0.01 + wind_mul ) then
-		local can_play_sound = false
-		
-		
-		if #constraint.GetTable( ent ) != 0 then
-			can_play_sound = true 
-		elseif phys:IsMotionEnabled()==false then
-			can_play_sound = true 
-		end	
-		
-		if can_play_sound then
-		
-			local windspeed  = table_wind["Speed"]
-		
-		
-		
-			if windspeed > 60 then 
-			
-				local material_type = GetMaterialType(ent)
-				
-				
-				if material_type == "wood" then 
-					sound.Play(table.Random(Break_Sounds.Wood), ent:GetPos(), 80, math.random(90,110), 1)
-				
-				elseif material_type == "metal" then 
-					sound.Play(table.Random(Break_Sounds.Metal), ent:GetPos(), 80, math.random(90,110), 1)
-				
-				elseif material_type == "plastic" then 
-					sound.Play(table.Random(Break_Sounds.Plastic), ent:GetPos(), 80, math.random(90,110), 1)
-					
-				elseif material_type == "rock" then 
-					sound.Play(table.Random(Break_Sounds.Rock), ent:GetPos(), 80, math.random(90,110), 1)
-					
-				elseif material_type == "glass" then 
-					sound.Play(table.Random(Break_Sounds.Glass), ent:GetPos(), 80, math.random(90,110), 1)
-					
-				elseif material_type == "ice" then 
-					sound.Play(table.Random(Break_Sounds.Ice), ent:GetPos(), 80, math.random(90,110), 1)
-				
-				else
-					sound.Play(table.Random(Break_Sounds.Generic), ent:GetPos(), 80, math.random(90,110), 1)
-				
-				end
-				
-				phys:EnableMotion(true)
-				phys:Wake()
-				constraint.RemoveAll( ent )
-
-			
-			end
-		end
-	end
-
-end
-
 function Wind()
 
 	local table_wind = GLOBAL_SYSTEM["Atmosphere"]["Wind"]
@@ -597,11 +568,62 @@ function Wind()
 	local windphysics_enabled = GetConVar( "gdisasters_wind_physics_enabled" ):GetInt() == 1 
 	local windconstraints_remove = GetConVar( "gdisasters_wind_candamageconstraints" ):GetInt() == 1
 
-	
 	SetGlobalFloat("gDisasters_Wind", windspeed)
 	SetGlobalVector("gDisasters_Wind_Direction", winddir)
 	
+	local function WindUnweld(ent)
+		local wind_mul   = (math.Clamp(table_wind["Speed"],200, 256) -200) / 10
+		local phys = ent:GetPhysicsObject()
 
+		if HitChance(0.01 + wind_mul ) then
+			local can_play_sound = false
+
+
+			if #constraint.GetTable( ent ) != 0 then
+				can_play_sound = true 
+			elseif phys:IsMotionEnabled()==false then
+				can_play_sound = true 
+			end	
+
+			if can_play_sound then
+				if windspeed > 60 then 
+				
+					local material_type = GetMaterialType(ent)
+
+
+					if material_type == "wood" then 
+						sound.Play(table.Random(Break_Sounds.Wood), ent:GetPos(), 80, math.random(90,110), 1)
+					
+					elseif material_type == "metal" then 
+						sound.Play(table.Random(Break_Sounds.Metal), ent:GetPos(), 80, math.random(90,110), 1)
+					
+					elseif material_type == "plastic" then 
+						sound.Play(table.Random(Break_Sounds.Plastic), ent:GetPos(), 80, math.random(90,110), 1)
+
+					elseif material_type == "rock" then 
+						sound.Play(table.Random(Break_Sounds.Rock), ent:GetPos(), 80, math.random(90,110), 1)
+
+					elseif material_type == "glass" then 
+						sound.Play(table.Random(Break_Sounds.Glass), ent:GetPos(), 80, math.random(90,110), 1)
+
+					elseif material_type == "ice" then 
+						sound.Play(table.Random(Break_Sounds.Ice), ent:GetPos(), 80, math.random(90,110), 1)
+					
+					else
+						sound.Play(table.Random(Break_Sounds.Generic), ent:GetPos(), 80, math.random(90,110), 1)
+					
+					end
+
+					phys:EnableMotion(true)
+					phys:Wake()
+					constraint.RemoveAll( ent )
+
+				
+				end
+			end
+		end
+
+	end
 	
 	local function performTrace(ply, direction)
 	
@@ -788,7 +810,7 @@ function Wind()
 end
 		
 function stormfox2()
-	if GetConVar("gdisasters_graphics_stormfox"):GetInt() >= 1 then 
+	if GetConVar("gdisasters_stormfox_enabled"):GetInt() >= 1 then 
 		
 		if Stormfox then 
 			GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = StormFox.GetTemperature()
@@ -838,7 +860,7 @@ function stormfox2()
 end
 
 function spacebuild()
-	if GetConVar("gdisasters_sb_enabled"):GetInt() <= 0 then return end
+	if GetConVar("gdisasters_spacebuild_enabled"):GetInt() <= 0 then return end
 	if CAF or LS then  
 		for k, v in pairs(player.GetAll()) do
 			v.gDisasters.Body.Oxygen = v.suit.air
@@ -846,7 +868,6 @@ function spacebuild()
 			v.gDisasters.Body.Coolant = v.suit.coolant
 
 			v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
-			v:SetNWFloat("BodyTemperature", v.gDisasters.Body.Temperature)
 			v:SetNWFloat("BodyEnergy", v.gDisasters.Body.Energy)
 			v:SetNWFloat("BodyCoolant", v.gDisasters.Body.Coolant)
 
