@@ -32,7 +32,7 @@ function ENT:Initialize()
 		end 		
 		
 		self:SetNoDraw(true)
-		ParticleEffectAttach("whirlpool_big_effect", PATTACH_POINT_FOLLOW, self, 0)
+		ParticleEffectAttach("whirlpool_super_effect", PATTACH_POINT_FOLLOW, self, 0)
 		
 	end
 	

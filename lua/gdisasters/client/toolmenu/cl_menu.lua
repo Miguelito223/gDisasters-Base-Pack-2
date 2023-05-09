@@ -199,7 +199,6 @@ local function gDisastersServerGraphics( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_graphics_atmosphere");
 	CreateTickboxConVariable(CPanel, "Enable GFX effect"  , "gdisasters_graphics_gfx");
 	CreateTickboxConVariable(CPanel, "Enable Fog Effect"  , "gdisasters_graphics_fog");
-	CreateTickboxConVariable(CPanel, "Enable Stormfox2 Compatibility"  , "gdisasters_graphics_stormfox");
 
 	local lb2 = AddControlLabel( CPanel, "Antilag Collision Options:" )
 	local lb3 = AddControlLabel( CPanel, "PD NC BT: Post Damage No Collide Base Time\n\nCPPPS: Collisions Per Prop Per Second\n\nCAPS:Collisions Average Per Second" )
@@ -247,10 +246,11 @@ local function gDisastersAutospawn( CPanel )
 end
 
 local function gDisastersDNC( CPanel )
-
-	local lb = AddControlLabel( CPanel, "DNC Options: " )
-	lb:SetTextColor(Color( 0, 0, 0))
-	lb:SetSize(500, 500)
+	local lb1 = AddControlLabel( CPanel, "DNC: Day And Night Cycle" )
+	local lb2 = AddControlLabel( CPanel, "DNC Options: " )
+	lb1:SetTextColor(Color( 0, 47, 255))
+	lb2:SetTextColor(Color( 0, 0, 0))
+	lb2:SetSize(500, 500)
 	
 	CreateTickboxConVariable(CPanel, "DNC Enable"  , "gdisasters_dnc_enabled");
 	CreateTickboxConVariable(CPanel, "DNC Paused"  , "gdisasters_dnc_paused");
@@ -264,15 +264,22 @@ local function gDisastersDNC( CPanel )
 	
 end
 
-local function gDisastersSB( CPanel )
+local function gDisastersAddonsCompatibility( CPanel )
 
-	local lb = AddControlLabel( CPanel, "SB Options: " )
+	local lb = AddControlLabel( CPanel, "Spacebuild Options: " )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 	
-	CreateTickboxConVariable(CPanel, "SB Enable"  , "gdisasters_sb_enabled");
+	CreateTickboxConVariable(CPanel, "Enable Spacebuild Compatibility"  , "gdisasters_spacebuild_enabled");
+
+	local lb = AddControlLabel( CPanel, "Stormfox Options: " )
+	lb:SetTextColor(Color( 0, 0, 0))
+	lb:SetSize(500, 500)
+	
+	CreateTickboxConVariable(CPanel, "Enable Stormfox Compatibility"  , "gdisasters_stormfox_enabled");
 	
 end
+
 
 --CL MENU 
 
@@ -321,7 +328,7 @@ end
 local function gDisastersHudSettings( CPanel )
 	
 	local lb = AddControlLabel( CPanel, "Hud Options: ")
-	local lb2 = AddControlLabel( CPanel, "1: body hud\n\n2: pressure hud\n\n3: earthquake hud\n\n4: SB hud")
+	local lb2 = AddControlLabel( CPanel, "1: body hud\n\n2: pressure hud\n\n3: earthquake hud\n\n4: SpaceBuild hud")
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 	lb2:SetTextColor(Color( 0, 47, 255))
@@ -363,7 +370,7 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAutospawn", "Autospawn", "", "", gDisastersAutospawn )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisasterDNC", "DNC", "", "", gDisastersDNC )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSB", "SB", "", "", gDisastersSB )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAddonsCompatibility", "Addons", "", "", gDisastersAddonsCompatibility )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersServerGraphics", "Server Graphics", "", "", gDisastersServerGraphics )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersAudioSettings", "Volume", "", "", gDisastersAudioSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )
