@@ -135,8 +135,9 @@ function ENT:GetEntitiesInsideLava()
 	local lents2 = {}
 	
 	local lpos  = self:GetLavaLevelPosition()
+	local scale = self:GetModelScale()
 
-	for k, v in pairs(ents.FindInSphere(lpos, 360)) do
+	for k, v in pairs(ents.FindInSphere(lpos, 360 * scale)) do
 	
 		local pos = v:GetPos()
 		local phys = v:GetPhysicsObject()
