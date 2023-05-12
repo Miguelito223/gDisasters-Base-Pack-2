@@ -308,8 +308,9 @@ function ENT:SpawnFunction( ply, tr )
 
 	self.OWNER = ply
 	local ent = ents.Create( self.ClassName )
+	local scale = self:GetModelScale()
 	ent:SetPhysicsAttacker(ply)
-	ent:SetPos( tr.HitPos + tr.HitNormal * 920  ) 
+	ent:SetPos( tr.HitPos + tr.HitNormal * (920 * scale)  ) 
 	ent:Spawn()
 	ent:Activate()
 	return ent
