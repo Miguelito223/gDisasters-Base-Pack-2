@@ -57,7 +57,7 @@ function ENT:Initialize()
 end
 
 function ENT:VolcanicLavaEffects()
-	local pos = self:GetLavaLevelPosition() - Vector(0,0,200)
+	local pos = self:GetLavaLevelPosition()
 	local effect = table.Random({"volcano_magma_heat_warp"})
 	
 
