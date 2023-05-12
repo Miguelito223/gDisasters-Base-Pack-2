@@ -246,7 +246,7 @@ function ENT:Erupt()
 		CreateSoundWave("streams/disasters/nature/krakatoa_explosion.mp3", pos, "3d" ,340.29/2, {100,100}, 5)
 	end)
 
-	ParticleEffect("volcano_eruption_dusty_main", self:GetLavaLevelPosition() - Vector(0,0,100), Angle(0,0,0), nil)
+	ParticleEffect("volcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
 	
 	if GetConVar("gdisasters_volcano_weatherchange"):GetInt() <= 0 then return end
 	
