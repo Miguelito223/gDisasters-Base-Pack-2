@@ -663,6 +663,20 @@ function ENT:Think()
 			end 
 			
 		end
+		for k, v in pairs(ents.FindByClass("gd_d10_supervolcano")) do 
+			
+			
+			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
+				self.NextAvailableSoundEmission = CurTime() + 120
+				
+				timer.Simple(v:GetPos():Distance(self:GetPos())/6000, function()
+					if !self:IsValid() then return end 
+					self:Alarm()
+				end)
+		
+			end 
+			
+		end
 		for k, v in pairs(ents.FindByClass("gd_d5_maturevolcano")) do 
 			
 			
