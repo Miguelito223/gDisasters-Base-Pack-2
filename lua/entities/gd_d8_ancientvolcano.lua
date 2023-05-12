@@ -438,10 +438,6 @@ function ENT:OnRemove()
 	self:StopParticles()
 end
 
-local watertexture = table.Random({"nature/base_water_01", "nature/base_water_02"})
-
-local water = Material("nature/base_water_01")
-
 function ENT:Draw()
 
 	self:DrawModel()
