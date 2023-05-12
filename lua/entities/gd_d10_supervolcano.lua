@@ -86,7 +86,7 @@ function ENT:CheckPressure()
 			
 			if math.random(1,1)==1 then
 
-				local earthquake = ents.Create(table.Random({"gd_d1_rs1eq","gd_d2_rs2eq"}))
+				local earthquake = ents.Create(table.Random({"gd_d9_rs9eq","gd_d10_rs10eq"}))
 				earthquake:SetPos(self:GetPos() - Vector(0,0,5000))
 				earthquake:Spawn()
 				earthquake:Activate()
