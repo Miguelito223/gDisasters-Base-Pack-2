@@ -122,7 +122,7 @@ function ENT:CreateLoop()
 end
 
 function ENT:GetLavaLevelPosition()
-	return self:GetPos() + Vector(0, 0, self.LavaLevel)
+	return self:GetPos() + Vector(0, 0, self.LavaLevel) - (self:GetForward() * -100)
 end
 
 function ENT:LavaControl()
@@ -137,7 +137,7 @@ function ENT:GetEntitiesInsideLava()
 	local lents = {} 
 	local lents2 = {}
 	
-	local lpos  = self:GetLavaLevelPosition() - (self:GetForward() * -100)
+	local lpos  = self:GetLavaLevelPosition()
 	local scale = self:GetModelScale()
 
 	for k, v in pairs(ents.FindInSphere(lpos, 1400 * scale)) do
@@ -188,7 +188,7 @@ function ENT:InsideLavaEffect()
 			
 				local eye = v:EyePos()
 					
-				if eye.z <= self:GetLavaLevelPosition().z and v:Alive() then
+				if eye.z <= self:GetLavaLevelPosition().z and v:Alive() and self:IsValid() then
 					v:SetNWBool("IsUnderlava", true)
 					v:SendLua("LocalPlayer().LavaIntensity=LocalPlayer().LavaIntensity + (FrameTime()*8)")
 				else
