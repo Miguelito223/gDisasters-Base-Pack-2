@@ -5,7 +5,7 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Ancient Volcano"
+ENT.PrintName		                 =  "Super Volcano"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
@@ -122,7 +122,7 @@ function ENT:CreateLoop()
 end
 
 function ENT:GetLavaLevelPosition()
-	return self:GetPos() + Vector(0, 0, self.LavaLevel) - (self:GetForward() * -100)
+	return self:GetPos() + Vector(0, 0, self.LavaLevel) + Vector(0, 0, 200) - (self:GetForward() * -100)
 end
 
 function ENT:LavaControl()
@@ -189,10 +189,7 @@ function ENT:InsideLavaEffect()
 				local eye = v:EyePos()
 					
 				if eye.z <= self:GetLavaLevelPosition().z and v:Alive() and self:IsValid() then
-					v:SetNWBool("IsUnderlava", true)
 					v:SendLua("LocalPlayer().LavaIntensity=LocalPlayer().LavaIntensity + (FrameTime()*8)")
-				else
-					v:SetNWBool("IsUnderlava", false)
 				end
 			end
 
