@@ -197,10 +197,7 @@ function ENT:InsideLavaEffect()
 				local eye = v:EyePos()
 					
 				if eye.z <= self:GetLavaLevelPosition().z and v:Alive() and self:IsValid() then
-					v:SetNWBool("IsUnderlava", true)
 					v:SendLua("LocalPlayer().LavaIntensity=LocalPlayer().LavaIntensity + (FrameTime()*8)")
-				else
-					v:SetNWBool("IsUnderlava", false)
 				end
 			end
 			v:Ignite(15)
@@ -338,20 +335,6 @@ function ENT:SetLavaLevel(lvl)
 	self.LavaLevel  = lava_lvl 
 	self:SetNWFloat("LavaLevel", lava_lvl)
 end
-
-local water_textures = {}
-water_textures[1]    = Material("nature/env_dynamicwater/base_water_01")
-water_textures[2]    = Material("nature/env_dynamicwater/base_water_02")
-water_textures[3]    = Material("nature/env_dynamicwater/base_water_03")
-
-
-local water_shader   = {}
-water_shader[1]    = Material("nature/env_dynamicwater/water_expensive_02")
-water_shader[2]    = Material("nature/env_dynamicwater/water_expensive_01")
-
-local tsunami_water_textures = {}
-tsunami_water_textures[1]    = Material("nature/env_dynamicwater/base_water_tsunami");
-tsunami_water_textures[2]    = Material("nature/env_dynamicwater/base_water_03");
 
 
 function ENT:VFire()

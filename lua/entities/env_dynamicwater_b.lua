@@ -19,7 +19,7 @@ function ENT:Initialize()
 	self:SetupMiscVars()
 	if (CLIENT) then 
 
-		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
+		
 		
 		LocalPlayer().Sounds["Tsunami"]         = CreateLoopedSound(LocalPlayer(), self.WedgeSound)
 		

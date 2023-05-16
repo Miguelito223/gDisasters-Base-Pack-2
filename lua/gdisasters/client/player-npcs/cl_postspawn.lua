@@ -88,10 +88,21 @@ function gDisasters_PostSpawnCL()
 	
 	end
 
+	local function gDisasters_SetupLavaIntesity()
+		LocalPlayer().LavaIntensity = 0
+	end
+
+	local function gDisasters_SetupSound()
+		LocalPlayer().Sounds = {}
+		LocalPlayer().Sounds2 = {}
+	end
+
 	gDisasters_SetupOutsideVars()
 	gDisasters_SetupHUDMISC()	
 	gDisasters_SetupFOGVars()
 	gDisasters_SetupHUDConvars()
 	gDisasters_SetupGFXVars()
+	gDisasters_SetupLavaIntesity()
+	gDisasters_SetupSound()
 end
 hook.Add( "InitPostEntity", "gDisasters_PostSpawnCL", gDisasters_PostSpawnCL )

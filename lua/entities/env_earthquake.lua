@@ -12,7 +12,7 @@ ENT.FadeInMod                        =  engine.TickInterval()
 ENT.Life                             =  {15,20}
 function ENT:Initialize()	
 	if (CLIENT) then
-		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
+		
 		if LocalPlayer().Sounds["Earthquake"]==nil then
 			LocalPlayer().Sounds["Earthquake"] = {  ["sound"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/earthquake/earthquake.wav"), ["volume"] = 0 }
 			LocalPlayer().Sounds["Earthquake"]["sound"]:ChangeVolume(0,0)
@@ -484,7 +484,7 @@ function ENT:MagnitudeModulateSound()
 		distance_mod = 1 - (tr.HitPos:Distance(LocalPlayer():GetPos())/3000)
 	end
 	volmod = volmod * distance_mod
-	if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
+	
 	if LocalPlayer().Sounds["Earthquake"]==nil then
 		LocalPlayer().Sounds["Earthquake"] = {  ["sound"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/earthquake/earthquake.wav"), ["volume"] = 0 }
 		LocalPlayer().Sounds["Earthquake"]["sound"]:ChangeVolume(volmod,0)
@@ -507,7 +507,7 @@ function ENT:Think()
 end
 function ENT:OnRemove()
 	if (CLIENT) then
-		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
+		
 		if LocalPlayer().Sounds["Earthquake"]==nil then
 			LocalPlayer().Sounds["Earthquake"] = {  ["sound"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/earthquake/earthquake.wav"), ["volume"] = 0 }
 			LocalPlayer().Sounds["Earthquake"]["sound"]:ChangeVolume(0,0)

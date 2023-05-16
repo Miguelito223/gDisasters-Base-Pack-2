@@ -20,7 +20,7 @@ function ENT:Initialize()
 	self:Lightning()
 	if (CLIENT) then
 	
-		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
+		
 		
 		LocalPlayer().Sounds["Ashstorm_IDLE"]         = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/sandstorm_loop.wav")
 		LocalPlayer().Sounds["Ashstorm_muffled_IDLE"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/sandstorm_muffled_loop.wav")

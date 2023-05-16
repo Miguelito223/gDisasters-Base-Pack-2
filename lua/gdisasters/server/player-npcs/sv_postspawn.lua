@@ -19,10 +19,14 @@ function gDisasters_PostSpawn(ply)
 		ply.gDisasters.Area.IsOutdoor = false
 	
 	end
+	local function gDisasters_SetupLavaIntesity()
+		ply.LavaIntensity = 0
+	end
 	
 	
 	gDisasters_SetupBodyVariables()
 	gDisasters_SetupAreaVariables()	
+	gDisasters_SetupLavaIntesity()
 
 
 	

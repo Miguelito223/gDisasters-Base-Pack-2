@@ -20,7 +20,7 @@ function ENT:Initialize()
 	self:SetupMiscVarsLava()
 	if (CLIENT) then 
 
-		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
+		
 		
 		LocalPlayer().Sounds["Tsunamilava"]         = CreateLoopedSound(LocalPlayer(), self.WedgeSound)
 		LocalPlayer().Sounds["lava"]         = CreateLoopedSound(LocalPlayer(), self.WedgeSound2)

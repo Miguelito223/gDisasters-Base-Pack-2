@@ -24,7 +24,7 @@ function ENT:Initialize()
 
 	if (CLIENT) then
 	
-		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
+		
 		LocalPlayer().Sounds["Rainstorm_IDLE"]         = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop.wav")
 		LocalPlayer().Sounds["Rainstorm_muffled_IDLE"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop_muffled.wav")
 	end

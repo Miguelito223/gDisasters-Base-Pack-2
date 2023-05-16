@@ -22,7 +22,7 @@ function ENT:Initialize()
 	
 	if (CLIENT) then
 	
-		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
+		
 		if LocalPlayer().Sounds["Nurse_Idle"]==nil or LocalPlayer().Sounds["Nurse_Chasing"]==nil then
 		
 			LocalPlayer().Sounds["Nurse_Idle"]         = {  ["sound"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/silenthill/nurse_nearby.wav"), ["volume"] = 0 }

@@ -22,7 +22,7 @@ function ENT:Initialize()
 		
 
 		
-		if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
+		
 		
 		LocalPlayer().Sounds["Sandstorm_IDLE"]         = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/sandstorm_loop.wav")
 		LocalPlayer().Sounds["Sandstorm_muffled_IDLE"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/sandstorm_muffled_loop.wav")
