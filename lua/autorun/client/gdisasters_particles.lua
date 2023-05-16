@@ -15,7 +15,7 @@ game.AddParticles( "particles/water_effect.pcf")
 -- disasters
 
 
-
+game.AddParticles( "particles/chicxulub.pcf" )
 game.AddParticles( "particles/hail_effect.pcf") 
 game.AddParticles( "particles/downburst_effect.pcf") 
 game.AddParticles( "particles/heatburst_effect.pcf") 
@@ -53,6 +53,7 @@ game.AddParticles( "particles/damagetypes.pcf")
 game.AddParticles( "particles/lightning_effect.pcf") 
 game.AddParticles( "particles/water_splash_effect.pcf") 
 game.AddParticles( "particles/lava_splash_effect.pcf") 
+game.AddParticles( "particles/dry_ice.pcf" );
 game.AddParticles( "particles/earthquake_effect.pcf") 
 game.AddParticles( "particles/renderfog.pcf") 
 game.AddParticles( "particles/heatwave_ripples.pcf") 

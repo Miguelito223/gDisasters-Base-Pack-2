@@ -22,7 +22,13 @@ PrecacheParticleSystem("moderate_rain_effect")
 PrecacheParticleSystem("shootingstar_burnup_main")
 PrecacheParticleSystem("mini_firenado")
 PrecacheParticleSystem("small_mini_firenado_hd_main")
-PrecacheParticleSystem("localized_firestorm_effect")--
+PrecacheParticleSystem("localized_firestorm_effect")
+
+PrecacheParticleSystem( "dryice_lowfog_crawler" )
+PrecacheParticleSystem( "dryice_medfog_crawler" )
+PrecacheParticleSystem( "dryice_deepfog_crawler" )
+PrecacheParticleSystem( "dryice_fog_explosion" )
+PrecacheParticleSystem( "dryice_melting" )
 
 PrecacheParticleSystem("rain_ceiling_drops_effect")
 PrecacheParticleSystem("rain_ceiling_drop_ground_splash")

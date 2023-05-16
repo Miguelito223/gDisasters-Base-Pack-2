@@ -24,12 +24,8 @@ function ENT:Initialize()
 	
 	self.SpawnTime = CurTime()
 	
-	game.AddParticles("particles/dry_ice.pcf");
-	PrecacheParticleSystem( "dryice_lowfog_crawler" )
-	PrecacheParticleSystem( "dryice_medfog_crawler" )
-	PrecacheParticleSystem( "dryice_deepfog_crawler" )
-	PrecacheParticleSystem( "dryice_fog_explosion" )
-	PrecacheParticleSystem( "dryice_melting" )
+	
+
 	
 	if (SERVER) then
 		

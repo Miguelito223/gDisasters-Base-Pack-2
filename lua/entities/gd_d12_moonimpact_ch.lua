@@ -14,8 +14,7 @@ ENT.Model                            = "models/ramses/models/nature/moon.mdl"
 
 
 function ENT:Initialize()	
-
-    game.AddParticles( "particles/chicxulub.pcf" )
+	
 	if (SERVER) then
 		
 		self:SetModel(self.Model)
