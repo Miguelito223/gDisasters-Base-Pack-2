@@ -126,7 +126,7 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 				Name = name,
 				Class = class,
 				Healths = 100,
-				Weapons = { "none" }
+				Weapons = { "none" },
 				Category = subcategory
 			})
 		else
