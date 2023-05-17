@@ -630,14 +630,6 @@ concommand.Add("gdisasters_setbody_oxygen", function(cmd, args, O2)
 	end
 end)
 
-concommand.Add("gdisasters_dnc_getsundir", function(cmd, args, O2)
-	print(gDisasters_GetSunDir())
-end)
-
-concommand.Add("gdisasters_dnc_getmoondir", function(cmd, args, O2)
-	print(gDisasters_GetMoonDir())
-end)
-
 concommand.Add("gdisasters_dnc_getmoondirindegrees", function(cmd, args, O2)
 	print(gDisasters_GetMoonAngleInDegs())
 end)
@@ -667,6 +659,14 @@ end)
 
 concommand.Add("getmap", function()
 	print(game.GetMap())
+end)
+
+concommand.Add("gdisasters_dnc_getsundir", function(cmd, args, O2)
+	print(gDisasters_GetSunDir())
+end)
+
+concommand.Add("gdisasters_dnc_getmoondir", function(cmd, args, O2)
+	print(gDisasters_GetMoonDir())
 end)
 
 concommand.Add( "gdisasters_dnc_pause", function( pl, cmd, args )
