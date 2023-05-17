@@ -229,7 +229,7 @@ AddToGDSpawnMenu("Micro Firenado"        , "gd_d2_mfirenado"              , "Dis
 AddToGDSpawnMenu("Gustnado (Smart)"         , "gd_d2_gustnado_pathed"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Plant Appocolapse"         , "gd_d2_planttakeover"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Shooting Star"         , "gd_d2_shootingstar"			, "Disasters", "Tier 2", false)
-AddToGDSpawnMenu("Shooting Star"         , "gd_d2_shootingstar"			, "Disasters", "Tier 2", false)
+AddToGDSpawnMenu("Shooting Stars Shower (No Climate Change)"         , "gd_d2_shootingstarshower", "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Funnel", "gd_d2_funnel", "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Hail Stone"         , "gd_d2_hail"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Waterspout", "gd_d2_waterspout" , "Disasters", "Tier 2", false)

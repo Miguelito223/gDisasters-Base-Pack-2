@@ -3,11 +3,9 @@ function Atmosphere()
 end
 hook.Add("Think", "atmosphericLoop", Atmosphere)
 
-
-
 function WindControl()
 	if LocalPlayer().gDisasters == nil then return end
-	
+	if LocalPlayer().Sounds == nil then LocalPlayer().Sounds = {} end
 	
 	local local_wind    = LocalPlayer():GetNWFloat("LocalWind")
 	local outside_fac   = LocalPlayer().gDisasters.Outside.OutsideFactor/100 

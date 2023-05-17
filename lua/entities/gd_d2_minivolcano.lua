@@ -192,10 +192,8 @@ function ENT:InsideLavaEffect()
 				local eye = v:EyePos()
 					
 				if eye.z <= self:GetLavaLevelPosition().z and v:Alive() and self:IsValid() then
-					v:SetNWBool("IsUnderlava", true)
 					v:SendLua("LocalPlayer().LavaIntensity=LocalPlayer().LavaIntensity + (FrameTime()*8)")
-				else
-					v:SetNWBool("IsUnderlava", false)
+					v.LavaIntensity=v.LavaIntensity + (FrameTime()*8)
 				end
 			end
 			v:Ignite(15)

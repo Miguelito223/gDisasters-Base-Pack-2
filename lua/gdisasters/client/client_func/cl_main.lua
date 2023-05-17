@@ -121,7 +121,7 @@ hook.Add("RenderScreenspaceEffects", "gfx_Underwater", function()
 	LocalPlayer().LastIsUnderwater = LocalPlayer():GetNWBool("IsUnderwater")
 
 end)
-	
+
 hook.Add("RenderScreenspaceEffects", "gfx_Underlava", function() 
 	LocalPlayer().LavaIntensity = math.Clamp(LocalPlayer().LavaIntensity - (FrameTime()/4), 0, 1)
 	local intensity = LocalPlayer().LavaIntensity 

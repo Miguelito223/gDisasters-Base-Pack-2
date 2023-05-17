@@ -65,13 +65,7 @@ function ENT:PhysicsCollide( data, phys )
 	local vel = self.Move_vector 
 	
 
-	self:Remove()
-
-		
-		
-			
-
-			
+	self:Remove()	
 
 end
 

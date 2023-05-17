@@ -451,11 +451,13 @@ function Temperature()
 	DamagePlayer()
 end
 
+function Lava()
+
 function Oxygen()
 
 	local oxygen = GLOBAL_SYSTEM["Atmosphere"]["Oxygen"]
 	SetGlobalFloat("gDisasters_Oxygen", oxygen)
-    
+
 	function DamagePlayer()
 
 		if GetConVar("gdisasters_hud_oxygen_enable"):GetInt() <= 0 then return end

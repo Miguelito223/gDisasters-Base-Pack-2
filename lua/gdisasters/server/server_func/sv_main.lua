@@ -105,6 +105,13 @@ function paintSky_Fade(data_to, fraction) -- fade from one skypaint setting to a
 
 end
 
+hook.Add("Think", "LavaVolcano", function()
+	for k, v in pairs(player.GetAll()) do
+		v.LavaIntensity = math.Clamp(v.LavaIntensity - (FrameTime()/4), 0, 1)
+	end
+end)
+
+
 function paintSky(data)
 
 	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() <= 0 then return end
@@ -458,9 +465,6 @@ function FindInCylinder(pos, radius, top, bottom, physonly)
 
 	return entities 
 end
-
-
-
 
 function clShakeScreen(ply, duration)
 

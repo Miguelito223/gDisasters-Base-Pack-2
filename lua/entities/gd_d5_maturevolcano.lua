@@ -198,6 +198,7 @@ function ENT:InsideLavaEffect()
 					
 				if eye.z <= self:GetLavaLevelPosition().z and v:Alive() and self:IsValid() then
 					v:SendLua("LocalPlayer().LavaIntensity=LocalPlayer().LavaIntensity + (FrameTime()*8)")
+					v.LavaIntensity=v.LavaIntensity + (FrameTime()*8)
 				end
 			end
 			v:Ignite(15)
