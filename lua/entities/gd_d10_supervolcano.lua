@@ -122,7 +122,8 @@ function ENT:CreateLoop()
 end
 
 function ENT:GetLavaLevelPosition()
-	return self:GetPos() + Vector(0, 0, self.LavaLevel) + Vector(0, 0, 200) - (self:GetForward() * -100)
+	local scale = self:GetModelScale()
+	return self:GetPos() + Vector(0, 0, self:GetNWFloat("LavaLevel") + (scale * 100) ) - (self:GetForward() * -100)
 end
 
 function ENT:LavaControl()

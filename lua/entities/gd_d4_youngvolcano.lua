@@ -120,7 +120,7 @@ end
 
 
 function ENT:GetLavaLevelPosition()
-	return self:GetPos() + Vector(0, 0, self.LavaLevel)
+	return self:GetPos() + Vector(0, 0, self:GetNWFloat("LavaLevel"))
 end
 
 function ENT:LavaControl()
