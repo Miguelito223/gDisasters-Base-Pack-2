@@ -82,7 +82,7 @@ AddToGDSpawnMenu("Light Breeze", "gd_w1_lightbreeze", "Weather", "Tier 1", false
 AddToGDSpawnMenu("Beaufort 0 Wind (Calm)", "gd_w1_beaufort0", "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Beaufort 1 Wind (Light Air)", "gd_w1_beaufort1", "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Shooting Star Shower", "gd_w1_shootingstarshower" , "Weather", "Tier 1", false)
-AddToGDSpawnMenu("Cumulus Cloud", "gd_w1_cumu_cldy" , "Weather", "Tier 1", false)gd_w2_ashstorm
+AddToGDSpawnMenu("Cumulus Cloud", "gd_w1_cumu_cldy" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("City Snow", "gd_w1_citysnow" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("High pressure", "gd_w1_highpressure_sys" , "Weather", "Tier 1", false)
 

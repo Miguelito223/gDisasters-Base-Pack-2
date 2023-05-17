@@ -70,11 +70,6 @@ function ENT:Initialize()
 			data.EndMin         = 40
 			data.EndMinCurrent  = 0
 			data.EndMaxCurrent  = 0   
-
-		timer.Simple(40, function()
-			if !self:IsValid() then return end 
-			self:Remove()
-		end)	
 	
 	end
 end
