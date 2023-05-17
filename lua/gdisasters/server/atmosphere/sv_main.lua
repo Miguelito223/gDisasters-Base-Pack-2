@@ -451,8 +451,6 @@ function Temperature()
 	DamagePlayer()
 end
 
-function Lava()
-
 function Oxygen()
 
 	local oxygen = GLOBAL_SYSTEM["Atmosphere"]["Oxygen"]
