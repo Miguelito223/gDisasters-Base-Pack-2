@@ -436,8 +436,6 @@ function ENT:Think()
 		self:VolcanicLavaEffects()
 		self:InsideLavaEffect()
 		self:SetLavaLevel(600)
-		
-		print(self:GetLavaLevelPosition())
 
 		self:NextThink(CurTime() + t)
 		return true	
