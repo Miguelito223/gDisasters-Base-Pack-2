@@ -123,7 +123,7 @@ end
 
 function ENT:GetLavaLevelPosition()
 	local scale = self:GetModelScale()
-	return self:GetPos() + Vector(0, 0, self:GetNWFloat("LavaLevel") + (scale * 100) ) - (self:GetForward() * -100)
+	return self:GetPos() + Vector(0, 0, self:GetNWFloat("LavaLevel")) + Vector(0,0,124) - (self:GetForward() * -100)
 end
 
 function ENT:LavaControl()
@@ -437,7 +437,8 @@ function ENT:Think()
 		self:InsideLavaEffect()
 		self:SetLavaLevel(600)
 		
-		
+		print(self:GetLavaLevelPosition())
+
 		self:NextThink(CurTime() + t)
 		return true	
 	end
