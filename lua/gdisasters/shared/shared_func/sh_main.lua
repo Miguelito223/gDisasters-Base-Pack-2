@@ -285,6 +285,7 @@ function isinLava(ply)
 end
 
 function isUnderLava(ply)
+	if ply.LavaIntensity == nil then ply.LavaIntensity = 0 end
 	local lv = ply:GetNWBool("IsUnderlava")
 	local lv2 = ply.LavaIntensity
 

@@ -74,6 +74,7 @@ AddToGDSpawnMenu("Light Snow", "gd_w1_snow" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Sunny", "gd_w1_sunny" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Sleet", "gd_w1_sleet" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Light Rain", "gd_w1_lightrain" , "Weather", "Tier 1", false)
+AddToGDSpawnMenu("Heavy Rain", "gd_w1_heavyrain" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Night", "gd_w1_night" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Tropical Depression", "gd_w1_tropicaldepression", "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Tropical Storm", "gd_w1_tropicalstorm", "Weather", "Tier 1", false)
@@ -180,10 +181,15 @@ AddToGDSpawnMenu("Beaufort 10 Wind (Storm, Whole Gale)", "gd_w6_beaufort10", "We
 AddToGDSpawnMenu("Beaufort 11 Wind (Violent Storm)", "gd_w6_beaufort11", "Weather", "Tier 6", false)
 AddToGDSpawnMenu("Beaufort 12 Wind (Hurricane Force)", "gd_w6_beaufort12", "Weather", "Tier 6", false)
 
+
 --[[
 WEATHER TIER 7
 --]]
 
+
+AddToGDSpawnMenu("Beaufort 13 Wind (Hiper Force)", "gd_w7_beaufort13", "Weather", "Tier 7", false)
+AddToGDSpawnMenu("Beaufort 14 Wind (Hiper Mega Force)", "gd_w7_beaufort14", "Weather", "Tier 7", false)
+AddToGDSpawnMenu("super Extreme Wind", "gd_w7_superextremebreeze", "Weather", "Tier 7", false)
 AddToGDSpawnMenu("Martian Snow Storm", "gd_w7_martiansnow", "Weather", "Tier 7", false)
 AddToGDSpawnMenu("Solar Ray", "gd_w7_solarray", "Weather", "Tier 7", false)
 AddToGDSpawnMenu("Freeze Ray", "gd_w7_freezeray", "Weather", "Tier 7", false)
