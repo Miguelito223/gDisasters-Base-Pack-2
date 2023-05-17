@@ -656,6 +656,15 @@ concommand.Add("gdisasters_sethumidity", function(cmd, args, humidity)
 	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = tonumber(humi)
 end)
 
+concommand.Add("gdisasters_setbdadiation", function(cmd, args, BRadiation)
+	local BR =  BRadiation[1]
+	GLOBAL_SYSTEM_TARGET["Atmosphere"]["BRadiation"] = tonumber(BR)
+end)
+concommand.Add("gdisasters_setoxygen", function(cmd, args, Oxygen)
+	local Ox = Oxygen[1]
+	GLOBAL_SYSTEM_TARGET["Atmosphere"]["Oxygen"] = tonumber(Ox)
+end)
+
 concommand.Add("getmap", function()
 	print(game.GetMap())
 end)
