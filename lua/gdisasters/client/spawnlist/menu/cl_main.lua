@@ -88,6 +88,13 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 			AdminOnly = adminonly, 
 			Offset = 0
 		})
+		list.Set( "Weapon", class, {
+			Name = name,
+			Class = class, 
+			Category = subcategory, 
+			AdminOnly = adminonly, 
+			Offset = 0
+		})
 	elseif category == "Buildings" then
 		list.Set( "gDisasters_Buildings", class, {
 			Name = name, 
@@ -105,13 +112,32 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 			Offset = 0
 		})
 	elseif category == "Misc" then
-		list.Set( "gDisasters_Misc", class, {
-			Name = name, 
-			Class = class, 
-			Category = subcategory, 
-			AdminOnly = adminonly, 
-			Offset = 0
-		})
+		if subcategory == "NPCs" then
+			list.Set( "gDisasters_Misc", class, {
+				Name = name, 
+				Class = class, 
+				Category = subcategory, 
+				AdminOnly = adminonly,
+				Healths = 100,
+				Weapons = { "none" },
+				Offset = 0
+			})
+			list.Set("NPC", class, {
+				Name = name,
+				Class = class,
+				Healths = 100,
+				Weapons = { "none" }
+				Category = subcategory
+			})
+		else
+			list.Set( "gDisasters_Misc", class, {
+				Name = name, 
+				Class = class, 
+				Category = subcategory, 
+				AdminOnly = adminonly,
+				Offset = 0
+			})
+		end
 	end
 
 end
@@ -437,9 +463,9 @@ hook.Add( "PopulategDisasters_Misc", "AddMiscContent", function( pnlContent, tre
 
 	local MiscCategories = {}
 	local SpawnableMiscList = list.Get("gDisasters_Misc")
+
 	if (SpawnableMiscList) then
 		for k, v in pairs(SpawnableMiscList) do
-
 			MiscCategories[v.Category] = MiscCategories[v.Category] or {}
 			table.insert(MiscCategories[v.Category], v)
 		end
@@ -457,16 +483,31 @@ hook.Add( "PopulategDisasters_Misc", "AddMiscContent", function( pnlContent, tre
 			self.PropPanel:SetVisible( false )
 			self.PropPanel:SetTriggerSpawnlistChange( false )
 
-			for name, ent in SortedPairsByMemberValue( v, "PrintName" ) do
+			if CategoryName == "NPCs" then
+				for name, ent in SortedPairsByMemberValue( v, "PrintName" ) do
 				
-				spawnmenu.CreateContentIcon( "entity", self.PropPanel, 
-				{ 
-					nicename	= ent.PrintName or ent.Name,
-					spawnname	= ent.Class,
-					material	= "entities/"..ent.Class..".png",
-					admin		= ent.AdminOnly or false
-				})
+					spawnmenu.CreateContentIcon( "npc", self.PropPanel, 
+					{ 
+						nicename	= ent.PrintName or ent.Name,
+						spawnname	= ent.Class,
+						material	= "entities/"..ent.Class..".png",
+						weapon		= ent.Weapons,
+						admin		= ent.AdminOnly or false
+					})
 				
+				end
+			else
+				for name, ent in SortedPairsByMemberValue( v, "PrintName" ) do
+				
+					spawnmenu.CreateContentIcon( "entity", self.PropPanel, 
+					{ 
+						nicename	= ent.PrintName or ent.Name,
+						spawnname	= ent.Class,
+						material	= "entities/"..ent.Class..".png",
+						admin		= ent.AdminOnly or false
+					})
+				
+				end
 			end
 
 		end
