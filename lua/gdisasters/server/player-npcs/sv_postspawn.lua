@@ -41,6 +41,7 @@ hook.Add( "PlayerInitialSpawn", "gDisasters_PostSpawn", gDisasters_PostSpawn )
 function gDisasters_OnSpawn_Reset( ply )
 	ply.gDisasters.Body.Temperature = 37 
 	ply.gDisasters.Body.Oxygen      = 100
+	ply.LavaIntensity = 0
 
 	if GetConVar("gdisasters_hud_temp_enable"):GetInt() <= 0 or GetConVar("gdisasters_hud_temp_value"):GetInt() <= 0 then 
 		ply:SetNWFloat("BodyTemperature", ply.gDisasters.Body.Temperature)

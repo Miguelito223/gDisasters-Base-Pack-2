@@ -14,9 +14,7 @@ ENT.WedgeSound2							= "streams/disasters/nature/volcano_idle.wav"
 
 function ENT:Initialize()	
 	if (CLIENT) then 
-		if LocalPlayer().Sounds2 == nil then LocalPlayer().Sounds2 = {} end
-		
-		LocalPlayer().Sounds2["lava"]         = CreateLoopedSound(LocalPlayer(), self.WedgeSound2)
+		LocalPlayer().Sounds["lava"]         = CreateLoopedSound(LocalPlayer(), self.WedgeSound2)
 	
 	end
 	
@@ -262,9 +260,9 @@ function ENT:OnRemove()
 		end
 	end
 	if (CLIENT) then
-		if LocalPlayer().Sounds2["lava"]!=nil then 
-			LocalPlayer().Sounds2["lava"]:Stop()
-			LocalPlayer().Sounds2["lava"]=nil
+		if LocalPlayer().Sounds["lava"]!=nil then 
+			LocalPlayer().Sounds["lava"]:Stop()
+			LocalPlayer().Sounds["lava"]=nil
 		end
 	end
 

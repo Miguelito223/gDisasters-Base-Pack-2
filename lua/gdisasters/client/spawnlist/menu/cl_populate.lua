@@ -82,7 +82,7 @@ AddToGDSpawnMenu("Light Breeze", "gd_w1_lightbreeze", "Weather", "Tier 1", false
 AddToGDSpawnMenu("Beaufort 0 Wind (Calm)", "gd_w1_beaufort0", "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Beaufort 1 Wind (Light Air)", "gd_w1_beaufort1", "Weather", "Tier 1", false)
 AddToGDSpawnMenu("Shooting Star Shower", "gd_w1_shootingstarshower" , "Weather", "Tier 1", false)
-AddToGDSpawnMenu("Cumulus Cloud", "gd_w1_cumu_cldy" , "Weather", "Tier 1", false)
+AddToGDSpawnMenu("Cumulus Cloud", "gd_w1_cumu_cldy" , "Weather", "Tier 1", false)gd_w2_ashstorm
 AddToGDSpawnMenu("City Snow", "gd_w1_citysnow" , "Weather", "Tier 1", false)
 AddToGDSpawnMenu("High pressure", "gd_w1_highpressure_sys" , "Weather", "Tier 1", false)
 
@@ -94,7 +94,8 @@ WEATHER TIER 2
 AddToGDSpawnMenu("Acid Rain", "gd_w2_acidrain" , "Weather", "Tier 2", false)
 AddToGDSpawnMenu("Heat Wave", "gd_w2_heatwave" , "Weather", "Tier 2", false)
 AddToGDSpawnMenu("Hail Storm", "gd_w2_hailstorm" , "Weather", "Tier 2", false)
-AddToGDSpawnMenu("Ash Storm", "gd_w2_volcano_ash" , "Weather", "Tier 2", false)
+AddToGDSpawnMenu("Volcano Ash", "gd_w2_volcano_ash" , "Weather", "Tier 2", false)
+AddToGDSpawnMenu("Ash Storm", "gd_w2_ashstorm" , "Weather", "Tier 2", false)
 AddToGDSpawnMenu("Moderate Wind", "gd_w2_modbreeze" , "Weather", "Tier 2", false)
 AddToGDSpawnMenu("Cold Wave", "gd_w2_coldwave" , "Weather", "Tier 2", false)
 AddToGDSpawnMenu("Heavy Snow", "gd_w2_heavysnow" , "Weather", "Tier 2", false)

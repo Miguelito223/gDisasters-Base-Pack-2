@@ -94,7 +94,7 @@ function gDisasters_PostSpawnCL()
 
 	local function gDisasters_SetupSound()
 		LocalPlayer().Sounds = {}
-		LocalPlayer().Sounds2 = {}
+		LocalPlayer().Sounds = {}
 	end
 
 	gDisasters_SetupOutsideVars()

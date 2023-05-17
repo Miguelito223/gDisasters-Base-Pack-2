@@ -16,12 +16,8 @@ ENT.Mass                             =  100
 function ENT:Initialize()		
 	
 	if (CLIENT) then
-	
-		
-		
 		LocalPlayer().Sounds["Sandstorm_IDLE"]         = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/sandstorm_loop.wav")
 		LocalPlayer().Sounds["Sandstorm_muffled_IDLE"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/sandstorm_muffled_loop.wav")
-
 	end
 	
 	if (SERVER) then
