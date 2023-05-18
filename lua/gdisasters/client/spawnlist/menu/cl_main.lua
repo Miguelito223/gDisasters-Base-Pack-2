@@ -88,7 +88,7 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 			AdminOnly = adminonly, 
 			Offset = 0
 		})
-		list.Set( "Weapon", class, {
+		list.Set( "weapon", class, {
 			Name = name,
 			Class = class, 
 			Category = subcategory, 
@@ -119,15 +119,14 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 				Category = subcategory, 
 				AdminOnly = adminonly,
 				Healths = 100,
-				Weapons = { "none" },
 				Offset = 0
 			})
 			list.Set("NPC", class, {
 				Name = name,
 				Class = class,
+				Category = subcategory,
 				Healths = 100,
-				Weapons = { "none" },
-				Category = subcategory
+				Offset = 0
 			})
 		else
 			list.Set( "gDisasters_Misc", class, {
