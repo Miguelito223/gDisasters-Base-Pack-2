@@ -13,7 +13,7 @@ SWEP.Slot = 0
 SWEP.DrawAmmo = false
 SWEP.DrawCrosshair = false
 
-SWEP.Spawnable = false
+SWEP.Spawnable = true
 SWEP.AdminSpawnable = false
 
 SWEP.Category 			= "gDisasters - Measurer"
