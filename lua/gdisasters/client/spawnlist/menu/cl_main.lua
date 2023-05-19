@@ -83,18 +83,18 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 			Offset = 0
 		})
 	elseif category == "Weapons" then 
-		list.Set( "gDisasters_Weapons", class, {
-			Name = name,
-			Class = class, 
-			Category = subcategory, 
-			AdminOnly = adminonly,
-			Spawnable = true,
-		})
 		list.Set( "Weapon", class, {
 			Name = name,
 			Class = class, 
 			Category = subcategory, 
 			AdminOnly = adminonly, 
+			Spawnable = true,
+		})
+		list.Set( "gDisasters_Weapons", class, {
+			Name = name,
+			Class = class, 
+			Category = subcategory, 
+			AdminOnly = adminonly,
 			Spawnable = true,
 		})
 	elseif category == "Buildings" then
@@ -113,22 +113,37 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 			Offset = 0
 		})
 	elseif category == "NPCs" then
-		list.Set( "gDisasters_NPCs", class, {
-			Name = name, 
-			Class = class, 
-			Category = subcategory, 
-			AdminOnly = adminonly,
-			Health = "100",
-			Weapons = {"none"},
-		})
-		list.Set( "NPC", class, {
-			Name = name, 
-			Class = class, 
-			Category = subcategory,
-			AdminOnly = adminonly,
-			Health = "100",
-			Weapons = {"none"},
-		})
+		if subcategory == "Nextbot" then
+			list.Set( "NPC", class, {
+				Name = name, 
+				Class = class, 
+				Category = subcategory,
+				AdminOnly = adminonly,
+			})	
+			list.Set( "gDisasters_NPCs", class, {
+				Name = name, 
+				Class = class, 
+				Category = subcategory, 
+				AdminOnly = adminonly,
+			})
+		else
+			list.Set( "gDisasters_NPCs", class, {
+				Name = name, 
+				Class = class, 
+				Category = subcategory, 
+				AdminOnly = adminonly,
+				Health = "100",
+				Weapons = {"none"},
+			})
+			list.Set( "NPC", class, {
+				Name = name, 
+				Class = class, 
+				Category = subcategory,
+				AdminOnly = adminonly,
+				Health = "100",
+				Weapons = {"none"},
+			})
+		end
 	elseif category == "Misc" then
 		list.Set( "gDisasters_Misc", class, {
 			Name = name, 
@@ -483,9 +498,7 @@ hook.Add( "PopulategDisasters_NPCs", "AddNPCsContent", function( pnlContent, tre
 			self.PropPanel:SetVisible( false )
 			self.PropPanel:SetTriggerSpawnlistChange( false )
 
-
 			for name, npc in SortedPairsByMemberValue( v, "PrintName" ) do
-			
 				spawnmenu.CreateContentIcon( "npc", self.PropPanel, 
 				{ 
 					nicename	= npc.PrintName or npc.Name,
@@ -494,9 +507,7 @@ hook.Add( "PopulategDisasters_NPCs", "AddNPCsContent", function( pnlContent, tre
 					weapon		= npc.Weapons,
 					admin		= npc.AdminOnly or false
 				})
-			
 			end
-
 		end
 
 		node.DoClick = function( self )

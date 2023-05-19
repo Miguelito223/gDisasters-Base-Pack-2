@@ -55,18 +55,18 @@ AddToGDSpawnMenu("Campfire" , "gd_equip_campfire"		, "Equipment", "Survival", fa
 AddToGDSpawnMenu("Dry Ice", "gd_equip_dryice", "Equipment", "Others", false)
 
 --[[
-Misc
+NPCs
 --]]
 
-AddToGDSpawnMenu("Nurse" , "gd_npc_nurse", "NPCs", "Nurse", false)
+AddToGDSpawnMenu("Nurse" , "gd_npc_nurse", "NPCs", "Nextbot", false)
 
 --[[
 Misc
 --]]
 
-AddToGDSpawnMenu("♫ The Man In Gauze ♫"        , "gd_misc_themaningauze"              , "Misc", "Others", false)
-AddToGDSpawnMenu("tvirus" , "gb5_chemical_tvirus"         , "Misc", "gbomb 5 Infections", false)
-AddToGDSpawnMenu("tvirus cure"        , "gb5_chemical_tvirus_cure"              , "Misc", "gbomb 5 Infections", false)
+AddToGDSpawnMenu("♫ The Man In Gauze ♫"        , "gd_misc_themaningauze"              , "Misc", "the man in gauze", false)
+AddToGDSpawnMenu("tvirus" , "gb5_chemical_tvirus"         , "Misc", "tvirus", false)
+AddToGDSpawnMenu("tvirus cure"        , "gb5_chemical_tvirus_cure"              , "Misc", "tvirus", false)
 
 --[[
 WEATHER TIER 1
