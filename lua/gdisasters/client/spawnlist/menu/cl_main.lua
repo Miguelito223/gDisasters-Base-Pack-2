@@ -16,7 +16,7 @@ search.AddProvider(
 		searchList("gDisasters_Weather", "entity")
 		searchList("gDisasters_Buildings", "entity")
 		searchList("gDisasters_Equipment", "entity")
-		searchList("gDisasters_NPCs", "entity")
+		searchList("gDisasters_NPCs", "npc")
 		searchList("gDisasters_Misc", "entity")
 
 		// searchList("VJBASE_SPAWNABLE_VEHICLES", "vehicle") -- vehicle (Not yet lol)
