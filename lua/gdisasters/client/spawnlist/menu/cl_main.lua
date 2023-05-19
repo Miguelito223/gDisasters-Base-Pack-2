@@ -457,7 +457,7 @@ end )
 
 hook.Add( "PopulategDisasters_NPCs", "AddNPCsContent", function( pnlContent, tree, node )
 
-	local dtree = tree:AddNode("Misc", "icon16/monkey.png")
+	local dtree = tree:AddNode("NPCs", "icon16/monkey.png")
 	dtree.PropPanel = vgui.Create("ContentContainer", pnlContent)
 	dtree.PropPanel:SetVisible(false)
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
