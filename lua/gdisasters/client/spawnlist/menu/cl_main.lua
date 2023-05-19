@@ -88,14 +88,14 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 			Class = class, 
 			Category = subcategory, 
 			AdminOnly = adminonly, 
-			Spawnable = true,
+			Spawnable = true
 		})
 		list.Set( "gDisasters_Weapons", class, {
 			Name = name,
 			Class = class, 
 			Category = subcategory, 
 			AdminOnly = adminonly,
-			Spawnable = true,
+			Spawnable = true
 		})
 	elseif category == "Buildings" then
 		list.Set( "gDisasters_Buildings", class, {
