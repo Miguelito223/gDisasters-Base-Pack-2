@@ -87,7 +87,8 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 			Name = name,
 			Class = class, 
 			Category = subcategory, 
-			AdminOnly = adminonly, 
+			AdminOnly = adminonly,
+			Spawnable = true,
 			Offset = 0
 		})
 		list.Set( "Weapon", class, {
@@ -95,6 +96,7 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 			Class = class, 
 			Category = subcategory, 
 			AdminOnly = adminonly, 
+			Spawnable = true,
 			Offset = 0
 		})
 	elseif category == "Buildings" then
@@ -119,7 +121,16 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 			Class = class, 
 			Category = subcategory, 
 			AdminOnly = adminonly,
-			Healths = 100,
+			Health = "100",
+			Weapons = {"none"}
+			Offset = 0
+		})
+		list.Set( "NPC", class, {
+			Name = name, 
+			Class = class, 
+			Category = subcategory,
+			AdminOnly = adminonly,
+			Health = "100",
 			Weapons = {"none"}
 			Offset = 0
 		})
