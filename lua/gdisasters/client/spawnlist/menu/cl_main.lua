@@ -133,7 +133,7 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 				Category = subcategory, 
 				AdminOnly = adminonly,
 				Health = "100",
-				Weapons = {"none"},
+				Weapons = {"none"}
 			})
 			list.Set( "NPC", class, {
 				Name = name, 
@@ -141,7 +141,7 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 				Category = subcategory,
 				AdminOnly = adminonly,
 				Health = "100",
-				Weapons = {"none"},
+				Weapons = {"none"}
 			})
 		end
 	elseif category == "Misc" then
