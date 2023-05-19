@@ -16,6 +16,7 @@ search.AddProvider(
 		searchList("gDisasters_Weather", "entity")
 		searchList("gDisasters_Buildings", "entity")
 		searchList("gDisasters_Equipment", "entity")
+		searchList("gDisasters_NPCs", "entity")
 		searchList("gDisasters_Misc", "entity")
 
 		// searchList("VJBASE_SPAWNABLE_VEHICLES", "vehicle") -- vehicle (Not yet lol)
@@ -53,6 +54,7 @@ spawnmenu.AddCreationTab("gDisasters Revived", function()
 	ctrl:CallPopulateHook("PopulategDisasters_Buildings")
 	ctrl:CallPopulateHook("PopulategDisasters_Weapons")
 	ctrl:CallPopulateHook("PopulategDisasters_Equipment")
+	ctrl:CallPopulateHook("PopulategDisasters_NPCs")
 	ctrl:CallPopulateHook("PopulategDisasters_Misc")
 	return ctrl
 	end,
@@ -111,32 +113,25 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 			AdminOnly = adminonly,
 			Offset = 0
 		})
+	elseif category == "NPCs" then
+		list.Set( "gDisasters_NPCs", class, {
+			Name = name, 
+			Class = class, 
+			Category = subcategory, 
+			AdminOnly = adminonly,
+			Healths = 100,
+			Weapons = {"none"}
+			Offset = 0
+		})
 	elseif category == "Misc" then
-		if subcategory == "NPCs" then
-			list.Set( "gDisasters_Misc", class, {
-				Name = name, 
-				Class = class, 
-				Category = subcategory, 
-				AdminOnly = adminonly,
-				Healths = 100,
-				Offset = 0
-			})
-			list.Set("NPC", class, {
-				Name = name,
-				Class = class,
-				Category = subcategory,
-				Healths = 100,
-				Offset = 0
-			})
-		else
-			list.Set( "gDisasters_Misc", class, {
-				Name = name, 
-				Class = class, 
-				Category = subcategory, 
-				AdminOnly = adminonly,
-				Offset = 0
-			})
-		end
+		list.Set( "gDisasters_Misc", class, {
+			Name = name, 
+			Class = class, 
+			Category = subcategory, 
+			AdminOnly = adminonly,
+			Offset = 0
+		})
+
 	end
 
 end
@@ -449,6 +444,70 @@ hook.Add( "PopulategDisasters_Weather", "AddWeatherContent", function( pnlConten
 
 end )
 
+hook.Add( "PopulategDisasters_NPCs", "AddNPCsContent", function( pnlContent, tree, node )
+
+	local dtree = tree:AddNode("Misc", "icon16/monkey.png")
+	dtree.PropPanel = vgui.Create("ContentContainer", pnlContent)
+	dtree.PropPanel:SetVisible(false)
+	dtree.PropPanel:SetTriggerSpawnlistChange(false)
+
+	function dtree:DoClick()
+		pnlContent:SwitchPanel(self.PropPanel)
+	end
+
+	local MiscCategories = {}
+	local SpawnableMiscList = list.Get("gDisasters_NPCs")
+
+	if (SpawnableMiscList) then
+		for k, v in pairs(SpawnableMiscList) do
+			MiscCategories[v.Category] = MiscCategories[v.Category] or {}
+			table.insert(MiscCategories[v.Category], v)
+		end
+	end
+	for CategoryName, v in SortedPairs(MiscCategories) do
+	
+		local node = dtree:AddNode(CategoryName, "icon16/monkey.png")
+		
+		
+		node.DoPopulate = function( self )
+	
+			if ( self.PropPanel ) then return end
+
+			self.PropPanel = vgui.Create( "ContentContainer", pnlContent )
+			self.PropPanel:SetVisible( false )
+			self.PropPanel:SetTriggerSpawnlistChange( false )
+
+
+			for name, npc in SortedPairsByMemberValue( v, "PrintName" ) do
+			
+				spawnmenu.CreateContentIcon( "npc", self.PropPanel, 
+				{ 
+					nicename	= npc.PrintName or npc.Name,
+					spawnname	= npc.Class,
+					material	= "entities/"..npc.Class..".png",
+					weapon		= npc.Weapons,
+					admin		= npc.AdminOnly or false
+				})
+			
+			end
+
+		end
+
+		node.DoClick = function( self )
+	
+			self:DoPopulate()		
+			pnlContent:SwitchPanel( self.PropPanel )
+	
+		end
+		
+
+		
+	end
+
+
+
+end )
+
 hook.Add( "PopulategDisasters_Misc", "AddMiscContent", function( pnlContent, tree, node )
 
 	local dtree = tree:AddNode("Misc", "icon16/monkey.png")
@@ -482,32 +541,19 @@ hook.Add( "PopulategDisasters_Misc", "AddMiscContent", function( pnlContent, tre
 			self.PropPanel:SetVisible( false )
 			self.PropPanel:SetTriggerSpawnlistChange( false )
 
-			if CategoryName == "NPCs" then
-				for name, ent in SortedPairsByMemberValue( v, "PrintName" ) do
-				
-					spawnmenu.CreateContentIcon( "npc", self.PropPanel, 
-					{ 
-						nicename	= ent.PrintName or ent.Name,
-						spawnname	= ent.Class,
-						material	= "entities/"..ent.Class..".png",
-						weapon		= ent.Weapons,
-						admin		= ent.AdminOnly or false
-					})
-				
-				end
-			else
-				for name, ent in SortedPairsByMemberValue( v, "PrintName" ) do
-				
-					spawnmenu.CreateContentIcon( "entity", self.PropPanel, 
-					{ 
-						nicename	= ent.PrintName or ent.Name,
-						spawnname	= ent.Class,
-						material	= "entities/"..ent.Class..".png",
-						admin		= ent.AdminOnly or false
-					})
-				
-				end
+
+			for name, ent in SortedPairsByMemberValue( v, "PrintName" ) do
+			
+				spawnmenu.CreateContentIcon( "entity", self.PropPanel, 
+				{ 
+					nicename	= ent.PrintName or ent.Name,
+					spawnname	= ent.Class,
+					material	= "entities/"..ent.Class..".png",
+					admin		= ent.AdminOnly or false
+				})
+			
 			end
+			
 
 		end
 
