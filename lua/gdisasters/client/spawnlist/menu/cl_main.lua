@@ -118,13 +118,13 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 				Name = name, 
 				Class = class, 
 				Category = subcategory,
-				AdminOnly = adminonly,
+				AdminOnly = adminonly
 			})	
 			list.Set( "gDisasters_NPCs", class, {
 				Name = name, 
 				Class = class, 
 				Category = subcategory, 
-				AdminOnly = adminonly,
+				AdminOnly = adminonly
 			})
 		else
 			list.Set( "gDisasters_NPCs", class, {
