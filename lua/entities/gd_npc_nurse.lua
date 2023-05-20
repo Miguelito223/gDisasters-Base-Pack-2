@@ -355,6 +355,13 @@ function ENT:UpdateTransmitState()
 	return TRANSMIT_ALWAYS
 end
 
+list.Set( "NPC", "gd_npc_nurse", {
+	Name = "Bcat lol", 
+	Class = "gd_npc_nurse", 
+	Category = "Nextbot",
+	AdminOnly = false,
+})
+
 
 
 
