@@ -58,12 +58,13 @@ AddToGDSpawnMenu("Dry Ice", "gd_equip_dryice", "Equipment", "Others", false)
 NPCs
 --]]
 
-AddToGDSpawnMenu("Nurse" , "gd_npc_nurse", "NPCs", "Nextbot", false)
+AddToGDSpawnMenu("Bcat lol" , "gd_npc_bcat", "NPCs", "Nextbot", false)
 
 --[[
 Misc
 --]]
 
+AddToGDSpawnMenu("Nurse" , "gd_npc_nurse", "Misc", "Nurse", false)
 AddToGDSpawnMenu("♫ The Man In Gauze ♫"        , "gd_misc_themaningauze"              , "Misc", "the man in gauze", false)
 AddToGDSpawnMenu("tvirus" , "gb5_chemical_tvirus"         , "Misc", "tvirus", false)
 AddToGDSpawnMenu("tvirus cure"        , "gb5_chemical_tvirus_cure"              , "Misc", "tvirus", false)

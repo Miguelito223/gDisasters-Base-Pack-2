@@ -498,15 +498,27 @@ hook.Add( "PopulategDisasters_NPCs", "AddNPCsContent", function( pnlContent, tre
 			self.PropPanel:SetVisible( false )
 			self.PropPanel:SetTriggerSpawnlistChange( false )
 
-			for name, npc in SortedPairsByMemberValue( v, "PrintName" ) do
-				spawnmenu.CreateContentIcon( "npc", self.PropPanel, 
-				{ 
-					nicename	= npc.PrintName or npc.Name,
-					spawnname	= npc.Class,
-					material	= "entities/"..npc.Class..".png",
-					weapon		= npc.Weapons,
-					admin		= npc.AdminOnly or false
-				})
+			if CategoryName == "Nextbot" then
+				for name, ent in SortedPairsByMemberValue( v, "PrintName" ) do
+					spawnmenu.CreateContentIcon( "entity", self.PropPanel, 
+					{ 
+						nicename	= ent.PrintName or ent.Name,
+						spawnname	= ent.Class,
+						material	= "entities/"..ent.Class..".png",
+						admin		= ent.AdminOnly or false
+					})
+				end
+			else
+				for name, npc in SortedPairsByMemberValue( v, "PrintName" ) do
+					spawnmenu.CreateContentIcon( "npc", self.PropPanel, 
+					{ 
+						nicename	= npc.PrintName or npc.Name,
+						spawnname	= npc.Class,
+						material	= "entities/"..npc.Class..".png",
+						weapon		= npc.Weapons,
+						admin		= npc.AdminOnly or false
+					})
+				end
 			end
 		end
 
@@ -557,7 +569,6 @@ hook.Add( "PopulategDisasters_Misc", "AddMiscContent", function( pnlContent, tre
 			self.PropPanel = vgui.Create( "ContentContainer", pnlContent )
 			self.PropPanel:SetVisible( false )
 			self.PropPanel:SetTriggerSpawnlistChange( false )
-
 
 			for name, ent in SortedPairsByMemberValue( v, "PrintName" ) do
 			
