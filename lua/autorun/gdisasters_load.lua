@@ -6,17 +6,12 @@ AddCSLuaFile("gdisasters/shared/extensions/sh_patchs-bounds.lua")
 AddCSLuaFile("gdisasters/shared/game/convars/sh_main.lua")
 AddCSLuaFile("gdisasters/shared/game/sh_world_init.lua")
 AddCSLuaFile("gdisasters/shared/shared_func/sh_main.lua")
-AddCSLuaFile("gdisasters/shared/spawnlist/menu/sh_main.lua")
-AddCSLuaFile("gdisasters/shared/spawnlist/menu/sh_populate.lua")
-AddCSLuaFile("gdisasters/shared/toolmenu/sh_menu.lua")
 
 include("gdisasters/shared/shared_func/sh_main.lua")
 include("gdisasters/shared/extensions/sh_patchs-bounds.lua")
 include("gdisasters/shared/game/sh_world_init.lua")
 include("gdisasters/shared/game/convars/sh_main.lua")
-include("gdisasters/shared/spawnlist/menu/sh_main.lua")
-include("gdisasters/shared/spawnlist/menu/sh_populate.lua")
-include("gdisasters/shared/toolmenu/sh_menu.lua")
+
 
 if (SERVER) then
 
@@ -57,6 +52,9 @@ if (CLIENT) then
 	AddCSLuaFile("gdisasters/client/player-npcs/sv_process_gfx.lua")
 	AddCSLuaFile("gdisasters/client/atmosphere/cl_main.lua")
 	AddCSLuaFile("gdisasters/client/game/cl_world_init.lua")
+	AddCSLuaFile("gdisasters/client/spawnlist/menu/cl_main.lua")
+	AddCSLuaFile("gdisasters/client/spawnlist/menu/cl_populate.lua")
+	AddCSLuaFile("gdisasters/client/toolmenu/cl_menu.lua")
 
 	include("gdisasters/client/game/cl_world_init.lua")
 	include("gdisasters/client/atmosphere/cl_main.lua")
@@ -65,4 +63,7 @@ if (CLIENT) then
 	include("gdisasters/client/player-npcs/cl_process_gfx.lua")
 	include("gdisasters/client/player-npcs/cl_postspawn.lua")
 	include("gdisasters/client/hud/cl_main.lua")
+	include("gdisasters/client/spawnlist/menu/cl_main.lua")
+	include("gdisasters/client/spawnlist/menu/cl_populate.lua")
+	include("gdisasters/client/toolmenu/cl_menu.lua")
 end
