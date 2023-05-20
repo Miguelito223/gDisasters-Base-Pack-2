@@ -13,7 +13,7 @@ ENT.TauntSounds = {
 	Sound("streams/nextbot/gd_npc_bcat/lol2.mp3"),
 	Sound("streams/nextbot/gd_npc_bcat/lol3.mp3"),
 }
-local chaseMusic = Sound("streams/nextbot/gd_npc_bcat/NyanCatmusic.mp3")
+local chaseMusic = Sound("streams/nextbot/gd_npc_bcat/chaselol.mp3")
 
 local IsValid = IsValid
 
