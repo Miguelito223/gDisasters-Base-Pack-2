@@ -538,7 +538,7 @@ end )
 
 hook.Add( "PopulategDisasters_Misc", "AddMiscContent", function( pnlContent, tree, node )
 
-	local dtree = tree:AddNode("Misc", "icon16/monkey.png")
+	local dtree = tree:AddNode("Misc", "icon16/brick.png")
 	dtree.PropPanel = vgui.Create("ContentContainer", pnlContent)
 	dtree.PropPanel:SetVisible(false)
 	dtree.PropPanel:SetTriggerSpawnlistChange(false)
@@ -558,7 +558,7 @@ hook.Add( "PopulategDisasters_Misc", "AddMiscContent", function( pnlContent, tre
 	end
 	for CategoryName, v in SortedPairs(MiscCategories) do
 	
-		local node = dtree:AddNode(CategoryName, "icon16/monkey.png")
+		local node = dtree:AddNode(CategoryName, "icon16/brick.png")
 		
 		
 		node.DoPopulate = function( self )
