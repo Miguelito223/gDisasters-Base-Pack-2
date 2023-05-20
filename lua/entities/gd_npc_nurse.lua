@@ -356,7 +356,7 @@ function ENT:UpdateTransmitState()
 end
 
 list.Set( "NPC", "gd_npc_nurse", {
-	Name = "Bcat lol", 
+	Name = "Nurse", 
 	Class = "gd_npc_nurse", 
 	Category = "Nextbot",
 	AdminOnly = false,
