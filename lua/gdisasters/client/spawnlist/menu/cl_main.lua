@@ -152,7 +152,6 @@ function AddToGDSpawnMenu(name, class, category, subcategory, adminonly)
 			AdminOnly = adminonly,
 			Offset = 0
 		})
-
 	end
 
 end
