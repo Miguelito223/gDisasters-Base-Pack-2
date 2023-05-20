@@ -1110,10 +1110,3 @@ net.Receive("bcat_nag", function()
 end)
 
 end
-
-list.Set( "NPC", "gd_npc_bcat", {
-	Name = "Bcat lol", 
-	Class = "gd_npc_bcat", 
-	Category = "Nextbot",
-	AdminOnly = false,
-})
