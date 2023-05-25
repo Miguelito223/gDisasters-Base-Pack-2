@@ -119,8 +119,9 @@ function ENT:CreateLoop()
 end
 
 function ENT:GetLavaLevelPosition()
+	local crater = self:GetAttachment(self:LookupAttachment("lava_lvl")).Pos
 	local scale = self:GetModelScale()
-	return self:GetPos() + Vector(0, 0, self:GetNWFloat("LavaLevel")) - Vector(0,0,300 * scale) - (self:GetForward() * -100)
+	return Vector(crater.x, crater.y, crater.z) - Vector(0,0,100 * scale) - (self:GetForward() * -100)
 end
 
 function ENT:LavaControl()

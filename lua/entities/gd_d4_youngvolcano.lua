@@ -120,7 +120,8 @@ end
 
 
 function ENT:GetLavaLevelPosition()
-	return self:GetPos() + Vector(0, 0, self:GetNWFloat("LavaLevel"))
+	local crater = self:GetAttachment(self:LookupAttachment("crater")).Pos
+	return Vector(crater.x, crater.y, crater.z + self:GetNWFloat("LavaLevel"))
 end
 
 function ENT:LavaControl()
