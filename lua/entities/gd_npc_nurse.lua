@@ -19,6 +19,7 @@ ENT.RenderGroup = RENDERGROUP_BOTH
 function ENT:Initialize()	
 
 	self.NextStep = CurTime()
+	self:SetModelScale(1,0)
 	
 	if (CLIENT) then
 	
@@ -30,8 +31,6 @@ function ENT:Initialize()
 			LocalPlayer().Sounds["Nurse_Idle"]["sound"]:ChangeVolume(0,0)
 			LocalPlayer().Sounds["Nurse_Chasing"]["sound"]:ChangeVolume(0,0)
 		end
-		
-		self:SetMDScale( Vector(1,1,0))
 	end
 	
 	
@@ -148,7 +147,7 @@ function ENT:Appear()
 			self.IsAppearing = false 
 			self.HasAppeared = true
 		else
-			self:SetMDScale( Vector(1,1, math.Clamp(time_elapsed / 4,0,1)))
+			self:SetModelScale(math.Clamp(time_elapsed / 4,0,1),0)
 		end	
 	end
 	
@@ -166,13 +165,6 @@ function ENT:Appear()
 	end
 	
 end
-
-function ENT:SetMDScale(scale)
-	local mat = Matrix()
-	mat:Scale(scale)
-	self:EnableMatrix("RenderMultiply", mat)
-end
-
 
 function ENT:Wakeup(should)
 	
