@@ -124,7 +124,7 @@ end
 function ENT:GetLavaLevelPosition()
 	local crater = self:GetAttachment(self:LookupAttachment("lava_lvl")).Pos
 	local scale = self:GetModelScale()
-	return Vector(crater.x, crater.y, crater.z) + Vector(0,0,100 * scale) - (self:GetForward() * -100)
+	return Vector(crater.x, crater.y, crater.z) - Vector(0,0,150 * scale) - (self:GetForward() * -100)
 end
 
 function ENT:LavaControl()
@@ -141,6 +141,8 @@ function ENT:GetEntitiesInsideLava()
 	
 	local lpos  = self:GetLavaLevelPosition()
 	local scale = self:GetModelScale()
+
+	print(lpos)
 
 	for k, v in pairs(ents.FindInSphere(lpos, 1400 * scale)) do
 	
