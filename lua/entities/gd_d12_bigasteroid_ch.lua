@@ -50,7 +50,6 @@ end
 
 function ENT:Fix()
 	SetMDScale(self, Vector(2,2,2))
-	
 end
 
 
