@@ -17,7 +17,7 @@ function ENT:Initialize()
 
     
 	if (SERVER) then
-		
+		self:SetModelScale( 2, 0 )
 		self:SetModel(self.Model)
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
@@ -49,16 +49,10 @@ end
 
 
 function ENT:Fix()
-	self:SetMDScale(Vector(2,2,2))
+	SetMDScale(self, Vector(2,2,2))
 	
 end
 
-
-function ENT:SetMDScale(scale)
-	local mat = Matrix()
-	mat:Scale(scale)
-	self:EnableMatrix("RenderMultiply", mat)
-end
 
 
 function ENT:SpawnFunction( ply, tr )

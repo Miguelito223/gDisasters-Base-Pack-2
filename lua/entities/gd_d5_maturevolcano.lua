@@ -64,18 +64,6 @@ function ENT:Initialize()
 	self:CreateLoop()
 end
 
-function ENT:SetMDScale(scale)
-	local mat = Matrix()
-	mat:Scale(scale)
-	self:EnableMatrix("RenderMultiply", mat)
-end
-
-function ENT:SetParticleScale(scale)
-	local mat = Matrix()
-	mat:Scale(scale)
-	self:EnableMatrix("RenderMultiply", mat)
-end
-
 function ENT:PressureIncrement()
 	
 	if self.IsGoingToErupt==false and self.IsPressureLeaking == false then

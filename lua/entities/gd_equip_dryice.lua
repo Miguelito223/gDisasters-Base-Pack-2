@@ -54,13 +54,6 @@ function ENT:Initialize()
 	end
 end
 
-function ENT:SetMDScale(scale)
-	local mat = Matrix()
-	mat:Scale(scale)
-	self:EnableMatrix("RenderMultiply", mat)
-end
-
-
 function ENT:SpawnFunction( ply, tr )
 	if ( !tr.Hit ) then return end
 

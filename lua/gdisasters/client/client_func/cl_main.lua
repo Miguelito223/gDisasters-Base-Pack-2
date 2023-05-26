@@ -419,10 +419,16 @@ function AddCeilingWaterDrops(effect_nm, ieffect_nm, delay, offset_range, angle)
 end
 
 
-function ENT:SetMDScale(scale)
+function ENT:SetMDScale(ent, scale)
 	local mat = Matrix()
 	mat:Scale(scale)
-	self:EnableMatrix("RenderMultiply", mat)
+	ent:EnableMatrix("RenderMultiply", mat)
+end
+
+function ENT:SetParticleScale(particle, scale)
+	local mat = Matrix()
+	mat:Scale(scale)
+	particle:EnableMatrix("RenderMultiply", mat)
 end
 
 

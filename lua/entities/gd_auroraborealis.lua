@@ -64,13 +64,6 @@ function ENT:AtmosphericReposition()
 
 end
 
-
-function ENT:SetMDScale(scale)
-	local mat = Matrix()
-	mat:Scale(scale)
-	self:EnableMatrix("RenderMultiply", mat)
-end
-
 function ENT:MoveCloud()
 	local wind_speed, wind_dir = GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"], GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]
 	local next_pos = self:GetPos() + (wind_dir * (wind_speed/1))

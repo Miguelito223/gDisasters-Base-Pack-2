@@ -15,13 +15,9 @@ ENT.Mass                             =  100
 ENT.Models                           =  {"models/props_debris/concrete_spawnplug001a.mdl"}
 ENT.RENDERGROUP                      = RENDERGROUP_TRANSLUCENT
 
-function ENT:Initialize()	
-	if (CLIENT) then
-		self:SetMDScale(Vector(1,1,0))
-	end
-	
+function ENT:Initialize()		
 	if (SERVER) then
-		
+		self:SetModelScale( 1, 0 )
 		self:SetModel(table.Random(self.Models))
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
@@ -47,12 +43,6 @@ function ENT:Initialize()
 		
 		
 	end
-end
-
-function ENT:SetMDScale(scale)
-	local mat = Matrix()
-	mat:Scale(scale)
-	self:EnableMatrix("RenderMultiply", mat)
 end
 
 function ENT:SpawnFunction( ply, tr )
