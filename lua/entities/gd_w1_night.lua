@@ -14,19 +14,11 @@ ENT.Model                            =  "models/ramses/models/space/skysphere.md
 ENT.Mass                             =  100
 
 function ENT:Initialize()	
-
-if (CLIENT) then
-		local scale = (2.5)
-		self:SetMDScale(Vector(scale,scale,scale))
-	
-	end	
-	
-	
 	if (SERVER) then
 	
 		GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(1,3),["Direction"]=Vector(0,0,0)}, ["Pressure"]    = 103000, ["Temperature"] = math.random(5,10), ["Humidity"]    = math.random(10,25), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
-			
+		self:SetModelScale(2.5, 0)
 		self:SetModel(self.Model)
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
@@ -81,11 +73,7 @@ if (CLIENT) then
 	end
 end
 
-function ENT:SetMDScale(scale)
-	local mat = Matrix()
-	mat:Scale(scale)
-	self:EnableMatrix("RenderMultiply", mat)
-end
+
 
 function ENT:SpawnFunction( ply, tr )
 	if ( !tr.Hit ) then return end
