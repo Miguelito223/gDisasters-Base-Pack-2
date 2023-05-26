@@ -17,7 +17,6 @@ ENT.RENDERGROUP                      = RENDERGROUP_TRANSLUCENT
 
 function ENT:Initialize()		
 	if (SERVER) then
-		self:SetModelScale( 1, 0 )
 		self:SetModel(table.Random(self.Models))
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
