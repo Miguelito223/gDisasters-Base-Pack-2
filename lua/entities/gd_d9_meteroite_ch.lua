@@ -15,7 +15,6 @@ ENT.Model                            = "models/ramses/models/nature/volcanic_roc
 function ENT:Initialize()	
 
 	if (SERVER) then
-		self:SetModelScale( 2, 0 )
 		self:SetModel(self.Model)
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
@@ -47,11 +46,6 @@ function ENT:Initialize()
 	end
 end
 
-
-function ENT:Fix()
-	SetMDScale(self, Vector(2,2,2))
-	
-end
 
 
 function ENT:SpawnFunction( ply, tr )
@@ -155,15 +149,12 @@ function ENT:Explode()
 end
 
 function ENT:Think()
-	if (CLIENT) then
-	
-		self:Fix()
-
-	end
 
 	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
 		
 	if (SERVER) then
+
+		self:SetModelScale( 2, 0 )
 
 		if isinWater(self) then 
 			self:Remove() 
