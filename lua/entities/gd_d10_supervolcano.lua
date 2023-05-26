@@ -142,8 +142,6 @@ function ENT:GetEntitiesInsideLava()
 	local lpos  = self:GetLavaLevelPosition()
 	local scale = self:GetModelScale()
 
-	print(lpos)
-
 	for k, v in pairs(ents.FindInSphere(lpos, 1400 * scale)) do
 	
 		local pos = v:GetPos()
