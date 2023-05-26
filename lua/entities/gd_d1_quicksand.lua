@@ -16,7 +16,10 @@ ENT.Models                           =  {"models/props_debris/concrete_spawnplug
 
 
 function ENT:Initialize()	
-
+	if (CLIENT) then
+		SetMDScale(self, Vector(1,1,0.05))
+	end
+	
 	if (SERVER) then
 		
 		self:SetModel(table.Random(self.Models))
