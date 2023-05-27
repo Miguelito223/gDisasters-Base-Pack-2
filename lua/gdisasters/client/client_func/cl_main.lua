@@ -377,11 +377,11 @@ end
 function StopSoundWave(soundpath, soundtype) -- SPEED MUST BE IN MS^-1
 	
 	if soundtype == "mono" then
-
+		surface.StopSound(soundpath)
 	elseif soundtype == "stereo" then
 		LocalPlayer():StopSound(soundpath)
 	elseif soundtype == "3d" then
-
+		sound.Stop(soundpath)
 	end		
 
 	
