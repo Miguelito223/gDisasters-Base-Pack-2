@@ -151,10 +151,12 @@ end
 function ENT:Think()
 
 	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
+	
+	self:SetModelScale( 2, 0 )
 		
 	if (SERVER) then
 
-		self:SetModelScale( 2, 0 )
+		
 
 		if isinWater(self) then 
 			self:Remove() 

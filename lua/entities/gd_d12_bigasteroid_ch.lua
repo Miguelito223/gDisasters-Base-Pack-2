@@ -193,7 +193,6 @@ function ENT:Think()
 	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
 		
 	if (SERVER) then
-		self:SetModelScale( 2, 0 )
 		
 		if isinWater(self) or isUnderWater(self) then
 			self:Explode()
