@@ -99,7 +99,7 @@ function ENT:Think()
 end
 
 function ENT:OnRemove()
-	StopSoundWave("streams/disasters/wtf/kingramses.mp3")
+	StopSoundWave("streams/disasters/wtf/kingramses.mp3", "stereo")
 end
 
 function ENT:Draw()

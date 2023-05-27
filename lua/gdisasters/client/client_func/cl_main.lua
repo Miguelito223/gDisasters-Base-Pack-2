@@ -374,11 +374,16 @@ function CreateSoundWave(soundpath, epicenter, soundtype, speed, pitchrange, sha
 
 end
 
-function StopSoundWave(soundpath) -- SPEED MUST BE IN MS^-1
+function StopSoundWave(soundpath, soundtype) -- SPEED MUST BE IN MS^-1
+	
+	if soundtype == "mono" then
 
-	if LocalPlayer():IsValid() then
+	elseif soundtype == "stereo" then
 		LocalPlayer():StopSound(soundpath)
-	end
+	elseif soundtype == "3d" then
+
+	end		
+
 	
 end
 

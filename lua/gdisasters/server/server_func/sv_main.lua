@@ -260,6 +260,7 @@ function StopSoundWave(soundpath, soundtype) -- SPEED MUST BE IN MS^-1
 		if v:IsValid() then
 			net.Start("gd_soundwave_stop")
 			net.WriteString(soundpath)
+			net.WriteString(soundtype)
 			net.Send(v)			
 		end
 
