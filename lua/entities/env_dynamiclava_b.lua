@@ -908,10 +908,7 @@ function ENT:DamageEntity(ent, phys, buoyancy_mod, mass)
 	
 end
 
-
-local tsunami_water_textures = {}
-tsunami_water_textures[1]    = Material("nature/env_dynamicwater/base_water_tsunami");
-tsunami_water_textures[2]    = Material("nature/env_dynamicwater/base_water_03");
+local lava2_texture = Material("nature/env_dynamiclava/base_lava")
 
 
 function ENT:Draw()
@@ -963,7 +960,7 @@ function env_dynamiclava_b_DrawLava()
 	local model = ClientsideModel("models/props_junk/PopCan01a.mdl", RENDERGROUP_OPAQUE);
 	model:SetNoDraw(true);	
 	
-	local lava2_texture = Material("nature/env_dynamiclava/base_lava")
+
 	
 	local function RenderFix2()
 	

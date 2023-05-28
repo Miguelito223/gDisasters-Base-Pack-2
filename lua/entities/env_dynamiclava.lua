@@ -269,17 +269,7 @@ function ENT:OnRemove()
 	self:StopParticles()
 end
 
-local water_textures = {}
-water_textures[1]    = Material("nature/env_dynamicwater/base_water_01")
-water_textures[2]    = Material("nature/env_dynamicwater/base_water_02")
-water_textures[3]    = Material("nature/env_dynamicwater/base_water_03")
-
-
-local water_shader   = {}
-water_shader[1]    = Material("nature/env_dynamicwater/water_expensive_02")
-water_shader[2]    = Material("nature/env_dynamicwater/water_expensive_01")
-
-
+local lava_texture = Material("nature/env_dynamiclava/base_lava")
 
 function ENT:Draw()
 			
@@ -299,9 +289,6 @@ function env_dynamiclava_Drawlava()
 	local map_bounds = getMapBounds()
 	local vmin, vmax =  Vector(map_bounds[1].x,map_bounds[1].y,0),  Vector(map_bounds[2].x,map_bounds[2].y,height)
 	
-	local water_texture =  water_textures[ math.Clamp(GetConVar( "gdisasters_graphics_water_quality" ):GetInt(), 1, 3)]
-	local lava_texture = Material("nature/env_dynamiclava/base_lava")
-
 
 	local function RenderFix()
 	

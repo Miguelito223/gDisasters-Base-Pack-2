@@ -301,20 +301,6 @@ function ENT:SetLavaLevel(lvl)
 	self:SetNWFloat("LavaLevel", lava_lvl)
 end
 
-local water_textures = {}
-water_textures[1]    = Material("nature/env_dynamicwater/base_water_01")
-water_textures[2]    = Material("nature/env_dynamicwater/base_water_02")
-water_textures[3]    = Material("nature/env_dynamicwater/base_water_03")
-
-
-local water_shader   = {}
-water_shader[1]    = Material("nature/env_dynamicwater/water_expensive_02")
-water_shader[2]    = Material("nature/env_dynamicwater/water_expensive_01")
-
-local tsunami_water_textures = {}
-tsunami_water_textures[1]    = Material("nature/env_dynamicwater/base_water_tsunami");
-tsunami_water_textures[2]    = Material("nature/env_dynamicwater/base_water_03");
-
 
 function ENT:VFire()
 
