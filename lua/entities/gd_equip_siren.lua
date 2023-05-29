@@ -20,7 +20,7 @@ sound.Add( {
 	volume = 1.0,
 	level = 110,
 	pitch = { 90, 115 },
-	sound = "streams/sirens/tornado_siren.mp3"
+	sound = "streams/disasters/sirens/tornado_siren.mp3"
 } )
 
 
@@ -29,7 +29,7 @@ function ENT:Initialize()
 	
 	if (SERVER) then
 		
-		self:SetModel("models/tornado_siren.mdl")
+		self:SetModel("models/ramses/models/siren/tornado_siren.mdl")
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
 		self:SetMoveType( MOVETYPE_VPHYSICS  )

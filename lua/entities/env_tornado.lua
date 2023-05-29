@@ -81,31 +81,31 @@ function ENT:PlayFadeinSound()
 	
 	if category == "EF0" or category == "EF1" or category == "EF2"then
 	
-		CreateSoundWave("streams/environment/wind_shared/ef0_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/disasters/environment/wind_shared/ef0_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 		
 	elseif category == "EF3" then
 	
-		CreateSoundWave("streams/environment/wind_shared/ef3_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/disasters/environment/wind_shared/ef3_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 
 	elseif category == "EF4" then
 	
-		CreateSoundWave("streams/environment/wind_shared/ef4_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/disasters/environment/wind_shared/ef4_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 
 	elseif category == "EF5" then
 	
-		CreateSoundWave("streams/environment/wind_shared/ef5_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/disasters/environment/wind_shared/ef5_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 		
 	elseif category == "EF6" then
 	
-		CreateSoundWave("streams/environment/wind_shared/ef5_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/disasters/environment/wind_shared/ef5_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 
 	elseif category == "Martian EF6" then
 	
-		CreateSoundWave("streams/environment/wind_shared/martian_tornado_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/disasters/environment/wind_shared/martian_tornado_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 
 	elseif category == "EF7" then
 	
-		CreateSoundWave("streams/environment/wind_shared/martian_tornado_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/disasters/environment/wind_shared/martian_tornado_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 
 	end
 
@@ -117,27 +117,27 @@ function ENT:PlayFadeoutSound()
 	
 	if category == "EF0" or category == "EF1" or category == "EF2"then
 	
-		CreateSoundWave("streams/environment/wind_shared/ef0_fadeout.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/disasters/environment/wind_shared/ef0_fadeout.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 		
 	elseif category == "EF4" then
 	
-		CreateSoundWave("streams/environment/wind_shared/ef4_fadeout.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/disasters/environment/wind_shared/ef4_fadeout.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 
 	elseif category == "EF5" then
 	
-		CreateSoundWave("streams/environment/wind_shared/ef5_fadeout.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/disasters/environment/wind_shared/ef5_fadeout.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 
 	elseif category == "EF6" then
 	
-		CreateSoundWave("streams/environment/wind_shared/ef5_fadeout.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/disasters/environment/wind_shared/ef5_fadeout.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 	
 	elseif category == "Martian EF6" then
 	
-		CreateSoundWave("streams/environment/wind_shared/martian_tornado_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/disasters/environment/wind_shared/martian_tornado_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 
 	elseif category == "EF7" then
 	
-		CreateSoundWave("streams/environment/wind_shared/martian_tornado_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
+		CreateSoundWave("streams/disasters/environment/wind_shared/martian_tornado_fadein.mp3", self:GetPos(), "3d", 340/2, {80,120}, 10)
 
 	end
 
@@ -396,36 +396,36 @@ function ENT:CreateLoop()
 	
 	if category == "EF0" then
 	
-		spath      = table.Random( {"streams/environment/wind_shared/ef0_loop.wav", "streams/environment/wind_shared/ef0_loop2.wav"})
+		spath      = table.Random( {"streams/disasters/environment/wind_shared/ef0_loop.wav", "streams/disasters/environment/wind_shared/ef0_loop2.wav"})
 		
 	elseif category == "EF1" or category == "EF2" then
 	
-		spath      = "streams/environment/wind_shared/ef1_loop.wav"
+		spath      = "streams/disasters/environment/wind_shared/ef1_loop.wav"
 		
 	elseif category == "EF3" then
 				
-		spath      = "streams/environment/wind_shared/ef3_loop.wav"	
+		spath      = "streams/disasters/environment/wind_shared/ef3_loop.wav"	
 		
 	elseif category == "EF4" then
 	
-		spath      =  table.Random( {"streams/environment/wind_shared/ef4_loop.wav", "streams/environment/wind_shared/ef4_loop2.wav"})
+		spath      =  table.Random( {"streams/disasters/environment/wind_shared/ef4_loop.wav", "streams/disasters/environment/wind_shared/ef4_loop2.wav"})
 
 	elseif category == "EF5" then
 	
-		spath      =  table.Random( {"streams/environment/wind_shared/ef5_loop.wav", "streams/environment/wind_shared/ef5_loop2.wav"})
+		spath      =  table.Random( {"streams/disasters/environment/wind_shared/ef5_loop.wav", "streams/disasters/environment/wind_shared/ef5_loop2.wav"})
 		
 		
 	elseif category == "EF6" then
 	
-		spath      =  table.Random( {"streams/environment/wind_shared/ef5_loop.wav", "streams/environment/wind_shared/ef5_loop2.wav"})
+		spath      =  table.Random( {"streams/disasters/environment/wind_shared/ef5_loop.wav", "streams/disasters/environment/wind_shared/ef5_loop2.wav"})
 
 	elseif category == "Martian EF6" then
 	
-		spath      =  ("streams/environment/wind_shared/martian_tornado_loop.wav")
+		spath      =  ("streams/disasters/environment/wind_shared/martian_tornado_loop.wav")
 
 	elseif category == "EF7" then
 	
-		spath      =  ("streams/environment/wind_shared/martian_tornado_loop.wav")
+		spath      =  ("streams/disasters/environment/wind_shared/martian_tornado_loop.wav")
 
 	end
 

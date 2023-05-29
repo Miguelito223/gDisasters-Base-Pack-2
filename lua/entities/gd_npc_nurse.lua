@@ -11,7 +11,7 @@ ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
      
 ENT.Mass                             =  100
-ENT.Model                            =  "models/nurse/slow.mdl"
+ENT.Model                            =  "models/ramses/models/nurse/slow.mdl"
 
 ENT.AutomaticFrameAdvance = true
 ENT.RenderGroup = RENDERGROUP_BOTH
