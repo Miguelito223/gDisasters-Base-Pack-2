@@ -170,13 +170,13 @@ local function isValidTarget(ent)
 	local class = ent:GetClass()
 	return (ent:IsNPC()
 		and ent:Health() > 0
-		and class ~= "npc_bcat"
+		and class ~= "gd_npc_bcat"
 		and not class:find("bullseye"))
 end
 
 hook.Add("PlayerSpawnedNPC", "bcatMissingNavmeshNag", function(ply, ent)
 	if not IsValid(ent) then return end
-	if ent:GetClass() ~= "npc_bcat" then return end
+	if ent:GetClass() ~= "gd_npc_bcat" then return end
 	if navmesh.GetNavAreaCount() > 0 then return end
 
 	-- Try to explain why bcat isn't working.
@@ -303,7 +303,7 @@ local function navGenerate()
 	end
 
 	-- The least we can do is ensure they don't have to listen to this noise.
-	for _, bcat in pairs(ents.FindByClass("npc_bcat")) do
+	for _, bcat in pairs(ents.FindByClass("gd_npc_bcat")) do
 		bcat:Remove()
 	end
 
@@ -814,8 +814,8 @@ end
 else -- CLIENT --
 
 local MAT_bcat = Material("nextbot/gd_npc_bcat/bcat")
-killicon.Add("npc_bcat", "nextbot/gd_npc_bcat/killicon", color_white)
-language.Add("npc_bcat", "bcat ")
+killicon.Add("gd_npc_bcat", "nextbot/gd_npc_bcat/killicon", color_white)
+language.Add("gd_npc_bcat", "bcat ")
 
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
@@ -853,7 +853,7 @@ local MUSIC_bcat_MAX_DISTANCE_SCORE =
 	(MUSIC_CUTOFF_DISTANCE - MUSIC_PANIC_DISTANCE) * MUSIC_bcat_PANIC_COUNT
 
 local function updatePanicMusic()
-	if #ents.FindByClass("npc_bcat") == 0 then
+	if #ents.FindByClass("gd_npc_bcat") == 0 then
 		-- Whoops. No need to run for now.
 		DevPrint(4, "Halting music timer.")
 		timer.Remove("bcatPanicMusicUpdate")
@@ -883,7 +883,7 @@ local function updatePanicMusic()
 	local totalDistanceScore = 0
 	local nearEntities = ents.FindInSphere(LocalPlayer():GetPos(), 1000)
 	for _, ent in pairs(nearEntities) do
-		if IsValid(ent) and ent:GetClass() == "npc_bcat" then
+		if IsValid(ent) and ent:GetClass() == "gd_npc_bcat" then
 			local distanceScore = math.max(0, MUSIC_CUTOFF_DISTANCE
 				- LocalPlayer():GetPos():Distance(ent:GetPos()))
 			totalDistanceScore = totalDistanceScore + distanceScore
