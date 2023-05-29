@@ -822,7 +822,7 @@ ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 local developer = GetConVar("developer")
 local function DevPrint(devLevel, msg)
 	if developer:GetInt() >= devLevel then
-		print("npc_bcat: " .. msg)
+		print("gd_npc_bcat: " .. msg)
 	end
 end
 
