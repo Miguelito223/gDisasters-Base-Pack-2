@@ -297,6 +297,16 @@ function isUnderLava(ply)
 	end
 end
 
+function isUnderGround(ply)
+	local ug = ply.IsUnderGround
+
+	if ug then
+		return true
+	else
+		return false
+	end
+end
+
 function FindNearestEntity(self, class)
 
 	if ents.FindByClass(class)[1] == nil then return nil end

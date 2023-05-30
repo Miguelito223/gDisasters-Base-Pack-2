@@ -507,6 +507,23 @@ function Oxygen()
 						v:TakeDamageInfo(  dmg)
 					end
 				end
+			elseif isUnderGround(v) then
+				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.1 ,0,100 ) 
+				
+				if v.gDisasters.Body.Oxygen <= 0 then
+				
+					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
+				
+					if math.random(1, 50)==1 then
+						local dmg = DamageInfo()
+						dmg:SetDamage( math.random(1,25) )
+						dmg:SetAttacker( v )
+						dmg:SetDamageType( DMG_DROWN  )
+					
+						v:TakeDamageInfo(  dmg)
+					end
+				
+				end
 			else
 				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen + 0.5 , 0,100 )
 			end
@@ -542,6 +559,19 @@ function Oxygen()
 				end
 
 				timer.Simple(50, function()
+					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
+
+					if math.random(1, 50)==1 and v:IsValid() then
+						local dmg = DamageInfo()
+						dmg:SetDamage( math.random(1,25) )
+						dmg:SetAttacker( v )
+						dmg:SetDamageType( DMG_DROWN  )
+					
+						v:TakeDamageInfo(  dmg)
+					end
+				end)
+			elseif isUnderGround(v) then
+				timer.Simple(15, function()
 					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
 
 					if math.random(1, 50)==1 and v:IsValid() then

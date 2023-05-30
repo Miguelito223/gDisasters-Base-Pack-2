@@ -67,49 +67,43 @@ end
 
 
 function ENT:Touch( entity )
-
+	
 	local vlength = entity:GetVelocity():Length()
 	
 	if vlength > 100 then return end 
+
+	entity.IsUnderGround = false
 	
 	if entity:IsNPC() or entity:IsPlayer() or entity:IsNextBot() then
 		
 		
 		if entity:IsPlayer() then
-		
 			entity:SetPos( entity:GetPos() - Vector(0,0,5))
-
-			timer.Simple(5, function()
-				if self:IsValid() and entity:GetPos():Distance(self:GetPos()) <= 1000 then 
-					local dmg = DamageInfo()
-					dmg:SetDamage( 100 )
-					dmg:SetAttacker( entity )
-					dmg:SetDamageType( DMG_DROWN  )
-					
-					entity:TakeDamageInfo(  dmg)
-				end
-			end)
-		
+			
+			if entity:EyePos().z < getMapCenterFloorPos().z then
+				entity.IsUnderGround = true
+			else
+				entity.IsUnderGround = false
+			end
 		else
-
 			entity:SetPos( entity:GetPos() - Vector(0,0,166))
-
-			timer.Simple(5, function()
-				if self:IsValid() and entity:GetPos():Distance(self:GetPos()) <= 1000 then 
-					local dmg = DamageInfo()
-					dmg:SetDamage( 100 )
-					dmg:SetAttacker( entity )
-					dmg:SetDamageType( DMG_DROWN  )
-					
-					entity:TakeDamageInfo(  dmg)
-				end
-			end)
-
+			
+			if entity:GetPos() < getMapCenterFloorPos().z then
+				entity.IsUnderGround = true
+			else
+				entity.IsUnderGround = false
+			end
 		end
 		
 	
 	else
 		entity:SetPos( entity:GetPos() - Vector(0,0,5))
+		
+		if entity:GetPos() < getMapCenterFloorPos().z then
+			entity.IsUnderGround = true
+		else
+			entity.IsUnderGround = false
+		end
 
 	end
 	
