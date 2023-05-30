@@ -67,8 +67,8 @@ Misc
 
 
 AddToGDSpawnMenu("♫ The Man In Gauze ♫"        , "gd_misc_themaningauze"              , "Misc", "the man in gauze", false)
-AddToGDSpawnMenu("tvirus" , "gb5_chemical_tvirus"         , "Misc", "tvirus", false)
-AddToGDSpawnMenu("tvirus cure"        , "gb5_chemical_tvirus_cure"              , "Misc", "tvirus", false)
+AddToGDSpawnMenu("tvirus" , "gd_misc_chemical_tvirus"         , "Misc", "tvirus", false)
+AddToGDSpawnMenu("tvirus cure"        , "gd_misc_chemical_tvirus_cure"              , "Misc", "tvirus", false)
 
 --[[
 WEATHER TIER 1

@@ -1,0 +1,18 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/thedoctor/mat_davy/davy_skin"
+	"$surfaceprop" "metal"
+	"$model" 1
+	"$phong" 1  
+	"$envmaptint" "[0.2 0.2 0.2]"
+	"$envmap" "env_cubemap"
+
+	
+	"$phong"				"1"
+	"$phongalbedotint"		"1"
+	"$phongboost"			"50"
+	"$phongexponent"		"5"
+	"$phongexponenttexture"	"models\vehicle_exp"
+	"$phongfresnelranges"	"[1 1 1]"
+}
+

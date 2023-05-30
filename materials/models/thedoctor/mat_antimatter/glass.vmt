@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/thedoctor/mat_antimatter/glass"
+	"$surfaceprop" "metal"
+	"$model" 1
+	"$translucent" 1
+
+	"$detail" "models/detail_metall_det1"
+	"$detailscale" "6.00"
+	"$detailblendfactor" "0.2"
+	"$detailblendmode" "0"
+
+}
+
