@@ -69,6 +69,7 @@ end
 function ENT:Touch( entity )
 	
 	local vlength = entity:GetVelocity():Length()
+		
 	
 	if vlength > 100 then return end 
 	
@@ -85,7 +86,21 @@ function ENT:Touch( entity )
 	else
 		entity:SetPos( entity:GetPos() - Vector(0,0,5))
 	end
+
+
 	
+end
+
+function ENT:DrownUnderGround()
+	for k, entity in pairs(ents.GetAll()) do
+		local eye = entity:EyePos()
+		
+		if eye.z <= getMapCenterFloorPos().z then
+			entity:SetNWBool("IsUnderGround", true)
+		else
+			entity:SetNWBool("IsUnderGround", false)
+		end
+	end
 end
 
 function ENT:Think()
@@ -93,13 +108,16 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		local t =  (FrameTime() / 0.1) / (66.666 / 0.1) -- tick dependant function that allows for constant think loop regardless of server tickrate
-		
+		self:DrownUnderGround()
 		self:NextThink(CurTime() + t)
 		return true
 	end
 end
 
 function ENT:OnRemove()
+	for k, v in pairs(ents.GetAll()) do
+		v:SetNWBool("IsUnderGround", false)
+	end
 end
 
 function ENT:Draw()
