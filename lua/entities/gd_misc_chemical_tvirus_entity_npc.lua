@@ -134,7 +134,7 @@ function ENT:Think()
 			else
 				ent:SetHealth(500)
 			end
-			local z_ent = ents.Create("gd_chemical_tvirus_entity_z")
+			local z_ent = ents.Create("gd_misc_chemical_tvirus_entity_z")
 			z_ent:SetVar("zombie", ent)
 			z_ent:SetPos( ent:GetPos() ) 
 			z_ent:Spawn()
@@ -170,7 +170,7 @@ if (SERVER) then
 			else
 				ent:SetHealth(500)
 			end
-			local z_ent = ents.Create("gd_chemical_tvirus_entity_z")
+			local z_ent = ents.Create("gd_misc_chemical_tvirus_entity_z")
 			z_ent:SetVar("zombie", ent)
 			z_ent:SetPos( ent:GetPos() ) 
 			z_ent:Spawn()

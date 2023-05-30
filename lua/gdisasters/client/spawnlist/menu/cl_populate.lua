@@ -53,6 +53,8 @@ AddToGDSpawnMenu("Doppler Radar", "gd_equip_wradar" , "Equipment", "Standard", f
 AddToGDSpawnMenu("Supercooled Ice" , "gd_equip_supercooledice"		, "Equipment", "Survival", false)
 AddToGDSpawnMenu("Campfire" , "gd_equip_campfire"		, "Equipment", "Survival", false)
 AddToGDSpawnMenu("Dry Ice", "gd_equip_dryice", "Equipment", "Others", false)
+AddToGDSpawnMenu("Mask"        , "gd_misc_gas_mask"              , "Equipment", "tvirus", false)
+AddToGDSpawnMenu("Mask Remover"        , "gd_misc_gas_mask_remover"              , "Equipment", "tvirus", false)
 
 --[[
 NPCs
@@ -69,8 +71,7 @@ Misc
 AddToGDSpawnMenu("♫ The Man In Gauze ♫"        , "gd_misc_themaningauze"              , "Misc", "the man in gauze", false)
 AddToGDSpawnMenu("tvirus" , "gd_misc_chemical_tvirus"         , "Misc", "tvirus", false)
 AddToGDSpawnMenu("tvirus cure"        , "gd_misc_chemical_tvirus_cure"              , "Misc", "tvirus", false)
-AddToGDSpawnMenu("Mask"        , "gd_misc_gas_mask"              , "Misc", "tvirus", false)
-AddToGDSpawnMenu("Mask Remover"        , "gd_misc_gas_mask_remover"              , "Misc", "tvirus", false)
+
 
 --[[
 WEATHER TIER 1
