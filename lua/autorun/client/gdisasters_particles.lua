@@ -8,9 +8,9 @@ game.AddParticles( "particles/testsmoke.pcf")
 game.AddParticles( "particles/sleet_effect.pcf") 
 game.AddParticles( "particles/snow_effect.pcf") 
 game.AddParticles( "particles/ash_effect.pcf")
-
 game.AddParticles( "particles/water_effect.pcf")
-
+game.AddParticles( "particles/tvirus.pcf" )
+game.AddParticles( "particles/tvirus_splash.pcf" )
 
 -- disasters
 
