@@ -60,7 +60,7 @@ if SERVER then
 		if activator.gasmasked==true then	
 			activator:EmitSound("streams/others/protection_used.wav",50,190)
 			activator.gasmasked=true
-			net.Start( "gbombs5_net" )        
+			net.Start( "gd_net" )        
 				net.WriteBit( false )
 				activator:StopSound("breathing")				
 			net.Send(activator)
@@ -73,7 +73,7 @@ end
 
 if CLIENT then
 	function ENT:OnRemove()
-		net.Receive( "gbombs5_net", function( len )
+		net.Receive( "gd_net", function( len )
 		
 			local mask_on = net.ReadBit()
 			if mask_on==1 then
