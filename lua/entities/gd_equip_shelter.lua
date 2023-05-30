@@ -18,7 +18,7 @@ function ENT:Initialize()
 	
 	if (SERVER) then
 		
-		self:SetModel("models/ramses/models/misc/buildings/storm_shelter.mdl")
+		self:SetModel("models/ramses/models/buildings/storm_shelter.mdl")
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
 		self:SetMoveType( MOVETYPE_VPHYSICS  )
