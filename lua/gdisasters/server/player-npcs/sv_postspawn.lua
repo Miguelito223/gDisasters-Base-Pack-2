@@ -48,7 +48,7 @@ function gDisasters_OnSpawn_Reset( ply )
 	ply:StopSound("breathing")
 	net.Start( "gd_net" )        
 	net.WriteBit( false )
-	net.Send(activator)
+	net.Send(ply)
 
 	if GetConVar("gdisasters_hud_temp_enable"):GetInt() <= 0 or GetConVar("gdisasters_hud_temp_value"):GetInt() <= 0 then 
 		ply:SetNWFloat("BodyTemperature", ply.gDisasters.Body.Temperature)
