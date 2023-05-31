@@ -1,9 +1,0 @@
-"VertexLitGeneric"
-{
-	"$basetexture" "particle/environmental/electricity/lightning_arc_01"
-	"$additive" "1"
-	"$vertexcolor" "1"
-	"$vertexalpha" "1"
-
-
-}

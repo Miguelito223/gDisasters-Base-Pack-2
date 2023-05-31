@@ -1,7 +1,6 @@
 "UnlitGeneric"
 {
-	"$basetexture" "particles/Fire7"
+	"$basetexture" "particles/ember"
 	"$vertexalpha" 1
 	"$vertexcolor" 1
-	"$additive" 1
 }

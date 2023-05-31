@@ -1,0 +1,5 @@
+"SpriteCard"
+{
+	$basetexture "particles\explosions\blast"
+	$additive "1"
+}

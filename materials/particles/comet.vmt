@@ -1,7 +1,9 @@
-"UnlitGeneric"
+SpriteCard
 {
-        $basetexture "particles/comet"
-		"$additive" 0
-		"$vertexcolor" 1
-		"$vertexalpha" 1
+$BASETEXTURE "particles/comet/comet"
+
+$OVERBRIGHTFACTOR 1.5
+
+$ADDSELF 0.5
+$DEPTHBLEND 1
 }

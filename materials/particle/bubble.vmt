@@ -1,9 +1,0 @@
-"VertexLitGeneric"
-{
-	"$basetexture" "particle/bubble"
-	"$additive" "1"
-	"$vertexcolor" "1"
-	"$vertexalpha" "1"
-	"$translucent" 1
-
-}

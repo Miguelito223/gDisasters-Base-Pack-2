@@ -1,8 +1,0 @@
-"unlitgeneric"
-{
-	"$basetexture" "particle\antlion_gib1\antlion_gib1"
-	$vertexcolor 1
-	$vertexalpha 1
-	$translucent 1
-	$additive 1
-}
