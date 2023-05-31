@@ -480,32 +480,36 @@ function Oxygen()
 					end
 				
 				end
-			elseif oxygen <= 20 and v.gasmasked == false or v.hazsuited == false then
-				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.01 ,0,100 ) 
-				
-				if v.NextChokeOnAsh == nil then v.NextChokeOnAsh = CurTime() end
-				
-				if CurTime() >= v.NextChokeOnAsh then 
-					local mouth_attach = v:LookupAttachment("mouth")
-					ParticleEffectAttach( "cough_ash", PATTACH_POINT_FOLLOW, v, mouth_attach )
-					v:TakeDamage( math.random(9,14), self, self)
-					v:EmitSound("streams/disasters/player/cough.wav", 80, 100, 0.2)
-				
-					v.NextChokeOnAsh = CurTime() + math.random(3,8)
-				end
-
-				if v.gDisasters.Body.Oxygen <= 0 then 
-
-					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end   
-
-					if math.random(1, 50)==1 then
-						local dmg = DamageInfo()
-						dmg:SetDamage( math.random(1,25) )
-						dmg:SetAttacker( v )
-						dmg:SetDamageType( DMG_DROWN  )
+			elseif oxygen <= 20  then
+				if v.gasmasked == false or v.hazsuited == false then 
+					v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.01 ,0,100 ) 
 					
-						v:TakeDamageInfo(  dmg)
+					if v.NextChokeOnAsh == nil then v.NextChokeOnAsh = CurTime() end
+					
+					if CurTime() >= v.NextChokeOnAsh then 
+						local mouth_attach = v:LookupAttachment("mouth")
+						ParticleEffectAttach( "cough_ash", PATTACH_POINT_FOLLOW, v, mouth_attach )
+						v:TakeDamage( math.random(9,14), self, self)
+						v:EmitSound("streams/disasters/player/cough.wav", 80, 100, 0.2)
+					
+						v.NextChokeOnAsh = CurTime() + math.random(3,8)
 					end
+
+					if v.gDisasters.Body.Oxygen <= 0 then 
+
+						if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end   
+
+						if math.random(1, 50)==1 then
+							local dmg = DamageInfo()
+							dmg:SetDamage( math.random(1,25) )
+							dmg:SetAttacker( v )
+							dmg:SetDamageType( DMG_DROWN  )
+						
+							v:TakeDamageInfo(  dmg)
+						end
+					end
+				else
+					v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen + 0.5 , 0,100 )
 				end
 			elseif isUnderGround(v) then
 				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.1 ,0,100 ) 
