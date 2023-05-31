@@ -53,8 +53,8 @@ AddToGDSpawnMenu("Doppler Radar", "gd_equip_wradar" , "Equipment", "Standard", f
 AddToGDSpawnMenu("Supercooled Ice" , "gd_equip_supercooledice"		, "Equipment", "Survival", false)
 AddToGDSpawnMenu("Campfire" , "gd_equip_campfire"		, "Equipment", "Survival", false)
 AddToGDSpawnMenu("Dry Ice", "gd_equip_dryice", "Equipment", "Others", false)
-AddToGDSpawnMenu("Mask"        , "gd_misc_gas_mask"              , "Equipment", "tvirus", false)
-AddToGDSpawnMenu("Mask Remover"        , "gd_misc_gas_mask_remover"              , "Equipment", "tvirus", false)
+AddToGDSpawnMenu("Mask"        , "gd_equip_gas_mask"              , "Equipment", "Survival", false)
+AddToGDSpawnMenu("Mask Remover"        , "gd_equip_gas_mask_remover"              , "Equipment", "Survival", false)
 
 --[[
 NPCs

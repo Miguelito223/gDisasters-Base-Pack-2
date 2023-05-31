@@ -61,8 +61,8 @@ if SERVER then
 			activator:EmitSound("streams/others/protection_used.wav",50,190)
 			activator.gasmasked=true
 			net.Start( "gd_net" )        
-				net.WriteBit( false )
-				activator:StopSound("breathing")				
+			net.WriteBit( false )
+			activator:StopSound("breathing")				
 			net.Send(activator)
 			activator.gasmasked=false
 			
