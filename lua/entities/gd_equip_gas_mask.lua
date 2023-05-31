@@ -31,7 +31,7 @@ end
 function ENT:SpawnFunction( ply, tr )
 	if ( not tr.Hit ) then return end
 	local SpawnPos = tr.HitPos + tr.HitNormal * 16
-	local ent = ents.Create( "gd_misc_gas_mask" )
+	local ent = ents.Create( "gd_equip_gas_mask" )
 	ent:SetPos( SpawnPos )
 	ent:Spawn()
 	ent:Activate()
