@@ -38,9 +38,9 @@ function ENT:Initialize()
 			self:Remove()
 		end)
 			
-		timer.Simple(0.1, function()	
-		ParticleEffectAttach("meteor_burnup_main", PATTACH_POINT_FOLLOW, self, 0)
-		
+		timer.Simple(0.1, function()
+			if !self:IsValid() then return end	
+			ParticleEffectAttach("meteor_burnup_main", PATTACH_POINT_FOLLOW, self, 0)
 		end)
 
 	end
