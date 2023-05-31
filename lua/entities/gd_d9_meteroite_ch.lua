@@ -11,15 +11,18 @@ ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 
 ENT.Model                            = "models/ramses/models/nature/volcanic_rock_03_128.mdl"
+ENT.Material                         = "ramses/models/space/madara_meteor/main_diffuse"
 
 function ENT:Initialize()	
 
 	if (SERVER) then
+		
 		self:SetModel(self.Model)
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
 		self:SetMoveType( MOVETYPE_VPHYSICS  )
 		self:SetUseType( ONOFF_USE )
+		self:SetMaterial(self.Material)
 
 		
 		local phys = self:GetPhysicsObject()

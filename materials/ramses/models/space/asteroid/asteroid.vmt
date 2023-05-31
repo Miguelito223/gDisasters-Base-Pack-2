@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/space/Asteroid"
+	"$surfaceprop" "Concrete"
+}

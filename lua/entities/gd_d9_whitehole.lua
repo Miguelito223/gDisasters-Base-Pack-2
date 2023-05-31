@@ -11,7 +11,7 @@ ENT.Mass = 100
 ENT.RealMass = 5*(10^16)
 
 ENT.Model = "models/hunter/misc/sphere375x375.mdl"
-ENT.Material = "space/models/white_hole/main"
+ENT.Material = "ramses/models/space/white_hole/main"
 
 function ENT:Initialize()
 	if (SERVER) then

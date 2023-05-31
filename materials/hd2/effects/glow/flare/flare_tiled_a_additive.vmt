@@ -1,7 +1,0 @@
-"SpriteCard"
-{
-	"$basetexture" "hd2/effects/glow/flare/flare_tiled_a"
-	"$vertexcolor" 1
-	"$vertexalpha" 1
-	"$additive" 1
-}

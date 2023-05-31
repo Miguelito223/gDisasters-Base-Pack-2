@@ -11,7 +11,7 @@ ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 
 ENT.Model                            = "models/ramses/models/nature/volcanic_rock_03_128.mdl"
-ENT.Material                         = "space/models/madara_meteor/main_diffuse"
+ENT.Material                         = "ramses/models/space/madara_meteor/main_diffuse"
 
 function ENT:Initialize()	
 

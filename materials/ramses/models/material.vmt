@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "ramses/models/Material"
+	"$surfaceprop" "Grass"
+}

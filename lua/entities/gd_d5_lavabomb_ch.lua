@@ -11,7 +11,7 @@ ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 
 ENT.Model                            = "models/ramses/models/nature/volcanic_rock_03_64.mdl"
-ENT.Material                         = "space/models/lavabomb/main_diffuse"
+ENT.Material                         = "ramses/models/space/lavabomb/main_diffuse"
 
 function ENT:Initialize()	
 
@@ -147,7 +147,7 @@ function ENT:Explode()
 		if (phys:IsValid()) then
 			phys:SetMass(math.random(50,80))
 		end 	
-		local mat = "space/models/lavabomb/main_diffuse"
+		local mat = "ramses/models/space/lavabomb/main_diffuse"
 		piece:SetPos(pos)
 		piece:Spawn()
 		piece:Activate()
