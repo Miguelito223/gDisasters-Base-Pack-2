@@ -481,7 +481,7 @@ function Oxygen()
 				
 				end
 			elseif oxygen <= 20  then
-				if v.gasmasked == false and v.hazsuited == false then 
+				if v.gasmasked == false or v.hazsuited == false then 
 					v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.01 ,0,100 ) 
 					
 					if v.NextChokeOnAsh == nil then v.NextChokeOnAsh = CurTime() end
