@@ -1,0 +1,22 @@
+"UnlitGeneric"
+{
+	"$basetexture" "particle/magic_circle_3"
+	$vertexcolor 1
+	$vertexalpha 1
+	$translucent 1
+	$additive 1
+	$NoCull 1
+	$nofog 1
+	$depthblend 1
+	$depthblendscale 50
+	$ADDOVERBLEND 0
+	
+// RAMPTEXTURE and POWERFUNCTION are mutually exclusive:	
+//	$RAMPTEXTURE "particle/fireGradient.vtf"
+	$POWERFUNCTION "[1.0 2.5 5]"
+	
+//	$OVERBRIGHTFACTOR 1.5
+	$EXTRACTGREENALPHA 1
+	$ADDSELF 0.1
+	$DEPTHBLEND 1
+}

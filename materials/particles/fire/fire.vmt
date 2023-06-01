@@ -1,6 +1,0 @@
-"SpriteCard"
-{
-	$basetexture "particles/fire/fire"
-	$additive "1"
-	$depthblend "0"
-}

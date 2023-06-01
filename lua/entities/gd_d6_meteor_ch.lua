@@ -25,10 +25,11 @@ function ENT:Initialize()
 		self:SetMaterial(self.Material)
 		
 		
-		local phys = self:GetPhysicsObject()	
+		local phys = self:GetPhysicsObject()
+		phys:Wake()
+		
 		if (phys:IsValid()) then
 			phys:SetMass(math.random(600,700))
-			phys:Wake()
 		end 		
 		
 		phys:EnableDrag( false )

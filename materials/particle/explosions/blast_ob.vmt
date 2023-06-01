@@ -1,0 +1,6 @@
+"SpriteCard"
+{
+	$basetexture "particle\explosions\blast"
+	$additive "1"
+	$overbrightfactor "8.5"
+}
