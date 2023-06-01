@@ -26,17 +26,16 @@ function ENT:Initialize()
 
 		
 		local phys = self:GetPhysicsObject()
-		phys:Wake()
-		
 		if (phys:IsValid()) then
 			phys:SetMass(700)
+			phys:Wake()
 		end 		
 		
 		phys:EnableDrag( false )
 		
 		timer.Simple(0.1, function()
-		if !self:IsValid() then return end
-		ParticleEffectAttach("meteorite_burnup_trail_main", PATTACH_POINT_FOLLOW, self, 2)
+			if !self:IsValid() then return end
+			ParticleEffectAttach("meteorite_burnup_trail_main", PATTACH_POINT_FOLLOW, self, 2)
 		end)
 		
 		
