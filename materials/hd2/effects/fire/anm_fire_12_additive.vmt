@@ -1,0 +1,7 @@
+"SpriteCard"
+{
+	"$basetexture" "hd2/effects/fire/anm_fire_12"
+	"$additive" 1 
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+}

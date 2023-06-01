@@ -1,6 +1,6 @@
 "UnlitGeneric"
 {
-	"$basetexture"				"TTC/smoke1"
+	"$basetexture"				"effects/smoke1"
 	"$vertexcolor"				"1"
 	"$vertexalpha"				"1"
 	"$translucent"				"1"

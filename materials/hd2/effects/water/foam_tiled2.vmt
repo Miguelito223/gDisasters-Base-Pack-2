@@ -1,0 +1,7 @@
+"SpriteCard"
+{
+	"$basetexture" "hd2/effects/water/foam_tiled2"
+	"$additive" 0
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+}

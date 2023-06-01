@@ -1,0 +1,7 @@
+"SpriteCard"
+{
+	"$basetexture" "hd2/effects/smoke/cw2_distant_smoke_tiled"
+	"$additive" 0
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+}

@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "hd2/effects/smoke/smoke_trail_tiled"
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$additive" 0
+}

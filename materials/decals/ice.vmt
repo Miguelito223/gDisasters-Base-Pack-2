@@ -1,13 +1,8 @@
-"VertexLitGeneric"
+"LightmappedGeneric"
 {
-	
-	"$basetexture" "nature/ice"
-	
-	"$envmap" "env_cubemap"
-	"$envmaptint" "[0.2 0.2 0.2]"
+	"$basetexture" "decals/ice"
+	"$decal" 1
+	"$decalscale" 2
 	"$translucent" 1
-	
-	
-	
-}
 
+}

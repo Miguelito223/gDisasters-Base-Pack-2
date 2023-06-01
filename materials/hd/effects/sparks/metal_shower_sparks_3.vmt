@@ -1,0 +1,12 @@
+"SpriteCard"
+{
+	"$basetexture" "hd/effects/sparks/metal_shower_sparks_3"
+	"$additive" "1"
+	$POWERFUNCTION "[0.8 2.5 5]"
+	$OVERBRIGHTFACTOR 2
+	$DEPTHBLEND 1
+	$startfadesize .2
+	$endfadesize .25
+	$MAXSIZE .25
+	$BLENDFRAMES 1
+}
