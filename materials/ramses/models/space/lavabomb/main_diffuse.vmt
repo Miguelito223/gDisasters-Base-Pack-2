@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	
+	"$basetexture" "ramses/models/space/lavabomb/main_diffuse"
+	"$surfaceprop" "metal"
+	"$model" 1
+	$selfillum 1
+    $selfillummask "ramses/models/space/lavabomb/main_selfillummask"
+	
+	
+	
+	
+}
+

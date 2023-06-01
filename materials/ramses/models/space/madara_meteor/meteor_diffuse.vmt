@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	
+	"$basetexture" "ramses/models/space/madara_meteor/meteor_diffuse"
+	"$surfaceprop" "metal"
+	
+	"$model" 1
+	"$bumpmap"		"ramses/models/space/madara_meteor/meteor_normal"
+	
+	
+	
+}
+
