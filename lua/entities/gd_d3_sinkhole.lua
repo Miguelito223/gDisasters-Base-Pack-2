@@ -89,17 +89,27 @@ function ENT:Touch( entity )
 end
 
 function ENT:Think()
-
 	if (SERVER) then
 		if !self:IsValid() then return end
 		local t =  (FrameTime() / 0.1) / (66.666 / 0.1) -- tick dependant function that allows for constant think loop regardless of server tickrate
 		
+		for k, v in pairs(player.GetAll()) do
+			if v:EyePos().z < getMapCenterFloorPos().z then
+				v:SetNWBool("IsUnderGround", true)
+			else
+				v:SetNWBool("IsUnderGround", false)
+			end
+		end
+
 		self:NextThink(CurTime() + t)
 		return true
 	end
 end
 
 function ENT:OnRemove()
+	for k, v in pairs(player.GetAll()) do
+		v:SetNWBool("IsUnderGround", false)
+	end
 end
 
 function ENT:Draw()

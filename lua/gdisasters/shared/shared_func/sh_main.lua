@@ -298,7 +298,7 @@ function isUnderLava(ply)
 end
 
 function isUnderGround(ply)
-	local ug = ply:EyePos().z < getMapCenterFloorPos().z
+	local ug = ply:GetNWBool("IsUnderGround")
 
 	if ug then
 		return true
