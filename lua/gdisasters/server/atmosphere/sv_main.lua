@@ -334,7 +334,7 @@ function Temperature()
 				if closest_envfire != nil then
 					if distance_3 <= 100 and distance_3 >= 30 then
 						InflictDamage(v, v, "heat", 0.01)
-					elseif distance_2 <= 30 then
+					elseif distance_3 <= 30 then
 						InflictDamage(v, v, "fire", 0.1)
 					end
 				end
