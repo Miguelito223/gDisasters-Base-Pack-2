@@ -30,19 +30,16 @@ function ENT:Initialize()
 		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 		self:SetMaterial(self.Material)
 		
-		self:SetTrigger( true )
-
-		self:SetModelScale( math.random(1,4) ) 
-		self:SetAngles( Angle(0,math.random(1,180), 0))
-
 		local phys = self:GetPhysicsObject()
+		
+		self:SetTrigger( true )
 
 		if (phys:IsValid()) then
 			phys:SetMass(self.Mass)
 		end 		
 
-		
-		
+		self:SetModelScale( math.random(1,4) ) 
+		self:SetAngles( Angle(0,math.random(1,180), 0))
 		
 		
 	end
