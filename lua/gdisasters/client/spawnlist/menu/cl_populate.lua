@@ -240,6 +240,7 @@ AddToGDSpawnMenu("Locust Apocalypse"        , "gd_d2_locust_apoc" , "Disasters",
 AddToGDSpawnMenu("Bolt of Lightning"        , "gd_d2_lightning" , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Mini Volcano"        , "gd_d2_minivolcano" , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Black Ice Over"        , "gd_d2_blackiceover" , "Disasters", "Tier 2", false)
+AddToGDSpawnMenu("Mini Tsunami"        , "gd_d2_tidal_wave"              , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Custom Flash Flood"        , "gd_d2_custom_flashflood"              , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Flash Flood"        , "gd_d2_flashflood"              , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Micro Firenado"        , "gd_d2_mfirenado"              , "Disasters", "Tier 2", false)
