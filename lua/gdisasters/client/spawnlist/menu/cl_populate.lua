@@ -37,8 +37,8 @@ AddToGDSpawnMenu("Foundation", "gd_building_h1_p11" , "Buildings", "Building Sup
 Building 02
 --]]
 
-AddToGDSpawnMenu("Storm Shelter", "gd_equip_shelter" , "Buildings", "Storm Shelter", false)
-AddToGDSpawnMenu('6.7" Solid Steel Door', "gd_equip_shelter_d" , "Buildings", "Storm Shelter", false)
+AddToGDSpawnMenu("Storm Shelter", "gd_building_shelter" , "Buildings", "Storm Shelter", false)
+AddToGDSpawnMenu('6.7" Solid Steel Door', "gd_building_shelter_d" , "Buildings", "Storm Shelter", false)
 
 
 --[[

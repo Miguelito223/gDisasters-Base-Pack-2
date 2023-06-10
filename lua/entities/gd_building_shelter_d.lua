@@ -5,7 +5,7 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Storm Shelter"
+ENT.PrintName		                 =  "Storm Shelter Door"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
@@ -18,7 +18,7 @@ function ENT:Initialize()
 	
 	if (SERVER) then
 		
-		self:SetModel("models/ramses/models/buildings/storm_shelter.mdl")
+		self:SetModel("models/ramses/models/buildings/storm_shelter/storm_shelter_door.mdl")
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
 		self:SetMoveType( MOVETYPE_VPHYSICS  )
@@ -51,9 +51,10 @@ function ENT:SpawnFunction( ply, tr )
 	self.OWNER = ply
 	local ent = ents.Create( self.ClassName )
 	ent:SetPhysicsAttacker(ply)
-	ent:SetPos( tr.HitPos + tr.HitNormal * 100   ) 
+	ent:SetPos( tr.HitPos + tr.HitNormal * 20   ) 
 	ent:Spawn()
 	ent:Activate()
+	ent:SetAngles(Angle(90,0,0))
 	return ent
 end
 
