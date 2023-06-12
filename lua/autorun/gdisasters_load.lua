@@ -1,7 +1,3 @@
-AddCSLuaFile("autorun/gdisasters_load.lua")
-AddCSLuaFile("autorun/gdisasters_precached_particles.lua")
-AddCSLuaFile("autorun/gdisasters_decals.lua")
-
 AddCSLuaFile("gdisasters/shared/extensions/sh_patchs-bounds.lua")
 AddCSLuaFile("gdisasters/shared/game/convars/sh_main.lua")
 AddCSLuaFile("gdisasters/shared/game/sh_world_init.lua")
@@ -14,7 +10,6 @@ include("gdisasters/shared/game/convars/sh_main.lua")
 
 
 if (SERVER) then
-
 	AddCSLuaFile("gdisasters/server/server_func/sv_main.lua")
 	AddCSLuaFile("gdisasters/server/server_func/sv_netstrings.lua")
 	AddCSLuaFile("gdisasters/server/game/antilag/sv_main.lua")
@@ -41,10 +36,7 @@ if (SERVER) then
 	
 end
 
-if (CLIENT) then	
-
-	AddCSLuaFile("autorun/client/gdisasters_particles.lua")
-
+if (CLIENT) then
 	AddCSLuaFile("gdisasters/client/client_func/cl_main.lua")
 	AddCSLuaFile("gdisasters/client/client_func/cl_netstrings.lua")
 	AddCSLuaFile("gdisasters/client/hud/cl_main.lua")

@@ -1,6 +1,5 @@
 
 if SERVER then
-	AddCSLuaFile();
 	npc_tvirus = {
 		"npc_monk",
 		"npc_metropolice",
