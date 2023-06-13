@@ -111,6 +111,13 @@ local function gDisastersSVSettings( CPanel )
 	
 	CreateTickboxConVariable(CPanel, "Enable Body Oxygen" ,"gdisasters_hud_oxygen_enable");
 	CreateTickboxConVariable(CPanel, "Enable Body Oxygen Related Damage" ,"gdisasters_hud_oxygen_damage");
+
+	local lb3 = AddControlLabel( CPanel, "tvirus Options: " )
+	lb3:SetTextColor(Color( 0, 0, 0))
+	lb3:SetSize(500, 500)
+	
+	CreateTickboxConVariable(CPanel, "Zombie Strength" ,"gdisasters_tvirus_zombie_strength");
+	CreateTickboxConVariable(CPanel, "NMRIH Zombies" ,"gdisasters_tvirus_nmrih_zombies");
 end
 
 local function gDisastersSVADVSettings( CPanel )
