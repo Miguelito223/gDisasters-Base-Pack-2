@@ -91,19 +91,19 @@ function ENT:Think()
 	end
 	if (self.Bursts >= 1200) then -- Zombie time hehe
 		if not self:IsValid() then return end
-		if (file.Exists( "lua/autorun/vj_nmrih_autorun.lua", "GAME" )) and GetConVar("gd_nmrih_zombies"):GetInt()== 1 then
+		if (file.Exists( "lua/autorun/vj_nmrih_autorun.lua", "GAME" )) and GetConVar("gdisasters_tvirus_nmrih_zombies"):GetInt()== 1 then
 			local ent = ents.Create(table.Random(ZombieList2)) -- This creates our zombie entity
 			ent:SetPos(self.infected:GetPos())
 			ent:Spawn() 
-			if GetConVar("gd_zombie_strength"):GetInt() == 0 then
+			if GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == 0 then
 				ent:SetHealth(500)
-			elseif GetConVar("gd_zombie_strength"):GetInt() == 1 then
+			elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == 1 then
 				ent:SetHealth(1000)
-			elseif GetConVar("gd_zombie_strength"):GetInt() == 2 then
+			elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == 2 then
 				ent:SetHealth(2000)
-			elseif GetConVar("gd_zombie_strength"):GetInt() == -1 then
+			elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == -1 then
 				ent:SetHealth(250)
-			elseif GetConVar("gd_zombie_strength"):GetInt() == -2 then
+			elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == -2 then
 				ent:SetHealth(175)
 			else
 				ent:SetHealth(500)
@@ -121,15 +121,15 @@ function ENT:Think()
 			local ent = ents.Create(table.Random(ZombieList)) -- This creates our zombie entity
 			ent:SetPos(self.infected:GetPos())
 			ent:Spawn() 
-			if GetConVar("gd_zombie_strength"):GetInt() == 0 then
+			if GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == 0 then
 				ent:SetHealth(500)
-			elseif GetConVar("gd_zombie_strength"):GetInt() == 1 then
+			elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == 1 then
 				ent:SetHealth(1000)
-			elseif GetConVar("gd_zombie_strength"):GetInt() == 2 then
+			elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == 2 then
 				ent:SetHealth(2000)
-			elseif GetConVar("gd_zombie_strength"):GetInt() == -1 then
+			elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == -1 then
 				ent:SetHealth(250)
-			elseif GetConVar("gd_zombie_strength"):GetInt() == -2 then
+			elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == -2 then
 				ent:SetHealth(175)
 			else
 				ent:SetHealth(500)
@@ -153,19 +153,19 @@ end
 if (SERVER) then
 	function ENT:OnRemove()
 		if not self.diedfromtime then
-			if (file.Exists( "lua/autorun/vj_nmrih_autorun.lua", "GAME" )) and GetConVar("gd_nmrih_zombies"):GetInt()== 1 then
+			if (file.Exists( "lua/autorun/vj_nmrih_autorun.lua", "GAME" )) and GetConVar("gdisasters_tvirus_nmrih_zombies"):GetInt()== 1 then
 			local ent = ents.Create(table.Random(ZombieList2)) -- This creates our zombie entity
 			ent:SetPos(self:GetPos())
 			ent:Spawn() 
-			if GetConVar("gd_zombie_strength"):GetInt() == 0 then
+			if GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == 0 then
 				ent:SetHealth(500)
-			elseif GetConVar("gd_zombie_strength"):GetInt() == 1 then
+			elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == 1 then
 				ent:SetHealth(1000)
-			elseif GetConVar("gd_zombie_strength"):GetInt() == 2 then
+			elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == 2 then
 				ent:SetHealth(2000)
-			elseif GetConVar("gd_zombie_strength"):GetInt() == -1 then
+			elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == -1 then
 				ent:SetHealth(250)
-			elseif GetConVar("gd_zombie_strength"):GetInt() == -2 then
+			elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == -2 then
 				ent:SetHealth(175)
 			else
 				ent:SetHealth(500)
@@ -183,15 +183,15 @@ if (SERVER) then
 				local ent = ents.Create(table.Random(ZombieList)) -- This creates our zombie entity
 				ent:SetPos(self:GetPos())
 				ent:Spawn() 
-				if GetConVar("gd_zombie_strength"):GetInt() == 0 then
+				if GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == 0 then
 					ent:SetHealth(500)
-				elseif GetConVar("gd_zombie_strength"):GetInt() == 1 then
+				elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == 1 then
 					ent:SetHealth(1000)
-				elseif GetConVar("gd_zombie_strength"):GetInt() == 2 then
+				elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == 2 then
 					ent:SetHealth(2000)
-				elseif GetConVar("gd_zombie_strength"):GetInt() == -1 then
+				elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == -1 then
 					ent:SetHealth(250)
-				elseif GetConVar("gd_zombie_strength"):GetInt() == -2 then
+				elseif GetConVar("gdisasters_tvirus_zombie_strength"):GetInt() == -2 then
 					ent:SetHealth(175)
 				else
 					ent:SetHealth(500)

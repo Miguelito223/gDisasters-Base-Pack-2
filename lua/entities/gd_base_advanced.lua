@@ -137,15 +137,15 @@ function ENT:Explode()
 	ent:Activate()
 	ent:SetVar("GBOWNER", self.GBOWNER)
 	ent:SetVar("MAX_RANGE",50000)
-	if GetConVar("gd_sound_speed"):GetInt() == 0 then
+	if GetConVar("gdisasters_sound_speed"):GetInt() == 0 then
 		ent:SetVar("SHOCKWAVE_INCREMENT",200)
-	elseif GetConVar("gd_sound_speed"):GetInt()== 1 then
+	elseif GetConVar("gdisasters_sound_speed"):GetInt()== 1 then
 		ent:SetVar("SHOCKWAVE_INCREMENT",300)
-	elseif GetConVar("gd_sound_speed"):GetInt() == 2 then
+	elseif GetConVar("gdisasters_sound_speed"):GetInt() == 2 then
 		ent:SetVar("SHOCKWAVE_INCREMENT",400)
-	elseif GetConVar("gd_sound_speed"):GetInt() == -1 then
+	elseif GetConVar("gdisasters_sound_speed"):GetInt() == -1 then
 		ent:SetVar("SHOCKWAVE_INCREMENT",100)
-	elseif GetConVar("gd_sound_speed"):GetInt() == -2 then
+	elseif GetConVar("gdisasters_sound_speed"):GetInt() == -2 then
 		ent:SetVar("SHOCKWAVE_INCREMENT",50)
 	else
 		ent:SetVar("SHOCKWAVE_INCREMENT",200)
@@ -205,7 +205,7 @@ function ENT:OnTakeDamage(dmginfo)
 	 local phys = self:GetPhysicsObject()
 	 
      if (self.Life <= 0) then return end
-	 if(GetConVar("gd_fragility"):GetInt() >= 1) then
+	 if(GetConVar("gdisasters_fragility"):GetInt() >= 1) then
 	     if(not self.Armed and not self.Arming) then
 	         self:Arm()
 	     end
@@ -232,7 +232,7 @@ function ENT:PhysicsCollide( data, physobj )
      if(self.Exploded) then return end
      if(not self:IsValid()) then return end
 	 if(self.Life <= 0) then return end
-	 if(GetConVar("gd_fragility"):GetInt() >= 1) then
+	 if(GetConVar("gdisasters_fragility"):GetInt() >= 1) then
 	     if(data.Speed > self.ImpactSpeed) then
 	 	     if(not self.Armed and not self.Arming) then
 		         self:EmitSound(damagesound)
@@ -276,7 +276,7 @@ end
 function ENT:Use( activator, caller )
      if(self.Exploded) then return end
      if(self:IsValid()) then
-	     if(GetConVar("gd_easyuse"):GetInt() >= 1) then
+	     if(GetConVar("gdisasters_easyuse"):GetInt() >= 1) then
 	         if(not self.Armed) then
 		         if(not self.Exploded) and (not self.Used) then
 		             if(activator:IsPlayer()) then

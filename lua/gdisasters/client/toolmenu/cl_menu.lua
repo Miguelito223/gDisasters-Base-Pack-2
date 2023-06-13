@@ -93,14 +93,17 @@ local function gDisastersSVSettings( CPanel )
 	lb2:SetSize(500, 500)
 	
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature" ,"gdisasters_hud_temp_enable");
-	CreateTickboxConVariable(CPanel, "Enable Change Value of Body Temperature" ,"gdisasters_hud_temp_value");
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Screen Effects" ,"gdisasters_hud_temp_enable_cl");
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Related Damage" ,"gdisasters_hud_temp_damage");
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Change Player Speed" ,"gdisasters_hud_temp_player_speed");
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Change Player Speed" ,"gdisasters_hud_temp_player_speed_enable");
 
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Breathing" ,"gdisasters_hud_temp_breathing");
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Vomit" ,"gdisasters_hud_temp_vomit");
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Sneeze" ,"gdisasters_hud_temp_sneeze");
+
+	CreateTickboxConVariable(CPanel, "Enable Change Value of Body Temperature" ,"gdisasters_hud_temp_value");
+
+	CreateSliderConVariable(CPanel, "Default player walk speed", 0, 1000, 0, "gdisasters_hud_temp_player_speed_walk" );
+	CreateSliderConVariable(CPanel, "Default player sprint speed", 0, 1000, 0, "gdisasters_hud_temp_player_speed_sprint" );
 
 	local lb3 = AddControlLabel( CPanel, "Body Oxygen Options: " )
 	lb3:SetTextColor(Color( 0, 0, 0))
@@ -199,6 +202,7 @@ local function gDisastersServerGraphics( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_graphics_atmosphere");
 	CreateTickboxConVariable(CPanel, "Enable GFX effect"  , "gdisasters_graphics_gfx");
 	CreateTickboxConVariable(CPanel, "Enable Fog Effect"  , "gdisasters_graphics_fog");
+	
 
 	local lb2 = AddControlLabel( CPanel, "Antilag Collision Options:" )
 	local lb3 = AddControlLabel( CPanel, "PD NC BT: Post Damage No Collide Base Time\n\nCPPPS: Collisions Per Prop Per Second\n\nCAPS:Collisions Average Per Second" )
@@ -318,6 +322,9 @@ local function gDisastersGraphicsSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable GP"  , "gdisasters_graphics_enable_ground_particles");
 	CreateTickboxConVariable(CPanel, "Enable WP"  , "gdisasters_graphics_enable_weather_particles");
 	CreateTickboxConVariable(CPanel, "Enable SP"  , "gdisasters_graphics_enable_screen_particles");
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Screen Effects" ,"gdisasters_hud_temp_effects");
+	CreateTickboxConVariable(CPanel, "Enable Underwater Screen Effects" ,"gdisasters_hud_underwater");
+	CreateTickboxConVariable(CPanel, "Enable UnderLava Screen Effects" ,"gdisasters_hud_underlava");
 
 	CreateTickboxConVariable(CPanel, "Enable Manual SP"  , "gdisasters_graphics_enable_manual_number_of_screen_particles");
 

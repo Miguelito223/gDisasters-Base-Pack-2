@@ -37,12 +37,13 @@ CreateConVar( "gdisasters_weather_acidraindamageprops", "1", {FCVAR_ARCHIVE}, ""
 --hud
 
 CreateConVar( "gdisasters_hud_temp_damage", "1", {FCVAR_ARCHIVE}	, "" )
-CreateConVar( "gdisasters_hud_temp_player_speed", "1", {FCVAR_ARCHIVE}	, "" )
+CreateConVar( "gdisasters_hud_temp_player_speed_enable", "1", {FCVAR_ARCHIVE}	, "" )
+CreateConVar( "gdisasters_hud_temp_player_speed_walk", "400", {FCVAR_ARCHIVE}	, "" )
+CreateConVar( "gdisasters_hud_temp_player_speed_sprint", "600", {FCVAR_ARCHIVE}	, "" )
 CreateConVar( "gdisasters_hud_temp_value", "1", {FCVAR_ARCHIVE}	, "" )
 CreateConVar( "gdisasters_hud_temp_breathing", "1", {FCVAR_ARCHIVE}	, "" )
 CreateConVar( "gdisasters_hud_temp_vomit", "1", {FCVAR_ARCHIVE}	, "" )
 CreateConVar( "gdisasters_hud_temp_sneeze", "1", {FCVAR_ARCHIVE}	, "" )
-CreateConVar( "gdisasters_hud_temp_enable_cl", "1", {FCVAR_ARCHIVE}	, "" )
 CreateConVar( "gdisasters_hud_temp_enable", "1", {FCVAR_ARCHIVE}	, "" )
 
 CreateConVar( "gdisasters_hud_oxygen_damage", "1", {FCVAR_ARCHIVE}, "" )
@@ -102,18 +103,9 @@ CreateConVar( "gdisasters_stormfox_enabled", "0", {FCVAR_ARCHIVE}, "")
 
 
 --tvirus
-CreateConVar("gd_easyuse", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-CreateConVar("gd_nuke_light", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-CreateConVar("gd_zombie_strength", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-CreateConVar("gd_sound_speed", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-CreateConVar("gd_maxforcefield_range", "5000", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-CreateConVar("gd_fragility", "1", {FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-CreateConVar("gd_nuclear_emp", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-CreateConVar("gd_safeemp", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-CreateConVar("gd_nuclear_vaporisation", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-CreateConVar("gd_shockwave_unfreeze", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-CreateConVar("gd_decals", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-CreateConVar("gd_realistic_sound", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-CreateConVar("gd_sound_shake", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-CreateConVar("gd_nuclear_fallout", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-CreateConVar("gd_nmrih_zombies", "0", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
+
+CreateConVar("gdisasters_easyuse", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
+CreateConVar("gdisasters_tvirus_zombie_strength", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
+CreateConVar("gdisasters_sound_speed", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
+CreateConVar("gdisasters_fragility", "1", {FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
+CreateConVar("gdisasters_tvirus_nmrih_zombies", "0", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )

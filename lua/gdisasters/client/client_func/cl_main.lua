@@ -67,6 +67,7 @@ end
 
 hook.Add("RenderScreenspaceEffects", "gfx_Underwater", function() 
 	
+	if GetConVar("gdisasters_hud_underwater"):GetInt() == 0 then return end
 	
 	if isUnderWater(LocalPlayer()) then
 		if LocalPlayer().LastIsUnderwater == false then
@@ -123,6 +124,9 @@ hook.Add("RenderScreenspaceEffects", "gfx_Underwater", function()
 end)
 
 hook.Add("RenderScreenspaceEffects", "gfx_Underlava", function() 
+	
+	if GetConVar("gdisasters_hud_underlava"):GetInt() == 0 then return end
+
 	LocalPlayer().LavaIntensity = math.Clamp(LocalPlayer().LavaIntensity - (FrameTime()/4), 0, 1)
 	local intensity = LocalPlayer().LavaIntensity 
 
@@ -208,7 +212,7 @@ end)
 	
 hook.Add("RenderScreenspaceEffects", "gfx_TempEffect", function()
 
-	if GetConVar("gdisasters_hud_temp_enable_cl"):GetInt() == 0 then return end
+	if GetConVar("gdisasters_hud_temp_effects"):GetInt() == 0 then return end
 
 	local temp            = LocalPlayer():GetNWFloat("BodyTemperature")
 	local blur_alpha_hot  =  1-((44-math.Clamp(temp,39,44))/5)

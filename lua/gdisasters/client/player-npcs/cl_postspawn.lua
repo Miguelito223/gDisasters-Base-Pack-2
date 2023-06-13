@@ -24,6 +24,9 @@ function gDisasters_PostSpawnCL()
 		CreateConVar( "gdisasters_hud_type", 1, {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_hud_windtype", "km/h", {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_hud_temptype", "c", {FCVAR_ARCHIVE}	, "" )
+		CreateConVar( "gdisasters_hud_temp_effects", "1", {FCVAR_ARCHIVE}	, "" )
+		CreateConVar( "gdisasters_hud_underwater", "1", {FCVAR_ARCHIVE}	, "" )
+		CreateConVar( "gdisasters_hud_underlava", "1", {FCVAR_ARCHIVE}	, "" )
 
 		--graphics
 		CreateConVar( "gdisasters_graphics_fog_quality", 4, {FCVAR_ARCHIVE}	, "" )

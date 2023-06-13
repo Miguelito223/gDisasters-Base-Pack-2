@@ -194,7 +194,7 @@ function Temperature()
 					
 					InflictDamage(v, v, "cold", alpha_hot + alpha_cold)
 					
-					if GetConVar("gdisasters_hud_temp_player_speed"):GetInt() == 0 then return end
+					if GetConVar("gdisasters_hud_temp_player_speed_enable"):GetInt() == 0 then return end
 					
 					v:SetWalkSpeed( v:GetWalkSpeed() - (alpha_cold + 1) )
 					v:SetRunSpeed( v:GetRunSpeed() - (alpha_cold + 1)  )
@@ -205,17 +205,17 @@ function Temperature()
 					
 					InflictDamage(v, v, "heat", alpha_hot + alpha_cold)
 					
-					if GetConVar("gdisasters_hud_temp_player_speed"):GetInt() == 0 then return end
+					if GetConVar("gdisasters_hud_temp_player_speed_enable"):GetInt() == 0 then return end
 					
 					v:SetWalkSpeed( v:GetWalkSpeed() - (alpha_hot - 1) )
 					v:SetRunSpeed( v:GetRunSpeed() - (alpha_hot - 1)  )
 					
 					
 				else
-					if GetConVar("gdisasters_hud_temp_player_speed"):GetInt() == 0 then return end
+					if GetConVar("gdisasters_hud_temp_player_speed_enable"):GetInt() == 0 then return end
 					
-					v:SetWalkSpeed(400)
-					v:SetRunSpeed(600)
+					v:SetWalkSpeed(GetConVar("gdisasters_hud_temp_player_speed_walk"):GetInt())
+					v:SetRunSpeed(GetConVar("gdisasters_hud_temp_player_speed_sprint"):GetInt())
 				end
 			end
 			
