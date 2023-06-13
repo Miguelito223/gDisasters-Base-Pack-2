@@ -323,8 +323,8 @@ local function gDisastersGraphicsSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable WP"  , "gdisasters_graphics_enable_weather_particles");
 	CreateTickboxConVariable(CPanel, "Enable SP"  , "gdisasters_graphics_enable_screen_particles");
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Screen Effects" ,"gdisasters_hud_temp_effects");
-	CreateTickboxConVariable(CPanel, "Enable Underwater Screen Effects" ,"gdisasters_hud_underwater");
-	CreateTickboxConVariable(CPanel, "Enable UnderLava Screen Effects" ,"gdisasters_hud_underlava");
+	CreateTickboxConVariable(CPanel, "Enable Underwater Screen Effects" ,"gdisasters_hud_underwater_effects");
+	CreateTickboxConVariable(CPanel, "Enable UnderLava Screen Effects" ,"gdisasters_hud_underlava_effects");
 
 	CreateTickboxConVariable(CPanel, "Enable Manual SP"  , "gdisasters_graphics_enable_manual_number_of_screen_particles");
 

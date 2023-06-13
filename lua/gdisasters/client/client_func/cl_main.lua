@@ -67,7 +67,7 @@ end
 
 hook.Add("RenderScreenspaceEffects", "gfx_Underwater", function() 
 	
-	if GetConVar("gdisasters_hud_underwater"):GetInt() == 0 then return end
+	if GetConVar("gdisasters_hud_underwater_effects"):GetInt() == 0 then return end
 	
 	if isUnderWater(LocalPlayer()) then
 		if LocalPlayer().LastIsUnderwater == false then
@@ -125,7 +125,7 @@ end)
 
 hook.Add("RenderScreenspaceEffects", "gfx_Underlava", function() 
 	
-	if GetConVar("gdisasters_hud_underlava"):GetInt() == 0 then return end
+	if GetConVar("gdisasters_hud_underlava_effects"):GetInt() == 0 then return end
 
 	LocalPlayer().LavaIntensity = math.Clamp(LocalPlayer().LavaIntensity - (FrameTime()/4), 0, 1)
 	local intensity = LocalPlayer().LavaIntensity 
