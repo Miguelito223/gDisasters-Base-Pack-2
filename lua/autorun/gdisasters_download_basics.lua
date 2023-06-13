@@ -1,3 +1,5 @@
+AddCSLuaFile()
+
 if (SERVER) then
   resource.AddSingleFile( "materials/hud/infection.vmt" )
   resource.AddSingleFile( "materials/hud/infection.vtf" )

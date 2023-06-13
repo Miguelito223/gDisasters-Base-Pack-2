@@ -1,3 +1,5 @@
+AddCSLuaFile()
+
 AddCSLuaFile("gdisasters/shared/extensions/sh_patchs-bounds.lua")
 AddCSLuaFile("gdisasters/shared/game/convars/sh_main.lua")
 AddCSLuaFile("gdisasters/shared/game/sh_world_init.lua")

@@ -1,3 +1,4 @@
+AddCSLuaFile()
 
 if SERVER then
 	npc_tvirus = {
