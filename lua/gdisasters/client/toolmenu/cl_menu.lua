@@ -322,9 +322,6 @@ local function gDisastersGraphicsSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable GP"  , "gdisasters_graphics_enable_ground_particles");
 	CreateTickboxConVariable(CPanel, "Enable WP"  , "gdisasters_graphics_enable_weather_particles");
 	CreateTickboxConVariable(CPanel, "Enable SP"  , "gdisasters_graphics_enable_screen_particles");
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Screen Effects" ,"gdisasters_hud_temp_effects");
-	CreateTickboxConVariable(CPanel, "Enable Underwater Screen Effects" ,"gdisasters_hud_underwater_effects");
-	CreateTickboxConVariable(CPanel, "Enable UnderLava Screen Effects" ,"gdisasters_hud_underlava_effects");
 
 	CreateTickboxConVariable(CPanel, "Enable Manual SP"  , "gdisasters_graphics_enable_manual_number_of_screen_particles");
 
@@ -341,10 +338,17 @@ local function gDisastersHudSettings( CPanel )
 	lb2:SetTextColor(Color( 0, 47, 255))
 
 	CreateTickboxConVariable(CPanel, "Enable Hud", "gdisasters_hud_enabled");
+	
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Screen Effects" ,"gdisasters_hud_temp_effects");
+	CreateTickboxConVariable(CPanel, "Enable Underwater Screen Effects" ,"gdisasters_hud_underwater_effects");
+	CreateTickboxConVariable(CPanel, "Enable UnderLava Screen Effects" ,"gdisasters_hud_underlava_effects");
+	
 	CreateSliderConVariable(CPanel, "Hud Type", 1, 4, 0, "gdisasters_hud_type" );
 
 	AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
 	AddComboBox( CPanel, "Hud Temperature Display", {"c", "f", "k"}, "gdisasters_hud_temptype")
+
+
 end
 
 
