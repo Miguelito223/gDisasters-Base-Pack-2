@@ -17,7 +17,7 @@ function ENT:Initialize()
     
 	local bool hasShelfCloud = false
 	
-    self:Lightning()
+    
 	if (CLIENT) then
 	
 	end
@@ -63,7 +63,7 @@ function ENT:Initialize()
 		
 		setMapLight("e")		
 	
-
+		self:Lightning()
 
 		local data = {}
 			data.Color = Color(145,144,165)
