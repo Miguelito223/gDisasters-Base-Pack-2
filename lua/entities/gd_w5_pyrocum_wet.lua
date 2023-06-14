@@ -17,7 +17,6 @@ function ENT:Initialize()
 	
 	local bool recentTor = false
 	
-	self:Lightning()
 	if (CLIENT) then
 	
 		
@@ -37,6 +36,8 @@ function ENT:Initialize()
 		self:SetMoveType( MOVETYPE_NONE  )
 		self:SetUseType( ONOFF_USE )
 		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+
+		self:Lightning()
 		
 		local phys = self:GetPhysicsObject()
 		if (phys:IsValid()) then
@@ -122,6 +123,8 @@ function ENT:AffectPlayers()
 
 		if v.gDisasters.Area.IsOutdoor then
 			
+			v:Ignite(1)
+
 			if HitChance(time_mul) then
 				if math.random(1,3)==1 then
 					net.Start("gd_screen_particles")
@@ -141,16 +144,17 @@ function ENT:AffectPlayers()
 				net.WriteAngle(Angle(0,ang,0))
 				net.Send(v)
 				
+				
 			
 			end
 		else
 
-		if math.random(1,2) == 2 then
-			net.Start("gd_clParticles")
-			net.WriteString("hail_character_effect_01_main")
-			net.Send(v)			
-			
-		end
+			if math.random(1,2) == 2 then
+				net.Start("gd_clParticles")
+				net.WriteString("hail_character_effect_01_main")
+				net.Send(v)			
+
+			end
 		
 		
 	
@@ -228,7 +232,6 @@ function ENT:Think()
 
 		self:AffectPlayers()
 		self:SpawnDeath()
-		self:Ignite(v)
 		
 		local t =  (FrameTime() / 0.1) / (66.666 / 0.1) -- tick dependant function that allows for constant think loop regardless of server tickrate
 		
@@ -278,7 +281,8 @@ function ENT:Lightning()
 	local pos = self:GetPos()
 	
 	timer.Simple(0.1, function()
-	if !self:IsValid() then return end
+
+		if !self:IsValid() then return end
 		local ent = ents.Create("gd_w2_thunderstorm_cl")
 		ent:SetPos(pos)
 		ent:Spawn()

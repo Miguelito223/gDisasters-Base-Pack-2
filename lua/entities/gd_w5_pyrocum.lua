@@ -17,7 +17,7 @@ function ENT:Initialize()
 	
 	local bool recentTor = false
 	
-	self:Lightning()
+	
 	if (CLIENT) then
 	
 		
@@ -68,6 +68,7 @@ function ENT:Initialize()
 		
 		end
 		
+		self:Lightning()
 		
 		setMapLight("a")
 		physenv.SetAirDensity(60)
@@ -121,7 +122,8 @@ function ENT:AffectPlayers()
 		
 
 		if v.gDisasters.Area.IsOutdoor then
-			
+			v:Ignite(1)
+
 			if HitChance(time_mul) then
 				if math.random(1,3)==1 then
 					net.Start("gd_screen_particles")
@@ -238,7 +240,7 @@ function ENT:Think()
 
 		self:AffectPlayers()
 		self:SpawnDeath()
-		self:Ignite(v)
+		
 		
 		local t =  (FrameTime() / 0.1) / (66.666 / 0.1) -- tick dependant function that allows for constant think loop regardless of server tickrate
 		
@@ -288,7 +290,7 @@ function ENT:Lightning()
 	local pos = self:GetPos()
 	
 	timer.Simple(0.1, function()
-	if !self:IsValid() then return end
+		if !self:IsValid() then return end
 		local ent = ents.Create("gd_w2_thunderstorm_cl")
 		ent:SetPos(pos)
 		ent:Spawn()
