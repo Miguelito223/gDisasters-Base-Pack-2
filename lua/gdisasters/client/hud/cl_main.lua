@@ -755,7 +755,7 @@ function hud_DrawSeismoGraph()
 		--±0.4
 		surface.SetDrawColor( 255, 255, 255 , 255 )
 		surface.DrawLine( peak_x_min, (max_a  * (-0.5 * (ymax - ymin)))+ (0.5 * (ymax + ymin)), peak_x_max, (max_a  * (-0.5 * (ymax - ymin)))+ (0.5 * (ymax + ymin)) )
-		draw.DrawText( " Richter Scale \n     ≈  "..math.Round(max_a*15,1), "gDisastersFont_"..tostring(math.Round(scale * 15)), peak_x_min , (max_a  * (-0.5 * (ymax - ymin)))+ (0.5 * (ymax + ymin)) , Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
+		draw.DrawText( " Richter Scale \n     ≈  "..math.Round(GetGlobalFloat("gd_seismic_activity"),1), "gDisastersFont_"..tostring(math.Round(scale * 15)), peak_x_min , (max_a  * (-0.5 * (ymax - ymin)))+ (0.5 * (ymax + ymin)) , Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 
 	end	
 	recordTremors()
