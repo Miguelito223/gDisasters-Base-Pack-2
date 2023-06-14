@@ -708,7 +708,7 @@ function hud_DrawSeismoGraph()
 		
 		if CurTime() >= LocalPlayer().SeismoGraph_SampleIntervalNextTime then  -- here we add sample points 
 			
-			local M  =  -1+( GetGlobalFloat("gd_seismic_activity")/10)
+			local M  =  -1+( GetGlobalFloat("gd_seismic_activity")/12)
 			local IP =  (-(M-0.25)^2 - (2/(M-0.25))) / 8
 		
 			local ygain = (( 0.5 * (ymax - ymin) + math.random(0,10) ) * (math.sin( (2 * math.pi * math.random(14,16)) * CurTime()))) * (math.Clamp((IP),0.01, 1))
