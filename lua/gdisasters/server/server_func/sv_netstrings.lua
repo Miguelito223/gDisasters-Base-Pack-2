@@ -47,17 +47,6 @@ net.Receive("gd_ambientlight", function()
 	local ent = net.ReadEntity()
 	local aLL = net.ReadVector()
 	ent.AmbientLight = aLL
-	
-
-end)
-
-net.Receive( "gd_entity_exists_on_server", function() 
-	
-	local string = net.ReadString()
-	
-	gDisasters.CachedExists[string] = ents.Create(string)
-	gDisasters.CachedExists[string]:Spawn()
-	gDisasters.CachedExists[string]:Activate()
 end)
 
 net.Receive("gd_vomit_blood", function()

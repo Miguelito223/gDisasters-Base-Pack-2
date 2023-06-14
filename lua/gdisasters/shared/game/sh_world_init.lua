@@ -183,6 +183,12 @@ gDisasters.DayNightSystem.Paused = false
 
 gDisasters.DayNightSystem.Initialize = function()
 	gDisasters.DayNightSystem.OldSkyName = GetConVar("sv_skyname"):GetString();
+	
+	if gDisasters_Is3DSkybox() then
+		print("this have 3D skybox")
+	else
+		print("this don't have 3D skybox")
+	end
 
 	hook.Add("Think", "think", gDisasters.DayNightSystem.Think)
 end
@@ -257,7 +263,7 @@ gDisasters.DayNightSystem.initEntities_Function = function()
 		end
 	end
 
-	if  IsValid( gDisasters.DayNightSystem.EnvSkyPaint )  then
+	if IsValid( gDisasters.DayNightSystem.EnvSkyPaint )  then
 		gDisasters.DayNightSystem.EnvSkyPaint:SetStarTexture( "skybox/starfield" )
 	else
 		gDisasters.DayNightSystem.EnvSkyPaint =  ents.Create("env_skypaint")
