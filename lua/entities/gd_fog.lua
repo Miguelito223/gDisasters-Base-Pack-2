@@ -4,6 +4,10 @@ ENT.Base = "base_entity";
 ENT.Type = "point";
 ENT.DisableDuplicator = true;
 
+function ENT:UpdateTransmitState() 
+    return TRANSMIT_ALWAYS 
+end
+
 function ENT:Initialize()
 
     if SERVER then return end

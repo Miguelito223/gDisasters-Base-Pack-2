@@ -225,6 +225,12 @@ gDisasters.DayNightSystem.initEntities_Function = function()
 	gDisasters.DayNightSystem.EnvFogController = ents.FindByClass( "env_fog_controller" )[1]
 	gDisasters.DayNightSystem.RelayDawn = ents.FindByName( "dawn" )[1]
 	gDisasters.DayNightSystem.RelayDusk = ents.FindByName( "dusk" )[1]
+
+	if !IsValid(gDisasters.DayNightSystem.EnvFogController) then
+		gDisasters.DayNightSystem.EnvFogController = ents.Create("env_fog_controller")
+		gDisasters.DayNightSystem.EnvFogController:Spawn()
+		gDisasters.DayNightSystem.EnvFogController:Activate()
+	end
 	
 	gDisasters.DayNightSystem.Fog = ents.Create("gd_fog")
 	gDisasters.DayNightSystem.Fog:Spawn()
@@ -236,12 +242,6 @@ gDisasters.DayNightSystem.initEntities_Function = function()
 		gDisasters.DayNightSystem.EnvSun = ents.Create("env_sun")
 		gDisasters.DayNightSystem.EnvSun:Spawn()
 		gDisasters.DayNightSystem.EnvSun:Activate()
-	end
-
-	if !IsValid(gDisasters.DayNightSystem.EnvFogController) then
-		gDisasters.DayNightSystem.EnvFogController = ents.Create("env_fog_controller")
-		gDisasters.DayNightSystem.EnvFogController:Spawn()
-		gDisasters.DayNightSystem.EnvFogController:Activate()
 	end
 
 	if IsValid( gDisasters.DayNightSystem.LightEnvironment ) then
