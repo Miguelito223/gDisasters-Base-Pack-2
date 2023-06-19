@@ -88,30 +88,6 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Tornado Related Damage" ,"gdisasters_envtornado_candamageconstraints");
 	CreateTickboxConVariable(CPanel, "Enable Wind Related Damage" ,"gdisasters_wind_candamageconstraints");
 
-	local lb2 = AddControlLabel( CPanel, "Body Temperature Options: " )
-	lb2:SetTextColor(Color( 0, 0, 0))
-	lb2:SetSize(500, 500)
-	
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature" ,"gdisasters_hud_temp_enable");
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Related Damage" ,"gdisasters_hud_temp_damage");
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Change Player Speed" ,"gdisasters_hud_temp_player_speed_enable");
-
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Breathing" ,"gdisasters_hud_temp_breathing");
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Vomit" ,"gdisasters_hud_temp_vomit");
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Sneeze" ,"gdisasters_hud_temp_sneeze");
-
-	CreateTickboxConVariable(CPanel, "Enable Change Value of Body Temperature" ,"gdisasters_hud_temp_value");
-
-	CreateSliderConVariable(CPanel, "Default player walk speed", 0, 1000, 0, "gdisasters_hud_temp_player_speed_walk" );
-	CreateSliderConVariable(CPanel, "Default player sprint speed", 0, 1000, 0, "gdisasters_hud_temp_player_speed_sprint" );
-
-	local lb3 = AddControlLabel( CPanel, "Body Oxygen Options: " )
-	lb3:SetTextColor(Color( 0, 0, 0))
-	lb3:SetSize(500, 500)
-	
-	CreateTickboxConVariable(CPanel, "Enable Body Oxygen" ,"gdisasters_hud_oxygen_enable");
-	CreateTickboxConVariable(CPanel, "Enable Body Oxygen Related Damage" ,"gdisasters_hud_oxygen_damage");
-
 	local lb3 = AddControlLabel( CPanel, "tvirus Options: " )
 	lb3:SetTextColor(Color( 0, 0, 0))
 	lb3:SetSize(500, 500)
@@ -200,7 +176,7 @@ local function gDisastersSVADVSettings( CPanel )
 	
 end
 
-local function gDisastersServerGraphics( CPanel )
+local function gDisastersSVGraphics( CPanel )
 
 	local lb = AddControlLabel( CPanel, "Main Server Graphics: " )
 	lb:SetTextColor(Color( 0, 0, 0))
@@ -253,6 +229,29 @@ local function gDisastersAutospawn( CPanel )
 	
 	CreateTickboxConVariable(CPanel, "Enable Autospawn "  , "gdisasters_autospawn_enable");
 
+	
+end
+local function gDisastersSVhud( CPanel )
+
+	
+	local lb2 = AddControlLabel( CPanel, "Body Temperature Options: " )
+	lb2:SetTextColor(Color( 0, 0, 0))
+	lb2:SetSize(500, 500)
+	
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature" ,"gdisasters_hud_temp_enable");
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Related Damage" ,"gdisasters_hud_temp_damage");
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Change Player Speed" ,"gdisasters_hud_temp_player_speed_enable");
+	CreateTickboxConVariable(CPanel, "Enable Change Value of Body Temperature" ,"gdisasters_hud_temp_value");
+
+	CreateSliderConVariable(CPanel, "Default player walk speed", 0, 1000, 0, "gdisasters_hud_temp_player_speed_walk" );
+	CreateSliderConVariable(CPanel, "Default player sprint speed", 0, 1000, 0, "gdisasters_hud_temp_player_speed_sprint" );
+
+	local lb3 = AddControlLabel( CPanel, "Body Oxygen Options: " )
+	lb3:SetTextColor(Color( 0, 0, 0))
+	lb3:SetSize(500, 500)
+	
+	CreateTickboxConVariable(CPanel, "Enable Body Oxygen" ,"gdisasters_hud_oxygen_enable");
+	CreateTickboxConVariable(CPanel, "Enable Body Oxygen Related Damage" ,"gdisasters_hud_oxygen_damage");
 	
 end
 
@@ -347,6 +346,9 @@ local function gDisastersHudSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Hud", "gdisasters_hud_enabled");
 	
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Screen Effects" ,"gdisasters_hud_temp_effects");
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Breathing" ,"gdisasters_hud_temp_breathing");
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Vomit" ,"gdisasters_hud_temp_vomit");
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Sneeze" ,"gdisasters_hud_temp_sneeze");
 	CreateTickboxConVariable(CPanel, "Enable Underwater Screen Effects" ,"gdisasters_hud_underwater_effects");
 	CreateTickboxConVariable(CPanel, "Enable UnderLava Screen Effects" ,"gdisasters_hud_underlava_effects");
 	
@@ -383,13 +385,15 @@ hook.Add( "AddToolMenuTabs", "gDisasters_Tab", function()
 end)
 
 hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
+	
 
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVADSettings", "Advanced", "", "", gDisastersSVADVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAutospawn", "Autospawn", "", "", gDisastersAutospawn )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisasterDNC", "DNC", "", "", gDisastersDNC )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVhud", "Server Hud", "", "", gDisastersSVhud )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAddonsCompatibility", "Addons", "", "", gDisastersAddonsCompatibility )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersServerGraphics", "Server Graphics", "", "", gDisastersServerGraphics )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVGraphics", "Server Graphics", "", "", gDisastersSVGraphics )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersAudioSettings", "Volume", "", "", gDisastersAudioSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "ggDisastersHudSettings", "Hud", "", "", gDisastersHudSettings )
