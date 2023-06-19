@@ -83,4 +83,15 @@ net.Receive("gd_sneeze_big", function()
 	ParticleEffectAttach( "sneeze_big_main", PATTACH_POINT_FOLLOW, ent, mouth_attach )
 
 end)
+
+net.Receive( "gd_entity_exists_on_server", function() 
+	local string = net.ReadString()
+	gDisasters.CachedExists[string] = ents.FindByClass(string)
+
+	if !IsValid(gDisasters.CachedExists[string]) then
+		gDisasters.CachedExists[string] = ents.Create(string)
+		gDisasters.CachedExists[string]:Spawn()
+		gDisasters.CachedExists[string]:Activate()
+	end
+end)
 	
