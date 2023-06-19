@@ -355,7 +355,7 @@ local function gDisastersHudSettings( CPanel )
 	CreateSliderConVariable(CPanel, "Hud Type", 1, 4, 0, "gdisasters_hud_type" );
 
 	AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
-	AddComboBox( CPanel, "Hud Temperature Display", {"c", "f", "k"}, "gdisasters_hud_temptype")
+	AddComboBox( CPanel, "Hud Temperature Display", {"°C", "°F", "°K"}, "gdisasters_hud_temptype")
 
 
 end

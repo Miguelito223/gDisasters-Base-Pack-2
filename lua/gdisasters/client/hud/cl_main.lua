@@ -220,11 +220,11 @@ function hud_DrawSpacebuildINFO()
 	end
 	local function drawText()
 
-		if GetConVar("gdisasters_hud_temptype"):GetString() == "c" then
+		if GetConVar("gdisasters_hud_temptype"):GetString() == "°C" then
 			draw.DrawText( "Air Temperature: "..air_temp.."°C", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
-		elseif GetConVar("gdisasters_hud_temptype"):GetString() == "f" then
+		elseif GetConVar("gdisasters_hud_temptype"):GetString() == "°F" then
 			draw.DrawText( "Air Temperature: "..convert_CelciustoFahrenheit(air_temp).."°F", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
-		elseif GetConVar("gdisasters_hud_temptype"):GetString() == "k" then
+		elseif GetConVar("gdisasters_hud_temptype"):GetString() == "°K" then
 			draw.DrawText( "Air Temperature: "..convert_CelciustoKelvin(air_temp).."°K", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 		end
 		
@@ -436,13 +436,13 @@ function hud_DrawBasicINFO()
 	
 	local function drawText()
 
-		if GetConVar("gdisasters_hud_temptype"):GetString() == "c" then
+		if GetConVar("gdisasters_hud_temptype"):GetString() == "°C" then
 			draw.DrawText( "Air Temperature: "..air_temp.."°C", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			draw.DrawText( "Body Temperature: "..body_temp.."°C", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_temperature.x , pos_body_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
-		elseif GetConVar("gdisasters_hud_temptype"):GetString() == "f" then
+		elseif GetConVar("gdisasters_hud_temptype"):GetString() == "°F" then
 			draw.DrawText( "Air Temperature: "..convert_CelciustoFahrenheit(air_temp).."°F", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			draw.DrawText( "Body Temperature: "..convert_CelciustoFahrenheit(body_temp).."°F", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_temperature.x , pos_body_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
-		elseif GetConVar("gdisasters_hud_temptype"):GetString() == "k" then
+		elseif GetConVar("gdisasters_hud_temptype"):GetString() == "°K" then
 			draw.DrawText( "Air Temperature: "..convert_CelciustoKelvin(air_temp).."°K", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature.x , pos_air_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			draw.DrawText( "Body Temperature: "..convert_CelciustoKelvin(body_temp).."°K", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_body_temperature.x , pos_body_temperature.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 		end
