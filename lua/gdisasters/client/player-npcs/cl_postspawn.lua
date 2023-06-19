@@ -110,4 +110,3 @@ function gDisasters_PostSpawnCL()
 	gDisasters_SetupSound()
 end
 hook.Add( "InitPostEntity", "gDisasters_PostSpawnCL", gDisasters_PostSpawnCL )
-gDisasters_PostSpawnCL()
