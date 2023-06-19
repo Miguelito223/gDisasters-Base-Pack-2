@@ -17,7 +17,7 @@ function gDisasters_PostSpawnCL()
 		LocalPlayer().gDisasters.HUD.SneezeBigIntensity  = 0
 	end
 	
-	local function gDisasters_SetupHUDConvars()
+	local function gDisasters_SetupCLConvars()
 	
 		--hud
 		CreateConVar( "gdisasters_hud_enabled", 1, {FCVAR_ARCHIVE}	, "" )
@@ -103,7 +103,7 @@ function gDisasters_PostSpawnCL()
 	gDisasters_SetupOutsideVars()
 	gDisasters_SetupHUDMISC()	
 	gDisasters_SetupFOGVars()
-	gDisasters_SetupHUDConvars()
+	gDisasters_SetupCLConvars()
 	gDisasters_SetupGFXVars()
 	gDisasters_SetupLavaIntesity()
 	gDisasters_SetupSound()
