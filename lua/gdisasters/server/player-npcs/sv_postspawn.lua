@@ -13,8 +13,25 @@ function gDisasters_PostSpawn(ply)
 		end
 		
 	end
-	local function gDisasters_SetupConvars()
+	local function gDisasters_SetupAreaVariables()
+		ply.gDisasters.Area      = {}
+		ply.gDisasters.Area.LocalWind = 0
+		ply.gDisasters.Area.IsOutdoor = false
 	
+	end
+	local function gDisasters_SetupLavaIntesity()
+		ply.LavaIntensity = 0
+	end
+
+	gDisasters_SetupBodyVariables()
+	gDisasters_SetupAreaVariables()	
+	gDisasters_SetupLavaIntesity()
+	
+end
+hook.Add( "PlayerInitialSpawn", "gDisasters_PostSpawn", gDisasters_PostSpawn )
+
+function gDisasters_PostSpawn2()
+	local function gDisasters_SetupConvars()
 		--env
 			
 		CreateConVar( "gdisasters_envdynamicwater_simquality", "0.10", {FCVAR_ARCHIVE}, "this affects simulation quality of env_dynamicwater " )
@@ -57,6 +74,7 @@ function gDisasters_PostSpawn(ply)
 		CreateConVar( "gdisasters_hud_temp_player_speed_enable", "1", {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_hud_temp_player_speed_walk", "400", {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_hud_temp_player_speed_sprint", "600", {FCVAR_ARCHIVE}	, "" )
+		CreateConVar( "gdisasters_hud_temp_breathing", "1", {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_hud_temp_value", "1", {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_hud_temp_enable", "1", {FCVAR_ARCHIVE}	, "" )
 			
@@ -99,30 +117,10 @@ function gDisasters_PostSpawn(ply)
 		CreateConVar( "gdisasters_stormfox_enabled", "0", {FCVAR_ARCHIVE}, "")
 	
 	end
-	local function gDisasters_SetupAreaVariables()
-		ply.gDisasters.Area      = {}
-		ply.gDisasters.Area.LocalWind = 0
-		ply.gDisasters.Area.IsOutdoor = false
-	
-	end
-	local function gDisasters_SetupLavaIntesity()
-		ply.LavaIntensity = 0
-	end
-
-
-	
 	gDisasters_SetupConvars()
-	gDisasters_SetupBodyVariables()
-	gDisasters_SetupAreaVariables()	
-	gDisasters_SetupLavaIntesity()
-	
-
-
-	
-
-	
 end
-hook.Add( "PlayerInitialSpawn", "gDisasters_PostSpawn", gDisasters_PostSpawn )
+gDisasters_PostSpawn2()
+hook.Add( "InitPostEntity", "gDisasters_PostSpawn2", gDisasters_PostSpawn2 )
 
 function gDisasters_OnSpawn_Reset( ply )
 	ply.gDisasters.Body.Temperature = 37 

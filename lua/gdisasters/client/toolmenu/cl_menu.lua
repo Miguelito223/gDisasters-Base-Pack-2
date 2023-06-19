@@ -239,6 +239,7 @@ local function gDisastersSVhud( CPanel )
 	lb2:SetSize(500, 500)
 	
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature" ,"gdisasters_hud_temp_enable");
+	CreateTickboxConVariable(CPanel, "Enable Body Temperature Breathing" ,"gdisasters_hud_temp_breathing");
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Related Damage" ,"gdisasters_hud_temp_damage");
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Change Player Speed" ,"gdisasters_hud_temp_player_speed_enable");
 	CreateTickboxConVariable(CPanel, "Enable Change Value of Body Temperature" ,"gdisasters_hud_temp_value");
@@ -346,7 +347,6 @@ local function gDisastersHudSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "Enable Hud", "gdisasters_hud_enabled");
 	
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Screen Effects" ,"gdisasters_hud_temp_effects");
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Breathing" ,"gdisasters_hud_temp_breathing");
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Vomit" ,"gdisasters_hud_temp_vomit");
 	CreateTickboxConVariable(CPanel, "Enable Body Temperature Sneeze" ,"gdisasters_hud_temp_sneeze");
 	CreateTickboxConVariable(CPanel, "Enable Underwater Screen Effects" ,"gdisasters_hud_underwater_effects");
