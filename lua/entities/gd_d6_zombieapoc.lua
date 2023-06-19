@@ -41,14 +41,10 @@ function ENT:Initialize()
 		end 		
 		
 		for k, v in pairs( ents.FindByClass( "env_sun" ) ) do
-		if IsValid( v ) then 
-		v:Fire( "TurnOff", "", 0 )
-		
+			if IsValid( v ) then 
+				v:Fire( "TurnOff", "", 0 )
 			end
-
 		end	
-			
-	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 and #ents.FindByClass("gd_w*") == 0 then 
 	
 		
 		self.Original_SkyData = {}
@@ -80,7 +76,7 @@ function ENT:Initialize()
 		
 		self:SetNoDraw(true)
 		
-		end
+		
 	end
 end
 
@@ -207,17 +203,12 @@ function ENT:OnRemove()
 	if (SERVER) then	
 		
 	for k, v in pairs(self.Zombies) do
-	if IsValid( v ) then v:Remove() end 
-	
-		end
+		if IsValid( v ) then v:Remove() end 
+	end	
 		
 	for k, v in pairs( ents.FindByClass( "env_sun" ) ) do
-	v:Fire( "TurnOn", "", 0 )
-		
-	end		
-		
-	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 and #ents.FindByClass("gd_w*") == 0 then 
-		
+		v:Fire( "TurnOn", "", 0 )
+	end	
 		
 	local resetdata = self.Reset_SkyData
 	GLOBAL_SYSTEM_TARGET=GLOBAL_SYSTEM_ORIGINAL
@@ -225,16 +216,14 @@ function ENT:OnRemove()
 	for i=0, 40 do
 		timer.Simple(i/100, function()
 			paintSky_Fade(resetdata,0.05)
-			end)
-			
-		end
-		
+		end)
+
 		setMapLight("t")		
-		
-		end
-			
-		
+
 	end
+
+
+	
 
 end
 
