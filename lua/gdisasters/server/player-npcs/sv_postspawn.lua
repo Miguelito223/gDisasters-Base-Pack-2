@@ -123,7 +123,6 @@ function gDisasters_PostSpawn(ply)
 	
 end
 hook.Add( "PlayerInitialSpawn", "gDisasters_PostSpawn", gDisasters_PostSpawn )
-hook.Add( "InitPostEntity", "gDisasters_PostSpawn2", gDisasters_PostSpawn )
 
 
 
