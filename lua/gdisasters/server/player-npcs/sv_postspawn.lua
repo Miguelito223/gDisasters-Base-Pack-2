@@ -111,9 +111,8 @@ function gDisasters_PostSpawn(ply)
 
 
 	
-	
-	gDisasters_SetupBodyVariables()
 	gDisasters_SetupConvars()
+	gDisasters_SetupBodyVariables()
 	gDisasters_SetupAreaVariables()	
 	gDisasters_SetupLavaIntesity()
 	
@@ -123,7 +122,8 @@ function gDisasters_PostSpawn(ply)
 
 	
 end
-hook.Add( "InitPostEntity", "gDisasters_PostSpawn", gDisasters_PostSpawn )
+hook.Add( "PlayerInitialSpawn", "gDisasters_PostSpawn", gDisasters_PostSpawn )
+hook.Add( "InitPostEntity", "gDisasters_PostSpawn2", gDisasters_PostSpawn )
 
 
 

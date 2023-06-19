@@ -202,24 +202,25 @@ function ENT:OnRemove()
 
 	if (SERVER) then	
 		
-	for k, v in pairs(self.Zombies) do
-		if IsValid( v ) then v:Remove() end 
-	end	
-		
-	for k, v in pairs( ents.FindByClass( "env_sun" ) ) do
-		v:Fire( "TurnOn", "", 0 )
-	end	
-		
-	local resetdata = self.Reset_SkyData
-	GLOBAL_SYSTEM_TARGET=GLOBAL_SYSTEM_ORIGINAL
+		for k, v in pairs(self.Zombies) do
+			if IsValid( v ) then v:Remove() end 
+		end	
 
-	for i=0, 40 do
-		timer.Simple(i/100, function()
-			paintSky_Fade(resetdata,0.05)
-		end)
+		for k, v in pairs( ents.FindByClass( "env_sun" ) ) do
+			v:Fire( "TurnOn", "", 0 )
+		end	
 
-		setMapLight("t")		
+		local resetdata = self.Reset_SkyData
+		GLOBAL_SYSTEM_TARGET=GLOBAL_SYSTEM_ORIGINAL
 
+		for i=0, 40 do
+			timer.Simple(i/100, function()
+				paintSky_Fade(resetdata,0.05)
+			end)
+
+			setMapLight("t")		
+
+		end
 	end
 
 
