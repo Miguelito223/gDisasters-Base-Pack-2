@@ -124,9 +124,6 @@ function gDisasters_PostSpawn(ply)
 end
 hook.Add( "PlayerInitialSpawn", "gDisasters_PostSpawn", gDisasters_PostSpawn )
 
-
-
-
 function gDisasters_OnSpawn_Reset( ply )
 	ply.gDisasters.Body.Temperature = 37 
 	ply.gDisasters.Body.Oxygen      = 100
