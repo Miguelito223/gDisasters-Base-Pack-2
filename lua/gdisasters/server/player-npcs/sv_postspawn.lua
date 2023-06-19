@@ -117,10 +117,13 @@ function gDisasters_PostSpawn2()
 		CreateConVar( "gdisasters_stormfox_enabled", "0", {FCVAR_ARCHIVE}, "")
 	
 	end
+
+
 	gDisasters_SetupConvars()
 end
-gDisasters_PostSpawn2()
 hook.Add( "InitPostEntity", "gDisasters_PostSpawn2", gDisasters_PostSpawn2 )
+gDisasters_PostSpawn2()
+
 
 function gDisasters_OnSpawn_Reset( ply )
 	ply.gDisasters.Body.Temperature = 37 
