@@ -958,21 +958,17 @@ hook.Add("Think", "gDisastersmapbounds", function()
 
 			if MAP_BOUNDS[map] != nil then
 				if tr.HitPos.z > MAP_BOUNDS[map][3].z then
-					for i=1, math.random(20,100) do
-						local tr = util.TraceLine({
-							start = Vector(0, 0,  tr.HitPos.z),
-							endpos = Vector(0, 0, tr.HitPos.z - 50000),
-							mask = MASK_SOLID_BRUSHONLY
-						})
-					end
+					local tr = util.TraceLine({
+						start = Vector(0, 0,  tr.HitPos.z),
+						endpos = Vector(0, 0, tr.HitPos.z - 50000),
+						mask = MASK_SOLID_BRUSHONLY
+					})
 				else
-					for i=1,math.random(20,100) do
-						local tr2 = util.TraceLine({
-							start = Vector(0, 0,  tr.HitPos.z),
-							endpos = Vector(0, 0, tr.HitPos.z + 50000),
-							mask = MASK_SOLID_BRUSHONLY
-						})	
-					end
+					local tr = util.TraceLine({
+						start = Vector(0, 0,  tr.HitPos.z),
+						endpos = Vector(0, 0, tr.HitPos.z + 50000),
+						mask = MASK_SOLID_BRUSHONLY
+					})	
 				end
 			end
 
