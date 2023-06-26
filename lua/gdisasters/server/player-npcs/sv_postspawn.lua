@@ -120,7 +120,7 @@ function gDisasters_PostSpawn2()
 	gDisasters_SetupConvars()
 end
 hook.Add( "InitPostEntity", "gDisasters_PostSpawn2", gDisasters_PostSpawn2 )
-hook.Add( "Initialize", "gDisasters_PostSpawn2", gDisasters_PostSpawn2 )
+gDisasters_PostSpawn2()
 
 
 
