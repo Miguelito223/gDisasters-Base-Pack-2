@@ -25,8 +25,6 @@ function gDisasters_PostSpawnSH()
         CreateConVar("gdisasters_fragility", "1", {FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
         CreateConVar("gdisasters_tvirus_nmrih_zombies", "0", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
     end
-
-    
     gDisasters_SetupConvars()
 end
 hook.Add( "InitPostEntity", "gDisasters_PostSpawnSH", gDisasters_PostSpawnSH)

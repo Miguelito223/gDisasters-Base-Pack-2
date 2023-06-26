@@ -920,7 +920,7 @@ Vector(3975,1832,67),
 Vector(-2316,2100,67)
 }
 
-hook.Add("Think", "gDisastersmapbounds", function()
+function mapbounds_functions()
 
 	function IsMapPathRegistered()
 		local map = game.GetMap()
@@ -949,29 +949,17 @@ hook.Add("Think", "gDisastersmapbounds", function()
 			if IsMapRegistered()==false then print("S37K no have Bounds") return nil end
 			local map = game.GetMap()
 
-			local tr = util.TraceLine({
-				start = Vector(0, 0, S37K.skyZ),
-				endpos = Vector(0, 0, -S37K.skyZ),
-				mask = MASK_SOLID_BRUSHONLY
-			})
-
-			if MAP_BOUNDS[map] != nil then
-				if tr.HitPos.z > MAP_BOUNDS[map][3].z then
-					local tr = util.TraceLine({
-						start = Vector(0, 0,  tr.HitPos.z),
-						endpos = Vector(0, 0, tr.HitPos.z - 50000),
-						mask = MASK_SOLID_BRUSHONLY
-					})
-				else
-					local tr = util.TraceLine({
-						start = Vector(0, 0,  tr.HitPos.z),
-						endpos = Vector(0, 0, tr.HitPos.z + 50000),
-						mask = MASK_SOLID_BRUSHONLY
-					})	
-				end
+			if MAP_BOUNDS[map] == nil or table.IsEmpty(MAP_BOUNDS) then
+				local tr = util.TraceLine({
+					start = Vector(0, 0, S37K.skyZ),
+					endpos = Vector(0, 0, -S37K.skyZ),
+					mask = MASK_SOLID_BRUSHONLY
+				})
+				return { Vector(S37K.positiveX, S37K.positiveY, -S37K.skyZ), Vector(S37K.negativeX, S37K.negativeY, S37K.skyZ), tr.HitPos }
+			else
+				return { Vector(S37K.positiveX, S37K.positiveY, -S37K.skyZ), Vector(S37K.negativeX, S37K.negativeY, S37K.skyZ), MAP_BOUNDS[map][3]}
 			end
-
-			return { Vector(S37K.positiveX, S37K.positiveY, -S37K.skyZ), Vector(S37K.negativeX, S37K.negativeY, S37K.skyZ), tr.HitPos }
+	
 		end
 
 		function getMapCeiling()
@@ -1010,7 +998,7 @@ hook.Add("Think", "gDisastersmapbounds", function()
 		function IsMapRegistered()
 			local map = game.GetMap()
 
-			if MAP_BOUNDS[map]==nil then 
+			if MAP_BOUNDS[map]==nil or table.IsEmpty(MAP_BOUNDS) then 
 				return false 
 			else 
 				return true 
@@ -1055,4 +1043,6 @@ hook.Add("Think", "gDisastersmapbounds", function()
 
 	end
 	
-end)
+end
+hook.Add("Think","gDisasters_MapBounds", mapbounds_functions)
+mapbounds_functions()
