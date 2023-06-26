@@ -1045,4 +1045,3 @@ function mapbounds_functions()
 	
 end
 hook.Add("Think","gDisasters_MapBounds", mapbounds_functions)
-mapbounds_functions()
