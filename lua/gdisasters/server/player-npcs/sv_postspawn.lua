@@ -117,11 +117,8 @@ function gDisasters_PostSpawn2()
 		CreateConVar( "gdisasters_stormfox_enabled", "0", {FCVAR_ARCHIVE}, "")
 	
 	end
-
-
 	gDisasters_SetupConvars()
 end
-hook.Add( "InitPostEntity", "gDisasters_PostSpawn2", gDisasters_PostSpawn2 )
 hook.Add( "Initialize", "gDisasters_PostSpawn2", gDisasters_PostSpawn2 )
 
 
