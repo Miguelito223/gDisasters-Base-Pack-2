@@ -128,7 +128,6 @@ function gDisasters_OnSpawn_Reset( ply )
 	ply.gDisasters.Body.Temperature = 37 
 	ply.gDisasters.Body.Oxygen      = 100
 	ply.LavaIntensity = 0
-	
 	ply.gasmasked=false
 	ply.hazsuited=false
 	ply:StopSound("breathing")

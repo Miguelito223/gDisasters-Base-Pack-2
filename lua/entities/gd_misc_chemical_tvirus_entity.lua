@@ -2,10 +2,6 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "gd_nuclear_fission_rad_base" )
 
-if (SERVER) then
-	util.AddNetworkString( "gd_net_tvirus" )
-end
-
 ENT.Spawnable		            	 =  false
 ENT.AdminSpawnable		             =  false     
 
