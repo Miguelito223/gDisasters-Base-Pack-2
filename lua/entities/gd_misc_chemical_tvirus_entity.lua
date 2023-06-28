@@ -439,7 +439,7 @@ if (SERVER) then
 		infected_player:SetColor(Color(255,255,255))
 		
 		net.Start("gd_net_tvirus")
-			net.WriteTable({["IsDead"]=false,["Seconds"]=self.Seconds,["Infected"]=self.infected,["IsDead"]=true})
+		net.WriteTable({["IsDead"]=false,["Seconds"]=self.Seconds,["Infected"]=self.infected,["IsDead"]=true})
 		net.Send(self.infected)
 	end
 end
