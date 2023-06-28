@@ -12,12 +12,7 @@ ENT.Spawnable		= true
 ENT.AdminOnly		= true
 ENT.Contact			                 =  ""  
 
-function GasMask()
-	local tex = surface.GetTextureID("hud/mask_overlay")
-	surface.SetTexture(tex)
-	surface.SetDrawColor( 255, 255, 255, 255 );
-	surface.DrawTexturedRect( 0, 0, ScrW(), ScrH() )
-end
+
 
 function ENT:SpawnFunction( ply, tr )
 	if ( not tr.Hit ) then return end
@@ -70,22 +65,6 @@ if SERVER then
 		end
 	end
 end
-
-if CLIENT then
-	function ENT:OnRemove()
-		net.Receive( "gd_net", function( len )
-		
-			local mask_on = net.ReadBit()
-			if mask_on==1 then
-				hook.Add( "RenderScreenspaceEffects", "GasMask", GasMask)
-			else
-				hook.Remove("RenderScreenspaceEffects", "GasMask", GasMask)
-			end
-		end)
-    end
-end
-		
-
 
 
 if CLIENT then

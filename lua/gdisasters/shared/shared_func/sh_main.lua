@@ -778,7 +778,6 @@ local precomputed_color = {
 	
 }
 
-
 function EvaluateRayleighAtT(T)
 	T = math.Clamp(T,0,10000) / 10000 
 	

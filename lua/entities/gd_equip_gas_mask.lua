@@ -19,14 +19,7 @@ sound.Add( {
 	level = 50,
 	pitch = {90, 100},
 	sound = "player/breathe1.wav"
-} )
-
-function GasMask()
-	local tex = surface.GetTextureID("hud/mask_overlay")
-	surface.SetTexture(tex)
-	surface.SetDrawColor( 255, 255, 255, 255 );
-	surface.DrawTexturedRect( 0, 0, ScrW(), ScrH() )
-end
+})
 
 function ENT:SpawnFunction( ply, tr )
 	if ( not tr.Hit ) then return end
@@ -80,19 +73,6 @@ if SERVER then
 		end
 	end
 end
-
-
-net.Receive( "gd_net", function( len )
-
-	local mask_on = net.ReadBit()
-	if mask_on==1 then
-		hook.Add( "RenderScreenspaceEffects", "GasMask", GasMask)
-	else
-		hook.Remove("RenderScreenspaceEffects", "GasMask", GasMask)
-	end
-end)
-
-
 
 if CLIENT then
 	function ENT:Draw()

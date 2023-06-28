@@ -440,4 +440,11 @@ function SetParticleScale(particle, scale)
 	particle:EnableMatrix("RenderMultiply", mat)
 end
 
+function GasMask()
+	local tex = surface.GetTextureID("hud/mask_overlay")
+	surface.SetTexture(tex)
+	surface.SetDrawColor( 255, 255, 255, 255 );
+	surface.DrawTexturedRect( 0, 0, ScrW(), ScrH() )
+end
+
 

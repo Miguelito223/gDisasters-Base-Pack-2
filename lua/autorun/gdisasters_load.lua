@@ -2,15 +2,16 @@ AddCSLuaFile()
 
 AddCSLuaFile("gdisasters/shared/players-npcs/sh_postspawn.lua")
 AddCSLuaFile("gdisasters/shared/shared_func/sh_main.lua")
+AddCSLuaFile("gdisasters/shared/shared_func/sh_netstrings.lua")
 AddCSLuaFile("gdisasters/shared/extensions/sh_patchs-bounds.lua")
 AddCSLuaFile("gdisasters/shared/game/sh_world_init.lua")
 
 
 include("gdisasters/shared/player-npcs/sh_postspawn.lua")
 include("gdisasters/shared/shared_func/sh_main.lua")
+include("gdisasters/shared/shared_func/sh_netstrings.lua")
 include("gdisasters/shared/extensions/sh_patchs-bounds.lua")
 include("gdisasters/shared/game/sh_world_init.lua")
-
 
 
 if (SERVER) then
