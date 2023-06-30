@@ -92,6 +92,7 @@ function ENT:PhysicsCollide( data, phys )
 			timer.Simple(math.random(3,12), function()
 				if p1:IsValid() then p1:Remove() end
 				if p2:IsValid() then p2:Remove() end
+				if p3:IsValid() then p3:Remove() end
 			end)
 		else
 			
