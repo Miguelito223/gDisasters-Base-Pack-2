@@ -62,11 +62,9 @@ function ENT:CheckPressure()
 end
 
 function ENT:CreateLandsliderocks(num, lifetime)
-    pos = self:GetPos() + Vector(math.random(0, 100), math.random(0, 100), 1995)
-    models = {"models/ramses/models/nature/landmass_2.mdl", "models/ramses/models/nature/landmass_1.mdl", "models/ramses/models/nature/rock_1.mdl", "models/ramses/models/nature/rock_3.mdl"}
+    local pos = self:GetPos() + Vector(math.random(0, 100), math.random(0, 100), 1995)
     for i=1, num do
-        local rock = ents.Create("prop_physics")
-        rock:SetModel(table.Random(models))
+        local rock = ents.Create("gd_d3_rock")
         rock:SetPos(pos)
         rock:Spawn()
         rock:Activate()

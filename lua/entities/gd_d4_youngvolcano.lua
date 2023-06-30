@@ -207,11 +207,9 @@ end
 
 function ENT:CreateRocks(num, lifetime)
 	local pos = self:GetLavaLevelPosition()
-	local models = {"models/ramses/models/nature/volcanic_rock_03_128.mdl","models/ramses/models/nature/volcanic_rock_02_128.mdl","models/ramses/models/nature/volcanic_rock_01_128.mdl", "models/ramses/models/nature/volcanic_rock_03_64.mdl", "models/ramses/models/nature/volcanic_rock_02_64.mdl", "models/ramses/models/nature/volcanic_rock_01_64.mdl"}
 	for i=0, num do
 
-		local rock = ents.Create("prop_physics")
-		rock:SetModel( table.Random(models) ) 
+		local rock = ents.Create("gd_d4_lava_rock")
 		rock:SetPos( pos ) 
 		rock:Spawn()
 		rock:Activate()

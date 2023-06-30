@@ -261,6 +261,7 @@ TIER THREE
 
 AddToGDSpawnMenu("Ball Lightning"        , "gd_d3_ball_lightning"              , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("Lightning Storm"        , "gd_d3_lightningstorm"              , "Disasters", "Tier 3", false)
+AddToGDSpawnMenu("Rock"         , "gd_d3_rock"			, "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("Big Whirlpool"      , "gd_d3_whirlpool"        , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("≈3.0 Magnitude Earthquake" , "gd_d3_rs3eq"         , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("Tidal Wave Lava"        , "gd_d3_tidal_wave_lava"              , "Disasters", "Tier 3", false)
@@ -282,6 +283,7 @@ TIER FOUR
 AddToGDSpawnMenu("Landspout", "gd_d4_landspout", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Landspout (Smart)", "gd_d4_landspout_pathed", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("≈4.0 Magnitude Earthquake" , "gd_d4_rs4eq"         , "Disasters", "Tier 4", false)
+AddToGDSpawnMenu("Lava Rock"         , "gd_d4_lava_rock"			, "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("EF1 Tornado"        , "gd_d4_ef1"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Megacryometeor"        , "gd_d4_mcryometeor"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Young Volcano"        , "gd_d4_youngvolcano"              , "Disasters", "Tier 4", false)
