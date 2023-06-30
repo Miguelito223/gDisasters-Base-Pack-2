@@ -321,10 +321,6 @@ AddToGDSpawnMenu("Zombie Appocolapse" , "gd_d6_zombieapoc"         , "Disasters"
 AddToGDSpawnMenu("Lava Bomb Shower" , "gd_d10_lavabombshower"         , "Disasters", "Tier 6", false)
 
 
-
-
-
-
 --[[
 DISASTERS 
 TIER SEVEN
