@@ -117,6 +117,17 @@ MAP_PATHS["gm_flatgrass"]    			  = { Vector(-13466,9319,-12795),
 												Vector(5955,15091,-12795)
 											}
 
+MAP_PATHS["gm_flatgrass_winter"]    			  = { Vector(-13466,9319,-12795),
+												Vector(-5885,4476,-12795),
+												Vector(-2944,-2859,-12795),
+												Vector(-880,-3783,-12795),
+												Vector(5372,-604,-12795), 
+												Vector(4080,3599,-12795),
+												Vector(1283,4951,-12795),
+												Vector(1225,5206,-12795),
+												Vector(5955,15091,-12795)
+											}
+
 MAP_PATHS["gm_tornadohighway_final"]    			  = { 
 															Vector(8865,11188,5),
 															Vector(8754,8179,0),
@@ -926,7 +937,7 @@ function gDisasters_MapBounds()
 	function IsMapPathRegistered()
 		local map = game.GetMap()
 
-		if MAP_PATHS[map]==nil or table.IsEmpty(MAP_PATHS[map]) then 
+		if MAP_PATHS[map]==nil or table.IsEmpty(MAP_PATHS) then 
 			return false 
 		else 
 			return true 
@@ -955,7 +966,7 @@ function gDisasters_MapBounds()
 			if IsMapRegistered()==false then print("S37K no have Bounds") return nil end
 			local map = game.GetMap()
 
-			if MAP_BOUNDS[map] == nil or table.IsEmpty(MAP_BOUNDS[map]) then
+			if MAP_BOUNDS[map] == nil or table.IsEmpty(MAP_BOUNDS) then
 				local tr = util.TraceLine({
 					start = Vector(0, 0, S37K.skyZ),
 					endpos = Vector(0, 0, -S37K.skyZ),
@@ -1004,7 +1015,7 @@ function gDisasters_MapBounds()
 		function IsMapRegistered()
 			local map = game.GetMap()
 
-			if MAP_BOUNDS[map]==nil or table.IsEmpty(MAP_BOUNDS[map]) then 
+			if MAP_BOUNDS[map]==nil or table.IsEmpty(MAP_BOUNDS) then 
 				return false 
 			else 
 				return true 
