@@ -85,10 +85,8 @@ function ENT:SpawnFunction( ply, tr )
 	ent:SetPhysicsAttacker(ply)
 	
 	if IsMapRegistered() == false then 
-		ent:Remove()
 		ent:SetPos( tr.HitPos + tr.HitNormal * 1  )
 	else 
-		
 		ent:SetPos( getMapCenterFloorPos() )
 	end
 	

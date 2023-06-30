@@ -56,7 +56,6 @@ function ENT:SpawnFunction( ply, tr )
 	if IsMapRegistered() == false then 
 		ent:SetPos( tr.HitPos + tr.HitNormal * 1  )
 	else 
-		
 		ent:SetPos( getMapCenterFloorPos() )
 	end
 	
