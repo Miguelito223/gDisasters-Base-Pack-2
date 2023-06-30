@@ -229,6 +229,8 @@ function ENT:Erupt()
 	end)
 	self:CreateRocks( 20, {8,10} )
 
+	ParticleEffect("minivolcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
+
 	if GetConVar("gdisasters_volcano_weatherchange"):GetInt() <= 0 then return end
 	
 	timer.Simple(10, function()
