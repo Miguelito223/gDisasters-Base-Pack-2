@@ -283,7 +283,7 @@ TIER FOUR
 AddToGDSpawnMenu("Landspout", "gd_d4_landspout", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Landspout (Smart)", "gd_d4_landspout_pathed", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("≈4.0 Magnitude Earthquake" , "gd_d4_rs4eq"         , "Disasters", "Tier 4", false)
-AddToGDSpawnMenu("Lava Rock"         , "gd_d4_lava_rock"			, "Disasters", "Tier 4", false)
+
 AddToGDSpawnMenu("EF1 Tornado"        , "gd_d4_ef1"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Megacryometeor"        , "gd_d4_mcryometeor"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Young Volcano"        , "gd_d4_youngvolcano"              , "Disasters", "Tier 4", false)
@@ -314,6 +314,7 @@ TIER SIX
 AddToGDSpawnMenu("EF3 Tornado"           , "gd_d6_ef3"           , "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("EF3 Tornado (Smart)"   , "gd_d6_ef3_pathed"    , "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("Meteor"   , "gd_d6_meteor"    , "Disasters", "Tier 6", false)
+AddToGDSpawnMenu("Volcanic Rock"         , "gd_d6_volcanic_rock"			, "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("≈6.0 Magnitude Earthquake" , "gd_d6_rs6eq"         , "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("Cryo Shower" , "gd_d6_cryoshower"         , "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("Zombie Appocolapse" , "gd_d6_zombieapoc"         , "Disasters", "Tier 6", false)

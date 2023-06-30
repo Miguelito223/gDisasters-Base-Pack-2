@@ -209,7 +209,7 @@ function ENT:CreateRocks(num, lifetime)
 	local pos = self:GetLavaLevelPosition()
 	for i=0, num do
 
-		local rock = ents.Create("gd_d4_lava_rock")
+		local rock = ents.Create("gd_d6_volcanic_rock_ch")
 		rock:SetPos( pos ) 
 		rock:Spawn()
 		rock:Activate()
