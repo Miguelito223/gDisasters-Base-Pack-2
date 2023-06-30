@@ -74,9 +74,6 @@ end
 function ENT:SpawnFunction( ply, tr )
 	if ( !tr.Hit ) then return end
 	
-	if IsMapRegistered() == true then
-
-
 	self.OWNER = ply
 	local ent = ents.Create( self.ClassName )
 	ent:SetPhysicsAttacker(ply)
@@ -85,7 +82,7 @@ function ENT:SpawnFunction( ply, tr )
 	ent:Activate()
 	return ent
 	
-	end
+	
 
 end
  
