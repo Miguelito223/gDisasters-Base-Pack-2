@@ -238,6 +238,18 @@ function ENT:Erupt()
 	end)
 
 	ParticleEffect("volcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
+
+	local pe = ents.Create( "env_physexplosion" );
+	pe:SetPos( self:GetLavaLevelPosition() );
+	pe:SetKeyValue( "Magnitude", 1400 );
+	pe:SetKeyValue( "radius", 2000 );
+	pe:SetKeyValue( "spawnflags", 19 );
+	pe:Spawn();
+	pe:Activate();
+	pe:Fire( "Explode", "", 0 );
+	pe:Fire( "Kill", "", 0.5 );
+	
+	util.BlastDamage( self, self, self:GetLavaLevelPosition(), 1200, math.random( 10, 20 ) )	
 	
 	if GetConVar("gdisasters_volcano_weatherchange"):GetInt() <= 0 then return end
 	

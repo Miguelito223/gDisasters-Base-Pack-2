@@ -226,6 +226,18 @@ function ENT:Erupt()
 	self:CreateRocks( 20, {8,10} )
 
 	ParticleEffect("minivolcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
+
+	local pe = ents.Create( "env_physexplosion" );
+	pe:SetPos( self:GetLavaLevelPosition() );
+	pe:SetKeyValue( "Magnitude", 800 );
+	pe:SetKeyValue( "radius", 1200 );
+	pe:SetKeyValue( "spawnflags", 19 );
+	pe:Spawn();
+	pe:Activate();
+	pe:Fire( "Explode", "", 0 );
+	pe:Fire( "Kill", "", 0.5 );
+	
+	util.BlastDamage( self, self, self:GetLavaLevelPosition(), 400, math.random( 10, 20 ) )	
 end
 
 
