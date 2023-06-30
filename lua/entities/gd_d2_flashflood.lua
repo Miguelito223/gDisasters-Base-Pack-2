@@ -32,9 +32,14 @@ function ENT:Initialize()
 			phys:SetMass(self.Mass)
 		end 		
 		
-
-		self.Child = createFlood(math.random(self.MaxFloodLevel[1], self.MaxFloodLevel[2]), self)
-		
+		if IsMapRegistered() == true then
+			self.Child = createFlood(math.random(self.MaxFloodLevel[1], self.MaxFloodLevel[2]), self)
+		else
+			self:Remove()
+			for k, v in pairs(player.GetAll()) do 
+				v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
+			end 
+		end
 			
 		
 	end

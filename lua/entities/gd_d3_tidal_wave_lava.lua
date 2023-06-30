@@ -5,24 +5,23 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Mega Tsunami"
+ENT.PrintName		                 =  "Micro-Tsunami"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
-ENT.MaxFloodLevel                    =  1000
+ENT.MaxFloodLevel                    =  30
 ENT.Mass                             =  100
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 
 ENT.StartHeight                      =  1 
 ENT.StartWedgeConstant               =  0.5
 
-ENT.MiddleHeight                     =  6000
+ENT.MiddleHeight                     =  80
 ENT.MiddleWedgeConstant              =  0.005 
 
-ENT.EndHeight                        =  1000 
+ENT.EndHeight                        =  30 
 ENT.EndWedgeConstant                 =  0.1
-ENT.Speed                            =  convert_MetoSU(math.random(15,60)) -- argument is in metres 
-
+ENT.Speed                            = convert_MetoSU(math.random(10,30)) -- argument is in metres 
 
 
 
@@ -46,7 +45,6 @@ function ENT:Initialize()
 		end 		
 		
 		local data = { 
-		
 					StartHeight  = self.StartHeight,
 					StartWedge   = self.StartWedgeConstant,
 					
@@ -56,10 +54,8 @@ function ENT:Initialize()
 					EndHeight    = self.EndHeight,
 					EndWedge     = self.EndWedgeConstant,
 					Speed        = self.Speed
+					}
 					
-		}
-					
-
 		if IsMapRegistered() == true then
 			self.Child = createTsunamilava(self, data)
 		else

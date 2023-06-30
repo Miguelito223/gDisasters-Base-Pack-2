@@ -263,6 +263,7 @@ AddToGDSpawnMenu("Ball Lightning"        , "gd_d3_ball_lightning"              ,
 AddToGDSpawnMenu("Lightning Storm"        , "gd_d3_lightningstorm"              , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("Big Whirlpool"      , "gd_d3_whirlpool"        , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("≈3.0 Magnitude Earthquake" , "gd_d3_rs3eq"         , "Disasters", "Tier 3", false)
+AddToGDSpawnMenu("Tidal Wave Lava"        , "gd_d3_tidal_wave_lava"              , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("EF0 Tornado"        , "gd_d3_ef0"              , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("EF0 Tornado (Smart)"        , "gd_d3_ef0_pathed"              , "Disasters", "Tier 3", false)
 AddToGDSpawnMenu("Landslide" , "gd_d3_landslide"         , "Disasters", "Tier 3", false)
