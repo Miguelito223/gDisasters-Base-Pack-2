@@ -5,86 +5,53 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Rock"
+ENT.PrintName		                 =  "Volcanic rock"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 
-ENT.Model                            = {"models/ramses/models/nature/volcanic_rock_03_128.mdl","models/ramses/models/nature/volcanic_rock_02_128.mdl","models/ramses/models/nature/volcanic_rock_01_128.mdl", "models/ramses/models/nature/volcanic_rock_03_64.mdl", "models/ramses/models/nature/volcanic_rock_02_64.mdl", "models/ramses/models/nature/volcanic_rock_01_64.mdl"}
+    
+ENT.Mass                             =  100
+ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 
 function ENT:Initialize()	
 
+	
 	if (SERVER) then
 		
-		self:SetModel(table.Random(self.Model))
+		self:SetModel(self.Model)
 		self:PhysicsInit( SOLID_VPHYSICS )
-		self:SetSolid( SOLID_VPHYSICS )
-		self:SetMoveType( MOVETYPE_VPHYSICS  )
+		self:SetSolid( SOLID_NONE )
+		self:SetMoveType( MOVETYPE_NONE  )
 		self:SetUseType( ONOFF_USE )
-
-		
+		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 		local phys = self:GetPhysicsObject()
+
 		if (phys:IsValid()) then
-			phys:SetMass(700)
-			phys:Wake()
+			phys:SetMass(self.Mass)
 		end 		
-		
-		phys:EnableDrag( false )
-		
-		timer.Simple(14, function()
-			if !self:IsValid() then return end
+		if IsMapRegistered() == true then
+			self:CreateVolcanicRock()
+		else
 			self:Remove()
-		end)
-
-	end
-end
-
-
-
-function ENT:SpawnFunction( ply, tr )
-	if ( !tr.Hit ) then return end
-
-	self.OWNER = ply
-	local ent = ents.Create( self.ClassName )
-	ent:SetPhysicsAttacker(ply)
-	ent:SetPos( tr.HitPos + tr.HitNormal * -1.00  ) 
-	ent:Spawn()
-	ent:Activate()
-	return ent
-	
-end
-
-
-function ENT:PhysicsCollide( data, phys )
-	local tr,trace = {},{}
-	tr.start = self:GetPos() + self:GetForward() * -200
-	tr.endpos = tr.start + self:GetForward() * 500
-	tr.filter = { self, physobj }
-	trace = util.TraceLine( tr )
-
-	if( trace.HitSky ) then
-	
-		self:Remove()
+			for k, v in pairs(player.GetAll()) do 
+				v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
+			end 
+		end
+		self:SetNoDraw(true)
 		
-		return
 		
 	end
-
-	if ( data.Speed > 500 ) then 
-			
-		self:Explode()	
-	
-	end
 end
 
-function ENT:Createlava()
+function ENT:CreateVolcanicRock()
 
-
+	
 	local bounds    = getMapSkyBox()
 	local min       = bounds[1]
 	local max       = bounds[2]
 		
-	local startpos  = Vector(   self:GetPos().x     ,  self:GetPos().y ,   max.z )
+	local startpos  = Vector(self:GetPos().x, self:GetPos().y, max.z )
 
 	local startpos  = startpos
 	
@@ -98,32 +65,31 @@ function ENT:Createlava()
 	} )
 
 
-	local lava = ents.Create("gd_d6_volcanic_rock_ch")
+	local moite = ents.Create("gd_d6_volcanic_rock_ch")
 			
-	lava:SetPos( tr.HitPos - Vector(0,0,1000) )
-	lava:Spawn()
-	lava:Activate()
-	lava:GetPhysicsObject():EnableMotion(true)
-	lava:GetPhysicsObject():SetVelocity( Vector(0,0,-3000)  )
-	lava:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
+	moite:SetPos( tr.HitPos - Vector(0,0,1000) )
+	moite:Spawn()
+	moite:Activate()
+	moite:GetPhysicsObject():EnableMotion(true)
+	moite:GetPhysicsObject():SetVelocity( Vector(0,0,math.random(-5000,-10000))  )
+	moite:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
 	self:Remove()
 	
 	
 end
 
-function ENT:Think()
 
-	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
-		
-	if (SERVER) then
-	
-		self:NextThink(CurTime() + t)
-		return true
-	
-	end
-			
+function ENT:SpawnFunction( ply, tr )
+	if ( !tr.Hit ) then return end
+
+	self.OWNER = ply
+	local ent = ents.Create( self.ClassName )
+	ent:SetPhysicsAttacker(ply)
+	ent:SetPos( tr.HitPos + tr.HitNormal    ) 
+	ent:Spawn()
+	ent:Activate()
+	return ent
 end
-
 
 function ENT:OnRemove()
 

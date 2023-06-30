@@ -5,7 +5,7 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Rock"
+ENT.PrintName		                 =  "Volcanic rock"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
@@ -70,7 +70,7 @@ function ENT:PhysicsCollide( data, phys )
 		
 	end
 
-	if ( data.Speed > 500 ) then 
+	if ( data.Speed > 200 ) then 
 			
 		self:Explode()	
 	
