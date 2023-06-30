@@ -348,6 +348,7 @@ AddToGDSpawnMenu("EF5 Tornado (Small)"           , "gd_d8_ef5_small"           ,
 AddToGDSpawnMenu("EF5 Tornado (Smart)"   , "gd_d8_ef5_pathed"    , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("≈8.0 Magnitude Earthquake" , "gd_d8_rs8eq"         , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("Acient Volcano" , "gd_d8_ancientvolcano"         , "Disasters", "Tier 8", false)
+AddToGDSpawnMenu("Volcanic Rock Shower", "gd_d8_volcanicrockhower", "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("Combine Invasion" , "gd_d8_combineinv"         , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("Custom Lava Tsunami" , "gd_d8_custom_lava_tsunami"         , "Disasters", "Tier 8", false)
 AddToGDSpawnMenu("Lava Tsunami" , "gd_d8_lava_tsunami"         , "Disasters", "Tier 8", false)
@@ -361,7 +362,6 @@ TIER NINE
 AddToGDSpawnMenu("≈9.0 Magnitude Earthquake" , "gd_d9_rs9eq"         , "Disasters", "Tier 9", false)
 AddToGDSpawnMenu("Meteorite" , "gd_d9_meteorite"         , "Disasters", "Tier 9", false)
 AddToGDSpawnMenu("EF5+ Tornado", "gd_d9_ef6", "Disasters", "Tier 9", false)
-
 AddToGDSpawnMenu("EF5+ Tornado (Smart)", "gd_d9_ef6_pathed", "Disasters", "Tier 9", false)
 AddToGDSpawnMenu("White Hole"  , "gd_d9_whitehole" , "Disasters", "Tier 9", false)
 
@@ -380,7 +380,6 @@ AddToGDSpawnMenu("Firenado (Smart)", "gd_d10_mfirenado_pathed", "Disasters", "Ti
 AddToGDSpawnMenu("Super Volcano" , "gd_d10_supervolcano"         , "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Meteor Shower", "gd_d10_meteorshower", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Meteorite Shower", "gd_d10_meteoriteshower", "Disasters", "Tier ELE", false)
-AddToGDSpawnMenu("Volcanic Rock Shower", "gd_d10_volcanicrockhower", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("EF5++ Tornado", "gd_d10_ef7", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("EF5++ Tornado (Smart)", "gd_d10_ef7_pathed", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Mega Tsunami", "gd_d10_megatsunami", "Disasters", "Tier ELE", false)
