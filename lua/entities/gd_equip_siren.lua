@@ -747,7 +747,7 @@ function ENT:Think()
 			end 
 			
 		end
-		for k, v in pairs(ents.FindByClass("gd_d9_meteroite")) do 
+		for k, v in pairs(ents.FindByClass("gd_d9_meteorite")) do 
 			
 			
 			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 

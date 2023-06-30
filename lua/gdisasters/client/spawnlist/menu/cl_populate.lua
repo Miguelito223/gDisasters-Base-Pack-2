@@ -359,7 +359,7 @@ TIER NINE
 --]]
 
 AddToGDSpawnMenu("≈9.0 Magnitude Earthquake" , "gd_d9_rs9eq"         , "Disasters", "Tier 9", false)
-AddToGDSpawnMenu("Meteorite" , "gd_d9_meteroite"         , "Disasters", "Tier 9", false)
+AddToGDSpawnMenu("Meteorite" , "gd_d9_meteorite"         , "Disasters", "Tier 9", false)
 AddToGDSpawnMenu("EF5+ Tornado", "gd_d9_ef6", "Disasters", "Tier 9", false)
 
 AddToGDSpawnMenu("EF5+ Tornado (Smart)", "gd_d9_ef6_pathed", "Disasters", "Tier 9", false)

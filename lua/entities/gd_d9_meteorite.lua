@@ -65,7 +65,7 @@ function ENT:CreateMeteorite()
 	} )
 
 
-	local moite = ents.Create("gd_d9_meteroite_ch")
+	local moite = ents.Create("gd_d9_meteorite_ch")
 			
 	moite:SetPos( tr.HitPos - Vector(0,0,1000) )
 	moite:Spawn()
