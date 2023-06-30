@@ -82,7 +82,7 @@ function ENT:SpawnFunction( ply, tr )
 	ent:SetPhysicsAttacker(ply)
 	
 	if IsMapRegistered() == false then 
-		self:Remove()
+		ent:Remove()
 		ent:SetPos( tr.HitPos + tr.HitNormal * 1  )
 	else 
 		
