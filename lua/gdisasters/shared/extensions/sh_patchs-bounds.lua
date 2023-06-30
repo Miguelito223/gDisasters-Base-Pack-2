@@ -27,6 +27,7 @@ MAP_BOUNDS["gm_ddustbowl2_night"]         = { Vector(-15358, -15358, -4395),    
 MAP_BOUNDS["gm_flatbuild_pb_v02"]      	  = { Vector(15599,15414,485),          Vector(-15208,-15181,15197), 	    Vector(0,0,59)         }
 MAP_BOUNDS["gm_flatbuild_pbs_2015_dev"]   = { Vector(15856,15855,-7257),        Vector(-15299,-15695,12088),			Vector(0,0,-7257)       }
 MAP_BOUNDS["gm_flatgrass"] 				  = { Vector(15343,15343,-15359),       Vector(-15343,-15343, 15359), 	    Vector(0,0,-12806)		}
+MAP_BOUNDS["gm_flatgrass_winter"] 		  = { Vector(15343,15343,-15359),       Vector(-15343,-15343, 15359), 	    Vector(0,0,-12806)		}
 MAP_BOUNDS["gm_hugeflatgrass_v1"] 		  = { Vector(15824,15823,-15808),       Vector(-15824,-15823,-15808), 	    Vector(0,0,-15808)		}
 MAP_BOUNDS["gm_flatgrass_classic"]        = { Vector(12305,-15378,-28),			Vector(-15454,12095,7168),  		Vector(0,0,-50)     	}
 MAP_BOUNDS["gm_fork"]     				  = { Vector(-15344,15343,-10721),       Vector(15345,-15346,15294),         Vector(0,0,-10443)		} --fix duplicate
@@ -924,7 +925,12 @@ function gDisasters_MapBounds()
 
 	function IsMapPathRegistered()
 		local map = game.GetMap()
-		if MAP_PATHS[map]==nil then return false else return true end 
+
+		if MAP_PATHS[map]==nil or table.IsEmpty(MAP_PATHS[map]) then 
+			return false 
+		else 
+			return true 
+		end 
 	end
 	
 	function getMapPath()
@@ -949,7 +955,7 @@ function gDisasters_MapBounds()
 			if IsMapRegistered()==false then print("S37K no have Bounds") return nil end
 			local map = game.GetMap()
 
-			if MAP_BOUNDS[map] == nil or table.IsEmpty(MAP_BOUNDS) then
+			if MAP_BOUNDS[map] == nil or table.IsEmpty(MAP_BOUNDS[map]) then
 				local tr = util.TraceLine({
 					start = Vector(0, 0, S37K.skyZ),
 					endpos = Vector(0, 0, -S37K.skyZ),
@@ -998,7 +1004,7 @@ function gDisasters_MapBounds()
 		function IsMapRegistered()
 			local map = game.GetMap()
 
-			if MAP_BOUNDS[map]==nil or table.IsEmpty(MAP_BOUNDS) then 
+			if MAP_BOUNDS[map]==nil or table.IsEmpty(MAP_BOUNDS[map]) then 
 				return false 
 			else 
 				return true 

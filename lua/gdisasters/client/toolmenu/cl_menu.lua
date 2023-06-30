@@ -144,12 +144,6 @@ local function gDisastersSVADVSettings( CPanel )
 
 	CreateTickboxConVariable(CPanel, "Enable Acid Rain damage props (Can cause lag)" ,"gdisasters_weather_acidraindamageprops");
 
-	local lb4 = AddControlLabel( CPanel, "Map Bounds options: " )
-	lb4:SetTextColor(Color( 0, 0, 0))
-	lb4:SetSize(500, 500)
-
-	CreateTickboxConVariable(CPanel, "Enable S37K Map Bounds", "gdisasters_mapbounds_S37K");
-
 	local lb5 = AddControlLabel( CPanel, "Water/Lava and Flood/Tsunami Options: " )
 	lb5:SetTextColor(Color( 0, 0, 0))
 	lb5:SetSize(500, 500)
@@ -289,6 +283,11 @@ local function gDisastersAddonsCompatibility( CPanel )
 	
 	CreateTickboxConVariable(CPanel, "Enable Stormfox Compatibility"  , "gdisasters_stormfox_enabled");
 	
+	local lb4 = AddControlLabel( CPanel, "S37K Map Bounds options: " )
+	lb4:SetTextColor(Color( 0, 0, 0))
+	lb4:SetSize(500, 500)
+
+	CreateTickboxConVariable(CPanel, "Enable S37K Map Bounds", "gdisasters_mapbounds_S37K");
 end
 
 
