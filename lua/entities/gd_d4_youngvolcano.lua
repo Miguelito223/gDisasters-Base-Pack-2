@@ -215,13 +215,6 @@ function ENT:CreateRocks(num, lifetime)
 		rock:Activate()
 
 		rock:GetPhysicsObject():SetVelocity( Vector(math.random(-1100,1100), math.random(-1100, 1100), math.random(2100,5500)))
-
-			
-	
-		
-		timer.Simple(math.random(lifetime[1], lifetime[2]), function()
-			if rock:IsValid() then rock:Remove() end 
-		end)
 	end
 		
 	

@@ -80,7 +80,7 @@ function ENT:PhysicsCollide( data, physobj )
 	if (data.Speed > 200 ) then 
 		
 		self:Explode()
-		
+
 		ParticleEffect("lavabomb_explosion_main", data.HitPos, Angle(0,0,0), nil)
 		
 		local h = data.HitPos + data.HitNormal
@@ -107,7 +107,6 @@ function ENT:Explode()
 	local vel = self.Move_vector 
 	
 	local sound = table.Random({"streams/event/explosion/explosion_light_k.mp3","streams/event/explosion/explosion_light_l.mp3","streams/event/explosion/explosion_light_a.mp3","streams/event/explosion/explosion_light_b.mp3","streams/event/explosion/explosion_light_m.mp3"})
-	
 	
 	CreateSoundWave(sound, self:GetPos(), "3d" ,340.29/2, {80,100}, 5)
 	

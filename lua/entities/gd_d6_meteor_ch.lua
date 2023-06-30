@@ -78,6 +78,10 @@ function ENT:PhysicsCollide( data, physobj )
 	if (data.Speed > 200 ) then 
 		
 		self:Explode()
+
+		local h = data.HitPos + data.HitNormal
+		local p = data.HitPos - data.HitNormal
+		util.Decal("Scorch", h, p )
 						 
 
 	end
@@ -114,32 +118,32 @@ function ENT:Explode()
 
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), 1000)) do
 		
-	local dist = ( v:GetPos() - self:GetPos() ):Length() 	
-		
-	if (  v != self && IsValid( v ) && IsValid( v:GetPhysicsObject() ) ) and (v:GetClass()!= "phys_constraintsystem" and v:GetClass()!= "phys_constraint"  and v:GetClass()!= "logic_collision_pair") then 
+		local dist = ( v:GetPos() - self:GetPos() ):Length() 	
 
-	local mass = v:GetPhysicsObject():GetMass()
-	
-	if dist < 1000 then 
-	
-	if( !v.Destroy ) and mass < 50000 then
+		if (  v != self && IsValid( v ) && IsValid( v:GetPhysicsObject() ) ) and (v:GetClass()!= "phys_constraintsystem" and v:GetClass()!= "phys_constraint"  and v:GetClass()!= "logic_collision_pair") then 
 
-	if math.random(1,10) == 1 then
-						
-			constraint.RemoveAll( v )
-			v:GetPhysicsObject():EnableMotion(true)
-			v:GetPhysicsObject():Wake()
-			v.Destroy = true
+			local mass = v:GetPhysicsObject():GetMass()
 			
-						end
-						
+			if dist < 1000 then 
+			
+				if ( !v.Destroy ) and mass < 50000 then
+
+					if math.random(1,10) == 1 then
+
+						constraint.RemoveAll( v )
+						v:GetPhysicsObject():EnableMotion(true)
+						v:GetPhysicsObject():Wake()
+						v.Destroy = true
+
 					end
-						
-			  end
+
+				end
+
+			end
 				  
 		end
 
-  end
+  	end
 	
 	self:Remove()
 
