@@ -311,9 +311,8 @@ end
 function ENT:Draw()
 
 	self:SetRenderBounds(Vector(-5000,-5000,-5000), Vector(5000,5000,5000))
-
 	self:DrawModel()
-	self:SetRenderBounds(Vector(-5000,-5000,-5000), Vector(5000,5000,5000))
+
 
 end
 
