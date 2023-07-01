@@ -267,10 +267,6 @@ function ENT:Erupt()
 	end)
 	
 	timer.Simple(120, function()
-
-		local ent = ents.Create("gd_w4_heavyacidrain")
-		ent:Spawn()
-		ent:Activate()
 		
 		local ent2 = ents.FindByClass("gd_w2_ashstorm")[1]
 		local ent3 = ents.FindByClass("gd_d7_lavabombshower")[1]
@@ -279,6 +275,10 @@ function ENT:Erupt()
 		if ent2:IsValid() then ent2:Remove() end
 		if ent3:IsValid() then ent3:Remove() end
 		if ent4:IsValid() then ent4:Remove() end
+
+		local ent = ents.Create("gd_w4_heavyacidrain")
+		ent:Spawn()
+		ent:Activate()
 	
 		
 	end)

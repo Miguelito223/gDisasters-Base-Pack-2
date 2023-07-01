@@ -161,13 +161,13 @@ function ENT:Explode()
 
 	end)
 	timer.Simple(120, function()
-		local ent4 = ents.Create("gd_w4_heavyacidrain")
-		ent4:Spawn()
-		ent4:Activate()
-		
 		local ent1 = ents.FindByClass("gd_w2_ashstorm")[1]
 		if !ent1:IsValid() then return end
 		if ent1:IsValid() then ent1:Remove() end
+
+		local ent4 = ents.Create("gd_w4_heavyacidrain")
+		ent4:Spawn()
+		ent4:Activate()
 	end)
 	timer.Simple(160, function()
 		local ent1 = ents.FindByClass("gd_d9_meteorshower")[1]
