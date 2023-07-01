@@ -252,8 +252,8 @@ function ENT:Erupt()
 	end)		  
     timer.Simple(50, function()
 		local ent2 = ents.FindByClass("gd_w2_volcano_ash")
-		if !ent2:IsValid() then return end
-		if ent2:IsValid() then ent2:Remove() end
+		if !IsValid(ent2) then return end
+		if IsValid(ent2) then ent2:Remove() end
 
 	    local ent = ents.Create("gd_w2_acidrain")
 		ent:Spawn()
@@ -261,8 +261,8 @@ function ENT:Erupt()
 	end)
 	timer.Simple(100, function()
 	    local ent = ents.FindByClass("gd_w2_acidrain")[1]
-		if !ent:IsValid() then return end
-		if ent:IsValid() then ent:Remove() end
+		if IsValid(ent) then return end
+		if IsValid(ent) then ent:Remove() end
 	end)
 	
 	ParticleEffect("volcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)

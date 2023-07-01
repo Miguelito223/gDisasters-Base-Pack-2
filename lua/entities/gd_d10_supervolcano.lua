@@ -270,21 +270,20 @@ function ENT:Erupt()
 		local ent2 = ents.FindByClass("gd_w2_ashstorm")[1]
 		local ent3 = ents.FindByClass("gd_d7_lavabombshower")[1]
 		local ent4 = ents.FindByClass("gd_d8_volcanicrockhower")[1]
-		if !ent2:IsValid() or !ent3:IsValid() or !ent4:IsValid() then return end
-		if ent2:IsValid() then ent2:Remove() end
-		if ent3:IsValid() then ent3:Remove() end
-		if ent4:IsValid() then ent4:Remove() end
+		if !IsValid(ent2) or !IsValid(ent3) or !IsValid(ent4) then return end
+		if IsValid(ent2) then ent2:Remove() end
+		if IsValid(ent3) then ent3:Remove() end
+		if IsValid(ent4) then ent4:Remove() end
 
 		local ent = ents.Create("gd_w4_heavyacidrain")
 		ent:Spawn()
 		ent:Activate()
-	
 		
 	end)
 	timer.Simple(300, function()
 		local ent = ents.FindByClass("gd_w4_heavyacidrain")[1]
-		if !ent:IsValid() then return end
-		if ent:IsValid() then ent:Remove() end
+		if !IsValid(ent) then return end
+		if IsValid(ent) then ent:Remove() end
 	end)
 	
 end
