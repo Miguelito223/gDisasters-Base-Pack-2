@@ -371,9 +371,8 @@ gDisasters.DayNightSystem.Think = function()
 
 	if ( IsValid( gDisasters.DayNightSystem.Fog ) ) then
 		if (CLIENT) then
-
-			local cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Night;
-			local next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Night;
+			local cur = gDisasters.DayNightSystem.InternalVars.Fog.Night;
+			local next = gDisasters.DayNightSystem.InternalVars.Fog.Night;
 			local frac = 0;
 			local ease = 0.3;
 
