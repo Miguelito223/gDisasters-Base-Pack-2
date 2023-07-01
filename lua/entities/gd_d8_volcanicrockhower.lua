@@ -57,7 +57,6 @@ function ENT:SpawnDeath()
 		
 		local startpos  = Vector(math.random(min.x,max.x), math.random(min.y,max.y), max.z )
 
-			
 		local tr = util.TraceLine( {
 			start  = startpos,
 			endpos    = startpos + Vector(0,0,50000),

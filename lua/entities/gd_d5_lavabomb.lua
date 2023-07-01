@@ -53,23 +53,19 @@ function ENT:Createlava()
 	local min       = bounds[1]
 	local max       = bounds[2]
 		
-	local startpos  = Vector(   self:GetPos().x     ,  self:GetPos().y ,   max.z )
-
-	local startpos  = startpos
+	local startpos  = Vector(self:GetPos().x, self:GetPos().y, self:GetPos().z )
+	local endpos  = Vector(self:GetPos().x, self:GetPos().y, max.z )
 	
-	local endpos    = self:GetPos()
-	
-		
 	local tr = util.TraceLine( {
-		start  = startpos,
-		endpos = endpos + Vector(0,0,50000),
-
+		start  =  startpos,
+		endpos = endpos,
+		mask = MASK_SOLID_BRUSHONLY
 	} )
 
 
 	local lava = ents.Create("gd_d5_lavabomb_ch")
 			
-	lava:SetPos( tr.HitPos - Vector(0,0,1000) )
+	lava:SetPos( tr.HitPos)
 	lava:Spawn()
 	lava:Activate()
 	lava:GetPhysicsObject():EnableMotion(true)

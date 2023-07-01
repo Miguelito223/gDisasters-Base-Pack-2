@@ -308,7 +308,7 @@ function ENT:SpawnDeath()
 		} )
 		
 
-		local moite = ents.Create("gd_d1_hail")
+		local moite = ents.Create("gd_d1_hail_ch")
 		
 		moite:SetPos( tr.HitPos - Vector(0,0,5000) )
 		moite:Spawn()

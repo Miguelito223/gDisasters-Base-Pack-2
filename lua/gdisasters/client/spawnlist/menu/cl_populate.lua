@@ -225,7 +225,7 @@ AddToGDSpawnMenu("Rainbow" , "gd_d1_rainbow"		, "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Geyser"        , "gd_d1_geyser" , "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Whirlpool (Small)" , "gd_d1_whirlpool" , "Disasters", "Tier 1", false)
 AddToGDSpawnMenu("Steam devil", "gd_d1_steamdevil", "Disasters", "Tier 1", false)
-AddToGDSpawnMenu("Hail"        , "gd_d1_hail" , "Disasters", "Tier 1", false)
+AddToGDSpawnMenu("Hail"        , "gd_d1_hail_ch" , "Disasters", "Tier 1", false)
 
 --[[
 DISASTERS 
@@ -248,7 +248,7 @@ AddToGDSpawnMenu("Plant Appocolapse"         , "gd_d2_planttakeover"			, "Disast
 AddToGDSpawnMenu("Shooting Star"         , "gd_d2_shootingstar"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Shooting Stars Shower (No Climate Change)"         , "gd_d2_shootingstarshower", "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Funnel", "gd_d2_funnel", "Disasters", "Tier 2", false)
-AddToGDSpawnMenu("Hail Stone"         , "gd_d2_hail"			, "Disasters", "Tier 2", false)
+AddToGDSpawnMenu("Hail Stone"         , "gd_d1_hail"			, "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Waterspout", "gd_d2_waterspout" , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Waterspout (Smart)", "gd_d2_waterspout_pathed" , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Sinkhole" , "gd_d3_sinkhole"         , "Disasters", "Tier 2", false)
@@ -283,7 +283,6 @@ TIER FOUR
 AddToGDSpawnMenu("Landspout", "gd_d4_landspout", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Landspout (Smart)", "gd_d4_landspout_pathed", "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("≈4.0 Magnitude Earthquake" , "gd_d4_rs4eq"         , "Disasters", "Tier 4", false)
-
 AddToGDSpawnMenu("EF1 Tornado"        , "gd_d4_ef1"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Megacryometeor"        , "gd_d4_mcryometeor"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Young Volcano"        , "gd_d4_youngvolcano"              , "Disasters", "Tier 4", false)
@@ -374,7 +373,7 @@ AddToGDSpawnMenu("10.0 Magnitude Earthquake" , "gd_d10_rs10eq"         , "Disast
 AddToGDSpawnMenu("Firenado"  , "gd_d10_mfirenado" , "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Firenado (Smart)", "gd_d10_mfirenado_pathed", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Super Volcano" , "gd_d10_supervolcano"         , "Disasters", "Tier ELE", false)
-AddToGDSpawnMenu("Meteor Shower", "gd_d10_meteorshower", "Disasters", "Tier ELE", false)
+AddToGDSpawnMenu("Meteor Shower", "gd_d9_meteorshower", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Meteorite Shower", "gd_d10_meteoriteshower", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("EF5++ Tornado", "gd_d10_ef7", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("EF5++ Tornado (Smart)", "gd_d10_ef7_pathed", "Disasters", "Tier ELE", false)
