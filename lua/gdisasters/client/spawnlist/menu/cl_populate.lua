@@ -317,7 +317,6 @@ AddToGDSpawnMenu("Volcanic Rock"         , "gd_d6_volcanic_rock"			, "Disasters"
 AddToGDSpawnMenu("≈6.0 Magnitude Earthquake" , "gd_d6_rs6eq"         , "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("Cryo Shower" , "gd_d6_cryoshower"         , "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("Zombie Appocolapse" , "gd_d6_zombieapoc"         , "Disasters", "Tier 6", false)
-AddToGDSpawnMenu("Lava Bomb Shower" , "gd_d7_lavabombshower"         , "Disasters", "Tier 6", false)
 
 
 --[[
@@ -329,6 +328,7 @@ AddToGDSpawnMenu("EF4 Tornado"           , "gd_d7_ef4"           , "Disasters", 
 AddToGDSpawnMenu("EF4 Tornado (Small)"           , "gd_d7_ef4_small"           , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("EF4 Tornado (Smart)"           , "gd_d7_ef4_pathed"           , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("≈7.0  Magnitude Earthquake" , "gd_d7_rs7eq"         , "Disasters", "Tier 7", false)
+AddToGDSpawnMenu("Lava Bomb Shower" , "gd_d7_lavabombshower"         , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("Custom Tsunami" , "gd_d7_custom_tsunami"         , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("Tsunami" , "gd_d7_tsunami"         , "Disasters", "Tier 7", false)
 
