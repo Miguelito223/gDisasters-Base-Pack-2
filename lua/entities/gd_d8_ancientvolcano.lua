@@ -228,14 +228,11 @@ function ENT:CreateRocks(num, lifetime)
 end
 	
 function ENT:Erupt()
-	local pos = self:GetPos()
-	
-	self:CreateRocks(4,20)
-	
 	timer.Simple(2, function() -- we have a delay here because air is still expanding from heat
 		if !self:IsValid() then return end
-		CreateSoundWave("streams/disasters/nature/krakatoa_explosion.mp3", pos, "3d" ,340.29/2, {100,100}, 5)
+		CreateSoundWave("streams/disasters/nature/krakatoa_explosion.mp3", self:GetPos(), "3d" ,340.29/2, {100,100}, 5)
 	end)
+	self:CreateRocks(4,20)
 
 	ParticleEffect("volcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
 
@@ -271,10 +268,10 @@ function ENT:Erupt()
 		local ent2 = ents.FindByClass("gd_w2_ashstorm")[1]
 		local ent3 = ents.FindByClass("gd_d7_lavabombshower")[1]
 		local ent4 = ents.FindByClass("gd_d8_volcanicrockhower")[1]
-		if !IsValid(ent2) or !IsValid(ent3) or !IsValid(ent4) then return end
-		if IsValid(ent2) then ent2:Remove() end
-		if IsValid(ent3) then ent3:Remove() end
-		if IsValid(ent4) then ent4:Remove() end
+		if !ent2:IsValid() or !ent3:IsValid() or !ent4:IsValid() then return end
+		if ent2:IsValid() then ent2:Remove() end
+		if ent3:IsValid() then ent3:Remove() end
+		if ent4:IsValid() then ent4:Remove() end
 
 		local ent = ents.Create("gd_w4_heavyacidrain")
 		ent:Spawn()
@@ -284,8 +281,8 @@ function ENT:Erupt()
 	end)
 	timer.Simple(200, function()
 		local ent = ents.FindByClass("gd_w4_heavyacidrain")[1]
-		if !IsValid(ent) then return end
-		if IsValid(ent) then ent:Remove() end
+		if !ent:IsValid() then return end
+		if ent:IsValid() then ent:Remove() end
 	end)
 	
 end

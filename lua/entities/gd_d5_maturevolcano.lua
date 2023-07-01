@@ -241,7 +241,7 @@ function ENT:Erupt()
 	pe:Fire( "Explode", "", 0 );
 	pe:Fire( "Kill", "", 0.5 );
 	
-	util.BlastDamage( self, self, self:GetLavaLevelPosition(), 1000, math.random( 10, 20 ) )	
+	util.BlastDamage( self, self, self:GetLavaLevelPosition(), 1000, math.random( 10, 20 ) )
 
 	if GetConVar("gdisasters_volcano_weatherchange"):GetInt() <= 0 then return end
 	
@@ -251,9 +251,9 @@ function ENT:Erupt()
 		ent:Activate()
 	end)		  
     timer.Simple(50, function()
-		local ent2 = ents.FindByClass("gd_w2_volcano_ash")
-		if !IsValid(ent2) then return end
-		if IsValid(ent2) then ent2:Remove() end
+		local ent2 = ents.FindByClass("gd_w2_volcano_ash")[1]
+		if !ent2:IsValid() then return end
+		if ent2:IsValid() then ent2:Remove() end
 
 	    local ent = ents.Create("gd_w2_acidrain")
 		ent:Spawn()
@@ -261,11 +261,9 @@ function ENT:Erupt()
 	end)
 	timer.Simple(100, function()
 	    local ent = ents.FindByClass("gd_w2_acidrain")[1]
-		if !IsValid(ent) then return end
-		if IsValid(ent) then ent:Remove() end
+		if !ent:IsValid() then return end
+		if ent:IsValid() then ent:Remove() end
 	end)
-	
-	ParticleEffect("volcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
 end
 
 function ENT:LavaGlow()
