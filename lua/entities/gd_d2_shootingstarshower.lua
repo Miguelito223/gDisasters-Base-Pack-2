@@ -53,14 +53,6 @@ function ENT:CreateHail()
 		local bounds    = getMapSkyBox()
 		local min       = bounds[1]
 		local max       = bounds[2]
-		
-		local startpos  = Vector(   math.random(min.x,max.x)      ,  math.random(min.y,max.y) ,   max.z )
-
-			
-		local tr = util.TraceLine( {
-		start  = startpos,
-		endpos    = startpos + Vector(0,0,50000),
-		} )
 
 		if #ents.FindByClass("gd_d2_shootingstar") < 1 then 
 		
@@ -70,7 +62,7 @@ function ENT:CreateHail()
 			local star = ents.Create("gd_d2_shootingstar_ch")
 			star:Spawn()
 			star:Activate()	
-			star:SetPos( tr.HitPos )
+			star:SetPos( Vector(   math.random(min.x,max.x)      ,  math.random(min.y,max.y) ,   max.z ) )
 			star:GetPhysicsObject():EnableMotion(true)
 			star:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
 			

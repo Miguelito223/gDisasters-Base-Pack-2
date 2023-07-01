@@ -41,12 +41,13 @@ end
 
 function ENT:CreateHail()
 
-
+	local bounds    = getMapSkyBox()
+	local min       = bounds[1]
+	local max       = bounds[2]
 
 	
-	local startpos  = self:GetPos()
-	
-	local endpos    = startpos + Vector(0,0,50000)
+	local startpos  = Vector(self:GetPos().x, self:GetPos().y, self:GetPos().z )
+	local endpos    = Vector(self:GetPos().x, self:GetPos().y, max.z )
 	
 		
 	local tr = util.TraceLine( {

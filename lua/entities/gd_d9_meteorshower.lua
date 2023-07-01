@@ -54,19 +54,10 @@ function ENT:SpawnDeath()
 		local bounds    = getMapSkyBox()
 		local min       = bounds[1]
 		local max       = bounds[2]
-		
-		local startpos  = Vector(math.random(min.x,max.x), math.random(min.y,max.y), max.z )
-
-			
-		local tr = util.TraceLine( {
-			start  = startpos,
-			endpos    = startpos + Vector(0,0,90000),
-		} )
-		
 
 		local moite = ents.Create("gd_d6_meteor_ch")
 		
-		moite:SetPos( tr.HitPos - Vector(0,0,0) )
+		moite:SetPos( Vector(math.random(min.x,max.x), math.random(min.y,max.y), max.z ) )
 		moite:Spawn()
 		moite:Activate()
 		moite:GetPhysicsObject():EnableMotion(true)
