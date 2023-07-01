@@ -379,7 +379,7 @@ AddToGDSpawnMenu("Meteorite Shower", "gd_d10_meteoriteshower", "Disasters", "Tie
 AddToGDSpawnMenu("EF5++ Tornado", "gd_d10_ef7", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("EF5++ Tornado (Smart)", "gd_d10_ef7_pathed", "Disasters", "Tier ELE", false)
 AddToGDSpawnMenu("Mega Tsunami", "gd_d10_megatsunami", "Disasters", "Tier ELE", false)
-AddToGDSpawnMenu("Mega Lava Tsunami", "gd_d10_lava_megatsunami", "Disasters", "Tier ELE", false)
+
 
 --[[
 DISASTERS 
@@ -389,6 +389,7 @@ TIER ELEVEN
 AddToGDSpawnMenu("Black Hole"  , "gd_d11_blackhole" , "Disasters", "Tier ELE 2", false)
 AddToGDSpawnMenu("11.0 Magnitude Earthquake" , "gd_d11_rs11eq"         , "Disasters", "Tier ELE 2", false)
 AddToGDSpawnMenu("Neutron Star"  , "gd_d11_neutron_star" , "Disasters", "Tier ELE 2", false)
+AddToGDSpawnMenu("Mega Lava Tsunami", "gd_d11_lava_megatsunami", "Disasters", "Tier ELE 2", false)
 
 --[[
 DISASTERS 

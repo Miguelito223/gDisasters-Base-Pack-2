@@ -118,7 +118,7 @@ local function Autospawn_Timer()
 				"gd_d8_combineinv",
 				"gd_d8_lava_tsunami",
 				"gd_d10_megatsunami",
-				"gd_d10_lava_megatsunami"
+				"gd_d11_lava_megatsunami"
 			}
 
 			local dis = ents.Create(table.Random(disasters))
@@ -441,7 +441,7 @@ local function Autospawn_Timer()
 				"gd_d8_combineinv",
 				"gd_d8_lava_tsunami",
 				"gd_d10_megatsunami",
-				"gd_d10_lava_megatsunami"
+				"gd_d11_lava_megatsunami"
 			}
 
 			local weadis = ents.Create(table.Random(weadisas))
