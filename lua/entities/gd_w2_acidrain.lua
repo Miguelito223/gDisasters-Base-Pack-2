@@ -188,7 +188,7 @@ function ENT:Think()
 	end
 	if (SERVER) then
 		if !self:IsValid() then return end
-		if GLOBAL_SYSTEM_TARGET["BRadiation"] < 20 then GLOBAL_SYSTEM_TARGET["BRadiation"] = 100 end
+		if GLOBAL_SYSTEM_TARGET["Atmosphere"]["BRadiation"] < 20 then GLOBAL_SYSTEM_TARGET["Atmosphere"]["BRadiation"] = 100 end
 
 		self:AffectPlayers()		
 		self:SpawnAcid()
