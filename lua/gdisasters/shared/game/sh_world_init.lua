@@ -362,6 +362,46 @@ gDisasters.DayNightSystem.Think = function()
 		end
 	end
 
+	--gd_fog
+	if ( IsValid( gDisasters.DayNightSystem.Fog ) ) then
+		if (CLIENT) then
+			local TransitionMul = 0.3;
+			local frac = FrameTime() * TransitionMul;
+
+			if ( gDisasters.DayNightSystem.Time < 4 or gDisasters.DayNightSystem.Time > 20 ) then
+			
+				NextFog = gDisasters.DayNightSystem.InternalVars.Fog.Night
+			
+			elseif ( gDisasters.DayNightSystem.Time < 6 ) then
+			
+				NextFog =  gDisasters.DayNightSystem.InternalVars.Fog.Dawn
+			
+			elseif ( gDisasters.DayNightSystem.Time < 18 ) then
+			
+				NextFog = gDisasters.DayNightSystem.InternalVars.Fog.Day
+			
+			elseif ( gDisasters.DayNightSystem.Time < 20 ) then
+			
+				NextFog = gDisasters.DayNightSystem.InternalVars.Fog.Dusk
+			
+			end
+
+			CurrentFog = table.Copy( NextFog );
+
+			CurrentFog.FogStart = Lerp( frac, CurrentFog.FogStart, NextFog.FogStart );
+			CurrentFog.FogEnd = Lerp( frac, CurrentFog.FogEnd, NextFog.FogEnd );
+			CurrentFog.FogDensity = Lerp( frac, CurrentFog.FogDensity, NextFog.FogDensity );
+			CurrentFog.FogColor = LerpVector( frac, CurrentFog.FogColor, NextFog.FogColor );
+
+			gDisasters.DayNightSystem.Fog:SetFogStart(CurrentFog.FogStart)
+			gDisasters.DayNightSystem.Fog:SetFogEnd(CurrentFog.FogEnd)
+			gDisasters.DayNightSystem.Fog:SetFogDensity(CurrentFog.FogDensity)
+			gDisasters.DayNightSystem.Fog:SetFogColor(CurrentFog.FogColor)
+    			
+			print(gDisasters.DayNightSystem.Fog:GetFogColor())
+		end	
+	end
+
 	-- env_skypaint
 	if ( IsValid( gDisasters.DayNightSystem.EnvSkyPaint ) ) then
 
@@ -369,53 +409,34 @@ gDisasters.DayNightSystem.Think = function()
 			gDisasters.DayNightSystem.EnvSkyPaint:SetSunNormal( gDisasters.DayNightSystem.EnvSun:GetInternalVariable( "m_vDirection" ) );
 		end
 
-		local cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Night;
-		local next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Night;
-		local nextfog = gDisasters.DayNightSystem.InternalVars.Fog.Night
-		local curfog = gDisasters.DayNightSystem.InternalVars.Fog.Night
-		local frac = 0;
-		local ease = 0.3;
-
-
-		if ( gDisasters.DayNightSystem.Time >= gDisasters.DayNightSystem.InternalVars.time.Dawn_Start and gDisasters.DayNightSystem.Time < dawnMidPoint ) then
-			cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Night;
-			next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Dawn;
-			curfog = gDisasters.DayNightSystem.InternalVars.Fog.Night;
-			nextfog = gDisasters.DayNightSystem.InternalVars.Fog.Dawn;
-			frac = math.EaseInOut( ( gDisasters.DayNightSystem.Time - gDisasters.DayNightSystem.InternalVars.time.Dawn_Start ) / ( dawnMidPoint - gDisasters.DayNightSystem.InternalVars.time.Dawn_Start ), ease, ease );
-		elseif ( gDisasters.DayNightSystem.Time >= dawnMidPoint and gDisasters.DayNightSystem.Time < gDisasters.DayNightSystem.InternalVars.time.Dawn_End ) then
-			cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Dawn;
-			next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Day;
-			curfog = gDisasters.DayNightSystem.InternalVars.Fog.Dawn;
-			nextfog = gDisasters.DayNightSystem.InternalVars.Fog.Day;
-			frac = math.EaseInOut( ( gDisasters.DayNightSystem.Time - dawnMidPoint ) / ( gDisasters.DayNightSystem.InternalVars.time.Dawn_End - dawnMidPoint ), ease, ease );
-		elseif ( gDisasters.DayNightSystem.Time >= gDisasters.DayNightSystem.InternalVars.time.Dusk_Start and gDisasters.DayNightSystem.Time < duskMidPoint ) then
-			cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Day;
-			next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Dusk;
-			curfog = gDisasters.DayNightSystem.InternalVars.Fog.Day;
-			nextfog = gDisasters.DayNightSystem.InternalVars.Fog.Dusk;
-			frac = math.EaseInOut( ( gDisasters.DayNightSystem.Time - gDisasters.DayNightSystem.InternalVars.time.Dusk_Start ) / ( duskMidPoint - gDisasters.DayNightSystem.InternalVars.time.Dusk_Start ), ease, ease );
-		elseif ( gDisasters.DayNightSystem.Time >= duskMidPoint and gDisasters.DayNightSystem.Time < gDisasters.DayNightSystem.InternalVars.time.Dusk_End ) then
-			cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Dusk;
-			next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Night;
-			curfog = gDisasters.DayNightSystem.InternalVars.Fog.Dusk;
-			nextfog = gDisasters.DayNightSystem.InternalVars.Fog.Night;
-			frac = math.EaseInOut( ( gDisasters.DayNightSystem.Time - duskMidPoint ) / ( gDisasters.DayNightSystem.InternalVars.time.Dusk_End - duskMidPoint ), ease, ease );
-		elseif ( gDisasters.DayNightSystem.Time >= gDisasters.DayNightSystem.InternalVars.time.Dawn_End and gDisasters.DayNightSystem.Time <= gDisasters.DayNightSystem.InternalVars.time.Dusk_End ) then
-			cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Day;
-			next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Day;
-			curfog = gDisasters.DayNightSystem.InternalVars.Fog.Day;
-			nextfog = gDisasters.DayNightSystem.InternalVars.Fog.Day;
-		end
-
-		if (CLIENT) then
-			gDisasters.DayNightSystem.Fog:SetFogStart(Lerp(frac, curfog.FogStart, nextfog.FogStart))
-			gDisasters.DayNightSystem.Fog:SetFogEnd(Lerp(frac, curfog.FogEnd, nextfog.FogEnd))
-			gDisasters.DayNightSystem.Fog:SetFogDensity(Lerp(frac, curfog.FogDensity, nextfog.FogDensity))
-			gDisasters.DayNightSystem.Fog:SetFogColor(LerpVector(frac, curfog.FogColor, nextfog.FogColor))
-
-		end		
 		if (SERVER) then
+
+			local cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Night;
+			local next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Night;
+			local frac = 0;
+			local ease = 0.3;
+
+
+			if ( gDisasters.DayNightSystem.Time >= gDisasters.DayNightSystem.InternalVars.time.Dawn_Start and gDisasters.DayNightSystem.Time < dawnMidPoint ) then
+				cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Night;
+				next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Dawn;
+				frac = math.EaseInOut( ( gDisasters.DayNightSystem.Time - gDisasters.DayNightSystem.InternalVars.time.Dawn_Start ) / ( dawnMidPoint - gDisasters.DayNightSystem.InternalVars.time.Dawn_Start ), ease, ease );
+			elseif ( gDisasters.DayNightSystem.Time >= dawnMidPoint and gDisasters.DayNightSystem.Time < gDisasters.DayNightSystem.InternalVars.time.Dawn_End ) then
+				cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Dawn;
+				next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Day;
+				frac = math.EaseInOut( ( gDisasters.DayNightSystem.Time - dawnMidPoint ) / ( gDisasters.DayNightSystem.InternalVars.time.Dawn_End - dawnMidPoint ), ease, ease );
+			elseif ( gDisasters.DayNightSystem.Time >= gDisasters.DayNightSystem.InternalVars.time.Dusk_Start and gDisasters.DayNightSystem.Time < duskMidPoint ) then
+				cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Day;
+				next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Dusk;
+				frac = math.EaseInOut( ( gDisasters.DayNightSystem.Time - gDisasters.DayNightSystem.InternalVars.time.Dusk_Start ) / ( duskMidPoint - gDisasters.DayNightSystem.InternalVars.time.Dusk_Start ), ease, ease );
+			elseif ( gDisasters.DayNightSystem.Time >= duskMidPoint and gDisasters.DayNightSystem.Time < gDisasters.DayNightSystem.InternalVars.time.Dusk_End ) then
+				cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Dusk;
+				next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Night;
+				frac = math.EaseInOut( ( gDisasters.DayNightSystem.Time - duskMidPoint ) / ( gDisasters.DayNightSystem.InternalVars.time.Dusk_End - duskMidPoint ), ease, ease );
+			elseif ( gDisasters.DayNightSystem.Time >= gDisasters.DayNightSystem.InternalVars.time.Dawn_End and gDisasters.DayNightSystem.Time <= gDisasters.DayNightSystem.InternalVars.time.Dusk_End ) then
+				cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Day;
+				next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Day;
+			end
 
 			gDisasters.DayNightSystem.EnvSkyPaint:SetTopColor( LerpVector( frac, cur.TopColor, next.TopColor ) );
 			gDisasters.DayNightSystem.EnvSkyPaint:SetBottomColor( LerpVector( frac, cur.BottomColor, next.BottomColor ) );

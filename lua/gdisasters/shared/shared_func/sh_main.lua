@@ -804,14 +804,6 @@ function EvaluateRayleighAtT(T)
 	
 end
 
-function Entity_Create(entity)
-	if (CLIENT) then return end
-	
-	local ent = ents.Create(entity)
-	ent:Spawn()
-	ent:Activate()
-end
-
 function gDisasters_GetMoonAngleInRadians()
 
 	return convert_AngleToRadiants(gDisasters_GetMoonDir())

@@ -54,12 +54,6 @@ end
 
 function ENT:Think()
 
-    if ( gd_Fog != self ) then
-
-        gd_Fog = self;
-
-    end
-
 end
 
 function ENT:SetupWorldFog()

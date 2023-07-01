@@ -276,8 +276,6 @@ net.Receive( "gd_maplight_cl", function( len, pl )
 	timer.Simple(0.1, function()
 		render.RedownloadAllLightmaps()
 	end)
-
-
 end )
 
 net.Receive("gd_removegfxfog", function()
