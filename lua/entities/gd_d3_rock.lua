@@ -58,8 +58,6 @@ end
 function ENT:PhysicsCollide( data, phys )
 	
 	if ( data.Speed > 500 ) then 
-		
-		ParticleEffect("hail_impact_effect_main", data.HitPos + Vector(0,0,1), Angle(0,0,0), nil)
 		sound.Play(table.Random({"streams/event/break/rock_break_a.mp3","streams/event/break/rock_break_b.mp3","streams/event/break/rock_break_c.mp3"}), self:GetPos(), 80, {80,120}, 1)
 		
 		local p1 = ents.Create("prop_physics")
@@ -88,10 +86,9 @@ function ENT:PhysicsCollide( data, phys )
 		p2:GetPhysicsObject():AddAngleVelocity( VectorRand() * 10000 )
 		p1:GetPhysicsObject():AddAngleVelocity( VectorRand() * 10000 )
 		
-		if HitChance(10) then
-		else
-			self:Remove()
-		end
+
+		self:Remove()
+		
 		
 		timer.Simple(math.random(3,12), function()
 			if p1:IsValid() then p1:Remove() end

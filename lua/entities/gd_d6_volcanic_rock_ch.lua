@@ -85,7 +85,7 @@ end
 
 function ENT:Explode()
 	
-	local sound = table.Random({"streams/event/explosion/explosion_light_k.mp3","streams/event/explosion/explosion_light_l.mp3","streams/event/explosion/explosion_light_a.mp3","streams/event/explosion/explosion_light_b.mp3","streams/event/explosion/explosion_light_m.mp3"})
+	local sound = table.Random({"streams/event/explosion/explosion_medium_a.mp3","streams/event/explosion/explosion_medium_b.mp3","streams/event/explosion/explosion_medium_c.mp3","streams/event/explosion/explosion_medium_d.mp3" ,"streams/event/explosion/explosion_medium_e.mp3","streams/event/explosion/explosion_medium_f.mp3","streams/event/explosion/explosion_medium_g.mp3"})
 
 	CreateSoundWave(sound, self:GetPos(), "3d" ,340.29/2, {80,100}, 5)
 	
@@ -110,6 +110,12 @@ function ENT:Think()
 	local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1	
 		
 	if (SERVER) then
+
+		if isinWater(self) then 
+			self:Remove() 
+		elseif isinLava(self) then
+			self:Remove()
+		end
 	
 		self:NextThink(CurTime() + t)
 		return true
