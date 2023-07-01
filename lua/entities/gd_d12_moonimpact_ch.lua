@@ -147,7 +147,7 @@ function ENT:Explode()
 
 	timer.Simple(2, function()
 		local ent = ents.Create("gd_w2_ashstorm")
-		local ent2 = ents.Create("gd_d10_meteorshower")
+		local ent2 = ents.Create("gd_d9_meteorshower")
 		local ent3 = ents.Create("gd_d10_meteoriteshower")
 		ent:Spawn()
 		ent:Activate()
@@ -167,7 +167,7 @@ function ENT:Explode()
 		if ent1:IsValid() then ent1:Remove() end
 	end)
 	timer.Simple(160, function()
-		local ent1 = ents.FindByClass("gd_d10_meteorshower")[1]
+		local ent1 = ents.FindByClass("gd_d9_meteorshower")[1]
 		local ent2 = ents.FindByClass("gd_d10_meteoriteshower")[1]
 		if !ent1:IsValid() or !ent2:IsValid() then return end
 		if ent1:IsValid() then ent1:Remove() end
