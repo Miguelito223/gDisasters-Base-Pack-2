@@ -85,7 +85,7 @@ end
 
 function ENT:Explode()
 	
-	local sound = table.Random({"streams/event/explosion/explosion_medium_a.mp3","streams/event/explosion/explosion_medium_b.mp3","streams/event/explosion/explosion_medium_c.mp3","streams/event/explosion/explosion_medium_d.mp3" ,"streams/event/explosion/explosion_medium_e.mp3","streams/event/explosion/explosion_medium_f.mp3","streams/event/explosion/explosion_medium_g.mp3"})
+	local sound = table.Random({"streams/event/explosion/explosion_medium_a.mp3","streams/event/explosion/explosion_medium_b.mp3","streams/event/explosion/explosion_medium_e.mp3","streams/event/explosion/explosion_medium_f.mp3","streams/event/explosion/explosion_medium_g.mp3"})
 
 	CreateSoundWave(sound, self:GetPos(), "3d" ,340.29/2, {80,100}, 5)
 	
