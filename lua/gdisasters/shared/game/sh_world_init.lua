@@ -146,7 +146,7 @@ gDisasters.DayNightSystem.InternalVars.Fog = {}
 gDisasters.DayNightSystem.InternalVars.Fog.Dusk = 
 {
 	FogStart = 0.0,
-	FogEnd = 25000.0,
+	FogEnd = 35000.0,
 	FogDensity = 0.3,
 	FogColor = Vector( 1.00, 0.63, 0.00 )
 }
@@ -162,7 +162,7 @@ gDisasters.DayNightSystem.InternalVars.Fog.Day =
 gDisasters.DayNightSystem.InternalVars.Fog.Dawn = 
 {
 	FogStart = 0.0,
-	FogEnd = 25000.0,
+	FogEnd = 35000.0,
 	FogDensity = 0.3,
 	FogColor = Vector( 1.00, 0.63, 0.00)
 }
