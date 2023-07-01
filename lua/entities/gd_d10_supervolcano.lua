@@ -255,7 +255,7 @@ function ENT:Erupt()
 	
 	timer.Simple(22, function()
 		local ent = ents.Create("gd_w2_ashstorm")
-		local ent2 = ents.Create("gd_d10_lavabombshower")
+		local ent2 = ents.Create("gd_d7_lavabombshower")
 		ent:SetPos(pos - Vector(0,0,5000))
 		ent:Spawn()
 		ent:Activate()
@@ -271,7 +271,7 @@ function ENT:Erupt()
 		ent3:Activate()
 		
 		local ent = ents.FindByClass("gd_w2_ashstorm")[1]
-		local ent2 = ents.FindByClass("gd_d10_lavabombshower")[1]
+		local ent2 = ents.FindByClass("gd_d7_lavabombshower")[1]
 		if !ent:IsValid() or !ent2:IsValid() then return end
 		if ent:IsValid() then ent:Remove() end
 		if ent2:IsValid() then ent2:Remove() end
