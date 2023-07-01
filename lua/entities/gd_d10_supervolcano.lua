@@ -256,25 +256,29 @@ function ENT:Erupt()
 	timer.Simple(22, function()
 		local ent = ents.Create("gd_w2_ashstorm")
 		local ent2 = ents.Create("gd_d7_lavabombshower")
-		ent:SetPos(pos - Vector(0,0,5000))
+		local ent3 = ents.Create("gd_d8_volcanicrockhower")
 		ent:Spawn()
 		ent:Activate()
 		ent2:Spawn()
 		ent2:Activate()
+		ent3:Spawn()
+		ent3:Activate()
 
 	end)
 	
 	timer.Simple(140, function()
 
-		local ent3 = ents.Create("gd_w4_heavyacidrain")
-		ent3:Spawn()
-		ent3:Activate()
+		local ent = ents.Create("gd_w4_heavyacidrain")
+		ent:Spawn()
+		ent:Activate()
 		
-		local ent = ents.FindByClass("gd_w2_ashstorm")[1]
-		local ent2 = ents.FindByClass("gd_d7_lavabombshower")[1]
-		if !ent:IsValid() or !ent2:IsValid() then return end
-		if ent:IsValid() then ent:Remove() end
+		local ent2 = ents.FindByClass("gd_w2_ashstorm")[1]
+		local ent3 = ents.FindByClass("gd_d7_lavabombshower")[1]
+		local ent4 = ents.FindByClass("gd_d8_volcanicrockhower")[1]
+		if !ent2:IsValid() or !ent3:IsValid() or !ent4:IsValid() then return end
 		if ent2:IsValid() then ent2:Remove() end
+		if ent3:IsValid() then ent3:Remove() end
+		if ent4:IsValid() then ent4:Remove() end
 	
 		
 	end)
