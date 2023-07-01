@@ -147,7 +147,7 @@ gDisasters.DayNightSystem.InternalVars.Fog.Dusk =
 {
 	FogStart = 0.0,
 	FogEnd = 55000.0,
-	FogDensity = 0.1,
+	FogDensity = 0.3,
 	FogColor = Vector( 1.00, 0.63, 0.00 )
 }
 
@@ -155,7 +155,7 @@ gDisasters.DayNightSystem.InternalVars.Fog.Day =
 {
 	FogStart = 0.0,
 	FogEnd = 35000.0,
-	FogDensity = 0.0,
+	FogDensity = 0.3,
 	FogColor = Vector( 0.6, 0.7, 0.8 )
 }
 
@@ -171,7 +171,7 @@ gDisasters.DayNightSystem.InternalVars.Fog.Night =
 {
 	FogStart = 0.0,
 	FogEnd = 45000.0,
-	FogDensity = 0.1,
+	FogDensity = 0.3,
 	FogColor = Vector( 0, 0, 0 )
 }
 
@@ -223,56 +223,59 @@ end
 
 gDisasters.DayNightSystem.initEntities_Function = function()
 
-	if (CLIENT) then return end
+	if (SERVER) then
 
-	gDisasters.DayNightSystem.LightEnvironment = ents.FindByClass( "light_environment" )[1]
-	gDisasters.DayNightSystem.EnvSun = ents.FindByClass( "env_sun" )[1]
-	gDisasters.DayNightSystem.EnvSkyPaint = ents.FindByClass( "env_skypaint" )[1]
-	gDisasters.DayNightSystem.EnvFogController = ents.FindByClass( "env_fog_controller" )[1]
-	gDisasters.DayNightSystem.RelayDawn = ents.FindByName( "dawn" )[1]
-	gDisasters.DayNightSystem.RelayDusk = ents.FindByName( "dusk" )[1]
+		gDisasters.DayNightSystem.LightEnvironment = ents.FindByClass( "light_environment" )[1]
+		gDisasters.DayNightSystem.EnvSun = ents.FindByClass( "env_sun" )[1]
+		gDisasters.DayNightSystem.EnvSkyPaint = ents.FindByClass( "env_skypaint" )[1]
+		gDisasters.DayNightSystem.EnvFogController = ents.FindByClass( "env_fog_controller" )[1]
+		gDisasters.DayNightSystem.RelayDawn = ents.FindByName( "dawn" )[1]
+		gDisasters.DayNightSystem.RelayDusk = ents.FindByName( "dusk" )[1]
 
-	if !IsValid(gDisasters.DayNightSystem.EnvFogController) then
-		gDisasters.DayNightSystem.EnvFogController = ents.Create("env_fog_controller")
-		gDisasters.DayNightSystem.EnvFogController:Spawn()
-		gDisasters.DayNightSystem.EnvFogController:Activate()
-	end
-	
-	gDisasters.DayNightSystem.Fog = ents.Create("gd_fog")
-	gDisasters.DayNightSystem.Fog:Spawn()
-	gDisasters.DayNightSystem.Fog:Activate()
+		gDisasters.DayNightSystem.Fog = ents.Create("gd_fog")
+		gDisasters.DayNightSystem.Fog:Spawn()
+		gDisasters.DayNightSystem.Fog:Activate()
 
-	if IsValid(gDisasters.DayNightSystem.EnvSun) then
-		gDisasters.DayNightSystem.EnvSun:SetKeyValue( "sun_dir", "1 0 0" )
-	else
-		gDisasters.DayNightSystem.EnvSun = ents.Create("env_sun")
-		gDisasters.DayNightSystem.EnvSun:Spawn()
-		gDisasters.DayNightSystem.EnvSun:Activate()
-	end
-
-	if IsValid( gDisasters.DayNightSystem.LightEnvironment ) then
-		gDisasters.DayNightSystem.LightStyle( "a", true )
-	else
-		if gDisasters.DayNightSystem.InternalVars.Createlight_environment:GetInt() <= 0 then
-			gDisasters.DayNightSystem.InternalVars.Style_Low = string.byte( "b" )
-			gDisasters.DayNightSystem.LightStyle( "b", true )
-		else
-			gDisasters.DayNightSystem.LightEnvironment = ents.Create("light_environment")
-			gDisasters.DayNightSystem.LightEnvironment:Spawn()
-			gDisasters.DayNightSystem.LightEnvironment:Activate()
+		if !IsValid(gDisasters.DayNightSystem.EnvFogController) then
+			gDisasters.DayNightSystem.EnvFogController = ents.Create("env_fog_controller")
+			gDisasters.DayNightSystem.EnvFogController:Spawn()
+			gDisasters.DayNightSystem.EnvFogController:Activate()
 		end
+
+		if IsValid(gDisasters.DayNightSystem.EnvSun) then
+			gDisasters.DayNightSystem.EnvSun:SetKeyValue( "sun_dir", "1 0 0" )
+		else
+			gDisasters.DayNightSystem.EnvSun = ents.Create("env_sun")
+			gDisasters.DayNightSystem.EnvSun:Spawn()
+			gDisasters.DayNightSystem.EnvSun:Activate()
+		end
+
+		if IsValid( gDisasters.DayNightSystem.LightEnvironment ) then
+			gDisasters.DayNightSystem.LightStyle( "a", true )
+		else
+			if gDisasters.DayNightSystem.InternalVars.Createlight_environment:GetInt() <= 0 then
+				gDisasters.DayNightSystem.InternalVars.Style_Low = string.byte( "b" )
+				gDisasters.DayNightSystem.LightStyle( "b", true )
+			else
+				gDisasters.DayNightSystem.LightEnvironment = ents.Create("light_environment")
+				gDisasters.DayNightSystem.LightEnvironment:Spawn()
+				gDisasters.DayNightSystem.LightEnvironment:Activate()
+			end
+		end
+
+		if IsValid( gDisasters.DayNightSystem.EnvSkyPaint )  then
+			gDisasters.DayNightSystem.EnvSkyPaint:SetStarTexture( "skybox/starfield" )
+		else
+			gDisasters.DayNightSystem.EnvSkyPaint =  ents.Create("env_skypaint")
+			gDisasters.DayNightSystem.EnvSkyPaint:Spawn()
+			gDisasters.DayNightSystem.EnvSkyPaint:Activate()
+		end
+
+		gDisasters.DayNightSystem.initEntities = true
 	end
-
-	if IsValid( gDisasters.DayNightSystem.EnvSkyPaint )  then
-		gDisasters.DayNightSystem.EnvSkyPaint:SetStarTexture( "skybox/starfield" )
-	else
-		gDisasters.DayNightSystem.EnvSkyPaint =  ents.Create("env_skypaint")
-		gDisasters.DayNightSystem.EnvSkyPaint:Spawn()
-		gDisasters.DayNightSystem.EnvSkyPaint:Activate()
+	if (CLIENT) then
+		gDisasters.DayNightSystem.Fog = g_Fog
 	end
-
-	gDisasters.DayNightSystem.initEntities = true
-
 end
 
 gDisasters.DayNightSystem.Think = function()
@@ -363,6 +366,9 @@ gDisasters.DayNightSystem.Think = function()
 	end
 
 	--gd_fog
+
+	
+
 	if ( IsValid( gDisasters.DayNightSystem.Fog ) ) then
 		if (CLIENT) then
 			local TransitionMul = 0.3;
@@ -397,8 +403,7 @@ gDisasters.DayNightSystem.Think = function()
 			gDisasters.DayNightSystem.Fog:SetFogEnd(CurrentFog.FogEnd)
 			gDisasters.DayNightSystem.Fog:SetFogDensity(CurrentFog.FogDensity)
 			gDisasters.DayNightSystem.Fog:SetFogColor(CurrentFog.FogColor)
-    			
-			print(gDisasters.DayNightSystem.Fog:GetFogColor())
+    		
 		end	
 	end
 
@@ -415,7 +420,6 @@ gDisasters.DayNightSystem.Think = function()
 			local next = gDisasters.DayNightSystem.InternalVars.SkyPaint.Night;
 			local frac = 0;
 			local ease = 0.3;
-
 
 			if ( gDisasters.DayNightSystem.Time >= gDisasters.DayNightSystem.InternalVars.time.Dawn_Start and gDisasters.DayNightSystem.Time < dawnMidPoint ) then
 				cur = gDisasters.DayNightSystem.InternalVars.SkyPaint.Night;

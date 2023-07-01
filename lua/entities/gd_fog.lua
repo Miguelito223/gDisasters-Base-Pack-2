@@ -53,7 +53,11 @@ function ENT:GetFogValues()
 end
 
 function ENT:Think()
+    if ( g_Fog != self ) then
 
+        g_Fog = self;
+
+    end
 end
 
 function ENT:SetupWorldFog()

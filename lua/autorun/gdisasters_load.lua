@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-AddCSLuaFile("gdisasters/shared/players-npcs/sh_postspawn.lua")
+AddCSLuaFile("gdisasters/shared/player-npcs/sh_postspawn.lua")
 AddCSLuaFile("gdisasters/shared/shared_func/sh_main.lua")
 AddCSLuaFile("gdisasters/shared/shared_func/sh_netstrings.lua")
 AddCSLuaFile("gdisasters/shared/extensions/sh_patchs-bounds.lua")
