@@ -35,8 +35,8 @@ function ENT:Initialize()
 		self:SetNoDraw(true)
 		self:PlayInitialSounds()
 		timer.Simple(math.random(self.Life[1], self.Life[2]), function()
-			 if !self:IsValid() then return end
-			 self:EarthquakeDecay()
+			if !self:IsValid() then return end
+			self:EarthquakeDecay()
 		end)
 	end
 end
@@ -104,6 +104,30 @@ function ENT:EFire(pointer, arg)
 	elseif pointer == "Parent" then self.Parent = arg 
 	end
 end
+
+function ENT:ProbabilityTsunami()
+	local magmod    = self.MagnitudeModifier
+	local mag       = self.Magnitude * magmod
+
+	table = {"gd_d2_tidal_wave", "gd_d7_tsunami","gd_d10_megatsunami"}
+
+	if math.random(1,5)==5 then
+		if mag >= 10 and mag < 13 then
+			local tsunami = ents.Create(table[3])
+			tsunami:Spawn()
+			tsunami:Activate()
+		elseif mag >= 5 and mag < 10 then
+			local tsunami = ents.Create(table[2])
+			tsunami:Spawn()
+			tsunami:Activate()
+		elseif mag > 0 and mag < 5 then
+			local tsunami = ents.Create(table[2])
+			tsunami:Spawn()
+			tsunami:Activate()	
+		end
+	end
+end
+
 function createEarthquake(magnitude, parent)
 	for k, v in pairs(ents.FindByClass("env_earthquake")) do
 		v:Remove()
@@ -499,6 +523,7 @@ function ENT:Think()
 	if (SERVER) then
 		self:IsParentValid()
 		self:ProcessMagnitude()
+		self:ProbabilityTsunami()
 		self:MagnitudeModifierIncrement()
 		self:UpdateGlobalSeismicActivity()
 		self:NextThink(CurTime())
