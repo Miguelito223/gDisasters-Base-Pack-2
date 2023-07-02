@@ -476,7 +476,7 @@ function ENT:CanDoPhysics(nexttime)
 end
 
 function ENT:CheckProbabilityTsunami()
-	if self:isValid() and self.Magnitude != nil and self.MagnitudeModifier != nil then
+	if self:IsValid() and self.Magnitude != nil and self.MagnitudeModifier != nil then
 		self.TsunamiProbability = true
 	end
 end
