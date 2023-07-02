@@ -102,6 +102,7 @@ function ENT:EFire(pointer, arg)
 	if pointer == "Enable" then self.Enable = arg or false 
 	elseif pointer == "Magnitude" then self.Magnitude = arg or 0 
 	elseif pointer == "Parent" then self.Parent = arg 
+	elseif pointer == "Tsunami" then self.Tsunami = arg or false
 	end
 end
 
@@ -111,19 +112,25 @@ function ENT:ProbabilityTsunami()
 
 	table = {"gd_d2_tidal_wave", "gd_d7_tsunami","gd_d10_megatsunami"}
 
-	if math.random(1,5)==5 then
-		if mag >= 10 and mag < 13 then
-			local tsunami = ents.Create(table[3])
-			tsunami:Spawn()
-			tsunami:Activate()
-		elseif mag >= 5 and mag < 10 then
-			local tsunami = ents.Create(table[2])
-			tsunami:Spawn()
-			tsunami:Activate()
-		elseif mag > 0 and mag < 5 then
-			local tsunami = ents.Create(table[2])
-			tsunami:Spawn()
-			tsunami:Activate()	
+	if self.Tsunami == false then
+		self.Tsunami = true 
+		if math.random(1,15)==15 then
+			if mag >= 10 and mag < 13 then
+				local tsunami = ents.Create(table[3])
+				tsunami:Spawn()
+				tsunami:Activate()
+			elseif mag >= 5 and mag < 10 then
+				local tsunami = ents.Create(table[2])
+				tsunami:Spawn()
+				tsunami:Activate()
+			elseif mag > 0 and mag < 5 then
+				local tsunami = ents.Create(table[2])
+				tsunami:Spawn()
+				tsunami:Activate()
+			end
+			timer.Simple(math.random(5,10), function()
+				self.Tsunami = false 
+			end)
 		end
 	end
 end
@@ -134,6 +141,7 @@ function createEarthquake(magnitude, parent)
 	end
 	local earthquake = ents.Create("env_earthquake")
 	earthquake:EFire("Magnitude", magnitude)
+	earthquake:EFire("Tsunami", false)
 	earthquake:SetPos(parent:GetPos())
 	earthquake:Spawn()
 	earthquake:Activate()
@@ -523,9 +531,9 @@ function ENT:Think()
 	if (SERVER) then
 		self:IsParentValid()
 		self:ProcessMagnitude()
-		self:ProbabilityTsunami()
 		self:MagnitudeModifierIncrement()
 		self:UpdateGlobalSeismicActivity()
+		self:ProbabilityTsunami()
 		self:NextThink(CurTime())
 		return true
 	end
