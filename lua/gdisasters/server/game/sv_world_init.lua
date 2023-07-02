@@ -8,10 +8,9 @@ hook.Add( "InitPostEntity", "gDisastersInitFix", function()
 			print("created env_skypaint")
 		end
 
-		if ( RunConsoleCommand ) then
-			RunConsoleCommand( "sv_skyname", "painted" )
-			print("Changing sv_skyname to painted")
-		end
+		RunConsoleCommand( "sv_skyname", "painted" )
+		print("Changing sv_skyname to painted")
+
 		if ( game.ConsoleCommand ) then
 			game.ConsoleCommand( "sv_skyname painted\n" )
 			print("finish Changing sv_skyname to painted")
