@@ -61,43 +61,44 @@ end
 
 
 function ENT:PhysicsCollide( data, phys )
+
+	if ( data.Speed > 200 ) then 
 	
-	local pos = self:GetPos()
-	local mat = self.Material
-	local vel = self.Move_vector 
-	
-	CreateSoundWave("streams/disasters/atmospheric/sonic_boom_01.mp3", self:GetPos(), "3d" ,340.29/2, {100,100}, 5)
-
+		local pos = self:GetPos()
+		local mat = self.Material
+		local vel = Vector( math.random(-2000,2000), math.random(-2000,2000), 0)
 		
-	local models = { "models/ramses/models/nature/megacryometeor_01.mdl",
-					 "models/ramses/models/nature/megacryometeor_02.mdl",
-					 "models/ramses/models/nature/megacryometeor_03.mdl",
-					 "models/ramses/models/nature/megacryometeor_04.mdl",
-				 	 "models/ramses/models/nature/megacryometeor_05.mdl",
-				  	 "models/ramses/models/nature/megacryometeor_06.mdl",
-				 	 "models/ramses/models/nature/megacryometeor_07.mdl",
-					 "models/ramses/models/nature/megacryometeor_08.mdl",
-					 "models/ramses/models/nature/megacryometeor_09.mdl",
-					 "models/ramses/models/nature/megacryometeor_10.mdl"}
-					 
-	ParticleEffect("megacryometeor_explosion_main", self:GetPos(), Angle(0,0,0), nil)
+		CreateSoundWave("streams/disasters/atmospheric/sonic_boom_01.mp3", self:GetPos(), "3d" ,340.29/2, {100,100}, 5)
 
-	self:Remove()
-
-	for i=1, 10 do 
-		local mod_vector = Vector( math.random(-2000,2000), math.random(-2000,2000), 0)
-		local piece = ents.Create("prop_physics") 
-		piece:SetModel( models[i] )
-		piece:SetPos(pos)
-		piece:Spawn()
-		piece:Activate()
-		piece:SetMaterial(mat)
-		piece:GetPhysicsObject():SetVelocity(mod_vector)
-
+		ParticleEffect("megacryometeor_explosion_main", self:GetPos(), Angle(0,0,0), nil)
 		
-		ParticleEffectAttach("megacryometeor_piece_steam", PATTACH_POINT_FOLLOW, piece, 0)
-		timer.Simple(i + 10, function() if piece:IsValid() then piece:Remove() end end)
-		
+		local models = { "models/ramses/models/nature/megacryometeor_01.mdl",
+						 "models/ramses/models/nature/megacryometeor_02.mdl",
+						 "models/ramses/models/nature/megacryometeor_03.mdl",
+						 "models/ramses/models/nature/megacryometeor_04.mdl",
+					 	 "models/ramses/models/nature/megacryometeor_05.mdl",
+					  	 "models/ramses/models/nature/megacryometeor_06.mdl",
+					 	 "models/ramses/models/nature/megacryometeor_07.mdl",
+						 "models/ramses/models/nature/megacryometeor_08.mdl",
+						 "models/ramses/models/nature/megacryometeor_09.mdl",
+						 "models/ramses/models/nature/megacryometeor_10.mdl"}
+
+		for i=1, 10 do 
+			local piece = ents.Create("prop_physics") 
+			piece:SetModel( models[i] )
+			piece:SetPos(pos)
+			piece:Spawn()
+			piece:Activate()
+			piece:SetMaterial(mat)
+			piece:GetPhysicsObject():SetVelocity(vel)
+
+
+			ParticleEffectAttach("megacryometeor_piece_steam", PATTACH_POINT_FOLLOW, piece, 0)
+			timer.Simple(i + 10, function() if piece:IsValid() then piece:Remove() end end)
+
+		end
+
+		self:Remove()
 	end
 		
 			

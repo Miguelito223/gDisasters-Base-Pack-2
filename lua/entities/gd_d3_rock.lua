@@ -58,47 +58,33 @@ end
 function ENT:PhysicsCollide( data, phys )
 	
 	if ( data.Speed > 500 ) then 
+		
+		
 		sound.Play(table.Random({"streams/event/break/rock_break_a.mp3","streams/event/break/rock_break_b.mp3","streams/event/break/rock_break_c.mp3"}), self:GetPos(), 80, {80,120}, 1)
 		
-		local p1 = ents.Create("prop_physics")
-		p1:SetModel("models/ramses/models/nature/rock_1.mdl") 
-		p1:SetPos(data.HitPos + Vector(0,0,15))
-		p1:Spawn()
-		p1:Activate()
-		
-		
-		local p2 = ents.Create("prop_physics")
-		p2:SetModel("models/ramses/models/nature/rock_2.mdl") 
-		p2:SetPos(data.HitPos + Vector(0,0,15))
-		p2:Spawn()
-		p2:Activate()	
 
-		local p3 = ents.Create("prop_physics")
-		p3:SetModel("models/ramses/models/nature/rock_3.mdl") 
-		p3:SetPos(data.HitPos + Vector(0,0,15))
-		p3:Spawn()
-		p3:Activate()		
-		
-		p3:GetPhysicsObject():SetVelocity(self:GetVelocity())
-		p2:GetPhysicsObject():SetVelocity(self:GetVelocity())
-		p1:GetPhysicsObject():SetVelocity(self:GetVelocity())
-		p3:GetPhysicsObject():AddAngleVelocity( VectorRand() * 10000 )
-		p2:GetPhysicsObject():AddAngleVelocity( VectorRand() * 10000 )
-		p1:GetPhysicsObject():AddAngleVelocity( VectorRand() * 10000 )
-		
+		local models = { 
+			"models/ramses/models/nature/rock_1.mdl",		
+			"models/ramses/models/nature/rock_2.mdl",	    
+			"models/ramses/models/nature/rock_3.mdl"
+		}
+
+		for i=1, math.random(3, 5) do
+			local piece = ents.Create("prop_physics") 
+			piece:SetModel( table.Random(models) )
+			piece:SetPos(data.HitPos + Vector(0,0,15))
+			piece:Spawn()
+			piece:Activate()
+			piece:GetPhysicsObject():SetVelocity(self:GetVelocity())
+			piece:GetPhysicsObject():AddAngleVelocity( VectorRand() * 10000 )
+
+			timer.Simple(math.random(3,12), function()
+				if piece:IsValid() then piece:Remove() end
+			end)
+			
+		end
 
 		self:Remove()
-		
-		
-		timer.Simple(math.random(3,12), function()
-			if p1:IsValid() then p1:Remove() end
-			if p2:IsValid() then p2:Remove() end
-			if p3:IsValid() then p3:Remove() end
-		end)
-
-
-
-
 	
 	end
 end
