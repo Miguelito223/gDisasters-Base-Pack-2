@@ -1,4 +1,4 @@
-hook.Add( "Initialize", "gDisastersInitFix", function()
+hook.Add( "InitPostEntity", "gDisastersInitFix", function()
 	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 or gDisasters.DayNightSystem.InternalVars.Enabled:GetInt() >= 1 then 
 
 		if #ents.FindByClass("env_skypaint")<1 then
@@ -14,6 +14,7 @@ hook.Add( "Initialize", "gDisastersInitFix", function()
 			game.ConsoleCommand( "sv_skyname painted\n" )
 
 		end
+		
 	end
 end )
 
