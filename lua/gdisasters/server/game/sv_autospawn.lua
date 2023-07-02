@@ -568,8 +568,8 @@ local function Removemaptornados()
 		for k, v in pairs(ents.FindByClass("func_tracktrain", "func_tanktrain")) do
 			v:Remove()
 		end
+		print("Removed all map tornados!!")
 	end
-	print("Removed all map tornados!!")
 end
 
 hook.Add("InitPostEntity","gdisastersRemovemaptornados",function()
