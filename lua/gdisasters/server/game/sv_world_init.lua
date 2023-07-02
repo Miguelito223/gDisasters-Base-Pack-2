@@ -5,6 +5,7 @@ hook.Add( "InitPostEntity", "gDisastersInitFix", function()
 			local ent = ents.Create("env_skypaint")
 			ent:SetPos(Vector(0,0,0))
 			ent:Spawn()
+			print("created env_skypaint")
 		end
 
 		RunConsoleCommand( "sv_skyname", "painted" )
@@ -14,6 +15,8 @@ hook.Add( "InitPostEntity", "gDisastersInitFix", function()
 			game.ConsoleCommand( "sv_skyname painted\n" )
 
 		end
+
+		print("changed sv_skyname to painted")
 		
 	end
 end )
@@ -35,6 +38,7 @@ hook.Add( "InitPostEntity", "gDisastersInitPostEvo", function()
 
 			oldCleanUpMap(dontSendToClients, ExtraFilters)
 		end
+		print("removed entitys env_skypaint and light_environment")
 	end
 
 end )
