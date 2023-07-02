@@ -13,16 +13,14 @@ hook.Add( "InitPostEntity", "gDisastersInitFix", function()
 			print("Changing sv_skyname to painted")
 		end
 		if ( game.ConsoleCommand ) then
-
 			game.ConsoleCommand( "sv_skyname painted\n" )
-			
 			print("finish Changing sv_skyname to painted")
 		end
 
 		print("changed sv_skyname to painted")
 		
 	end
-end )
+end)
 
 hook.Add( "InitPostEntity", "gDisastersInitPostEvo", function()
 	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 or gDisasters.DayNightSystem.InternalVars.Enabled:GetInt() >= 1 then 
