@@ -1,3 +1,25 @@
+hook.Add( "InitPostEntity", "gDisastersInitPostEvo", function()
+	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 or gDisasters.DayNightSystem.InternalVars.Enabled:GetInt() >= 1 then 
+
+		local oldCleanUpMap = game.CleanUpMap
+	
+		game.CleanUpMap = function(dontSendToClients, ExtraFilters)
+			dontSendToClients = (dontSendToClients != nil and dontSendToClients or false)
+
+			if ( ExtraFilters != nil ) then
+				table.insert(ExtraFilters, "env_skypaint")
+				table.insert(ExtraFilters, "light_environment")
+			else
+				ExtraFilters = { "env_skypaint", "light_environment" }
+			end
+
+			oldCleanUpMap(dontSendToClients, ExtraFilters)
+		end
+		print("removed entitys env_skypaint and light_environment")
+	end
+
+end )
+
 hook.Add( "PlayerInitialSpawn", "gDisastersInitFix", function()
 	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 or gDisasters.DayNightSystem.InternalVars.Enabled:GetInt() >= 1 then 
 
@@ -20,28 +42,6 @@ hook.Add( "PlayerInitialSpawn", "gDisastersInitFix", function()
 		
 	end
 end)
-
-hook.Add( "InitPostEntity", "gDisastersInitPostEvo", function()
-	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 or gDisasters.DayNightSystem.InternalVars.Enabled:GetInt() >= 1 then 
-
-		local oldCleanUpMap = game.CleanUpMap
-	
-		game.CleanUpMap = function(dontSendToClients, ExtraFilters)
-			dontSendToClients = (dontSendToClients != nil and dontSendToClients or false)
-
-			if ( ExtraFilters != nil ) then
-				table.insert(ExtraFilters, "env_skypaint")
-				table.insert(ExtraFilters, "light_environment")
-			else
-				ExtraFilters = { "env_skypaint", "light_environment" }
-			end
-
-			oldCleanUpMap(dontSendToClients, ExtraFilters)
-		end
-		print("removed entitys env_skypaint and light_environment")
-	end
-
-end )
 
 
 
