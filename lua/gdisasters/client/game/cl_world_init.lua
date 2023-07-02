@@ -2,6 +2,8 @@ hook.Add( "InitPostEntity", "gDisastersFirstJoinLightmaps", function()
 
 	render.RedownloadAllLightmaps();
 
+	print("Redownload All Lightmaps")
+
 end )
 
 hook.Add( "CalcView", "gdisastersCalcView", function( pl, pos, ang, fov, nearZ, farZ )
