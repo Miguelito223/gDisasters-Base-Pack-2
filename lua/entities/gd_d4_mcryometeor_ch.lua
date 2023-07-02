@@ -94,7 +94,9 @@ function ENT:PhysicsCollide( data, phys )
 
 
 			ParticleEffectAttach("megacryometeor_piece_steam", PATTACH_POINT_FOLLOW, piece, 0)
-			timer.Simple(i + 10, function() if piece:IsValid() then piece:Remove() end end)
+			timer.Simple(i + 10, function() 
+				if piece:IsValid() then piece:Remove() end 
+			end)
 
 		end
 
