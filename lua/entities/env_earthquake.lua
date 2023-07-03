@@ -495,19 +495,17 @@ function ENT:Tsunami()
 			if mag >= 10 and mag < 13 then
 				local tsunami = ents.Create("gd_d10_megatsunami")
 				tsunami:Spawn()
-				tsunami:Activate()
-				self.TsunamiProbability = false 
+				tsunami:Activate() 
 			elseif mag >= 5 and mag < 10 then
 				local tsunami = ents.Create("gd_d7_tsunami")
 				tsunami:Spawn()
 				tsunami:Activate()
-				self.TsunamiProbability = false 
 			elseif mag > 0 and mag < 5 then
 				local tsunami = ents.Create("gd_d2_tidal_wave")
 				tsunami:Spawn()
 				tsunami:Activate()
-				self.TsunamiProbability = false 
 			end
+			self.TsunamiProbability = false 
 			
 		end
 	end
@@ -542,8 +540,8 @@ function ENT:Think()
 		self:IsParentValid()
 		self:ProcessMagnitude()
 		self:MagnitudeModifierIncrement()
-		self:Tsunami()
 		self:UpdateGlobalSeismicActivity()
+		self:Tsunami()
 		self:NextThink(CurTime())
 		return true
 	end
