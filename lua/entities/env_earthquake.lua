@@ -477,7 +477,11 @@ end
 
 function ENT:CheckProbabilityTsunami()
 	if self:IsValid() and self.Magnitude != nil and self.MagnitudeModifier != nil then
-		self.TsunamiProbability = true
+		timer.Simple(math.random(50,100), function()
+			self.TsunamiProbability = true
+		end)
+	else
+		self.TsunamiProbability = false
 	end
 end
 
@@ -485,26 +489,22 @@ function ENT:ProbabilityTsunami()
 	local magmod    = self.MagnitudeModifier
 	local mag       = self.Magnitude * magmod
 
-	table = {"gd_d2_tidal_wave", "gd_d7_tsunami","gd_d10_megatsunami"}
-
 	if self.TsunamiProbability == true then
-		if math.random(1,15)==15 then
+		if math.random(1,3)==3 then
 			if mag >= 10 and mag < 13 then
-				local tsunami = ents.Create(table[3])
+				local tsunami = ents.Create("gd_d10_megatsunami")
 				tsunami:Spawn()
 				tsunami:Activate()
 			elseif mag >= 5 and mag < 10 then
-				local tsunami = ents.Create(table[2])
+				local tsunami = ents.Create("gd_d7_tsunami")
 				tsunami:Spawn()
 				tsunami:Activate()
 			elseif mag > 0 and mag < 5 then
-				local tsunami = ents.Create(table[2])
+				local tsunami = ents.Create("gd_d2_tidal_wave")
 				tsunami:Spawn()
 				tsunami:Activate()
 			end
-			timer.Simple(math.random(5,10), function()
-				self.TsunamiProbability = false 
-			end)
+			self.TsunamiProbability = false 
 		end
 	end
 end
