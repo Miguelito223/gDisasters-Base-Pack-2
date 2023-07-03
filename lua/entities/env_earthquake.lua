@@ -496,16 +496,19 @@ function ENT:Tsunami()
 				local tsunami = ents.Create("gd_d10_megatsunami")
 				tsunami:Spawn()
 				tsunami:Activate()
+				self.TsunamiProbability = false 
 			elseif mag >= 5 and mag < 10 then
 				local tsunami = ents.Create("gd_d7_tsunami")
 				tsunami:Spawn()
 				tsunami:Activate()
+				self.TsunamiProbability = false 
 			elseif mag > 0 and mag < 5 then
 				local tsunami = ents.Create("gd_d2_tidal_wave")
 				tsunami:Spawn()
 				tsunami:Activate()
+				self.TsunamiProbability = false 
 			end
-			self.TsunamiProbability = false 
+			
 		end
 	end
 end
