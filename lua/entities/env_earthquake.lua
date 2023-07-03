@@ -484,7 +484,6 @@ function ENT:CheckProbabilityTsunami()
 	else
 		self.TsunamiProbability = false
 	end
-	self:Tsunami()
 end
 
 function ENT:Tsunami()
