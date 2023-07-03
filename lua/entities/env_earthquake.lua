@@ -505,8 +505,8 @@ function ENT:Tsunami()
 				tsunami:Spawn()
 				tsunami:Activate()
 			end
+			self.TsunamiProbability = false 
 		end
-		self.TsunamiProbability = false 
 	end
 end
 
