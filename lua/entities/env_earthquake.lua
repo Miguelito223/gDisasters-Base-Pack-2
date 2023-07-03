@@ -478,7 +478,7 @@ end
 
 function ENT:CheckProbabilityTsunami()
 	if self:IsValid() and self.Magnitude != nil and self.MagnitudeModifier != nil then
-		timer.Simple(math.random(20,50), function()
+		timer.Simple(math.random(10,15), function()
 			self.TsunamiProbability = true
 		end)
 	else
@@ -492,7 +492,7 @@ function ENT:Tsunami()
 	local mag       = self.Magnitude * magmod
 
 	if self.TsunamiProbability == true then
-		if math.random(1,3)==3 then
+		if math.random(1, 30)==30 then
 			if mag >= 10 and mag < 13 then
 				local tsunami = ents.Create("gd_d10_megatsunami")
 				tsunami:Spawn()
