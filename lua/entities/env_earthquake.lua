@@ -35,7 +35,6 @@ function ENT:Initialize()
 		self.NextPhysicsTime = CurTime()
 		self.SpawnTime       = CurTime()
 		self:SetNoDraw(true)
-		self:CheckProbabilityTsunami()
 		self:PlayInitialSounds()
 		timer.Simple(math.random(self.Life[1], self.Life[2]), function()
 			if !self:IsValid() then return end
@@ -476,40 +475,6 @@ function ENT:CanDoPhysics(nexttime)
 	end
 end
 
-function ENT:CheckProbabilityTsunami()
-	if self:IsValid() and self.Magnitude != nil and self.MagnitudeModifier != nil then
-		timer.Simple(math.random(10,15), function()
-			self.TsunamiProbability = true
-		end)
-	else
-		self.TsunamiProbability = false
-	end
-end
-
-function ENT:Tsunami()
-	local magmod    = self.MagnitudeModifier
-	local mag       = self.Magnitude * magmod
-
-	if self.TsunamiProbability == true then
-		if math.random(1, 100)==100 then
-			if mag >= 10 and mag < 13 then
-				local tsunami = ents.Create("gd_d10_megatsunami")
-				tsunami:Spawn()
-				tsunami:Activate() 
-			elseif mag >= 5 and mag < 10 then
-				local tsunami = ents.Create("gd_d7_tsunami")
-				tsunami:Spawn()
-				tsunami:Activate()
-			elseif mag > 0 and mag < 5 then
-				local tsunami = ents.Create("gd_d2_tidal_wave")
-				tsunami:Spawn()
-				tsunami:Activate()
-			end
-			self.TsunamiProbability = false 
-		end
-	end
-end
-
 function ENT:MagnitudeModulateSound()
 	local volume = self:GetNWFloat("Magnitude") 
 	local volmod = (volume / 10) ^ 3
@@ -540,7 +505,6 @@ function ENT:Think()
 		self:ProcessMagnitude()
 		self:MagnitudeModifierIncrement()
 		self:UpdateGlobalSeismicActivity()
-		self:Tsunami()
 		self:NextThink(CurTime())
 		return true
 	end
