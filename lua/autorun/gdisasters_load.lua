@@ -8,20 +8,6 @@ include("gdisasters/shared/game/sh_world_init.lua")
 
 
 if (SERVER) then
-
-
-
-	AddCSLuaFile("gdisasters/server/player-npcs/sv_postspawn.lua")
-	AddCSLuaFile("gdisasters/server/server_func/sv_main.lua")
-	AddCSLuaFile("gdisasters/server/server_func/sv_netstrings.lua")
-	AddCSLuaFile("gdisasters/server/game/antilag/sv_main.lua")
-	AddCSLuaFile("gdisasters/server/game/sv_autospawn.lua")
-	AddCSLuaFile("gdisasters/server/game/sv_damagetypes.lua")
-	AddCSLuaFile("gdisasters/server/game/sv_water_physics.lua")
-	AddCSLuaFile("gdisasters/server/game/sv_world_init.lua")
-	AddCSLuaFile("gdisasters/server/player-npcs/sv_process_gfx.lua")
-	AddCSLuaFile("gdisasters/server/atmosphere/sv_main.lua")
-	AddCSLuaFile("gdisasters/server/extensions/sv_patchs-bounds.lua")
 	AddCSLuaFile("gdisasters/client/player-npcs/cl_postspawn.lua")
 	AddCSLuaFile("gdisasters/client/client_func/cl_main.lua")
 	AddCSLuaFile("gdisasters/client/client_func/cl_netstrings.lua")
