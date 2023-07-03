@@ -35,6 +35,7 @@ function ENT:Initialize()
 		self.NextPhysicsTime = CurTime()
 		self.SpawnTime       = CurTime()
 		self:SetNoDraw(true)
+		self:CheckProbabilityTsunami()
 		self:PlayInitialSounds()
 		timer.Simple(math.random(self.Life[1], self.Life[2]), function()
 			if !self:IsValid() then return end
@@ -477,15 +478,16 @@ end
 
 function ENT:CheckProbabilityTsunami()
 	if self:IsValid() and self.Magnitude != nil and self.MagnitudeModifier != nil then
-		timer.Simple(math.random(50,100), function()
+		timer.Simple(math.random(20,50), function()
 			self.TsunamiProbability = true
 		end)
 	else
 		self.TsunamiProbability = false
 	end
+	self:Tsunami()
 end
 
-function ENT:ProbabilityTsunami()
+function ENT:Tsunami()
 	local magmod    = self.MagnitudeModifier
 	local mag       = self.Magnitude * magmod
 
@@ -538,9 +540,8 @@ function ENT:Think()
 		self:IsParentValid()
 		self:ProcessMagnitude()
 		self:MagnitudeModifierIncrement()
+		self:Tsunami()
 		self:UpdateGlobalSeismicActivity()
-		self:CheckProbabilityTsunami()
-		self:ProbabilityTsunami()
 		self:NextThink(CurTime())
 		return true
 	end
