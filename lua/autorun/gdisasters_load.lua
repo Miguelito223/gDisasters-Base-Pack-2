@@ -48,5 +48,4 @@ function LoadFiles(file_path)
 	end
 end
 
-LoadFiles()
 LoadFiles("gdisasters")
