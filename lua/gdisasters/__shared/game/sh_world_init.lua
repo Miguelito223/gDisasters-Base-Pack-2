@@ -698,7 +698,7 @@ concommand.Add("gdisasters_dnc_getmoondir", function(cmd, args, O2)
 	print(gDisasters_GetMoonDir())
 end)
 
-concommand.Add( "gdisasters_LoadFiles", function( pl, cmd, args )
+concommand.Add( "gdisasters_loadfiles", function( pl, cmd, args )
 	LoadFiles("gdisasters")
 end );
 
