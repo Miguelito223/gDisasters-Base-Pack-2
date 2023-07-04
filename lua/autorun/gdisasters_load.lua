@@ -1,53 +1,53 @@
 AddCSLuaFile()
 
-include("gdisasters/shared/player-npcs/sh_postspawn.lua")
-include("gdisasters/shared/shared_func/sh_main.lua")
-include("gdisasters/shared/shared_func/sh_netstrings.lua")
-include("gdisasters/shared/extensions/sh_patchs-bounds.lua")
-include("gdisasters/shared/game/sh_world_init.lua")
+local root_folder_name = debug.getinfo(1).short_src:match("addons/(.-)/")
 
-
-if (SERVER) then
-	AddCSLuaFile("gdisasters/client/player-npcs/cl_postspawn.lua")
-	AddCSLuaFile("gdisasters/client/client_func/cl_main.lua")
-	AddCSLuaFile("gdisasters/client/client_func/cl_netstrings.lua")
-	AddCSLuaFile("gdisasters/client/hud/cl_main.lua")
-	AddCSLuaFile("gdisasters/client/player-npcs/cl_process_gfx.lua")
-	AddCSLuaFile("gdisasters/client/atmosphere/cl_main.lua")
-	AddCSLuaFile("gdisasters/client/game/cl_world_init.lua")
-	AddCSLuaFile("gdisasters/client/spawnlist/menu/cl_main.lua")
-	AddCSLuaFile("gdisasters/client/spawnlist/menu/cl_populate.lua")
-	AddCSLuaFile("gdisasters/client/toolmenu/cl_menu.lua")
-	AddCSLuaFile("gdisasters/shared/player-npcs/sh_postspawn.lua")
-	AddCSLuaFile("gdisasters/shared/shared_func/sh_main.lua")
-	AddCSLuaFile("gdisasters/shared/shared_func/sh_netstrings.lua")
-	AddCSLuaFile("gdisasters/shared/extensions/sh_patchs-bounds.lua")
-	AddCSLuaFile("gdisasters/shared/game/sh_world_init.lua")
-
-	include("gdisasters/server/player-npcs/sv_postspawn.lua")
-	include("gdisasters/server/server_func/sv_main.lua")
-	include("gdisasters/server/server_func/sv_netstrings.lua")
-	include("gdisasters/server/game/antilag/sv_main.lua")
-	include("gdisasters/server/game/sv_autospawn.lua")
-	include("gdisasters/server/game/sv_damagetypes.lua")
-	include("gdisasters/server/game/sv_water_physics.lua")
-	include("gdisasters/server/game/sv_world_init.lua")
-	include("gdisasters/server/player-npcs/sv_process_gfx.lua")
-	include("gdisasters/server/atmosphere/sv_main.lua")
-	include("gdisasters/server/extensions/sv_patchs-bounds.lua")
+local function RunFile(file_path)
+	local file = file_path:match(".+/(.+)")
+	print("file")
 	
+	if !file:EndsWith(".lua") then return end
+	
+	if SERVER then
+		if string.StartWith(file, "_sh_") or string.StartWith(file, "sh_") then
+			AddCSLuaFile(file_path)
+			include(file_path)
+		elseif string.StartWith(file, "_sv_") or string.StartWith(file, "sv_") then
+			include(file_path)
+		elseif string.StartWith(file, "_cl_") or string.StartWith(file, "cl_") then
+			AddCSLuaFile(file_path)
+		end
+	elseif CLIENT then
+		if string.StartWith(file, "_sh_") or string.StartWith(file, "sh_") then
+			include(file_path)
+		elseif string.StartWith(file, "_cl_") or string.StartWith(file, "cl_") then
+			include(file_path)
+		end
+	end
 end
 
-if (CLIENT) then
-
-	include("gdisasters/client/player-npcs/cl_postspawn.lua")
-	include("gdisasters/client/client_func/cl_main.lua")
-	include("gdisasters/client/client_func/cl_netstrings.lua")
-	include("gdisasters/client/hud/cl_main.lua")
-	include("gdisasters/client/player-npcs/cl_process_gfx.lua")
-	include("gdisasters/client/atmosphere/cl_main.lua")
-	include("gdisasters/client/game/cl_world_init.lua")
-	include("gdisasters/client/spawnlist/menu/cl_main.lua")
-	include("gdisasters/client/spawnlist/menu/cl_populate.lua")
-	include("gdisasters/client/toolmenu/cl_menu.lua")
+function LoadFiles(file_path)
+	file_path = file_path or root_folder_name
+	local files, folders = file.Find(file_path .. "/*", "LUA")
+	
+	if !table.IsEmpty(folders) then
+		for _, folder_name in next, folders do
+			if folder_name == "." or folder_name == ".." then continue end
+            
+			local path = ("%s/%s"):format(file_path, folder_name)
+			
+			LoadFiles(path)
+		end
+	end
+	
+	if !table.IsEmpty(files) then
+		for i = 1, #files do
+			local file = files[i]
+			
+			RunFile(file_path .. "/" .. file)
+		end
+	end
 end
+
+LoadFiles()
+LoadFiles("gdisasters")
