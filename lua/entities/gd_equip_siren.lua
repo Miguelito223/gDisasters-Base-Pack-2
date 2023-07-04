@@ -705,7 +705,7 @@ function ENT:Think()
 			end 
 			
 		end
-		for k, v in pairs(ents.FindByClass("gd_d11_neutron_star_ch")) do 
+		for k, v in pairs(ents.FindByClass("gd_d11_neutron_star")) do 
 			
 			
 			if v:IsValid() and CurTime() >= self.NextAvailableSoundEmission then 
