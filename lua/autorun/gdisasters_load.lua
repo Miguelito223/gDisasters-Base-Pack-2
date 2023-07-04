@@ -4,7 +4,6 @@ local root_folder_name = debug.getinfo(1).short_src:match("addons/(.-)/")
 
 local function RunFile(file_path)
 	local file = file_path:match(".+/(.+)")
-	print("file")
 	
 	if !file:EndsWith(".lua") then return end
 	
