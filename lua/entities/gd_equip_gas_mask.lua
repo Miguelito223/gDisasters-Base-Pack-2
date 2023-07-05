@@ -8,8 +8,8 @@ ENT.Information		= ""
 ENT.Category		= "GB5: Protection"
 
 ENT.Editable		= false
-ENT.Spawnable		= true
-ENT.AdminOnly		= true
+ENT.Spawnable		= false
+ENT.AdminOnly		= false
 ENT.Contact			                 =  ""  
 
 sound.Add( {
