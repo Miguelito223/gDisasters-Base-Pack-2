@@ -80,6 +80,7 @@ local function Autospawn_Timer()
 				"gd_d6_cryoshower", 
 				"gd_d7_lavabombshower", 
 				"gd_d8_ancientvolcano", 
+				"gd_d10_supervolcano",
 				"gd_d5_maturevolcano", 
 				"gd_d4_youngvolcano",
 				"gd_d2_minivolcano",
@@ -106,6 +107,7 @@ local function Autospawn_Timer()
 				"gd_d9_whitehole",
 				"gd_d2_blackiceover",
 				"gd_d2_gustnado",
+				"gd_d8_volcanicrockhower",
 				"gd_d3_ball_lightning",
 				"gd_d10_mfirenado",
 				"gd_d5_mfirenado",
@@ -118,7 +120,9 @@ local function Autospawn_Timer()
 				"gd_d8_combineinv",
 				"gd_d8_lava_tsunami",
 				"gd_d10_megatsunami",
-				"gd_d11_lava_megatsunami"
+				"gd_d11_lava_megatsunami",
+				"gd_d2_tidal_wave",
+				"gd_d3_tidal_wave_lava"
 			}
 
 			local dis = ents.Create(table.Random(disasters))
@@ -322,7 +326,7 @@ local function Autospawn_Timer()
 				"gd_w4_catfourhurricane", 
 				"gd_w5_catfivehurricane", 
 				"gd_w6_catsixhurricane", 
-				"gd_w1_shootingstarshower", 
+				"gd_w1_shootingstarshower",
 				"gd_w1_duststorm",  
 				"gd_w1_snow",  
 				"gd_w1_heavyfog", 
@@ -399,6 +403,8 @@ local function Autospawn_Timer()
 				"gd_d6_cryoshower", 
 				"gd_d7_lavabombshower", 
 				"gd_d8_ancientvolcano", 
+				"gd_d10_supervolcano", 
+				"gd_d8_volcanicrockhower",
 				"gd_d5_maturevolcano", 
 				"gd_d4_youngvolcano",
 				"gd_d3_snownado", 
@@ -441,7 +447,9 @@ local function Autospawn_Timer()
 				"gd_d8_combineinv",
 				"gd_d8_lava_tsunami",
 				"gd_d10_megatsunami",
-				"gd_d11_lava_megatsunami"
+				"gd_d11_lava_megatsunami",
+				"gd_d2_tidal_wave",
+				"gd_d3_tidal_wave_lava"
 			}
 
 			local weadis = ents.Create(table.Random(weadisas))
