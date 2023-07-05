@@ -1,5 +1,3 @@
-AddCSLuaFile()
-
 local root_folder_name = debug.getinfo(1).short_src:match("gdisasters")
 
 local function RunFile(file_path)

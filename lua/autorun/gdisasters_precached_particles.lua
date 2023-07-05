@@ -1,5 +1,3 @@
-AddCSLuaFile()
-
 PrecacheParticleSystem("localized_dust_effect")
 PrecacheParticleSystem("localized_sand_effect")
 PrecacheParticleSystem("localized_rain_effect")
