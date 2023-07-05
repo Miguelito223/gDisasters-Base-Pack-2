@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-local root_folder_name = debug.getinfo(1).short_src:match("addons/(.-)/")
+local root_folder_name = debug.getinfo(1).short_src:match("gdisasters")
 
 local function RunFile(file_path)
 	local file = file_path:match(".+/(.+)")
@@ -28,6 +28,7 @@ end
 function LoadFiles(file_path)
 	file_path = file_path or root_folder_name
 	local files, folders = file.Find(file_path .. "/*", "LUA")
+	print(file_path)
 	
 	if !table.IsEmpty(folders) then
 		for _, folder_name in next, folders do
@@ -48,4 +49,4 @@ function LoadFiles(file_path)
 	end
 end
 
-LoadFiles("gdisasters")
+LoadFiles()
