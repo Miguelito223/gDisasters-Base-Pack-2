@@ -28,7 +28,6 @@ end
 function LoadFiles(file_path)
 	file_path = file_path or root_folder_name
 	local files, folders = file.Find(file_path .. "/*", "LUA")
-	print(file_path)
 	
 	if !table.IsEmpty(folders) then
 		for _, folder_name in next, folders do
