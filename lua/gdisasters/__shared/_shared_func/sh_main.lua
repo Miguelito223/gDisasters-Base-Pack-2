@@ -4,7 +4,7 @@ gDisasters.Cached         = {}
 gDisasters.DayNightSystem        = {}
 gDisasters.DayNightSystem.InternalVars = {}
 gDisasters.Game                  = {}
-gDisasters.Version = 0.296
+gDisasters.Version = 0.297
 gDisasters.WorkshopURL = "https://steamcommunity.com/sharedfiles/filedetails/changelog/2522900784"
 
 Break_Sounds = {

@@ -3,9 +3,8 @@ local function RunCheck()
     http.Fetch(gDisasters.WorkShopURL, function(code)
         local lV = tonumber(string.match(code, "Version:(.-)<"))
         if not lV then return end -- Unable to locate last version
-        if gDisasters.Version >= lV then
-            print("Version " .. lV .. " is out!")
-        end
+        if gDisasters.Version >= lV then return end
+        print("Version " .. lV .. " is out!")
         cookie.Set("gd_nextv", lV)
     end)
 end
