@@ -20,7 +20,7 @@ hook.Add( "InitPostEntity", "gDisastersInitPostEvo", function()
 
 end )
 
-hook.Add( "PlayerInitialSpawn", "gDisastersInitFix", function()
+hook.Add( "PostInit", "gDisastersInitFix", function()
 	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 or gDisasters.DayNightSystem.InternalVars.Enabled:GetInt() >= 1 then 
 
 		if #ents.FindByClass("env_skypaint")<1 then
