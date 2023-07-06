@@ -276,24 +276,6 @@ hook.Add("RenderScreenspaceEffects", "gfx_TempEffect", function()
 
 
 end)
-
-hook.Add( "Tick", "gDisasters_EnvWaterMovement", function(  )
-	for k, ply in pairs(player.GetAll()) do 
-	
-		if isinWater(ply) then
-			if ply:KeyDown( IN_JUMP) then
-				if ply:GetVelocity():Dot(Vector(0,0,30)) < 500 then 
-					ply:SetVelocity(  Vector( 0, 0, 30 ) )
-				end
-			elseif ply:KeyDown( IN_FORWARD) then
-				if ply:GetVelocity():Dot(ply:GetAimVector() * 100) < 10000 then 
-					ply:SetVelocity(  ply:GetAimVector() * 100 )
-				end
-			end
-		end
-	end
-	
-end )
 	
 	
 	
