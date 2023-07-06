@@ -8,13 +8,13 @@ local function RunCheck()
         else 
             print("Version " .. lV .. " is the newest version")
         end
-        cookie.Set("sf_nextv", lV)
+        cookie.Set("gd_nextv", lV)
     end)
 end
 local function RunLogic()
     -- Check if a newer version is out
-    local lV = cookie.GetNumber("sf_nextv", gDisasters.Version)
-    if cookie.GetNumber("sf_nextvcheck", 0) > os.time() then
+    local lV = cookie.GetNumber("gd_nextv", gDisasters.Version)
+    if cookie.GetNumber("gd_nextvcheck", 0) > os.time() then
         if lV > gDisasters.Version then
             print("Version " .. lV .. " is out!")
         else
@@ -22,7 +22,7 @@ local function RunLogic()
         end
     else
         RunCheck()
-        cookie.Set("sf_nextvcheck", os.time() + 129600) -- Check in 1½ day
+        cookie.Set("gd_nextvcheck", os.time() + 129600) -- Check in 1½ day
     end
 end
-hook.Add("PlayerInitialSpawn", "gDisasters_checkversion", RunLogic)
+hook.Add("Initialize", "gDisasters_checkversion", RunLogic)
