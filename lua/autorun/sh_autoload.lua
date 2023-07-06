@@ -13,12 +13,15 @@ local function RunFile(file_path)
 			include(file_path)
 		elseif string.StartWith(file, "_cl_") or string.StartWith(file, "cl_") then
 			AddCSLuaFile(file_path)
+		else
 		end
 	elseif CLIENT then
 		if string.StartWith(file, "_sh_") or string.StartWith(file, "sh_") then
 			include(file_path)
 		elseif string.StartWith(file, "_cl_") or string.StartWith(file, "cl_") then
 			include(file_path)
+		elseif string.StartWith(file, "_sv_") or string.StartWith(file, "sv_") then
+		else
 		end
 	end
 end
@@ -46,4 +49,4 @@ function LoadFiles(file_path)
 	end
 end
 
-LoadFiles()
+LoadFiles("gdisasters")
