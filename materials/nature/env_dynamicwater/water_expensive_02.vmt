@@ -3,7 +3,6 @@
 
 	"$refractamount" "0.4"
 	"$refracttint" "[0.5 0.5 0.5]"
-
 	"$dudvmap" "dev/water_dudv"
 	"$normalmap" "dev/water_normal"
 
@@ -11,7 +10,7 @@
 	"$bumpframe" "0"
 	"$nocull" 1
 
-	$detail nature/water_detail
+	$detail "nature/water_detail"
 	$detailscale 12
 	$detailblendfactor 1
 	$detailblendmode 1

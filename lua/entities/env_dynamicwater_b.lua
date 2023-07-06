@@ -918,12 +918,6 @@ function ENT:DamageEntity(ent, phys, buoyancy_mod, mass)
 	
 end
 
-
-local tsunami_water_textures = {}
-tsunami_water_textures[1]    = Material("nature/env_dynamicwater/base_water_tsunami");
-tsunami_water_textures[2]    = Material("nature/env_dynamicwater/base_water_03");
-
-
 function ENT:Draw()
 			
 end
@@ -961,6 +955,16 @@ function ENT:IsParentValid()
 	if self.Parent:IsValid()==false or self.Parent==nil then self:Remove(); end
 	
 end
+
+local water_textures = {}
+water_textures[1]    = Material("nature/env_dynamicwater/base_water_01")
+water_textures[2]    = Material("nature/env_dynamicwater/base_water_02")
+water_textures[3]    = Material("nature/env_dynamicwater/base_water_03")
+
+
+local water_shader   = {}
+water_shader[1]    = Material("nature/env_dynamicwater/water_expensive_01")
+water_shader[2]    = Material("nature/env_dynamicwater/water_expensive_02")
 
 
 function env_dynamicwater_b_DrawWater()
@@ -1010,7 +1014,7 @@ function env_dynamicwater_b_DrawWater()
 	
 	
 		render.SetBlend( 1 )
-		render.SetMaterial(tsunami_water_textures[2])
+		render.SetMaterial(water_shader[1])
 		
 		local matrix = Matrix( );
 		matrix:Translate( getMapCenterFloorPos() );
@@ -1054,7 +1058,7 @@ function env_dynamicwater_b_DrawWater()
 	local function DrawLQWater()
 	
 		render.SetBlend( 1 )
-		render.SetMaterial(tsunami_water_textures[1])
+		render.SetMaterial(water_texture)
 		
 		local matrix = Matrix( );
 		matrix:Translate( getMapCenterFloorPos() );

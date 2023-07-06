@@ -291,8 +291,8 @@ water_textures[3]    = Material("nature/env_dynamicwater/base_water_03")
 
 
 local water_shader   = {}
-water_shader[1]    = Material("nature/env_dynamicwater/water_expensive_02")
-water_shader[2]    = Material("nature/env_dynamicwater/water_expensive_01")
+water_shader[1]    = Material("nature/env_dynamicwater/water_expensive_01")
+water_shader[2]    = Material("nature/env_dynamicwater/water_expensive_02")
 
 
 	
@@ -349,7 +349,6 @@ function env_dynamicwater_DrawWater()
 		
 		render.SetBlend( 1 )
 		render.SetMaterial(water_shader[1])
-		render.SuppressEngineLighting( true ) 
 		
 		local matrix = Matrix( );
 		matrix:Translate( getMapCenterFloorPos() );
@@ -403,8 +402,7 @@ function env_dynamicwater_DrawWater()
 	
 	
 	RenderFix()
-	if GetConVar( "gdisasters_graphics_water_quality" ):GetInt() >= 3 then DrawHQWater() end 
-	DrawLQWater()	
+	if GetConVar( "gdisasters_graphics_water_quality" ):GetInt() >= 3 then DrawHQWater() else DrawLQWater()	end
 	
 	model:Remove()	
 end
