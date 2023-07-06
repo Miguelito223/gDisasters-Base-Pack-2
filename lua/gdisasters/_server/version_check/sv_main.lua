@@ -5,8 +5,6 @@ local function RunCheck()
         if not lV then return end -- Unable to locate last version
         if gDisasters.Version >= lV then
             print("Version " .. lV .. " is out!")
-        else 
-            print("Version " .. lV .. " is the newest version")
         end
         cookie.Set("gd_nextv", lV)
     end)
@@ -17,8 +15,6 @@ local function RunLogic()
     if cookie.GetNumber("gd_nextvcheck", 0) > os.time() then
         if lV > gDisasters.Version then
             print("Version " .. lV .. " is out!")
-        else
-            print("Version " .. lV .. " is the newest version")
         end
     else
         RunCheck()
