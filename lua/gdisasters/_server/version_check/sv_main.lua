@@ -25,4 +25,4 @@ local function RunLogic()
         cookie.Set("gd_nextvcheck", os.time() + 129600) -- Check in 1½ day
     end
 end
-hook.Add("Initialize", "gDisasters_checkversion", RunLogic)
+hook.Add("PlayerInitialSpawn", "gDisasters_checkversion", RunLogic)
