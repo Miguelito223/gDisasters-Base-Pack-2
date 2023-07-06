@@ -977,7 +977,7 @@ function env_dynamicwater_b_DrawWater()
 	local model = ClientsideModel("models/props_junk/PopCan01a.mdl", RENDERGROUP_OPAQUE);
 	model:SetNoDraw(true);	
 	
-	
+	local water_texture =  water_textures[ math.Clamp(GetConVar( "gdisasters_graphics_water_quality" ):GetInt(), 1, 3)]
 	
 	local function RenderFix()
 	
@@ -1101,7 +1101,7 @@ function env_dynamicwater_b_DrawWater()
 	end
 	
 	RenderFix()
-	if GetConVar( "gdisasters_graphics_water_quality" ):GetInt() >= 3 then DrawHQWater() else DrawLQWater()	end 
+	if GetConVar( "gdisasters_graphics_water_quality" ):GetInt() > 3 then DrawHQWater() else DrawLQWater()	end 
 	model:Remove()	
 end
 

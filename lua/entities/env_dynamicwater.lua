@@ -402,8 +402,7 @@ function env_dynamicwater_DrawWater()
 	
 	
 	RenderFix()
-	if GetConVar( "gdisasters_graphics_water_quality" ):GetInt() >= 3 then DrawHQWater() else DrawLQWater()	end
-	
+	if GetConVar( "gdisasters_graphics_water_quality" ):GetInt() > 3 then DrawHQWater() else DrawLQWater()	end
 	model:Remove()	
 end
 
