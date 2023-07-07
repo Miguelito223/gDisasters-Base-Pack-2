@@ -20,7 +20,7 @@ npc_tvirus = {
 }
 
 for i = 1, #npc_tvirus do
-	print(npc_tvirus[i])
+	print("loading" .. npc_tvirus[i])
 end
 
 print("finish")

@@ -4,11 +4,12 @@ local root_folder_name = debug.getinfo(1).short_src:match("materials/decals")
 
 local function RunFile(file_path)
 	local file = file_path:match(".+/(.+)")
+	local name = file_path:match("(.+)%..+$")
 	local file_path_fixed = file_path:match(".-/(.+)%..+$")
 
-	if !file:EndsWith(".vtf") and !file:EndsWith(".vmt") then return end
+	if !file:EndsWith(".vmt") then return end
 
-	print("loading file: " .. file_path_fixed)
+	print("loading file: " .. file_path_fixed )
 
 	if file:match("snow") == "snow" then
 		game.AddDecal( "snow", file_path_fixed  )
@@ -17,7 +18,7 @@ local function RunFile(file_path)
 	elseif file:match("ice") == "ice" then
 		game.AddDecal( "ice", file_path_fixed  )
 	else
-		game.AddDecal( file, file_path_fixed )
+		game.AddDecal( name, file_path_fixed )
 	end
 
 
