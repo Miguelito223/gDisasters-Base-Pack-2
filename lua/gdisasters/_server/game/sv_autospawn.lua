@@ -1,5 +1,3 @@
-
-
 local function Autospawn_Timer()
 	local recent = false
 
