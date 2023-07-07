@@ -6,6 +6,8 @@ local function RunFile(file_path)
 	local file = file_path:match(".+/(.+)")
 	
 	if !file:EndsWith(".pcf") then return end
+
+	print("loading file: " .. file_path)
 	
 	game.AddParticles( file_path )
 	
@@ -29,7 +31,6 @@ function LoadFiles(file_path)
 	if !table.IsEmpty(files) then
 		for i = 1, #files do
 			local file = files[i]
-			print("loading file: " .. file_path .. "/" .. file)
 			RunFile(file_path .. "/" .. file)
 		end
 	end
