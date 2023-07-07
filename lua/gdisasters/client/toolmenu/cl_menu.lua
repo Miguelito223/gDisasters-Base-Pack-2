@@ -299,7 +299,7 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	lb:SetSize(500, 500)
 
 	CreateSliderConVariable(CPanel,  "Water Quality", 1, 4, 0, "gdisasters_graphics_water_quality" );
-	CreateSliderConVariable(CPanel,  "Water shader Quality", 1, 2, 0, "gdisasters_graphics_water_shader_quality" );
+	CreateSliderConVariable(CPanel,  "Water Shader Quality", 1, 2, 0, "gdisasters_graphics_water_shader_quality" );
 	CreateSliderConVariable(CPanel,  "Lava Quality", 1, 2, 0, "gdisasters_graphics_lava_quality" );
 	CreateSliderConVariable(CPanel,   "Fog Quality", 1, 4, 0, "gdisasters_graphics_fog_quality" );
 
