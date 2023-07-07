@@ -1016,6 +1016,7 @@ function env_dynamicwater_b_DrawWater()
 	
 		render.SetBlend( 1 )
 		render.SetMaterial(water_shaders)
+		render.SuppressEngineLighting( true ) 
 		
 		local matrix = Matrix( );
 		matrix:Translate( getMapCenterFloorPos() );
