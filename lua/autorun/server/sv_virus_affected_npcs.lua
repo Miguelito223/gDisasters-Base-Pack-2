@@ -1,5 +1,7 @@
 AddCSLuaFile()
 
+print("Loading tvirus Affect NPCS...")
+
 npc_tvirus = {
 	"npc_monk",
 	"npc_metropolice",
@@ -17,3 +19,8 @@ npc_tvirus = {
 	"npc_breen"
 }
 
+for i = 1, #npc_tvirus do
+	print(npc_tvirus[i])
+end
+
+print("finish")

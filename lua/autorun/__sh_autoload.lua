@@ -1,3 +1,5 @@
+print("loading gdisasters...")
+
 local root_folder_name = debug.getinfo(1).short_src:match("gdisasters")
 
 local function RunFile(file_path)
@@ -27,6 +29,8 @@ local function RunFile(file_path)
 			include(file_path)
 		end
 	end
+
+	print("completed")
 end
 
 function LoadFiles(file_path)
@@ -46,10 +50,12 @@ function LoadFiles(file_path)
 	if !table.IsEmpty(files) then
 		for i = 1, #files do
 			local file = files[i]
-			
+			print("loading file: " .. file_path .. "/" .. file)
 			RunFile(file_path .. "/" .. file)
 		end
 	end
 end
 
 LoadFiles("gdisasters")
+
+print("Finish")

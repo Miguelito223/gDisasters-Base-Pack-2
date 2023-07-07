@@ -1,3 +1,5 @@
+print("Prechaching particles...")
+
 PrecacheParticleSystem("localized_dust_effect")
 PrecacheParticleSystem("localized_sand_effect")
 PrecacheParticleSystem("localized_rain_effect")
@@ -202,5 +204,4 @@ PrecacheParticleSystem("tsunami_splash_effect_r500")
 --black hole
 PrecacheParticleSystem("micro_blackhole_effect")
 
-
-
+print("finish")

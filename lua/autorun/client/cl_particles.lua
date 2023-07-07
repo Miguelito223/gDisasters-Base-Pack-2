@@ -1,95 +1,41 @@
-game.AddParticles( "particles/dust_storm_effect.pcf") 
-game.AddParticles( "particles/sand_storm_effect.pcf") 
-game.AddParticles( "particles/heavy_rain_effect.pcf") 
-game.AddParticles( "particles/character_effects.pcf") 
-game.AddParticles( "particles/acidrain_effect.pcf") 
-game.AddParticles( "particles/testtest.pcf") 
-game.AddParticles( "particles/testsmoke.pcf") 
-game.AddParticles( "particles/sleet_effect.pcf") 
-game.AddParticles( "particles/snow_effect.pcf") 
-game.AddParticles( "particles/ash_effect.pcf")
-game.AddParticles( "particles/water_effect.pcf")
-game.AddParticles( "particles/tvirus.pcf" )
-game.AddParticles( "particles/tvirus_splash.pcf" )
+print("Loading Particles...")
 
--- disasters
+local root_folder_name = debug.getinfo(1).short_src:match("particles")
 
+local function RunFile(file_path)
+	local file = file_path:match(".+/(.+)")
+	
+	if !file:EndsWith(".pcf") then return end
+	
+	game.AddParticles( file_path )
+	
+	print("completed")
+end
 
-game.AddParticles( "particles/chicxulub.pcf" )
-game.AddParticles( "particles/hail_effect.pcf") 
-game.AddParticles( "particles/downburst_effect.pcf") 
-game.AddParticles( "particles/heatburst_effect.pcf") 
-game.AddParticles( "particles/blizzard_effect.pcf") 
-game.AddParticles( "particles/whirlpool_effect.pcf") 
-game.AddParticles( "particles/gustnado_effect.pcf")  
-game.AddParticles( "particles/volcano_eruption_ash.pcf")
-game.AddParticles( "particles/extreme_heavy_rain_effect.pcf")
-game.AddParticles( "particles/light_rain_effect.pcf")
-game.AddParticles( "particles/moderate_rain.pcf")
-game.AddParticles( "particles/firenado_hf.pcf")
-game.AddParticles( "particles/firestorm_effect.pcf")
+function LoadFiles(file_path)
+	file_path = file_path or root_folder_name
+	local files, folders = file.Find(file_path .. "/*", "THIRDPARTY") 
+	
+	if !table.IsEmpty(folders) then
+		for _, folder_name in next, folders do
+			if folder_name == "." or folder_name == ".." then continue end
+            
+			local path = ("%s/%s"):format(file_path, folder_name)
+			
+			LoadFiles(path)
+		end
+	end
+	
+	if !table.IsEmpty(files) then
+		for i = 1, #files do
+			local file = files[i]
+			print("loading file: " .. file_path .. "/" .. file)
+			RunFile(file_path .. "/" .. file)
+		end
+	end
+end
 
-game.AddParticles( "particles/dust_devil_effect.pcf") 
-game.AddParticles( "particles/tar_pit_effect.pcf") 
-game.AddParticles( "particles/rainbow_effect.pcf") 
-game.AddParticles( "particles/bugswarm_effect.pcf") 
-game.AddParticles( "particles/geyser_effect.pcf")
-game.AddParticles( "particles/minivolcano_eruption_effect.pcf")
-game.AddParticles( "particles/volcano_eruption_effect.pcf")
-game.AddParticles( "particles/ball_lightning.pcf") 
-game.AddParticles( "particles/sprite_jet_lightning.pcf") 
-game.AddParticles( "particles/neutron_star_effect.pcf") 
-game.AddParticles( "particles/ramses_player_effect.pcf") 
-
-game.AddParticles( "particles/megacryometeor_effect.pcf")
-game.AddParticles( "particles/meteor_effect.pcf")
-game.AddParticles( "particles/lavabomb_effect.pcf") 
-game.AddParticles( "particles/micro_blackhole_effect.pcf" ) 
+LoadFiles("particles")
 
 
---- MISC
-game.AddParticles( "particles/damagetypes.pcf") 
-
-game.AddParticles( "particles/lightning_effect.pcf") 
-game.AddParticles( "particles/water_splash_effect.pcf") 
-game.AddParticles( "particles/lava_splash_effect.pcf") 
-game.AddParticles( "particles/dry_ice.pcf" );
-game.AddParticles( "particles/earthquake_effect.pcf") 
-game.AddParticles( "particles/renderfog.pcf") 
-game.AddParticles( "particles/heatwave_ripples.pcf") 
-game.AddParticles( "particles/ground_effects.pcf") 
-game.AddParticles( "particles/tsunami_splash_effect.pcf") 
---- tornado
-game.AddParticles( "particles/waterspout_effect.pcf" )
-game.AddParticles( "particles/waterspout_nocloud_effect.pcf" )
-game.AddParticles( "particles/landspout_effect.pcf" )
-game.AddParticles( "particles/landspout_nocloud_effect.pcf" )
-game.AddParticles( "particles/snownado_effect.pcf" )
-game.AddParticles( "particles/snownado_nocloud_effect.pcf" )
-game.AddParticles( "particles/alien_tornado.pcf") 
-game.AddParticles( "particles/tornado_effects_01.pcf") 
-game.AddParticles( "particles/tornado_effects_02.pcf") 
-game.AddParticles( "particles/tornado_effects_03.pcf")
-game.AddParticles( "particles/tornado_effects_04.pcf") 
-game.AddParticles( "particles/tornado_effects_05.pcf") 
-game.AddParticles( "particles/tornado_effects_06.pcf")
-game.AddParticles( "particles/tornado_effects_extra.pcf")
-game.AddParticles( "particles/n_tornado_01.pcf")
-game.AddParticles( "particles/martian_tornado.pcf")
-game.AddParticles( "particles/firenado_hd.pcf") 
-game.AddParticles( "particles/firenado_hf.pcf") 
-game.AddParticles( "particles/steam_devil.pcf")
-game.AddParticles( "particles/tornadoes.pcf")
-
-
-
-
-
-
-
-
-
-
-
-
-
+print("Finish")
