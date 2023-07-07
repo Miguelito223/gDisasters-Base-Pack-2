@@ -10,10 +10,6 @@
 	"$bumpframe" "0"
 	"$nocull" 1
 
-	$detail "nature/water_detail"
-	$detailscale 12
-	$detailblendfactor 1
-	$detailblendmode 1
 	
 	"Proxies"
 	{

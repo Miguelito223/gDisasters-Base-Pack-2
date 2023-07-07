@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 {
 	
-	"$basetexture" "nature/env_dynamicwater/base_water_01"
+	"$basetexture" "nature/env_dynamicwater/base_water_02"
 	
 	"$translucent" 1
 	"$nocull" 1
