@@ -5,16 +5,16 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 = false        
 ENT.AdminSpawnable		             = false 
 
-ENT.PrintName		                 =  "Lava Flood"
+ENT.PrintName		                 =  "Lava Flash Flood"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 ENT.MaxlavaLevel                    =   9000
-ENT.WedgeSound2							= "streams/disasters/nature/volcano_idle.wav"
+ENT.WedgeSound							= "streams/disasters/nature/volcano_idle.wav"
 
 function ENT:Initialize()	
 	if (CLIENT) then 
-		LocalPlayer().Sounds["lava"]         = CreateLoopedSound(LocalPlayer(), self.WedgeSound2)
+		LocalPlayer().Sounds["lava"]         = CreateLoopedSound(LocalPlayer(), self.WedgeSound)
 	
 	end
 	
@@ -41,7 +41,7 @@ end
 function ENT:CreateLoop()
 
 
-	local sound = Sound(self.WedgeSound2)
+	local sound = Sound(self.WedgeSound)
 
 	CSPatch = CreateSound(self, sound)
 	CSPatch:SetSoundLevel( 100 )

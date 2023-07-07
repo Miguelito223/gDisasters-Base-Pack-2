@@ -47,20 +47,6 @@ function ENT:Initialize()
 	end
 end
 
-function ENT:CreateLoop()
-
-
-	local sound = Sound(self.WedgeSound)
-
-	CSPatch = CreateSound(self, sound)
-	CSPatch:SetSoundLevel( 100 )
-	CSPatch:Play()
-	CSPatch:ChangeVolume( 1 )
-
-	self.Sound = CSPatch
-	
-end
-
 function ENT:SetupMiscVars()
 
 

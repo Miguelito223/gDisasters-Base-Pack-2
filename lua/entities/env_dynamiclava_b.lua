@@ -49,20 +49,6 @@ function ENT:Initialize()
 	end
 end
 
-function ENT:CreateLoop()
-
-
-	local sound = Sound(self.WedgeSound)
-
-	CSPatch = CreateSound(self, sound)
-	CSPatch:SetSoundLevel( 100 )
-	CSPatch:Play()
-	CSPatch:ChangeVolume( 1 )
-
-	self.Sound = CSPatch
-	
-end
-
 function ENT:SetupMiscVarsLava()
 
 
@@ -150,6 +136,7 @@ function ENT:Expandlava()
 			local pos    = LocalPlayer():GetPos()
 			local alpha = 1 - math.Clamp( (math.abs(LocalPlayer():GetPos().x - self.Verts.wave_front[1].x) / 5000),0,1)
 			LocalPlayer().Sounds["Tsunamilava"]:ChangeVolume( alpha,0,1)
+			LocalPlayer().Sounds["lava"]:ChangeVolume( alpha,0,1)
 			
 			if HitChance(10) then 
 			
