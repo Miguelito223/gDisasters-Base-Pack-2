@@ -291,8 +291,8 @@ water_textures[3]    = Material("nature/env_dynamicwater/base_water_03")
 
 
 local water_shader   = {}
-water_shader[1]    = Material("nature/env_dynamicwater/water_expensive_01")
-water_shader[2]    = Material("nature/env_dynamicwater/water_expensive_02")
+water_shader[1]    = Material("nature/env_dynamicwater/water_expensive_02")
+water_shader[2]    = Material("nature/env_dynamicwater/water_expensive_01")
 
 
 	
