@@ -908,9 +908,6 @@ function ENT:DamageEntity(ent, phys, buoyancy_mod, mass)
 	
 end
 
-local lava2_texture = Material("nature/env_dynamiclava/base_lava")
-
-
 function ENT:Draw()
 			
 end
@@ -949,6 +946,9 @@ function ENT:IsParentValid()
 	
 end
 
+local lava_textures = {}
+lava_textures[1] = Material("nature/env_dynamiclava/base_lava_01")
+lava_textures[2] = Material("nature/env_dynamiclava/base_lava_02")
 
 function env_dynamiclava_b_DrawLava()
 
@@ -960,7 +960,7 @@ function env_dynamiclava_b_DrawLava()
 	local model = ClientsideModel("models/props_junk/PopCan01a.mdl", RENDERGROUP_OPAQUE);
 	model:SetNoDraw(true);	
 	
-
+	local lava_texture =  lava_textures[ math.Clamp(GetConVar( "gdisasters_graphics_lava_quality" ):GetInt(), 1, 2)]
 	
 	local function RenderFix2()
 	
@@ -994,7 +994,7 @@ function env_dynamiclava_b_DrawLava()
 	local function DrawLava2()
 	
 		render.SetBlend( 1 )
-		render.SetMaterial(lava2_texture)
+		render.SetMaterial(lava_texture)
 		
 		local matrix = Matrix( );
 		matrix:Translate( getMapCenterFloorPos() );

@@ -269,12 +269,13 @@ function ENT:OnRemove()
 	self:StopParticles()
 end
 
-local lava_texture = Material("nature/env_dynamiclava/base_lava")
-
 function ENT:Draw()
 			
 end
 
+local lava_textures = {}
+lava_textures[1] = Material("nature/env_dynamiclava/base_lava_01")
+lava_textures[2] = Material("nature/env_dynamiclava/base_lava_02")
 
 function env_dynamiclava_Drawlava()
 
@@ -288,6 +289,8 @@ function env_dynamiclava_Drawlava()
 	local height =  lava:GetNWFloat("lavaHeight")
 	local map_bounds = getMapBounds()
 	local vmin, vmax =  Vector(map_bounds[1].x,map_bounds[1].y,0),  Vector(map_bounds[2].x,map_bounds[2].y,height)
+
+	local lava_texture =  lava_textures[ math.Clamp(GetConVar( "gdisasters_graphics_lava_quality" ):GetInt(), 1, 2)]
 	
 
 	local function RenderFix()

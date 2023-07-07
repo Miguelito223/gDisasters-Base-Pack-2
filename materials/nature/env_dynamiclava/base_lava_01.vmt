@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "nature/env_dynamiclava/base_lava"
+	"$basetexture" "nature/env_dynamiclava/base_lava_01"
 	
 	"$translucent" 1
 	"$nocull" 1
