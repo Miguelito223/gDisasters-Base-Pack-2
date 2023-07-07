@@ -362,10 +362,10 @@ function env_dynamicwater_DrawWater()
 
 			mesh.Begin( MATERIAL_QUADS, 1 );
 
-			EasyVert( Vector(map_bounds[1].x,map_bounds[1].y,height), vector_up, 0,0 );
-			EasyVert( Vector(map_bounds[1].x,map_bounds[2].y,height), vector_up, 0,100 );
-			EasyVert( Vector(map_bounds[2].x,map_bounds[2].y,height), vector_up, 100,100 );
-			EasyVert( Vector(map_bounds[2].x,map_bounds[1].y,height), vector_up, 100,0 );
+				EasyVert( Vector(map_bounds[1].x,map_bounds[1].y,height), vector_up, 0,0 );
+				EasyVert( Vector(map_bounds[1].x,map_bounds[2].y,height), vector_up, 0,100 );
+				EasyVert( Vector(map_bounds[2].x,map_bounds[2].y,height), vector_up, 100,100 );
+				EasyVert( Vector(map_bounds[2].x,map_bounds[1].y,height), vector_up, 100,0 );
 		
 			mesh.End( );
 			 
