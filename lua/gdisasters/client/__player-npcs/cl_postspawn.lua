@@ -33,6 +33,7 @@ function gDisasters_PostSpawnCL()
 		--graphics
 		CreateConVar( "gdisasters_graphics_fog_quality", 4, {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_graphics_water_quality", 2, {FCVAR_ARCHIVE}	, "" )
+		CreateConVar( "gdisasters_graphics_water_shader_quality", 1, {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_graphics_lava_quality", 2, {FCVAR_ARCHIVE}	, "")
 		CreateConVar( "gdisasters_graphics_dr_resolution", "48x48", {FCVAR_ARCHIVE}	, "")
 		CreateConVar( "gdisasters_graphics_dr_monochromatic", "false", {FCVAR_ARCHIVE}	, "")

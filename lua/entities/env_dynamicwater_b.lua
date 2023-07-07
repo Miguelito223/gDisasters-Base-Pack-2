@@ -978,7 +978,8 @@ function env_dynamicwater_b_DrawWater()
 	model:SetNoDraw(true);	
 	
 	local water_texture =  water_textures[ math.Clamp(GetConVar( "gdisasters_graphics_water_quality" ):GetInt(), 1, 3)]
-	
+	local water_shaders =  water_shader[ math.Clamp(GetConVar( "gdisasters_graphics_water_shader_quality" ):GetInt(), 1, 2)]
+
 	local function RenderFix()
 	
 	
@@ -1014,7 +1015,7 @@ function env_dynamicwater_b_DrawWater()
 	
 	
 		render.SetBlend( 1 )
-		render.SetMaterial(water_shader[1])
+		render.SetMaterial(water_shaders)
 		
 		local matrix = Matrix( );
 		matrix:Translate( getMapCenterFloorPos() );
