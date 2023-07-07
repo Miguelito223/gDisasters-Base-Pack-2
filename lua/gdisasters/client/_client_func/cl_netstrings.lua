@@ -26,7 +26,7 @@ net.Receive("gd_createdecals", function()
 	if bool then return end
 	bool = true
 
-	for i=0, 25 do
+	for i=0, 5000 do
 	
 		local bounds    = getMapSkyBox()
 		local min       = bounds[1]
