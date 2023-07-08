@@ -2,8 +2,8 @@ AddCSLuaFile()
 
 print("Downloading textures and sounds for client...")
 
-local root_folder_name = debug.getinfo(1).short_src:match("materials")
-local root_folder_name2 = debug.getinfo(1).short_src:match("sounds")
+local root_folder_name = debug.getinfo(1).short_src:match("(.-)/materials")
+local root_folder_name2 = debug.getinfo(1).short_src:match("(.-)/sounds")
 
 local function RunFile(file_path)
 	local file = file_path:match(".+/(.+)")
