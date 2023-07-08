@@ -1,45 +1,26 @@
-AddCSLuaFile()
+local rootDirectory = "materials"
+local rootDirectory2 = "sounds"
 
-print("Downloading textures and sounds for client...")
-
-local root_folder_name = debug.getinfo(1).short_src:match("materials")
-local root_folder_name2 = debug.getinfo(1).short_src:match("sounds")
-
-local function RunFile(file_path)
-	local file = file_path:match(".+/(.+)")
-	
-	if !file:EndsWith(".mp3") and !file:EndsWith(".wav") and !file:EndsWith(".vtf") and !file:EndsWith(".vmt") then return end
-
-	print("loading file: " .. file_path)
-	
-	resource.AddSingleFile(file_path)
-	
-	print("completed")
+local function AddFile( File, directory )
+	resource.AddSingleFile( directory .. File )
+	print( "[GDISASTERS AUTOLOAD] ADDING: " .. File )
 end
 
-function LoadFiles(file_path)
-	local files, folders = file.Find(file_path .. "/*", "THIRDPARTY") 
-	
-	if !table.IsEmpty(folders) then
-		for _, folder_name in next, folders do
-			if folder_name == "." or folder_name == ".." then continue end
-            
-			local path = ("%s/%s"):format(file_path, folder_name)
-			
-			LoadFiles(path)
-		end
+local function IncludeDir( directory )
+	directory = directory .. "/"
+
+	local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
+
+	for _, v in ipairs( files ) do	
+		AddFile( v, directory )
 	end
-	
-	if !table.IsEmpty(files) then
-		for i = 1, #files do
-			local file = files[i]
-			RunFile(file_path .. "/" .. file)
-		end
+
+	for _, v in ipairs( directories ) do
+		print( "[GDISASTERS AUTOLOAD] Directory: " .. v )
+		IncludeDir( directory .. v )
 	end
 end
 
-LoadFiles(root_folder_name)
-LoadFiles(root_folder_name2)
-
-print("Finish")
+IncludeDir( rootDirectory )
+IncludeDir( rootDirectory2 )
 

@@ -1,61 +1,46 @@
-print("loading gdisasters...")
+local rootDirectory = "gdisasters"
 
-local root_folder_name = debug.getinfo(1).short_src:match("gdisasters")
+local function AddFile( File, directory )
+	local prefix = string.lower( string.Left( File, 3 ) )
 
-local function RunFile(file_path)
-	local file = file_path:match(".+/(.+)")
-	
-	if !file:EndsWith(".lua") then return end
-
-	print("loading file: " .. file_path)
-	
-	if SERVER then
-		if string.StartWith(file, "_sh_") or string.StartWith(file, "sh_") then
-			AddCSLuaFile(file_path)
-			include(file_path)
-		elseif string.StartWith(file, "_sv_") or string.StartWith(file, "sv_") then
-			include(file_path)
-		elseif string.StartWith(file, "_cl_") or string.StartWith(file, "cl_") then
-			AddCSLuaFile(file_path)
-		else
-			AddCSLuaFile(file_path)
-			include(file_path)
+	if prefix == "sv_" then
+		if SERVER then
+			include( directory .. File )
+			print( "[GDISASTERS AUTOLOAD] SERVER INCLUDE: " .. File )
 		end
-	elseif CLIENT then
-		if string.StartWith(file, "_sh_") or string.StartWith(file, "sh_") then
-			include(file_path)
-		elseif string.StartWith(file, "_cl_") or string.StartWith(file, "cl_") then
-			include(file_path)
-		elseif string.StartWith(file, "_sv_") or string.StartWith(file, "sv_") then
-		else
-			include(file_path)
+	elseif prefix == "sh_" then
+		if SERVER then
+			AddCSLuaFile( directory .. File )
+			print( "[GDISASTERS AUTOLOAD] SHARED ADDCS: " .. File )
 		end
-	end
-
-	print("completed")
-end
-
-function LoadFiles(file_path)
-	local files, folders = file.Find(file_path .. "/*", "LUA")
-	
-	if !table.IsEmpty(folders) then
-		for _, folder_name in next, folders do
-			if folder_name == "." or folder_name == ".." then continue end
-            
-			local path = ("%s/%s"):format(file_path, folder_name)
-			
-			LoadFiles(path)
-		end
-	end
-	
-	if !table.IsEmpty(files) then
-		for i = 1, #files do
-			local file = files[i]
-			RunFile(file_path .. "/" .. file)
+		include( directory .. File )
+		print( "[GDISASTERS AUTOLOAD] SHARED INCLUDE: " .. File )
+	elseif prefix == "cl_" then
+		if SERVER then
+			AddCSLuaFile( directory .. File )
+			print( "[GDISASTERS AUTOLOAD] CLIENT ADDCS: " .. File )
+		elseif CLIENT then
+			include( directory .. File )
+			print( "[GDISASTERS AUTOLOAD] CLIENT INCLUDE: " .. File )
 		end
 	end
 end
 
-LoadFiles(root_folder_name)
+local function IncludeDir( directory )
+	directory = directory .. "/"
 
-print("Finish")
+	local files, directories = file.Find( directory .. "*", "LUA" )
+
+	for _, v in ipairs( files ) do
+		if string.EndsWith( v, ".lua" ) then
+			AddFile( v, directory )
+		end
+	end
+
+	for _, v in ipairs( directories ) do
+		print( "[GDISASTERS AUTOLOAD] Directory: " .. v )
+		IncludeDir( directory .. v )
+	end
+end
+
+IncludeDir( rootDirectory )

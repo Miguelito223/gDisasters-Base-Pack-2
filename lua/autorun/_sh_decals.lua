@@ -1,43 +1,27 @@
-print("loading decals...")
+local rootDirectory = "materials/decals"
 
-local root_folder_name = debug.getinfo(1).short_src:match("materials/decals")
+local function AddFile( File, directory )
+	local name = File:match("(.+)%..+$")
 
-local function RunFile(file_path)
-	local file = file_path:match(".+/(.+)")
-	local name = file_path:match(".+/(.+)%..+$")
-	local file_path_fixed = file_path:match(".-/(.+)%..+$")
-
-	if !file:EndsWith(".vmt") then return end
-
-	print("loading file: " .. file_path_fixed )
-
-	game.AddDecal( name, file_path_fixed )
-
-	print("completed")
+	game.AddDecal( name, directory .. name )
+	print( "[GDISASTERS AUTOLOAD] ADDING: " .. File )
 end
 
-function LoadFiles(file_path)
-	local files, folders = file.Find(file_path .. "/*", "THIRDPARTY")
-	
-	if !table.IsEmpty(folders) then
-		for _, folder_name in next, folders do
-			if folder_name == "." or folder_name == ".." then continue end
-            
-			local path = ("%s/%s"):format(file_path, folder_name)
-			
-			LoadFiles(path)
-		end
+local function IncludeDir( directory )
+	directory = directory .. "/"
+
+	local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
+
+	for _, v in ipairs( files ) do
+
+		AddFile( v, directory )
+
 	end
-	
-	if !table.IsEmpty(files) then
-		for i = 1, #files do
-			local file = files[i]
-			
-			RunFile(file_path .. "/" .. file)
-		end
+
+	for _, v in ipairs( directories ) do
+		print( "[GDISASTERS AUTOLOAD] Directory: " .. v )
+		IncludeDir( directory .. v )
 	end
 end
 
-LoadFiles(root_folder_name)
-
-print("finish")
+IncludeDir( rootDirectory )
