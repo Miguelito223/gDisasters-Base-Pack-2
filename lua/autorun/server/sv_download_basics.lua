@@ -8,23 +8,24 @@ local function AddFile( File, directory )
 	print( "[GDISASTERS AUTOLOAD] ADDING: " .. File )
 end
 
-local function IncludeDir( directory )
+local function loadfiles( directory )
 	directory = directory .. "/"
 
 	local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
 
 	for _, v in ipairs( files ) do	
+		if string.EndsWith( v, ".png" ) then return then
 		AddFile( v, directory )
 	end
 
 	for _, v in ipairs( directories ) do
 		print( "[GDISASTERS AUTOLOAD] Directory: " .. v )
-		IncludeDir( directory .. v )
+		loadfiles( directory .. v )
 	end
 end
 
-IncludeDir( rootDirectory )
-IncludeDir( rootDirectory2 )
+loadfiles( rootDirectory )
+loadfiles( rootDirectory2 )
 
 print("[GDISASTERS AUTOLOAD] FINISH")
 

@@ -8,7 +8,7 @@ local function AddFile( File, directory )
 	print( "[GDISASTERS AUTOLOAD] ADDING: " .. File )
 end
 
-local function IncludeDir( directory )
+local function loadfiles( directory )
 	directory = directory .. "/"
 
 	local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
@@ -21,11 +21,11 @@ local function IncludeDir( directory )
 
 	for _, v in ipairs( directories ) do
 		print( "[GDISASTERS AUTOLOAD] Directory: " .. v )
-		IncludeDir( directory .. v )
+		loadfiles( directory .. v )
 	end
 end
 
-IncludeDir( rootDirectory )
+loadfiles( rootDirectory )
 
 
 print("[GDISASTERS AUTOLOAD] FINISH")
