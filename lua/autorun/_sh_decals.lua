@@ -2,8 +2,9 @@ local rootDirectory = "materials/decals"
 
 local function AddFile( File, directory )
 	local name = File:match("(.+)%..+$")
+	local lol = directory:match("materials/(.-)/")
 
-	game.AddDecal( name, directory .. name )
+	game.AddDecal( name, lol .. "/" .. name )
 	print( "[GDISASTERS AUTOLOAD] ADDING: " .. File )
 end
 
