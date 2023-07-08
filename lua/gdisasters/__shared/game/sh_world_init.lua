@@ -698,10 +698,6 @@ concommand.Add("gdisasters_dnc_getmoondir", function(cmd, args, O2)
 	print(gDisasters_GetMoonDir())
 end)
 
-concommand.Add( "gdisasters_loadfiles", function( pl, cmd, args )
-	LoadFiles("gdisasters")
-end );
-
 concommand.Add( "gdisasters_dnc_pause", function( pl, cmd, args )
 
 	if ( !IsValid( pl ) or !pl:IsAdmin() and !IsSuperAdmin() ) then return end
