@@ -1,3 +1,5 @@
+print("[GDISASTERS AUTOLOAD] DOWNLOADING BASIC...")
+
 local rootDirectory = "materials"
 local rootDirectory2 = "sounds"
 
@@ -23,4 +25,6 @@ end
 
 IncludeDir( rootDirectory )
 IncludeDir( rootDirectory2 )
+
+print("[GDISASTERS AUTOLOAD] FINISH")
 

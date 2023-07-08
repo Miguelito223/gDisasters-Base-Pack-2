@@ -1,3 +1,6 @@
+
+print("[GDISASTERS AUTOLOAD] LOADING PARTICLES...")
+
 local rootDirectory = "particles"
 
 local function AddFile( File, directory )
@@ -23,3 +26,6 @@ local function IncludeDir( directory )
 end
 
 IncludeDir( rootDirectory )
+
+
+print("[GDISASTERS AUTOLOAD] FINISH")

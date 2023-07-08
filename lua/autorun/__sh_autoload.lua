@@ -1,3 +1,5 @@
+print("[GDISASTERS AUTOLOAD] INCLUDING LUA FILES...")
+
 local rootDirectory = "gdisasters"
 
 local function AddFile( File, directory )
@@ -44,3 +46,5 @@ local function IncludeDir( directory )
 end
 
 IncludeDir( rootDirectory )
+
+print("[GDISASTERS AUTOLOAD] FINISH")

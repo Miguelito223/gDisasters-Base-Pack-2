@@ -1,3 +1,5 @@
+print("[GDISASTERS AUTOLOAD] LOADING DECALS...")
+
 local rootDirectory = "materials/decals"
 
 local function AddFile( File, directory )
@@ -26,3 +28,5 @@ local function IncludeDir( directory )
 end
 
 IncludeDir( rootDirectory )
+
+print("[GDISASTERS AUTOLOAD] FINISH")
