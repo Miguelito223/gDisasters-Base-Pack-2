@@ -11,16 +11,7 @@ local function RunFile(file_path)
 
 	print("loading file: " .. file_path_fixed )
 
-	if file:match("snow") == "snow" then
-		game.AddDecal( "snow", file_path_fixed  )
-	elseif file:match("sand") == "sand" then
-		game.AddDecal( "sand", file_path_fixed  )
-	elseif file:match("ice") == "ice" then
-		game.AddDecal( "ice", file_path_fixed  )
-	else
-		game.AddDecal( name, file_path_fixed )
-	end
-
+	game.AddDecal( name, file_path_fixed )
 
 	print("completed")
 end
