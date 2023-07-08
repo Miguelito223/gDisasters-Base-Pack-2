@@ -1,7 +1,7 @@
 print("[GDISASTERS AUTOLOAD] DOWNLOADING BASIC...")
 
-local rootDirectory = "materials"
-local rootDirectory2 = "sounds"
+local root_Directory = "materials"
+local root_Directory2 = "sounds"
 
 local function AddFile( File, directory )
 	resource.AddSingleFile( directory .. File )
@@ -14,7 +14,7 @@ local function loadfiles( directory )
 	local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
 
 	for _, v in ipairs( files ) do	
-		if string.EndsWith( v, ".png" ) then return then
+		if string.EndsWith( v, ".png" ) then return end
 		AddFile( v, directory )
 	end
 
@@ -24,8 +24,8 @@ local function loadfiles( directory )
 	end
 end
 
-loadfiles( rootDirectory )
-loadfiles( rootDirectory2 )
+loadfiles( root_Directory )
+loadfiles( root_Directory2 )
 
 print("[GDISASTERS AUTOLOAD] FINISH")
 

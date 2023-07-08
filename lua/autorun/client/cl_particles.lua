@@ -1,7 +1,8 @@
 
 print("[GDISASTERS AUTOLOAD] LOADING PARTICLES...")
 
-local rootDirectory = "particles"
+local root_Directory = "particles"
+print(root_Directory)
 
 local function AddFile( File, directory )
 	game.AddParticles( directory .. File )
@@ -25,7 +26,7 @@ local function loadfiles( directory )
 	end
 end
 
-loadfiles( rootDirectory )
+loadfiles( root_Directory )
 
 
 print("[GDISASTERS AUTOLOAD] FINISH")

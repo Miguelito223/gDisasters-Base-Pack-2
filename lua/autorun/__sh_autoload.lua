@@ -1,6 +1,6 @@
 print("[GDISASTERS AUTOLOAD] INCLUDING LUA FILES...")
 
-local rootDirectory = "gdisasters"
+local root_Directory = "gdisasters"
 
 local function AddFile( File, directory )
 	if string.StartWith(File, "_sv_") or string.StartWith(File, "sv_") then
@@ -43,6 +43,6 @@ local function loadfiles( directory )
 	end
 end
 
-loadfiles( rootDirectory )
+loadfiles( root_Directory )
 
 print("[GDISASTERS AUTOLOAD] FINISH")

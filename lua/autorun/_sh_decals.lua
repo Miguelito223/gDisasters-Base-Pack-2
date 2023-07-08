@@ -1,6 +1,6 @@
 print("[GDISASTERS AUTOLOAD] LOADING DECALS...")
 
-local rootDirectory = "materials/decals"
+local root_Directory = "materials/decals"
 
 local function AddFile( File, directory )
 	local name = File:match("(.+)%..+$")
@@ -27,6 +27,6 @@ local function loadfiles( directory )
 	end
 end
 
-loadfiles( rootDirectory )
+loadfiles( root_Directory )
 
 print("[GDISASTERS AUTOLOAD] FINISH")
