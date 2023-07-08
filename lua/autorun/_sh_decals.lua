@@ -4,7 +4,7 @@ local root_folder_name = debug.getinfo(1).short_src:match("materials/decals")
 
 local function RunFile(file_path)
 	local file = file_path:match(".+/(.+)")
-	local name = file_path:match("(.+)%..+$")
+	local name = file_path:match(".+/(.+)%..+$")
 	local file_path_fixed = file_path:match(".-/(.+)%..+$")
 
 	if !file:EndsWith(".vmt") then return end
