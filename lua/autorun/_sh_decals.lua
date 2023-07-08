@@ -17,7 +17,6 @@ local function RunFile(file_path)
 end
 
 function LoadFiles(file_path)
-	file_path = file_path or root_folder_name
 	local files, folders = file.Find(file_path .. "/*", "THIRDPARTY")
 	
 	if !table.IsEmpty(folders) then
@@ -39,6 +38,6 @@ function LoadFiles(file_path)
 	end
 end
 
-LoadFiles("materials/decals")
+LoadFiles(root_folder_name)
 
 print("finish")
