@@ -1,6 +1,6 @@
 print("loading decals...")
 
-local root_folder_name = debug.getinfo(1).short_src:match("(.-)/materials/decals")
+local root_folder_name = debug.getinfo(1).short_src:match("materials/decals")
 
 local function RunFile(file_path)
 	local file = file_path:match(".+/(.+)")

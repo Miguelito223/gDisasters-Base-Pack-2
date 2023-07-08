@@ -1,6 +1,7 @@
 print("Loading Particles...")
 
-local root_folder_name = debug.getinfo(1).short_src:match("(.-)/particles")
+local root_folder_name = debug.getinfo(1).short_src:match("particles")
+print(root_folder_name)
 
 local function RunFile(file_path)
 	local file = file_path:match(".+/(.+)")
