@@ -102,8 +102,8 @@ if SERVER then
 		print("[GDISASTERS] DOWNLOADING BASIC...")
 
 		local root_Directory = "materials"
-		local root_Directory2 = "sound"
-		local root_Directory3 = "models"
+		local root_Directory2 = "sound/streams"
+		local root_Directory3 = "models/ramses/models"
 
 		local function AddResourceFile( File, directory )
 			resource.AddSingleFile( directory .. File )
@@ -143,7 +143,7 @@ if CLIENT then
 
 	print("[GDISASTERS] LOADING PARTICLES...")
 
-	local root_Directory = "particles"
+	local root_Directory = "particles/gdisasters"
 
 	local function AddParticleFile( File, directory )
 		game.AddParticles( directory .. File )
