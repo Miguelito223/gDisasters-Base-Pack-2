@@ -100,7 +100,8 @@ if SERVER then
 	print("[GDISASTERS] DOWNLOADING BASIC...")
 
 	local root_Directory = "materials"
-	local root_Directory2 = "sounds"
+	local root_Directory2 = "sound"
+	local root_Directory3 = "models"
 
 	local function AddResourceFile( File, directory )
 		resource.AddSingleFile( directory .. File )
@@ -125,6 +126,7 @@ if SERVER then
 
 	loadfiles(root_Directory)
 	loadfiles(root_Directory2)
+	loadfiles(root_Directory3)
 
 	print("[GDISASTERS] FINISH")
 end
