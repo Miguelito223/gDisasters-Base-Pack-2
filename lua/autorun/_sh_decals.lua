@@ -13,7 +13,7 @@ end
 local function loadfiles( directory )
 	directory = directory .. "/"
 
-	local files, directories = file.Find( directory .. "*", "game" )
+	local files, directories = file.Find( directory .. "*", "GAME" )
 
 	for _, v in ipairs( files ) do
 
