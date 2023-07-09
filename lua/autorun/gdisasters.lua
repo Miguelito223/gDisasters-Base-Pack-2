@@ -94,7 +94,7 @@ loadfiles(root_Directory)
 
 print("[GDISASTERS] FINISH")
 
---adding materials and sounds to client
+--adding materials and sounds and models to client
 
 if SERVER then
 
@@ -132,7 +132,7 @@ if SERVER then
 
 		print("[GDISASTERS] FINISH")
 	else
-		resource.AddWorkshop(string.match(StormFox2.WorkShopURL, "%d+$"))
+		resource.AddWorkshop(string.match(gDisasters.WorkShopURL, "%d+$"))
 		print("[GDISASTERS] ADDED CONTENT FILE FROM WORKSHOP")
 	end
 end
@@ -168,7 +168,6 @@ if CLIENT then
 	end
 
 	loadfiles( root_Directory)
-
 
 	print("[GDISASTERS] FINISH")
 end
