@@ -1,6 +1,6 @@
 print("[GDISASTERS AUTOLOAD] LOADING DECALS...")
 
-local root_Directory = "materials/decals"
+local root_Directory = debug.getinfo(1).short_src:match("(addons/.-)/")
 
 local function AddFile( File, directory )
 	local name = File:match("(.+)%..+$")
@@ -13,7 +13,7 @@ end
 local function loadfiles( directory )
 	directory = directory .. "/"
 
-	local files, directories = file.Find( directory .. "*", "thirdparty" )
+	local files, directories = file.Find( directory .. "*", "game" )
 
 	for _, v in ipairs( files ) do
 
@@ -27,6 +27,6 @@ local function loadfiles( directory )
 	end
 end
 
-loadfiles( root_Directory )
+loadfiles( root_Directory .. "/materials/decals" )
 
 print("[GDISASTERS AUTOLOAD] FINISH")

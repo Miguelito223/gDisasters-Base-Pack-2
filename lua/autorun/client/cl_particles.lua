@@ -1,7 +1,7 @@
 
 print("[GDISASTERS AUTOLOAD] LOADING PARTICLES...")
 
-local root_Directory = "particles"
+local root_Directory = debug.getinfo(1).short_src:match("(addons/.-)/")
 
 local function AddFile( File, directory )
 	game.AddParticles( directory .. File )
@@ -11,7 +11,7 @@ end
 local function loadfiles( directory )
 	directory = directory .. "/"
 
-	local files, directories = file.Find( directory .. "*", "thirdparty" )
+	local files, directories = file.Find( directory .. "*", "GAME" )
 
 	for _, v in ipairs( files ) do
 		if string.EndsWith( v, ".pcf" ) then
@@ -25,7 +25,7 @@ local function loadfiles( directory )
 	end
 end
 
-loadfiles( root_Directory )
+loadfiles( root_Directory .. "/particles")
 
 
 print("[GDISASTERS AUTOLOAD] FINISH")
