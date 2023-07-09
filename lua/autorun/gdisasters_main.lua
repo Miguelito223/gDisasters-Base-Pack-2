@@ -1,4 +1,173 @@
-print("Prechaching particles...")
+gDisasters = {}
+gDisasters.CachedExists     = {}
+gDisasters.Cached         = {}
+gDisasters.DayNightSystem        = {}
+gDisasters.DayNightSystem.InternalVars = {}
+gDisasters.Game                  = {}
+gDisasters.Version = 0.33
+gDisasters.WorkshopURL = "https://steamcommunity.com/sharedfiles/filedetails/changelog/2522900784"
+gDisasters.WorkshopVersion = false
+
+--loading lua files
+
+print("[GDISASTERS] INCLUDING LUA FILES...")
+
+local root_Directory = "gdisasters"
+
+local function AddFile( File, directory )
+	if string.StartWith(File, "_sv_") or string.StartWith(File, "sv_") then
+		if SERVER then
+			include( directory .. File )
+			print( "[GDISASTERS] SERVER INCLUDE: " .. File )
+		end
+	elseif string.StartWith(File, "_sh_") or string.StartWith(File, "sh_") then
+		if SERVER then
+			AddCSLuaFile( directory .. File )
+			print( "[GDISASTERS] SHARED ADDCS: " .. File )
+		end
+		include( directory .. File )
+		print( "[GDISASTERS] SHARED INCLUDE: " .. File )
+	elseif string.StartWith(File, "_cl_") or string.StartWith(File, "cl_") then
+		if SERVER then
+			AddCSLuaFile( directory .. File )
+			print( "[GDISASTERS] CLIENT ADDCS: " .. File )
+		elseif CLIENT then
+			include( directory .. File )
+			print( "[GDISASTERS] CLIENT INCLUDE: " .. File )
+		end
+	end
+end
+
+local function loadfiles( directory )
+	directory = directory .. "/"
+
+	local files, directories = file.Find( directory .. "*", "LUA" )
+
+	for _, v in ipairs( files ) do
+		if string.EndsWith( v, ".lua" ) then
+			AddFile( v, directory )
+		end
+	end
+
+	for _, v in ipairs( directories ) do
+		print( "[GDISASTERS] Directory: " .. v )
+		loadfiles( directory .. v )
+	end
+end
+
+loadfiles( root_Directory )
+
+print("[GDISASTERS] FINISH")
+
+--loading decals
+
+print("[GDISASTERS] LOADING DECALS...")
+
+local root_Directory = "materials/decals" 
+
+local function AddDecalsFile( File, directory )
+	local name = File:match("(.+)%..+$")
+	local directory_fixed = directory:match("materials/(.-)/")
+
+	game.AddDecal( name, directory_fixed .. "/" .. name )
+	print( "[GDISASTERS] ADDING: " .. File )
+end
+
+local function loadfiles( directory )
+	directory = directory .. "/"
+
+	local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
+
+	for _, v in ipairs( files ) do
+
+		AddDecalsFile( v, directory )
+
+	end
+
+	for _, v in ipairs( directories ) do
+		print( "[GDISASTERS] Directory: " .. v )
+		loadfiles( directory .. v )
+	end
+end
+
+loadfiles(root_Directory)
+
+print("[GDISASTERS] FINISH")
+
+--adding materials and sounds to client
+
+if SERVER then
+	print("[GDISASTERS] DOWNLOADING BASIC...")
+
+	local root_Directory = "materials"
+	local root_Directory2 = "sounds"
+
+	local function AddResourceFile( File, directory )
+		resource.AddSingleFile( directory .. File )
+		print( "[GDISASTERS] ADDING: " .. File )
+	end
+
+	local function loadfiles( directory )
+		directory = directory .. "/"
+
+		local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
+
+		for _, v in ipairs( files ) do	
+			if string.EndsWith( v, ".png" ) then return end
+			AddResourceFile( v, directory )
+		end
+
+		for _, v in ipairs( directories ) do
+			print( "[GDISASTERS] Directory: " .. v )
+			loadfiles( directory .. v )
+		end
+	end
+
+	loadfiles(root_Directory)
+	loadfiles(root_Directory2)
+
+	print("[GDISASTERS] FINISH")
+end
+
+--adding particles
+
+if CLIENT then
+
+	print("[GDISASTERS] LOADING PARTICLES...")
+
+	local root_Directory = "particles"
+
+	local function AddParticleFile( File, directory )
+		game.AddParticles( directory .. File )
+		print( "[GDISASTERS] ADDING: " .. File )
+	end
+
+	local function loadfiles( directory )
+		directory = directory .. "/"
+
+		local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
+
+		for _, v in ipairs( files ) do
+			if string.EndsWith( v, ".pcf" ) then
+				AddParticleFile( v, directory )
+			end
+		end
+
+		for _, v in ipairs( directories ) do
+			print( "[GDISASTERS] Directory: " .. v )
+			loadfiles( directory .. v )
+		end
+	end
+
+	loadfiles( root_Directory)
+
+
+	print("[GDISASTERS] FINISH")
+end
+
+--prechaching the particles
+
+print("[GDISASTERS] Prechaching particles...")
 
 PrecacheParticleSystem("localized_dust_effect")
 PrecacheParticleSystem("localized_sand_effect")
@@ -204,4 +373,12 @@ PrecacheParticleSystem("tsunami_splash_effect_r500")
 --black hole
 PrecacheParticleSystem("micro_blackhole_effect")
 
-print("finish")
+print("[GDISASTERS] finish")
+
+--adding new hook
+
+timer.Simple(1,function()
+	print("[GDISASTERS] adding custom hook")
+    hook.Run("PostInit")
+	print("[GDISASTERS] added custom hook")
+end)

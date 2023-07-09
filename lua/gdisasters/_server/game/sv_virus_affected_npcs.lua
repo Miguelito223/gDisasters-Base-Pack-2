@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-print("[GDISASTERS AUTOLOAD] LOADING TVIRUS... ")
+print("[GDISASTERS] LOADING TVIRUS... ")
 
 npc_tvirus = {
 	"npc_monk",
@@ -20,7 +20,7 @@ npc_tvirus = {
 }
 
 for i = 1, #npc_tvirus do
-	print("[GDISASTERS AUTOLOAD] LOADING TABLE: " .. npc_tvirus[i])
+	print("[GDISASTERS] LOADING TABLE: " .. npc_tvirus[i])
 end
 
-print("[GDISASTERS AUTOLOAD] FINISH")
+print("[GDISASTERS] FINISH")
