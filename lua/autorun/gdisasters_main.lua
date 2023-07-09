@@ -97,38 +97,44 @@ print("[GDISASTERS] FINISH")
 --adding materials and sounds to client
 
 if SERVER then
-	print("[GDISASTERS] DOWNLOADING BASIC...")
 
-	local root_Directory = "materials"
-	local root_Directory2 = "sound"
-	local root_Directory3 = "models"
+	if not gDisasters.WorkshopVersion then
+		print("[GDISASTERS] DOWNLOADING BASIC...")
 
-	local function AddResourceFile( File, directory )
-		resource.AddSingleFile( directory .. File )
-		print( "[GDISASTERS] ADDING: " .. File )
-	end
+		local root_Directory = "materials"
+		local root_Directory2 = "sound"
+		local root_Directory3 = "models"
 
-	local function loadfiles( directory )
-		directory = directory .. "/"
-
-		local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
-
-		for _, v in ipairs( files ) do	
-			if string.EndsWith( v, ".png" ) then return end
-			AddResourceFile( v, directory )
+		local function AddResourceFile( File, directory )
+			resource.AddSingleFile( directory .. File )
+			print( "[GDISASTERS] ADDING: " .. File )
 		end
 
-		for _, v in ipairs( directories ) do
-			print( "[GDISASTERS] Directory: " .. v )
-			loadfiles( directory .. v )
+		local function loadfiles( directory )
+			directory = directory .. "/"
+
+			local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
+
+			for _, v in ipairs( files ) do	
+				if string.EndsWith( v, ".png" ) then return end
+				AddResourceFile( v, directory )
+			end
+
+			for _, v in ipairs( directories ) do
+				print( "[GDISASTERS] Directory: " .. v )
+				loadfiles( directory .. v )
+			end
 		end
+
+		loadfiles(root_Directory)
+		loadfiles(root_Directory2)
+		loadfiles(root_Directory3)
+
+		print("[GDISASTERS] FINISH")
+	else
+		resource.AddWorkshop(string.match(StormFox2.WorkShopURL, "%d+$"))
+		print("[GDISASTERS] ADDED CONTENT FILE FROM WORKSHOP")
 	end
-
-	loadfiles(root_Directory)
-	loadfiles(root_Directory2)
-	loadfiles(root_Directory3)
-
-	print("[GDISASTERS] FINISH")
 end
 
 --adding particles
