@@ -4,7 +4,7 @@ gDisasters.Cached         = {}
 gDisasters.DayNightSystem        = {}
 gDisasters.DayNightSystem.InternalVars = {}
 gDisasters.Game                  = {}
-gDisasters.Version = 0.33
+gDisasters.Version = 0.34
 gDisasters.WorkShopURL = "https://steamcommunity.com/sharedfiles/filedetails/?id=2522900784"
 gDisasters.WorkshopVersion = false
 
