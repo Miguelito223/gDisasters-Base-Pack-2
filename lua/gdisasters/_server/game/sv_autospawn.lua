@@ -68,8 +68,6 @@ local function Autospawn_Timer()
 
 			TableAdd()
 
-			PrintTable(disasters)
-
 			local dis = ents.Create(table.Random(disasters))
 			if dis==nil then return end
 
@@ -212,7 +210,6 @@ local function Autospawn_Timer()
 			end
 
 			TableAdd()
-			PrintTable(weadisas)
 			
 
 			local weadis = ents.Create(table.Random(weadisas))
