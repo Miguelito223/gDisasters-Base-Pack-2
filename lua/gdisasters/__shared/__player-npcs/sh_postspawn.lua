@@ -28,3 +28,4 @@ function gDisasters_PostSpawnSH()
     gDisasters_SetupConvars()
 end
 hook.Add( "InitPostEntity", "gDisasters_PostSpawnSH", gDisasters_PostSpawnSH)
+gDisasters_PostSpawnSH()
