@@ -118,7 +118,7 @@ function ENT:Think()
 					 local F_dir = (v:GetPos() - pos):GetNormal() * self.DEFAULT_PHYSFORCE_PLYGROUND	 
 					 v:SetVelocity( F_dir )		
 				 end
-				 if (v:IsNPC()) then
+				 if (v:IsNPC() or v:IsNextBot()) then
 					 v:TakeDamageInfo(dmg)
 				 end
 			 i = i + 1

@@ -24,21 +24,21 @@ local function Autospawn_Timer()
 		if GetConVar("gdisasters_autospawn_type"):GetString() == "Tornado" then
 			recent = true
 			local tornado = {
-			"gd_d2_waterspout",
-			"gd_d2_gustnado",
-			"gd_d3_snownado", 
-			"gd_d3_ef0", 
-			"gd_d4_ef1", 
-			"gd_d4_landspout", 
-			"gd_d5_ef2", 
-			"gd_d5_alien_tornado",
-			"gd_d6_ef3", 
-			"gd_d7_ef4", 
-			"gd_d7_ef4_small", 
-			"gd_d8_ef5", 
-			"gd_d8_ef5_small", 
-			"gd_d9_ef6", 
-			"gd_d10_ef7"
+				"gd_d2_waterspout",
+				"gd_d2_gustnado",
+				"gd_d3_snownado", 
+				"gd_d3_ef0", 
+				"gd_d4_ef1", 
+				"gd_d4_landspout", 
+				"gd_d5_ef2", 
+				"gd_d5_alien_tornado",
+				"gd_d6_ef3", 
+				"gd_d7_ef4", 
+				"gd_d7_ef4_small", 
+				"gd_d8_ef5", 
+				"gd_d8_ef5_small", 
+				"gd_d9_ef6", 
+				"gd_d10_ef7"
 			}
 
 			local EF = ents.Create(table.Random(tornado))
@@ -55,73 +55,20 @@ local function Autospawn_Timer()
 
 		elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Disasters" then
 			recent = true
-			local disasters = {
-				"gd_d1_rs1eq", 
-				"gd_d2_rs2eq", 
-				"gd_d3_rs3eq", 
-				"gd_d4_rs4eq", 
-				"gd_d5_rs5eq", 
-				"gd_d6_rs6eq", 
-				"gd_d7_rs7eq", 
-				"gd_d8_rs8eq", 
-				"gd_d9_rs9eq", 
-				"gd_d10_rs10eq", 
-				"gd_d11_rs11eq", 
-				"gd_d12_rs12eq", 
-				"gd_d9_meteorshower", 
-				"gd_d5_alien_tornado",
-				"gd_d8_ef5_small", 
-				"gd_d7_ef4_small", 
-				"gd_d3_snownado", 
-				"gd_d7_tsunami", 
-				"gd_d10_meteoriteshower", 
-				"gd_d6_cryoshower", 
-				"gd_d7_lavabombshower", 
-				"gd_d8_ancientvolcano", 
-				"gd_d10_supervolcano",
-				"gd_d5_maturevolcano", 
-				"gd_d4_youngvolcano",
-				"gd_d2_minivolcano",
-				"gd_d3_lightningstorm", 
-				"gd_d2_flashflood", 
-				"gd_d2_locust_apoc", 
-				"gd_d2_planttakeover", 
-				"gd_d1_geyser",   
-				"gd_d11_neutron_star", 
-				"gd_d11_blackhole", 
-				"gd_d10_martiantornado", 
-				"gd_d12_bigasteroid",
-				"gd_d12_moonimpact",
-				"gd_d3_ef0", 
-				"gd_d4_ef1", 
-				"gd_d4_landspout", 
-				"gd_d5_ef2", 
-				"gd_d6_ef3", 
-				"gd_d7_ef4", 
-				"gd_d8_ef5", 
-				"gd_d9_ef6",
-				"gd_d6_zombieapoc",
-				"gd_d10_ef7",
-				"gd_d9_whitehole",
-				"gd_d2_blackiceover",
-				"gd_d2_gustnado",
-				"gd_d8_volcanicrockhower",
-				"gd_d3_ball_lightning",
-				"gd_d10_mfirenado",
-				"gd_d5_mfirenado",
-				"gd_d2_mfirenado",
-				"gd_d1_dustdevil",
-				"gd_d1_steamdevil",
-				"gd_d3_landslide",
-				"gd_d2_waterspout",
-				"gd_d3_lava_flashflood",
-				"gd_d8_combineinv",
-				"gd_d8_lava_tsunami",
-				"gd_d10_megatsunami",
-				"gd_d11_lava_megatsunami",
-				"gd_d2_tidal_wave",
-				"gd_d3_tidal_wave_lava"
-			}
+			local disasters = {}
+
+			local function TableAdd()
+				local files, directory = file.Find("entities/gd_d*.lua", "LUA")
+
+				for k, v in ipairs(files) do
+					local file = v:match("(.+)%..+$")
+					table.insert(disasters, file)
+				end
+			end
+
+			TableAdd()
+
+			PrintTable(disasters)
 
 			local dis = ents.Create(table.Random(disasters))
 			if dis==nil then return end
@@ -216,81 +163,19 @@ local function Autospawn_Timer()
 		
 		elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Weather" then
 			recent = true
-			local weather = {
-				"gd_w1_lightbreeze", 
-				"gd_w2_mildbreeze", 
-				"gd_w3_strongbreeze", 
-				"gd_w4_intensebreeze", 
-				"gd_w5_veryintensebreeze", 
-				"gd_w6_beaufort10", 
-				"gd_w2_hailstorm", 
-				"gd_w1_catonehurricane", 
-				"gd_w2_cattwohurricane", 
-				"gd_w3_catthreehurricane", 
-				"gd_w4_catfourhurricane", 
-				"gd_w5_catfivehurricane", 
-				"gd_w6_catsixhurricane", 
-				"gd_w1_shootingstarshower", 
-				"gd_w1_duststorm",  
-				"gd_w1_snow",  
-				"gd_w1_heavyfog", 
-				"gd_w1_tropicalstorm", 
-				"gd_w1_lightrain", 
-				"gd_w1_tropicaldepression", 
-				"gd_w1_sleet",
-				"gd_w1_sandstorm",
-				"gd_w1_cumu_cldy",
-				"gd_w2_smog",
-				"gd_w2_thundersnow",
-				"gd_w2_shelfcloud",
-				"gd_w2_heatwave",
-				"gd_w2_thunderstorm",
-				"gd_w2_freezingrain",
-				"gd_w2_heavyrain",
-				"gd_w2_acidrain",	
-				"gd_w2_volcano_ash",
-				"gd_w2_heavysnow",		
-				"gd_w2_coldwave",
-				"gd_w3_heavyashstorm",
-				"gd_w3_major_hailstorm",
-				"gd_w3_heatburst",
-				"gd_w3_extremeheavyrain",
-				"gd_w2_blizzard",
-				"gd_w3_icestorm",
-				"gd_w4_heavyacidrain",
-				"gd_w5_microburst",
-				"gd_w5_downburst",
-				"gd_w5_macroburst",
-				"gd_w7_martianduststorm",
-				"gd_w7_martiansnow",
-				"gd_w7_solarray",
-				"gd_w4_growingstorm",
-				"gd_w7_freezeray", 
-				"gd_w3_drought",
-				"gd_w1_citysnow",
-				"gd_w2_chinese_smog",
-				"gd_w3_heavythunderstorm",
-				"gd_w1_highpressure_sys",
-				"gd_w2_lowpressure_sys",
-				"gd_w3_hurricanic_lowpressure_sys",
-				"gd_w5_silenthill",
-				"gd_w4_dryline",
-				"gd_w4_derecho",
-				"gd_w4_strong_coldfront",
-				"gd_w4_strong_occludedfront",
-				"gd_w4_strong_warmfront",
-				"gd_w4_severethunderstorm",
-				"gd_w3_drythunderstorm",
-				"gd_w2_stationaryfront",
-				"gd_w2_haboob",
-				"gd_w5_pyrocum",
-				"gd_d1_cldy_irid",
-				"gd_d1_aurora",
-				"gd_w7_neptune",
-				"gd_w7_redspot",
-				"gd_w7_hypercane",
-				"gd_w5_pyrocum_wet"
-			}
+			local weather = {}
+
+			local function TableAdd()
+				local files, directory = file.Find("entities/gd_w*.lua", "LUA")
+
+				for k, v in ipairs(files) do
+					local file = v:match("(.+)%..+$")
+					table.insert(weather, file)
+				end
+			end
+
+			TableAdd()
+			PrintTable(weather)
 
 			local wea = ents.Create(table.Random(weather))
 			if wea==nil then return end
@@ -310,145 +195,25 @@ local function Autospawn_Timer()
 
 		elseif GetConVar("gdisasters_autospawn_type"):GetString() == "Weather/Disasters" then
 			recent = true
-			local weadisas = {
-				"gd_w1_lightbreeze",
-				"gd_w2_mildbreeze", 
-				"gd_w3_strongbreeze", 
-				"gd_w4_intensebreeze", 
-				"gd_w5_veryintensebreeze", 
-				"gd_w6_beaufort10", 
-				"gd_w2_hailstorm", 
-				"gd_w1_catonehurricane", 
-				"gd_w2_cattwohurricane", 
-				"gd_w3_catthreehurricane", 
-				"gd_w4_catfourhurricane", 
-				"gd_w5_catfivehurricane", 
-				"gd_w6_catsixhurricane", 
-				"gd_w1_shootingstarshower",
-				"gd_w1_duststorm",  
-				"gd_w1_snow",  
-				"gd_w1_heavyfog", 
-				"gd_w1_tropicalstorm", 
-				"gd_w1_lightrain", 
-				"gd_w1_tropicaldepression", 
-				"gd_w1_sleet",
-				"gd_w1_sandstorm",
-				"gd_w1_cumu_cldy",
-				"gd_w2_smog",
-				"gd_w2_thundersnow",
-				"gd_w2_shelfcloud",
-				"gd_w2_heatwave",
-				"gd_w2_thunderstorm",
-				"gd_w2_freezingrain",
-				"gd_w2_heavyrain",
-				"gd_w2_acidrain",	
-				"gd_w2_volcano_ash",
-				"gd_w2_heavysnow",		
-				"gd_w2_coldwave",
-				"gd_w3_heavyashstorm",
-				"gd_w3_major_hailstorm",
-				"gd_w3_heatburst",
-				"gd_w3_extremeheavyrain",
-				"gd_w2_blizzard",
-				"gd_w3_icestorm",
-				"gd_w4_heavyacidrain",
-				"gd_w5_microburst",
-				"gd_w5_downburst",
-				"gd_w5_macroburst",
-				"gd_w7_martianduststorm",
-				"gd_w7_martiansnow",
-				"gd_w7_solarray",
-				"gd_w7_freezeray", 
-				"gd_w3_drought",
-				"gd_w1_citysnow",
-				"gd_w2_chinese_smog",
-				"gd_w3_heavythunderstorm",
-				"gd_w1_highpressure_sys",
-				"gd_w2_lowpressure_sys",
-				"gd_w3_hurricanic_lowpressure_sys",
-				"gd_w4_dryline",
-				"gd_w4_derecho",
-				"gd_w4_strong_coldfront",
-				"gd_d1_cldy_irid",
-				"gd_d1_aurora",
-				"gd_w4_strong_occludedfront",
-				"gd_w4_strong_warmfront",
-				"gd_w4_severethunderstorm",
-				"gd_w3_drythunderstorm",
-				"gd_w2_stationaryfront",
-				"gd_w5_silenthill",
-				"gd_w2_haboob",
-				"gd_w5_pyrocum",
-				"gd_w7_neptune",
-				"gd_w7_redspot",
-				"gd_w7_hypercane",
-				"gd_w5_pyrocum_wet",
-				"gd_d1_rs1eq", 
-				"gd_d2_rs2eq", 
-				"gd_d3_rs3eq", 
-				"gd_d4_rs4eq", 
-				"gd_d5_rs5eq", 
-				"gd_d6_rs6eq", 
-				"gd_d7_rs7eq", 
-				"gd_d8_rs8eq", 
-				"gd_d9_rs9eq", 
-				"gd_d10_rs10eq", 
-				"gd_d11_rs11eq", 
-				"gd_d12_rs12eq", 
-				"gd_d9_meteorshower", 
-				"gd_d7_tsunami",  
-				"gd_d10_meteoriteshower", 
-				"gd_d6_cryoshower", 
-				"gd_d7_lavabombshower", 
-				"gd_d8_ancientvolcano", 
-				"gd_d10_supervolcano", 
-				"gd_d8_volcanicrockhower",
-				"gd_d5_maturevolcano", 
-				"gd_d4_youngvolcano",
-				"gd_d3_snownado", 
-				"gd_d2_minivolcano",
-				"gd_d3_lightningstorm", 
-				"gd_d2_flashflood", 
-				"gd_d2_locust_apoc", 
-				"gd_d2_planttakeover", 
-				"gd_d1_geyser",   
-				"gd_d11_neutron_star", 
-				"gd_d11_blackhole", 
-				"gd_d10_martiantornado", 
-				"gd_d12_bigasteroid",
-				"gd_d12_moonimpact",
-				"gd_d3_ef0", 
-				"gd_d4_ef1", 
-				"gd_d4_landspout", 
-				"gd_d5_ef2", 
-				"gd_d6_ef3", 
-				"gd_d5_alien_tornado",
-				"gd_d8_ef5_small", 
-				"gd_d7_ef4_small", 
-				"gd_d7_ef4", 
-				"gd_d8_ef5", 
-				"gd_d9_ef6",
-				"gd_d6_zombieapoc",
-				"gd_d10_ef7",
-				"gd_d9_whitehole",
-				"gd_d2_blackiceover",
-				"gd_d2_gustnado",
-				"gd_d3_ball_lightning",
-				"gd_d10_mfirenado",
-				"gd_d5_mfirenado",
-				"gd_d2_mfirenado",
-				"gd_d1_dustdevil",
-				"gd_d1_steamdevil",
-				"gd_d3_landslide",
-				"gd_d2_waterspout",
-				"gd_d3_lava_flashflood",
-				"gd_d8_combineinv",
-				"gd_d8_lava_tsunami",
-				"gd_d10_megatsunami",
-				"gd_d11_lava_megatsunami",
-				"gd_d2_tidal_wave",
-				"gd_d3_tidal_wave_lava"
-			}
+			local weadisas = {}
+
+			local function TableAdd()
+				local files, directory = file.Find("entities/gd_d*.lua", "LUA")
+				local files2, directory2 = file.Find("entities/gd_w*.lua", "LUA")
+
+				for k, v in ipairs(files) do
+					local file = v:match("(.+)%..+$")
+					table.insert(weadisas, file)
+				end
+				for k, v in ipairs(files2) do
+					local file = v:match("(.+)%..+$")
+					table.insert(weadisas, file)
+				end
+			end
+
+			TableAdd()
+			PrintTable(weadisas)
+			
 
 			local weadis = ents.Create(table.Random(weadisas))
 			if weadis==nil then return end
@@ -568,6 +333,7 @@ local function Autospawn_Timer()
 
 end
 hook.Add( "Initialize", "gDisasters_Autospawn", Autospawn_Timer)
+Autospawn_Timer()
 
 local function Removemaptornados()
 	if GetConVar('gdisasters_autospawn_getridmaptor'):GetInt() == 1 then

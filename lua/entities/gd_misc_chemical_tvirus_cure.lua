@@ -89,7 +89,7 @@ function ENT:Explode()
 				v:EmitSound("streams/others/tvirus_infection/infection_sign.mp3")
 			end
 		end
-		if v:IsNPC() and table.HasValue(ZombieList,v:GetClass()) then
+		if v:IsNPC() or v:IsNextBot() and table.HasValue(ZombieList,v:GetClass()) then
 			if math.random(1,4)==4 then
 				local ent = ents.Create("npc_citizen") 
 				ent:SetPos(v:GetPos())

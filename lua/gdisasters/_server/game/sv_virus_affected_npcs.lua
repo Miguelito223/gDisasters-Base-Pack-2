@@ -19,6 +19,17 @@ npc_tvirus = {
 	"npc_breen"
 }
 
+local function TableAdd()
+	local files, directory = file.Find("entities/npc_*.lua", "LUA")
+
+	for k, v in ipairs(files) do
+		local file = v:match("(.+)%..+$")
+		table.insert(npc_tvirus, file)
+	end
+end
+
+TableAdd()
+
 for i = 1, #npc_tvirus do
 	print("[GDISASTERS] LOADING TABLE: " .. npc_tvirus[i])
 end

@@ -34,7 +34,7 @@ function ENT:Think()
 	 dmg:SetDamageType(self.DamageType)
 	 dmg:SetAttacker(self.GBOWNER)
 	 for k, v in pairs(ents.FindInSphere(pos,self.DamageRadius)) do
-         if v:IsPlayer() or v:IsNPC() then
+         if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
 		    v:TakeDamageInfo(dmg)
 		 end
 	 end

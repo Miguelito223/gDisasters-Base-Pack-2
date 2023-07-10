@@ -89,7 +89,7 @@ function ENT:Think()
 			v.isinfected = true
 			ParticleEffectAttach("zombie_blood",PATTACH_ABSORIGIN_FOLLOW,v, 1) 
 		end
-		if (v:IsNPC() and table.HasValue(npc_tvirus,v:GetClass()) and not v.isinfected) or (v.IsVJHuman==true and not v.isinfected) then
+		if (v:IsNPC() or v:IsNextBot() and table.HasValue(npc_tvirus,v:GetClass()) and not v.isinfected) or (v.IsVJHuman==true and not v.isinfected) then
 			if v.gasmasked==false and v.hazsuited==false then
 				local ent = ents.Create("gd_chemical_tvirus_entity_npc")
 				ent:SetVar("infected", v)

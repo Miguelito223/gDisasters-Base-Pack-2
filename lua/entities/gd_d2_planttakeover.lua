@@ -111,7 +111,7 @@ function ENT:SpawnTrees()
 	
 		end
 	
-		if v:IsNPC() and (v:GetClass()!= "npc_crow" and v:GetClass()!= "npc_pigeon"  and v:GetClass()!= "npc_seagull" and v:GetClass()!= "npc_zombie" and v:GetClass()!="npc_fastzombie" and v:GetClass()!="npc_zombie_torso" and v:GetClass()!="npc_fastzombie_torso") then 
+		if v:IsNPC() or v:IsNextBot() and (v:GetClass()!= "npc_crow" and v:GetClass()!= "npc_pigeon"  and v:GetClass()!= "npc_seagull" and v:GetClass()!= "npc_zombie" and v:GetClass()!="npc_fastzombie" and v:GetClass()!="npc_zombie_torso" and v:GetClass()!="npc_fastzombie_torso") then 
 			if !self:IsValid() then return end
 			v:Remove()
 		

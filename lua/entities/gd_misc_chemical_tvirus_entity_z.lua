@@ -39,7 +39,7 @@ function ENT:Think()
 			self.zombie:SetPlaybackRate( 2 )
 		end
 		for k, v in pairs(ents.FindInSphere(self:GetPos(),200)) do
-			if v:IsNPC() and (v:GetClass()=="npc_headcrab" or v:GetClass()=="npc_headcrab_fast" or v:GetClass()=="npc_headcrab_poison") and not v.isinfected then
+			if v:IsNPC() or v:IsNextBot() and (v:GetClass()=="npc_headcrab" or v:GetClass()=="npc_headcrab_fast" or v:GetClass()=="npc_headcrab_poison") and not v.isinfected then
 			
 				local ent = ents.Create("gd_misc_chemical_tvirus_entity_z")
 				ent:SetVar("infected", v)
@@ -68,7 +68,7 @@ function ENT:Think()
 
 				end
 			end
-			if (v:IsNPC() and table.HasValue(npc_tvirus,v:GetClass()) and not v.isinfected) or (v.IsVJHuman==true and not v.isinfected) then
+			if (v:IsNPC() or v:IsNextBot() and table.HasValue(npc_tvirus,v:GetClass()) and not v.isinfected) or (v.IsVJHuman==true and not v.isinfected) then
 				local ent = ents.Create("gd_misc_chemical_tvirus_entity_npc")
 				ent:SetVar("infected", v)
 				ent:SetPos( self:GetPos() ) 
