@@ -53,12 +53,17 @@ function ENT:PositionBolt()
 	
 	local startpos = self.TargetPositions[1]
 	self:SetPos(startpos)
-	
-	
 	self:Smite()
 
 
 
+end
+
+
+function ENT:Scorch()
+	local startpos = self.TargetPositions[1]
+	local endpos = self.TargetPositions[2]
+	util.Decal("Scorch", startpos, endpos )
 end
 
 function ENT:CreateTarget()
@@ -66,17 +71,26 @@ function ENT:CreateTarget()
 	
 	local ent = ents.Create("prop_physics")
 	ent:SetModel("models/props_junk/PopCan01a.mdl")
-
 	ent:SetPos(endpos)
 	ent:Spawn()
 	ent:Activate()
-
-	
-	
-
 	
 	return ent 
 	
+end
+
+function ENT:Explode(pos)
+	local pe = ents.Create( "env_physexplosion" );
+	pe:SetPos(pos);
+	pe:SetKeyValue( "Magnitude", 50 );
+	pe:SetKeyValue( "radius", 40 );
+	pe:SetKeyValue( "spawnflags", 19 );
+	pe:Spawn();
+	pe:Activate();
+	pe:Fire( "Explode", "", 0 );
+	pe:Fire( "Kill", "", 0.5 );
+	
+	util.BlastDamage( self, self, pos, 32, math.random( 1, 8 ) )
 end
 
 
@@ -110,19 +124,60 @@ function ENT:Smite()
 		net.WriteEntity(self)
 		net.WriteEntity(target)
 		net.WriteString(particle)
-		
 		net.Broadcast()
 		
 		if explosion != "" then ParticleEffect(explosion, target:GetPos(), Angle(0,0,0), nil) end 
+
+		self:Explode(target:GetPos())
+
+		for k, v in pairs(ents.GetAll()) do
 		
+			if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
+			
+				local hit = (Vector( v:GetPos().x, v:GetPos().y, 0) - Vector( target:GetPos().x, target:GetPos().y, 0)):Length() 
+
+				if ( hit < 200 and hit >= 100 ) and v:IsValid() then
+				
+					InflictDamage(v, self, "electrical", math.random(20,40))
+				
+					v:Ignite(1)
+				
+				elseif hit < 100 and v:IsValid() then
+				
+					InflictDamage(v, self, "electrical", math.random(70,140))
+				
+					v:Ignite(3)
+				
+				end
+
+			else
+				local hitprop = (Vector( v:GetPos().x, v:GetPos().y, 0) - Vector( self.TargetPositions[2].x, self.TargetPositions[2].y, 0)):Length() 
+
+
+			
+			
+				if ( hitprop < 200 and hitprop >= 100 ) and v:IsValid() then
+				
+					InflictDamage(v, self, "electrical", math.random(20,40))
+				
+					v:Ignite(1)
+				
+				elseif hitprop < 100 and v:IsValid() then
+				
+					InflictDamage(v, self, "electrical", math.random(70,140))
+				
+					v:Ignite(3)
+				
+				end
+			end
 		
+		end
+
+		self:Scorch()
+
 		CreateSoundWave(table.Random(sounds), target:GetPos(), "3d" ,340.29/2, {70,120}, 0.5)
 		
 	end)
-
-	
-	
-
 	
 	timer.Simple(0.5, function()
 		if self:IsValid() then
@@ -133,7 +188,7 @@ function ENT:Smite()
 		end
 	end)
 	
-		
+	
 	
 end
 
@@ -145,66 +200,6 @@ function CreateLightningBolt(startpos, endpos, color, grounded)
 	ent.ParticleData = { ["Color"] = color, ["IsGrounded"] = grounded}	
 	ent:Spawn()
 	ent:Activate()
-
-	for k,v in pairs(ents.GetAll()) do
-	
-		if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
-	
-			local hit = (Vector( v:GetPos().x, v:GetPos().y, 0) - Vector( ent:GetPos().x, ent:GetPos().y, 0)):Length() 
-
-
-		
-	
-			if ( hit < 200 and hit >= 100 ) and v:IsValid() then
-	
-				InflictDamage(v, ent, "electrical", math.random(20,40))
-	
-				v:Ignite(1)
-	
-			elseif hit < 100 and v:IsValid() then
-	
-				InflictDamage(v, ent, "electrical", math.random(70,140))
-	
-				v:Ignite(3)
-		
-			end
-
-		else
-			local hitprop = (Vector( v:GetPos().x, v:GetPos().y, 0) - Vector( ent:GetPos().x, ent:GetPos().y, 0)):Length() 
-
-
-		
-	
-			if ( hitprop < 200 and hitprop >= 100 ) and v:IsValid() then
-	
-				InflictDamage(v, ent, "electrical", math.random(20,40))
-	
-				v:Ignite(1)
-	
-			elseif hitprop < 100 and v:IsValid() then
-	
-				InflictDamage(v, ent, "electrical", math.random(70,140))
-	
-				v:Ignite(3)
-		
-			end
-		end
-	
-	end
-end
-
-function ENT:Explode()
-	local pe = ents.Create( "env_physexplosion" );
-	pe:SetPos(self:GetPos());
-	pe:SetKeyValue( "Magnitude", 5000 );
-	pe:SetKeyValue( "radius", 4000 );
-	pe:SetKeyValue( "spawnflags", 19 );
-	pe:Spawn();
-	pe:Activate();
-	pe:Fire( "Explode", "", 0 );
-	pe:Fire( "Kill", "", 0.5 );
-	
-	util.BlastDamage( self, self, self:GetPos()+Vector(0,0,12), 3200, math.random( 1, 8 ) )
 end
 
 function ENT:UpdateTransmitState()
