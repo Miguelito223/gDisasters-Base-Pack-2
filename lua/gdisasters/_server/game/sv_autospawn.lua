@@ -65,7 +65,6 @@ local function Autospawn_Timer()
 					table.insert(disasters, file)
 				end
 			end
-
 			TableAdd()
 
 			local dis = ents.Create(table.Random(disasters))
@@ -171,9 +170,7 @@ local function Autospawn_Timer()
 					table.insert(weather, file)
 				end
 			end
-
 			TableAdd()
-			PrintTable(weather)
 
 			local wea = ents.Create(table.Random(weather))
 			if wea==nil then return end
@@ -208,7 +205,6 @@ local function Autospawn_Timer()
 					table.insert(weadisas, file)
 				end
 			end
-
 			TableAdd()
 			
 

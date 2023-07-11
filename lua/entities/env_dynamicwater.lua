@@ -232,26 +232,7 @@ function ENT:ProcessFlood(scalar, t)
 	end
 end
 
-hook.Add( "Tick", "gDisasters_EnvWaterMovement", function(  )
-	if !SERVER then return end 
-	
-	for k, ply in pairs(player.GetAll()) do 
-	
-		if ply.IsInWater then
-	
-			if ply:KeyDown( IN_JUMP) then 
-				if ply:GetVelocity():Dot(Vector(0,0,30)) < 500 then 
-					ply:SetVelocity(  Vector( 0, 0, 30 ) )
-				end
-			elseif ply:KeyDown( IN_FORWARD) then
-				if ply:GetVelocity():Dot(ply:GetAimVector() * 100) < 10000 then 
-					ply:SetVelocity(  ply:GetAimVector() * 100 )
-				end
-			end
-		end
-	end
-	
-end )
+
 
 function ENT:IsParentValid()
 
