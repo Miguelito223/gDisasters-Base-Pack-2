@@ -48,9 +48,8 @@ function ENT:Initialize()
 
 		self:SetAngles( Angle(0,math.random(1,180), 0))
 		self:AtmosphericReposition()
-		self:AddLightningLight(self.LightningColor)
 		self:SetColor(self.DefaultColor)
-		
+		self:AddLightningLight(self.LightningColor)
 		self:SetNoDraw(false)
 	end
 end
@@ -116,8 +115,6 @@ function ENT:Think()
 	
 	if (SERVER) then
 		if !self:IsValid() then return end
-		
-		
 		self:FadeInOutControler()
 		self:MoveCloud()
 		self:NextThink(CurTime() + 0.01)

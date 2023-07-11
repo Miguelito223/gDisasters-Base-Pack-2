@@ -14,9 +14,7 @@ ENT.Model                            =  "models/props_junk/PopCan01a.mdl"
 ENT.Mass                             =  100
 
 function ENT:Initialize()		
-    
-	self:Lightning()
-	self:Lightning()
+
 	
 	if (CLIENT) then
 		
@@ -66,6 +64,9 @@ function ENT:Initialize()
 		self:CreateSandDecals()
 		setMapLight("c")		
 		gDisasters_CreateGlobalGFX("sandstormy", self)
+
+		self:Lightning()
+		self:Lightning()
 		
 		local data = {}
 			data.Color = Color(255,math.random(140,180),67)

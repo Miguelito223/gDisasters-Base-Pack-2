@@ -34,7 +34,6 @@ end
 
 function ENT:LightningType()
 	if self.TargetPositions == nil then return end 
-	
 	self:PositionBolt()
 
 end
@@ -43,8 +42,6 @@ function ENT:PositionBolt()
 	
 	local startpos = self.TargetPositions[1]
 	self:SetPos(startpos)
-	
-	
 	self:Smite()
 
 
