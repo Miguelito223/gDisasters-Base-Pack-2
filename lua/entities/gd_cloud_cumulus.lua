@@ -23,6 +23,7 @@ ENT.AlphaMax                         = 100
 ENT.LightningLightFadeTime           = 1 
 
 ENT.DefaultColor = Color(255, 255, 255)
+ENT.LightningColor = Color(166, 249, 255)
 
 function ENT:Initialize()	
 
@@ -47,6 +48,7 @@ function ENT:Initialize()
 
 		self:SetAngles( Angle(0,math.random(1,180), 0))
 		self:AtmosphericReposition()
+		self:AddLightningLight(self.LightningColor)
 		self:SetColor(self.DefaultColor)
 		
 		self:SetNoDraw(false)
@@ -67,7 +69,7 @@ end
 
 function ENT:AddLightningLight(color)
 	self.StartTime_LightningLight = CurTime()
-
+	self.AddColor = Vector(color.r * 4, color.g * 4, color.b * 4) 
 end
 
 function ENT:LightningLightColorController()
