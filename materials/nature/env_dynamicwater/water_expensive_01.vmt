@@ -1,7 +1,7 @@
 "Refract"
 {
 
-	"$refractamount" "0.075"
+	"$refractamount" "0.4"
 	"$refracttint" "[1 1 1]"
 	"$dudvmap" "dev/water_dudv"
 	"$normalmap" "dev/water_normal"
