@@ -655,12 +655,16 @@ hook.Add( "Think", "gDisasters_EnvWaterMovement", function(  )
 	
 		if isinWater(ply) then
 			if ply:KeyDown( IN_JUMP) then 
-				if ply:GetVelocity():Dot(Vector(0,0,100)) < 500 then 
+				if ply:GetVelocity():Dot(Vector(0,0,100)) < 1000 then 
 					ply:SetVelocity(Vector( 0,0,100 ))
 				end
 			elseif ply:KeyDown( IN_FORWARD) then
 				if ply:GetVelocity():Dot(ply:GetAimVector() * 100) < 10000 then 
 					ply:SetVelocity(  ply:GetAimVector() * 100 )
+				end
+			elseif ply:KeyDown( IN_BACK)
+				if ply:GetVelocity():Dot(ply:GetAimVector() * 100) < 10000 then 
+					ply:SetVelocity(  -ply:GetAimVector() * -100 )
 				end
 			end
 		end
