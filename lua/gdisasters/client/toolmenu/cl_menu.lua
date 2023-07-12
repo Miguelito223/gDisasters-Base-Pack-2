@@ -5,7 +5,7 @@ local function AddControlCB(CPanel, label, command)
 	return CPanel:CheckBox( label, command )
 end
 local function AddControlLabel( CPanel, label )
-	return  CPanel:Help( label )
+	return  CPanel:Help( language.GetPhrase(label) )
 end
 local function AddControlSlider( CPanel, label, command, min, max, dp  )
 	return  CPanel:NumSlider( label, command, min, max, dp );
@@ -13,7 +13,7 @@ end
 
 local function AddComboBox( CPanel, title, listofitems, convar)
 		
-	local combobox, label = CPanel:ComboBox( title, convar)
+	local combobox, label = CPanel:ComboBox( language.GetPhrase(title), convar)
 		
 		
 	for k, item in pairs(listofitems) do
@@ -24,7 +24,7 @@ local function AddComboBox( CPanel, title, listofitems, convar)
 end
 	
 local function CreateTickboxConVariable(CPanel, desc, convarname)
-	local CB = AddControlCB(CPanel, desc, convarname)
+	local CB = AddControlCB(CPanel, language.GetPhrase(desc), convarname)
 	
  
 	CB.OnChange = function( panel, bVal ) 
@@ -50,7 +50,7 @@ local function CreateTickboxConVariable(CPanel, desc, convarname)
 end
 
 local function CreateSliderConVariable(CPanel, desc, minvar, maxvar, dp, convarname)
-	local CB = AddControlSlider( CPanel, desc, convarname, minvar, maxvar, dp  )
+	local CB = AddControlSlider( CPanel, language.GetPhrase(desc), convarname, minvar, maxvar, dp  )
 	
 
 	CB.OnValueChanged = function( panel, val )
@@ -80,123 +80,123 @@ end
 
 local function gDisastersSVSettings( CPanel )
 
-	local lb = AddControlLabel( CPanel, "Wind/Tornado/Water Related Damage Options: " )
+	local lb = AddControlLabel( CPanel, "gd_1" )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "Enable Water Related Damage"  , "gdisasters_envdynamicwater_candamageconstraints");
-	CreateTickboxConVariable(CPanel, "Enable Tornado Related Damage" ,"gdisasters_envtornado_candamageconstraints");
-	CreateTickboxConVariable(CPanel, "Enable Wind Related Damage" ,"gdisasters_wind_candamageconstraints");
+	CreateTickboxConVariable(CPanel, "gd_2"  , "gdisasters_envdynamicwater_candamageconstraints");
+	CreateTickboxConVariable(CPanel, "gd_3" ,"gdisasters_envtornado_candamageconstraints");
+	CreateTickboxConVariable(CPanel, "gd_4" ,"gdisasters_wind_candamageconstraints");
 
-	local lb3 = AddControlLabel( CPanel, "tvirus Options: " )
+	local lb3 = AddControlLabel( CPanel, "gd_5" )
 	lb3:SetTextColor(Color( 0, 0, 0))
 	lb3:SetSize(500, 500)
 	
-	CreateTickboxConVariable(CPanel, "Zombie Strength" ,"gdisasters_tvirus_zombie_strength");
-	CreateTickboxConVariable(CPanel, "NMRIH Zombies" ,"gdisasters_tvirus_nmrih_zombies");
+	CreateTickboxConVariable(CPanel, "gd_6" ,"gdisasters_tvirus_zombie_strength");
+	CreateTickboxConVariable(CPanel, "gd_7" ,"gdisasters_tvirus_nmrih_zombies");
 end
 
 local function gDisastersSVADVSettings( CPanel )
 
-	local lb = AddControlLabel( CPanel, "Don't mess with these settings unless you know what you're doing.")
-	local lb2 = AddControlLabel( CPanel, "Advanced Options: ")
+	local lb = AddControlLabel( CPanel, "gd_8")
+	local lb2 = AddControlLabel( CPanel, "gd_9")
 	lb:SetTextColor(Color( 255, 0, 0))
 	lb2:SetTextColor(Color( 0, 0, 0))
 	lb2:SetSize(500, 500)
 	
-	local lb3 = AddControlLabel( CPanel, "Simulation Option (Change the quality of simulation): ")
+	local lb3 = AddControlLabel( CPanel, "gd_10")
 	lb3:SetTextColor(Color( 0, 0, 0))
 	lb3:SetSize(500, 500)
 	
-	CreateSliderConVariable(CPanel, "Tornado Simulation Quality", 0.1, 0.50, 2, "gdisasters_envtornado_simquality" );
-	CreateSliderConVariable(CPanel, "Earthquake Simulation Quality", 0.1, 0.50, 2, "gdisasters_envearthquake_simquality" );
-	CreateSliderConVariable(CPanel, "Water Simulation Quality", 0.1, 0.50, 2, "gdisasters_envdynamicwater_simquality");
-	CreateSliderConVariable(CPanel, "Wind Simulation Quality", 0.1, 0.50, 2, "gdisasters_wind_physics_simquality");
+	CreateSliderConVariable(CPanel, "gd_11", 0.1, 0.50, 2, "gdisasters_envtornado_simquality" );
+	CreateSliderConVariable(CPanel, "gd_12", 0.1, 0.50, 2, "gdisasters_envearthquake_simquality" );
+	CreateSliderConVariable(CPanel, "gd_13", 0.1, 0.50, 2, "gdisasters_envdynamicwater_simquality");
+	CreateSliderConVariable(CPanel, "gd_14", 0.1, 0.50, 2, "gdisasters_wind_physics_simquality");
 
-	local lb4 = AddControlLabel( CPanel, "Wind Options: " )
+	local lb4 = AddControlLabel( CPanel, "gd_15" )
 	lb4:SetTextColor(Color( 0, 0, 0))
 	lb4:SetSize(500, 500)
 	
-	CreateTickboxConVariable(CPanel, "Enable Wind physical" ,"gdisasters_wind_physics_enabled");
-	CreateTickboxConVariable(CPanel, "Enable Wind postdamage no collide" ,"gdisasters_wind_postdamage_nocollide_enabled");
-	CreateTickboxConVariable(CPanel, "Enable Wind postdamage no collide basetimeout" ,"gdisasters_wind_postdamage_nocollide_basetimeout");
-	CreateTickboxConVariable(CPanel, "Enable Wind postdamage no collide basetime spread" ,"gdisasters_wind_postdamage_nocollide_basetimeout_spread");
-	CreateTickboxConVariable(CPanel, "Enable Wind postdamage reducemass" ,"gdisasters_wind_postdamage_reducemass_enabled");
+	CreateTickboxConVariable(CPanel, "gd_16" ,"gdisasters_wind_physics_enabled");
+	CreateTickboxConVariable(CPanel, "gd_17" ,"gdisasters_wind_postdamage_nocollide_enabled");
+	CreateTickboxConVariable(CPanel, "gd_18" ,"gdisasters_wind_postdamage_nocollide_basetimeout");
+	CreateTickboxConVariable(CPanel, "gd_19" ,"gdisasters_wind_postdamage_nocollide_basetimeout_spread");
+	CreateTickboxConVariable(CPanel, "gd_20" ,"gdisasters_wind_postdamage_reducemass_enabled");
 
-	local lb41 = AddControlLabel( CPanel, "Eathquake Options: " )
+	local lb41 = AddControlLabel( CPanel, "gd_21" )
 	lb41:SetTextColor(Color( 0, 0, 0))
 	lb41:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "Enable earthquake change collision group" ,"gdisasters_envearthquake_change_collision_group");
+	CreateTickboxConVariable(CPanel, "gd_22" ,"gdisasters_envearthquake_change_collision_group");
 
-	local lb41 = AddControlLabel( CPanel, "Volcano/Moon/Asteroid Options: " )
+	local lb41 = AddControlLabel( CPanel, "gd_23" )
 	lb41:SetTextColor(Color( 0, 0, 0))
 	lb41:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "Enable volcano/moon/asteroid climate change (Can cause lag)" ,"gdisasters_volcano_weatherchange");
+	CreateTickboxConVariable(CPanel, "gd_24" ,"gdisasters_volcano_weatherchange");
 
-	CreateSliderConVariable(CPanel, "Volcano/Landslide Presure Increase", 0, 10, 2, "gdisasters_volcano_pressure_increase" );
-	CreateSliderConVariable(CPanel, "Volcano/Landslide Presure Decrease", 0, 10, 2, "gdisasters_volcano_pressure_decrease" );
+	CreateSliderConVariable(CPanel, "gd_25", 0, 10, 2, "gdisasters_volcano_pressure_increase" );
+	CreateSliderConVariable(CPanel, "gd_26", 0, 10, 2, "gdisasters_volcano_pressure_decrease" );
 
-	local lb41 = AddControlLabel( CPanel, "Weather Options: " )
+	local lb41 = AddControlLabel( CPanel, "gd_27" )
 	lb41:SetTextColor(Color( 0, 0, 0))
 	lb41:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "Enable Acid Rain damage props (Can cause lag)" ,"gdisasters_weather_acidraindamageprops");
+	CreateTickboxConVariable(CPanel, "gd_28" ,"gdisasters_weather_acidraindamageprops");
 
-	local lb5 = AddControlLabel( CPanel, "Water/Lava and Flood/Tsunami Options: " )
+	local lb5 = AddControlLabel( CPanel, "gd_29" )
 	lb5:SetTextColor(Color( 0, 0, 0))
 	lb5:SetSize(500, 500)
 	
-	CreateSliderConVariable(CPanel, "min flood level" , 0, 10000, 1,"gdisasters_envdynamicwater_level_min");
-	CreateSliderConVariable(CPanel, "max flood level", 0, 10000, 1 ,"gdisasters_envdynamicwater_level_max");
+	CreateSliderConVariable(CPanel, "gd_30" , 0, 10000, 1,"gdisasters_envdynamicwater_level_min");
+	CreateSliderConVariable(CPanel, "gd_31", 0, 10000, 1 ,"gdisasters_envdynamicwater_level_max");
 
-	CreateSliderConVariable(CPanel, "Tsunami start level", 0, 10000, 1 ,"gdisasters_envdynamicwater_b_startlevel");
-	CreateSliderConVariable(CPanel, "Tsunami middel level", 0, 10000, 1 ,"gdisasters_envdynamicwater_b_middellevel");
-	CreateSliderConVariable(CPanel, "Tsunami end level", 0, 10000, 1 ,"gdisasters_envdynamicwater_b_endlevel");
+	CreateSliderConVariable(CPanel, "gd_32", 0, 10000, 1 ,"gdisasters_envdynamicwater_b_startlevel");
+	CreateSliderConVariable(CPanel, "gd_33", 0, 10000, 1 ,"gdisasters_envdynamicwater_b_middellevel");
+	CreateSliderConVariable(CPanel, "gd_34", 0, 10000, 1 ,"gdisasters_envdynamicwater_b_endlevel");
 
-	CreateSliderConVariable(CPanel, "Tsunami speed", 0, 10000, 1 ,"gdisasters_envdynamicwater_b_speed");
+	CreateSliderConVariable(CPanel, "gd_35", 0, 10000, 1 ,"gdisasters_envdynamicwater_b_speed");
 	
-	local lb6 = AddControlLabel( CPanel, "Tornado Options: ")
+	local lb6 = AddControlLabel( CPanel, "gd_36")
 	lb6:SetTextColor(Color( 0, 0, 0))
 	lb6:SetSize(500, 500)
 	
-	CreateTickboxConVariable(CPanel, "Enable Custom Tornado Speed" ,"gdisasters_envtornado_manualspeed");
-	CreateSliderConVariable(CPanel, "Tornado Speed", 4, 20, 1, "gdisasters_envtornado_speed" );
-	CreateSliderConVariable(CPanel, "Tornado Lifetime min", 1, 1000, 1, "gdisasters_envtornado_lifetime_min" );
-	CreateSliderConVariable(CPanel, "Tornado Lifetime max", 1, 1000, 1, "gdisasters_envtornado_lifetime_max" );
-	CreateSliderConVariable(CPanel, "Tornado Damage", 0, 5000, 1, "gdisasters_envtornado_damage" );
+	CreateTickboxConVariable(CPanel, "gd_37" ,"gdisasters_envtornado_manualspeed");
+	CreateSliderConVariable(CPanel, "gd_38", 4, 20, 1, "gdisasters_envtornado_speed" );
+	CreateSliderConVariable(CPanel, "gd_39", 1, 1000, 1, "gdisasters_envtornado_lifetime_min" );
+	CreateSliderConVariable(CPanel, "gd_40", 1, 1000, 1, "gdisasters_envtornado_lifetime_max" );
+	CreateSliderConVariable(CPanel, "gd_41", 0, 5000, 1, "gdisasters_envtornado_damage" );
 	
 	
 end
 
 local function gDisastersSVGraphics( CPanel )
 
-	local lb = AddControlLabel( CPanel, "Main Server Graphics: " )
+	local lb = AddControlLabel( CPanel, "gd_42" )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "Enable Atmosphere"  , "gdisasters_graphics_atmosphere");
-	CreateTickboxConVariable(CPanel, "Enable GFX effect"  , "gdisasters_graphics_gfx");
-	CreateTickboxConVariable(CPanel, "Enable Fog Effect"  , "gdisasters_graphics_fog");
+	CreateTickboxConVariable(CPanel, "gd_43"  , "gdisasters_graphics_atmosphere");
+	CreateTickboxConVariable(CPanel, "gd_44"  , "gdisasters_graphics_gfx");
+	CreateTickboxConVariable(CPanel, "gd_45"  , "gdisasters_graphics_fog");
 	
 
-	local lb2 = AddControlLabel( CPanel, "Antilag Collision Options:" )
-	local lb3 = AddControlLabel( CPanel, "PD NC BT: Post Damage No Collide Base Time\n\nCPPPS: Collisions Per Prop Per Second\n\nCAPS:Collisions Average Per Second" )
+	local lb2 = AddControlLabel( CPanel, "gd_46" )
+	local lb3 = AddControlLabel( CPanel, "gd_47" )
 	lb2:SetTextColor(Color( 0, 0, 0))
 	lb2:SetSize(500, 500)
 	lb3:SetTextColor(Color( 0, 47, 255))
 
-	CreateSliderConVariable(CPanel,"Max CPPPS", 0, 1000, 0,"gdisasters_antilag_maximum_safe_collisions_per_second_per_prop");
-	CreateSliderConVariable(CPanel,"Max PD NC BT", 0, 1000, 0,"gdisasters_antilag_post_damage_no_collide_base_time");
-	CreateSliderConVariable(CPanel,"Max CAPS (s)", 0, 1000, 0,"gdisasters_antilag_maximum_safe_collisions_per_second_average" );
+	CreateSliderConVariable(CPanel,"gd_48", 0, 1000, 0,"gdisasters_antilag_maximum_safe_collisions_per_second_per_prop");
+	CreateSliderConVariable(CPanel,"gd_49", 0, 1000, 0,"gdisasters_antilag_post_damage_no_collide_base_time");
+	CreateSliderConVariable(CPanel,"gd_50", 0, 1000, 0,"gdisasters_antilag_maximum_safe_collisions_per_second_average" );
 
-	local lb4 = AddControlLabel( CPanel, "Antilag Options:" )
+	local lb4 = AddControlLabel( CPanel, "gd_51" )
 	lb4:SetTextColor(Color( 0, 0, 0))
 	lb4:SetSize(500, 500)
 	
-	CreateSliderConVariable(CPanel,"Antilag Mode (No Work)", 0, 2, 0,"gdisasters_antilag_mode" );
-	CreateTickboxConVariable(CPanel,"Enable Antilag", "gdisasters_antilag_enabled" );
+	CreateSliderConVariable(CPanel,"gd_52", 0, 2, 0,"gdisasters_antilag_mode" );
+	CreateTickboxConVariable(CPanel,"gd_53", "gdisasters_antilag_enabled" );
 	
 end
 
@@ -204,159 +204,159 @@ end
 
 local function gDisastersAutospawn( CPanel )
 
-	local lb = AddControlLabel( CPanel, "Autospawn Options: " )
+	local lb = AddControlLabel( CPanel, "gd_54" )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 	
-	CreateSliderConVariable(CPanel, "Autospawn Spawn Time", 1, 1000, 0, "gdisasters_autospawn_spawn_timer" )
-	CreateSliderConVariable(CPanel, "Autospawn Remove Time", 1, 1000, 0, "gdisasters_autospawn_remove_timer" )
-	CreateSliderConVariable(CPanel, "Autospawn Chance", 0, 1000, 0, "gdisasters_autospawn_spawn_chance" )
+	CreateSliderConVariable(CPanel, "gd_55", 1, 1000, 0, "gdisasters_autospawn_spawn_timer" )
+	CreateSliderConVariable(CPanel, "gd_56", 1, 1000, 0, "gdisasters_autospawn_remove_timer" )
+	CreateSliderConVariable(CPanel, "gd_57", 0, 1000, 0, "gdisasters_autospawn_spawn_chance" )
 
 	AddComboBox( CPanel, "Autospawn Type", {"Disasters", "Weather", "Tornado", "Weather/Disasters"}, "gdisasters_autospawn_type")
 
-	local lb2 = AddControlLabel( CPanel, "Autospawn Box Options: " )
+	local lb2 = AddControlLabel( CPanel, "gd_58" )
 	lb2:SetTextColor(Color( 0, 0, 0))
 	lb2:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "Disable Map Tornadoes "  , "gdisasters_autospawn_getridmaptor");
-	CreateTickboxConVariable(CPanel, "Enable Chat Messages"  , "gdisasters_autospawn_chat");
+	CreateTickboxConVariable(CPanel, "gd_59"  , "gdisasters_autospawn_getridmaptor");
+	CreateTickboxConVariable(CPanel, "gd_60"  , "gdisasters_autospawn_chat");
 	
-	CreateTickboxConVariable(CPanel, "Enable Autospawn "  , "gdisasters_autospawn_enable");
+	CreateTickboxConVariable(CPanel, "gd_61"  , "gdisasters_autospawn_enable");
 
 	
 end
 local function gDisastersSVhud( CPanel )
 
 	
-	local lb2 = AddControlLabel( CPanel, "Body Temperature Options: " )
+	local lb2 = AddControlLabel( CPanel, "gd_62" )
 	lb2:SetTextColor(Color( 0, 0, 0))
 	lb2:SetSize(500, 500)
 	
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature" ,"gdisasters_hud_temp_enable");
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Breathing" ,"gdisasters_hud_temp_breathing");
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Related Damage" ,"gdisasters_hud_temp_damage");
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Change Player Speed" ,"gdisasters_hud_temp_player_speed_enable");
-	CreateTickboxConVariable(CPanel, "Enable Change Value of Body Temperature" ,"gdisasters_hud_temp_value");
+	CreateTickboxConVariable(CPanel, "gd_63" ,"gdisasters_hud_temp_enable");
+	CreateTickboxConVariable(CPanel, "gd_64" ,"gdisasters_hud_temp_breathing");
+	CreateTickboxConVariable(CPanel, "gd_65" ,"gdisasters_hud_temp_damage");
+	CreateTickboxConVariable(CPanel, "gd_66" ,"gdisasters_hud_temp_player_speed_enable");
+	CreateTickboxConVariable(CPanel, "gd_67" ,"gdisasters_hud_temp_value");
 
-	CreateSliderConVariable(CPanel, "Default player walk speed", 0, 1000, 0, "gdisasters_hud_temp_player_speed_walk" );
-	CreateSliderConVariable(CPanel, "Default player sprint speed", 0, 1000, 0, "gdisasters_hud_temp_player_speed_sprint" );
+	CreateSliderConVariable(CPanel, "gd_68", 0, 1000, 0, "gdisasters_hud_temp_player_speed_walk" );
+	CreateSliderConVariable(CPanel, "gd_69", 0, 1000, 0, "gdisasters_hud_temp_player_speed_sprint" );
 
-	local lb3 = AddControlLabel( CPanel, "Body Oxygen Options: " )
+	local lb3 = AddControlLabel( CPanel, "gd_70" )
 	lb3:SetTextColor(Color( 0, 0, 0))
 	lb3:SetSize(500, 500)
 	
-	CreateTickboxConVariable(CPanel, "Enable Body Oxygen" ,"gdisasters_hud_oxygen_enable");
-	CreateTickboxConVariable(CPanel, "Enable Body Oxygen Related Damage" ,"gdisasters_hud_oxygen_damage");
+	CreateTickboxConVariable(CPanel, "gd_71" ,"gdisasters_hud_oxygen_enable");
+	CreateTickboxConVariable(CPanel, "gd_72" ,"gdisasters_hud_oxygen_damage");
 	
 end
 
 local function gDisastersDNC( CPanel )
-	local lb1 = AddControlLabel( CPanel, "DNC: Day And Night Cycle" )
-	local lb2 = AddControlLabel( CPanel, "DNC Options: " )
+	local lb1 = AddControlLabel( CPanel, "gd_74" )
+	local lb2 = AddControlLabel( CPanel, "gd_75" )
 	lb1:SetTextColor(Color( 0, 47, 255))
 	lb2:SetTextColor(Color( 0, 0, 0))
 	lb2:SetSize(500, 500)
 	
-	CreateTickboxConVariable(CPanel, "DNC Enable"  , "gdisasters_dnc_enabled");
-	CreateTickboxConVariable(CPanel, "DNC Paused"  , "gdisasters_dnc_paused");
-	CreateTickboxConVariable(CPanel, "DNC Realtime "  , "gdisasters_dnc_realtime");
-	CreateTickboxConVariable(CPanel, "DNC Enable Create light_environment"  , "gdisasters_dnc_create_light_environment");
+	CreateTickboxConVariable(CPanel, "gd_76"  , "gdisasters_dnc_enabled");
+	CreateTickboxConVariable(CPanel, "gd_77"  , "gdisasters_dnc_paused");
+	CreateTickboxConVariable(CPanel, "gd_78"  , "gdisasters_dnc_realtime");
+	CreateTickboxConVariable(CPanel, "gd_79"  , "gdisasters_dnc_create_light_environment");
 	
-	CreateSliderConVariable(CPanel, "Length Day", 1, 3600, 0, "gdisasters_dnc_length_day" )
-	CreateSliderConVariable(CPanel, "Length Night", 1, 3600, 0, "gdisasters_dnc_length_night" )
+	CreateSliderConVariable(CPanel, "gd_80", 1, 3600, 0, "gdisasters_dnc_length_day" )
+	CreateSliderConVariable(CPanel, "gd_81", 1, 3600, 0, "gdisasters_dnc_length_night" )
 
-	CreateSliderConVariable(CPanel, "Moon Size", 1, 6000, 0, "gdisasters_dnc_moon_size" )
+	CreateSliderConVariable(CPanel, "gd_82", 1, 6000, 0, "gdisasters_dnc_moon_size" )
 	
 end
 
 local function gDisastersAddonsCompatibility( CPanel )
 
-	local lb = AddControlLabel( CPanel, "Spacebuild Options: " )
+	local lb = AddControlLabel( CPanel, "gd_83" )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 	
-	CreateTickboxConVariable(CPanel, "Enable Spacebuild Compatibility"  , "gdisasters_spacebuild_enabled");
+	CreateTickboxConVariable(CPanel, "gd_84"  , "gdisasters_spacebuild_enabled");
 
-	local lb = AddControlLabel( CPanel, "Stormfox Options: " )
+	local lb = AddControlLabel( CPanel, "gd_85" )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 	
-	CreateTickboxConVariable(CPanel, "Enable Stormfox Compatibility"  , "gdisasters_stormfox_enabled");
+	CreateTickboxConVariable(CPanel, "gd_86"  , "gdisasters_stormfox_enabled");
 	
-	local lb4 = AddControlLabel( CPanel, "S37K Map Bounds options: " )
+	local lb4 = AddControlLabel( CPanel, "gd_87" )
 	lb4:SetTextColor(Color( 0, 0, 0))
 	lb4:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "Enable S37K Map Bounds", "gdisasters_mapbounds_S37K");
+	CreateTickboxConVariable(CPanel, "gd_88", "gdisasters_mapbounds_S37K");
 end
 
 
 --CL MENU 
 
 local function gDisastersADVGraphicsSettings( CPanel )			
-	local lb = AddControlLabel( CPanel, "Advanced Graphics Options:" )
+	local lb = AddControlLabel( CPanel, "gd_cl_1" )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 
-	CreateSliderConVariable(CPanel,  "Water Quality", 1, 4, 0, "gdisasters_graphics_water_quality" );
-	CreateSliderConVariable(CPanel,  "Water Shader Quality", 1, 2, 0, "gdisasters_graphics_water_shader_quality" );
-	CreateSliderConVariable(CPanel,  "Lava Quality", 1, 2, 0, "gdisasters_graphics_lava_quality" );
-	CreateSliderConVariable(CPanel,   "Fog Quality", 1, 4, 0, "gdisasters_graphics_fog_quality" );
+	CreateSliderConVariable(CPanel,  "gd_cl_2", 1, 4, 0, "gdisasters_graphics_water_quality" );
+	CreateSliderConVariable(CPanel,  "gd_cl_3", 1, 2, 0, "gdisasters_graphics_water_shader_quality" );
+	CreateSliderConVariable(CPanel,  "gd_cl_4", 1, 2, 0, "gdisasters_graphics_lava_quality" );
+	CreateSliderConVariable(CPanel,   "gd_cl_5", 1, 4, 0, "gdisasters_graphics_fog_quality" );
 
-	local lb2 = AddControlLabel( CPanel, "Section dedicated to Doppler Radar.\nUse with caution." )
+	local lb2 = AddControlLabel( CPanel, "gd_cl_6" )
 	lb2:SetTextColor(Color( 255, 0, 0))
 
-	AddComboBox( CPanel, "Resolution", {"4x4","8x8","16x16","32x32","64x64","48x48","128x128"}, "gdisasters_graphics_dr_resolution")
-	AddComboBox( CPanel, "Monochromatic Mode", {"false", "true"}, "gdisasters_graphics_dr_monochromatic")
+	AddComboBox( CPanel, "gd_cl_7", {"4x4","8x8","16x16","32x32","64x64","48x48","128x128"}, "gdisasters_graphics_dr_resolution")
+	AddComboBox( CPanel, "gd_cl_8", {"false", "true"}, "gdisasters_graphics_dr_monochromatic")
 
-	CreateSliderConVariable(CPanel,"Max Render Distance", 1, 600, 0, "gdisasters_graphics_dr_maxrenderdistance" );
-	CreateSliderConVariable(CPanel,"Refresh Rate (Hz)", 1, 16, 0, "gdisasters_graphics_dr_refreshrate" );
-	CreateSliderConVariable(CPanel,"Update  Rate (Hz)", 1, 16, 0, "gdisasters_graphics_dr_updaterate" );
+	CreateSliderConVariable(CPanel,"gd_cl_9", 1, 600, 0, "gdisasters_graphics_dr_maxrenderdistance" );
+	CreateSliderConVariable(CPanel,"gd_cl_10", 1, 16, 0, "gdisasters_graphics_dr_refreshrate" );
+	CreateSliderConVariable(CPanel,"gd_cl_11", 1, 16, 0, "gdisasters_graphics_dr_updaterate" );
 	
 end
 
 local function gDisastersGraphicsSettings( CPanel )
 
-	local lb3 = AddControlLabel( CPanel, "Graphics Options." )
-	local lb4 = AddControlLabel( CPanel, "GP: Ground Particles\n\nWP:Weather Particles\n\nSP: Screen Particles" )
+	local lb3 = AddControlLabel( CPanel, "gd_cl_12" )
+	local lb4 = AddControlLabel( CPanel, "gd_cl_13")
 	lb3:SetTextColor(Color( 0, 0, 0))
 	lb3:SetSize(500, 500)
 	lb4:SetTextColor(Color( 0, 47, 255))
 
-	CreateTickboxConVariable(CPanel, "Enable Experimental Overdraw"  , "gdisasters_graphics_experimental_overdraw");
-	CreateTickboxConVariable(CPanel, "Enable Shake Screen"  , "gdisasters_graphics_shakescreen_enable");
-	CreateTickboxConVariable(CPanel, "Enable Draw ceiling drop effects"  , "gdisasters_graphics_draw_ceiling_effects");
+	CreateTickboxConVariable(CPanel, "gd_cl_14"  , "gdisasters_graphics_experimental_overdraw");
+	CreateTickboxConVariable(CPanel, "gd_cl_15"  , "gdisasters_graphics_shakescreen_enable");
+	CreateTickboxConVariable(CPanel, "gd_cl_16"  , "gdisasters_graphics_draw_ceiling_effects");
 	
-	CreateTickboxConVariable(CPanel, "Enable GP"  , "gdisasters_graphics_enable_ground_particles");
-	CreateTickboxConVariable(CPanel, "Enable WP"  , "gdisasters_graphics_enable_weather_particles");
-	CreateTickboxConVariable(CPanel, "Enable SP"  , "gdisasters_graphics_enable_screen_particles");
+	CreateTickboxConVariable(CPanel, "gd_cl_17"  , "gdisasters_graphics_enable_ground_particles");
+	CreateTickboxConVariable(CPanel, "gd_cl_18"  , "gdisasters_graphics_enable_weather_particles");
+	CreateTickboxConVariable(CPanel, "gd_cl_19"  , "gdisasters_graphics_enable_screen_particles");
 
-	CreateTickboxConVariable(CPanel, "Enable Manual SP"  , "gdisasters_graphics_enable_manual_number_of_screen_particles");
+	CreateTickboxConVariable(CPanel, "gd_cl_20"  , "gdisasters_graphics_enable_manual_number_of_screen_particles");
 
-	CreateSliderConVariable(CPanel, "Max SP", 0, 20, 1,"gdisasters_graphics_number_of_screen_particles"  );
+	CreateSliderConVariable(CPanel, "gd_cl_21", 0, 20, 1,"gdisasters_graphics_number_of_screen_particles"  );
 
 end
 
 local function gDisastersHudSettings( CPanel )
 	
-	local lb = AddControlLabel( CPanel, "Hud Options: ")
-	local lb2 = AddControlLabel( CPanel, "1: body hud\n\n2: pressure hud\n\n3: earthquake hud\n\n4: SpaceBuild hud")
+	local lb = AddControlLabel( CPanel, "gd_cl_22")
+	local lb2 = AddControlLabel( CPanel, "gd_cl_23")
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 	lb2:SetTextColor(Color( 0, 47, 255))
 
-	CreateTickboxConVariable(CPanel, "Enable Hud", "gdisasters_hud_enabled");
+	CreateTickboxConVariable(CPanel, "gd_cl_24", "gdisasters_hud_enabled");
 	
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Screen Effects" ,"gdisasters_hud_temp_effects");
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Vomit" ,"gdisasters_hud_temp_vomit");
-	CreateTickboxConVariable(CPanel, "Enable Body Temperature Sneeze" ,"gdisasters_hud_temp_sneeze");
-	CreateTickboxConVariable(CPanel, "Enable Underwater Screen Effects" ,"gdisasters_hud_underwater_effects");
-	CreateTickboxConVariable(CPanel, "Enable UnderLava Screen Effects" ,"gdisasters_hud_underlava_effects");
+	CreateTickboxConVariable(CPanel, "gd_cl_25" ,"gdisasters_hud_temp_effects");
+	CreateTickboxConVariable(CPanel, "gd_cl_26" ,"gdisasters_hud_temp_vomit");
+	CreateTickboxConVariable(CPanel, "gd_cl_27" ,"gdisasters_hud_temp_sneeze");
+	CreateTickboxConVariable(CPanel, "gd_cl_28" ,"gdisasters_hud_underwater_effects");
+	CreateTickboxConVariable(CPanel, "gd_cl_29" ,"gdisasters_hud_underlava_effects");
 	
-	CreateSliderConVariable(CPanel, "Hud Type", 1, 4, 0, "gdisasters_hud_type" );
+	CreateSliderConVariable(CPanel, "gd_cl_30", 1, 4, 0, "gdisasters_hud_type" );
 
-	AddComboBox( CPanel, "Hud Wind Display", {"km/h", "mph"}, "gdisasters_hud_windtype")
-	AddComboBox( CPanel, "Hud Temperature Display", {"°C", "°F", "°K"}, "gdisasters_hud_temptype")
+	AddComboBox( CPanel, "gd_cl_31", {"km/h", "mph"}, "gdisasters_hud_windtype")
+	AddComboBox( CPanel, "gd_cl_32", {"°C", "°F", "°K"}, "gdisasters_hud_temptype")
 
 
 end
@@ -364,21 +364,21 @@ end
 
 local function gDisastersAudioSettings( CPanel )
 	
-	local lb = AddControlLabel( CPanel, "Audio Options: " )
+	local lb = AddControlLabel( CPanel, "gd_cl_33" )
 	lb:SetTextColor(Color( 0, 0, 0))
 	lb:SetSize(500, 500)
 	
-	CreateSliderConVariable(CPanel, "Light Wind Volume", 0,1,1, "gdisasters_volume_Light_Wind" );
-	CreateSliderConVariable(CPanel, "Moderate Wind Volume", 0,1,1, "gdisasters_volume_Moderate_Wind" );
-	CreateSliderConVariable(CPanel, "Heavy Wind Volume", 0,1,1,"gdisasters_volume_Heavy_Wind" );
-	CreateSliderConVariable(CPanel, "SoundWave Volume", 0,1,1,"gdisasters_volume_soundwave" );
+	CreateSliderConVariable(CPanel, "gd_cl_34", 0,1,1, "gdisasters_volume_Light_Wind" );
+	CreateSliderConVariable(CPanel, "gd_cl_35", 0,1,1, "gdisasters_volume_Moderate_Wind" );
+	CreateSliderConVariable(CPanel, "gd_cl_36", 0,1,1,"gdisasters_volume_Heavy_Wind" );
+	CreateSliderConVariable(CPanel, "gd_cl_37", 0,1,1,"gdisasters_volume_soundwave" );
 	
-	local lb2 =  AddControlLabel( CPanel, "Hud Audio Options: " )
+	local lb2 =  AddControlLabel( CPanel, "gd_cl_38" )
 	lb2:SetTextColor(Color( 0, 0, 0))
 	lb2:SetSize(500, 500)
 	
-	CreateSliderConVariable(CPanel, "hud Hearth Volume", 0,1,1, "gdisasters_volume_hud_heartbeat" );
-	CreateSliderConVariable(CPanel, "hud Warning Volume", 0,1,1, "gdisasters_volume_hud_warning" );
+	CreateSliderConVariable(CPanel, "gd_cl_39", 0,1,1, "gdisasters_volume_hud_heartbeat" );
+	CreateSliderConVariable(CPanel, "gd_cl_40", 0,1,1, "gdisasters_volume_hud_warning" );
 end
 
 hook.Add( "AddToolMenuTabs", "gDisasters_Tab", function()
@@ -388,16 +388,16 @@ end)
 hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	
 
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVADSettings", "Advanced", "", "", gDisastersSVADVSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVSettings", "Main", "", "", gDisastersSVSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAutospawn", "Autospawn", "", "", gDisastersAutospawn )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisasterDNC", "DNC", "", "", gDisastersDNC )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVhud", "Server Hud", "", "", gDisastersSVhud )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAddonsCompatibility", "Addons", "", "", gDisastersAddonsCompatibility )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVGraphics", "Server Graphics", "", "", gDisastersSVGraphics )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersAudioSettings", "Volume", "", "", gDisastersAudioSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersADVGraphicsSettings", "Advanced Graphics", "", "", gDisastersADVGraphicsSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "ggDisastersHudSettings", "Hud", "", "", gDisastersHudSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersGraphicsSettings", "Graphics", "", "", gDisastersGraphicsSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVADSettings", language.GetPhrase("gd_advanced"), "", "", gDisastersSVADVSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVSettings", language.GetPhrase("gd_main"), "", "", gDisastersSVSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAutospawn", language.GetPhrase("gd_autospawn"), "", "", gDisastersAutospawn )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisasterDNC", language.GetPhrase("gd_dnc"), "", "", gDisastersDNC )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVhud", language.GetPhrase("gd_server_hud"), "", "", gDisastersSVhud )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAddonsCompatibility", language.GetPhrase("gd_addons"), "", "", gDisastersAddonsCompatibility )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVGraphics", language.GetPhrase("gd_server_graphics"), "", "", gDisastersSVGraphics )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersAudioSettings", language.GetPhrase("gd_volume"), "", "", gDisastersAudioSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersADVGraphicsSettings", language.GetPhrase("gd_advanced_graphics"), "", "", gDisastersADVGraphicsSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "ggDisastersHudSettings", language.GetPhrase("gd_hud"), "", "", gDisastersHudSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersGraphicsSettings", language.GetPhrase("gd_graphics"), "", "", gDisastersGraphicsSettings )
 
 end );

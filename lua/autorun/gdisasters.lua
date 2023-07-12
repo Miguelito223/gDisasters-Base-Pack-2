@@ -137,6 +137,35 @@ if SERVER then
 	end
 end
 
+print("[GDISASTERS] LOADING LANGUAGES...")
+
+local root_Directory = "resource/localization"
+
+local function AddResourceFile( File, directory )
+	resource.AddSingleFile( directory .. File )
+	print( "[GDISASTERS] ADDING: " .. File )
+end
+
+local function loadfiles( directory )
+	directory = directory .. "/"
+
+	local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
+
+	for _, v in ipairs( files ) do	
+		if string.EndsWith( v, ".png" ) then return end
+		AddResourceFile( v, directory )
+	end
+
+	for _, v in ipairs( directories ) do
+		print( "[GDISASTERS] Directory: " .. v )
+		loadfiles( directory .. v )
+	end
+end
+
+loadfiles(root_Directory)
+
+print("[GDISASTERS] FINISH")
+
 --adding particles
 
 if CLIENT then
