@@ -6,7 +6,7 @@ gDisasters.DayNightSystem.InternalVars = {}
 gDisasters.Game                  = {}
 gDisasters.Version = 0.35
 gDisasters.WorkShopURL = "https://steamcommunity.com/sharedfiles/filedetails/?id=2522900784"
-gDisasters.WorkshopVersion = true
+gDisasters.WorkshopVersion = false
 
 --loading lua files
 
