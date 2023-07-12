@@ -4,9 +4,9 @@ gDisasters.Cached         = {}
 gDisasters.DayNightSystem        = {}
 gDisasters.DayNightSystem.InternalVars = {}
 gDisasters.Game                  = {}
-gDisasters.Version = 0.34
+gDisasters.Version = 0.35
 gDisasters.WorkShopURL = "https://steamcommunity.com/sharedfiles/filedetails/?id=2522900784"
-gDisasters.WorkshopVersion = false
+gDisasters.WorkshopVersion = true
 
 --loading lua files
 
@@ -98,13 +98,40 @@ print("[GDISASTERS] FINISH")
 
 if SERVER then
 
+	print("[GDISASTERS] DOWNLOADING BASIC...")
+
+	local root_Directory = "resource/localization"
+	
+	local function AddResourceFile( File, directory )
+		resource.AddSingleFile( directory .. File )
+		print( "[GDISASTERS] ADDING: " .. File )
+	end
+
+	local function loadfiles( directory )
+		directory = directory .. "/"
+
+		local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
+
+		for _, v in ipairs( files ) do	
+			if string.EndsWith( v, ".png" ) then return end
+			AddResourceFile( v, directory )
+		end
+
+		for _, v in ipairs( directories ) do
+			print( "[GDISASTERS] Directory: " .. v )
+			loadfiles( directory .. v )
+		end
+	end
+
+	loadfiles(root_Directory)
+
 	if not gDisasters.WorkshopVersion then
-		print("[GDISASTERS] DOWNLOADING BASIC...")
+
+		print("[GDISASTERS] ADDING CONTENT FILE...")
 
 		local root_Directory = "materials"
 		local root_Directory2 = "sound/streams"
 		local root_Directory3 = "models/ramses/models"
-		local root_Directory4 = "resource/localization"
 
 		local function AddResourceFile( File, directory )
 			resource.AddSingleFile( directory .. File )
@@ -130,13 +157,16 @@ if SERVER then
 		loadfiles(root_Directory)
 		loadfiles(root_Directory2)
 		loadfiles(root_Directory3)
-		loadfiles(root_Directory4)
 
-		print("[GDISASTERS] FINISH")
+		print("[GDISASTERS] ADDED CONTENT FILE")
+		
 	else
+		print("[GDISASTERS] ADDING CONTENT FILE FROM WORKSHOP...")
 		resource.AddWorkshop(string.match(gDisasters.WorkShopURL, "%d+$"))
 		print("[GDISASTERS] ADDED CONTENT FILE FROM WORKSHOP")
 	end
+
+	print("[GDISASTERS] FINISH")
 end
 
 --adding particles
@@ -176,7 +206,7 @@ end
 
 --prechaching the particles
 
-print("[GDISASTERS] Prechaching particles...")
+print("[GDISASTERS] PRECHACHING PARTICLES...")
 
 PrecacheParticleSystem("localized_dust_effect")
 PrecacheParticleSystem("localized_sand_effect")
@@ -382,12 +412,12 @@ PrecacheParticleSystem("tsunami_splash_effect_r500")
 --black hole
 PrecacheParticleSystem("micro_blackhole_effect")
 
-print("[GDISASTERS] finish")
+print("[GDISASTERS] FINISH")
 
 --adding new hook
 
 timer.Simple(1,function()
-	print("[GDISASTERS] adding custom hook")
+	print("[GDISASTERS] ADDING CUSTOM HOOK")
     hook.Run("PostInit")
-	print("[GDISASTERS] added custom hook")
+	print("[GDISASTERS] ADDED CUSTOM HOOK")
 end)
