@@ -68,7 +68,7 @@ function ENT:Reposition()
 end
 
 function ENT:CreateLoop()
-	local sound = Sound("streams/disasters/nature/geyser_idle.wav")
+	local sound = Sound("streams/disasters/nature/volcano_idle.wav")
 
 	CSPatch = CreateSound(self, sound)
 	CSPatch:Play()
@@ -94,29 +94,29 @@ function ENT:PushEntities()
 		
 		if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
 		
-		if v:IsOnGround() and ( v:IsPlayer() and !v:InVehicle() ) then v:SetPos( v:GetPos() + Vector(0,0,1))  end 
+			if v:IsOnGround() and ( v:IsPlayer() and !v:InVehicle() ) then v:SetPos( v:GetPos() + Vector(0,0,1))  end 
 		
-		if self:GetModel()==self.Models then
+			if self:GetModel()==self.Models then
 		
-			v:SetVelocity(Vector(0,0,50))
+				v:SetVelocity(Vector(0,0,50))
 		
+		
+			end
 		
 		end
 		
-	end
-		
 		if phys:IsValid() then 
-		
-		local mass = v:GetPhysicsObject():GetMass()
-		
+	
+			local mass = v:GetPhysicsObject():GetMass()
+	
 			if mass < 10000 then
-			
+		
 			if self:GetModel()==self.Models then
-		
+	
 				phys:AddVelocity( Vector(0,0,force * 25 + math.random(-5,5)) )
-						
+					
 			end
-		
+	
 		end
 	
 		
@@ -238,16 +238,13 @@ function ENT:lavaDetection()
 		if vpos.z <= pos.z and v:GetClass()!="worldspawn" and v != self and phys:IsValid() then
 			local diff = pos.z-vpos.z 
 			if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
+				v:SetVelocity( v:GetVelocity() * -0.9)
 				v.isinLava = true
 				v:Ignite(15)
 				v:TakeDamage(10, self, self)
-				if v:IsOnGround() and ( v:IsPlayer() and !v:InVehicle() ) then v:SetPos( v:GetPos() + Vector(0,0,1))  end 
-				if self:GetModel()==self.Models then
-					v:SetVelocity(Vector(0,0,diff * math.random(0.3,0.5) ))
-				end
-			
 			else
-			
+				phys:SetVelocity( phys:GetVelocity() * 0.01)
+				v:Ignite(15)
 			end
 		end
 		if v:IsPlayer() then
