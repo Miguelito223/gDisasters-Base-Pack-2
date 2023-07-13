@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-print("[GDISASTERS] LOADING TVIRUS... ")
+gDisasters:Msg("LOADING TVIRUS... ")
 
 npc_tvirus = {
 	"npc_monk",
@@ -31,7 +31,7 @@ end
 TableAdd()
 
 for i = 1, #npc_tvirus do
-	print("[GDISASTERS] LOADING TABLE: " .. npc_tvirus[i])
+	gDisasters:Msg("LOADING TABLE: " .. npc_tvirus[i])
 end
 
-print("[GDISASTERS] FINISH")
+gDisasters:Msg("FINISH")
