@@ -248,6 +248,7 @@ function isinWater(ply)
 end
 
 function isUnderWater(ply)
+	if ply.WaterIntensity == nil then ply.WaterIntensity = 0 end
 	local wl = ply:WaterLevel()
 	local wl2 = ply:GetNWBool("IsUnderwater", false)==true
 	local wl4 = ply.WaterIntensity
