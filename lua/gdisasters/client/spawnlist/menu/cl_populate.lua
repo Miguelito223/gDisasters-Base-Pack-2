@@ -238,6 +238,7 @@ AddToGDSpawnMenu("≈2.0 Magnitude Earthquake", "gd_d2_rs2eq"       	, "Disaster
 AddToGDSpawnMenu("Locust Apocalypse"        , "gd_d2_locust_apoc" , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Bolt of Lightning"        , "gd_d2_lightning" , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Mini Volcano"        , "gd_d2_minivolcano" , "Disasters", "Tier 2", false)
+AddToGDSpawnMenu("Geyser Of Lava"        , "gd_d2_lava_geyser" , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Black Ice Over"        , "gd_d2_blackiceover" , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Tidal Wave"        , "gd_d2_tidal_wave"              , "Disasters", "Tier 2", false)
 AddToGDSpawnMenu("Custom Flash Flood"        , "gd_d2_custom_flashflood"              , "Disasters", "Tier 2", false)

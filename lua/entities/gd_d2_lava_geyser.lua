@@ -225,7 +225,7 @@ function ENT:lavaDetection()
 	
 
 
-	elseif self:GetModel()==self.Models then
+	if self:GetModel()==self.Models then
 		radius = 200
 	end
 
