@@ -718,8 +718,8 @@ function ENT:OnRemove()
 		
 		for k, v in pairs(player.GetAll()) do
 		
-		v.IsInWater = false 
-		v:SetNWBool("IsUnderwater", false)
+			v.IsInWater = false 
+			v:SetNWBool("IsUnderwater", false)
 		
 		end
 	end

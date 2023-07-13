@@ -578,7 +578,7 @@ function isOutdoor(ply, isprop)
 	
 	local hitSky     = isBelowSky(ply)
 	
-	if isUnderWater(ply) or isUnderLava(ply) then
+	if ply:IsPlayer() and isUnderWater(ply) or isUnderLava(ply) then
 		if isprop == nil then
 			net.Start("gd_isOutdoor")
 			net.WriteBool(false)
