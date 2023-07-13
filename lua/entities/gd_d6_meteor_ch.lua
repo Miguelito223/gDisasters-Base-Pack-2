@@ -10,8 +10,7 @@ ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
 
-ENT.Model                            = "models/ramses/models/nature/volcanic_rock_03_128.mdl"
-ENT.Material                         = "ramses/models/space/madara_meteor/main_diffuse"
+ENT.Model                            = "models/ramses/models/space/meteorite.mdl"
 
 function ENT:Initialize()	
 
@@ -22,7 +21,6 @@ function ENT:Initialize()
 		self:SetSolid( SOLID_VPHYSICS )
 		self:SetMoveType( MOVETYPE_VPHYSICS  )
 		self:SetUseType( ONOFF_USE )
-		self:SetMaterial(self.Material)
 		
 		
 		local phys = self:GetPhysicsObject()

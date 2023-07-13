@@ -19,13 +19,14 @@ function gDisasters_PostSpawn(ply)
 		ply.gDisasters.Area.IsOutdoor = false
 	
 	end
-	local function gDisasters_SetupLavaIntesity()
+	local function gDisasters_SetupIntesity()
 		ply.LavaIntensity = 0
+		ply.WaterIntensity = 0
 	end
 
 	gDisasters_SetupBodyVariables()
 	gDisasters_SetupAreaVariables()	
-	gDisasters_SetupLavaIntesity()
+	gDisasters_SetupIntesity()
 	
 end
 hook.Add( "PlayerInitialSpawn", "gDisasters_PostSpawn", gDisasters_PostSpawn )

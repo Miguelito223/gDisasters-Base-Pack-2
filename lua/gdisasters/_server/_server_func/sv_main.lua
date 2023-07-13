@@ -650,6 +650,12 @@ hook.Add("Think", "LavaVolcano", function()
 	end
 end)
 
+hook.Add("Think", "WaterGeyser", function()
+	for k, v in pairs(player.GetAll()) do
+		v.WaterIntensity = math.Clamp(v.WaterIntensity - (FrameTime()/4), 0, 1)
+	end
+end)
+
 hook.Add( "Think", "gDisasters_EnvWaterMovement", function(  )
 	for k, ply in pairs(player.GetAll()) do 
 	

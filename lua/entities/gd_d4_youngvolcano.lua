@@ -119,6 +119,8 @@ function ENT:CreateLoop()
 end
 
 
+
+
 function ENT:GetLavaLevelPosition()
 	local crater = self:GetAttachment(self:LookupAttachment("crater")).Pos
 	return Vector(crater.x, crater.y, crater.z + self:GetNWFloat("LavaLevel"))
@@ -186,7 +188,7 @@ function ENT:InsideLavaEffect()
 			
 				local eye = v:EyePos()
 					
-				if eye.z <= self:GetLavaLevelPosition().z and v:Alive() and self:IsValid() then
+				if eye.z < self:GetLavaLevelPosition().z and v:Alive() and self:IsValid() then
 					v:SendLua("LocalPlayer().LavaIntensity=LocalPlayer().LavaIntensity + (FrameTime()*8)")
 					v.LavaIntensity=v.LavaIntensity + (FrameTime()*8)
 				end

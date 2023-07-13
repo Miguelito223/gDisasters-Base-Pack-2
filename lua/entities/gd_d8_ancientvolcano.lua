@@ -146,8 +146,6 @@ function ENT:GetEntitiesInsideLava()
 		local phys = v:GetPhysicsObject()
 		
 		if (pos.z <= lpos.z)  and v:GetClass()!="worldspawn" and v != self and phys:IsValid() then
-			
-			
 			table.insert(lents, v)
 			lents2[v] = true
 			v.IsInlava = true
@@ -191,7 +189,7 @@ function ENT:InsideLavaEffect()
 			
 				local eye = v:EyePos()
 					
-				if eye.z <= self:GetLavaLevelPosition().z and v:Alive() and self:IsValid() then
+				if eye.z < self:GetLavaLevelPosition().z and v:Alive() and self:IsValid() then
 					v:SendLua("LocalPlayer().LavaIntensity=LocalPlayer().LavaIntensity + (FrameTime()*8)")
 					v.LavaIntensity=v.LavaIntensity + (FrameTime()*8)
 				end

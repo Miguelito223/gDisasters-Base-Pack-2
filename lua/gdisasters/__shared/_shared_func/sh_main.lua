@@ -250,6 +250,7 @@ end
 function isUnderWater(ply)
 	local wl = ply:WaterLevel()
 	local wl2 = ply:GetNWBool("IsUnderwater", false)==true
+	local wl4 = ply.WaterIntensity
 	
 	if InfMap then
 		local function inWater(pos)
@@ -260,7 +261,7 @@ function isUnderWater(ply)
 		wl3 = inWater(ply:GetPos())
 	end
 
-	if wl >= 3 or wl2 or wl3 then
+	if wl >= 3 or wl2 or wl3 or wl4 > 0 then
 		return true
 	else
 		return false

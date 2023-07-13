@@ -69,11 +69,37 @@ hook.Add("RenderScreenspaceEffects", "gfx_Underwater", function()
 	
 	if GetConVar("gdisasters_hud_underwater_effects"):GetInt() == 0 then return end
 	
+	LocalPlayer().WaterIntensity = math.Clamp(LocalPlayer().WaterIntensity - (FrameTime()/4), 0, 1)
+	local intensity = LocalPlayer().WaterIntensity
+
 	if isUnderWater(LocalPlayer()) then
 		if LocalPlayer().LastIsUnderwater == false then
 			LocalPlayer().Sounds["Underwater"] = CreateLoopedSound(LocalPlayer(), "ambient/water/underwater.wav")
 			LocalPlayer().LastIsUnderwater = true
 		end
+
+		local tab2 = {}
+			tab2[ "$pp_colour_addr" ] = 0
+			tab2[ "$pp_colour_addg" ] = 0
+			tab2[ "$pp_colour_addb" ] = 0
+			tab2[ "$pp_colour_brightness" ] = 0 - intensity
+			tab2[ "$pp_colour_contrast" ] = 1 - intensity
+			tab2[ "$pp_colour_colour" ] = 1 - intensity
+			tab2[ "$pp_colour_mulr" ] = intensity
+			tab2[ "$pp_colour_mulg" ] = -intensity
+			tab2[ "$pp_colour_mulb" ] = -intensity
+		DrawColorModify( tab2 )
+
+		local mat_Overlay = Material("effects/water_warp01")
+		render.UpdateScreenEffectTexture()
+		
+		mat_Overlay:SetFloat( "$envmap", 0 )
+		mat_Overlay:SetFloat( "$envmaptint", 0 )
+		mat_Overlay:SetFloat( "$refractamount", intensity )
+		mat_Overlay:SetInt( "$ignorez", 1 )
+		
+		render.SetMaterial( mat_Overlay )
+		render.DrawScreenQuad()
 		
 		local flood  = ents.FindByClass("env_dynamicwater")[1] or  ents.FindByClass("env_dynamicwater_b")[1]
 		
