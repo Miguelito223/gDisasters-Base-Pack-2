@@ -40,6 +40,7 @@ function ENT:Initialize()
 		
 		self.IsGoingToErupt    = false
 		self.IsPressureLeaking = false
+		self.NextBubblingSound = CurTime()
 		
 		
 		
@@ -52,9 +53,10 @@ function ENT:Initialize()
 		self:ResetSequence(self:LookupSequence("idle"))
 		
 		
-		
 
-		
+		if isUnderWater(self) then
+			ParticleEffectAttach("sumerged_volcano_main", PATTACH_POINT_FOLLOW, self, 0)
+		end
 
 		
 			
@@ -240,6 +242,27 @@ function ENT:Erupt()
 	util.BlastDamage( self, self, self:GetLavaLevelPosition(), 400, math.random( 10, 20 ) )	
 end
 
+function ENT:CanPlayBubblingSound()
+
+	if CurTime() >= self.NextBubblingSound then 
+		self.NextBubblingSound = CurTime() + 8
+		return true
+	else 
+		return false
+	end
+	
+end
+
+function ENT:IfUnderWater()
+
+	if isUnderWater(self) then
+		if (math.random(1,100) == 1) and self:CanPlayBubblingSound() then
+			self:EmitSound("streams/tarpit.mp3")
+		end
+	end
+	
+end
+
 
 
 function ENT:LavaGlow()
@@ -333,12 +356,12 @@ function ENT:Think()
 		self:SetPos(self.StartPos)
 		self:GetPhysicsObject():EnableMotion(false)
 		self:SetAngles(self:GetAngles())
-		
 		self:VFire()
 		self:LavaControl()
 		self:CheckPressure()
 		self:PressureIncrement()
 		self:InsideLavaEffect()
+		self:IfUnderWater()
 		self:NextThink(CurTime() + t)
 		return true	
 	end

@@ -308,6 +308,8 @@ PrecacheParticleSystem("neutron_star_ray_main")
 PrecacheParticleSystem("localized_blizzard_effect")
 PrecacheParticleSystem("hail_character_effect_02_main")
 
+PrecacheParticleSystem("sumerged_volcano_main")
+
 
 -- character_effects.pcf
 PrecacheParticleSystem("exhale")
