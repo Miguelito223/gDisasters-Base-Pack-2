@@ -239,6 +239,7 @@ function ENT:Erupt()
 		mask = MASK_SOLID_BRUSHONLY
 	})
 
+
 	if isUnderWater(self) then
 		ParticleEffect("water_medium", tr.HitPos, Angle(0,0,0), nil)
 	else
