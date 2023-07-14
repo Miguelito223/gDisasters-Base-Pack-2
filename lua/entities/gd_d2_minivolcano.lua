@@ -225,9 +225,22 @@ function ENT:Erupt()
 		if !self:IsValid() then return end
 		CreateSoundWave("streams/disasters/nature/explosion_light_fiery_b.mp3", self:GetPos(), "3d" ,340.29/2, {100,100}, 5)
 	end)
-	self:CreateRocks( 20, {8,10} )
 
-	ParticleEffect("minivolcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
+	local pos = Vector(self:GetPos().x,  self:GetPos().y,  getMapSkyBox().z)
+
+	local tr = util.TraceLine({
+		start = pos,
+		endpos = pos - Vector(0,0,50000),
+		mask = MASK_SOLID_BRUSHONLY
+	})
+
+
+	if isUnderWater(self) then
+		ParticleEffect("water_small", tr.HitPos, Angle(0,0,0), nil)
+	else
+		ParticleEffect("minivolcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
+		self:CreateRocks( 20, {8,10} )
+	end
 
 	local pe = ents.Create( "env_physexplosion" );
 	pe:SetPos( self:GetLavaLevelPosition() );

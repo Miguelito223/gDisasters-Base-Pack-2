@@ -52,7 +52,9 @@ function ENT:Initialize()
 		self:ResetSequence(self:LookupSequence("idle"))
 		
 		
-		
+		if isUnderWater(self) then
+			ParticleEffectAttach("sumerged_volcano_main", PATTACH_POINT_FOLLOW, self, 0)
+		end
 
 		
 
@@ -227,9 +229,21 @@ function ENT:Erupt()
 		if !self:IsValid() then return end
 		CreateSoundWave("streams/disasters/nature/krakatoa_explosion.mp3", self:GetPos(), "3d" ,340.29/2, {100,100}, 5)
 	end)
-	self:CreateRocks( 20, {8,10} )
 
-	ParticleEffect("minivolcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
+	local pos = Vector(self:GetPos().x,  self:GetPos().y,  getMapSkyBox().z)
+
+	local tr = util.TraceLine({
+		start = pos,
+		endpos = pos - Vector(0,0,50000),
+		mask = MASK_SOLID_BRUSHONLY
+	})
+	
+	if isUnderWater(self) then
+		ParticleEffect("water_huge", tr.HitPos, Angle(0,0,0), nil)
+	else
+		ParticleEffect("minivolcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
+		self:CreateRocks( 20, {8,10} )
+	end
 
 	local pe = ents.Create( "env_physexplosion" );
 	pe:SetPos( self:GetLavaLevelPosition() );
@@ -264,6 +278,27 @@ function ENT:Erupt()
 		if !ent:IsValid() then return end
 		if ent:IsValid() then ent:Remove() end
 	end)
+end
+
+function ENT:CanPlayBubblingSound()
+
+	if CurTime() >= self.NextBubblingSound then 
+		self.NextBubblingSound = CurTime() + 8
+		return true
+	else 
+		return false
+	end
+	
+end
+
+function ENT:IfUnderWater()
+
+	if isUnderWater(self) then
+		if (math.random(1,100) == 1) and self:CanPlayBubblingSound() then
+			self:EmitSound("streams/tarpit.mp3")
+		end
+	end
+	
 end
 
 function ENT:LavaGlow()
@@ -362,6 +397,7 @@ function ENT:Think()
 		self:LavaControl()
 		self:CheckPressure()
 		self:PressureIncrement()
+		self:IfUnderWater()
 		self:InsideLavaEffect()
 		self:NextThink(CurTime() + t)
 		return true	
