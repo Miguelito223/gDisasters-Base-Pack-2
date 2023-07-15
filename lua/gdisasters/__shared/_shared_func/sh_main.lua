@@ -1,3 +1,6 @@
+gDisasters.CachedExists     = {}
+gDisasters.Cached         = {}
+
 Break_Sounds = {
 
 

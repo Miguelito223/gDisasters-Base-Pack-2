@@ -1,9 +1,6 @@
-gDisasters = gDisasters or {}
-gDisasters.CachedExists     = {}
-gDisasters.Cached         = {}
-gDisasters.DayNightSystem        = {}
-gDisasters.DayNightSystem.InternalVars = {}
-gDisasters.Game                  = {}
+--class
+gDisasters = {}
+gDisasters.__index = gDisasters
 gDisasters.Version = 0.35
 gDisasters.WorkShopURL = "https://steamcommunity.com/sharedfiles/filedetails/?id=2522900784"
 gDisasters.WorkshopVersion = false
@@ -51,9 +48,9 @@ end
 
 gDisasters:Msg("INCLUDING LUA FILES...")
 
-local root_Directory = "gdisasters"
+gDisasters.root_Directory = "gdisasters"
 
-local function AddFile( File, directory )
+function gDisasters:IncludeFile( File, directory )
 	if string.StartWith(File, "_sv_") or string.StartWith(File, "sv_") then
 		if SERVER then
 			include( directory .. File )
@@ -77,24 +74,24 @@ local function AddFile( File, directory )
 	end
 end
 
-local function loadfiles( directory )
+function gDisasters:loadluafiles( directory )
 	directory = directory .. "/"
 
 	local files, directories = file.Find( directory .. "*", "LUA" )
 
 	for _, v in ipairs( files ) do
 		if string.EndsWith( v, ".lua" ) then
-			AddFile( v, directory )
+			gDisasters:IncludeFile( v, directory )
 		end
 	end
 
 	for _, v in ipairs( directories ) do
 		gDisasters:Msg( "Directory: " .. v )
-		loadfiles( directory .. v )
+		gDisasters:loadluafiles( directory .. v )
 	end
 end
 
-loadfiles( root_Directory )
+gDisasters:loadluafiles( gDisasters.root_Directory )
 
 gDisasters:Msg("FINISH")
 
@@ -102,9 +99,9 @@ gDisasters:Msg("FINISH")
 
 gDisasters:Msg("LOADING DECALS...")
 
-local root_Directory = "materials/decals" 
+gDisasters.root_Directory = "materials/decals" 
 
-local function AddDecalsFile( File, directory )
+function gDisasters:AddDecalsFile( File, directory )
 	local name = File:match("(.+)%..+$")
 	local directory_fixed = directory:match("materials/(.-)/")
 
@@ -112,24 +109,24 @@ local function AddDecalsFile( File, directory )
 	gDisasters:Msg( "ADDING: " .. File )
 end
 
-local function loadfiles( directory )
+function gDisasters:loaddecalsfiles( directory )
 	directory = directory .. "/"
 
 	local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
 
 	for _, v in ipairs( files ) do
 
-		AddDecalsFile( v, directory )
+		gDisasters:AddDecalsFile( v, directory )
 
 	end
 
 	for _, v in ipairs( directories ) do
 		gDisasters:Msg( "Directory: " .. v )
-		loadfiles( directory .. v )
+		gDisasters:loaddecalsfiles( directory .. v )
 	end
 end
 
-loadfiles(root_Directory)
+gDisasters:loaddecalsfiles(gDisasters.root_Directory)
 
 gDisasters:Msg("FINISH")
 
@@ -139,63 +136,63 @@ if SERVER then
 
 	gDisasters:Msg("DOWNLOADING BASIC...")
 
-	local root_Directory = "resource/localization"
+	gDisasters.root_Directory = "resource/localization"
 	
-	local function AddResourceFile( File, directory )
+	function gDisasters:AddResourceFile( File, directory )
 		resource.AddSingleFile( directory .. File )
 		gDisasters:Msg( "ADDING: " .. File )
 	end
 
-	local function loadfiles( directory )
+	function gDisasters:loadresourcefiles( directory )
 		directory = directory .. "/"
 
 		local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
 
 		for _, v in ipairs( files ) do	
 			if string.EndsWith( v, ".png" ) then return end
-			AddResourceFile( v, directory )
+			gDisasters:AddResourceFile( v, directory )
 		end
 
 		for _, v in ipairs( directories ) do
 			gDisasters:Msg( "Directory: " .. v )
-			loadfiles( directory .. v )
+			gDisasters:loadresourcefiles( directory .. v )
 		end
 	end
 
-	loadfiles(root_Directory)
+	gDisasters:loadresourcefiles(gDisasters.root_Directory)
 
 	if not gDisasters.WorkshopVersion then
 
 		gDisasters:Msg("ADDING CONTENT FILE...")
 
-		local root_Directory = "materials"
-		local root_Directory2 = "sound/streams"
-		local root_Directory3 = "models/ramses/models"
+		gDisasters.root_Directory = "materials"
+		gDisasters.root_Directory2 = "sound/streams"
+		gDisasters.root_Directory3 = "models/ramses/models"
 
-		local function AddResourceFile( File, directory )
+		function gDisasters:AddResourceFile( File, directory )
 			resource.AddSingleFile( directory .. File )
 			gDisasters:Msg( "ADDING: " .. File )
 		end
 
-		local function loadfiles( directory )
+		function gDisasters:loadresourcefiles( directory )
 			directory = directory .. "/"
 
 			local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
 
 			for _, v in ipairs( files ) do	
 				if string.EndsWith( v, ".png" ) then return end
-				AddResourceFile( v, directory )
+				gDisasters:AddResourceFile( v, directory )
 			end
 
 			for _, v in ipairs( directories ) do
 				gDisasters:Msg( "Directory: " .. v )
-				loadfiles( directory .. v )
+				gDisasters:loadresourcefiles( directory .. v )
 			end
 		end
 
-		loadfiles(root_Directory)
-		loadfiles(root_Directory2)
-		loadfiles(root_Directory3)
+		gDisasters:loadresourcefiles(gDisasters.root_Directory)
+		gDisasters:loadresourcefiles(gDisasters.root_Directory2)
+		gDisasters:loadresourcefiles(gDisasters.root_Directory3)
 
 		gDisasters:Msg("ADDED CONTENT FILE")
 		
@@ -214,31 +211,31 @@ if CLIENT then
 
 	gDisasters:Msg("LOADING PARTICLES...")
 
-	local root_Directory = "particles/gdisasters"
+	gDisasters.root_Directory = "particles/gdisasters"
 
-	local function AddParticleFile( File, directory )
+	function gDisasters:AddParticleFile( File, directory )
 		game.AddParticles( directory .. File )
 		gDisasters:Msg( "ADDING: " .. File )
 	end
 
-	local function loadfiles( directory )
+	function gDisasters:loadparticlesfiles( directory )
 		directory = directory .. "/"
 
 		local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
 
 		for _, v in ipairs( files ) do
 			if string.EndsWith( v, ".pcf" ) then
-				AddParticleFile( v, directory )
+				gDisasters:AddParticleFile( v, directory )
 			end
 		end
 
 		for _, v in ipairs( directories ) do
 			gDisasters:Msg( "Directory: " .. v )
-			loadfiles( directory .. v )
+			gDisasters:loadparticlesfiles( directory .. v )
 		end
 	end
 
-	loadfiles( root_Directory)
+	gDisasters:loadparticlesfiles( gDisasters.root_Directory)
 
 	gDisasters:Msg("FINISH")
 end
