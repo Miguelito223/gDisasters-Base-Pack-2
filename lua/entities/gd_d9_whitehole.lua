@@ -35,6 +35,8 @@ function ENT:Initialize()
     	self:SoundLoop()
     	self:LockPosition()
 
+		EnableGlobalGravity(false)
+
 		ParticleEffectAttach("micro_blackhole_effect", PATTACH_POINT_FOLLOW, self, 0)
 	end
 end

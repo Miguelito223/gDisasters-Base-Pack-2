@@ -40,6 +40,9 @@ function ENT:Initialize()
 		self:LockPosition()
 	
 		self:CreatePoleEndTracers()
+
+		EnableGlobalGravity(false)
+
 		ParticleEffectAttach("neutron_star_aura_main", PATTACH_POINT_FOLLOW, self, 0)
 		
 	end

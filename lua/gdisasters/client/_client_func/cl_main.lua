@@ -302,7 +302,7 @@ hook.Add("RenderScreenspaceEffects", "gfx_TempEffect", function()
 
 
 end)
-	
+
 	
 	
 	
