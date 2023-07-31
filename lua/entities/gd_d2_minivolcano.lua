@@ -226,7 +226,7 @@ function ENT:Erupt()
 		CreateSoundWave("streams/disasters/nature/explosion_light_fiery_b.mp3", self:GetPos(), "3d" ,340.29/2, {100,100}, 5)
 	end)
 
-	local pos = Vector(self:GetPos().x,  self:GetPos().y,  getMapSkyBox().z)
+	local pos = Vector(self:GetPos().x,  self:GetPos().y,  getMapSkyBox()[2].z)
 
 	local tr = util.TraceLine({
 		start = pos,
