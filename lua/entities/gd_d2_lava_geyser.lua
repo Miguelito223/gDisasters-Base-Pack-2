@@ -43,7 +43,7 @@ function ENT:Initialize()
 		self.CurrentlavaLevel = 0
 		
 		
-		ParticleEffectAttach("geyser_small_idle_main", PATTACH_POINT_FOLLOW, self, 1)
+		ParticleEffectAttach("geyser_lava_idle_main", PATTACH_POINT_FOLLOW, self, 1)
 
 			
 		
@@ -171,7 +171,7 @@ function ENT:Erupt()
 	self:StopParticles()
 	
 
-	ParticleEffectAttach("geyser_big_eruption_main", PATTACH_POINT_FOLLOW, self, 0)
+	ParticleEffectAttach("geyser_lava_eruption_main", PATTACH_POINT_FOLLOW, self, 0)
 
 	if !self:IsValid() then return end
 	
@@ -187,7 +187,7 @@ function ENT:ProcessTime()
 
 	local increment = 0.24
 	
-	if elapsed >=20 then self.IsErupting=false self:StopParticles() ParticleEffectAttach("geyser_small_idle_main", PATTACH_POINT_FOLLOW, self, 1) end 
+	if elapsed >=20 then self.IsErupting=false self:StopParticles() ParticleEffectAttach("geyser_lava_idle_main", PATTACH_POINT_FOLLOW, self, 1) end 
 	if elapsed>=0 and elapsed <= 5 then self.CurrentlavaLevel = self.CurrentlavaLevel - increment  end
 	if elapsed>=15 and elapsed <= 20 then self.CurrentlavaLevel = self.CurrentlavaLevel + increment end
 	if elapsed >= 20 then self.IsErupting = false end 
