@@ -234,8 +234,6 @@ function ENT:Erupt()
 		mask = MASK_WATER
 	})
 
-	print(pos)
-
 
 	if isUnderWater(self) then
 		ParticleEffect("water_huge", tr.HitPos, Angle(0,0,0), nil)
