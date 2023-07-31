@@ -41,6 +41,8 @@ function ENT:Initialize()
 		self:SetAngles( Angle(0,math.random(-180, 180),0))
 		self.StartPos   = self:GetPos()
 		self.CurrentlavaLevel = 0
+		
+		
 		ParticleEffectAttach("geyser_small_idle_main", PATTACH_POINT_FOLLOW, self, 1)
 
 			
@@ -111,11 +113,9 @@ function ENT:PushEntities()
 	
 			if mass < 10000 then
 		
-			if self:GetModel()==self.Models then
-	
-				phys:AddVelocity( Vector(0,0,force * 25 + math.random(-5,5)) )
+			phys:AddVelocity( Vector(0,0,force * 25 + math.random(-5,5)) )
 					
-			end
+
 	
 		end
 	
@@ -171,7 +171,7 @@ function ENT:Erupt()
 	self:StopParticles()
 	
 
-	if self:GetModel()==self.Models then ParticleEffectAttach("geyser_big_eruption_main", PATTACH_POINT_FOLLOW, self, 0) end
+	ParticleEffectAttach("geyser_big_eruption_main", PATTACH_POINT_FOLLOW, self, 0)
 
 	if !self:IsValid() then return end
 	
@@ -185,11 +185,7 @@ function ENT:ProcessTime()
 	local lava_level = 0
 	local elapsed     = CurTime() - self.EruptionStartTime
 
-	local increment   = 0.06
-	
-	if self:GetModel()==self.Models then
-		increment = 0.06
-	end
+	local increment = 0.24
 	
 	if elapsed >=20 then self.IsErupting=false self:StopParticles() ParticleEffectAttach("geyser_small_idle_main", PATTACH_POINT_FOLLOW, self, 1) end 
 	if elapsed>=0 and elapsed <= 5 then self.CurrentlavaLevel = self.CurrentlavaLevel - increment  end
@@ -221,13 +217,7 @@ end
 
 function ENT:lavaDetection()
 	local pos    = self:GetlavaLevelPosition()
-	local radius = 50
-	
-
-
-	if self:GetModel()==self.Models then
-		radius = 200
-	end
+	local radius = 200
 
 	local ents   = ents.FindInSphere(pos, radius)
 	
