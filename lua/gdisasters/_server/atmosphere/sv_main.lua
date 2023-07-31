@@ -746,7 +746,7 @@ function Wind()
 	
 	end
 	
-	if windphysics_enabled and windspeed >= 30 and CurTime() >= GLOBAL_SYSTEM["Atmosphere"]["Wind"]["NextThink"] then
+	if windphysics_enabled and windspeed >= 1 and CurTime() >= GLOBAL_SYSTEM["Atmosphere"]["Wind"]["NextThink"] then
 		GLOBAL_SYSTEM["Atmosphere"]["Wind"]["NextThink"] = CurTime() + GetConVar( "gdisasters_wind_physics_simquality" ):GetFloat()
 		
 		for k, v in pairs(ents.GetAll()) do
