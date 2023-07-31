@@ -235,7 +235,7 @@ function ENT:Erupt()
 	local tr = util.TraceLine({
 		start = pos,
 		endpos = pos - Vector(0,0,50000),
-		mask = MASK_SOLID_BRUSHONLY
+		mask = MASK_WATER
 	})
 	
 	if isUnderWater(self) then

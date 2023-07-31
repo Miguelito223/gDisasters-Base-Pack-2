@@ -231,12 +231,14 @@ function ENT:Erupt()
 	local tr = util.TraceLine({
 		start = pos,
 		endpos = pos - Vector(0,0,50000),
-		mask = MASK_SOLID_BRUSHONLY
+		mask = MASK_WATER
 	})
+
+	print(pos)
 
 
 	if isUnderWater(self) then
-		ParticleEffect("water_small", tr.HitPos, Angle(0,0,0), nil)
+		ParticleEffect("water_medium", tr.HitPos, Angle(0,0,0), nil)
 	else
 		ParticleEffect("minivolcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
 		self:CreateRocks( 20, {8,10} )
