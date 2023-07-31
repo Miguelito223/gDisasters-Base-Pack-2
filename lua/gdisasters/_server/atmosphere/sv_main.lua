@@ -620,40 +620,35 @@ function Wind()
 			end	
 
 			if can_play_sound then
-				if windspeed > 60 then 
+				local material_type = GetMaterialType(ent)
+
+
+				if material_type == "wood" then 
+					sound.Play(table.Random(Break_Sounds.Wood), ent:GetPos(), 80, math.random(90,110), 1)
 				
-					local material_type = GetMaterialType(ent)
+				elseif material_type == "metal" then 
+					sound.Play(table.Random(Break_Sounds.Metal), ent:GetPos(), 80, math.random(90,110), 1)
+				
+				elseif material_type == "plastic" then 
+					sound.Play(table.Random(Break_Sounds.Plastic), ent:GetPos(), 80, math.random(90,110), 1)
 
+				elseif material_type == "rock" then 
+					sound.Play(table.Random(Break_Sounds.Rock), ent:GetPos(), 80, math.random(90,110), 1)
 
-					if material_type == "wood" then 
-						sound.Play(table.Random(Break_Sounds.Wood), ent:GetPos(), 80, math.random(90,110), 1)
-					
-					elseif material_type == "metal" then 
-						sound.Play(table.Random(Break_Sounds.Metal), ent:GetPos(), 80, math.random(90,110), 1)
-					
-					elseif material_type == "plastic" then 
-						sound.Play(table.Random(Break_Sounds.Plastic), ent:GetPos(), 80, math.random(90,110), 1)
+				elseif material_type == "glass" then 
+					sound.Play(table.Random(Break_Sounds.Glass), ent:GetPos(), 80, math.random(90,110), 1)
 
-					elseif material_type == "rock" then 
-						sound.Play(table.Random(Break_Sounds.Rock), ent:GetPos(), 80, math.random(90,110), 1)
-
-					elseif material_type == "glass" then 
-						sound.Play(table.Random(Break_Sounds.Glass), ent:GetPos(), 80, math.random(90,110), 1)
-
-					elseif material_type == "ice" then 
-						sound.Play(table.Random(Break_Sounds.Ice), ent:GetPos(), 80, math.random(90,110), 1)
-					
-					else
-						sound.Play(table.Random(Break_Sounds.Generic), ent:GetPos(), 80, math.random(90,110), 1)
-					
-					end
-
-					phys:EnableMotion(true)
-					phys:Wake()
-					constraint.RemoveAll( ent )
-
+				elseif material_type == "ice" then 
+					sound.Play(table.Random(Break_Sounds.Ice), ent:GetPos(), 80, math.random(90,110), 1)
+				
+				else
+					sound.Play(table.Random(Break_Sounds.Generic), ent:GetPos(), 80, math.random(90,110), 1)
 				
 				end
+
+				phys:EnableMotion(true)
+				phys:Wake()
+				constraint.RemoveAll( ent )
 			end
 		end
 
