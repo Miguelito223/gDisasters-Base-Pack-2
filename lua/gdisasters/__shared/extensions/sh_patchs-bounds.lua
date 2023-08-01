@@ -103,7 +103,7 @@ MAP_BOUNDS["gm_infmap_desert"] = { Vector(16255, 16255, -16255), Vector(-16255, 
 MAP_BOUNDS["gm_infmap_ocean"] = { Vector(16255, 16255, -16255), Vector(-16255, -16255, 16255), Vector(0, 0, -38)}
 MAP_BOUNDS["gm_infmap_onlygrass"] = { Vector(16255, 16255, -16255), Vector(-16255, -16255, 16255), Vector(0, 0, -38)}
 MAP_BOUNDS["gm_tornadovalley_v1"] = { Vector(15359, 15871, -6143), Vector(-15359, -15871, 6143), Vector(0, 0, -503)}
-MAP_BOUNDS["gm_tornadowakita"] = { Vector(-16021,-16048,-8200), Vector(16202,16175, 8200), Vector(0, 0, -27)}
+MAP_BOUNDS["gm_tornadowakita"] = { Vector(-16021,-16048,-8200), Vector(16202,16175, 8200), Vector(0, 0, -253)}
 MAP_BOUNDS["gm_survivethedisasters"] = { Vector(-630,5288,146), Vector(-5425,492, 3873), Vector(0, 0, 802)}
 
 
