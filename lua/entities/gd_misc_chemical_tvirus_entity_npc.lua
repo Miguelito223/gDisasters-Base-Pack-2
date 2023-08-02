@@ -206,7 +206,7 @@ if (SERVER) then
 				self:Remove()
 			else
 				for k, v in pairs(player.GetAll()) do
-					v:ChatPrint("Rare zombie boss has spawned somewherenot ")
+					gDisasters:Warning("Rare zombie boss has spawned somewherenot ")
 				end
 				local ent = ents.Create(table.Random(ZombieList)) -- This creates our zombie entity
 				ent:SetPos(self:GetPos())

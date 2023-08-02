@@ -244,7 +244,7 @@ function ENT:Think()
 			else
 
 				for k, v in pairs(player.GetAll()) do
-					v:ChatPrint("Zombie boss has spawnednot ")
+					gDisasters:Warning("Zombie boss has spawnednot ")
 				end
 				local ent = ents.Create(table.Random(ZombieList)) -- This creates our zombie entity
 				ent:SetPos(self.infected:GetPos())

@@ -39,7 +39,7 @@ function ENT:Initialize()
 		if IsMapRegistered() == false then
 			self:Remove()
 			for k, v in pairs(player.GetAll()) do 
-				v:ChatPrint("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.") 
+				gDisasters:Warning("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.", true) 
 			end 
 		end
 		

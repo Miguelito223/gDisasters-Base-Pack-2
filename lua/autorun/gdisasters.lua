@@ -38,7 +38,7 @@ function gDisasters:Msg(...)
 end
 
 function gDisasters:Warning( sMessage, bError )
-	MsgC(Color(255,136,0),"[gDisasters] ",red," [WARNING] ",env_color,sMessage,"\n")
+	MsgC(Color(255,136,0),"[gDisasters]",Color(255,75,75)," [WARNING] ",env_color,sMessage,"\n")
 	if bError then
 		error(sMessage)
 	end
