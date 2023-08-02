@@ -29,9 +29,7 @@ function ENT:Initialize()
 			self:SetPos(getMapCenterFloorPos())
 		else
 			self:Remove()
-			for k, v in pairs(player.GetAll()) do 
-				gDisasters:Warning("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.", true) 
-			end 
+			gDisasters:Warning("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.", true) 
 		end
 		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 		local phys = self:GetPhysicsObject()
