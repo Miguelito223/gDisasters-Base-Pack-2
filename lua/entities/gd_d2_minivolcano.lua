@@ -40,9 +40,8 @@ function ENT:Initialize()
 		
 		self.IsGoingToErupt    = false
 		self.IsPressureLeaking = false
+		
 		self.NextBubblingSound = CurTime()
-		
-		
 		
 		self.OldEntitiesInsideLava = {}
 
