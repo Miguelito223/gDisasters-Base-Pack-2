@@ -242,6 +242,7 @@ function ENT:Erupt()
 
 	if isUnderWater(self) or isinWater(self) then
 		ParticleEffect("water_huge", tr.HitPos, Angle(0,0,0), nil)
+		ParticleEffect("minivolcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
 	else
 		ParticleEffect("minivolcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
 		self:CreateRocks( 20, {8,10} )
