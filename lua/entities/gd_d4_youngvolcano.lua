@@ -53,7 +53,7 @@ function ENT:Initialize()
 		
 		
 		
-		if isUnderWater(self) then
+		if isUnderWater(self) or isinWater(self) then
 			ParticleEffectAttach("sumerged_volcano_main", PATTACH_POINT_FOLLOW, self, 0)
 		end
 		
@@ -240,7 +240,7 @@ function ENT:Erupt()
 	})
 
 
-	if isUnderWater(self) then
+	if isUnderWater(self) or isinWater(self) then
 		ParticleEffect("water_huge", tr.HitPos, Angle(0,0,0), nil)
 	else
 		ParticleEffect("minivolcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
@@ -274,7 +274,7 @@ end
 
 function ENT:IfUnderWater()
 
-	if isUnderWater(self) then
+	if isUnderWater(self) or isinWater(self) then
 		if (math.random(1,100) == 1) and self:CanPlayBubblingSound() then
 			self:EmitSound("streams/tarpit.mp3")
 		end
