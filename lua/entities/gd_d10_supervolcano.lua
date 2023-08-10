@@ -347,6 +347,13 @@ function ENT:SetLavaLevel(lvl)
 	local lava_level_extension3   = self:LookupBone("volcano_lava_level_extension_04")
 	local lava_level_extension4   = self:LookupBone("volcano_lava_level_extension_05")
 	local lava_level_extension5   = self:LookupBone("volcano_lava_level_extension_06")	
+
+	self:ManipulateBoneScale(lava_level_main, Vector(2,2,2))
+	self:ManipulateBoneScale(lava_level_extension, Vector(2,2,2))
+	self:ManipulateBoneScale(lava_level_extension2, Vector(2,2,2))
+	self:ManipulateBoneScale(lava_level_extension3, Vector(2,2,2))
+	self:ManipulateBoneScale(lava_level_extension4, Vector(2,2,2))
+	self:ManipulateBoneScale(lava_level_extension5, Vector(2,2,2))
 	
 	if lava_lvl <=100 then
 		self:ManipulateBonePosition( lava_level_main, Vector(0,0, lava_lvl  ))
