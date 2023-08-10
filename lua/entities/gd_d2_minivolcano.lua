@@ -12,11 +12,17 @@ ENT.Category                         =  "Hmm"
     
 ENT.Mass                             =  100
 ENT.Model                            =  "models/ramses/models/nature/volcano.mdl"
-ENT.AutomaticFrameAdvance            = true 
 
 function ENT:Initialize()	
+	local lava_level_main         = self:LookupBone("lava_level")
+	local lava_level_extension    = self:LookupBone("lava_level_extension")
+	local lava_level_extension2   = self:LookupBone("lava_level_extension_02")
+
 	self:DrawShadow( false)
 	self:SetModelScale(0.5,0)
+	self:ManipulateBoneScale(lava_level_main, Vector(0.5,0.5,0.5))
+	self:ManipulateBoneScale(lava_level_extension, Vector(0.5,0.5,0.5))
+	self:ManipulateBoneScale(lava_level_extension2, Vector(0.5,0.5,0.5))
 	
 	if (SERVER) then
 		self:SetModel(self.Model)
