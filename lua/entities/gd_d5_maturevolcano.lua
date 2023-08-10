@@ -246,7 +246,7 @@ function ENT:Erupt()
 		self:CreateRocks( 20, {8,10} )
 	end
 
-	for k,v in pairs(ents.FindInSphere(self:GetPos(), 2500)) do
+	for k,v in pairs(ents.FindInSphere(self:GetPos(), 1400)) do
 		
 		local dist = ( v:GetPos() - self:GetPos() ):Length() 	
 
@@ -254,7 +254,7 @@ function ENT:Erupt()
 
 			local mass = v:GetPhysicsObject():GetMass()
 			
-			if dist < 2500 then 
+			if dist < 1400 then 
 			
 				if ( !v.Destroy ) and mass < 50000 then
 

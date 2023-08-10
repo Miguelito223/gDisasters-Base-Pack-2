@@ -236,13 +236,13 @@ function ENT:Erupt()
 
 	ParticleEffect("volcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
 
-	for k,v in pairs(ents.FindInSphere(self:GetPos(), 5000)) do
+	for k,v in pairs(ents.FindInSphere(self:GetPos(), 2000)) do
 		
 		local dist = ( v:GetPos() - self:GetPos() ):Length() 	
 			
 		if (  v != self && IsValid( v ) && IsValid( v:GetPhysicsObject() ) ) and (v:GetClass()!= "phys_constraintsystem" and v:GetClass()!= "phys_constraint"  and v:GetClass()!= "logic_collision_pair") then 
 
-			if dist < 5000 then 
+			if dist < 2000 then 
 
 				if( !v.Destroy ) then
 								
