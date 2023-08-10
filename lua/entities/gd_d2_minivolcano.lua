@@ -12,6 +12,7 @@ ENT.Category                         =  "Hmm"
     
 ENT.Mass                             =  100
 ENT.Model                            =  "models/ramses/models/nature/volcano.mdl"
+ENT.AutomaticFrameAdvance            = true 
 
 function ENT:Initialize()	
 	self:DrawShadow( false)
