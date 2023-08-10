@@ -17,9 +17,7 @@ ENT.AutomaticFrameAdvance            = true
 function ENT:Initialize()	
 	self:DrawShadow( false)
 	self:SetModelScale(1.5,0)
-	self:ManipulateBoneScale(self:LookupBone("lava_level"), Vector(1.5,1.5,1.5))
-	self:ManipulateBoneScale(self:LookupBone("lava_level_extension"), Vector(1.5,1.5,1.5))
-	self:ManipulateBoneScale(self:LookupBone("lava_level_extension_02"), Vector(1.5,1.5,1.5))
+
 	
 	if (SERVER) then
 		self:SetModel(self.Model)
@@ -368,6 +366,10 @@ function ENT:SetLavaLevel(lvl)
 	local lava_level_main         = self:LookupBone("lava_level")
 	local lava_level_extension    = self:LookupBone("lava_level_extension")
 	local lava_level_extension2   = self:LookupBone("lava_level_extension_02")
+
+	self:ManipulateBoneScale(lava_level_main, Vector(1.5,1.5,1.5))
+	self:ManipulateBoneScale(lava_level_extension, Vector(1.5,1.5,1.5))
+	self:ManipulateBoneScale(lava_level_extension2, Vector(1.5,1.5,1.5))
 	
 	
 	
