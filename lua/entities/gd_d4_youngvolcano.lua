@@ -248,9 +248,9 @@ function ENT:Erupt()
 		self:CreateRocks( 20, {8,10} )
 	end
 
-	for k,v in pairs(ents.FindInSphere(self:GetPos(), 1000)) do
+	for k,v in pairs(ents.FindInSphere(self:GetLavaLevelPosition(), 1000)) do
 		
-		local dist = ( v:GetPos() - self:GetPos() ):Length() 	
+		local dist = ( v:GetPos() - self:GetLavaLevelPosition() ):Length() 	
 
 		if (  v != self && IsValid( v ) && IsValid( v:GetPhysicsObject() ) ) and (v:GetClass()!= "phys_constraintsystem" and v:GetClass()!= "phys_constraint"  and v:GetClass()!= "logic_collision_pair") then 
 
