@@ -346,7 +346,6 @@ function ENT:SetLavaLevel(lvl)
 	
 	if lava_lvl <=100 then
 		self:ManipulateBonePosition( lava_level_main, Vector(0,0, lava_lvl  ))
-		
 		self:ManipulateBonePosition( lava_level_extension, Vector(0,0, 0  ))
 		self:ManipulateBonePosition( lava_level_extension2, Vector(0,0, 0  ))
 		
