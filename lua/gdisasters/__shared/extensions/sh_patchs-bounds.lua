@@ -908,33 +908,36 @@ MAP_PATHS["gm_hugeflatgrass_v1"]    		= {
 										Vector(3438,-10030,-15808),
 										Vector(940,-910,-15808)
 
-											}		
+									}		
 
 MAP_PATHS["gm_destroyable_city_001"] = {
 
-Vector(9898,1875,67),
-Vector(1413,2103,67),
-Vector(534,1962,67),
-Vector(-31,791,67),
-Vector(-269,22,67),
-Vector(-273,-1001,67),
-Vector(131,-2225,67),
-Vector(929,-2900,67),
-Vector(1865,-3189,67),
-Vector(2993,-3333,67),
-Vector(3596,-3228,67),
-Vector(4596,-3061,67),
-Vector(5508,-2441,67),
-Vector(5965,-1700,67),
-Vector(6002,-593,67),
-Vector(5656,532,67),
-Vector(5242,1058,67),
-Vector(4702,1492,67),
-Vector(3975,1832,67),
-Vector(-2316,2100,67)
-}
+										Vector(9898,1875,67),
+										Vector(1413,2103,67),
+										Vector(534,1962,67),
+										Vector(-31,791,67),
+										Vector(-269,22,67),
+										Vector(-273,-1001,67),
+										Vector(131,-2225,67),
+										Vector(929,-2900,67),
+										Vector(1865,-3189,67),
+										Vector(2993,-3333,67),
+										Vector(3596,-3228,67),
+										Vector(4596,-3061,67),
+										Vector(5508,-2441,67),
+										Vector(5965,-1700,67),
+										Vector(6002,-593,67),
+										Vector(5656,532,67),
+										Vector(5242,1058,67),
+										Vector(4702,1492,67),
+										Vector(3975,1832,67),
+										Vector(-2316,2100,67)
+									}
 
-function gDisasters_MapBounds()
+
+
+
+hook.Add("Think","gDisasters_MapBounds", function()
 
 	function IsMapPathRegistered()
 		local map = game.GetMap()
@@ -1062,5 +1065,4 @@ function gDisasters_MapBounds()
 
 	end
 	
-end
-hook.Add("Think","gDisasters_MapBounds", gDisasters_MapBounds)
+end)
