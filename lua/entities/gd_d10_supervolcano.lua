@@ -232,7 +232,7 @@ function ENT:Erupt()
 		if !self:IsValid() then return end
 		CreateSoundWave("streams/disasters/nature/krakatoa_explosion.mp3", self:GetPos(), "3d" ,340.29/2, {100,100}, 5)
 	end)
-	self:CreateRocks(4,20)
+	self:CreateRocks(20,20)
 
 	ParticleEffect("volcano_eruption_dusty_main", self:GetLavaLevelPosition(), Angle(0,0,0), nil)
 
