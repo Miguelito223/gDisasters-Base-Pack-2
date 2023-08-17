@@ -17,7 +17,7 @@ ENT.AutomaticFrameAdvance            = true
 function ENT:Initialize()	
 	self:DrawShadow( false)
 	self:SetModelScale(1.5,0)
-
+	self:Activate()
 	
 	if (SERVER) then
 		self:SetModel(self.Model)
