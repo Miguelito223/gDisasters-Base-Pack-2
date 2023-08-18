@@ -16,7 +16,7 @@ ENT.AutomaticFrameAdvance            = true
 
 function ENT:Initialize()	
 	self:DrawShadow( false)
-	self:SetModelScale(0.5,0.0000001)
+	self:SetModelScale(0.5,0.000001)
 
 	
 	if (SERVER) then
