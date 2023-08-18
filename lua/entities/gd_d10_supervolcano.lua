@@ -16,12 +16,11 @@ ENT.AutomaticFrameAdvance            = true
 
 function ENT:Initialize()	
 	self:DrawShadow(false)
-	self:SetModelScale(1.5,0.000001)
+	self:SetModelScale(1.5)
 	
 	if (SERVER) then
 		
 		self:SetAngles( Angle(0,math.random(-180, 180),0))
-		
 		self:SetModel(self.Model)
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
