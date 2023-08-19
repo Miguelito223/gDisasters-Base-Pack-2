@@ -306,6 +306,7 @@ PrecacheParticleSystem("localized_blizzard_effect")
 PrecacheParticleSystem("hail_character_effect_02_main")
 
 PrecacheParticleSystem("sumerged_volcano_main")
+PrecacheParticleSystem("sumerged_bigvolcano_main")
 
 
 -- character_effects.pcf
