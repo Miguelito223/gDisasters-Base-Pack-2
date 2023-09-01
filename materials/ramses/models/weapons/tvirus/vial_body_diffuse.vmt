@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "ramses/models/weapons/tvirus/vial_body_diffuse"
+	"$surfaceprop" "wood"
+	"$model" 1
+}
+

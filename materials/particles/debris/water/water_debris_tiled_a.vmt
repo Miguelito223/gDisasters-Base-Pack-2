@@ -1,0 +1,9 @@
+"UnlitGeneric"
+{
+	"$basetexture" "hd/particles/debris/water/water_debris_tiled_a"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+	"$translucent" "1"
+	"$depthblend" 1 
+	
+}

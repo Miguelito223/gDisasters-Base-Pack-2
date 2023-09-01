@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+$basetexture "models\nmr_zombie\casual\casual_02\casual_piecemeal_head_03_color"
+$bumpmap "models\nmr_zombie\casual\casual_02\casual_piecemeal_head_01_normal"
+}

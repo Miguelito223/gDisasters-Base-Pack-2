@@ -1,0 +1,7 @@
+"Spritecard"
+{
+	"$basetexture" "particles/tntsmoke_circle"
+	"$translucent" 1
+	"$additive" 1
+	"$overbrightfactor" "1"
+}

@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	
+	"$basetexture" "nature/ice_clear"
+	
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[0.25 0.25 0.5]"
+	"$translucent" 1
+	
+	
+	
+	
+}
+

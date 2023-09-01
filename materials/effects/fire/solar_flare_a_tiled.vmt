@@ -1,0 +1,11 @@
+"SpriteCard"
+{
+	$basetexture "hd/effects/fire/solar_flare_a_tiled"
+	$SEQUENCE_BLEND_MODE 1 
+	$MAXLUMFRAMEBLEND1 0
+	$MAXLUMFRAMEBLEND2 1
+	$depthblend 1
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$additive" 1
+}

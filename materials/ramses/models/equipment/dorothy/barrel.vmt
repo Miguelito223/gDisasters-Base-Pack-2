@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "ramses/models/equipment/dorothy/barrel"
+	"$surfaceprop" "wood"
+	"$model" 1
+	
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[0.7 0.7 0.7]"
+	"$envmapmask"		"ramses/models/equipment/dorothy/barrel_envmapmask"
+	
+	"$selfillum" 1
+	
+	"$selfillummask"	"ramses/models/equipment/dorothy/barrel_selfillummask"
+
+	
+}
+

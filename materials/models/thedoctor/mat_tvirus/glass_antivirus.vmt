@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/thedoctor/mat_tvirus/glass_antivirus"
+	"$surfaceprop" "metal"
+	"$model" 1
+	"$phong" 1
+	"$envmaptint" "[0.2 1 0.2]"
+	"$envmap" "env_cubemap"
+	"$envmapmask"		"models/thedoctor/mat_t12/t12_body_SPEC"
+	"$translucent" 1
+}
+

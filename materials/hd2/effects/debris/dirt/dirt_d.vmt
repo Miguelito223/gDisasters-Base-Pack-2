@@ -1,0 +1,8 @@
+"UnlitGeneric"
+{
+	"$basetexture" "hd2/effects/debris/dirt/dirt_d"
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$translucent" 1
+}
+

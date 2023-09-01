@@ -1,0 +1,8 @@
+"UnlitGeneric"
+{
+	$basetexture "hd/effects/smoke/smoke_spike_tiled_a"
+	$depthblend 1
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$additive" 0
+}

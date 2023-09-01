@@ -1,0 +1,8 @@
+"SpriteCard"
+{
+	"$basetexture" "hd2/effects/muzzle_flashes/4point_tiled1"
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$additive" 1
+	"$ignorez" 1
+}

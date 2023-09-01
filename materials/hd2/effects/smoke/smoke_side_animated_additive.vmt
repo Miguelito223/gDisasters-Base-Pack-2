@@ -1,0 +1,7 @@
+"SpriteCard"
+{
+	"$basetexture" "hd2/effects/smoke/smoke_side_animated"
+	"$additive" 1
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+}

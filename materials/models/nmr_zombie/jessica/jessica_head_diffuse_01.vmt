@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+$basetexture "models\nmr_zombie\jessica\jessica_head_diffuse_01"
+//$bumpmap "models\nmr_zombie\jessica\jessica_head_normal_01"
+}

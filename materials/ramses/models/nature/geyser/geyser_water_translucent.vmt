@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	"$model" 1
+	"$basetexture" "ramses/models/nature/geyser/geyser_water"
+	"$surfaceprop" "metal"
+	
+	"$translucent" 1
+	"$nocull" 1
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[0.5 0.5 1]"
+	
+	
+	
+}
+

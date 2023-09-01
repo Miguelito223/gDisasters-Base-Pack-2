@@ -1,0 +1,7 @@
+"SpriteCard"
+{
+	"$basetexture" "hd2/effects/debris/slime/slime_anim_c_diff"
+	"$translucent" 1
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+}

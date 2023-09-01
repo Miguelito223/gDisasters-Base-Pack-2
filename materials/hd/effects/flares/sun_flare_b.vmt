@@ -1,0 +1,8 @@
+"UnlitGeneric"
+{
+	"$basetexture" "hd/effects/flares/sun_flare_b"
+	"$additive" "1"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+	
+}

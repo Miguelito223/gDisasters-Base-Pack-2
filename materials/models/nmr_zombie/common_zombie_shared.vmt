@@ -1,0 +1,14 @@
+vertexlitgeneric
+{
+$phong "1"
+$phongboost "3"
+$phongexponent "5"
+$phongtint "[.4 .8 1]"
+$phongfresnelranges "[.3 .65 30]"
+$halflambert "0"
+$ambientocclusion "1"
+$lightwarptexture "models\player\player_mute_shared"
+}
+
+
+

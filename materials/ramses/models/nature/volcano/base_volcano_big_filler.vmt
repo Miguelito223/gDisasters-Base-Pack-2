@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "ramses/models/nature/volcano/base_volcano_big_filler"
+	"$surfaceprop" "wood"
+	"$model" 1
+
+	"$bumpmap" "ramses/models/nature/volcano/base_volcano_big_filler_normal"
+
+		
+		
+}
+

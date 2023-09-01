@@ -1,0 +1,11 @@
+"VertexlitGeneric"
+{
+	$basetexture "atmosphere/aurora_borealis_01_diffuse"
+	"$model" 1 
+	"$translucent" 1
+	"$additive" 1
+	"$nocull" 1
+	"$selfillum" 1
+	"$selfillummask" "atmosphere/aurora_borealis_01_selfillum_mask"
+	
+}

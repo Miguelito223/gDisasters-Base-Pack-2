@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	
+	"$basetexture" "ramses/models/space/white_hole/main"
+	"$surfaceprop" "wood"
+	"$model" 1
+	
+
+	"$selfillum" 1
+	"$selfillummask" "ramses/models/space/white_hole/main"
+	
+	
+	
+}

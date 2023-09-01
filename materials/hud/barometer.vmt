@@ -1,0 +1,6 @@
+"UnlitGeneric"
+	{
+		"$baseTexture" "hud/barometer"
+		"$translucent"		"1"
+		"$vertexalpha" "1"
+	}

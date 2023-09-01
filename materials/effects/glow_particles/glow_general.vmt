@@ -1,0 +1,8 @@
+"UnlitGeneric"
+{
+	"$basetexture" "hd/effects/glow_particles/glow_general"
+	"$additive" "1"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+	
+}

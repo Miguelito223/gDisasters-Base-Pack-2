@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "ramses/models/equipment/dorothy/probe"
+	"$surfaceprop" "wood"
+	"$model" 1
+
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[0.5 0.5 0.5]"
+	"$envmapmask"		"ramses/models/equipment/dorothy/probe_alphamask"
+	
+
+}
+

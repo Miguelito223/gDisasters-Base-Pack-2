@@ -1,0 +1,11 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/player/slow/amberlyn/sh5/nurse/slow_knife"
+	"$bumpmap"	"models/player/slow/amberlyn/sh5/nurse/slow_knife_bump"
+
+	"$envmap" "env_cubemap"
+	"$normalmapalphaenvmapmask" 1
+	"$envmaptint" "[1 1 1]" 
+	"$envmapcontrast" .3
+	"$envmapsaturation" 0.65
+}

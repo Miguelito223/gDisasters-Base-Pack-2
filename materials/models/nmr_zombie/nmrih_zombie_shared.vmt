@@ -1,0 +1,10 @@
+vertexlitgeneric
+{
+$halflambert "1"
+$phong "1"
+$phongtint "[.4 .8 1]"
+$phongboost ".1"
+$phongexponent "1"
+$phongfresnelranges	"[1 1 16]"
+$lightwarptexture "models\nmr_zombie\zombie_warp_shared"
+}

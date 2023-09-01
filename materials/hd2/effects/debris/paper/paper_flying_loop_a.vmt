@@ -1,0 +1,7 @@
+"SpriteCard"
+{
+	"$basetexture" "hd2/effects/debris/paper/paper_flying_loop_a"
+	"$translucent" 1
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+}

@@ -1,0 +1,6 @@
+"UnlitGeneric"
+	{
+		"$baseTexture" "hud/sand_3"
+		"$translucent"		"1"
+		"$vertexalpha" "1"
+	}

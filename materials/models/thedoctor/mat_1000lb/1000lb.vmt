@@ -1,0 +1,24 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/thedoctor/mat_1000lb/1000lb"
+	"$surfaceprop" "metal"
+	"$model" 1
+	"$phong" 1
+	"$bumpmap" "models/thedoctor/mat_1000lb/1000lb_NRM"     
+	"$normalmapalphaenvmapmask" 1
+	"$envmaptint" "[0.04 0.04 0.04]"
+	"$envmap" "env_cubemap"
+	
+	"$detail" "models/detail_metall_det2"
+	"$detailscale" "9.00"
+	"$detailblendfactor" "0.5"
+	"$detailblendmode" "0"
+
+	"$phong"				"1"
+	"$phongalbedotint"		"1"
+	"$phongboost"			"5"
+	"$phongexponent"		"15"
+	"$phongexponenttexture"	"models\vehicle_exp"
+	"$phongfresnelranges"	"[0 0.1 0]"
+}
+

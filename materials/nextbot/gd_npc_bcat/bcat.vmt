@@ -1,0 +1,5 @@
+"UnlitGeneric"
+{
+	"$basetexture" "nextbot/gd_npc_bcat/bcat"
+	"$alphatest" 1
+}

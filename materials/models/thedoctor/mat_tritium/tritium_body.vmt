@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/thedoctor/mat_tritium/tritium_body"
+	"$surfaceprop" "metal"
+	"$model" 1
+}
+

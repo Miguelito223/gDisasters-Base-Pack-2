@@ -1,0 +1,8 @@
+"SpriteCard"
+{
+	"$basetexture" "hd2/effects/fire/alien_fire_a"
+	"$additive" 1
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$translucent" 1
+}

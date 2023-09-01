@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+$basetexture "models\nmr_zombie\julie\Head Diffuse Z"	
+$bumpmap "models\nmr_zombie\julie\Head Normal Z"
+}

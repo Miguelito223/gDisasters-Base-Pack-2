@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/thedoctor/mat_photon/photon_misc"
+	"$surfaceprop" "metal"
+	"$model" 1
+	"$phong" 1    
+	"$envmaptint" "[0.01 0.01 0.01]"
+	"$envmap" "env_cubemap"
+}
+

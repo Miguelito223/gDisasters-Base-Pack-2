@@ -1,0 +1,15 @@
+"Refract"
+{
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$refractamount" "1"
+	"$bluramount" "1"
+	"$normalmap" "hd2/effects/warps/water_bubbles_a_ddn"
+	"$dudvmap" ""
+	"$nocull" 1
+	"$ignorez" 1
+	"Refract_DX80"
+{
+	"$fallbackmaterial" "null"
+	}
+}

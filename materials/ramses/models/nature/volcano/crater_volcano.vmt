@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "ramses/models/nature/volcano/crater_volcano"
+	"$surfaceprop" "wood"
+	"$model" 1
+	"$phong" 1
+	"$envmaptint" "[1 1 1 ]"
+	$selfillum 1
+	$selfillummask "ramses/models/nature/volcano/crater_volcano_glow"
+
+
+
+}
+

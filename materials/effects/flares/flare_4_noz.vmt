@@ -1,0 +1,10 @@
+"UnlitGeneric"
+{
+	"$basetexture" "hd/effects/flares/flare_4"
+	"$additive" "1"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+	"$ignorez" "1"
+
+	
+}

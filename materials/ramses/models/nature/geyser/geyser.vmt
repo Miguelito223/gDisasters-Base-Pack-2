@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "ramses/models/nature/geyser/geyser"
+	"$surfaceprop" "wood"
+	"$model" 1
+	"$phong" 1
+
+	"$bumpmap" "ramses/models/nature/geyser/geyser_normal"
+
+
+}
+

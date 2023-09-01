@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	
+	"$basetexture" "ramses/models/space/neutron_star/main"
+	"$surfaceprop" "wood"
+	"$model" 1
+	
+
+	"$selfillum" 1
+	"$selfillummask" "ramses/models/space/neutron_star/main"
+	
+	
+	
+}
+

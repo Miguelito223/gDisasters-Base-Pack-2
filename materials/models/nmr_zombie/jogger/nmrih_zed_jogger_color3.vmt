@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+$basetexture "models\nmr_zombie\jogger\nmrih_Zed_jogger_color3"
+$bumpmap "models\nmr_zombie\jogger\nmrih_Zed_jogger_normal"
+}

@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "hd2/effects/water/rain_drop2"
+	"$additive" 0
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+}

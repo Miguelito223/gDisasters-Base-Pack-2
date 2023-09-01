@@ -1,0 +1,23 @@
+"UnlitGeneric"
+{
+	
+	"$basetexture" "space/models/madara_meteor/air_anim_01"
+	"$surfaceprop" "metal"
+	"$model" 1
+	"$additive" 1
+	"$nocull" 1
+	
+		
+		"Proxies"
+	{
+	"AnimatedTexture"
+	{
+	"animatedTextureVar" "$basetexture"
+	"animatedTextureFrameNumVar" "$frame"
+	"animatedTextureFrameRate" "4"
+	}
+	}
+
+	
+}
+

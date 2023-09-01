@@ -1,0 +1,6 @@
+"Spritecard"
+{
+	"$basetexture" "particles/circle_improved"
+	"$translucent" 1
+	"$overbrightfactor" "1"
+}

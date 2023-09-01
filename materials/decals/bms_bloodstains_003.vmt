@@ -1,0 +1,7 @@
+"DecalModulate"
+{
+	"$basetexture" "decals/bms_bloodstains_003"
+	"$decal" 1
+	"$decalscale" 0.25
+	"%keywords" "BMS"
+}

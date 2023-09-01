@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\npc\nationalguard\ng_tan_d_z"	
+	"$bumpmap" "models\npc\nationalguard\ng_n"	
+}

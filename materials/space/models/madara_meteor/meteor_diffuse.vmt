@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	
+	"$basetexture" "space/models/madara_meteor/meteor_diffuse"
+	"$surfaceprop" "metal"
+	
+	"$model" 1
+	"$bumpmap"		"space/models/madara_meteor/meteor_normal"
+	
+	
+	
+}
+
