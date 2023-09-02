@@ -96,43 +96,6 @@ gDisasters:loadluafiles( gDisasters.root_Directory )
 
 gDisasters:Msg("FINISH")
 
---loading decals
-
-gDisasters:Msg("LOADING DECALS...")
-
-gDisasters.root_Directory = "materials/decals/gdisasters" 
-
-function gDisasters:AddDecalsFile( File, directory )
-	local name = File:match("(.+)%..+$")
-	local directory_fixed = directory:match("materials/(.-)/")
-
-	game.AddDecal( name, directory_fixed .. "/gdisasters/" .. name )
-	gDisasters:Msg( "ADDING: " .. File )
-end
-
-function gDisasters:loaddecalsfiles( directory )
-	directory = directory .. "/"
-
-	local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
-
-	for _, v in ipairs( files ) do
-		if string.EndsWith( v, ".png" ) then 
-		else 
-			gDisasters:AddDecalsFile( v, directory )
-		end
-
-	end
-
-	for _, v in ipairs( directories ) do
-		gDisasters:Msg( "Directory: " .. v )
-		gDisasters:loaddecalsfiles( directory .. v )
-	end
-end
-
-gDisasters:loaddecalsfiles(gDisasters.root_Directory)
-
-gDisasters:Msg("FINISH")
-
 --adding materials and sounds and models to client
 
 if SERVER then
@@ -211,6 +174,43 @@ if SERVER then
 
 	gDisasters:Msg("FINISH")
 end
+
+--loading decals
+
+gDisasters:Msg("LOADING DECALS...")
+
+gDisasters.root_Directory = "materials/decals/gdisasters" 
+
+function gDisasters:AddDecalsFile( File, directory )
+	local name = File:match("(.+)%..+$")
+	local directory_fixed = directory:match("materials/(.-)/")
+
+	game.AddDecal( name, directory_fixed .. "/gdisasters/" .. name )
+	gDisasters:Msg( "ADDING: " .. File )
+end
+
+function gDisasters:loaddecalsfiles( directory )
+	directory = directory .. "/"
+
+	local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
+
+	for _, v in ipairs( files ) do
+		if string.EndsWith( v, ".png" ) then 
+		else 
+			gDisasters:AddDecalsFile( v, directory )
+		end
+
+	end
+
+	for _, v in ipairs( directories ) do
+		gDisasters:Msg( "Directory: " .. v )
+		gDisasters:loaddecalsfiles( directory .. v )
+	end
+end
+
+gDisasters:loaddecalsfiles(gDisasters.root_Directory)
+
+gDisasters:Msg("FINISH")
 
 --adding particles
 
