@@ -3,7 +3,11 @@ gDisasters = {}
 gDisasters.__index = gDisasters
 gDisasters.Version = 0.354
 gDisasters.WorkShopURL = "https://steamcommunity.com/sharedfiles/filedetails/?id=2522900784"
+<<<<<<< HEAD
 gDisasters.WorkshopVersion = false
+=======
+gDisasters.WorkshopVersion = true
+>>>>>>> d24ff0e9f513de6f4770730817817526d9bcc565
 
 --functions
 
@@ -101,6 +105,10 @@ gDisasters:Msg("LOADING DECALS...")
 
 gDisasters.root_Directory = "materials/decals/gdisasters" 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> d24ff0e9f513de6f4770730817817526d9bcc565
 function gDisasters:AddDecalsFile( File, directory )
 	local name = File:match("(.+)%..+$")
 	local directory_fixed = directory:match("materials/(.-)/")
@@ -116,7 +124,14 @@ function gDisasters:loaddecalsfiles( directory )
 
 	for _, v in ipairs( files ) do
 
+<<<<<<< HEAD
 		gDisasters:AddDecalsFile( v, directory )
+=======
+		if string.EndsWith( v, ".png" ) then 
+		else 
+			gDisasters:AddDecalsFile( v, directory )
+		end
+>>>>>>> d24ff0e9f513de6f4770730817817526d9bcc565
 
 	end
 
@@ -149,8 +164,15 @@ if SERVER then
 		local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
 
 		for _, v in ipairs( files ) do	
+<<<<<<< HEAD
 			if string.EndsWith( v, ".png" ) then return end
 			gDisasters:AddResourceFile( v, directory )
+=======
+			if string.EndsWith( v, ".png" ) then 
+			else
+				gDisasters:AddResourceFile( v, directory )		
+			end	
+>>>>>>> d24ff0e9f513de6f4770730817817526d9bcc565
 		end
 
 		for _, v in ipairs( directories ) do
@@ -180,8 +202,16 @@ if SERVER then
 			local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
 
 			for _, v in ipairs( files ) do	
+<<<<<<< HEAD
 				if string.EndsWith( v, ".png" ) then return end
 				gDisasters:AddResourceFile( v, directory )
+=======
+				if string.EndsWith( v, ".png" ) then 
+				else
+					gDisasters:AddResourceFile( v, directory )
+				end
+				
+>>>>>>> d24ff0e9f513de6f4770730817817526d9bcc565
 			end
 
 			for _, v in ipairs( directories ) do
