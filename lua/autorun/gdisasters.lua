@@ -105,7 +105,7 @@ function gDisasters:AddDecalsFile( File, directory )
 	local name = File:match("(.+)%..+$")
 	local directory_fixed = directory:match("materials/(.-)/")
 
-	game.AddDecal( name, directory_fixed .. "/gdisasters/" .. name )
+	game.AddDecal(name, name)
 	gDisasters:Msg( "ADDING: " .. File )
 end
 
@@ -156,8 +156,7 @@ if SERVER then
 			if string.EndsWith( v, ".png" ) then 
 			else
 				gDisasters:AddResourceFile( v, directory )		
-			end
-			
+			end	
 		end
 
 		for _, v in ipairs( directories ) do
