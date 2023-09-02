@@ -99,7 +99,7 @@ gDisasters:Msg("FINISH")
 
 gDisasters:Msg("LOADING DECALS...")
 
-gDisasters.root_Directory = "materials/decals" 
+gDisasters.root_Directory = "materials/gdisasters/decals" 
 
 function gDisasters:AddDecalsFile( File, directory )
 	local name = File:match("(.+)%..+$")
