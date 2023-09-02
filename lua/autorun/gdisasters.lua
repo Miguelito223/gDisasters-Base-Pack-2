@@ -3,11 +3,8 @@ gDisasters = {}
 gDisasters.__index = gDisasters
 gDisasters.Version = 0.354
 gDisasters.WorkShopURL = "https://steamcommunity.com/sharedfiles/filedetails/?id=2522900784"
-<<<<<<< HEAD
 gDisasters.WorkshopVersion = false
-=======
-gDisasters.WorkshopVersion = true
->>>>>>> d24ff0e9f513de6f4770730817817526d9bcc565
+
 
 --functions
 
