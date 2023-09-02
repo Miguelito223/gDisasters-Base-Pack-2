@@ -114,7 +114,8 @@ function gDisasters:loaddecalsfiles( directory )
 	local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
 
 	for _, v in ipairs( files ) do
-
+		
+		if string.EndsWith( v, ".png" ) then return end
 		gDisasters:AddDecalsFile( v, directory )
 
 	end
