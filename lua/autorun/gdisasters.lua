@@ -183,7 +183,6 @@ function gDisasters:AddDecalsFile( File, directory )
 	local name = File:match("(.+)%..+$")
 	directory = directory:match("materials/(.-)/") .. "/gdisasters/" .. name
 
-	print(directory)
 	game.AddDecal( name, directory)
 	gDisasters:Msg( "ADDING: " .. File )
 end
