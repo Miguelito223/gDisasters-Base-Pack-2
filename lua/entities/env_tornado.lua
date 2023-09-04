@@ -1117,7 +1117,7 @@ end
 	
 hook.Add( "PreDrawOpaqueRenderables", "test", function()
 
-	if GetConVar("gdisasters_graphics_draw_smarttornado_path"):getint() >= 1 then
+	if GetConVar("gdisasters_graphics_draw_smarttornado_path"):GetInt() >= 1 then
 		render.SetColorMaterial()
 
 		local Path          =  getMapPath()
