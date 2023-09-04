@@ -1,7 +1,7 @@
 --class
 gDisasters = {}
 gDisasters.__index = gDisasters
-gDisasters.Version = 0.354
+gDisasters.Version = 0.355
 gDisasters.WorkShopURL = "https://steamcommunity.com/sharedfiles/filedetails/?id=2522900784"
 gDisasters.WorkshopVersion = false
 
