@@ -137,7 +137,7 @@ function ENT:Expand()
 			
 			if HitChance(10) then 
 			
-			util.ScreenShake( Vector(self.Verts.wave_front[1].x, pos.y, pos.z), 0.2 *alpha , 0.5, math.random(), 1000 )
+				util.ScreenShake( Vector(self.Verts.wave_front[1].x, pos.y, pos.z), 0.2 *alpha , 0.5, math.random(), 1000 )
 			
 			end 
 			
