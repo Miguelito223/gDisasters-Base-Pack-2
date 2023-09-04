@@ -48,7 +48,7 @@ function gDisasters_PostSpawnCL()
 		CreateConVar( "gdisasters_graphics_number_of_screen_particles", 1, {FCVAR_ARCHIVE}, "")
 		CreateConVar( "gdisasters_graphics_shakescreen_enable", 1,{FCVAR_ARCHIVE}, "")
 		CreateConVar( "gdisasters_graphics_experimental_overdraw", 1, {FCVAR_ARCHIVE}, "sexy " )
-		CreateConVar( "gdisasters_graphics_draw_smarttornado_path", "0", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_graphics_draw_smarttornado_path", 0, {FCVAR_ARCHIVE}, "" )
 
 		--sounds
 		CreateConVar( "gdisasters_volume_hud_heartbeat", 0.1, {FCVAR_ARCHIVE}	, "" )
@@ -114,3 +114,4 @@ function gDisasters_PostSpawnCL()
 	gDisasters_SetupSound()
 end
 hook.Add( "InitPostEntity", "gDisasters_PostSpawnCL", gDisasters_PostSpawnCL )
+gDisasters_PostSpawnCL()
