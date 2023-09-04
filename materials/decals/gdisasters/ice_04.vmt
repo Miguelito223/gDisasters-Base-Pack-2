@@ -1,6 +1,6 @@
 "LightmappedGeneric"
 {
-	"$basetexture" "decals/ice"
+	"$basetexture" "decals/gdisasters/ice"
 	"$decal" 1
 	"$decalscale" 8
 	"$translucent" 1
