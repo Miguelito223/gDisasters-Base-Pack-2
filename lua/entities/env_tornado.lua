@@ -1115,24 +1115,24 @@ end
 
 
 	
---[[hook.Add( "PreDrawOpaqueRenderables", "test", function()
+hook.Add( "PreDrawOpaqueRenderables", "test", function()
 
-	render.SetColorMaterial()
+	if GetConVar("gdisasters_graphics_draw_smarttornado_path"):getint() >= 1 then
+		render.SetColorMaterial()
 
-	local Path          =  getMapPath()
-	
-	local NextPathIndex = 8
-	
-	if NextPathIndex > #Path then return end
-	for k, v in pairs(ents.FindByClass( "env_tornado" ) ) do
+		local Path          =  getMapPath()
+		
+		local NextPathIndex = 8
+		
+		if NextPathIndex > #Path then return end
 
-
-
-	render.DrawLine( Path[1], Path[NextPathIndex], Color( 0, 225, 0, 255 ), false )
+		for k, v in pairs(ents.FindByClass( "env_tornado" ) ) do
+			render.DrawLine( Path[1], Path[NextPathIndex], Color( 0, 225, 0, 255 ), false )
+		end
 	end
 
 	
-end )--]]
+end )
 
 	
 function ENT:Draw()	
