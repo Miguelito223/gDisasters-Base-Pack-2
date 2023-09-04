@@ -181,8 +181,10 @@ gDisasters.root_Directory = "materials/decals/gdisasters"
 
 function gDisasters:AddDecalsFile( File, directory )
 	local name = File:match("(.+)%..+$")
+	directory = directory:match("materials/(.-)/")
+	directory = directory .. "/gdisasters/" .. name
 
-	game.AddDecal( name, "decals/gdisasters/" .. name )
+	game.AddDecal( name, directory)
 	gDisasters:Msg( "ADDING: " .. File )
 end
 
