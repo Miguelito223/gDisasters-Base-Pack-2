@@ -191,29 +191,21 @@ function gDisasters:AddDecalsFile( Key, File, directory )
 	if string.StartWith(name, "snow_") then
 		table.insert(snowtable, Key - 27, directory)
 
-		timer.Simple(0.5, function()
-			game.AddDecal( "snow", snowtable)
-			gDisasters:Msg( "ADDING: " .. File )
-		end)
+		game.AddDecal( "snow", snowtable)
+		gDisasters:Msg( "ADDING: " .. File )
 	elseif string.StartWith(name, "sand_") then
 		table.insert(sandtable, Key - 17, directory)
 
-		timer.Simple(0.5, function()
-			game.AddDecal( "sand", sandtable)
-			gDisasters:Msg( "ADDING: " .. File )	
-		end)
+		game.AddDecal( "sand", sandtable)
+		gDisasters:Msg( "ADDING: " .. File )
 	elseif string.StartWith(name, "ice_") then
 		table.insert(icetable, Key - 7, directory)
 
-		timer.Simple(0.5, function()
-			game.AddDecal( "ice", icetable)
-			gDisasters:Msg( "ADDING: " .. File )
-		end)
+		game.AddDecal( "ice", icetable)
+		gDisasters:Msg( "ADDING: " .. File )
 	else
-		timer.Simple(0.5, function()
-			game.AddDecal( name, directory)
-			gDisasters:Msg( "ADDING: " .. File )
-		end)
+		game.AddDecal( name, directory)
+		gDisasters:Msg( "ADDING: " .. File )
 	end
 	timer.Simple(5, function()
 		PrintTable(snowtable)
@@ -228,7 +220,6 @@ function gDisasters:loaddecalsfiles( directory )
 	local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
 
 	for k, v in ipairs( files ) do
-		print(k .. v)
 		if !string.EndsWith( v, ".png" ) and !string.EndsWith( v, ".vtf" ) then 
 			gDisasters:AddDecalsFile( k, v, directory)
 		end
