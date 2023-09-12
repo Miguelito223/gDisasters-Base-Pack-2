@@ -188,17 +188,17 @@ function gDisasters:AddDecalsFile( Key, File, directory )
 	local icetable = {}
 
 
-	if string.StartWith(name, "snow_") then
+	if string.StartWith(name, "snow") then
 		table.insert(snowtable, Key - 27, directory)
 
 		game.AddDecal( "snow", snowtable)
 		gDisasters:Msg( "ADDING: " .. File )
-	elseif string.StartWith(name, "sand_") then
+	elseif string.StartWith(name, "sand") then
 		table.insert(sandtable, Key - 17, directory)
 
 		game.AddDecal( "sand", sandtable)
 		gDisasters:Msg( "ADDING: " .. File )
-	elseif string.StartWith(name, "ice_") then
+	elseif string.StartWith(name, "ice") then
 		table.insert(icetable, Key - 7, directory)
 
 		game.AddDecal( "ice", icetable)
