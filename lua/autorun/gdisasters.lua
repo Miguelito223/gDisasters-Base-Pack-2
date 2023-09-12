@@ -183,8 +183,6 @@ function gDisasters:AddDecalsFile( Key, File, directory )
 	local name = File:match("(.+)%..+$")
 	directory = directory:match("materials/(.-)/") .. "/gdisasters/" .. name
 
-	print(Key ..  File)
-
 	local snowtable = {}
 	local sandtable = {}
 	local icetable = {}
@@ -192,7 +190,7 @@ function gDisasters:AddDecalsFile( Key, File, directory )
 
 	if string.StartWith(name, "snow_") then
 		table.insert(snowtable, Key - 27, directory)
-		
+
 		timer.Simple(0.5, function()
 			game.AddDecal( "snow", snowtable)
 			gDisasters:Msg( "ADDING: " .. File )
