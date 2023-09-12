@@ -115,7 +115,7 @@ if SERVER then
 		local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
 
 		for _, v in ipairs( files ) do	
-			if !string.EndsWith( v, ".png" ) then 
+			if !string.EndsWith( v, ".png" ) and !string.EndsWith( v, ".vtf" ) then 
 				gDisasters:AddResourceFile( v, directory )		
 			end	
 		end
@@ -147,7 +147,7 @@ if SERVER then
 			local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
 
 			for _, v in ipairs( files ) do	
-				if !string.EndsWith( v, ".png" ) then 
+				if !string.EndsWith( v, ".png" ) and !string.EndsWith( v, ".vtf" ) then 
 					gDisasters:AddResourceFile( v, directory )
 				end
 			end
@@ -183,33 +183,30 @@ function gDisasters:AddDecalsFile( Key, File, directory )
 	local name = File:match("(.+)%..+$")
 	directory = directory:match("materials/(.-)/") .. "/gdisasters/" .. name
 
+	print(Key ..  File)
+
 	local snowtable = {}
 	local sandtable = {}
 	local icetable = {}
 
 
-	if string.StartWith(name, "snow") then
-		table.insert(snowtable, Key, directory)
-
+	if string.StartWith(name, "snow_") then
+		table.insert(snowtable, Key - 27, directory)
 		game.AddDecal( "snow", snowtable)
 		gDisasters:Msg( "ADDING: " .. File )
-	elseif string.StartWith(name, "sand") then
-		table.insert(sandtable, Key, directory)
-
-
+	elseif string.StartWith(name, "sand_") then
+		table.insert(sandtable, Key - 17, directory)
 		game.AddDecal( "sand", sandtable)
 		gDisasters:Msg( "ADDING: " .. File )	
-	elseif string.StartWith(name, "ice") then
-		table.insert(icetable, Key, directory)
-
-
+	elseif string.StartWith(name, "ice_") then
+		table.insert(icetable, Key - 7, directory)
 		game.AddDecal( "ice", icetable)
 		gDisasters:Msg( "ADDING: " .. File )
 	else
 		game.AddDecal( name, directory)
 		gDisasters:Msg( "ADDING: " .. File )
 	end
-	timer.Simple(7, function() 
+	timer.Simple(5, function()
 		PrintTable(snowtable)
 		PrintTable(sandtable)
 		PrintTable(icetable)
@@ -222,6 +219,7 @@ function gDisasters:loaddecalsfiles( directory )
 	local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
 
 	for k, v in ipairs( files ) do
+		print(k .. v)
 		if !string.EndsWith( v, ".png" ) and !string.EndsWith( v, ".vtf" ) then 
 			gDisasters:AddDecalsFile( k, v, directory)
 		end
