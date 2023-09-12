@@ -192,6 +192,7 @@ function gDisasters:AddDecalsFile( Key, File, directory )
 
 	if string.StartWith(name, "snow_") then
 		table.insert(snowtable, Key - 27, directory)
+		
 		timer.Simple(0.5, function()
 			game.AddDecal( "snow", snowtable)
 			gDisasters:Msg( "ADDING: " .. File )
