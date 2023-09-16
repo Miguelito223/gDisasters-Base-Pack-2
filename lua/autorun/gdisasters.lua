@@ -27,7 +27,7 @@ function gDisasters:Msg(...)
 				t[#t] = t[#t] .. " " .. v
 				break
 			elseif cur == 2 then
-				t[#t] = v
+				t[#t] = gDisasters:dump(v)
 				break
 			end
 		end
@@ -44,6 +44,21 @@ function gDisasters:Warning( sMessage, bError )
 		error(sMessage)
 	end
 end
+
+function gDisasters:dump(o)
+   	if type(o) == 'table' then
+    	local s = '{ '
+      	for k,v in pairs(o) do
+      	   if type(k) ~= 'number' then k = '"'..k..'"' end
+      	   s = s .. '['..k..'] = ' .. dump(v) .. ','
+      	end
+      	return s .. '} '
+   	else
+      	return tostring(o)
+   	end
+end
+
+
 
 --loading lua files
 
@@ -189,29 +204,25 @@ function gDisasters:AddDecalsFile( Key, File, directory )
 
 
 	if string.StartWith(File, "snow") then
-		table.insert(snowtable, Key - 25, directory)
-
+		snowtable[Key] = directory
+		gDisasters:Msg(snowtable)
 		game.AddDecal( "snow", snowtable)
 		gDisasters:Msg( "ADDING: " .. File )
 	elseif string.StartWith(File, "sand") then
-		table.insert(sandtable, Key - 16, directory)
-
+		sandtable[Key] = directory
+		gDisasters:Msg(sandtable)
 		game.AddDecal( "sand", sandtable)
 		gDisasters:Msg( "ADDING: " .. File )
 	elseif string.StartWith(File, "ice") then
-		table.insert(icetable, Key - 7, directory)
-
+		icetable[Key] = directory
+		gDisasters:Msg(icetable)
 		game.AddDecal( "ice", icetable)
 		gDisasters:Msg( "ADDING: " .. File )
 	else
 		game.AddDecal( name, directory)
 		gDisasters:Msg( "ADDING: " .. File )
 	end
-	timer.Simple(5, function()
-		PrintTable(snowtable)
-		PrintTable(sandtable)
-		PrintTable(icetable)
-	end)
+
 end
 
 function gDisasters:loaddecalsfiles( directory )
