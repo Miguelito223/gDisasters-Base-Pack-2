@@ -50,7 +50,7 @@ function gDisasters:dump(o)
     	local s = '{ '
       	for k,v in pairs(o) do
       	   if type(k) ~= 'number' then k = '"'..k..'"' end
-      	   s = s .. '['..k..'] = ' .. dump(v) .. ','
+      	   s = s .. '['..k..'] = ' .. gDisasters:dump(v) .. ','
       	end
       	return s .. '} '
    	else
@@ -207,32 +207,24 @@ function gDisasters:AddDecalsFile( Key, File, directory )
 		snowtable[Key] = directory
 		gDisasters:Msg(snowtable)
 		
-		timer.Simple(1, function()
-			game.AddDecal( "snow", snowtable)
-			gDisasters:Msg( "ADDING: " .. File )
-		end)
+		game.AddDecal( "snow", snowtable)
+		gDisasters:Msg( "ADDING: " .. File )
 	elseif string.StartWith(File, "sand") then
 		sandtable[Key] = directory
 		gDisasters:Msg(sandtable)
 
-		
-		timer.Simple(1, function()
-			game.AddDecal( "sand", sandtable)
-			gDisasters:Msg( "ADDING: " .. File )
-		end)
+		game.AddDecal( "sand", sandtable)
+		gDisasters:Msg( "ADDING: " .. File )
+
 	elseif string.StartWith(File, "ice") then
 		icetable[Key] = directory
 		gDisasters:Msg(icetable)
 
-		timer.Simple(1, function()
-			game.AddDecal( "ice", icetable)
-			gDisasters:Msg( "ADDING: " .. File )
-		end)
+		game.AddDecal( "ice", icetable)
+		gDisasters:Msg( "ADDING: " .. File )
 	else
-
 		game.AddDecal( name, directory)
 		gDisasters:Msg( "ADDING: " .. File )
-
 	end
 
 end
