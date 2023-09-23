@@ -4,22 +4,21 @@
 	"$surfaceprop" "wood"
 	"$model" 1
 	
-
-	
 	"$envmaptint" "[0.12 0.12 0.12]"
 	"$envmap" "env_cubemap"
 	"$selfillum" 1
 	"$selfillummask" "ramses/models/nature/geyser/geyser_lava"
-	"Proxies"
+
 	
+	"Proxies"
 	{
-      "AnimatedTexture"
-      {
+      	"AnimatedTexture"
+      	{
          "animatedtexturevar" "$baseTexture"
          "animatedtextureframenumvar" "$frame"
          "animatedtextureframerate" "1"
-	}
-   }
+		}
+   	}
 
 
 
