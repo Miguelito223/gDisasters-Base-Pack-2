@@ -1,13 +1,25 @@
 "VertexLitGeneric"
 {
 	"$basetexture" "nature/env_dynamiclava/base_lava_01"
-	
+	"$surfaceprop" "wood"
 	"$translucent" 1
 	"$nocull" 1
+
+	"$envmaptint" "[0.12 0.12 0.12]"
+	"$envmap" "env_cubemap"
+	"$selfillum" 1
+	"$selfillummask" "nature/env_dynamiclava/base_lava_01"
 	
 	"Proxies"
 	{
 	
+      	"AnimatedTexture"
+      	{
+         "animatedtexturevar" "$baseTexture"
+         "animatedtextureframenumvar" "$frame"
+         "animatedtextureframerate" "1"
+		}
+
 		"TextureScroll"
 		{
 			"texturescrollvar" "$baseTextureTransform"
