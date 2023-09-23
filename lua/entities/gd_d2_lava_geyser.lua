@@ -12,6 +12,7 @@ ENT.Category                         =  "Hmm"
     
 ENT.Mass                             =  100
 ENT.Models                           =  "models/ramses/models/nature/geyser_lava_64.mdl"
+ENT.AutomaticFrameAdvance            = true
 
 
 function ENT:Initialize()
