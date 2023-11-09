@@ -40,7 +40,7 @@ local function CreateTickboxConVariable(CPanel, desc, convarname)
 	end
 	timer.Simple(0.1, function()
 	
-		if( CB ) then
+		if( CB and LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() and !Created ) then
 			CB:SetValue( GetConVar(( convarname )):GetFloat() );
 		end
 	end)
@@ -68,7 +68,7 @@ local function CreateSliderConVariable(CPanel, desc, minvar, maxvar, dp, convarn
 	end
 	timer.Simple(0.1, function()
 		
-		if( CB ) then
+		if( CB and LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() and !Created ) then
 			CB:SetValue( GetConVar(( convarname )):GetFloat() );
 		end
 	end)
