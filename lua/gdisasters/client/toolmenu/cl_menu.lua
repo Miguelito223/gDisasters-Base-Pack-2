@@ -36,14 +36,15 @@ local function CreateTickboxConVariable(CPanel, desc, convarname)
 			net.WriteString( convarname );
 			net.WriteFloat( bVal and 1 or 0 );
 			net.SendToServer();
+			
+			timer.Simple(0.1, function()
+				if( CB ) then
+					CB:SetValue( GetConVar(( convarname )):GetFloat() );
+				end
+			end)
 		end
 	end
-	timer.Simple(0.1, function()
-	
-		if( CB and LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() and !Created ) then
-			CB:SetValue( GetConVar(( convarname )):GetFloat() );
-		end
-	end)
+
 	
 	return CB 
 	
@@ -63,15 +64,17 @@ local function CreateSliderConVariable(CPanel, desc, minvar, maxvar, dp, convarn
 			net.WriteString( convarname );
 			net.WriteFloat( tonumber(val) );
 			net.SendToServer();
+			
+			timer.Simple(0.1, function()
+				
+				if( CB ) then
+					CB:SetValue( GetConVar(( convarname )):GetFloat() );
+				end
+			end)
 		end
 		
 	end
-	timer.Simple(0.1, function()
-		
-		if( CB and LocalPlayer():IsAdmin() or LocalPlayer():IsSuperAdmin() and !Created ) then
-			CB:SetValue( GetConVar(( convarname )):GetFloat() );
-		end
-	end)
+
 	
 	return CB
 end
