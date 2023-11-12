@@ -3,9 +3,17 @@ gDisasters = {}
 gDisasters.__index = gDisasters
 gDisasters.Version = 0.36
 gDisasters.WorkShopURL = "https://steamcommunity.com/sharedfiles/filedetails/?id=2522900784"
-gDisasters.WorkshopVersion = engine.GetAddons().downloaded and engine.GetAddons().wsid == "2522900784"
 
-print(gDisasters.WorkshopVersion)
+for k,v in pairs(engine.GetAddons()) then
+	print(k,v)
+	gDisasters.WorkshopVersion = v.downloaded and v.wsid == "2522900784"
+end
+
+
+
+
+
+PrintTable(engine.GetAddons())
 
 
 --functions
