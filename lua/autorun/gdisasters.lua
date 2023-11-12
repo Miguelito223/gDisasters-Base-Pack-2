@@ -12,7 +12,7 @@ for _,v in pairs(engine.GetAddons()) do
 		break
 	else
 		print("no workshop")
-		return
+		break
 	end
 end
 
