@@ -3,7 +3,7 @@ gDisasters = {}
 gDisasters.__index = gDisasters
 gDisasters.Version = 0.36
 gDisasters.WorkShopURL = "https://steamcommunity.com/sharedfiles/filedetails/?id=2522900784"
-gDisasters.WorkshopVersion = false
+gDisasters.WorkshopVersion = game.IsDedicated()
 
 
 --functions
