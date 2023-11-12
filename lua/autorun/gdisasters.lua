@@ -8,13 +8,11 @@ gDisasters.WorkshopVersion = false
 for _,v in pairs(engine.GetAddons()) do
 	if v.downloaded and tonumber(v.wsid) == 2522900784 or v.title == "gDisasters Revived" then
 		gDisasters.WorkshopVersion = true
-		print("yes workshop")
-		break
-	else
-		print("no workshop")
 		break
 	end
 end
+
+print("Workshop Version ==" .. gDisasters.WorkshopVersion)
 
 --functions
 
