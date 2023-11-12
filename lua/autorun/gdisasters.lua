@@ -12,7 +12,7 @@ for _,v in pairs(engine.GetAddons()) do
 	end
 end
 
-print("Workshop Version == " + gDisasters.WorkshopVersion)
+print("Workshop Version == ".. tostring(gDisasters.WorkshopVersion))
 
 --functions
 
