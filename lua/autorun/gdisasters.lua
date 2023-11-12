@@ -4,8 +4,11 @@ gDisasters.__index = gDisasters
 gDisasters.Version = 0.361
 gDisasters.WorkShopURL = "https://steamcommunity.com/sharedfiles/filedetails/?id=2522900784"
 
-for k,v in pairs(engine.GetAddons()) do
-	gDisasters.WorkshopVersion = v.downloaded == true and v.wsid == "2522900784"
+for _,v in pairs(engine.GetAddons()) do
+	if v.downloaded and tonumber(v.wsid) == 2522900784 or v.title = "gDisasters Revived"
+		gDisasters.WorkshopVersion = true
+	else
+		gDisasters.WorkshopVersion = false
 end
 
 PrintTable(engine.GetAddons())
