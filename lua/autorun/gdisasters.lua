@@ -5,8 +5,11 @@ gDisasters.Version = 0.361
 gDisasters.WorkShopURL = "https://steamcommunity.com/sharedfiles/filedetails/?id=2522900784"
 
 for k,v in pairs(engine.GetAddons()) do
-	gDisasters.WorkshopVersion = v.downloaded and v.wsid == "2522900784"
+	gDisasters.WorkshopVersion = v.downloaded == true and v.wsid == "2522900784"
 end
+
+PrintTable(gDisasters.WorkshopVersion)
+print(gDisasters.WorkshopVersion)
 
 
 --functions
