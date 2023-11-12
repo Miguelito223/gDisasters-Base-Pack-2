@@ -8,7 +8,7 @@ for k,v in pairs(engine.GetAddons()) do
 	gDisasters.WorkshopVersion = v.downloaded == true and v.wsid == "2522900784"
 end
 
-PrintTable(gDisasters.WorkshopVersion)
+PrintTable(engine.GetAddons())
 print(gDisasters.WorkshopVersion)
 
 
