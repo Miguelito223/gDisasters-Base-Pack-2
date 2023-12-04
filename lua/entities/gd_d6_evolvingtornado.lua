@@ -80,15 +80,6 @@ function ENT:Think()
 
 	if (SERVER) then
 		if !self:IsValid() then return end
-		
-
-		self.Data.MaxFunnel.Radius = self.Data.MaxFunnel.Radius + 0.5
-		self.Data.MinFunnel.Radius = self.Data.MinFunnel.Radius + 0.5
-		self.Data.GroundSpeed.Max = self.Data.GroundSpeed.Max + 0.1
-
-
-		self.Data.MaxGroundFunnel.Radius = self.Data.MaxGroundFunnel.Radius + 0.5
-		self.Data.MinGroundFunnel.Radius = self.Data.MinGroundFunnel.Radius + 0.5
 
 		self:NextThink(CurTime() + 1)
 		return true
