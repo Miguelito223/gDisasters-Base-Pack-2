@@ -100,8 +100,8 @@ function ENT:SetupNWVars()
 			local category = self.Data.EnhancedFujitaScale
 			self:SetNWString("Category", category)
 		end)
-		print("EF5")
 		timer.Simple(5000, function()
+			print("EF5")
 			self.Data.EnhancedFujitaScale = "EF5"
 			local category = self.Data.EnhancedFujitaScale
 			self:SetNWString("Category", category)
