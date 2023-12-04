@@ -1157,25 +1157,41 @@ function ENT:AttachParticleEffect()
 		end)
 	else
 		timer.Simple(0.1, function()
+			if self == nil then return end
+			if self.Data == nil then return end
+
+
 			self.Data.Effect = table.Random(self.Data.Effect)
 			ParticleEffectAttach(self.Data.Effect, PATTACH_POINT_FOLLOW, self, 0)
 		end)	
 		timer.Simple(60, function()
+			if self == nil then return end
+			if self.Data == nil then return end
+
 			self:StopParticles()
 			self.Data.Effect2 = table.Random(self.Data.Effect2)
 			ParticleEffectAttach(self.Data.Effect2 , PATTACH_POINT_FOLLOW, self, 0)
 		end)	
 		timer.Simple(60 * 2, function()
+			if self == nil then return end
+			if self.Data == nil then return end
+
 			self:StopParticles()
 			self.Data.Effect3 = table.Random(self.Data.Effect3)
 			ParticleEffectAttach(self.Data.Effect3, PATTACH_POINT_FOLLOW, self, 0)
 		end)	
 		timer.Simple(60 * 3, function()
+			if self == nil then return end
+			if self.Data == nil then return end
+
 			self:StopParticles()
 			self.Data.Effect4 = table.Random(self.Data.Effect4)
 			ParticleEffectAttach(self.Data.Effect4, PATTACH_POINT_FOLLOW, self, 0)
 		end)
 		timer.Simple(60 * 4, function()
+			if self == nil then return end
+			if self.Data == nil then return end
+			
 			self:StopParticles()
 			self.Data.Effect5 = table.Random(self.Data.Effect5)
 			ParticleEffectAttach(self.Data.Effect5, PATTACH_POINT_FOLLOW, self, 0)
