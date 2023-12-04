@@ -384,7 +384,7 @@ end
 function ENT:EvolvingTornado()
 	local entity = ents.FindByClass("gd_d6_evolvingtornado")[1]
 	
-	if entity and #ents.FindByClass("gd_d6_evolvingtornado") < #ents.FindByClass(self)  then
+	if entity then
 		return true
 	else
 		return false
