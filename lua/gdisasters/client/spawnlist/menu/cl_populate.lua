@@ -313,6 +313,7 @@ TIER SIX
 
 AddToGDSpawnMenu("EF3 Tornado"           , "gd_d6_ef3"           , "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("EF3 Tornado (Smart)"   , "gd_d6_ef3_pathed"    , "Disasters", "Tier 6", false)
+AddToGDSpawnMenu("Envolving Tornado"   , "gd_d6_evolvingtornado"    , "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("Meteor"   , "gd_d6_meteor"    , "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("Volcanic Rock"         , "gd_d6_volcanic_rock"			, "Disasters", "Tier 6", false)
 AddToGDSpawnMenu("≈6.0 Magnitude Earthquake" , "gd_d6_rs6eq"         , "Disasters", "Tier 6", false)

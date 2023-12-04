@@ -55,6 +55,7 @@ function ENT:Initialize()
 		self:SetupMoveType()
 		self:PlayFadeinSound()
 		self:SetupNWVars()
+
 		self.InternalVers    = {Enabled = false}
 		self.NextPhysicsTime = CurTime()
 		self.StartTime       = CurTime()
@@ -70,11 +71,41 @@ function ENT:Initialize()
 end
 
 function ENT:SetupNWVars()
-	local category = self.Data.EnhancedFujitaScale
 
-	self:SetNWString("Category", category)
+	if not self:EvolvingTornado() then
+		local category = self.Data.EnhancedFujitaScale
+
+		self:SetNWString("Category", category)
+	else
+		timer.Simple(0.1, function()
+			self.Data.EnhancedFujitaScale = "EF1"
+			local category = self.Data.EnhancedFujitaScale
+			self:SetNWString("Category", category)
+		end)	
+		timer.Simple(1200, function()
+			self.Data.EnhancedFujitaScale = "EF2"
+			local category = self.Data.EnhancedFujitaScale
+			self:SetNWString("Category", category)
+		end)	
+		timer.Simple(2500, function()
+			self.Data.EnhancedFujitaScale = "EF3"
+			local category = self.Data.EnhancedFujitaScale
+			self:SetNWString("Category", category)
+		end)	
+		timer.Simple(3400, function()
+			self.Data.EnhancedFujitaScale = "EF4"
+			local category = self.Data.EnhancedFujitaScale
+			self:SetNWString("Category", category)
+		end)
+		timer.Simple(5000, function()
+			self.Data.EnhancedFujitaScale = "EF5"
+			local category = self.Data.EnhancedFujitaScale
+			self:SetNWString("Category", category)
+		end)
+	end
 	
 end
+
 
 function ENT:PlayFadeinSound()
 	local category         = self.Data.EnhancedFujitaScale
@@ -331,6 +362,27 @@ function ENT:Waterspout(dir)
 	end
 end
 
+function ENT:EvolvingTornado()
+	local entity = ents.FindByClass("gd_d6_evolvingtornado")[1]
+	
+	if entity then
+		return true
+	else
+		return false
+	end
+end
+
+function ENT:EnvolvingTornadoVars()
+	if self:EvolvingTornado():
+		self.Data.MaxFunnel.Radius = self.Data.MaxFunnel.Radius + 0.1
+		self.Data.MinFunnel.Radius = self.Data.MinFunnel.Radius + 0.1
+		self.Data.GroundSpeed.Max = self.Data.GroundSpeed.Max + 0.1
+
+		self.Data.MaxGroundFunnel.Radius = self.Data.MaxGroundFunnel.Radius + 0.1
+		self.Data.MinGroundFunnel.Radius = self.Data.MinGroundFunnel.Radius + 0.1
+	end
+end
+
 function ENT:Landspout(dir)
 	
 	local tr = util.TraceLine({
@@ -579,7 +631,7 @@ function ENT:TryRemoveConstraints(ent)
 	local mass = phys:GetMass()
 	
 	if mass <= 200 then
-	
+
 	if self.Data.EnhancedFujitaScale == "EF0" then
 		chance = GetConVar( "gdisasters_envtornado_damage" ):GetInt()
 		
@@ -1021,6 +1073,7 @@ function ENT:Think()
 		
 		self:Move()
 		self:Physics()
+		self:EnvolvingTornadoVars()
 		self:IsParentValid()
 
 		
@@ -1078,11 +1131,33 @@ end
 
 
 function ENT:AttachParticleEffect()
-	self.Data.Effect = table.Random(self.Data.Effect)
-	timer.Simple(0.1, function()
-	
-		ParticleEffectAttach(self.Data.Effect, PATTACH_POINT_FOLLOW, self, 0)
-	end)
+	if not self:EvolvingTornado() then
+		self.Data.Effect = table.Random(self.Data.Effect)
+		timer.Simple(0.1, function()
+			ParticleEffectAttach(self.Data.Effect, PATTACH_POINT_FOLLOW, self, 0)
+		end)
+	else
+		timer.Simple(0.1, function()
+			self.Data.Effect = table.Random(self.Data.Effect)
+			ParticleEffectAttach(self.Data.Effect, PATTACH_POINT_FOLLOW, self, 0)
+		end)	
+		timer.Simple(1200, function()
+			self.Data.Effect2 = table.Random(self.Data.Effect2)
+			ParticleEffectAttach(self.Data.Effect2 , PATTACH_POINT_FOLLOW, self, 0)
+		end)	
+		timer.Simple(2500, function()
+			self.Data.Effect3 = table.Random(self.Data.Effect3)
+			ParticleEffectAttach(self.Data.Effect3, PATTACH_POINT_FOLLOW, self, 0)
+		end)	
+		timer.Simple(3400, function()
+			self.Data.Effect4 = table.Random(self.Data.Effect4)
+			ParticleEffectAttach(self.Data.Effect4, PATTACH_POINT_FOLLOW, self, 0)
+		end)
+		timer.Simple(5000, function()
+			self.Data.Effect5 = table.Random(self.Data.Effect5)
+			ParticleEffectAttach(self.Data.Effect5, PATTACH_POINT_FOLLOW, self, 0)
+		end)
+	end
 end
 
 function ENT:Decay()
