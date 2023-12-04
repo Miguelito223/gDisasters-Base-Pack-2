@@ -83,26 +83,26 @@ function ENT:SetupNWVars()
 			self:SetNWString("Category", category)
 		end)	
 		timer.Simple(60, function()
-			print("EF2")
 			self.Data.EnhancedFujitaScale = "EF2"
+			
 			local category = self.Data.EnhancedFujitaScale
 			self:SetNWString("Category", category)
 		end)	
 		timer.Simple(60 * 2, function()
-			print("EF3")
 			self.Data.EnhancedFujitaScale = "EF3"
+			print(self.Data.EnhancedFujitaScale)
 			local category = self.Data.EnhancedFujitaScale
 			self:SetNWString("Category", category)
 		end)	
 		timer.Simple(60 * 3, function()
-			print("EF4")
 			self.Data.EnhancedFujitaScale = "EF4"
+			print(self.Data.EnhancedFujitaScale)
 			local category = self.Data.EnhancedFujitaScale
 			self:SetNWString("Category", category)
 		end)
 		timer.Simple(60 * 4, function()
-			print("EF5")
 			self.Data.EnhancedFujitaScale = "EF5"
+			print(self.Data.EnhancedFujitaScale)
 			local category = self.Data.EnhancedFujitaScale
 			self:SetNWString("Category", category)
 		end)
