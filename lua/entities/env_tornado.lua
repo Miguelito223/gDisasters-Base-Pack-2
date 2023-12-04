@@ -377,7 +377,7 @@ function ENT:EvolvingTornado()
 end
 
 function ENT:EnvolvingTornadoVars()
-	if self:EvolvingTornado():
+	if self:EvolvingTornado() then
 		self.Data.MaxFunnel.Radius = self.Data.MaxFunnel.Radius + 0.1
 		self.Data.MinFunnel.Radius = self.Data.MinFunnel.Radius + 0.1
 		self.Data.GroundSpeed.Max = self.Data.GroundSpeed.Max + 0.1
