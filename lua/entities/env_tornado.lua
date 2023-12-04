@@ -384,7 +384,7 @@ end
 function ENT:EvolvingTornado()
 	local entity = ents.FindByClass("gd_d6_evolvingtornado")[1]
 	
-	if entity then
+	if entity and #ents.FindByClass("gd_d6_evolvingtornado") < #ents.FindByClass(self)  then
 		return true
 	else
 		return false
@@ -1191,7 +1191,7 @@ function ENT:AttachParticleEffect()
 		timer.Simple(60 * 4, function()
 			if self == nil then return end
 			if self.Data == nil then return end
-			
+
 			self:StopParticles()
 			self.Data.Effect5 = table.Random(self.Data.Effect5)
 			ParticleEffectAttach(self.Data.Effect5, PATTACH_POINT_FOLLOW, self, 0)
