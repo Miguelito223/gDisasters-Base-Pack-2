@@ -79,6 +79,7 @@ function ENT:SetupNWVars()
 	else
 		timer.Simple(0.1, function()
 			if self == nil then return end
+			if self.Data == nil then return end
 
 			self.Data.EnhancedFujitaScale = "EF1"
 			local category = self.Data.EnhancedFujitaScale
@@ -86,13 +87,16 @@ function ENT:SetupNWVars()
 		end)	
 		timer.Simple(60, function()
 			if self == nil then return end
-			self.Data.EnhancedFujitaScale = "EF2"
+			if self.Data == nil then return end
 
+			self.Data.EnhancedFujitaScale = "EF2"
+			print(self.Data.EnhancedFujitaScale)
 			local category = self.Data.EnhancedFujitaScale
 			self:SetNWString("Category", category)
 		end)	
 		timer.Simple(60 * 2, function()
 			if self == nil then return end
+			if self.Data == nil then return end
 
 			self.Data.EnhancedFujitaScale = "EF3"
 			print(self.Data.EnhancedFujitaScale)
@@ -101,6 +105,7 @@ function ENT:SetupNWVars()
 		end)	
 		timer.Simple(60 * 3, function()
 			if self == nil then return end
+			if self.Data == nil then return end
 
 			self.Data.EnhancedFujitaScale = "EF4"
 			print(self.Data.EnhancedFujitaScale)
@@ -109,6 +114,7 @@ function ENT:SetupNWVars()
 		end)
 		timer.Simple(60 * 4, function()
 			if self == nil then return end
+			if self.Data == nil then return end
 
 			self.Data.EnhancedFujitaScale = "EF5"
 			print(self.Data.EnhancedFujitaScale)
