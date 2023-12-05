@@ -105,9 +105,9 @@ MAP_BOUNDS["gm_infmap_onlygrass"] = { Vector(16255, 16255, -16255), Vector(-1625
 MAP_BOUNDS["gm_tornadovalley_v1"] = { Vector(15359, 15871, -6143), Vector(-15359, -15871, 6143), Vector(0, 0, -503)}
 MAP_BOUNDS["gm_tornadowakita"] = { Vector(-16021,-16048,-8200), Vector(16202,16175, 8200), Vector(0, 0, -253)}
 MAP_BOUNDS["gm_survivethedisasters"] = { Vector(-630,5288,146), Vector(-5425,492, 3873), Vector(0, 0, 802)}
-MAP_BOUNDS["gm_natural_disaster_survival_destruct2"] 				  = { Vector(5119,5119,-4095),       Vector(-5119,-5119,4095), 	    Vector(0,0,-948)		}
-MAP_BOUNDS["gm_natural_disaster_survival_destruct1"] 				  = { Vector(5119,5119,-4095),       Vector(-5119,-5119,4095), 	    Vector(0,0,-948)		}
-MAP_BOUNDS["gm_natural_disaster_survival"] 				  = { Vector(5119,5119,-4095),       Vector(-5119,-5119,4095), 	    Vector(0,0,-948)		}
+MAP_BOUNDS["gm_natural_disaster_survival_destruct2"] = { Vector(5119,5119,-4095),       Vector(-5119,-5119,4095), 	    Vector(0,0,-948)		}
+MAP_BOUNDS["gm_natural_disaster_survival_destruct1"] = { Vector(5119,5119,-4095),       Vector(-5119,-5119,4095), 	    Vector(0,0,-948)		}
+MAP_BOUNDS["gm_natural_disaster_survival"] = { Vector(5119,5119,-4095),       Vector(-5119,-5119,4095), 	    Vector(0,0,-948)		}
 
 MAP_PATHS = {}
 MAP_PATHS["gm_flatgrass"]    			  = { Vector(-13466,9319,-12795),
