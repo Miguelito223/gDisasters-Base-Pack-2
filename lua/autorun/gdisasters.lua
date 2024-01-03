@@ -214,25 +214,27 @@ function gDisasters:AddDecalsFile( Key, File, directory, files )
 
 	if string.StartWith(File, "_ice") then
 
-		Key = Key - 1
+		Keys = Key - 1
 
-		icetable[Key] = directory
+		icetable[Keys] = directory
 		self:Msg(icetable)
 
 	elseif string.StartWith(File, "_sand") then
 
-		Key = Key - (7 + 1)
+		Keys = Key - (7 + 1)
 
-		sandtable[Key] = directory
+		sandtable[Keys] = directory
 		self:Msg(sandtable)
 
 	elseif string.StartWith(File, "_snow") then
 
-		Key = Key - (7 + 7 + 1)
+		Keys = Key - (7 + 7 + 1)
 
-		snowtable[Key] = directory
+		snowtable[Keys] = directory
 		self:Msg(snowtable)
-
+	else	
+		self:Msg( "ADDING: " .. File )
+		game.AddDecal(name, directory)
 	end
 
 	function is_done(x, y)
@@ -242,7 +244,7 @@ function gDisasters:AddDecalsFile( Key, File, directory, files )
 		return false
 	end
 
-	if is_done(Key, 21) then
+	if is_done(Key, 31) then
 		self:Msg(icetable)
 		game.AddDecal( "ice", icetable)
 
@@ -252,8 +254,6 @@ function gDisasters:AddDecalsFile( Key, File, directory, files )
 		self:Msg(snowtable)
 		game.AddDecal( "snow", snowtable)
 
-		self:Msg( "ADDING: " .. File )
-		game.AddDecal(name, directory)
 	end
 	
 	
