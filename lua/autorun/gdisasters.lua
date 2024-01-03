@@ -253,10 +253,7 @@ function gDisasters:AddDecalsFile( Key, File, directory, files )
 
 		self:Msg(snowtable)
 		game.AddDecal( "snow", snowtable)
-
 	end
-	
-	
 end
 
 function gDisasters:loaddecalsfiles( directory )
