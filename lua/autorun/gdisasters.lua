@@ -233,9 +233,9 @@ function gDisasters:AddDecalsFile( Key, File, directory)
 
 	if is_done(Key, 21) then
 		
-		self:Msg( "ADDING SNOW DECALS")
+		self:Msg( "ADDING ICE DECALS")
 		game.AddDecal( "ice", icetable)
-		self:Msg( "ADDED SNOW DECALS")
+		self:Msg( "ADDED ICE DECALS")
 
 		self:Msg( "ADDING SAND DECALS")
 		game.AddDecal( "sand", sandtable)
