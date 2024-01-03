@@ -182,16 +182,16 @@ if SERVER then
 			end
 		end
 
-		self:loadresourcefiles(gDisasters.root_Directory)
-		self:loadresourcefiles(gDisasters.root_Directory2)
-		self:loadresourcefiles(gDisasters.root_Directory3)
+		gDisasters:loadresourcefiles(gDisasters.root_Directory)
+		gDisasters:loadresourcefiles(gDisasters.root_Directory2)
+		gDisasters:loadresourcefiles(gDisasters.root_Directory3)
 
-		self:Msg("ADDED CONTENT FILE")
+		gDisasters:Msg("ADDED CONTENT FILE")
 		
 	else
-		self:Msg("ADDING CONTENT FILE FROM WORKSHOP...")
+		gDisasters:Msg("ADDING CONTENT FILE FROM WORKSHOP...")
 		resource.AddWorkshop(string.match(gDisasters.WorkShopURL, "%d+$"))
-		self:Msg("ADDED CONTENT FILE FROM WORKSHOP")
+		gDisasters:Msg("ADDED CONTENT FILE FROM WORKSHOP")
 	end
 
 	gDisasters:Msg("FINISH")
@@ -211,46 +211,35 @@ function gDisasters:AddDecalsFile( Key, File, directory, files )
 	local sandtable = {}
 	local icetable = {}
 
+
+	if string.StartWith(File, "_ice") then
+
+		Key = Key - 1
+
+		icetable[Key] = directory
+		self:Msg(icetable)
+
+	elseif string.StartWith(File, "_sand") then
+
+		Key = Key - (7 + 1)
+
+		sandtable[Key] = directory
+		self:Msg(sandtable)
+
+	elseif string.StartWith(File, "_snow") then
+
+		Key = Key - (7 + 7 + 1)
+
+		snowtable[Key] = directory
+		self:Msg(snowtable)
+
+	end
+
 	function is_done(x, y)
 		if x == y then
 			return true
 		end
 		return false
-	end
-
-
-	if string.StartWith(File, "_snow") then
-
-		if is_done(Key, 7) then
-			Key = Key - 7
-		end
-		
-		snowtable[Key] = directory
-		self:Msg(snowtable)
-
-
-		
-		
-	elseif string.StartWith(File, "_sand") then
-
-		if is_done(Key, 7) then
-			Key = Key - 7
-		end
-
-		sandtable[Key] = directory
-		self:Msg(sandtable)
-
-
-
-	elseif string.StartWith(File, "_ice") then
-
-		if is_done(Key, 7) then
-			Key = Key - 7
-		end
-
-		icetable[Key] = directory
-		self:Msg(icetable)
-
 	end
 
 	if is_done(Key, 21) then
