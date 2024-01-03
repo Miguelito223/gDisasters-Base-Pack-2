@@ -220,8 +220,9 @@ function gDisasters:AddDecalsFile( Key, File, directory)
 		
 		table.insert(snowtable,  directory)
 	else	
-		self:Msg( "ADDING: " .. File )
+		self:Msg( "ADDING: " .. name .. " DECAL")
 		game.AddDecal(name, directory)
+		self:Msg( "ADDED")
 	end
 
 	function is_done(x, y)
