@@ -212,25 +212,11 @@ function gDisasters:AddDecalsFile( Key, File, directory)
 	directory = directory:match("materials/(.-)/") .. "/gdisasters/" .. name
 
 	if string.StartWith(File, "_ice") then
-
-		Keys = Key - 1
-
-		table.insert(icetable, Keys, directory)
-		self:Msg(icetable)
-
+		table.insert(icetable,  directory)
 	elseif string.StartWith(File, "_sand") then
-
-		Keys = Key - (7 + 1)
-
-		table.insert(sandtable, Keys, directory)
-		self:Msg(sandtable)
-
+		table.insert(sandtable,  directory)
 	elseif string.StartWith(File, "_snow") then
-
-		Keys = Key - (7 + 7 + 1)
-
-		table.insert(snowtable, Keys, directory)
-		self:Msg(snowtable)
+		table.insert(snowtable,  directory)
 	else	
 		self:Msg( "ADDING: " .. File )
 		game.AddDecal(name, directory)
