@@ -203,7 +203,7 @@ gDisasters:Msg("LOADING DECALS...")
 
 gDisasters.root_Directory = "materials/decals/gdisasters" 
 
-function gDisasters:AddDecalsFile( Key, File, directory, files )
+function gDisasters:AddDecalsFile( Key, File, directory)
 	local name = File:match("(.+)%..+$")
 	directory = directory:match("materials/(.-)/") .. "/gdisasters/" .. name
 
@@ -216,21 +216,21 @@ function gDisasters:AddDecalsFile( Key, File, directory, files )
 
 		Keys = Key - 1
 
-		icetable[Keys] = directory
+		table.insert(icetable, Keys, directory)
 		self:Msg(icetable)
 
 	elseif string.StartWith(File, "_sand") then
 
 		Keys = Key - (7 + 1)
 
-		sandtable[Keys] = directory
+		table.insert(sandtable, Keys, directory)
 		self:Msg(sandtable)
 
 	elseif string.StartWith(File, "_snow") then
 
 		Keys = Key - (7 + 7 + 1)
 
-		snowtable[Keys] = directory
+		table.insert(snowtable, Keys, directory)
 		self:Msg(snowtable)
 	else	
 		self:Msg( "ADDING: " .. File )
@@ -244,16 +244,23 @@ function gDisasters:AddDecalsFile( Key, File, directory, files )
 		return false
 	end
 
-	if is_done(Key, 31) then
-		self:Msg(icetable)
+	if is_done(Key, 21) then
+		
+		PrintTable(icetable)
+		print(table.getn(icetable)) 
 		game.AddDecal( "ice", icetable)
 
-		self:Msg(sandtable)
+		PrintTable(sandtable)
+		print(table.getn(sandtable)) 
 		game.AddDecal( "sand", sandtable)
 
-		self:Msg(snowtable)
+		PrintTable(snowtable)
+		print(table.getn(snowtable)) 
 		game.AddDecal( "snow", snowtable)
+
 	end
+	
+	
 end
 
 function gDisasters:loaddecalsfiles( directory )
@@ -263,7 +270,7 @@ function gDisasters:loaddecalsfiles( directory )
 
 	for k, v in ipairs( files ) do
 		if !string.EndsWith( v, ".png" ) and !string.EndsWith( v, ".vtf" ) then 
-			self:AddDecalsFile( k, v, directory, files)
+			self:AddDecalsFile( k, v, directory)
 		end
 	end
 
