@@ -18,6 +18,19 @@ print("Workshop Version == ".. tostring(gDisasters.WorkshopVersion))
 
 local env_color = SERVER and Color(138,223,255) or Color(230,217,111)
 
+function gDisasters:dump(o)
+   	if type(o) == 'table' then
+    	local s = '{ '
+      	for k,v in pairs(o) do
+      	   if type(k) ~= 'number' then k = '"'..k..'"' end
+      	   s = s .. '['..k..'] = ' .. self:dump(v) .. ','
+      	end
+      	return s .. '} '
+   	else
+      	return tostring(o)
+   	end
+end
+
 function gDisasters:Msg(...)
 	local a = {...}
 	table.insert(a, 1, env_color)
@@ -35,7 +48,7 @@ function gDisasters:Msg(...)
 				t[#t] = t[#t] .. " " .. v
 				break
 			elseif cur == 2 then
-				t[#t] = gDisasters:dump(v)
+				t[#t] = self:dump(v)
 				break
 			end
 		end
@@ -53,25 +66,6 @@ function gDisasters:Warning( sMessage, bError )
 	end
 end
 
-function gDisasters:dump(o)
-   	if type(o) == 'table' then
-    	local s = '{ '
-      	for k,v in pairs(o) do
-      	   if type(k) ~= 'number' then k = '"'..k..'"' end
-      	   s = s .. '['..k..'] = ' .. gDisasters:dump(v) .. ','
-      	end
-      	return s .. '} '
-   	else
-      	return tostring(o)
-   	end
-end
-
-function gDisasters:is_done(x)
-	if x == 21 then
-		return true
-	end
-	return false
-end
 
 
 
@@ -85,22 +79,22 @@ function gDisasters:IncludeFile( File, directory )
 	if string.StartWith(File, "_sv_") or string.StartWith(File, "sv_") then
 		if SERVER then
 			include( directory .. File )
-			gDisasters:Msg( "SERVER INCLUDE: " .. File )
+			self:Msg( "SERVER INCLUDE: " .. File )
 		end
 	elseif string.StartWith(File, "_sh_") or string.StartWith(File, "sh_") then
 		if SERVER then
 			AddCSLuaFile( directory .. File )
-			gDisasters:Msg( "SHARED ADDCS: " .. File )
+			self:Msg( "SHARED ADDCS: " .. File )
 		end
 		include( directory .. File )
-		gDisasters:Msg( "SHARED INCLUDE: " .. File )
+		self:Msg( "SHARED INCLUDE: " .. File )
 	elseif string.StartWith(File, "_cl_") or string.StartWith(File, "cl_") then
 		if SERVER then
 			AddCSLuaFile( directory .. File )
-			gDisasters:Msg( "CLIENT ADDCS: " .. File )
+			self:Msg( "CLIENT ADDCS: " .. File )
 		elseif CLIENT then
 			include( directory .. File )
-			gDisasters:Msg( "CLIENT INCLUDE: " .. File )
+			self:Msg( "CLIENT INCLUDE: " .. File )
 		end
 	end
 end
@@ -112,13 +106,13 @@ function gDisasters:loadluafiles( directory )
 
 	for _, v in ipairs( files ) do
 		if string.EndsWith( v, ".lua" ) then
-			gDisasters:IncludeFile( v, directory )
+			self:IncludeFile( v, directory )
 		end
 	end
 
 	for _, v in ipairs( directories ) do
-		gDisasters:Msg( "Directory: " .. v )
-		gDisasters:loadluafiles( directory .. v )
+		self:Msg( "Directory: " .. v )
+		self:loadluafiles( directory .. v )
 	end
 end
 
@@ -136,7 +130,7 @@ if SERVER then
 	
 	function gDisasters:AddResourceFile( File, directory )
 		resource.AddSingleFile( directory .. File )
-		gDisasters:Msg( "ADDING: " .. File )
+		self:Msg( "ADDING: " .. File )
 	end
 
 	function gDisasters:loadresourcefiles( directory )
@@ -146,13 +140,13 @@ if SERVER then
 
 		for _, v in ipairs( files ) do	
 			if !string.EndsWith( v, ".png" ) and !string.EndsWith( v, ".vtf" ) then 
-				gDisasters:AddResourceFile( v, directory )		
+				self:AddResourceFile( v, directory )		
 			end	
 		end
 
 		for _, v in ipairs( directories ) do
-			gDisasters:Msg( "Directory: " .. v )
-			gDisasters:loadresourcefiles( directory .. v )
+			self:Msg( "Directory: " .. v )
+			self:loadresourcefiles( directory .. v )
 		end
 	end
 
@@ -160,7 +154,7 @@ if SERVER then
 
 	if not gDisasters.WorkshopVersion then
 
-		gDisasters:Msg("ADDING CONTENT FILE...")
+		self:Msg("ADDING CONTENT FILE...")
 
 		gDisasters.root_Directory = "materials"
 		gDisasters.root_Directory2 = "sound/streams"
@@ -168,7 +162,7 @@ if SERVER then
 
 		function gDisasters:AddResourceFile( File, directory )
 			resource.AddSingleFile( directory .. File )
-			gDisasters:Msg( "ADDING: " .. File )
+			self:Msg( "ADDING: " .. File )
 		end
 
 		function gDisasters:loadresourcefiles( directory )
@@ -178,26 +172,26 @@ if SERVER then
 
 			for _, v in ipairs( files ) do	
 				if !string.EndsWith( v, ".png" ) and !string.EndsWith( v, ".vtf" ) then 
-					gDisasters:AddResourceFile( v, directory )
+					self:AddResourceFile( v, directory )
 				end
 			end
 
 			for _, v in ipairs( directories ) do
-				gDisasters:Msg( "Directory: " .. v )
-				gDisasters:loadresourcefiles( directory .. v )
+				self:Msg( "Directory: " .. v )
+				self:loadresourcefiles( directory .. v )
 			end
 		end
 
-		gDisasters:loadresourcefiles(gDisasters.root_Directory)
-		gDisasters:loadresourcefiles(gDisasters.root_Directory2)
-		gDisasters:loadresourcefiles(gDisasters.root_Directory3)
+		self:loadresourcefiles(gDisasters.root_Directory)
+		self:loadresourcefiles(gDisasters.root_Directory2)
+		self:loadresourcefiles(gDisasters.root_Directory3)
 
-		gDisasters:Msg("ADDED CONTENT FILE")
+		self:Msg("ADDED CONTENT FILE")
 		
 	else
-		gDisasters:Msg("ADDING CONTENT FILE FROM WORKSHOP...")
+		self:Msg("ADDING CONTENT FILE FROM WORKSHOP...")
 		resource.AddWorkshop(string.match(gDisasters.WorkShopURL, "%d+$"))
-		gDisasters:Msg("ADDED CONTENT FILE FROM WORKSHOP")
+		self:Msg("ADDED CONTENT FILE FROM WORKSHOP")
 	end
 
 	gDisasters:Msg("FINISH")
@@ -217,35 +211,60 @@ function gDisasters:AddDecalsFile( Key, File, directory, files )
 	local sandtable = {}
 	local icetable = {}
 
+	function is_done(x, y)
+		if x == y then
+			return true
+		end
+		return false
+	end
+
 
 	if string.StartWith(File, "_snow") then
+
+		if is_done(Key, 7) then
+			Key = Key - 7
+		end
 		
 		snowtable[Key] = directory
-		gDisasters:Msg(snowtable)
+		self:Msg(snowtable)
+
+
+		
 		
 	elseif string.StartWith(File, "_sand") then
 
+		if is_done(Key, 7) then
+			Key = Key - 7
+		end
+
 		sandtable[Key] = directory
-		gDisasters:Msg(sandtable)
+		self:Msg(sandtable)
+
+
 
 	elseif string.StartWith(File, "_ice") then
 
+		if is_done(Key, 7) then
+			Key = Key - 7
+		end
+
 		icetable[Key] = directory
-		gDisasters:Msg(icetable)
+		self:Msg(icetable)
+
 	end
 
-	if self:is_done(Key) then
-		gDisasters:Msg( "ADDING TABLE: " .. table.getn(icetable) )
+	if is_done(Key, 21) then
+		self:Msg(icetable)
 		game.AddDecal( "ice", icetable)
 
-		gDisasters:Msg( "ADDING TABLE: " .. table.getn(sandtable) )
+		self:Msg(sandtable)
 		game.AddDecal( "sand", sandtable)
 
-		gDisasters:Msg( "ADDING TABLE: " .. table.getn(snowtable) )
+		self:Msg(snowtable)
 		game.AddDecal( "snow", snowtable)
 
-		game.AddDecal( name, directory)
-		gDisasters:Msg( "ADDING: " .. File )
+		self:Msg( "ADDING: " .. File )
+		game.AddDecal(name, directory)
 	end
 	
 	
@@ -258,13 +277,13 @@ function gDisasters:loaddecalsfiles( directory )
 
 	for k, v in ipairs( files ) do
 		if !string.EndsWith( v, ".png" ) and !string.EndsWith( v, ".vtf" ) then 
-			gDisasters:AddDecalsFile( k, v, directory, files)
+			self:AddDecalsFile( k, v, directory, files)
 		end
 	end
 
 	for _, v in ipairs( directories ) do
-		gDisasters:Msg( "Directory: " .. v )
-		gDisasters:loaddecalsfiles( directory .. v )
+		self:Msg( "Directory: " .. v )
+		self:loaddecalsfiles( directory .. v )
 	end
 end
 
@@ -282,7 +301,7 @@ if CLIENT then
 
 	function gDisasters:AddParticleFile( File, directory )
 		game.AddParticles( directory .. File )
-		gDisasters:Msg( "ADDING: " .. File )
+		self:Msg( "ADDING: " .. File )
 	end
 
 	function gDisasters:loadparticlesfiles( directory )
@@ -292,13 +311,13 @@ if CLIENT then
 
 		for _, v in ipairs( files ) do
 			if string.EndsWith( v, ".pcf" ) then
-				gDisasters:AddParticleFile( v, directory )
+				self:AddParticleFile( v, directory )
 			end
 		end
 
 		for _, v in ipairs( directories ) do
-			gDisasters:Msg( "Directory: " .. v )
-			gDisasters:loadparticlesfiles( directory .. v )
+			self:Msg( "Directory: " .. v )
+			self:loadparticlesfiles( directory .. v )
 		end
 	end
 
