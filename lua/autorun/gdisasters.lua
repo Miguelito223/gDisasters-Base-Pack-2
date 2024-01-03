@@ -203,14 +203,13 @@ gDisasters:Msg("LOADING DECALS...")
 
 gDisasters.root_Directory = "materials/decals/gdisasters" 
 
+local snowtable = {}
+local sandtable = {}
+local icetable = {}
+
 function gDisasters:AddDecalsFile( Key, File, directory)
 	local name = File:match("(.+)%..+$")
 	directory = directory:match("materials/(.-)/") .. "/gdisasters/" .. name
-
-	local snowtable = {}
-	local sandtable = {}
-	local icetable = {}
-
 
 	if string.StartWith(File, "_ice") then
 
