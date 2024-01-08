@@ -15,7 +15,7 @@ ENT.Mass                             =  100
 
 function ENT:Initialize()		
     
-	local bool hasShelfCloud = false
+	local hasShelfCloud = false
 	
     
 	if (CLIENT) then
@@ -229,8 +229,8 @@ function ENT:Squall()
     setMapLight("d")
 	
 	if(!hasShelfCloud) then
-	self:AttachParticleEffect()
-	hasShelfCloud = true
+		self:AttachParticleEffect()
+		hasShelfCloud = true
 	end
 
 	for k, v in pairs(player.GetAll()) do
