@@ -31,6 +31,13 @@ function gDisasters:dump(o)
    	end
 end
 
+function gDisasters:is_done(x, y)
+	if x == y then
+		return true
+	end
+	return false
+end
+
 function gDisasters:Msg(...)
 	local a = {...}
 	table.insert(a, 1, env_color)
@@ -225,14 +232,7 @@ function gDisasters:AddDecalsFile( Key, File, directory)
 		self:Msg( "ADDED")
 	end
 
-	function is_done(x, y)
-		if x == y then
-			return true
-		end
-		return false
-	end
-
-	if is_done(Key, 21) then
+	if self:is_done(Key, 21) then
 		
 		self:Msg( "ADDING ICE DECALS")
 		game.AddDecal( "ice", icetable)
