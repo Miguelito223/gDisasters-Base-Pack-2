@@ -53,7 +53,7 @@ function ENT:PhysicsCollide( data, phys )
 
 		if self:GetModel()=="models/ramses/models/nature/hail_01.mdl" then
 
-			sound.Play(table.Random({"streams/event/break/ice_break_a.mp3","streams/event/break/ice_break_b.mp3","streams/event/break/ice_break_c.mp3"}), self:GetPos(), 80, table.Random({80,120}), 1)
+			sound.Play(table.Random({"streams/event/break/ice_break_a.mp3","streams/event/break/ice_break_b.mp3","streams/event/break/ice_break_c.mp3"}), self:GetPos(), 80, math.random(80,120), 1)
 			ParticleEffect("hail_impact_effect_main", data.HitPos + Vector(0,0,1), Angle(0,0,0), nil)
 			
 			local p1 = ents.Create("prop_physics")
