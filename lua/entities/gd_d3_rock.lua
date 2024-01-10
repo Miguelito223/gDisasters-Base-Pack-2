@@ -60,7 +60,7 @@ function ENT:PhysicsCollide( data, phys )
 	if ( data.Speed > 500 ) then 
 		
 		
-		sound.Play(table.Random({"streams/event/break/rock_break_a.mp3","streams/event/break/rock_break_b.mp3","streams/event/break/rock_break_c.mp3"}), self:GetPos(), 80, table.Random({80,120}), 1)
+		sound.Play(table.Random({"streams/event/break/rock_break_a.mp3","streams/event/break/rock_break_b.mp3","streams/event/break/rock_break_c.mp3"}), self:GetPos(), 80, math.random(80,120), 1)
 		
 
 		local models = { 
