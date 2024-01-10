@@ -96,7 +96,7 @@ function ENT:CreateMeteor()
 	moite:Spawn()
 	moite:Activate()
 	moite:GetPhysicsObject():EnableMotion(true)
-	moite:GetPhysicsObject():SetVelocity( Vector(0,0,math.random(-5000,-10000))  )
+	moite:GetPhysicsObject():SetVelocity( Vector(math.random(math.random(-5000,-10000),math.random(5000,10000)),math.random(math.random(-5000,-10000),math.random(5000,10000)),math.random(-5000,-10000))  )
 	moite:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
 	self:Remove()
 	
