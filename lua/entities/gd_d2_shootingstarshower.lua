@@ -53,9 +53,6 @@ function ENT:CreateHail()
 		local max       = bounds[2]
 
 		if #ents.FindByClass("gd_d2_shootingstar") < 1 then 
-		
-		
-			
 
 			local star = ents.Create("gd_d2_shootingstar_ch")
 			star:Spawn()
