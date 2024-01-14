@@ -70,7 +70,7 @@ function ENT:StarF()
 	star:Spawn()
 	star:Activate()
 	star:GetPhysicsObject():EnableMotion(true)
-	star:GetPhysicsObject():SetVelocity( Vector(0,0,-6000)  )
+	star:GetPhysicsObject():SetVelocity( Vector(0,0,math.random(-5000,-10000))  )
 	star:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
 	self:Remove()
 	
