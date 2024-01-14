@@ -35,7 +35,7 @@ function ENT:Initialize()
 			self:SetPos(getMapCenterFloorPos())
 		else
 			self:Remove()
-gDisasters:Warning("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.", true) 
+			gDisasters:Warning("This map is incompatible with this addon! Tell the addon owner about this as soon as possible and change to gm_flatgrass or construct.", true) 
 		end		
 
 		self:SetNoDraw(true)
@@ -62,6 +62,7 @@ function ENT:CreateHail()
 			star:Activate()	
 			star:SetPos( Vector(   math.random(min.x,max.x)      ,  math.random(min.y,max.y) ,   max.z ) )
 			star:GetPhysicsObject():EnableMotion(true)
+			star:GetPhysicsObject():SetVelocity( Vector(math.random(math.random(-5000,-10000),math.random(5000,10000)),math.random(math.random(-5000,-10000),math.random(5000,10000)),math.random(-5000,-10000))  )
 			star:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
 			
 			timer.Simple( math.random(14,18), function()
