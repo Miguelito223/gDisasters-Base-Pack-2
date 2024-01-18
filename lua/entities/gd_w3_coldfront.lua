@@ -57,9 +57,7 @@ function ENT:Initialize()
 				if !self:IsValid() then return  end
 				paintSky_Fade(self.Original_SkyData, 0.05)
 			end)
-		end
-		
-		setMapLight("e")		
+		end		
 	
 		self:Lightning()
 
@@ -121,7 +119,7 @@ function ENT:OnStateChange(next_state)
 			
 		end
 		
-		for i=1, 7 do 
+		for i=1, #lol do 
 			timer.Simple(i, function()
 				if !self:IsValid() then return  end
 				setMapLight(lol[i])
@@ -173,9 +171,8 @@ end
 
 function ENT:ClearSky()
 	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(2,6),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 78000, ["Temperature"] = math.random(28,31), ["Humidity"]    = math.random(34,40), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
-	
-	setMapLight("z")
-	
+		
+	setMapLight("z") 
 end
 
 
