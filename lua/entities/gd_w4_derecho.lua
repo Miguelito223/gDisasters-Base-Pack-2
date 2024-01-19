@@ -136,23 +136,48 @@ end
 function ENT:Phase()
 	local t_elapsed  = self:GetTimeElapsed()
 	
-	local next_state = ""
-	if t_elapsed >= 0 and t_elapsed < 30 then
+	timer.Simple(0, function()
+		if !self:IsValid() then return  end
+
 		next_state = "light_raining"
-	elseif t_elapsed >= 30 and t_elapsed < 40 then
-		next_state= "light_rain_fading" 
-	elseif t_elapsed >= 40 and t_elapsed < 165 then
+
+		if self.State != next_state then self:OnStateChange(next_state) end
+
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(30, function()
+		if !self:IsValid() then return  end
+
+		next_state = "light_rain_fading" 
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(40, function()
+		if !self:IsValid() then return  end
+
 		next_state = "medium_wind"
-	elseif t_elapsed >= 165 and t_elapsed < 190 then
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(60, function()
+		if !self:IsValid() then return  end
+
 		next_state = "heavy_wind" 
-	else
-		next_state = "dead"
-	end
-	if self.State != next_state then self:OnStateChange(next_state) end
-	
-	self.State = next_state 
-	
-	self:StateProcessor()
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(90, function()
+		if !self:IsValid() then return  end
+		
+		next_state = "dead" 
+		self.State = next_state 
+		self:StateProcessor()
+	end)
 end
 
 function ENT:StateProcessor()

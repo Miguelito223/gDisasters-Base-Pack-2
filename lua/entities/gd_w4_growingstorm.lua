@@ -100,24 +100,65 @@ end
 
 function ENT:Phase()
 	local t_elapsed = self:GetTimeElapsed()
-	
-	if t_elapsed >= 0 and t_elapsed < 30 then
-		self.State = "overcasting"
-	elseif t_elapsed >= 30 and t_elapsed < 40 then
-		self.State = "outflowing" 
-	elseif t_elapsed >= 40 and t_elapsed < 60 then
-		self.State = "starting"
-	elseif t_elapsed >= 60 and t_elapsed < 175 then
-		self.State = "tranisitioning" 
-	elseif t_elapsed >= 175 and t_elapsed < 200 then
-		self.State = "heavyraining"
-	elseif t_elapsed >= 200 and t_elapsed < 400 then
-	    self.State = "tornado"
-	else
-		self.State = "dead"
-	end
-	
-	self:StateProcessor()
+
+	timer.Simple(0, function()
+		if !self:IsValid() then return  end
+
+		next_state = "overcasting"
+
+		if self.State != next_state then self:OnStateChange(next_state) end
+
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(30, function()
+		if !self:IsValid() then return  end
+
+		next_state = "outflowing" 
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(40, function()
+		if !self:IsValid() then return  end
+
+		next_state = "starting"
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(60, function()
+		if !self:IsValid() then return  end
+
+		next_state = "tranisitioning" 
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(175, function()
+		if !self:IsValid() then return  end
+		
+		next_state = "heavyraining" 
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(200, function()
+		if !self:IsValid() then return  end
+		
+		next_state = "tornado" 
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(400, function()
+		if !self:IsValid() then return  end
+		
+		next_state = "dead" 
+		self.State = next_state 
+		self:StateProcessor()
+	end)
 end
 
 function ENT:StateProcessor()
