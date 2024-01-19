@@ -148,7 +148,7 @@ function ENT:Phase()
 	end)
 
 	timer.Simple(30, function()
-		next_state= "light_rain_fading" 
+		next_state = "light_rain_fading" 
 		self.State = next_state 
 		self:StateProcessor()
 	end)
