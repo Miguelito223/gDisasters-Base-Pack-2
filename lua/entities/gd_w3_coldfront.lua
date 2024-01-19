@@ -76,6 +76,7 @@ function ENT:Initialize()
 		gDisasters_CreateGlobalGFX("heavyrain", self)
 
 		self:SetupSequencedVars()
+		self:Phase()	
 		
 		
 	end
@@ -134,22 +135,42 @@ function ENT:Phase()
 	local t_elapsed  = self:GetTimeElapsed()
 	
 	local next_state = ""
-	if t_elapsed >= 0 and t_elapsed < 30 then
+
+	timer.Simple(0, function()
 		next_state = "light_raining"
-	elseif t_elapsed >= 30 and t_elapsed < 40 then
+
+		if self.State != next_state then self:OnStateChange(next_state) end
+
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(30, function()
 		next_state= "light_rain_fading" 
-	elseif t_elapsed >= 40 and t_elapsed < 60 then
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(40, function()
 		next_state = "medium_wind"
-	elseif t_elapsed >= 60 and t_elapsed < 90 then
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(60, function()
 		next_state = "heavy_wind" 
-	else
-		next_state = "dead"
-	end
-	if self.State != next_state then self:OnStateChange(next_state) end
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(90, function()
+		next_state = "dead" 
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
 	
-	self.State = next_state 
-	
-	self:StateProcessor()
+
 end
 
 function ENT:StateProcessor()
@@ -171,13 +192,7 @@ end
 
 function ENT:ClearSky()
 	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(2,6),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 78000, ["Temperature"] = math.random(28,31), ["Humidity"]    = math.random(34,40), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
-		
-	setMapLight("z") 
 end
-
-
-
-
 
 function ENT:SpawnDeath()
 	
@@ -222,8 +237,6 @@ end
 			
 function ENT:Squall()
 	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(32,38),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 49000, ["Temperature"] = math.random(16,17), ["Humidity"]    = math.random(32,25), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
-
-    setMapLight("d")
 	
 	if(!hasShelfCloud) then
 		self:AttachParticleEffect()
@@ -341,7 +354,6 @@ function ENT:AfterFront()
 
     GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(12,15),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 126000, ["Temperature"] = math.random(8,14), ["Humidity"]    = math.random(31,41), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 	
-    setMapLight("z")
 	
 	
 end
@@ -388,7 +400,6 @@ function ENT:Think()
 	end
 	if (SERVER) then
 		if !self:IsValid() then return end
-		self:Phase()	
 		self:SpawnDeath()
 		self:NextThink(CurTime() + 0.01)
 		return true
