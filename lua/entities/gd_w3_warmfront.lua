@@ -117,6 +117,8 @@ function ENT:Phase()
 	
 	local next_state = ""
 	timer.Simple(0, function()
+		if !self:IsValid() then return  end
+
 		next_state = "light_raining"
 
 		if self.State != next_state then self:OnStateChange(next_state) end
@@ -126,24 +128,32 @@ function ENT:Phase()
 	end)
 
 	timer.Simple(30, function()
+		if !self:IsValid() then return  end
+
 		next_state= "light_rain_fading" 
 		self.State = next_state 
 		self:StateProcessor()
 	end)
 
 	timer.Simple(40, function()
+		if !self:IsValid() then return  end
+
 		next_state = "medium_wind"
 		self.State = next_state 
 		self:StateProcessor()
 	end)
 
 	timer.Simple(60, function()
+		if !self:IsValid() then return  end
+
 		next_state = "heavy_wind" 
 		self.State = next_state 
 		self:StateProcessor()
 	end)
 
 	timer.Simple(90, function()
+		if !self:IsValid() then return  end
+		
 		next_state = "dead" 
 		self.State = next_state 
 		self:StateProcessor()
