@@ -85,6 +85,7 @@ function ENT:Initialize()
 		gDisasters_CreateGlobalGFX("heavyrain", self)
 
 		self:SetupSequencedVars()
+		self:Phase()
 		
 	end
 end
@@ -105,8 +106,6 @@ function ENT:Phase()
 		if !self:IsValid() then return  end
 
 		next_state = "overcasting"
-
-		if self.State != next_state then self:OnStateChange(next_state) end
 
 		self.State = next_state 
 		self:StateProcessor()
@@ -562,7 +561,7 @@ function ENT:Lightning()
 	local pos = self:GetPos()
 	
 	timer.Simple(0.1, function()
-	if !self:IsValid() then return end
+		if !self:IsValid() then return end
 		local ent = ents.Create("gd_w2_thunderstorm_cl")
 		ent:SetPos(pos)
 		ent:Spawn()
@@ -597,8 +596,7 @@ function ENT:Think()
 		
 	end
 	if (SERVER) then
-		if !self:IsValid() then return end
-		self:Phase()	
+		if !self:IsValid() then return end	
 		self:SpawnDeath()
 		self:NextThink(CurTime() + 0.01)
 		return true
