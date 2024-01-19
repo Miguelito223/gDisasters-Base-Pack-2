@@ -58,7 +58,9 @@ function ENT:Initialize()
 				paintSky_Fade(self.Original_SkyData, 0.05)
 			end)
 		end		
-	
+		
+		setMapLight("e")
+
 		self:Lightning()
 
 		local data = {}
@@ -192,6 +194,7 @@ end
 
 function ENT:ClearSky()
 	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(2,6),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 78000, ["Temperature"] = math.random(28,31), ["Humidity"]    = math.random(34,40), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
+	setMapLight("z")
 end
 
 function ENT:SpawnDeath()
@@ -238,6 +241,8 @@ end
 function ENT:Squall()
 	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(32,38),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 49000, ["Temperature"] = math.random(16,17), ["Humidity"]    = math.random(32,25), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 	
+	setMapLight("d")
+
 	if(!hasShelfCloud) then
 		self:AttachParticleEffect()
 		hasShelfCloud = true
@@ -354,7 +359,7 @@ function ENT:AfterFront()
 
     GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(12,15),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 126000, ["Temperature"] = math.random(8,14), ["Humidity"]    = math.random(31,41), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 	
-	
+	setMapLight("z")
 	
 end
 
