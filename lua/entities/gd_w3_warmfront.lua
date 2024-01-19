@@ -71,6 +71,7 @@ function ENT:Initialize()
 		gDisasters_CreateGlobalGFX("heavyrain", self)
 
 		self:SetupSequencedVars()
+		self:Phase()
 		
 		
 	end
@@ -318,7 +319,6 @@ function ENT:Think()
 	end
 	if (SERVER) then
 		if !self:IsValid() then return end
-		self:Phase()	
 
 		self:NextThink(CurTime() + 0.01)
 		return true
