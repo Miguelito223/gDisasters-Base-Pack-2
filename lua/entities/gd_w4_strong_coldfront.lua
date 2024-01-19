@@ -148,36 +148,24 @@ function ENT:Phase()
 
 	timer.Simple(30, function()
 		next_state = "light_rain_fading" 
-
-		if self.State != next_state then self:OnStateChange(next_state) end
-
 		self.State = next_state 
 		self:StateProcessor()
 	end)
 
 	timer.Simple(40, function()
 		next_state = "medium_wind"
-
-		if self.State != next_state then self:OnStateChange(next_state) end
-
 		self.State = next_state 
 		self:StateProcessor()
 	end)
 
 	timer.Simple(60, function()
-		next_state = "heavy_wind"
-		
-		if self.State != next_state then self:OnStateChange(next_state) end
-
+		next_state = "heavy_wind" 
 		self.State = next_state 
 		self:StateProcessor()
 	end)
 
 	timer.Simple(90, function()
 		next_state = "dead" 
-		
-		if self.State != next_state then self:OnStateChange(next_state) end
-
 		self.State = next_state 
 		self:StateProcessor()
 	end)
