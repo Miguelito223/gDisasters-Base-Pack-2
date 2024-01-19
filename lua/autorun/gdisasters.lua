@@ -1,7 +1,7 @@
 --class
 gDisasters = {}
 gDisasters.__index = gDisasters
-gDisasters.Version = 0.391
+gDisasters.Version = 0.392
 gDisasters.WorkShopURL = "https://steamcommunity.com/sharedfiles/filedetails/?id=2522900784"
 gDisasters.WorkshopVersion = false
 
@@ -221,10 +221,8 @@ function gDisasters:AddDecalsFile( Key, File, directory)
 	if string.StartWith(File, "_ice") then
 		table.insert(icetable,  directory)
 	elseif string.StartWith(File, "_sand") then
-		
 		table.insert(sandtable,  directory)
 	elseif string.StartWith(File, "_snow") then
-		
 		table.insert(snowtable,  directory)
 	else	
 		self:Msg( "ADDING: " .. name .. " DECAL")
