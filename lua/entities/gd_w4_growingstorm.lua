@@ -20,8 +20,6 @@ function ENT:Initialize()
 
     local recentTor = false
 
-    self:Lightning()
-
 	if (CLIENT) then
 	
 		
@@ -30,6 +28,8 @@ function ENT:Initialize()
 	end
 	
 	if (SERVER) then
+
+		
 
 
 		self:SetModel(self.Model)
@@ -66,7 +66,9 @@ function ENT:Initialize()
 			end)
 		end
 		
-		setMapLight("d")		
+		setMapLight("d")	
+		
+		self:Lightning()
 	
 		self:SetNoDraw(true)
 
