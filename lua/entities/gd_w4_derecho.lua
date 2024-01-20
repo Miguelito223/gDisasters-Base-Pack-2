@@ -417,7 +417,7 @@ function ENT:Think()
 		
 	end
 	if (SERVER) then
-		if !self:IsValid() then return endº	
+		if !self:IsValid() then return end
 		self:SpawnDeath()
 		self:NextThink(CurTime() + 0.01)
 		return true
