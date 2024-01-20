@@ -314,9 +314,9 @@ function ENT:Passage()
 	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(130,148),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 26000, ["Temperature"] = math.random(7,15), ["Humidity"]    = math.random(95,97), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
 	self.Reset_SkyData["TopColor"]       = Vector(0.20,0.50,1.00)
-			self.Reset_SkyData["BottomColor"]    = Vector(0.80,1.00,1.00)
-			self.Reset_SkyData["DuskScale"]      = 1
-			self.Reset_SkyData["SunColor"]       = Vector(0.20,0.10,0.00)
+	self.Reset_SkyData["BottomColor"]    = Vector(0.80,1.00,1.00)
+	self.Reset_SkyData["DuskScale"]      = 1
+	self.Reset_SkyData["SunColor"]       = Vector(0.20,0.10,0.00)
 		
 	
 	for k, v in pairs(player.GetAll()) do
@@ -324,15 +324,15 @@ function ENT:Passage()
 		if v.gDisasters.Area.IsOutdoor then
 				
 	
-				net.Start("gd_clParticles")
-				net.WriteString("localized_extreme_rain_effect")
-				net.Send(v)	
-				net.Start("gd_clParticles_ground")
-				net.WriteString("extreme_rain_splash_effect")
-				net.Send(v)	
+			net.Start("gd_clParticles")
+			net.WriteString("localized_extreme_rain_effect")
+			net.Send(v)	
+			net.Start("gd_clParticles_ground")
+			net.WriteString("extreme_rain_splash_effect")
+			net.Send(v)	
 
 				
-			else
+		else
 				
 		
 			if HitChance(1)  then
@@ -418,6 +418,7 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		self:SpawnDeath()
+		self:StateProcessor()
 		self:NextThink(CurTime() + 0.01)
 		return true
 	end
