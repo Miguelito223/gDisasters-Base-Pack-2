@@ -454,7 +454,7 @@ function convert_VectorToRadiants(vector)
 	y = vector.y
 	z = vector.z
 	
-	return math.atan2(y,x)
+	return math.atan2(y,x), math.atan2(y,z)
 end
 
 function convert_VectorToAngle(vector)
@@ -470,7 +470,7 @@ function convert_DegreesToRadiants(degrees)
 end
 
 function convert_AngleToRadiants(angle)
-	return math.rad(angle.x + angle.y + angle.z)
+	return math.rad(angle.y)
 end
 
 function convert_AngleToVector(angle)
