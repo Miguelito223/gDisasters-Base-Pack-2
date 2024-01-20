@@ -48,8 +48,7 @@ net.Receive("gd_clParticles", function()
 	if GetConVar("gdisasters_graphics_enable_weather_particles"):GetInt() <= 0 then return end
 
 	local effect = net.ReadString()
-	local angle  = net.ReadAngle() or convert_VectorToAngle(-GetGlobalVector("gDisasters_Wind_Direction"))
-	print(angle)
+	local angle  = net.ReadAngle()
 	ParticleEffect( effect, LocalPlayer():GetPos(), angle, nil )
 
 end)
