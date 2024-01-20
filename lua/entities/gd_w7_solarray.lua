@@ -106,7 +106,6 @@ function ENT:AffectPlayers()
 			if HitChance(75) then
 				net.Start("gd_clParticles")
 				net.WriteString("localized_firestorm_effect")
-				net.WriteAngle(Angle(0,0,0))
 				net.Send(v)		
 			end
 		

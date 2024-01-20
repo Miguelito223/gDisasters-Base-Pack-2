@@ -103,7 +103,6 @@ function ENT:AffectPlayers()
 			if math.random(1,3)==1 then
 				net.Start("gd_clParticles")
 				net.WriteString("renderfog_main_HQ")
-				net.WriteAngle(Angle(0,0,0))
 				net.Send(v)		
 			end
 			

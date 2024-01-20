@@ -120,13 +120,9 @@ function ENT:AffectPlayers()
 					net.WriteVector(Vector(0,0.5,0))
 					net.Send(v)
 				end
-				
-				local ang = (v:GetPos()-self:GetPos()):Angle().y + 90
 
 				net.Start("gd_clParticles")
 				net.WriteString("localized_ash_effect_2")
-				
-				net.WriteAngle(Angle(0,ang,0))
 				net.Send(v)
 			
 			end

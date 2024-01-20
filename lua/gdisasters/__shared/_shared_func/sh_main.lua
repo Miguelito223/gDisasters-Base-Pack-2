@@ -449,12 +449,16 @@ function convert_KevintoCelcius(Kevin)
 	return Kevin - 273
 end
 
-function convert_VectorToAngle(vector)
+function convert_VectorToRadiants(vector)
 	x = vector.x
 	y = vector.y
 	z = vector.z
 	
 	return math.atan2(y,x)
+end
+
+function convert_VectorToAngle(vector)
+	return vector:Angle()
 end
 
 function convert_RadiantsToDegrees(radiants)
@@ -466,13 +470,11 @@ function convert_DegreesToRadiants(degrees)
 end
 
 function convert_AngleToRadiants(angle)
-	return math.acos(vector_up:Dot(angle))
+	return math.rad(angle.x + angle.y + angle.z)
 end
 
 function convert_AngleToVector(angle)
-	x = math.cos(angle)
-	y = math.sin(angle)
-	return Vector(x, y, 0)
+	return angle:Forward()
 end
 
 function FixedSortedPairsByMemberValue( pTable, pValueName, Desc )

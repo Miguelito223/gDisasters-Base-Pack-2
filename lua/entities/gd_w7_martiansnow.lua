@@ -147,7 +147,6 @@ function ENT:AffectPlayers()
 			if math.random(1,4)==1 then
 				net.Start("gd_clParticles")
 				net.WriteString("localized_dust_effect")
-				net.WriteAngle(Angle(0,0,0))
 				net.Send(v)		
 			end
 			

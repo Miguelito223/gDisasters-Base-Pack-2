@@ -137,15 +137,11 @@ function ENT:AffectPlayers()
 
 				net.Start("gd_clParticles")
 				net.WriteString("localized_ash_effect_2")
-				
-				net.WriteAngle(Angle(0,ang,0))
 				net.Send(v)
 				
 				
 				net.Start("gd_clParticles")
 				net.WriteString("localized_ash_effect_2")
-				
-				net.WriteAngle(Angle(0,ang,0))
 				net.Send(v)
 			
 			end
