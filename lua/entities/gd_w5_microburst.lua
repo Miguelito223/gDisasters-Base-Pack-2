@@ -78,6 +78,7 @@ function ENT:Initialize()
 		gDisasters_CreateGlobalGFX("heavyrain", self)
 
 		self:SetupSequencedVars()
+		self:Phase()
 		
 	end
 end
@@ -94,19 +95,46 @@ end
 function ENT:Phase()
 	local t_elapsed = self:GetTimeElapsed()
 	
-	if t_elapsed >= 0 and t_elapsed < 30 then
-		self.State = "light_raining"
-	elseif t_elapsed >= 30 and t_elapsed < 40 then
-		self.State = "transition_lrmr" 
-	elseif t_elapsed >= 40 and t_elapsed < 60 then
-		self.State = "moderate_raining"
-	elseif t_elapsed >= 60 and t_elapsed < 120 then
-		self.State = "heavy_raining" 
-	else
-		self.State = "dead"
-	end
-	
-	self:StateProcessor()
+	timer.Simple(0, function()
+		if !self:IsValid() then return  end
+
+		next_state = "light_raining"
+
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(30, function()
+		if !self:IsValid() then return  end
+
+		next_state = "transition_lrmr"
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(40, function()
+		if !self:IsValid() then return  end
+
+		next_state = "moderate_raining" 
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(60, function()
+		if !self:IsValid() then return  end
+		
+		next_state = "heavy_raining" 
+		self.State = next_state 
+		self:StateProcessor()
+	end)
+
+	timer.Simple(120, function()
+		if !self:IsValid() then return  end
+		
+		next_state = "dead" 
+		self.State = next_state 
+		self:StateProcessor()
+	end)
 end
 
 function ENT:StateProcessor()
@@ -435,7 +463,7 @@ function ENT:Think()
 	end
 	if (SERVER) then
 		if !self:IsValid() then return end
-		self:Phase()	
+		self:StateProcessor()	
 		self:SpawnDeath()
 		self:NextThink(CurTime() + 0.01)
 		return true
