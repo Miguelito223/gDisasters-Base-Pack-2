@@ -13,9 +13,6 @@ ENT.Category                         =  "Hmm"
 ENT.Model                            =  "models/props_junk/PopCan01a.mdl"                      
 ENT.Mass                             =  100
 
-
-
-
 function ENT:Initialize()		
 
     local recentTor = false

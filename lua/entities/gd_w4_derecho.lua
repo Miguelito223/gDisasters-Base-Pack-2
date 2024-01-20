@@ -256,8 +256,7 @@ function ENT:Squall()
     setMapLight("d")
 	
 	if(!hasShelfCloud) then
-	self:AttachParticleEffect()
-	hasShelfCloud = true
+		self:AttachParticleEffect()
 	end
 
 	for k, v in pairs(player.GetAll()) do
@@ -297,7 +296,7 @@ function ENT:AttachParticleEffect()
 	timer.Simple(0.1, function()
 	if !self:IsValid() then return end
 	
-	ParticleEffectAttach("t_shelfcloud", PATTACH_POINT_FOLLOW, self, 0)
+		ParticleEffectAttach("t_shelfcloud", PATTACH_POINT_FOLLOW, self, 0)
 	
 	end)
 	
