@@ -469,8 +469,28 @@ function convert_DegreesToRadiants(degrees)
 	return math.rad(degrees)
 end
 
-function convert_AngleToRadiants(angle)
+function convert_AngleYawToRadiants(angle)
 	return math.rad(angle.y)
+end
+
+function convert_AngleYawToDegrees(angle)
+	return math.deg(math.rad(angle.y))
+end
+
+function convert_AnglePitchToRadiants(angle)
+	return math.rad(angle.x)
+end
+
+function convert_AnglePitchToDegrees(angle)
+	return math.deg(math.rad(angle.x))
+end
+
+function convert_AngleRollToRadiants(angle)
+	return math.rad(angle.z)
+end
+
+function convert_AngleRollPitchToDegrees(angle)
+	return math.deg(math.rad(angle.z))
 end
 
 function convert_AngleToVector(angle)

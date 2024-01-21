@@ -61,7 +61,9 @@ net.Receive("gd_clParticles_ground", function()
 
 	local effect = net.ReadString()
 	local angle  = convert_VectorToAngle(GetGlobalVector("gDisasters_Wind_Direction"))
+	print(GetGlobalVector("gDisasters_Wind_Direction"))
 	print(convert_AngleToVector(angle))
+	print(angle)
 	ParticleEffect( effect, LocalPlayer():GetPos(), angle, nil )
 
 end)

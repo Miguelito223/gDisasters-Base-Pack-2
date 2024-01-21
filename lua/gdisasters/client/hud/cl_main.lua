@@ -396,7 +396,7 @@ function hud_DrawBasicINFO()
 	local body_temp  =  tostring( body_tmp )
 	local body_Oxy  =  tostring( body_Oxygen )
 	local humidity   =  tostring( hm)
-	local Wind_Direction   =  convert_RadiantsToDegrees(convert_VectorToRadiants(winddir))
+	local Wind_Direction   =  convert_AngleYawToDegrees(convert_VectorToAngle(winddir))
 	
 	local function windspeed_Format(speed)
 		local strspeed = tostring(speed)

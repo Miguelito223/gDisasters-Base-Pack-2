@@ -4,7 +4,7 @@ SetGlobalFloat("gDisasters_Humidity", 0)
 SetGlobalFloat("gDisasters_BRadiation", 0)
 SetGlobalFloat("gDisasters_Oxygen", 0)
 SetGlobalFloat("gDisasters_Wind", 0)
-SetGlobalVector("gDisasters_Wind_Direction", Vector(0,0,0))
+SetGlobalVector("gDisasters_Wind_Direction", Vector(1,0,0))
 
 
 
@@ -39,7 +39,7 @@ function AtmosphereFadeControl()
 	GLOBAL_SYSTEM["Atmosphere"]["Oxygen"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Oxygen"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Oxygen"])
 	GLOBAL_SYSTEM["Atmosphere"]["Temperature"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Temperature"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"])
 	GLOBAL_SYSTEM["Atmosphere"]["Humidity"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Humidity"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"])
-	GLOBAL_SYSTEM["Atmosphere"]["BRadiation"]    = Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["BRadiation"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["BRadiation"])
+	GLOBAL_SYSTEM["Atmosphere"]["BRadiation"]= Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["BRadiation"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["BRadiation"])
 
 end
 
