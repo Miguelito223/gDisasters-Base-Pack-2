@@ -449,15 +449,15 @@ function convert_KevintoCelcius(Kevin)
 	return Kevin - 273
 end
 
-function convert_VectorToRadiantYaw(vector)
+function convert_VectorToAngle(vector)
 	local x = vector.x
 	local y = vector.y
 	local z = vector.z
 	
-	return math.atan2(x,y)
+	return math.atan2(y,x)
 end
 
-function convert_VectorToAngle(vector)
+function convert_VectorToAngle2(vector)
 	return vector:Angle()
 end
 
@@ -467,30 +467,6 @@ end
 
 function convert_DegreesToRadiants(degrees)
 	return math.rad(degrees)
-end
-
-function convert_AngleYawToRadiants(angle)
-	return math.rad(angle.y)
-end
-
-function convert_AngleYawToDegrees(angle)
-	return math.deg(math.rad(angle.y))
-end
-
-function convert_AnglePitchToRadiants(angle)
-	return math.rad(angle.x)
-end
-
-function convert_AnglePitchToDegrees(angle)
-	return math.deg(math.rad(angle.x))
-end
-
-function convert_AngleRollToRadiants(angle)
-	return math.rad(angle.z)
-end
-
-function convert_AngleRollToDegrees(angle)
-	return math.deg(math.rad(angle.z))
 end
 
 function convert_AngleToVector(angle)
