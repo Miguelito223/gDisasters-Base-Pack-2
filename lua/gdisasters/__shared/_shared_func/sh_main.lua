@@ -449,7 +449,7 @@ function convert_KevintoCelcius(Kevin)
 	return Kevin - 273
 end
 
-function convert_VectorToRadiant(vector)
+function convert_VectorToRadiantYaw(vector)
 	local x = vector.x
 	local y = vector.y
 	local z = vector.z
