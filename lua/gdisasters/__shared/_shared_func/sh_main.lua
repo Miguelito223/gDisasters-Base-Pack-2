@@ -449,12 +449,12 @@ function convert_KevintoCelcius(Kevin)
 	return Kevin - 273
 end
 
-function convert_VectorToRadiants(vector)
-	x = vector.x
-	y = vector.y
-	z = vector.z
+function convert_VectorToRadiant(vector)
+	local x = vector.x
+	local y = vector.y
+	local z = vector.z
 	
-	return math.atan2(y,x), math.atan2(y,z)
+	return math.atan2(x,y)
 end
 
 function convert_VectorToAngle(vector)
