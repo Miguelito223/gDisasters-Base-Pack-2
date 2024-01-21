@@ -489,7 +489,7 @@ function convert_AngleRollToRadiants(angle)
 	return math.rad(angle.z)
 end
 
-function convert_AngleRollPitchToDegrees(angle)
+function convert_AngleRollToDegrees(angle)
 	return math.deg(math.rad(angle.z))
 end
 
