@@ -470,6 +470,12 @@ function convert_DegreesToRadiants(degrees)
 end
 
 function convert_AngleToVector(angle)
+	angle.x = math.cos(angle.x)
+	angle.y = math.sin(angle.y)
+	return Vector(angle.x, angle.y, 0)
+end
+
+function convert_AngleToVector2(angle)
 	return angle:Forward()
 end
 

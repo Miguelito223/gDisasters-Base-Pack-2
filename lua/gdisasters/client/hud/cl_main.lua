@@ -397,7 +397,7 @@ function hud_DrawBasicINFO()
 	local body_Oxy  =  tostring( body_Oxygen )
 	local humidity   =  tostring( hm)
 	local Wind_Direction   =  tostring(winddir)
-	
+
 	local function windspeed_Format(speed)
 		local strspeed = tostring(speed)
 		local chr1, chr2, chr3, chr4 = strspeed[1], strspeed[2], strspeed[3], strspeed[4]
