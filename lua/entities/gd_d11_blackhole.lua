@@ -14,9 +14,6 @@ ENT.Model = "models/hunter/misc/sphere375x375.mdl"
 ENT.Material = "ramses/models/space/black_hole/main"
 
 function ENT:Initialize()
-	
-	EnableGlobalGravity(false)
-
 	if (SERVER) then
 
     	self:SetModel(self.Model)
@@ -40,7 +37,7 @@ function ENT:Initialize()
     	self:SoundLoop()
     	self:LockPosition()
 
-		
+		EnableGlobalGravity(false)
 
 		ParticleEffectAttach("micro_blackhole_effect", PATTACH_POINT_FOLLOW, self, 0)
 	end
@@ -149,9 +146,9 @@ function ENT:Rotate()
 end
 
 function ENT:OnRemove()
-
-	EnableGlobalGravity(true)
-
+	if (SERVER) then
+		EnableGlobalGravity(true)
+	end
 	if self.Sound==nil then return end
 	self.Sound:Stop()
 
