@@ -469,6 +469,10 @@ function convert_DegreesToRadiants(degrees)
 	return math.rad(degrees)
 end
 
+function convert_AngletoDegrees(angle)
+	return angle.x + angle.y + angle.z
+end
+
 function convert_AngleToVector(angle)
 	angle.x = math.cos(angle.x)
 	angle.y = math.sin(angle.y)
