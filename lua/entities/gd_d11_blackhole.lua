@@ -159,6 +159,7 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		self:Rotate()
+		self:EnableGlobalGravity(false)
     	self:NewtonianGravity()
 		self:NextThink(CurTime() + 0.01)
     	return true	
