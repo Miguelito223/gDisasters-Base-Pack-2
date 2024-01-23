@@ -240,7 +240,7 @@ function isinWater(ply)
 			return pos[3] < InfMap.water_height
 		end
 
-		wl3 = inWater(ply:GetPos())
+		wl3 = inWater(InfMap.unlocalize_vector(ply:GetPos(), ply.CHUNK_OFFSET))
 		
 		if wl3 then
 			return true 
@@ -269,7 +269,9 @@ function isUnderWater(ply)
 			return pos[3] < InfMap.water_height
 		end
 
-		wl3 = inWater(ply:GetPos())
+
+		wl3 = inWater(InfMap.unlocalize_vector(ply:GetPos(), ply.CHUNK_OFFSET))
+
 
 		if wl3 then
 			return true 
