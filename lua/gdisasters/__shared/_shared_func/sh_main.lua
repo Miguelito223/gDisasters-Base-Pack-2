@@ -241,9 +241,16 @@ function isinWater(ply)
 		end
 
 		wl3 = inWater(ply:GetPos())
+		
+		if wl3 then
+			return true 
+		else
+			return false
+		end
+		
 	end
 
-	if wl > 0 or wl1 or wl2 or wl3 then
+	if wl > 0 or wl1 or wl2 then
 		return true
 	else
 		return false
@@ -263,9 +270,15 @@ function isUnderWater(ply)
 		end
 
 		wl3 = inWater(ply:GetPos())
+
+		if wl3 then
+			return true 
+		else
+			return false
+		end
 	end
 
-	if wl >= 3 or wl2 or wl3 or wl4 > 0 then
+	if wl >= 3 or wl2 or wl4 > 0 then
 		return true
 	else
 		return false
