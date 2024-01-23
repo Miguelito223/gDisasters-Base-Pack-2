@@ -269,8 +269,11 @@ function isUnderWater(ply)
 			return pos[3] < InfMap.water_height
 		end
 
-		wl3 = inWater(InfMap.unlocalize_vector(ply:GetPos(), ply.CHUNK_OFFSET))
-
+		if ply:IsPlayer() then
+			wl3 = inWater(InfMap.unlocalize_vector(ply:EyePos(), ply.CHUNK_OFFSET))
+		else
+			wl3 = inWater(InfMap.unlocalize_vector(ply:GetPos(), ply.CHUNK_OFFSET))
+		end
 
 		if wl3 then
 			return true 
