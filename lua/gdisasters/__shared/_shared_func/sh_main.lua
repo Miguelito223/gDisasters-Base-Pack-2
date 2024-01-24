@@ -842,15 +842,15 @@ end
 
 function gDisasters_GetMoonAngleInDegs()
 
-	return convert_RadiantsToDegrees(gDisasters_GetMoonDir())
+	return convert_RadiantsToDegrees(convert_VectorToAngle(gDisasters_GetSunDir()))
 end
 
 function gDisasters_GetSunAngleInRadians()
-	return convert_VectorToAngle(gDisasters_GetSunAngleInDegs())
+	return convert_VectorToAngle(gDisasters_GetSunDir())
 end
 
 function gDisasters_GetSunAngleInDegs()
-	return convert_RadiantsToDegrees(gDisasters_GetSunDir())
+	return convert_RadiantsToDegrees(convert_VectorToAngle(gDisasters_GetSunDir()))
 end
 
 function gDisasters_GetMoonDir()
