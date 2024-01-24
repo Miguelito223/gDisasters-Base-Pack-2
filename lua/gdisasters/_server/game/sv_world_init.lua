@@ -1,4 +1,4 @@
-hook.Add( "InitPostEntity", "gDisastersInitPostEvo", function()
+hook.Add( "PostInit", "gDisastersInitPostEvo", function()
 	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 or gDisasters.DayNightSystem.InternalVars.Enabled:GetInt() >= 1 then 
 
 		local oldCleanUpMap = game.CleanUpMap
