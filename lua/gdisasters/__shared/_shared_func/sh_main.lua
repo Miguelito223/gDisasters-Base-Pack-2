@@ -486,8 +486,16 @@ function convert_DegreesToRadiants(degrees)
 	return math.rad(degrees)
 end
 
-function convert_AngletoDegrees(angle)
-	return angle.x + angle.y + angle.z
+function convert_AngletoPitch(angle)
+	return angle.x
+end
+
+function convert_AngletoYaw(angle)
+	return angle.y
+end
+
+function convert_AngletoRoll(angle)
+	return angle.z
 end
 
 function convert_AngleToVector(angle)
@@ -829,20 +837,20 @@ end
 
 function gDisasters_GetMoonAngleInRadians()
 
-	return convert_AngleToRadiants(gDisasters_GetMoonDir())
+	return convert_VectorToAngle(gDisasters_GetMoonDir())
 end
 
 function gDisasters_GetMoonAngleInDegs()
 
-	return convert_RadiantsToDegrees(gDisasters_GetMoonAngleInRadians())
+	return convert_RadiantsToDegrees(gDisasters_GetMoonDir())
 end
 
 function gDisasters_GetSunAngleInRadians()
-	return convert_AngleToRadiants(gDisasters_GetSunDir())
+	return convert_VectorToAngle(gDisasters_GetSunAngleInDegs())
 end
 
 function gDisasters_GetSunAngleInDegs()
-	return convert_RadiantsToDegrees(gDisasters_GetSunAngleInRadians())
+	return convert_RadiantsToDegrees(gDisasters_GetSunDir())
 end
 
 function gDisasters_GetMoonDir()
