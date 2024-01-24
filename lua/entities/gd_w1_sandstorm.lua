@@ -134,7 +134,7 @@ function ENT:AffectPlayers()
 		if v.gDisasters.Area.IsOutdoor then
 			if math.random(1,4)==1 then
 				net.Start("gd_clParticles")
-				net.WriteString("localized_sand_effect", Angle(0,math.random(1,40),0))
+				net.WriteString("localized_sand_effect")
 				net.Send(v)
 			end
 			
