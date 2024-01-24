@@ -188,7 +188,7 @@ function ENT:StateProcessor()
 end
 
 function ENT:HighCloudy()
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(28,33),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 98000, ["Temperature"] = math.random(26,26), ["Humidity"]    = math.random(34,40), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(28,33),["Direction"]=Vector(math.random(-1,1),math.random(-1,1),0)}, ["Pressure"]    = 98000, ["Temperature"] = math.random(26,26), ["Humidity"]    = math.random(34,40), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 	
 	setMapLight("g")
 	
@@ -200,7 +200,7 @@ end
 			
 			
 function ENT:PassageWarm()
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(34,38),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 124000, ["Temperature"] = math.random(48,51), ["Humidity"]    = math.random(41,46), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(34,38),["Direction"]=Vector(math.random(-1,1),math.random(-1,1),0)}, ["Pressure"]    = 124000, ["Temperature"] = math.random(48,51), ["Humidity"]    = math.random(41,46), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
     setMapLight("d")
 
@@ -256,7 +256,7 @@ end
 
 function ENT:Transition()
 
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(5,7),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 66000, ["Temperature"] = math.random(26,29), ["Humidity"]    = math.random(6,14), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(5,7),["Direction"]=Vector(math.random(-1,1),math.random(-1,1),0)}, ["Pressure"]    = 66000, ["Temperature"] = math.random(26,29), ["Humidity"]    = math.random(6,14), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 		
 	setMapLight("g")
 	
@@ -286,7 +286,7 @@ function ENT:Transition()
 
 function ENT:PassageCold()
 
-    GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(167,195),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 243000, ["Temperature"] = math.random(5,7), ["Humidity"]    = math.random(73,81), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
+    GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(167,195),["Direction"]=Vector(math.random(-1,1),math.random(-1,1),0)}, ["Pressure"]    = 243000, ["Temperature"] = math.random(5,7), ["Humidity"]    = math.random(73,81), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 		
 	
 	for k, v in pairs(player.GetAll()) do
@@ -364,7 +364,7 @@ end
 
 function ENT:AfterFront()
 
-    GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(2,3),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 3000, ["Temperature"] = math.random(8,14), ["Humidity"]    = math.random(87,92), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
+    GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(2,3),["Direction"]=Vector(math.random(-1,1),math.random(-1,1),0)}, ["Pressure"]    = 3000, ["Temperature"] = math.random(8,14), ["Humidity"]    = math.random(87,92), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 	
     setMapLight("z")
 	

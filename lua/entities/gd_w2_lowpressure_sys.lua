@@ -144,7 +144,7 @@ function ENT:StateProcessor()
 end
 
 function ENT:PressureCenter()
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(29,37),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 65000, ["Temperature"] = math.random(12,17), ["Humidity"]    = math.random(71,89), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(29,37),["Direction"]=Vector(math.random(-1,1),math.random(-1,1),0)}, ["Pressure"]    = 65000, ["Temperature"] = math.random(12,17), ["Humidity"]    = math.random(71,89), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
 	
 	
@@ -152,7 +152,7 @@ end
 			
 			
 function ENT:PressureOutFlow()
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(48,66),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 75000, ["Temperature"] = math.random(8,12), ["Humidity"]    = math.random(82,89), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(48,66),["Direction"]=Vector(math.random(-1,1),math.random(-1,1),0)}, ["Pressure"]    = 75000, ["Temperature"] = math.random(8,12), ["Humidity"]    = math.random(82,89), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 	
 	
 
@@ -160,7 +160,7 @@ end
 
 function ENT:PressureBoundary()
 
-	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(68,97),["Direction"]=Vector(0,1,0)}, ["Pressure"]    = 85000, ["Temperature"] = math.random(13,18), ["Humidity"]    = math.random(82,89), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
+	GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(68,97),["Direction"]=Vector(math.random(-1,1),math.random(-1,1),0)}, ["Pressure"]    = 85000, ["Temperature"] = math.random(13,18), ["Humidity"]    = math.random(82,89), ["BRadiation"]  = 0.1, ["Oxygen"]  = 100}}
 
     gDisasters_CreateGlobalGFX("heavyrain", self)
 	
