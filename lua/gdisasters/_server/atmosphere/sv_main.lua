@@ -28,7 +28,8 @@ function Atmosphere()
 	Oxygen()
 	
 end
-hook.Add("Think3", "atmosphericLoop", Atmosphere)
+hook.Add("Think", "atmosphericLoop", Atmosphere)
+hook.Add("Think3", "atmosphericLoop", Oxygen)
 
 
 function AtmosphereFadeControl()
