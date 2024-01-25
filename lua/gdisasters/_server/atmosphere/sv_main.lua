@@ -12,7 +12,6 @@ function Atmosphere()
 	GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Temperature"],-273.3, 273.3)
 	GLOBAL_SYSTEM["Atmosphere"]["Humidity"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Humidity"],0, 100)
 	GLOBAL_SYSTEM["Atmosphere"]["BRadiation"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["BRadiation"],0, 100)
-	GLOBAL_SYSTEM["Atmosphere"]["Oxygen"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Oxygen"],0, 100)
 	GLOBAL_SYSTEM["Atmosphere"]["Pressure"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Pressure"], 0, math.huge)
 	
 
@@ -26,9 +25,16 @@ function Atmosphere()
 	spacebuild()
 	Temperature()
 	
+	
 end
 hook.Add("Think", "atmosphericLoop", Atmosphere)
-hook.Add("Think3", "Oxygen", Oxygen)
+
+function Atmosphere2()
+	GLOBAL_SYSTEM["Atmosphere"]["Oxygen"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Oxygen"],0, 100)
+	
+	Oxygen()
+end
+hook.Add("Think3", "atmosphericLoop2", Atmosphere2)
 
 
 function AtmosphereFadeControl()
