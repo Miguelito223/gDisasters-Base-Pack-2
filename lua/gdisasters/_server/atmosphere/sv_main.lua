@@ -509,7 +509,7 @@ function Oxygen()
 						end
 					end
 				else
-					v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen + 0.5 , 0,100 )
+					v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen + 5 , 0,100 )
 				end
 			elseif isUnderGround(v) then
 				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 5,0,100 ) 
