@@ -464,7 +464,7 @@ function Oxygen()
 			if GetConVar("gdisasters_spacebuild_enabled"):GetInt() >= 1 then return end
 		
 			if isUnderWater(v) or isUnderLava(v) then 
-				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 5 ,0,100 ) 
+				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 5,0,100 ) 
 			
 				if v.gDisasters.Body.Oxygen <= 0 then
 				
@@ -482,7 +482,7 @@ function Oxygen()
 				end
 			elseif oxygen <= 20 then
 				if v.gasmasked == false and v.hazsuited == false then 
-					v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - (1/5),0,100 ) 
+					v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 5,0,100 ) 
 					
 					if v.NextChokeOnAsh == nil then v.NextChokeOnAsh = CurTime() end
 					
@@ -512,7 +512,7 @@ function Oxygen()
 					v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen + 0.5 , 0,100 )
 				end
 			elseif isUnderGround(v) then
-				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.1 ,0,100 ) 
+				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 5,0,100 ) 
 				
 				if v.gDisasters.Body.Oxygen <= 0 then
 				
@@ -529,7 +529,7 @@ function Oxygen()
 				
 				end
 			else
-				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen + 0.5 , 0,100 )
+				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen + 5 , 0,100 )
 			end
 		
 			v:SetNWFloat("BodyOxygen", v.gDisasters.Body.Oxygen)
