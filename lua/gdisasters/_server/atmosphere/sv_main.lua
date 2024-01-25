@@ -25,11 +25,10 @@ function Atmosphere()
 	stormfox2()
 	spacebuild()
 	Temperature()
-	Oxygen()
 	
 end
 hook.Add("Think", "atmosphericLoop", Atmosphere)
-hook.Add("Think3", "atmosphericLoop", Oxygen)
+hook.Add("Think3", "Oxygen", Oxygen)
 
 
 function AtmosphereFadeControl()
