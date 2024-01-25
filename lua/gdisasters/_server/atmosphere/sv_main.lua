@@ -31,8 +31,10 @@ hook.Add("Think", "atmosphericLoop", Atmosphere)
 
 function Atmosphere2()
 	GLOBAL_SYSTEM["Atmosphere"]["Oxygen"]    = math.Clamp(GLOBAL_SYSTEM["Atmosphere"]["Oxygen"],0, 100)
+	GLOBAL_SYSTEM["Atmosphere"]["Oxygen"]    = Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Oxygen"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Oxygen"])
 	
 	Oxygen()
+	spacebuild()
 end
 hook.Add("Think3", "atmosphericLoop2", Atmosphere2)
 
@@ -42,7 +44,6 @@ function AtmosphereFadeControl()
 	GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"])
 	GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]=LerpVector(0.005, GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"], GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"])
 	GLOBAL_SYSTEM["Atmosphere"]["Pressure"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Pressure"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"])
-	GLOBAL_SYSTEM["Atmosphere"]["Oxygen"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Oxygen"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Oxygen"])
 	GLOBAL_SYSTEM["Atmosphere"]["Temperature"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Temperature"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"])
 	GLOBAL_SYSTEM["Atmosphere"]["Humidity"]=Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["Humidity"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"])
 	GLOBAL_SYSTEM["Atmosphere"]["BRadiation"]= Lerp(0.005, GLOBAL_SYSTEM["Atmosphere"]["BRadiation"],GLOBAL_SYSTEM_TARGET["Atmosphere"]["BRadiation"])
@@ -476,14 +477,14 @@ function Oxygen()
 				
 					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
 				
-					if math.random(1, 50)==1 then
-						local dmg = DamageInfo()
-						dmg:SetDamage( math.random(1,25) )
-						dmg:SetAttacker( v )
-						dmg:SetDamageType( DMG_DROWN  )
+
+					local dmg = DamageInfo()
+					dmg:SetDamage( math.random(1,25) )
+					dmg:SetAttacker( v )
+					dmg:SetDamageType( DMG_DROWN  )
+				
+					v:TakeDamageInfo(  dmg)
 					
-						v:TakeDamageInfo(  dmg)
-					end
 				
 				end
 			elseif oxygen <= 20 then
@@ -505,14 +506,14 @@ function Oxygen()
 
 						if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end   
 
-						if math.random(1, 50)==1 then
-							local dmg = DamageInfo()
-							dmg:SetDamage( math.random(1,25) )
-							dmg:SetAttacker( v )
-							dmg:SetDamageType( DMG_DROWN  )
-						
-							v:TakeDamageInfo(  dmg)
-						end
+
+						local dmg = DamageInfo()
+						dmg:SetDamage( math.random(1,25) )
+						dmg:SetAttacker( v )
+						dmg:SetDamageType( DMG_DROWN  )
+					
+						v:TakeDamageInfo(  dmg)
+
 					end
 				else
 					v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen + 5 , 0,100 )
@@ -523,15 +524,14 @@ function Oxygen()
 				if v.gDisasters.Body.Oxygen <= 0 then
 				
 					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
+
+					local dmg = DamageInfo()
+					dmg:SetDamage( math.random(1,25) )
+					dmg:SetAttacker( v )
+					dmg:SetDamageType( DMG_DROWN  )
 				
-					if math.random(1, 50)==1 then
-						local dmg = DamageInfo()
-						dmg:SetDamage( math.random(1,25) )
-						dmg:SetAttacker( v )
-						dmg:SetDamageType( DMG_DROWN  )
-					
-						v:TakeDamageInfo(  dmg)
-					end
+					v:TakeDamageInfo(  dmg)
+
 				
 				end
 			else
@@ -546,7 +546,7 @@ function Oxygen()
 					
 					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
 
-					if math.random(1, 50)==1 and v:IsValid() then
+					if v:IsValid() then
 						local dmg = DamageInfo()
 						dmg:SetDamage( math.random(1,25) )
 						dmg:SetAttacker( v )
@@ -571,7 +571,7 @@ function Oxygen()
 				timer.Simple(50, function()
 					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
 
-					if math.random(1, 50)==1 and v:IsValid() then
+					if v:IsValid() then
 						local dmg = DamageInfo()
 						dmg:SetDamage( math.random(1,25) )
 						dmg:SetAttacker( v )
@@ -584,7 +584,7 @@ function Oxygen()
 				timer.Simple(15, function()
 					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
 
-					if math.random(1, 50)==1 and v:IsValid() then
+					if v:IsValid() then
 						local dmg = DamageInfo()
 						dmg:SetDamage( math.random(1,25) )
 						dmg:SetAttacker( v )
