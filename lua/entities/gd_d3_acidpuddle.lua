@@ -93,13 +93,17 @@ function ENT:Touch( entity )
 	if entity:IsNPC() or entity:IsPlayer() or entity:IsNextBot() then
 		
 		if entity:IsPlayer() then
+			entity:SetPos( entity:GetPos() - Vector(0,0,0.6))
 			InflictDamage(entity, self, "acid", 10)
+			
 		else
+			entity:SetPos( entity:GetPos() - Vector(0,0,20))
 			InflictDamage(entity, self, "acid", 10)			
 		end
 		
 	
 	else
+		entity:SetPos( entity:GetPos() - Vector(0,0,0.6))
 		InflictDamage(entity, self, "acid", 10)
 	end
 	
