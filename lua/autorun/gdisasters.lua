@@ -518,9 +518,16 @@ PrecacheParticleSystem("micro_blackhole_effect")
 gDisasters:Msg("FINISH")
 
 --adding new hook
-
+gDisasters:Msg("ADDING CUSTOM HOOK")
 timer.Simple(1,function()
-	gDisasters:Msg("ADDING CUSTOM HOOK")
     hook.Run("PostInit")
-	gDisasters:Msg("ADDED CUSTOM HOOK")
 end)
+
+timer.Create("Think2", 0.5, 0, function()
+    hook.Run("Think2")
+end)
+
+timer.Create("Think3", 1, 0, function()
+    hook.Run("Think3")
+end)
+gDisasters:Msg("ADDED CUSTOM HOOK")

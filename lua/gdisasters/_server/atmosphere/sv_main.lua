@@ -28,7 +28,7 @@ function Atmosphere()
 	Oxygen()
 	
 end
-hook.Add("Think", "atmosphericLoop", Atmosphere)
+hook.Add("Think3", "atmosphericLoop", Atmosphere)
 
 
 function AtmosphereFadeControl()
@@ -464,7 +464,7 @@ function Oxygen()
 			if GetConVar("gdisasters_spacebuild_enabled"):GetInt() >= 1 then return end
 		
 			if isUnderWater(v) or isUnderLava(v) then 
-				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.05 ,0,100 ) 
+				v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 5 ,0,100 ) 
 			
 				if v.gDisasters.Body.Oxygen <= 0 then
 				
@@ -482,7 +482,7 @@ function Oxygen()
 				end
 			elseif oxygen <= 20 then
 				if v.gasmasked == false and v.hazsuited == false then 
-					v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - 0.01 ,0,100 ) 
+					v.gDisasters.Body.Oxygen = math.Clamp( v.gDisasters.Body.Oxygen - (1/5),0,100 ) 
 					
 					if v.NextChokeOnAsh == nil then v.NextChokeOnAsh = CurTime() end
 					
