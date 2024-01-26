@@ -50,26 +50,26 @@ ENT.Timer                            =  0
 ENT.GBOWNER                          =  nil             -- don't you fucking touch this.
 
 function ENT:Initialize()
- if (SERVER) then
-     self:LoadModel()Explodself
-	 self:PhysicsInit( SOLID_VPHYSICS )
-	 self:SetSolid( SOLID_VPHYSICS )
-	 self:SetMoveType( MOVETYPE_VPHYSICS )
-	 self:SetUseType( ONOFF_USE ) 
-	 local phys = self:GetPhysicsObject()
-	 local skincount = self:SkinCount()
-	 if (phys:IsValid()) then
-		 phys:SetMass(self.Mass)
-		 phys:Wake()
-     end
-	 if (skincount > 0) then
-	     self:SetSkin(math.random(0,skincount))
-	 end
-	 self.Armed    = true
-	 self.Exploded = false
-	 self.Used     = false
-	 self.Arming   = false
-	  if not (WireAddon == nil) then self.Inputs   = Wire_CreateInputs(self, { "Arm", "Detonate" }) end
+ 	if (SERVER) then
+		self:LoadModel()
+		self:PhysicsInit( SOLID_VPHYSICS )
+		self:SetSolid( SOLID_VPHYSICS )
+		self:SetMoveType( MOVETYPE_VPHYSICS )
+		self:SetUseType( ONOFF_USE ) 
+		local phys = self:GetPhysicsObject()
+		local skincount = self:SkinCount()
+		if (phys:IsValid()) then
+			phys:SetMass(self.Mass)
+			phys:Wake()
+		end
+		if (skincount > 0) then
+			self:SetSkin(math.random(0,skincount))
+		end
+		self.Armed    = true
+		self.Exploded = false
+		self.Used     = false
+		self.Arming   = false
+		if not (WireAddon == nil) then self.Inputs   = Wire_CreateInputs(self, { "Arm", "Detonate" }) end
 	end
 end
 
