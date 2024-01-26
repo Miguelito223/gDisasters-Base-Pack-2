@@ -51,7 +51,7 @@ ENT.GBOWNER                          =  nil             -- don't you fucking tou
 
 function ENT:Initialize()
  if (SERVER) then
-     self:LoadModel()
+     self:LoadModel()Explodself
 	 self:PhysicsInit( SOLID_VPHYSICS )
 	 self:SetSolid( SOLID_VPHYSICS )
 	 self:SetMoveType( MOVETYPE_VPHYSICS )
