@@ -23,6 +23,8 @@ net.Receive( "gd_net_tvirus", function( len, pl )
 		hook.Remove("RenderScreenspaceEffects", "T-Virus_Phase_2")
 		timepassed=0
 	end
+
+	ply.gDisasters.Body.Temperature = ply.gDisasters.Body.Temperature + 1
 	
 	local function Events(seconds)
 		-- Event Random 
@@ -158,7 +160,7 @@ net.Receive( "gd_net_tvirus", function( len, pl )
 	
 	EventHandler(Events(seconds))
 	
-
+	
 	
 
 	
