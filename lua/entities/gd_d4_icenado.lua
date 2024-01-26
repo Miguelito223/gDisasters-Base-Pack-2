@@ -110,7 +110,8 @@ function ENT:PostSpawn()
 				if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
 					InflictDamage(ent, me, "cold", 5)
 				else 
-		
+					
+					ent:SetMaterial("decals/gdisasters/ice")
 		
 				end
 			end
@@ -139,19 +140,7 @@ function ENT:PostSpawn()
 	
 	function self.TornadoENT:CustomPostSpawn()
 		self.NextIceDamageTime = CurTime() 
-		self:GetRidOfSounds()
-	
-		
-		timer.Simple(1, function()
-			if !self:IsValid() then return end
-			local sound = Sound(table.Random( {"streams/disasters/nature/tornado/Icenado.wav", "streams/disasters/nature/tornado/small_Icenado_loop_1.wav", "streams/disasters/nature/tornado/small_Icenado_loop_2.wav", "streams/disasters/nature/tornado/small_Icenado_loop_3.wav"}))
 
-			CSPatch = CreateSound(self, sound)
-			CSPatch:SetSoundLevel( 100 )
-			CSPatch:Play()
-			CSPatch:ChangeVolume( 1 )
-			self.Sound = CSPatch
-		end)
 		
 	end
 	self.TornadoENT:CustomPostSpawn()
@@ -171,19 +160,6 @@ function ENT:PostSpawn()
 			
 			function self.TornadoENT:CustomPostSpawn()
 				self.NextIceDamageTime = CurTime() 
-				
-				self:GetRidOfSounds()
-				
-				timer.Simple(1, function()
-					if !self:IsValid() then return end
-					local sound = Sound(table.Random( {"streams/disasters/environment/wind_shared/Icenado.wav", "streams/disasters/environment/wind_shared/small_Icenado_loop_1.wav", "streams/disasters/environment/wind_shared/small_Icenado_loop_2.wav", "streams/disasters/environment/wind_shared/small_Icenado_loop_3.wav"}))
-
-					CSPatch = CreateSound(self, sound)
-					CSPatch:SetSoundLevel( 100 )
-					CSPatch:Play()
-					CSPatch:ChangeVolume( 1 )
-					self.Sound = CSPatch
-				end)
 				
 			end
 			

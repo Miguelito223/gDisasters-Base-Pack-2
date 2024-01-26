@@ -91,14 +91,18 @@ function ENT:PostSpawn()
 			local height              =  self.Data.MaxFunnel.Height - ((self:GetPos().z + self.Data.MaxFunnel.Height) - ent:GetPos().z)
 
 			if ent:IsValid() and self:CanBeSeenByTheWind(ent) then 
-				
-
 
 				if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
-					InflictDamage(ent, me, "fire", 5)
+					InflictDamage(ent, me, "fire", 8)
+					ent:Ignite(3)
 				else 
 		
+				if ent:GetClass() != self and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
+					if math.random(1,2) == 1 then
+					ent:Ignite(math.random(3,5),0)
+					end
 		
+					end
 				end
 			end
 			
