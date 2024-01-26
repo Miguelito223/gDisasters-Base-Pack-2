@@ -89,7 +89,7 @@ function ENT:Explode()
 			
 		end
 		
-		if (v:IsNPC() or v:IsNextBot() and table.HasValue(npc_tvirus,v:GetClass()) and not v.isinfected) or (v.IsVJHuman==true and not v.isinfected) then
+		if (v:IsNPC() and table.HasValue(npc_tvirus,v:GetClass()) and not v.isinfected) or (v.IsVJHuman==true and not v.isinfected) then
 			local ent = ents.Create("gd_misc_chemical_tvirus_entity_npc")
 			ent:SetVar("infected", v)
 			ent:SetPos( self:GetPos() ) 
