@@ -26,27 +26,27 @@ function ENT:Initialize()
      end
 end
 function ENT:Think()
-     if (SERVER) then
-     if not self:IsValid() then return end
-	 local pos = self:GetPos()
-	 local dmg = DamageInfo()
-	 dmg:SetDamage(self.DamageAmount)
-	 dmg:SetDamageType(self.DamageType)
-	 dmg:SetAttacker(self.GBOWNER)
-	 for k, v in pairs(ents.FindInSphere(pos,self.DamageRadius)) do
-         if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
-		    v:TakeDamageInfo(dmg)
-		 end
-	 end
-	 self.Bursts = self.Bursts + 1
-	 if (self.Bursts >= self.Lifetime) then
-	     self:Remove()
-	 end
-	 self:NextThink(CurTime() + self.DamageDelay)
-	 return true
-	 end
+	if (SERVER) then
+		if not self:IsValid() then return end
+		local pos = self:GetPos()
+		local dmg = DamageInfo()
+		dmg:SetDamage(self.DamageAmount)
+		dmg:SetDamageType(self.DamageType)
+		dmg:SetAttacker(self.GBOWNER)
+		for k, v in pairs(ents.FindInSphere(pos,self.DamageRadius)) do
+			if v:IsPlayer() or v:IsNPC() or v:IsNextBot() then
+			v:TakeDamageInfo(dmg)
+			end
+		end
+		self.Bursts = self.Bursts + 1
+		if (self.Bursts >= self.Lifetime) then
+			self:Remove()
+		end
+		self:NextThink(CurTime() + self.DamageDelay)
+		return true
+	end
 end
 
 function ENT:Draw()
-     return false
+	return false
 end
