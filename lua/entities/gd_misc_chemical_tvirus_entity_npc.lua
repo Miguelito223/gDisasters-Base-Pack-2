@@ -73,7 +73,7 @@ function ENT:Think()
 				ParticleEffectAttach("zombie_blood",PATTACH_ABSORIGIN_FOLLOW,v, 1) 
 			end
 		end
-		if (v:IsNPC() or v:IsNextBot() and table.HasValue(npc_tvirus,v:GetClass()) and not v.isinfected) or (v.IsVJHuman==true and not v.isinfected) then
+		if (v:IsNPC() and table.HasValue(npc_tvirus,v:GetClass()) and not v.isinfected) or (v.IsVJHuman==true and not v.isinfected) then
 			if v.gasmasked==false or v.hazsuited==false then return end
 			local ent = ents.Create("gd_misc_chemical_tvirus_entity_npc")
 			ent:SetVar("infected", v)
@@ -206,7 +206,7 @@ if (SERVER) then
 				self:Remove()
 			else
 				for k, v in pairs(player.GetAll()) do
-					gDisasters:Warning("Rare zombie boss has spawned somewherenot ")
+					v:ChatPrint("Rare zombie boss has spawned somewherenot ")
 				end
 				local ent = ents.Create(table.Random(ZombieList)) -- This creates our zombie entity
 				ent:SetPos(self:GetPos())
