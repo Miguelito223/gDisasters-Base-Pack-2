@@ -288,6 +288,8 @@ AddToGDSpawnMenu("EF1 Tornado"        , "gd_d4_ef1"              , "Disasters", 
 AddToGDSpawnMenu("Megacryometeor"        , "gd_d4_mcryometeor"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("Young Volcano"        , "gd_d4_youngvolcano"              , "Disasters", "Tier 4", false)
 AddToGDSpawnMenu("EF1 Tornado (Smart)"        , "gd_d4_ef1_pathed"              , "Disasters", "Tier 4", false)
+AddToGDSpawnMenu("Icenado (Smart)"        , "gd_d4_icenado_pathed"              , "Disasters", "Tier 4", false)
+AddToGDSpawnMenu("Icenado"        , "gd_d4_icenado"              , "Disasters", "Tier 4", false)
 
 
 --[[

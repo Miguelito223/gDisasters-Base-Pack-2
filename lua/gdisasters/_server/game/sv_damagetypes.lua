@@ -35,7 +35,11 @@ gDisasters_DamageTypes["electrical"] = function(ent)
 
 end
 
+gDisasters_DamageTypes["cold"] = function(ent)
 
+	ParticleEffectAttach("cold_damage", PATTACH_POINT_FOLLOW, ent, 0)
+
+end
 
 gDisasters_DamageTypes["cold"] = function(ent)
 
