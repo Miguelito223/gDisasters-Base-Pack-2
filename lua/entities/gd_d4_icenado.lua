@@ -88,9 +88,6 @@ function ENT:PostSpawn()
 	
 	end
 	
-	function self.TornadoENT:Physics(crap)
-	end
-	
 	function self.TornadoENT:OnDamagingAura()
 		
 		
@@ -129,7 +126,7 @@ function ENT:PostSpawn()
 			if !self:IsValid() then return end
 			
 			self:Move()
-			--self:Physics()
+			self:Physics()
 			self:IsParentValid()
 			self:DamagingAura()
 			
