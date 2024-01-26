@@ -300,6 +300,10 @@ function Temperature()
 					v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature - 0.004
 				end
 			end
+
+			if v.isinfected then
+				v.gDisasters.Body.Temperature = v.gDisasters.Body.Temperature + 0.004
+			end
 			
 			--[[
 														Purpose		
