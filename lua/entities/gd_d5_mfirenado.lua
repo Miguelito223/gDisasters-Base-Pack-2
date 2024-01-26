@@ -95,14 +95,13 @@ function ENT:PostSpawn()
 
 				if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
 					InflictDamage(ent, me, "fire", 8)
-					ent:Ignite(3)
-				else 
+					ent:Ignite(3) 
+
+				end
 		
 				if ent:GetClass() != self and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
 					if math.random(1,2) == 1 then
-					ent:Ignite(math.random(3,5),0)
-					end
-		
+						ent:Ignite(math.random(3,5),0)
 					end
 				end
 			end

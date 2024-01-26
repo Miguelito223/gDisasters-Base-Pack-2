@@ -76,73 +76,72 @@ function ENT:PostSpawn()
 	local me  = self  
 		
 	if (SERVER) then 
-	function self.TornadoENT:DamagingAura()
-		
-		if CurTime() >= self.NextIceDamageTime then
-			self.NextIceDamageTime = self.NextIceDamageTime + 0.4 
-			 self:OnDamagingAura()
-			---
-		else 
+		function self.TornadoENT:DamagingAura()
+			
+			if CurTime() >= self.NextIceDamageTime then
+				self.NextIceDamageTime = self.NextIceDamageTime + 0.4 
+				self:OnDamagingAura()
+				---
+			
+			end
 		
 		end
-	
-	end
-	
-	function self.TornadoENT:OnDamagingAura()
 		
-		
-		local pos         = self:GetPos() + Vector(0,0,self.Data.MaxGroundFunnel.Height)
-		local funnel_ents = FindInCone(pos, self.Data.MaxFunnel.Height, self.Data.MinFunnel.Height, self.Data.MaxFunnel.Radius, self.Data.MinFunnel.Radius, true )
-		
-
-		for k, v in pairs(funnel_ents) do
+		function self.TornadoENT:OnDamagingAura()
 			
-			local radius =         v[2]
-			local ent              = v[1] 
-			local entpos 		   = ent:GetPos()
 			
-			local height              =  self.Data.MaxFunnel.Height - ((self:GetPos().z + self.Data.MaxFunnel.Height) - ent:GetPos().z)
+			local pos         = self:GetPos() + Vector(0,0,self.Data.MaxGroundFunnel.Height)
+			local funnel_ents = FindInCone(pos, self.Data.MaxFunnel.Height, self.Data.MinFunnel.Height, self.Data.MaxFunnel.Radius, self.Data.MinFunnel.Radius, true )
+			
 
-			if ent:IsValid() and self:CanBeSeenByTheWind(ent) then 
+			for k, v in pairs(funnel_ents) do
 				
-				if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
-					InflictDamage(ent, me, "cold", 5)
-				else 
-		
-				if ent:GetClass() != self and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
-					ent:SetMaterial("decals/gdisasters/_ice_07")
-					ent:GetPhysicsObject():SetMaterial("ice")
+				local radius =         v[2]
+				local ent              = v[1] 
+				local entpos 		   = ent:GetPos()
+				
+				local height              =  self.Data.MaxFunnel.Height - ((self:GetPos().z + self.Data.MaxFunnel.Height) - ent:GetPos().z)
+
+				if ent:IsValid() and self:CanBeSeenByTheWind(ent) then 
+					
+					if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
+						InflictDamage(ent, me, "cold", 5)	
+					end
+
+					if ent:GetClass() != self and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
+						ent:SetMaterial("ice")
+						ent:GetPhysicsObject():SetMaterial("ice")
+					end
 				end
+				
+			end
+			
+		
+		
+		end
+		
+		function self.TornadoENT:Think()
+			if (SERVER) then
+				if !self:IsValid() then return end
+				
+				self:Move()
+				self:Physics()
+				self:IsParentValid()
+				self:DamagingAura()
+				
+				
+				self:NextThink(CurTime() + 0.01)
+				return true
 			end
 			
 		end
 		
-	
-	
-	end
-	
-	function self.TornadoENT:Think()
-		if (SERVER) then
-			if !self:IsValid() then return end
-			
-			self:Move()
-			self:Physics()
-			self:IsParentValid()
-			self:DamagingAura()
-			
-			
-			self:NextThink(CurTime() + 0.01)
-			return true
-		end
-		
-	end
-	
-	function self.TornadoENT:CustomPostSpawn()
-		self.NextIceDamageTime = CurTime() 
+		function self.TornadoENT:CustomPostSpawn()
+			self.NextIceDamageTime = CurTime() 
 
-		
-	end
-	self.TornadoENT:CustomPostSpawn()
+			
+		end
+		self.TornadoENT:CustomPostSpawn()
 
 	end
 	
@@ -161,45 +160,10 @@ function ENT:PostSpawn()
 				self.NextIceDamageTime = CurTime() 
 				
 			end
-
-	
-			function self.TornadoENT:OnDamagingAura()
-				
-				
-				local pos         = self:GetPos() + Vector(0,0,self.Data.MaxGroundFunnel.Height)
-				local funnel_ents = FindInCone(pos, self.Data.MaxFunnel.Height, self.Data.MinFunnel.Height, self.Data.MaxFunnel.Radius, self.Data.MinFunnel.Radius, true )
-				
-
-				for k, v in pairs(funnel_ents) do
-					
-					local radius =         v[2]
-					local ent              = v[1] 
-					local entpos 		   = ent:GetPos()
-					
-					local height              =  self.Data.MaxFunnel.Height - ((self:GetPos().z + self.Data.MaxFunnel.Height) - ent:GetPos().z)
-
-					if ent:IsValid() and self:CanBeSeenByTheWind(ent) then 
-
-				
-						if ent:GetClass() != self and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
-							ent:SetMaterial("decals/gdisasters/_ice_07")
-							ent:GetPhysicsObject():SetMaterial("ice")
-						end
-					end
-					
-				end
-				
-			
-			
-			end
 			
 			function self.TornadoENT:Think()
-			
-
 
 				if (CLIENT) then 
-
-					self:OnDamagingAura()
 
 					local dlight = DynamicLight( self:EntIndex() )
 					if ( dlight ) then
