@@ -81,7 +81,7 @@ function ENT:Think()
 	
 	for k, v in pairs(ents.FindInSphere(self:GetPos(),100)) do
 		if v:IsPlayer() and v:Alive() and not v.isinfected then
-			local ent = ents.Create("gd_chemical_tvirus_entity")
+			local ent = ents.Create("gd_misc_chemical_tvirus_entity")
 			ent:SetVar("infected", v)
 			ent:SetPos( self:GetPos() ) 
 			ent:Spawn()
@@ -91,7 +91,7 @@ function ENT:Think()
 		end
 		if (v:IsNPC() or v:IsNextBot() and table.HasValue(npc_tvirus,v:GetClass()) and not v.isinfected) or (v.IsVJHuman==true and not v.isinfected) then
 			if v.gasmasked==false and v.hazsuited==false then
-				local ent = ents.Create("gd_chemical_tvirus_entity_npc")
+				local ent = ents.Create("gd_misc_chemical_tvirus_entity_npc")
 				ent:SetVar("infected", v)
 				ent:SetPos( self:GetPos() ) 
 				ent:Spawn()

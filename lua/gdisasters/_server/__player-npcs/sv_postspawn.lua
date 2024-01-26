@@ -37,6 +37,7 @@ function gDisasters_OnSpawn_Reset( ply )
 	ply.LavaIntensity = 0
 	ply.gasmasked=false
 	ply.hazsuited=false
+	ply.isinfected=false
 	ply:StopSound("breathing")
 	net.Start( "gd_net" )        
 	net.WriteBit( false )
