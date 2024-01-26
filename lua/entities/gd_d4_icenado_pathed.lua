@@ -109,7 +109,7 @@ function ENT:PostSpawn()
 					end
 
 					if ent:GetClass() != self and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
-						ent:SetMaterial("ice")
+						ent:SetMaterial("nature/ice")
 						ent:GetPhysicsObject():SetMaterial("ice")
 					end
 				end
