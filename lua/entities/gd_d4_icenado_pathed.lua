@@ -108,7 +108,7 @@ function ENT:PostSpawn()
 						
 						InflictDamage(ent, me, "cold", 5)
 
-						if ent:Alive() and ent:Health() <= 5 then	
+						if ent:Alive() and ent:Health() <= 1 then	
 							MakeFreeze(  ent )		
 						end
 						
