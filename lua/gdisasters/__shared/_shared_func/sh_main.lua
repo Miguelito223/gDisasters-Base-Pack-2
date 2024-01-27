@@ -949,7 +949,6 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
                 ent:DeleteOnRemove( weld2 )
             end
             
-			ent:GetPhysicsObjectNum( bone ):Wake()
             ent:GetPhysicsObjectNum( bone ):EnableMotion( true )
 			
         end
@@ -1019,16 +1018,21 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
                     bone1:SetPos( weld )
                     bone1:SetAngles( weld2 )
                     bone1:SetMaterial( "nature/ice"  )
+
+					constraint.Weld( rag, rag, 0, bone - 1, 0 )
                     
                     bone1:AddGameFlag( FVPHYSICS_NO_SELF_COLLISIONS )
                     bone1:AddGameFlag( FVPHYSICS_HEAVY_OBJECT )
                     bone1:SetMass( 500 )
+
+					
+
 					local effectdata = EffectData()
 					effectdata:SetOrigin( weld )
 					util.Effect( "GlassImpact", effectdata )
 					
                     
-                    bone1:Sleep()
+                    bone1:Wake()
 
 					local bone2 = bone1
 				end
@@ -1046,16 +1050,21 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
                     bone1:SetPos( weld )
                     bone1:SetAngles( weld2 )
                     bone1:SetMaterial( "nature/ice"  )
+
+					constraint.Weld( rag, rag, 0, bone - 1, 0 )
                     
                     bone1:AddGameFlag( FVPHYSICS_NO_SELF_COLLISIONS )
                     bone1:AddGameFlag( FVPHYSICS_HEAVY_OBJECT )
                     bone1:SetMass( 500 )
+
+					
+
 					local effectdata = EffectData()
 					effectdata:SetOrigin( weld )
 					util.Effect( "GlassImpact", effectdata )
                     
-                   	bone1:Sleep()
-					bone1:EnableMotion(false)
+                   	bone1:Wake()
+					bone1:EnableMotion(true)
 					
                     local bone2 = bone1
                 end
@@ -1070,17 +1079,22 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
                     
                     bone1:SetPos( weld )
                     bone1:SetAngles( weld2 )
-                    bone1:SetMaterial( "nature/ice"  )
+                    bone1:SetMaterial( "nature/ice")
+
+					constraint.Weld( rag, rag, 0, bone - 1, 0 )
                     
                     bone1:AddGameFlag( FVPHYSICS_NO_SELF_COLLISIONS )
                     bone1:AddGameFlag( FVPHYSICS_HEAVY_OBJECT )
                     bone1:SetMass( 500 )
+
+					
+
 					local effectdata = EffectData()
 					effectdata:SetOrigin( weld )
 					util.Effect( "GlassImpact", effectdata )
                     
-                    bone1:Sleep()
-					bone1:EnableMotion(false)
+                    bone1:Wake()
+					bone1:EnableMotion(true)
                                         
                     local bone2 = bone1
                 end
@@ -1094,8 +1108,6 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
 			end
 			
 			end
-
-			constraint.Weld( ent, Entity( 0 ), 0, 0, 0 )
             
             if ent:IsNPC( ) or ent:IsPlayer( ) then
             	wep = ent:GetActiveWeapon( )
