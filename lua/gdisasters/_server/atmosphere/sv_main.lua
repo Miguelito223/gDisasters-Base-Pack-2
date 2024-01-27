@@ -311,8 +311,10 @@ function Temperature()
 				
 			--]]		
 					
-			if tempbody >= 44 or tempbody <= 24 then
-				if v:Alive() then v:Kill() end
+			if tempbody >= 44 then
+				if v:Alive() then MakeBurn( v ) end
+			elseif tempbody <= 24 then
+				if v:Alive() then MakeFreeze( v ) end
 			end
 		end
 		for k, v in pairs(ents.FindByClass("npc_*")) do

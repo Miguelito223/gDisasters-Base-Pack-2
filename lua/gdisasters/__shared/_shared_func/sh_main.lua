@@ -920,7 +920,7 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
         ent:SetSchedule( SCHED_WAIT_FOR_SCRIPT )
     end
     
-    local bone, bones, bone1, bone2, weld, weld2
+    local bone, bones, bone1, bone2, bone3, weld, weld2, pos, angle
     
     if not ( ent:IsPlayer( ) or ent:IsNPC( ) or ent:IsNextBot() ) then
         --Make use of existing object
@@ -953,7 +953,7 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
 			
         end
         
-        ent:SetMaterial( "nature/ice" )
+        ent:SetMaterial( "nature/ice_clear" )
 		ent:GetPhysicsObject():SetMaterial("ice")
     else
         local rag, vel, solid, wep, fakewep
@@ -970,7 +970,7 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
 			rag:SetModel( ent:GetModel( ) )
 			rag:SetPos( ent:GetPos( ) )
 			rag:SetAngles( ent:GetAngles( ) )
-			rag:SetMaterial( "nature/ice" )
+			rag:SetMaterial( "nature/ice_clear" )
 			if IsValid(rag:GetPhysicsObject()) then
 				rag:GetPhysicsObject():SetMaterial("ice")
 			end
@@ -981,7 +981,7 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
 				rag:SetModel( ent:GetModel( ) )
 				rag:SetPos( ent:GetPos( ) )
 				rag:SetAngles( ent:GetAngles( ) )
-				rag:SetMaterial( "nature/ice" )
+				rag:SetMaterial( "nature/ice_clear" )
 				if IsValid(rag:GetPhysicsObject()) then
 					rag:GetPhysicsObject():SetMaterial("ice")
 				end
@@ -996,7 +996,7 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
 				rag:SetModel( ent:GetModel( ) )
 				rag:SetPos( ent:GetPos( ) )
 				rag:SetAngles( ent:GetAngles( ) )
-				rag:SetMaterial( "nature/ice" )
+				rag:SetMaterial( "nature/ice_clear" )
 				if IsValid(rag:GetPhysicsObject()) then
 					rag:GetPhysicsObject():SetMaterial("ice")
 				end
@@ -1025,11 +1025,26 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
 
             for bone = 1, bones do
 
-				bone1 = bone - 1
-				bone2 = bones - bone
-				
+              	bone1 = rag:GetPhysicsObjectNum( bone )
+                
+                if IsValid( bone1 ) then
+                    pos, angle = ent:GetBonePosition( ent:TranslatePhysBoneToBone( bone ) )
+                    
+                    bone1:SetPos( pos )
+                    bone1:SetAngles( angle )
+                    bone1:SetMaterial( "ice" )
+                    
+                    bone1:Wake()
+					bone1:EnableMotion(true)
+                                        
+                    local bone2 = bone1
+                end
+
+				bone2 = bone - 1
+				bone3 = bones - bone
+					
 				if not rag.Welds[ bone2 ] then
-					weld = constraint.Weld( rag, rag, bone1, bone2, 0 )
+					weld = constraint.Weld( rag, rag, bone2, bone3, 0 )
 					
 					if weld then
 						rag.Welds[ bone1 ] = weld
@@ -1037,14 +1052,12 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
 					end
 				end
 				
-				weld2 = constraint.Weld( rag, rag, 0, bone1, 0 )
+				weld2 = constraint.Weld( rag, rag, bone2, 0, 0 )
 				
 				if weld2 then
-					rag.Welds[ bone1 + bones ] = weld2
+					rag.Welds[ bone2 + bones ] = weld2
 					rag:DeleteOnRemove( weld2 )
 				end
-				
-				--rag:GetPhysicsObjectNum( bone ):EnableMotion( true )
 			end
             
             if ent:IsNPC( ) or ent:IsPlayer( ) then
@@ -1055,7 +1068,7 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
 					fakewep:SetModel( wep:GetModel( ) )
 					fakewep:SetParent( rag )
 					fakewep:AddEffects( EF_BONEMERGE )
-					fakewep:SetMaterial("nature/ice")
+					fakewep:SetMaterial("nature/ice_clear")
 					fakewep.Class = wep:GetClass( )
             		fakewep:Spawn( )
             		
@@ -1103,7 +1116,7 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
         rag:SetSkin( ent:GetSkin( ) )
 
         if ent:IsPlayer( ) then
-            ent:KillSilent( )
+			ent:KillSilent()
         else
             ent:Remove( )
         end
@@ -1111,5 +1124,142 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
     end
 end
 
+function MakeBurn( ent ) -- credits goes to Kogitsune
+    if not IsValid( ent ) then
+        return
+    end
+    
+    if ent.Welds then
+        --Already gold
+        return
+    end
+    
+    if not ent:GetModel( ):match( "models/.*%.mdl" ) then
+        --Brush entity / point / something without a proper model
+        return
+    end
+    
+    if ent:IsNPC( ) then
+        ent:SetSchedule( SCHED_WAIT_FOR_SCRIPT )
+    end
+    
+    if not ( ent:IsPlayer( ) or ent:IsNPC( ) or ent:IsNextBot() ) then
+        ent:SetMaterial( "black_outline" )
+    else
+        local rag, vel, solid, wep, fakewep
+        vel = ent:GetVelocity( )
+        
+        solid = ent:GetSolid( )
+        
+        ent:SetSolid( SOLID_NONE )
+        if ent:IsPlayer( ) or ent:IsNPC( ) or ent:IsNextBot() then
+
+			rag = ents.Create( "prop_ragdoll" )
+			rag:SetModel( "models/Humans/Charple01.mdl" )
+			rag:SetPos( ent:GetPos( ) )
+			rag:SetAngles( ent:GetAngles( ) )
+			rag:Spawn( )
+			if !IsValid(rag:GetPhysicsObject()) then
+				rag:Remove()
+				rag = ents.Create( "prop_physics" )
+				rag:SetModel( "models/Humans/Charple01.mdl" )
+				rag:SetPos( ent:GetPos( ) )
+				rag:SetAngles( ent:GetAngles( ) )
+				rag:Spawn( )
+			end
+			if !IsValid(rag:GetPhysicsObject()) then
+				rag:Remove()
+				rag = ents.Create( "base_anim" )
+				rag:PhysicsInit( SOLID_VPHYSICS )
+				rag:SetMoveType( MOVETYPE_FLY )
+				rag:SetSolid( SOLID_OBB )
+				rag:SetModel( "models/Humans/Charple01.mdl" )
+				rag:SetPos( ent:GetPos( ) )
+				rag:SetAngles( ent:GetAngles( ) )
+				rag:Spawn()
+			
+			end
+
+            
+            bones = rag:GetPhysicsObjectCount( )
+
+			rag.Welds = rag.Welds or { }
+
+            if ent:GetNumBodyGroups( ) != nil then
+				for solid = 1, ent:GetNumBodyGroups( ) do
+					rag:SetBodygroup( solid, ent:GetBodygroup( solid ) )
+				end
+			else
+				if IsValid(ent) then
+					ent:Remove()
+				end
+				return 
+			end
+            
+            rag:SetSequence( ent:GetSequence( ) )
+            rag:SetCycle( ent:GetCycle( ) )
+            
+            if ent:IsNPC( ) or ent:IsPlayer( ) then
+            	wep = ent:GetActiveWeapon( )
+            	
+            	if wep:IsValid( ) then
+            		fakewep = ents.Create( "base_anim" )
+					fakewep:SetModel( wep:GetModel( ) )
+					fakewep:SetParent( rag )
+					fakewep:AddEffects( EF_BONEMERGE )
+					fakewep.Class = wep:GetClass( )
+            		fakewep:Spawn( )
+            		
+            		function rag.PlayerUse( rag, pl )
+        				pl:Give( fakewep.Class )
+        				fakewep:Remove( )
+        				hook.Remove( "KeyPress", rag )
+        			end
+        			
+        			function rag.KeyPress( this, pl, key )
+        				if key == IN_USE then
+        					local tr = { }
+        					tr.start = pl:EyePos( )
+        					tr.endpos = pl:EyePos( ) + pl:GetAimVector( ) * 85
+        					tr.filter = pl
+        					
+        					tr = util.TraceLine( tr )
+        					
+        					if tr.Entity == this then
+        						this:PlayerUse( pl )
+        					end
+        				end
+        			end
+        			
+        			hook.Add( "KeyPress", rag, rag.KeyPress )
+
+            		rag.FakeWeapon = fakewep
+            	end
+            end
+            SafeRemoveEntityDelayed( rag, 90 )
+			MakeBurn( rag )
+        else
+            rag = ents.Create( "prop_physics" )
+			rag:SetModel( ent:GetModel( ) )
+			rag:SetPos( ent:GetPos( ) )
+			rag:SetAngles( ent:GetAngles( ) )
+            rag:Spawn( )
+        end
+        
+        ent:SetSolid( solid )
+        
+        rag:SetSequence( ent:GetSequence( ) )
+        rag:SetCycle( ent:GetCycle( ) )
+
+        rag:SetSkin( ent:GetSkin( ) )
+
+        if ent:IsPlayer( ) then
+			ent:KillSilent()
+        else
+            ent:Remove( )
+        end
+        MakeBurn( rag )
+    end
+end
 
 
