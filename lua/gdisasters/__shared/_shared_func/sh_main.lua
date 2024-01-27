@@ -1023,11 +1023,11 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
 					effectdata:SetOrigin( weld )
 					util.Effect( "GlassImpact", effectdata )
                     
-                    bone1:Sleep( )
-					end
+                    bone1:Wake()
+				end
                                         
-                    local bone2 = bone1
-                end
+				local bone2 = bone1
+			end
 			elseif rand > 10 and rand <= 16 then
 			for bone = 1, bones do
                 bone1 = rag:GetPhysicsObjectNum( bone )
@@ -1046,8 +1046,8 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
 					effectdata:SetOrigin( weld )
 					util.Effect( "GlassImpact", effectdata )
                     
-                    bone1:Sleep( )
-					bone1:EnableMotion(false)
+                   	bone1:Wake()
+					bone1:EnableMotion(true)
 					
                     local bone2 = bone1
                 end
@@ -1070,8 +1070,8 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
 					effectdata:SetOrigin( weld )
 					util.Effect( "GlassImpact", effectdata )
                     
-                    bone1:Sleep( )
-					bone1:EnableMotion(false)
+                    bone1:Wake()
+					bone1:EnableMotion(true)
                                         
                     local bone2 = bone1
                 end
@@ -1079,8 +1079,8 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
 			for bone = 1, bones do
                 bone1 = rag:GetPhysicsObjectNum( bone )
 				if IsValid( bone1 ) then
-				bone1:Wake()
-				bone1:EnableMotion(true)
+					bone1:Wake()
+					bone1:EnableMotion(true)
 				end
 			end
 			
