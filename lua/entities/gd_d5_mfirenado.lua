@@ -97,11 +97,17 @@ function ENT:PostSpawn()
 					InflictDamage(ent, me, "fire", 8)
 					ent:Ignite(3) 
 
-				end
+					if ent:Alive() and ent:Health() <= 1 then
+						MakeBurn( ent )
+					end
+
+				else
 		
-				if ent:GetClass() != self and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
-					if math.random(1,2) == 1 then
-						ent:Ignite(math.random(3,5),0)
+					if ent:GetClass() != self and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
+						if math.random(1,2) == 1 then
+							ent:Ignite(math.random(3,5),0)
+							MakeBurn( ent )
+						end
 					end
 				end
 			end

@@ -109,15 +109,17 @@ function ENT:PostSpawn()
 		
 						InflictDamage(ent, me, "cold", 5)
 
-
-						if ent:Alive() and ent:Health() <= 5 then	
+						if ent:Alive() and ent:Health() <= 1 then	
 							MakeFreeze(  ent )		
 						end
 						
-					end
+					else
 
-					if ent:GetClass() != me and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
-						MakeFreeze(  ent )
+						if ent:GetClass() != me and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
+							if math.random(1,2) == 1 then
+								MakeFreeze(  ent )
+							end
+						end
 					end
 				end
 				
