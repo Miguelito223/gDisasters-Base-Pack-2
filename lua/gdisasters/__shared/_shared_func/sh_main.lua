@@ -1027,9 +1027,11 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
 					
                     
                     bone1:Sleep()
+
+					local bone2 = bone1
 				end
                                         
-				local bone2 = bone1
+				
 			end
 			elseif rand > 10 and rand <= 16 then
 			for bone = 1, bones do
