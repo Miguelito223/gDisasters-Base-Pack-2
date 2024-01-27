@@ -1061,8 +1061,6 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
 			elseif rand > 16 then
 			for bone = 1, bones do
 
-				constraint.Weld( ent, ent, 0, bone, 0 )
-
                 bone1 = rag:GetPhysicsObjectNum( bone )
                 
                 if IsValid( bone1 ) then
@@ -1086,8 +1084,6 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
                 end
             end
 			for bone = 1, bones do
-				constraint.Weld( ent, ent, 0, bone, 0 )
-
                 bone1 = rag:GetPhysicsObjectNum( bone )
 				if IsValid( bone1 ) then
 					bone1:Wake()
