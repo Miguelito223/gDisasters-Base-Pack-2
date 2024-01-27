@@ -105,7 +105,13 @@ function ENT:PostSpawn()
 				if ent:IsValid() and self:CanBeSeenByTheWind(ent) then 
 					
 					if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
-						InflictDamage(ent, me, "cold", 5)	
+						
+						InflictDamage(ent, me, "cold", 5)
+						
+						if ent:Health() <= 0 then	
+							MakeFreeze( self, ent )
+						end
+						
 					end
 
 					if ent:GetClass() != self and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
@@ -200,8 +206,6 @@ function ENT:Think()
 		return true
 	end
 end
-
-
 
 
 
