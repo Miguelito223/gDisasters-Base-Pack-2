@@ -887,7 +887,7 @@ function MakeBurn( ent ) -- credits goes to Kogitsune
     end
     
     if not ( ent:IsPlayer( ) or ent:IsNPC( ) or ent:IsNextBot() ) then
-        ent:SetMaterial( rag:SetMaterial( "models/props_foliage/tree_deciduous_01a_trunk" ) )
+        ent:SetMaterial( ent:SetMaterial( "models/props_foliage/tree_deciduous_01a_trunk" ) )
     else
         local rag, vel, solid, wep, fakewep
         vel = ent:GetVelocity( )

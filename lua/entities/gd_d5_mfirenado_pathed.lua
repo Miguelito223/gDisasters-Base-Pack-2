@@ -97,7 +97,9 @@ function ENT:PostSpawn()
 					InflictDamage(ent, me, "fire", 8)
 					ent:Ignite(3)
 
-					if ent:Alive() and ent:Health() <= 1 then
+					if ent:IsPlayer() and ent:Alive() and ent:Health() <= 5 then	
+						MakeBurn( ent )
+					elseif ent:Health() <= 5 and ent:IsNPC() or ent:IsNextBot() then
 						MakeBurn( ent )
 					end
 				else

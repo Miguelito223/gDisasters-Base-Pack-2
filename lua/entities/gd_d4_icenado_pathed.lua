@@ -108,8 +108,10 @@ function ENT:PostSpawn()
 						
 						InflictDamage(ent, me, "cold", 5)
 
-						if ent:Alive() and ent:Health() <= 1 then	
-							MakeFreeze(  ent )		
+						if ent:IsPlayer() and ent:Alive() and ent:Health() <= 5 then	
+							MakeFreeze(  ent )
+						elseif ent:Health() <= 5 and ent:IsNPC() or ent:IsNextBot() then
+							MakeFreeze(  ent )
 						end
 						
 					else
