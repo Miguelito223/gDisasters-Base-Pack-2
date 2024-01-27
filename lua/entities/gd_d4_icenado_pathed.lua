@@ -109,14 +109,13 @@ function ENT:PostSpawn()
 						InflictDamage(ent, me, "cold", 5)
 						
 						if ent:Health() <= 0 then	
-							
+							MakeFreeze( self, ent )
 						end
 						
 					end
 
 					if ent:GetClass() != self and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
-						ent:SetMaterial("nature/ice")
-						
+						MakeFreeze( self, ent )
 					end
 				end
 				
@@ -206,10 +205,6 @@ function ENT:Think()
 		return true
 	end
 end
-
-
-
-
 
 
 

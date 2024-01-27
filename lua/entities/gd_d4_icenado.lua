@@ -115,8 +115,7 @@ function ENT:PostSpawn()
 					end
 
 					if ent:GetClass() != self and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
-						ent:SetMaterial("nature/ice")
-						ent:GetPhysicsObject():SetMaterial("ice")
+						MakeFreeze( self, ent )
 					end
 				end
 				

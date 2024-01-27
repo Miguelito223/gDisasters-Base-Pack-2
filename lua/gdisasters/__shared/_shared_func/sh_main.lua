@@ -942,14 +942,16 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
                 end
             end
             
-            weld2 = constraint.Weld( ent, ent, bone1, 0, 0 )
+            weld2 = constraint.Weld( ent, ent, 0, bone1, 0 )
             
             if weld2 then
                 ent.Welds[ bone1 + bones ] = weld2
                 ent:DeleteOnRemove( weld2 )
             end
             
+			ent:GetPhysicsObjectNum( bone ):Wake()
             ent:GetPhysicsObjectNum( bone ):EnableMotion( true )
+			
         end
         
         ent:SetMaterial( "nature/ice" )
