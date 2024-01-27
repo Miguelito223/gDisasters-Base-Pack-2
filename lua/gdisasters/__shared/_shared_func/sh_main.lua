@@ -949,10 +949,11 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
                 ent:DeleteOnRemove( weld2 )
             end
             
-            --ent:GetPhysicsObjectNum( bone ):EnableMotion( true )
+            ent:GetPhysicsObjectNum( bone ):EnableMotion( true )
         end
         
         ent:SetMaterial( "nature/ice" )
+		ent:GetPhysicsObject():SetMaterial("ice")
         ent:SetPhysicsAttacker( self.Owner )
     else
         local rag, vel, solid, wep, fakewep
@@ -1007,6 +1008,7 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
 			local rand = math.random(1,21)
 			if rand <= 10 then
             for bone = 1, bones do
+
                 bone1 = rag:GetPhysicsObjectNum( bone )
                 
                 if IsValid( bone1 ) then
@@ -1022,14 +1024,16 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
 					local effectdata = EffectData()
 					effectdata:SetOrigin( weld )
 					util.Effect( "GlassImpact", effectdata )
+					
                     
-                    bone1:Wake()
+                    bone1:Sleep()
 				end
                                         
 				local bone2 = bone1
 			end
 			elseif rand > 10 and rand <= 16 then
 			for bone = 1, bones do
+
                 bone1 = rag:GetPhysicsObjectNum( bone )
                 
                 if IsValid( bone1 ) then
@@ -1046,14 +1050,17 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
 					effectdata:SetOrigin( weld )
 					util.Effect( "GlassImpact", effectdata )
                     
-                   	bone1:Wake()
-					bone1:EnableMotion(true)
+                   	bone1:Sleep()
+					bone1:EnableMotion(false)
 					
                     local bone2 = bone1
                 end
             end
 			elseif rand > 16 then
 			for bone = 1, bones do
+
+				constraint.Weld( ent, ent, 0, bone, 0 )
+
                 bone1 = rag:GetPhysicsObjectNum( bone )
                 
                 if IsValid( bone1 ) then
@@ -1070,13 +1077,15 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
 					effectdata:SetOrigin( weld )
 					util.Effect( "GlassImpact", effectdata )
                     
-                    bone1:Wake()
-					bone1:EnableMotion(true)
+                    bone1:Sleep()
+					bone1:EnableMotion(false)
                                         
                     local bone2 = bone1
                 end
             end
 			for bone = 1, bones do
+				constraint.Weld( ent, ent, 0, bone, 0 )
+
                 bone1 = rag:GetPhysicsObjectNum( bone )
 				if IsValid( bone1 ) then
 					bone1:Wake()
@@ -1085,8 +1094,8 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
 			end
 			
 			end
-            
-            constraint.Weld( rag, Entity( 0 ), 0, 0, 900 )
+
+			constraint.Weld( ent, Entity( 0 ), 0, 0, 0 )
             
             if ent:IsNPC( ) or ent:IsPlayer( ) then
             	wep = ent:GetActiveWeapon( )
