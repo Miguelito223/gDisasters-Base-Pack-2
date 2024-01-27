@@ -901,7 +901,7 @@ function gDisasters_Is3DSkybox()
 	
 end
 
-function MakeFreeze( self, ent ) -- credits goes to Kogitsune
+function MakeFreeze( ent ) -- credits goes to Kogitsune
     if not IsValid( ent ) then
         return
     end
@@ -949,13 +949,12 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
                 ent:DeleteOnRemove( weld2 )
             end
             
-            ent:GetPhysicsObjectNum( bone ):EnableMotion( true )
+            --ent:GetPhysicsObjectNum( bone ):EnableMotion( true )
 			
         end
         
         ent:SetMaterial( "nature/ice" )
 		ent:GetPhysicsObject():SetMaterial("ice")
-        ent:SetPhysicsAttacker( self.Owner )
     else
         local rag, vel, solid, wep, fakewep
         
@@ -967,146 +966,83 @@ function MakeFreeze( self, ent ) -- credits goes to Kogitsune
         ent:SetSolid( SOLID_NONE )
         if bones > 1 or ent:IsPlayer( ) or ent:IsNPC( ) or ent:IsNextBot() then
             rag = ents.Create( "prop_ragdoll" )
-                rag:SetModel( ent:GetModel( ) )
-                rag:SetPos( ent:GetPos( ) )
-                rag:SetAngles( ent:GetAngles( ) )
+			rag:SetModel( ent:GetModel( ) )
+			rag:SetPos( ent:GetPos( ) )
+			rag:SetAngles( ent:GetAngles( ) )
+			rag:SetMaterial( "nature/ice" )
+			rag:GetPhysicsObject():SetMaterial("ice")
             rag:Spawn( )
 			if !IsValid(rag:GetPhysicsObject()) then
-			rag:Remove()
-			rag = ents.Create( "prop_physics" )
-            rag:SetModel( ent:GetModel( ) )
-            rag:SetPos( ent:GetPos( ) )
-            rag:SetAngles( ent:GetAngles( ) )
-            rag:Spawn( )
-			if !IsValid(rag:GetPhysicsObject()) then
-			rag:Remove()
-			rag = ents.Create( "base_anim" )
-			rag:PhysicsInit( SOLID_VPHYSICS )
-			rag:SetMoveType( MOVETYPE_FLY )
-			rag:SetSolid( SOLID_OBB )
-            rag:SetModel( ent:GetModel( ) )
-            rag:SetPos( ent:GetPos( ) )
-            rag:SetAngles( ent:GetAngles( ) )
-            rag:Spawn()
+				rag:Remove()
+				rag = ents.Create( "prop_physics" )
+				rag:SetModel( ent:GetModel( ) )
+				rag:SetPos( ent:GetPos( ) )
+				rag:SetAngles( ent:GetAngles( ) )
+				rag:SetMaterial( "nature/ice" )
+				rag:GetPhysicsObject():SetMaterial("ice")
+				rag:Spawn( )
 			end
+			if !IsValid(rag:GetPhysicsObject()) then
+				rag:Remove()
+				rag = ents.Create( "base_anim" )
+				rag:PhysicsInit( SOLID_VPHYSICS )
+				rag:SetMoveType( MOVETYPE_FLY )
+				rag:SetSolid( SOLID_OBB )
+				rag:SetModel( ent:GetModel( ) )
+				rag:SetPos( ent:GetPos( ) )
+				rag:SetAngles( ent:GetAngles( ) )
+				rag:Spawn()
+			
 			end
             
             bones = rag:GetPhysicsObjectCount( )
+
+			rag.Welds = rag.Welds or { }
+
             if ent:GetNumBodyGroups( ) != nil then
-            for solid = 1, ent:GetNumBodyGroups( ) do
-            	rag:SetBodygroup( solid, ent:GetBodygroup( solid ) )
-            end
+				for solid = 1, ent:GetNumBodyGroups( ) do
+					rag:SetBodygroup( solid, ent:GetBodygroup( solid ) )
+				end
 			else
-			if IsValid(ent) then
-			ent:Remove()
-			end
-			return 
+				if IsValid(ent) then
+					ent:Remove()
+				end
+				return 
 			end
             
             rag:SetSequence( ent:GetSequence( ) )
             rag:SetCycle( ent:GetCycle( ) )
-            
-			local rand = math.random(1,21)
-			if rand <= 10 then
+
             for bone = 1, bones do
 
-                bone1 = rag:GetPhysicsObjectNum( bone )
-                
-                if IsValid( bone1 ) then
-                    weld, weld2 = ent:GetBonePosition( ent:TranslatePhysBoneToBone( bone ) )
-                    
-                    bone1:SetPos( weld )
-                    bone1:SetAngles( weld2 )
-                    bone1:SetMaterial( "nature/ice"  )
-
-					constraint.Weld( rag, rag, 0, bone - 1, 0 )
-                    
-                    bone1:AddGameFlag( FVPHYSICS_NO_SELF_COLLISIONS )
-                    bone1:AddGameFlag( FVPHYSICS_HEAVY_OBJECT )
-                    bone1:SetMass( 500 )
-
-					
-
-					local effectdata = EffectData()
-					effectdata:SetOrigin( weld )
-					util.Effect( "GlassImpact", effectdata )
-					
-                    
-                    bone1:Wake()
-
-					local bone2 = bone1
-				end
-                                        
+				bone1 = bone - 1
+				bone2 = bones - bone
 				
+				if not rag.Welds[ bone2 ] then
+					weld = constraint.Weld( rag, rag, bone1, bone2, 0 )
+					
+					if weld then
+						rag.Welds[ bone1 ] = weld
+						rag:DeleteOnRemove( weld )
+					end
+				end
+				
+				weld2 = constraint.Weld( rag, rag, 0, bone1, 0 )
+				
+				if weld2 then
+					rag.Welds[ bone1 + bones ] = weld2
+					rag:DeleteOnRemove( weld2 )
+				end
+				
+				rag:GetPhysicsObjectNum( bone ):EnableMotion( true )
 			end
-			elseif rand > 10 and rand <= 16 then
-			for bone = 1, bones do
-
-                bone1 = rag:GetPhysicsObjectNum( bone )
-                
-                if IsValid( bone1 ) then
-                    weld, weld2 = ent:GetBonePosition( ent:TranslatePhysBoneToBone( bone ) )
-                    
-                    bone1:SetPos( weld )
-                    bone1:SetAngles( weld2 )
-                    bone1:SetMaterial( "nature/ice"  )
-
-					constraint.Weld( rag, rag, 0, bone - 1, 0 )
-                    
-                    bone1:AddGameFlag( FVPHYSICS_NO_SELF_COLLISIONS )
-                    bone1:AddGameFlag( FVPHYSICS_HEAVY_OBJECT )
-                    bone1:SetMass( 500 )
-
-					
-
-					local effectdata = EffectData()
-					effectdata:SetOrigin( weld )
-					util.Effect( "GlassImpact", effectdata )
-                    
-                   	bone1:Wake()
-					bone1:EnableMotion(true)
-					
-                    local bone2 = bone1
-                end
-            end
-			elseif rand > 16 then
-			for bone = 1, bones do
-
-                bone1 = rag:GetPhysicsObjectNum( bone )
-                
-                if IsValid( bone1 ) then
-                    weld, weld2 = ent:GetBonePosition( ent:TranslatePhysBoneToBone( bone ) )
-                    
-                    bone1:SetPos( weld )
-                    bone1:SetAngles( weld2 )
-                    bone1:SetMaterial( "nature/ice")
-
-					constraint.Weld( rag, rag, 0, bone - 1, 0 )
-                    
-                    bone1:AddGameFlag( FVPHYSICS_NO_SELF_COLLISIONS )
-                    bone1:AddGameFlag( FVPHYSICS_HEAVY_OBJECT )
-                    bone1:SetMass( 500 )
-
-					
-
-					local effectdata = EffectData()
-					effectdata:SetOrigin( weld )
-					util.Effect( "GlassImpact", effectdata )
-                    
-                    bone1:Wake()
-					bone1:EnableMotion(true)
                                         
-                    local bone2 = bone1
-                end
-            end
 			for bone = 1, bones do
                 bone1 = rag:GetPhysicsObjectNum( bone )
 				if IsValid( bone1 ) then
 					bone1:Wake()
 					bone1:EnableMotion(true)
 				end
-			end
-			
 			end
             
             if ent:IsNPC( ) or ent:IsPlayer( ) then
