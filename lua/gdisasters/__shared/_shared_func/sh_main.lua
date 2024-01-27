@@ -942,7 +942,7 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
                 end
             end
             
-            weld2 = constraint.Weld( ent, ent, 0, bone1, 0 )
+            weld2 = constraint.Weld( ent, ent, bone1, 0, 0 )
             
             if weld2 then
                 ent.Welds[ bone1 + bones ] = weld2
@@ -965,13 +965,16 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
         
         ent:SetSolid( SOLID_NONE )
         if bones > 1 or ent:IsPlayer( ) or ent:IsNPC( ) or ent:IsNextBot() then
-            rag = ents.Create( "prop_ragdoll" )
+
+			rag = ents.Create( "prop_ragdoll" )
 			rag:SetModel( ent:GetModel( ) )
 			rag:SetPos( ent:GetPos( ) )
 			rag:SetAngles( ent:GetAngles( ) )
 			rag:SetMaterial( "nature/ice" )
-			rag:GetPhysicsObject():SetMaterial("ice")
-            rag:Spawn( )
+			if IsValid(rag:GetPhysicsObject()) then
+				rag:GetPhysicsObject():SetMaterial("ice")
+			end
+			rag:Spawn( )
 			if !IsValid(rag:GetPhysicsObject()) then
 				rag:Remove()
 				rag = ents.Create( "prop_physics" )
@@ -979,7 +982,9 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
 				rag:SetPos( ent:GetPos( ) )
 				rag:SetAngles( ent:GetAngles( ) )
 				rag:SetMaterial( "nature/ice" )
-				rag:GetPhysicsObject():SetMaterial("ice")
+				if IsValid(rag:GetPhysicsObject()) then
+					rag:GetPhysicsObject():SetMaterial("ice")
+				end
 				rag:Spawn( )
 			end
 			if !IsValid(rag:GetPhysicsObject()) then
@@ -991,9 +996,14 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
 				rag:SetModel( ent:GetModel( ) )
 				rag:SetPos( ent:GetPos( ) )
 				rag:SetAngles( ent:GetAngles( ) )
+				rag:SetMaterial( "nature/ice" )
+				if IsValid(rag:GetPhysicsObject()) then
+					rag:GetPhysicsObject():SetMaterial("ice")
+				end
 				rag:Spawn()
 			
 			end
+
             
             bones = rag:GetPhysicsObjectCount( )
 
@@ -1034,15 +1044,7 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
 					rag:DeleteOnRemove( weld2 )
 				end
 				
-				rag:GetPhysicsObjectNum( bone ):EnableMotion( true )
-			end
-                                        
-			for bone = 1, bones do
-                bone1 = rag:GetPhysicsObjectNum( bone )
-				if IsValid( bone1 ) then
-					bone1:Wake()
-					bone1:EnableMotion(true)
-				end
+				--rag:GetPhysicsObjectNum( bone ):EnableMotion( true )
 			end
             
             if ent:IsNPC( ) or ent:IsPlayer( ) then
@@ -1083,15 +1085,13 @@ function MakeFreeze( ent ) -- credits goes to Kogitsune
             		rag.FakeWeapon = fakewep
             	end
             end
-            
-            MakeFreeze( rag )
-            
             SafeRemoveEntityDelayed( rag, 90 )
+			MakeFreeze( rag )
         else
             rag = ents.Create( "prop_physics" )
-                rag:SetModel( ent:GetModel( ) )
-                rag:SetPos( ent:GetPos( ) )
-                rag:SetAngles( ent:GetAngles( ) )
+			rag:SetModel( ent:GetModel( ) )
+			rag:SetPos( ent:GetPos( ) )
+			rag:SetAngles( ent:GetAngles( ) )
             rag:Spawn( )
         end
         
