@@ -24,15 +24,15 @@ local function Autospawn_Timer()
 		if GetConVar("gdisasters_autospawn_type"):GetString() == "Tornado" then
 			recent = true
 			local tornado = {
-				"gd_d2_waterspout",
 				"gd_d2_gustnado",
-				"gd_d3_snownado", 
 				"gd_d3_ef0", 
-				"gd_d4_ef1", 
-				"gd_d4_landspout", 
+				"gd_d4_ef1",
+				"gd_d4_landspout",
+				"gd_d4_icenado",  
 				"gd_d5_ef2", 
 				"gd_d5_alien_tornado",
 				"gd_d6_ef3", 
+				"gd_d6_evolvingtornado",
 				"gd_d7_ef4", 
 				"gd_d7_ef4_small", 
 				"gd_d8_ef5", 
