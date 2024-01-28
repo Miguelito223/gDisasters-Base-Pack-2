@@ -335,6 +335,7 @@ AddToGDSpawnMenu("≈7.0  Magnitude Earthquake" , "gd_d7_rs7eq"         , "Disas
 AddToGDSpawnMenu("Lava Bomb Shower" , "gd_d7_lavabombshower"         , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("Custom Tsunami" , "gd_d7_custom_tsunami"         , "Disasters", "Tier 7", false)
 AddToGDSpawnMenu("Tsunami" , "gd_d7_tsunami"         , "Disasters", "Tier 7", false)
+AddToGDSpawnMenu("Zombie Appocolapse (tvirus)" , "gd_d7_zombieapoctvirus"         , "Disasters", "Tier 7", false)
 
 
 --[[
