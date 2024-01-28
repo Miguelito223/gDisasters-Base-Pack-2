@@ -15,7 +15,7 @@ ENT.Data                             = {GroundSpeed = {}, MaxFunnel = {}, MinFun
 
 ENT.Data.Effect                      = {"h_ef1","t_ef1","temp_EF1","temp_EF1_fix","har_ef1","t_tornado_EF1","h1_EF1"}
 ENT.Data.Effect2                     = {"h_ef2","t_ef2","temp_EF2", "har_ef2","t_tornado_EF2","h1_EF2"}
-ENT.Data.Effect3	                 = {"h_ef3","t_ef3","temp_EF3", "har_ef2","t_tornado_EF3","h1_EF3"}
+ENT.Data.Effect3	                 = {"h_ef3","t_ef3","temp_EF3","har_ef3","t_tornado_EF3","h1_EF3"}
 ENT.Data.Effect4                     = {"h_ef4","t_ef4","temp_EF4","har_ef4","t_tornado_EF4","h1_EF4"}
 ENT.Data.Effect5                     = {"h_ef5","t_ef5","temp_EF5", "har_ef5","t_tornado_EF5","h1_EF5", "TTC_multivortex"}
 
