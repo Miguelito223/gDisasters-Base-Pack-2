@@ -97,58 +97,8 @@ function ENT:SpawnZombies()
 
 		if ( !IsValid( self ) )  then return end
 
-		if BA2_CustomInfs then
-			zom = ents.Create( table.Random({"nb_ba2_infected_citizen","nb_ba2_infected_combine","nb_ba2_infected_police","nb_ba2_infected_rebel"}) )
-			for k, v in pairs(ents.FindInSphere(zom:GetPos(),200)) do
-				if v:IsNPC() and (v:GetClass()=="npc_headcrab" or v:GetClass()=="npc_headcrab_fast" or v:GetClass()=="npc_headcrab_poison") and not v.isinfected then
-				
-					local ent = ents.Create("gd_misc_chemical_tvirus_entity_z")
-					ent:SetVar("infected", v)
-					ent.zombie=v
-					ent:SetPos( self:GetPos() ) 
-					ent:Spawn()
-					ent:Activate()
-					v.isinfected = true
-					ParticleEffectAttach("zombie_blood",PATTACH_POINT_FOLLOW,v,0 ) 	
-					ParticleEffectAttach("zombie_blood",PATTACH_POINT_FOLLOW,v,0 ) 	
-					ParticleEffectAttach("zombie_blood",PATTACH_POINT_FOLLOW,v,0 ) 	
-			
-				
-				end
-			end
-			for k, v in pairs(ents.FindInSphere(zom:GetPos(),100)) do
-				if v:IsPlayer() and v:Alive() and not v.isinfected then
-					if v.gasmasked==false and v.hazsuited==false then
-						local ent = ents.Create("gd_misc_chemical_tvirus_entity")
-						ent:SetVar("infected", v)
-						ent:SetPos( self:GetPos() ) 
-						ent:Spawn()
-						ent:Activate()
-						v.isinfected = true
-						ParticleEffectAttach("zombie_blood",PATTACH_POINT_FOLLOW,v,0 ) 	
-
-					end
-				end
-				if (v:IsNPC() and table.HasValue(npc_tvirus,v:GetClass()) and not v.isinfected) or (v.IsVJHuman==true and not v.isinfected) then
-					local ent = ents.Create("gd_misc_chemical_tvirus_entity_npc")
-					ent:SetVar("infected", v)
-					ent:SetPos( self:GetPos() ) 
-					ent:Spawn()
-					ent:Activate()
-					v.isinfected = true
-					ParticleEffectAttach("zombie_blood",PATTACH_POINT_FOLLOW,v,0 ) 	
-	
-				end	
-
-				
-			end
-		
-		else
-			zom = ents.Create( "gd_misc_chemical_tvirus_entity_z" )
-			zom:SetSchedule( SCHED_AISCRIPT )
-		end
-
-		
+		zom = ents.Create( "gd_misc_chemical_tvirus_entity_z" )
+		zom:SetSchedule( SCHED_AISCRIPT )
 		zom:Spawn()
 		zom:SetPos( tr.HitPos + Vector(0,0,2) )
 		table.insert(self.Zombies, zom)
