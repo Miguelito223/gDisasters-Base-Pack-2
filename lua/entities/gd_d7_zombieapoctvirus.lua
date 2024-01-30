@@ -97,10 +97,21 @@ function ENT:SpawnZombies()
 
 		if ( !IsValid( self ) )  then return end
 
-		zom = ents.Create( "gd_misc_chemical_tvirus_entity_z" )
-		zom:SetSchedule( SCHED_AISCRIPT )
+		if BA2_CustomInfs then
+			zom = ents.Create( table.Random({"nb_ba2_infected_citizen","nb_ba2_infected_combine","nb_ba2_infected_police","nb_ba2_infected_rebel"}) )
+		else
+			zom = ents.Create( table.Random({"npc_zombie","npc_fastzombie","npc_zombie_torso","npc_fastzombie_torso"}) )
+			zom:SetSchedule( SCHED_AISCRIPT )
+		end
+
 		zom:Spawn()
 		zom:SetPos( tr.HitPos + Vector(0,0,2) )
+
+		local z_zom = ents.Create("gd_misc_chemical_tvirus_entity_z")
+		z_zom:SetVar("zombie", zom)
+		z_zom:SetPos( zom:GetPos() ) 
+		z_zom:Spawn()
+		z_zom:Activate()
 		table.insert(self.Zombies, zom)
 			
 		
