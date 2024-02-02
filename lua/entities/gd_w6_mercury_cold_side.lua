@@ -18,7 +18,7 @@ function ENT:Initialize()
 	
 	if (SERVER) then
 	
-		GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(0,0),["Direction"]=Vector(math.random(-1,1),math.random(-1,1),0)}, ["Pressure"]    = 10000, ["Temperature"] = math.random(-45,462), ["Humidity"]    = math.random(-170,–180), ["BRadiation"]  = 0.1, ["Oxygen"] = 0}}
+		GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(0,0),["Direction"]=Vector(math.random(-1,1),math.random(-1,1),0)}, ["Pressure"]    = 10000, ["Temperature"] = math.random(-45,462), ["Humidity"]    = math.random(-170,-180), ["BRadiation"]  = 0.1, ["Oxygen"] = 0}}
 
 		self:SetModel(self.Model)
 		self:PhysicsInit( SOLID_VPHYSICS )
@@ -50,23 +50,7 @@ function ENT:Initialize()
 			end)
 		end
 		
-	setMapLight("d")		
-	
-
-
-	local data = {}
-		data.Color = Color(250,238,215)
-		data.DensityCurrent = 0
-		data.DensityMax     = 0.2
-		data.DensityMin     = 0.1
-		data.EndMax         = 2000
-		data.EndMin         = 1000
-		data.EndMinCurrent  = 0
-		data.EndMaxCurrent  = 0       
-
-	gDisasters_CreateGlobalFog(self, data, true)	
-	
-	gDisasters_CreateGlobalGFX("coldwave", self)						
+	setMapLight("d")							
 		
 	end
 end

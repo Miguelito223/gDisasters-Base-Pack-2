@@ -18,7 +18,7 @@ function ENT:Initialize()
 	
 	if (SERVER) then
 	
-		GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(0,15),["Direction"]=Vector(math.random(-1,1),math.random(-1,1),0)}, ["Pressure"]    = 10000, ["Temperature"] = math.random(0,-129), ["Humidity"]    = math.random(0,0), ["BRadiation"]  = 0.1, ["Oxygen"] = 0}}
+		GLOBAL_SYSTEM_TARGET =  {["Atmosphere"] 	= {["Wind"]        = {["Speed"]=math.random(0,15),["Direction"]=Vector(math.random(-1,1),math.random(-1,1),0)}, ["Pressure"]    = 10000, ["Temperature"] = math.random(0,-129), ["Humidity"]    = math.random(0,0), ["BRadiation"]  = 0.1, ["Oxygen"] =  5}}
 
 		self:SetModel(self.Model)
 		self:PhysicsInit( SOLID_VPHYSICS )
@@ -55,7 +55,7 @@ function ENT:Initialize()
 
 
 	local data = {}
-		data.Color = Color(148,95,95)
+		data.Color = Color(175,48,48)
 		data.DensityCurrent = 0
 		data.DensityMax     = 0.2
 		data.DensityMin     = 0.1

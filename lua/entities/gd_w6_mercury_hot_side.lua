@@ -50,23 +50,7 @@ function ENT:Initialize()
 			end)
 		end
 		
-	setMapLight("d")		
-	
-
-
-	local data = {}
-		data.Color = Color(250,238,215)
-		data.DensityCurrent = 0
-		data.DensityMax     = 0.2
-		data.DensityMin     = 0.1
-		data.EndMax         = 2000
-		data.EndMin         = 1000
-		data.EndMinCurrent  = 0
-		data.EndMaxCurrent  = 0       
-
-	gDisasters_CreateGlobalFog(self, data, true)	
-	
-	gDisasters_CreateGlobalGFX("hotwave", self)						
+	setMapLight("d")						
 		
 	end
 end
