@@ -179,6 +179,7 @@ AddToGDSpawnMenu("Microburst" , "gd_w5_microburst"    , "Weather", "Tier 5", fal
 AddToGDSpawnMenu("Macroburst" , "gd_w5_macroburst"    , "Weather", "Tier 5", false)
 AddToGDSpawnMenu("Silent Hill (sp00ky)"           , "gd_w5_silenthill"           , "Weather", "Tier 5", false)
 AddToGDSpawnMenu("Pyrocumulus" , "gd_w5_pyrocum"    , "Weather", "Tier 5", false)
+AddToGDSpawnMenu("Mars", "gd_w5_mars", "Weather", "Tier 5", false)
 
 --[[
 WEATHER TIER 6
@@ -189,6 +190,12 @@ AddToGDSpawnMenu("Extreme Wind" , "gd_w6_extremebreeze"    , "Weather", "Tier 6"
 AddToGDSpawnMenu("Beaufort 10 Wind (Storm, Whole Gale)", "gd_w6_beaufort10", "Weather", "Tier 6", false)
 AddToGDSpawnMenu("Beaufort 11 Wind (Violent Storm)", "gd_w6_beaufort11", "Weather", "Tier 6", false)
 AddToGDSpawnMenu("Beaufort 12 Wind (Hurricane Force)", "gd_w6_beaufort12", "Weather", "Tier 6", false)
+AddToGDSpawnMenu("Uranus", "gd_w6_uranus", "Weather", "Tier 6", false)
+AddToGDSpawnMenu("Saturn", "gd_w6_saturn", "Weather", "Tier 6", false)
+AddToGDSpawnMenu("Jupiter", "gd_w6_jupiter", "Weather", "Tier 6", false)
+AddToGDSpawnMenu("Venus", "gd_w6_venus", "Weather", "Tier 6", false)
+AddToGDSpawnMenu("Mecury (cold side)", "gd_w6_mercury_cold_size", "Weather", "Tier 6", false)
+AddToGDSpawnMenu("Mecury (hot side)", "gd_w6_mercury_hot_size", "Weather", "Tier 6", false)
 
 
 --[[
