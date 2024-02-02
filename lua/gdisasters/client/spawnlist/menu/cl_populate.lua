@@ -194,8 +194,8 @@ AddToGDSpawnMenu("Uranus", "gd_w6_uranus", "Weather", "Tier 6", false)
 AddToGDSpawnMenu("Saturn", "gd_w6_saturn", "Weather", "Tier 6", false)
 AddToGDSpawnMenu("Jupiter", "gd_w6_jupiter", "Weather", "Tier 6", false)
 AddToGDSpawnMenu("Venus", "gd_w6_venus", "Weather", "Tier 6", false)
-AddToGDSpawnMenu("Mecury (cold side)", "gd_w6_mercury_cold_size", "Weather", "Tier 6", false)
-AddToGDSpawnMenu("Mecury (hot side)", "gd_w6_mercury_hot_size", "Weather", "Tier 6", false)
+AddToGDSpawnMenu("Mecury (cold side)", "gd_w6_mercury_cold_side", "Weather", "Tier 6", false)
+AddToGDSpawnMenu("Mecury (hot side)", "gd_w6_mercury_hot_side", "Weather", "Tier 6", false)
 
 
 --[[
