@@ -33,16 +33,21 @@ function ENT:Initialize()
 		end 
 		
 		self.Original_SkyData = {}
-			self.Original_SkyData["TopColor"]    = Vector(0.1, 0.1, 0.1)
-			self.Original_SkyData["BottomColor"] = Vector(0.1, 0.1, 0.1)
-			self.Original_SkyData["DuskScale"]   = 0
+		self.Original_SkyData["TopColor"]    = Vector(0, 0, 0)
+		self.Original_SkyData["BottomColor"] = Vector(0, 0, 0)
+		self.Original_SkyData["DuskScale"]   = 0
+		self.Original_SkyData["SunScale"]   = 5.00
+		self.Original_SkyData["OverlaySize"]  = 0.00
+		self.Original_SkyData["DuskIntensity"]      = 0.00
 			
 		self.Reset_SkyData    = {}
-			self.Reset_SkyData["TopColor"]       = Vector(0.20,0.50,1.00)
-			self.Reset_SkyData["BottomColor"]    = Vector(0.80,1.00,1.00)
-			self.Reset_SkyData["DuskScale"]      = 1
-			self.Reset_SkyData["SunColor"]       = Vector(0.20,0.10,0.00)
-		
+		self.Reset_SkyData["TopColor"]       = Vector(0.20,0.50,1.00)
+		self.Reset_SkyData["BottomColor"]    = Vector(0.80,1.00,1.00)
+		self.Reset_SkyData["DuskScale"]      = 1
+		self.Reset_SkyData["DuskIntensity"]  = 1
+		self.Reset_SkyData["SunColor"]       = Vector(0.20,0.10,0.00)
+		self.Reset_SkyData["SunSize"]     	 = 2
+
 		for i=0, 100 do
 			timer.Simple(i/100, function()
 				if !self:IsValid() then return  end
@@ -50,7 +55,7 @@ function ENT:Initialize()
 			end)
 		end
 		
-	setMapLight("d")						
+	setMapLight("z")						
 		
 	end
 end
