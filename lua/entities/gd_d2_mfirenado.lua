@@ -141,7 +141,7 @@ function ENT:PostSpawn()
 		
 		timer.Simple(1, function()
 			if !self:IsValid() then return end
-			local sound = Sound(table.Random( {"streams/disasters/nature/tornado/firenado.wav", "streams/disasters/nature/tornado/small_firenado_loop_1.wav", "streams/disasters/nature/tornado/small_firenado_loop_2.wav", "streams/disasters/nature/tornado/small_firenado_loop_3.wav"}))
+			local sound = Sound(table.Random( {"streams/disasters/environment/wind_shared/firenado.wav", "streams/disasters/environment/wind_shared/small_firenado_loop_1.wav", "streams/disasters/environment/wind_shared/small_firenado_loop_2.wav", "streams/disasters/environment/wind_shared/small_firenado_loop_3.wav"}))
 
 			CSPatch = CreateSound(self, sound)
 			CSPatch:SetSoundLevel( 100 )
