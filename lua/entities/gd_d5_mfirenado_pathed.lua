@@ -60,100 +60,99 @@ function ENT:PostSpawn()
 	local me  = self  
 		
 	if (SERVER) then 
-	function self.TornadoENT:DamagingAura()
-		
-		if CurTime() >= self.NextFireDamageTime then
-			self.NextFireDamageTime = self.NextFireDamageTime + 0.4 
-			 self:OnDamagingAura()
-			---
-		else 
+		function self.TornadoENT:DamagingAura()
+			
+			if CurTime() >= self.NextFireDamageTime then
+				self.NextFireDamageTime = self.NextFireDamageTime + 0.4 
+				self:OnDamagingAura()
+			else 
+			
+			end
 		
 		end
-	
-	end
-	
-
-	
-	function self.TornadoENT:OnDamagingAura()
-		
-		
-		local pos         = self:GetPos() 
-		local funnel_ents = FindInCone(pos, self.Data.MaxFunnel.Height, self.Data.MinFunnel.Height, self.Data.MaxGroundFunnel.Radius, self.Data.MinGroundFunnel.Radius, true )
 		
 
-		for k, v in pairs(funnel_ents) do
+		
+		function self.TornadoENT:OnDamagingAura()
 			
-			local radius =         v[2]
-			local ent              = v[1] 
-			local entpos 		   = ent:GetPos()
 			
-			local height              =  self.Data.MaxFunnel.Height - ((self:GetPos().z + self.Data.MaxFunnel.Height) - ent:GetPos().z)
+			local pos         = self:GetPos() 
+			local funnel_ents = FindInCone(pos, self.Data.MaxFunnel.Height, self.Data.MinFunnel.Height, self.Data.MaxGroundFunnel.Radius, self.Data.MinGroundFunnel.Radius, true )
 			
-			if ent:IsValid() and self:CanBeSeenByTheWind(ent) then 
+
+			for k, v in pairs(funnel_ents) do
 				
+				local radius =         v[2]
+				local ent              = v[1] 
+				local entpos 		   = ent:GetPos()
+				
+				local height              =  self.Data.MaxFunnel.Height - ((self:GetPos().z + self.Data.MaxFunnel.Height) - ent:GetPos().z)
+				
+				if ent:IsValid() and self:CanBeSeenByTheWind(ent) then 
+					
 
 
-				if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
-					InflictDamage(ent, me, "fire", 8)
-					ent:Ignite(3)
+					if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
+						InflictDamage(ent, me, "fire", 8)
+						ent:Ignite(3)
 
-					if ent:IsPlayer() and ent:Alive() and ent:Health() <= 8 then	
-						MakeBurn( ent )
-					elseif ent:Health() <= 8 and ent:IsNPC() or ent:IsNextBot() then
-						MakeBurn( ent )
-					end
-				else
-		
-					if ent:GetClass() != self and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
-						if math.random(1,2) == 1 then
-							ent:Ignite(math.random(3,5),0)
+						if ent:IsPlayer() and ent:Alive() and ent:Health() <= 8 then	
 							MakeBurn( ent )
+						elseif ent:Health() <= 8 and ent:IsNPC() or ent:IsNextBot() then
+							MakeBurn( ent )
+						end
+					else
 			
+						if ent:GetClass() != self and ent:IsSolid() and (!ent:IsPlayer() and !ent:IsNPC()) then
+							if math.random(1,2) == 1 then
+								ent:Ignite(math.random(3,5),0)
+								MakeBurn( ent )
+				
+							end
 						end
 					end
 				end
+				
+			end
+			
+		
+		
+		end
+		
+		function self.TornadoENT:Think()
+			if (SERVER) then
+				if !self:IsValid() then return end
+				
+				self:Move()
+				self:Physics()
+				self:IsParentValid()
+				self:DamagingAura()
+				
+				
+				self:NextThink(CurTime() + 0.01)
+				return true
 			end
 			
 		end
 		
-	
-	
-	end
-	
-	function self.TornadoENT:Think()
-		if (SERVER) then
-			if !self:IsValid() then return end
-			
-			self:Move()
-			self:Physics()
-			self:IsParentValid()
-			self:DamagingAura()
-			
-			
-			self:NextThink(CurTime() + 0.01)
-			return true
-		end
+		function self.TornadoENT:CustomPostSpawn()
+			self.NextFireDamageTime = CurTime() 
+			self:GetRidOfSounds()
 		
-	end
-	
-	function self.TornadoENT:CustomPostSpawn()
-		self.NextFireDamageTime = CurTime() 
-		self:GetRidOfSounds()
-	
-		
-		timer.Simple(1, function()
-			if !self:IsValid() then return end
-			local sound = Sound("streams/disasters/environment/wind_shared/firenado.wav")
+			
+			timer.Simple(1, function()
+				if !self:IsValid() then return end
+				local sound = Sound("streams/disasters/environment/wind_shared/firenado.wav")
 
-			CSPatch = CreateSound(self, sound)
-			CSPatch:SetSoundLevel( 110 )
-			CSPatch:Play()
-			CSPatch:ChangeVolume( 1 )
-			self.Sound = CSPatch
-		end)
-		
-	end
-	self.TornadoENT:CustomPostSpawn()
+				CSPatch = CreateSound(self, sound)
+				CSPatch:SetSoundLevel( 110 )
+				CSPatch:Play()
+				CSPatch:ChangeVolume( 1 )
+				self.Sound = CSPatch
+			end)
+			
+		end
+		self.TornadoENT:CustomPostSpawn()
 
 	end
 	
