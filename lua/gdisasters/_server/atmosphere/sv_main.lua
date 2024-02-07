@@ -70,6 +70,7 @@ function BRadiation()
 			end
 		end
 		for k, v in pairs(ents.FindByClass("npc_*")) do
+			if GetConVar("gdisasters_weather_bradiation_damage_npcs"):GetInt() <= 0 then return end 
 			if BRadiation >= 80 and isOutdoor(v, true) then
 				if HitChance(0.5) then
 					InflictDamage(v, v, "acid", 4)
@@ -78,7 +79,7 @@ function BRadiation()
 		end
 		if BRadiation >= 80 then
 			for k, v in pairs(ents.FindByClass("prop_*")) do
-				if GetConVar("gdisasters_weather_acidraindamageprops"):GetInt() <= 0 then return end 
+				if GetConVar("gdisasters_weather_bradiation_damage_props"):GetInt() <= 0 then return end 
 				if isOutdoor(v, true) then
 					if HitChance(0.5) then
 						InflictDamage(v, v, "acid", 4)
@@ -158,11 +159,12 @@ function Temperature()
 	
 	local function DamagePlayer()
 		
-		if GetConVar("gdisasters_hud_temp_damage"):GetInt() <= 0 then return end
+		
 		
 		
 		for k, v in pairs(plytbl) do
 
+			if GetConVar("gdisasters_hud_temp_damage"):GetInt() <= 0 then return end
 			if GetConVar("gdisasters_hud_temp_value"):GetInt() <= 0 then return end
 		
 			local wl = isinWater(v)	
@@ -318,6 +320,8 @@ function Temperature()
 			end
 		end
 		for k, v in pairs(ents.FindByClass("npc_*")) do
+
+			if GetConVar("gdisasters_hud_temp_npc_damage"):GetInt() <= 0 then return end
 
 			local outdoor           = isOutdoor(v, true)
 			local wl = isinWater(v)
@@ -549,7 +553,7 @@ function Oxygen()
 			if isinWater(v) or isinLava(v) then 
 				timer.Simple(5, function()
 					
-					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
+					if GetConVar("gdisasters_hud_oxygen_npc_damage"):GetInt() == 0 then return end
 
 					if v:IsValid() then
 						local dmg = DamageInfo()
@@ -574,7 +578,7 @@ function Oxygen()
 				end
 
 				timer.Simple(50, function()
-					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
+					if GetConVar("gdisasters_hud_oxygen_npc_damage"):GetInt() == 0 then return end
 
 					if v:IsValid() then
 						local dmg = DamageInfo()
@@ -587,7 +591,7 @@ function Oxygen()
 				end)
 			elseif isUnderGround(v) then
 				timer.Simple(15, function()
-					if GetConVar("gdisasters_hud_oxygen_damage"):GetInt() == 0 then return end
+					if GetConVar("gdisasters_hud_oxygen_npc_damage"):GetInt() == 0 then return end
 
 					if v:IsValid() then
 						local dmg = DamageInfo()

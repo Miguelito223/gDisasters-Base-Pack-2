@@ -145,7 +145,8 @@ local function gDisastersSVADVSettings( CPanel )
 	lb41:SetTextColor(Color( 0, 0, 0))
 	lb41:SetSize(500, 500)
 
-	CreateTickboxConVariable(CPanel, "gd_28" ,"gdisasters_weather_acidraindamageprops");
+	CreateTickboxConVariable(CPanel, "gd_28" ,"gdisasters_weather_bradiation_damage_props");
+	CreateTickboxConVariable(CPanel, "gd_28.1" ,"gdisasters_weather_bradiation_damage_npcs");
 
 	local lb5 = AddControlLabel( CPanel, "gd_29" )
 	lb5:SetTextColor(Color( 0, 0, 0))
@@ -236,6 +237,7 @@ local function gDisastersSVhud( CPanel )
 	lb2:SetSize(500, 500)
 	
 	CreateTickboxConVariable(CPanel, "gd_63" ,"gdisasters_hud_temp_enable");
+	CreateTickboxConVariable(CPanel, "gd_63.1" ,"gdisasters_hud_temp_npc_damage");
 	CreateTickboxConVariable(CPanel, "gd_64" ,"gdisasters_hud_temp_breathing");
 	CreateTickboxConVariable(CPanel, "gd_65" ,"gdisasters_hud_temp_damage");
 	CreateTickboxConVariable(CPanel, "gd_66" ,"gdisasters_hud_temp_player_speed_enable");
@@ -249,6 +251,7 @@ local function gDisastersSVhud( CPanel )
 	lb3:SetSize(500, 500)
 	
 	CreateTickboxConVariable(CPanel, "gd_71" ,"gdisasters_hud_oxygen_enable");
+	CreateTickboxConVariable(CPanel, "gd_71.1" ,"gdisasters_hud_oxygen_npc_damage");
 	CreateTickboxConVariable(CPanel, "gd_72" ,"gdisasters_hud_oxygen_damage");
 	
 end

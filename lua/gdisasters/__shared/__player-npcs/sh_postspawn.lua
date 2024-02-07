@@ -58,12 +58,14 @@ function gDisasters_PostSpawnSH()
 		CreateConVar( "gdisasters_volcano_weatherchange", "1", {FCVAR_ARCHIVE}, "")
 		CreateConVar( "gdisasters_volcano_pressure_increase", "0.05", {FCVAR_ARCHIVE}, "")
 		CreateConVar( "gdisasters_volcano_pressure_decrease", "0.1", {FCVAR_ARCHIVE}, "")
-		CreateConVar( "gdisasters_weather_acidraindamageprops", "1", {FCVAR_ARCHIVE}, "")
+		CreateConVar( "gdisasters_weather_bradiation_damage_props", "1", {FCVAR_ARCHIVE}, "")
+		CreateConVar( "gdisasters_weather_bradiation_damage_npcs", "1", {FCVAR_ARCHIVE}	, "" )
 			
 			
 		--hud
 			
 		CreateConVar( "gdisasters_hud_temp_damage", "1", {FCVAR_ARCHIVE}	, "" )
+		CreateConVar( "gdisasters_hud_temp_npc_damage", "1", {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_hud_temp_player_speed_enable", "1", {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_hud_temp_player_speed_walk", "400", {FCVAR_ARCHIVE}	, "" )
 		CreateConVar( "gdisasters_hud_temp_player_speed_sprint", "600", {FCVAR_ARCHIVE}	, "" )
@@ -72,6 +74,7 @@ function gDisasters_PostSpawnSH()
 		CreateConVar( "gdisasters_hud_temp_enable", "1", {FCVAR_ARCHIVE}	, "" )
 			
 		CreateConVar( "gdisasters_hud_oxygen_damage", "1", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_hud_oxygen_npc_damage", "1", {FCVAR_ARCHIVE}, "" )
 		CreateConVar( "gdisasters_hud_oxygen_enable", "1", {FCVAR_ARCHIVE}, "" )
 			
 			
