@@ -237,9 +237,9 @@ local function gDisastersSVhud( CPanel )
 	lb2:SetSize(500, 500)
 	
 	CreateTickboxConVariable(CPanel, "gd_63" ,"gdisasters_hud_temp_enable");
-	CreateTickboxConVariable(CPanel, "gd_63.1" ,"gdisasters_hud_temp_npc_damage");
 	CreateTickboxConVariable(CPanel, "gd_64" ,"gdisasters_hud_temp_breathing");
 	CreateTickboxConVariable(CPanel, "gd_65" ,"gdisasters_hud_temp_damage");
+	CreateTickboxConVariable(CPanel, "gd_65.1" ,"gdisasters_hud_temp_npc_damage");
 	CreateTickboxConVariable(CPanel, "gd_66" ,"gdisasters_hud_temp_player_speed_enable");
 	CreateTickboxConVariable(CPanel, "gd_67" ,"gdisasters_hud_temp_value");
 
