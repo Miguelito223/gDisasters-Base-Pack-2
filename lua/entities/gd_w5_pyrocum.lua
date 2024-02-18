@@ -145,6 +145,7 @@ function ENT:AffectPlayers()
 				net.Send(v)
 			
 			end
+			self:SpawnDeath(v)
 		else
 
 		if math.random(1,2) == 2 then
@@ -159,13 +160,14 @@ function ENT:AffectPlayers()
 		end
 		
 		
+		
 	
 		end
 		
 	end
 end
 
-function ENT:SpawnDeath()
+function ENT:SpawnDeath(ply)
 	
 	if HitChance(math.Clamp(100 / ( (#player.GetAll()) ),5,50)) then
 		
@@ -233,7 +235,6 @@ function ENT:Think()
 		if !self:IsValid() then return end
 
 		self:AffectPlayers()
-		self:SpawnDeath()
 		
 		
 		local t =  (FrameTime() / 0.1) / (66.666 / 0.1) -- tick dependant function that allows for constant think loop regardless of server tickrate

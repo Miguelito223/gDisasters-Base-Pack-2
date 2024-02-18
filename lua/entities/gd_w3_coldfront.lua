@@ -207,38 +207,66 @@ function ENT:ClearSky()
 	setMapLight("z")
 end
 
-function ENT:SpawnDeath()
+function ENT:SpawnDeath(ply)
 	
-	if HitChance(5) then
-		
-		local bounds    = getMapSkyBox()
-		local min       = bounds[1]
-		local max       = bounds[2]
-		
-		local startpos  = Vector(   math.random(min.x,max.x)      ,  math.random(min.y,max.y) ,   max.z )
-
-			
-		local tr = util.TraceLine( {
-			start  = startpos,
-			endpos    = startpos + Vector(0,0,50000),
-		} )
-		
-
-		local moite = ents.Create("gd_d1_hail_ch")
-		
-		moite:SetPos( tr.HitPos - Vector(0,0,5000) )
-		moite:Spawn()
-		moite:Activate()
-		moite:GetPhysicsObject():EnableMotion(true)
-		moite:GetPhysicsObject():SetVelocity( Vector(0,0,math.random(-5000,-10000))  )
-		moite:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
-		
-		timer.Simple( math.random(14,18), function()
-			if moite:IsValid() then moite:Remove() end
-			
-		end)
-			
+	local bounds    = getMapSkyBox()
+	local min       = bounds[1]
+	local max       = bounds[2]
+	local z         = max.z 
+	local pos       = ply:GetPos()
+	local hitchance = math.Clamp(100 / ( (#player.GetAll()) ),5,50)
 	
+	if HitChance( hitchance ) then
+			
+		if HitChance(110) then
+			
+		if ply:InVehicle() then 
+		
+		local x = pos.x + math.random(-3000,3000)
+		local y = pos.y + math.random(-3000,3000)
+		local z = pos.z + 800
+		
+		local hail = ents.Create("gd_d1_hail")
+			
+			hail:SetPos( Vector(x, y, z ) )
+			hail:Spawn()
+			hail:Activate()
+			hail:GetPhysicsObject():EnableMotion(true)
+			hail:GetPhysicsObject():SetVelocity( Vector(0,0,-10000) )
+			hail:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
+		
+		else
+		
+			local x = pos.x + math.random(-2000,2000)
+			local y = pos.y + math.random(-2000,2000)
+			local z = pos.z + 1000
+			
+			local hail = ents.Create("gd_d1_hail")
+			
+			hail:SetPos( Vector(x, y, z ) )
+			hail:Spawn()
+			hail:Activate()
+			hail:GetPhysicsObject():EnableMotion(true)
+			hail:GetPhysicsObject():SetVelocity( Vector(0,0,-10000) )
+			hail:GetPhysicsObject():AddAngleVelocity( VectorRand() * 100 )
+		
+		end
+		
+		else
+		
+		if ply:InVehicle() then return end
+		
+			local x = pos.x 
+			local y = pos.y
+			local z = pos.z + 1000
+			local hail = ents.Create("gd_d1_hail")
+			
+			hail:SetPos( Vector(x, y, z ) )
+			hail:Spawn()
+			hail:Activate()
+			hail:GetPhysicsObject():EnableMotion(true)
+			hail:GetPhysicsObject():SetVelocity( Vector(0,0,-10000) )
+		end
 	end
 	
 
@@ -346,8 +374,8 @@ function ENT:Passage()
 
 					
 			end
-			
-			
+
+			self:SpawnDeath(v)
 
 		else
 
@@ -415,7 +443,6 @@ function ENT:Think()
 	end
 	if (SERVER) then
 		if !self:IsValid() then return end
-		self:SpawnDeath()
 		self:StateProcessor()
 		self:NextThink(CurTime() + 0.01)
 		return true
