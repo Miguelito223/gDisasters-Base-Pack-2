@@ -100,6 +100,10 @@ function ENT:OnRemove()
 				paintSky_Fade(resetdata,0.05)
 			end)
 		end
+
+		for k, v in pairs( ents.FindByClass( "env_sun" ) ) do
+			v:Fire( "TurnOn", "", 0 )
+		end
 		
 		setMapLight("t")	
 	end
