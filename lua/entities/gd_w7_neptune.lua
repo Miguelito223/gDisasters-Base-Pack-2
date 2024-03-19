@@ -33,8 +33,8 @@ function ENT:Initialize()
 		end 
 		
 		self.Original_SkyData = {}
-		self.Original_SkyData["TopColor"]    = Vector(0.19,0.49,1.00)
-		self.Original_SkyData["BottomColor"] = Vector(0.19,0.49,1.00)
+		self.Original_SkyData["TopColor"]    = Vector(0,0,1.00)
+		self.Original_SkyData["BottomColor"] = Vector(0,0,1.00)
 		self.Original_SkyData["DuskScale"]   = 0
 		self.Original_SkyData["SunScale"]   = 0.50
 			
@@ -56,7 +56,7 @@ function ENT:Initialize()
 
 
 		local data = {}
-			data.Color = Color(115,115,185)
+			data.Color = Color(0,0,185)
 			data.DensityCurrent = 0
 			data.DensityMax     = 0.2
 			data.DensityMin     = 0.1
