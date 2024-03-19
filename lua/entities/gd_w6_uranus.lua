@@ -33,8 +33,8 @@ function ENT:Initialize()
 		end 
 		
 		self.Original_SkyData = {}
-		self.Original_SkyData["TopColor"]    = Vector(0.18, 0.85, 0.89)
-		self.Original_SkyData["BottomColor"] = Vector(0.18, 0.85, 0.89)
+		self.Original_SkyData["TopColor"]    = Vector(0.18,0.85,0.89)
+		self.Original_SkyData["BottomColor"] = Vector(0.18,0.85,0.89)
 		self.Original_SkyData["DuskScale"]   = 0
 		self.Original_SkyData["SunScale"]   = 0.53
 			
