@@ -6,8 +6,7 @@ local updateInterval = 1 -- Intervalo de actualización en segundos
 local updateBatchSize = 100 -- Número de celdas a actualizar por frame
 local diffusionCoefficient = 0.1 -- Coeficiente de difusión de calor
 
-
--- Función para calcular la temperatura de un cuadrado basada en sus vecinos
+-- Función para calcular la temperatura de una celda basada en sus vecinos
 local function CalculateTemperature(x, y, temperatureMap)
     local totalTemperature = 0
     local count = 0
@@ -36,14 +35,14 @@ end
 -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
 local function GenerateGrid()
     local temperatureMap = {}
-    local MapBounds = getMapBounds()
-    local max = MapBounds[1]
-    local min = MapBounds[2]
-    local mapMinX = min.x
-    local mapMinY = min.y
-    local mapMaxX = max.x
-    local mapMaxY = max.y
    
+    if not IsMapRegistered() then return end
+   
+    local mapMinX = getMapBounds()[1].x
+    local mapMaxX = getMapBounds()[2].x
+    local mapMinY = getMapBounds()[1].y
+    local mapMaxY = getMapBounds()[2].y
+
     -- Generar la cuadrícula y asignar temperaturas iniciales aleatorias
     for x = mapMinX, mapMaxX, gridSize do
         temperatureMap[x] = {}
@@ -89,6 +88,7 @@ local function GenerateGrid()
         end
     end)
 
+    -- Hook para actualizar la temperatura alrededor de cada jugador
     hook.Add("Think", "UpdatePlayerAreaTemperature", function()
         for _, ply in ipairs(player.GetAll()) do
             local pos = ply:GetPos()
@@ -117,4 +117,5 @@ local function GenerateGrid()
 end
 
 -- Llamar a la función para generar la cuadrícula al inicio del juego
-hook.Add("PlayerInitialSpawn", "GenerateTemperatureGrid", GenerateGrid)
+hook.Add("InitPostEntity", "GenerateTemperatureGrid", GenerateGrid)
+GenerateGrid()
