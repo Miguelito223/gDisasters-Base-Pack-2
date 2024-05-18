@@ -67,7 +67,7 @@ function ENT:CreateEarthquakeWithParent()
 	if decider == false then
 		if  math.floor(self.Magnitude) > 1 then
 			CreateSoundWave("streams/disasters/earthquake/earthquake_aftershock.wav", self:GetPos(), "3d" ,340.29/2, {40,100}, 10)
-			local aftershock_magnitude = math.Clamp( math.floor(self.Magnitude) - math.random(1,3), 1, 10)
+			local aftershock_magnitude = math.Clamp( math.floor(self.Magnitude) - math.random(1,3), 1, 12)
 			local aftershock           = ents.Create( earthquakes[ aftershock_magnitude ] )
 			aftershock.IsAfterShock    = true 
 			aftershock:SetPos(Vector(0,0,0))
@@ -78,7 +78,7 @@ function ENT:CreateEarthquakeWithParent()
 	else
 		CreateSoundWave("streams/disasters/earthquake/earthquake_aftershock.wav", self:GetPos(), "3d" ,340.29/2, {120,130}, 20)
 		CreateSoundWave("streams/disasters/earthquake/earthquake_aftershock.wav", self:GetPos(), "3d" ,340.29/2.1, {120,130}, 20)
-		local foreshock_magnitude = math.Clamp( math.floor(self.Magnitude) + math.random(1,2), 1, 10)
+		local foreshock_magnitude = math.Clamp( math.floor(self.Magnitude) + math.random(1,2), 1, 12)
 		local foreshock           = ents.Create( earthquakes[ foreshock_magnitude ] )
 		foreshock.IsForeShock     = true
 		foreshock:SetPos(self:GetPos())
@@ -297,7 +297,7 @@ function ENT:MagnitudeEleven()
 	local mxa, mya   = (math.random(-125, 125)/100) * percentage,   (math.random(-125, 125)/100) * percentage
 	local xa, ya     = bxa + mxa, bya +  mya
 	for k, v in pairs(player.GetAll()) do
-		if v:IsOnGround() then self:SendClientsideEffects( v, Angle(xa,ya,0), 38) end
+		if v:IsOnGround() then self:SendClientsideEffects( v, Angle(xa,ya,0), 52) end
 	end
 	self:DoPhysics()
 end
@@ -308,7 +308,7 @@ function ENT:MagnitudeTwelve()
 	local mxa, mya   = (math.random(-425, 425)/100) * percentage,   (math.random(-425, 425)/100) * percentage
 	local xa, ya     = bxa + mxa, bya +  mya
 	for k, v in pairs(player.GetAll()) do
-		if v:IsOnGround() then self:SendClientsideEffects( v, Angle(xa,ya,0), 38) end
+		if v:IsOnGround() then self:SendClientsideEffects( v, Angle(xa,ya,0), 64) end
 	end
 	self:DoPhysics()
 end
