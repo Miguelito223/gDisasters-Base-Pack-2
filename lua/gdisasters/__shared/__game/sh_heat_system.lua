@@ -35,9 +35,7 @@ end
 -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
 local function GenerateGrid()
     local temperatureMap = {}
-   
-    if not IsMapRegistered() then return end
-   
+
     local mapMinX = getMapBounds()[1].x
     local mapMaxX = getMapBounds()[2].x
     local mapMinY = getMapBounds()[1].y
@@ -90,8 +88,8 @@ local function GenerateGrid()
 
     -- Hook para actualizar la temperatura alrededor de cada jugador
     hook.Add("Think", "UpdatePlayerAreaTemperature", function()
-        for _, ply in ipairs(player.GetAll()) do
-            local pos = ply:GetPos()
+        for _, player in ipairs(player.GetAll()) do
+            local pos = player:GetPos()
             local px, py = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize
             local totalTemperature = 0
             local count = 0
@@ -117,5 +115,4 @@ local function GenerateGrid()
 end
 
 -- Llamar a la función para generar la cuadrícula al inicio del juego
-hook.Add("InitPostEntity", "GenerateTemperatureGrid", GenerateGrid)
-GenerateGrid()
+hook.Add("PlayerSpawn", "GenerateTemperatureGrid", GenerateGrid)

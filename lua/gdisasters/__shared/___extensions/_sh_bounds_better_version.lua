@@ -110,29 +110,34 @@ MAP_BOUNDS["gm_natural_disaster_survival_destruct1"] = { Vector(5119,5119,-4095)
 MAP_BOUNDS["gm_natural_disaster_survival"] = { Vector(5119,5119,-4095),       Vector(-5119,-5119,4095), 	    Vector(0,0,-948)		}
 
 function IsMapRegistered()
-	if game.GetWorld():GetModelBounds()==nil then
-		return false
-	else 
+	local worldEnt = ents.FindByClass("worldspawn")[1]
+	
+	if worldEnt then
 		return true
+	else 
+		return false
 	end 
 end
 
 
 function getMapBounds()
-    local minVector, maxVector = game.GetWorld():GetModelBounds()
+	if IsMapRegistered()==false then error("This map no have Bounds") return nil end 
+
+	local minVector, maxVector = game.GetWorld():GetModelBounds()
 	local map = game.GetMap()
 
-    return { Vector(maxVector.x,maxVector.y,minVector.z),Vector(minVector.x,minVector.y,maxVector.z), MAP_BOUNDS[map][3]}
+	return { Vector(maxVector.x,maxVector.y,minVector.z),Vector(minVector.x,minVector.y,maxVector.z), MAP_BOUNDS[map][3]}
+
 end
 
 function getMapCeiling()
-	if IsMapRegistered()==false then print("This map no have Ceiling") return nil end 
+	if IsMapRegistered()==false then error("This map no have Ceiling") return nil end 
 
 	return getMapBounds()[2].z
 end
 
 function getMapSkyBox()
-	if IsMapRegistered()==false then print("This map no have SkyBox") return nil end 
+	if IsMapRegistered()==false then error("This map no have SkyBox") return nil end 
 	local bounds = getMapBounds()
 	local min    = bounds[1]
 	local max    = bounds[2]
@@ -142,14 +147,14 @@ end
 
 
 function getMapCenterPos()
-	if IsMapRegistered()==false then print("This map no have CenterPos") return nil end 
+	if IsMapRegistered()==false then error("This map no have CenterPos") return nil end 
 
 	local av         = ((getMapBounds()[1] + getMapBounds()[2])  / 2)
 	return av
 end
 
 function getMapCenterFloorPos()
-	if IsMapRegistered()==false then print("This map no have FloorPos") return nil end 
+	if IsMapRegistered()==false then error("This map no have FloorPos") return nil end 
 
 	return getMapBounds()[3]
 end
