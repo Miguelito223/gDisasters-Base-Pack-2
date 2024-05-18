@@ -3,11 +3,6 @@ local gridSize = 100 -- Tamaño de cada cuadrado en unidades
 local minTemperature = 10 -- Temperatura mínima
 local maxTemperature = 40 -- Temperatura máxima
 
-local mapMinX = getMapBounds()[1].x
-local mapMaxX = getMapBounds()[0].x
-local mapMinY = getMapBounds()[1].y
-local mapMaxY = getMapBounds()[0].y
-
 
 -- Función para calcular la temperatura de un cuadrado basada en sus vecinos
 local function CalculateTemperature(x, y, temperatureMap)
@@ -36,6 +31,13 @@ end
 -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
 local function GenerateGrid()
     local temperatureMap = {}
+    local MapBounds = getMapBounds()
+    local max = MapBounds[1]
+    local min = MapBounds[2]
+    local mapMinX = min.x
+    local mapMinY = min.y
+    local mapMaxX = max.x
+    local mapMaxY = max.y
 
     -- Generar la cuadrícula y asignar temperaturas iniciales aleatorias
     for x = mapMinX, mapMaxX, gridSize do
@@ -61,4 +63,4 @@ local function GenerateGrid()
 end
 
 -- Llamar a la función para generar la cuadrícula al inicio del juego
-hook.Add("Initialize", "GenerateTemperatureGrid", GenerateGrid)
+hook.Add("PlayerInitialSpawn", "GenerateTemperatureGrid", GenerateGrid)
