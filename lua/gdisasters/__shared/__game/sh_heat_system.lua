@@ -33,7 +33,7 @@ local function CalculateTemperature(x, y, temperatureMap)
 end
 
 -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
-local function GenerateGrid()
+local function GenerateGrid(ply)
     local temperatureMap = {}
 
     local mapMinX = getMapBounds()[1].x
@@ -86,33 +86,31 @@ local function GenerateGrid()
         end
     end)
 
-    -- Hook para actualizar la temperatura alrededor de cada jugador
-    hook.Add("Think", "UpdatePlayerAreaTemperature", function()
-        for _, player in ipairs(player.GetAll()) do
-            local pos = player:GetPos()
-            local px, py = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize
-            local totalTemperature = 0
-            local count = 0
+   -- Hook para actualizar la temperatura alrededor del jugador
+    hook.Add("Think", "UpdatePlayerAreaTemperature_" .. ply:SteamID(), function()
+        local pos = ply:GetPos()
+        local px, py = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize
+        local totalTemperature = 0
+        local count = 0
 
-            -- Calcular la temperatura promedio de la celda actual y las vecinas
-            for i = -1, 1 do
-                for j = -1, 1 do
-                    local nx, ny = px + i * gridSize, py + j * gridSize
-                    if temperatureMap[nx] and temperatureMap[nx][ny] then
-                        totalTemperature = totalTemperature + temperatureMap[nx][ny]
-                        count = count + 1
-                    end
+        -- Calcular la temperatura promedio de la celda actual y las vecinas
+        for i = -1, 1 do
+            for j = -1, 1 do
+                local nx, ny = px + i * gridSize, py + j * gridSize
+                if temperatureMap[nx] and temperatureMap[nx][ny] then
+                    totalTemperature = totalTemperature + temperatureMap[nx][ny]
+                    count = count + 1
                 end
             end
+        end
 
-            if count > 0 then
-                local averageTemperature = totalTemperature / count
-                GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = averageTemperature
-                print(string.format("Temperatura promedio alrededor del jugador %s: %d grados Celsius", ply:GetName(), averageTemperature))
-            end
+        if count > 0 then
+            local averageTemperature = totalTemperature / count
+            GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = averageTemperature
+            print(string.format("Temperatura promedio alrededor del jugador %s: %d grados Celsius", ply:GetName(), averageTemperature))
         end
     end)
 end
 
 -- Llamar a la función para generar la cuadrícula al inicio del juego
-hook.Add("PlayerSpawn", "GenerateTemperatureGrid", GenerateGrid)
+hook.Add("PlayerInitialSpawn", "GenerateTemperatureGrid", GenerateGrid)
