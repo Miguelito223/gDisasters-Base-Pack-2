@@ -346,6 +346,11 @@ net.Receive( "gd_entity_exists_on_server", function()
 	end
 end)
 
+net.Receive("gd_WeatherChange", function()
+	currentWeather = net.ReadString()
+	print("El clima ha cambiado a: " .. currentWeather)
+end)
+
 
 
 
