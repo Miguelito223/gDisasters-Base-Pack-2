@@ -1,5 +1,5 @@
 -- Tamaño de la cuadrícula y rango de temperatura
-gridSize = 1000 -- Tamaño de cada cuadrado en unidades
+gridSize = 100 -- Tamaño de cada cuadrado en unidades
 minTemperature = 20 -- Temperatura mínima
 maxTemperature = 35 -- Temperatura máxima
 minHumidity = 30 -- Humedad mínima
@@ -8,7 +8,7 @@ minPressure = 90000 -- Presión mínima en milibares
 maxPressure = 110000 -- Presión máxima en milibares
 minWind_speed = 0
 maxWind_speed = 10
-updateInterval = 0.1 -- Intervalo de actualización en segundos
+updateInterval = 1 -- Intervalo de actualización en segundos
 updateBatchSize = 100 -- Número de celdas a actualizar por frame
 diffusionCoefficient = 0.1 -- Coeficiente de difusión de calor
 GridMap = {}
@@ -144,7 +144,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
     function GenerateGrid(ply)
         if CLIENT then return end
-        
+
         local MapBounds = getMapBounds()
         local max, min = MapBounds[1], MapBounds[2]
         local mapMinX, mapMinY, mapMaxZ  = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize,math.ceil(min.z / gridSize) * gridSize

@@ -153,7 +153,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                 entity = ents.Create("gd_w1_sunny")
             else
                 entity:Remove()
-                entity = ents.Create("gd_w2_sunny")
+                entity = ents.Create("gd_w1_sunny")
             end
         elseif currentWeather == "lluvioso" then
             if not IsValid(entity) then
