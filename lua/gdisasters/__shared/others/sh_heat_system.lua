@@ -1,12 +1,14 @@
 -- Tamaño de la cuadrícula y rango de temperatura
-gridSize = 1000 -- Tamaño de cada cuadrado en unidades
+gridSize = 500 -- Tamaño de cada cuadrado en unidades
 minTemperature = -20 -- Temperatura mínima
 maxTemperature = 40 -- Temperatura máxima
 minHumidity = 30 -- Humedad mínima
 maxHumidity = 80 -- Humedad máxima
 minPressure = 90000 -- Presión mínima en milibares
 maxPressure = 110000 -- Presión máxima en milibares
-updateInterval = 0.01 -- Intervalo de actualización en segundos
+minWind_speed = 0
+maxWind_speed = 10
+updateInterval = 0.1 -- Intervalo de actualización en segundos
 updateBatchSize = 100 -- Número de celdas a actualizar por frame
 diffusionCoefficient = 0.1 -- Coeficiente de difusión de calor
 GridMap = {}
@@ -15,30 +17,36 @@ cellsToUpdate = {}
 if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then 
 
     -- Función para calcular la temperatura de una celda basada en sus vecinos
-    function CalculateTemperature(x, y)
+    function CalculateTemperature(x, y, z)
         local totalTemperature = 0
         local count = 0
 
         -- Sumar la temperatura de las celdas vecinas
         for i = -1, 1 do
             for j = -1, 1 do
-                local nx, ny = x + i * gridSize, y + j * gridSize
-                if GridMap[nx] and GridMap[nx][ny] then
-                    totalTemperature = totalTemperature + GridMap[nx][ny].temperature
-                    count = count + 1
+                for k = -1, 1 do
+                    local nx, ny, nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
+                    if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                        totalTemperature = totalTemperature + GridMap[nx][ny][nz].temperature
+                        count = count + 1
+                    end
                 end
             end
         end
 
         -- Si no hay celdas vecinas válidas, retornar la temperatura actual
-        if count == 0 then return GridMap[x][y].temperature end
+        if count == 0 then return GridMap[x][y][z].temperature end
 
         -- Calcular la temperatura promedio de las vecinas
         local averageTemperature = totalTemperature / count
 
         -- Ajustar la temperatura de la celda actual basada en la difusión de calor
-        local currentTemperature = GridMap[x][y].temperature
+        local currentTemperature = GridMap[x][y][z].temperature
         local newTemperature = currentTemperature + diffusionCoefficient * (averageTemperature - currentTemperature)
+        -- Ajustar la temperatura en función de la altitud
+        local altitudeEffect = z * 0.0065 -- La temperatura desciende aproximadamente 0.0065 grados por metro de altitud
+        newTemperature = newTemperature - altitudeEffect
+
 
         return math.max(minTemperature, math.min(maxTemperature, newTemperature)) -- Asegurarse de que la temperatura esté dentro del rango
     end
@@ -46,68 +54,99 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
 
 
     -- Función para calcular la humedad de una celda basada en sus vecinos
-    function CalculateHumidity(x, y)
+    function CalculateHumidity(x, y, z)
         local totalHumidity = 0
         local count = 0
 
         -- Sumar la humedad de las celdas vecinas
         for i = -1, 1 do
             for j = -1, 1 do
-                local nx, ny = x + i * gridSize, y + j * gridSize
-                if GridMap[nx] and GridMap[nx][ny] then
-                    totalHumidity = totalHumidity + GridMap[nx][ny].humidity
-                    count = count + 1
+                for k = -1, 1 do
+                    local nx, ny, nz = x + i * gridSize, y + j * gridSize, y + k * gridSize
+                    if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                        totalHumidity = totalHumidity + GridMap[nx][ny][nz].humidity
+                        count = count + 1
+                    end
                 end
             end
         end
 
         -- Si no hay celdas vecinas válidas, retornar la humedad actual
-        if count == 0 then return GridMap[x][y].humidity end
+        if count == 0 then return GridMap[x][y][z].humidity end
 
         -- Calcular la humedad promedio de las vecinas
         local averageHumidity = totalHumidity / count
 
         -- Ajustar la humedad de la celda actual
-        local currentHumidity = GridMap[x][y].humidity
+        local currentHumidity = GridMap[x][y][z].humidity
         local newHumidity = currentHumidity + diffusionCoefficient * (averageHumidity - currentHumidity)
 
         return math.max(minHumidity, math.min(maxHumidity, newHumidity)) -- Asegurarse de que la humedad esté dentro del rango
     end
 
-    function CalculatePressure(x, y)
+    function CalculatePressure(x, y, z)
         local totalPressure = 0
         local count = 0
 
         -- Sumar la presión de las celdas vecinas
         for i = -1, 1 do
             for j = -1, 1 do
-                local nx, ny = x + i * gridSize, y + j * gridSize
-                if GridMap[nx] and GridMap[nx][ny] then
-                    totalPressure = totalPressure + GridMap[nx][ny].pressure
-                    count = count + 1
+                for k = -1, 1 do
+                    local nx, ny, nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
+                    if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                        totalPressure = totalPressure + GridMap[nx][ny][nz].pressure
+                        count = count + 1
+                    end
                 end
             end
         end
 
         -- Si no hay celdas vecinas válidas, retornar la presión actual
-        if count == 0 then return GridMap[x][y].pressure end
+        if count == 0 then return GridMap[x][y][z].pressure end
 
         -- Calcular la presión promedio de las vecinas
         local averagePressure = totalPressure / count
 
         -- Ajustar la presión de la celda actual
-        local currentPressure = GridMap[x][y].pressure
+        local currentPressure = GridMap[x][y][z].pressure
         local newPressure = currentPressure + diffusionCoefficient * (averagePressure - currentPressure)
-
+        local altitudeEffect = z * 12 -- La temperatura desciende aproximadamente 0.0065 grados por metro de altitud
+        newPressure = newPressure - altitudeEffect
         return math.max(minPressure, math.min(maxPressure, newPressure)) -- Asegurarse de que la presión esté dentro del rango
+    end
+
+    function CalculateWindSpeed(x, y, z)
+        local maxDeltaPressure = 0 -- Almacena el cambio máximo de presión
+
+        -- Calcular la diferencia de presión entre las celdas vecinas
+        for i = -1, 1 do
+            for j = -1, 1 do
+                for k = -1, 1 do
+                    if i ~= 0 or j ~= 0 or k ~= 0 then -- Evitar la celda actual
+                        local nx, ny,nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
+                        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                            local deltaPressure = GridMap[nx][ny][nz].pressure - GridMap[x][y][z].pressure
+                            if math.abs(deltaPressure) > math.abs(maxDeltaPressure) then
+                                maxDeltaPressure = deltaPressure
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        -- Calcular la velocidad del viento en función de la diferencia de presión
+        local windSpeed = maxDeltaPressure * (maxWind_speed - minWind_speed) / (maxPressure - minPressure)
+
+        return math.max(minWind_speed, math.min(maxWind_speed, windSpeed))
     end
 
     -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
     function GenerateGrid(ply)
         local MapBounds = getMapBounds()
         local max, min = MapBounds[1], MapBounds[2]
-        local mapMinX, mapMinY = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize
-        local mapMaxX, mapMaxY = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize
+        local mapMinX, mapMinY, mapMaxZ  = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize,math.ceil(min.z / gridSize) * gridSize
+        local mapMaxX, mapMaxY, mapMinZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize, math.ceil(max.z / gridSize) * gridSize
 
         print("Generating grid...") -- Depuración
 
@@ -117,18 +156,25 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                 GridMap[x] = {} -- Asegurarse de que cada columna esté inicializada
             end
             for y = mapMinY, mapMaxY, gridSize do
-                GridMap[x][y] = { temperature = math.random(minTemperature, maxTemperature), humidity = math.random(minHumidity, maxHumidity), pressure = math.random(minPressure, maxPressure)}
-                print("Position grid: " .. x .. ", ".. y) -- Depuración
+                GridMap[x][y] = {}
+
+                for z = mapMinZ, mapMaxZ, gridSize do
+                    GridMap[x][y][z] = { temperature = math.random(minTemperature, maxTemperature), humidity = math.random(minHumidity, maxHumidity), pressure = math.random(minPressure, maxPressure), wind_speed = math.random(minWind_speed, maxWind_speed)}
+                    print("Position grid: " .. x .. ", ".. y .. ", " .. z) -- Depuración
+                end
             end
+
         end
 
         print("Grid generated.") -- Depuración
 
-    -- Variables para controlar la actualización por lotes
+        -- Variables para controlar la actualización por lotes
         
         for x = mapMinX, mapMaxX, gridSize do
             for y = mapMinY, mapMaxY, gridSize do
-                table.insert(cellsToUpdate, {x, y})
+                for z = mapMinZ, mapMaxZ, gridSize do
+                    table.insert(cellsToUpdate, {x, y, z})
+                end
             end
         end
 
@@ -146,21 +192,25 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                         -- Reiniciar la lista de celdas para actualizar
                         for x = mapMinX, mapMaxX, gridSize do
                             for y = mapMinY, mapMaxY, gridSize do
-                                table.insert(cellsToUpdate, {x, y})
+                                for z = mapMinZ, mapMaxZ, gridSize do
+                                    table.insert(cellsToUpdate, {x, y, z})
+                                end
                             end
                         end
                         cell = table.remove(cellsToUpdate, 1)
                     end
 
                     if cell then
-                        local x, y = cell[1], cell[2]
-                        if GridMap[x] and GridMap[x][y] then
-                            local newTemperature = CalculateTemperature(x, y)
-                            local newHumidity = CalculateHumidity(x, y)
-                            local newPressure = CalculatePressure(x, y)
-                            GridMap[x][y].temperature = newTemperature
-                            GridMap[x][y].humidity = newHumidity
-                            GridMap[x][y].pressure = newPressure
+                        local x, y, z = cell[1], cell[2], cell[3]
+                        if GridMap[x] and GridMap[x][y] and GridMap[x][y][z] then
+                            local newTemperature = CalculateTemperature(x, y, z)
+                            local newHumidity = CalculateHumidity(x, y, z)
+                            local newPressure = CalculatePressure(x, y, z)
+                            local newWind_speed = CalculateWindSpeed(x, y, z)
+                            GridMap[x][y][z].temperature = newTemperature
+                            GridMap[x][y][z].humidity = newHumidity
+                            GridMap[x][y][z].pressure = newPressure
+                            GridMap[x][y][z].wind_speed = newWind_speed
                         end
                     end
                 end
@@ -172,36 +222,98 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
             local pos = ply:GetPos()
             local px = math.floor(pos.x / gridSize) * gridSize
             local py = math.floor(pos.y / gridSize ) * gridSize
-            if GridMap[px] and GridMap[px][py] then
-                GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = CalculateTemperature(px, py)
-                GLOBAL_SYSTEM["Atmosphere"]["Humidity"] = CalculateHumidity(px, py)
-                GLOBAL_SYSTEM["Atmosphere"]["Pressure"] = CalculatePressure(px, py)
+            local pz = math.floor(pos.z / gridSize ) * gridSize
+            if GridMap[px] and GridMap[px][py] and GridMap[px][py][pz] then
+                GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = CalculateTemperature(px, py, pz)
+                GLOBAL_SYSTEM["Atmosphere"]["Humidity"] = CalculateHumidity(px, py, pz)
+                GLOBAL_SYSTEM["Atmosphere"]["Pressure"] = CalculatePressure(px, py, pz)
             end
         end)
     end
 
     if CLIENT then
+        local maxDrawDistance = 5000 -- Distancia máxima en unidades para dibujar la cuadrícula
+
         hook.Add("PostDrawOpaqueRenderables", "DrawGridDebug", function()
+            local playerPos = LocalPlayer():GetPos()
             local MapBounds = getMapBounds()
             local max, min, floor = MapBounds[1], MapBounds[2], MapBounds[3]
-            local mapMinX, mapMinY = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize
-            local mapMaxX, mapMaxY = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize
+            local mapMinX, mapMinY, mapMinZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize, math.floor(min.z / gridSize) * gridSize
+            local mapMaxX, mapMaxY, mapMaxZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize, math.ceil(max.z / gridSize) * gridSize
 
             for x = mapMinX, mapMaxX, gridSize do
-                local pos1 = Vector(x, mapMinY, floor.z + 5)
-                local pos2 = Vector(x + gridSize, mapMaxY, floor.z + 5)
-                render.SetColorMaterial()
-                render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
-
                 for y = mapMinY, mapMaxY, gridSize do
-                    local pos1 = Vector(mapMinX, y, floor.z + 5)
-                    local pos2 = Vector(mapMaxX, y + gridSize, floor.z + 5)
-                    render.SetColorMaterial()
-                    render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+                    for z = mapMinZ, mapMaxZ, gridSize do
+                        local cellCenter = Vector(x + gridSize / 2, y + gridSize / 2, z + gridSize / 2)
+                        if playerPos:DistToSqr(cellCenter) < maxDrawDistance * maxDrawDistance then
+                            local pos1, pos2
+
+                            pos1 = Vector(x, y, z)
+                            pos2 = Vector(x + gridSize, y, z)
+                            render.SetColorMaterial()
+                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+
+                            pos1 = Vector(x, y, z)
+                            pos2 = Vector(x, y + gridSize, z)
+                            render.SetColorMaterial()
+                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+
+                            pos1 = Vector(x, y, z)
+                            pos2 = Vector(x, y, z + gridSize)
+                            render.SetColorMaterial()
+                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+
+                            pos1 = Vector(x + gridSize, y + gridSize, z + gridSize)
+                            pos2 = Vector(x, y + gridSize, z + gridSize)
+                            render.SetColorMaterial()
+                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+
+                            pos1 = Vector(x + gridSize, y + gridSize, z + gridSize)
+                            pos2 = Vector(x + gridSize, y, z + gridSize)
+                            render.SetColorMaterial()
+                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+
+                            pos1 = Vector(x + gridSize, y + gridSize, z + gridSize)
+                            pos2 = Vector(x + gridSize, y + gridSize, z)
+                            render.SetColorMaterial()
+                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+
+                            pos1 = Vector(x + gridSize, y, z)
+                            pos2 = Vector(x + gridSize, y, z + gridSize)
+                            render.SetColorMaterial()
+                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+
+                            pos1 = Vector(x + gridSize, y, z)
+                            pos2 = Vector(x + gridSize, y + gridSize, z)
+                            render.SetColorMaterial()
+                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+
+                            pos1 = Vector(x, y + gridSize, z)
+                            pos2 = Vector(x, y + gridSize, z + gridSize)
+                            render.SetColorMaterial()
+                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+
+                            pos1 = Vector(x, y + gridSize, z)
+                            pos2 = Vector(x + gridSize, y + gridSize, z)
+                            render.SetColorMaterial()
+                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+
+                            pos1 = Vector(x, y, z + gridSize)
+                            pos2 = Vector(x + gridSize, y, z + gridSize)
+                            render.SetColorMaterial()
+                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+
+                            pos1 = Vector(x, y, z + gridSize)
+                            pos2 = Vector(x, y + gridSize, z + gridSize)
+                            render.SetColorMaterial()
+                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+                        end
+                    end
                 end
             end
         end)
     end
+    
 
     
 
