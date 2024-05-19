@@ -9,6 +9,8 @@ GLOBAL_SYSTEM = {
 											["Direction"]=Vector(1,0,0),
 											["NextThink"]=CurTime()
 										   },
+
+						["AirFlow"] = Vector(0,0,0),
 										
 					
 						["Pressure"]    = 100000,
@@ -29,6 +31,7 @@ GLOBAL_SYSTEM_TARGET = {
 											["Speed"]=0,
 											["Direction"]=Vector(1,0,0)
 										   },
+						["AirFlow"] = Vector(0,0,0),
 					
 						["Pressure"]    = 100000,
 						
@@ -39,6 +42,8 @@ GLOBAL_SYSTEM_TARGET = {
 						["BRadiation"]  = 0.1,
 
 						["Oxygen"]  = 100
+
+
 				}
 				}
 				
@@ -48,6 +53,8 @@ GLOBAL_SYSTEM_ORIGINAL = {
 											["Speed"]=0,
 											["Direction"]=Vector(1,0,0)
 										   },
+						
+						["AirFlow"] = Vector(0,0,0),
 					
 						["Pressure"]    = 100000,
 						

@@ -116,7 +116,9 @@ function ENT:Think()
 	if (SERVER) then
 		if !self:IsValid() then return end
 		self:FadeInOutControler()
-		self:MoveCloud()
+		if GetConVar("gdisasters_heat_system"):GetInt() <= 0 then 
+			self:MoveCloud()
+		end
 		self:NextThink(CurTime() + 0.01)
 		return true
 	end

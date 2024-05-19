@@ -13,6 +13,12 @@ updateBatchSize = 100 -- Número de celdas a actualizar por frame
 diffusionCoefficient = 0.1 -- Coeficiente de difusión de calor
 gas_constant = 287.05
 specific_heat_vapor = 2010
+airflowCoefficientX = 0.1 
+airflowCoefficientY = 0.1 
+airflowCoefficientZ = 0.1 
+waterTemperatureEffect = 10  -- Por ejemplo, un valor de temperatura predeterminado para el agua
+landTemperatureEffect = 5    -- Por ejemplo, un valor de temperatura predeterminado para la tierra
+lastUpdateTime = CurTime()
 GridMap = {}
 cellsToUpdate = {}
 waterSources = {}
@@ -102,18 +108,23 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         local max, min, floor = MapBounds[1], MapBounds[2], MapBounds[3]
         local mapMinX, mapMinY, mapMaxZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize, math.floor(min.z / gridSize) * gridSize
         local mapMaxX, mapMaxY, mapMinZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize, math.ceil(max.z / gridSize) * gridSize
+        local floorz = math.ceil(floor.z / gridSize) * gridSize
+        
         local MAP_WIDTH = mapMaxX - mapMinX
         local MAP_DEPTH = mapMaxY - mapMinY
         local MAP_HEIGHT = mapMaxZ - mapMinZ
+        local WATER_LEVEL = floorz
+        local MOUNTAIN_LEVEL = floorz + 1000
+
         -- Verificar si las coordenadas están dentro de los límites del mapa
         if x < 0 or x >= MAP_WIDTH or y < 0 or y >= MAP_DEPTH or z < 0 or z >= MAP_HEIGHT  then
             return "out_of_bounds" -- Devolver un tipo especial para coordenadas fuera de los límites del mapa
         end
 
         -- Simular diferentes tipos de celdas basadas en coordenadas
-        if y <= WATER_LEVEL then
+        if z <= WATER_LEVEL then
             return "water" -- Por debajo del nivel del agua es agua
-        elseif y >= MOUNTAIN_LEVEL then
+        elseif z >= MOUNTAIN_LEVEL then
             return "mountain" -- Por encima del nivel de la montaña es montaña
         else
             return "land" -- En otras coordenadas es tierra
@@ -150,75 +161,60 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         local airflowY = totalDeltaPressureY * airflowCoefficientY
         local airflowZ = totalDeltaPressureZ * airflowCoefficientZ
 
-        return airflowX, airflowY, airflowZ
+        return Vector(airflowX, airflowY, airflowZ)
     end
    
-    function GetClosestDistance(x1, y1, z1, x2, y2, z2)
-        local dx = x2 - x1
-        local dy = y2 - y1
-        local dz = z2 - z1
-        return math.sqrt(dx*dx + dy*dy + dz*dz)
-    end
-    
-    -- Función para encontrar la fuente de agua más cercana a un punto dado
-    function GetClosestWaterSource(x, y, z, source)
+    -- Función para obtener la distancia a la fuente más cercana
+    function GetClosestDistance(x, y, z, sources)
         local closestDistance = math.huge
-        local closestSource = nil
 
-        for _, source in ipairs(source) do
-            local distance = GetClosestDistance(x, y, z, source.x, source.y, source.z)
+        for _, source in ipairs(sources) do
+            local distance = GetDistance(x, y, z, source.x, source.y, source.z)
             if distance < closestDistance then
                 closestDistance = distance
-                closestSource = source
             end
         end
 
-        return closestSource, closestDistance
+        return closestDistance
     end
 
-    function AddTemperatureHumiditySources()
-        local waterSources = GetWaterSources() -- Obtener las coordenadas de las fuentes de agua
-        local landSources = GetLandSources() -- Obtener las coordenadas de las fuentes de tierra
+    lastUpdateTime = CurTime()
 
-        -- Iterar sobre todas las celdas en la cuadrícula
+    function AddTemperatureHumiditySources()    
+        local waterSources = GetWaterSources()
+        local landSources = GetLandSources()
+
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
-                    -- Calcular la distancia a las fuentes de agua y tierra más cercanas
                     local closestWaterDist = GetClosestDistance(x, y, z, waterSources)
                     local closestLandDist = GetClosestDistance(x, y, z, landSources)
 
-                    -- Ajustar la temperatura y la humedad en función de las fuentes de agua y tierra
                     if closestWaterDist < closestLandDist then
-                        -- La celda está más cerca del agua que de la tierra
-                        GridMap[x][y][z].temperature = GridMap[x][y][z].temperature - waterTemperatureEffect
-                        GridMap[x][y][z].humidity = math.min(maxHumidity, GridMap[x][y][z].humidity + waterHumidityEffect)
+                        cell.temperature = cell.temperature - waterTemperatureEffect
+                        cell.humidity = math.min(maxHumidity, cell.humidity + waterHumidityEffect)
                     else
-                        -- La celda está más cerca de la tierra que del agua
-                        GridMap[x][y][z].temperature = GridMap[x][y][z].temperature + landTemperatureEffect
-                        GridMap[x][y][z].humidity = math.max(minHumidity, GridMap[x][y][z].humidity - landHumidityEffect)
+                        cell.temperature = cell.temperature + landTemperatureEffect
+                        cell.humidity = math.max(minHumidity, cell.humidity - landHumidityEffect)
                     end
                 end
             end
         end
     end
 
+    -- Función para obtener las coordenadas de las fuentes de agua
     function GetWaterSources()
-        local waterSources = {} -- Lista para almacenar las coordenadas de las fuentes de agua
+        local waterSources = {}
 
-        -- Supongamos que tienes una función GetCellType(x, y, z) que devuelve el tipo de la celda en las coordenadas dadas
-        -- Esta función podría ser proporcionada por tu motor de juego o implementada por ti mismo
+        local mapBounds = getMapBounds()
+        local minX, minY, maxZ = mapBounds[2].x, mapBounds[2].y, mapBounds[2].z
+        local maxX, maxY, minZ = mapBounds[1].x, mapBounds[1].y, mapBounds[1].z
 
-        local mapBounds = getMapBounds() -- Obtener los límites del mapa
-        local minX, minY, maxZ = mapBounds[2].x, mapBounds[2].y, mapBounds[2].z -- Límites mínimos del mapa
-        local maxX, maxY, minZ = mapBounds[1].x, mapBounds[1].y, mapBounds[1].z -- Límites máximos del mapa
-
-        -- Recorrer el mapa para encontrar las fuentes de agua
         for x = minX, maxX do
             for y = minY, maxY do
                 for z = minZ, maxZ do
                     if GetCellType(x, y, z) == "water" then
-                        table.insert(waterSources, {x = x, y = y, z = z}) -- Agregar las coordenadas de la fuente de agua
+                        table.insert(waterSources, {x = x, y = y, z = z})
                     end
                 end
             end
@@ -227,23 +223,19 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         return waterSources
     end
 
-    -- Función para detectar automáticamente las fuentes de tierra en el entorno del juego
+    -- Función para obtener las coordenadas de las fuentes de tierra
     function GetLandSources()
-        local landSources = {} -- Lista para almacenar las coordenadas de las fuentes de tierra
+        local landSources = {}
 
-        -- Supongamos que tienes una función GetCellType(x, y, z) que devuelve el tipo de la celda en las coordenadas dadas
-        -- Esta función podría ser proporcionada por tu motor de juego o implementada por ti mismo
+        local mapBounds = getMapBounds()
+        local minX, minY, maxZ = mapBounds[2].x, mapBounds[2].y, mapBounds[2].z
+        local maxX, maxY, minZ = mapBounds[1].x, mapBounds[1].y, mapBounds[1].z
 
-        local mapBounds = getMapBounds() -- Obtener los límites del mapa
-        local minX, minY, minZ = mapBounds[2].x, mapBounds[2].y, mapBounds[2].z -- Límites mínimos del mapa
-        local maxX, maxY, maxZ = mapBounds[1].x, mapBounds[1].y, mapBounds[1].z -- Límites máximos del mapa
-
-        -- Recorrer el mapa para encontrar las fuentes de tierra
         for x = minX, maxX do
             for y = minY, maxY do
                 for z = minZ, maxZ do
                     if GetCellType(x, y, z) == "land" then
-                        table.insert(landSources, {x = x, y = y, z = z}) -- Agregar las coordenadas de la fuente de tierra
+                        table.insert(landSources, {x = x, y = y, z = z})
                     end
                 end
             end
@@ -252,95 +244,109 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         return landSources
     end
 
+
+    local function SpawnCloud(pos, airflow)
+        local cloud = ents.Create("gd_cloud_cumulus")
+        cloud:SetPos(pos)
+
+        -- Aplicar el flujo de aire a la velocidad de movimiento de la nube
+        local velocity = Vector(airflow.x, airflow.y, airflow.z) * 10 -- Ajusta el factor de escala según sea necesario
+        cloud:SetVelocity(velocity)
+
+        return cloud
+    end
+
+    -- Función para simular la formación y movimiento de nubes
+    function SimulateClouds()
+        for x, column in pairs(GridMap) do
+            for y, row in pairs(column) do
+                for z, cell in pairs(row) do
+                    local airflow = SimulateAirFlow(x, y, z)
+                    local pos = Vector(x, y, z) * gridSize
+                    SpawnCloud(pos, airflow)
+                end
+            end
+        end
+    end
+
+    -- Llamar a SimulateClouds() para simular la formación y movimiento de las nubes
+    function UpdateWeather()
+        SimulateClouds()
+    end
+
     -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
     function GenerateGrid(ply)
         if CLIENT then return end
 
-        local MapBounds = getMapBounds()
-        local max, min = MapBounds[1], MapBounds[2]
-        local mapMinX, mapMinY, mapMaxZ  = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize,math.ceil(min.z / gridSize) * gridSize
-        local mapMaxX, mapMaxY, mapMinZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize, math.ceil(max.z / gridSize) * gridSize
+        -- Obtener los límites del mapa
+        local mapBounds = getMapBounds()
+        local minX, minY, maxZ = math.floor(mapBounds[2].x / gridSize) * gridSize, math.floor(mapBounds[2].y / gridSize) * gridSize, math.ceil(mapBounds[2].z / gridSize) * gridSize
+        local maxX, maxY, minZ = math.ceil(mapBounds[1].x / gridSize) * gridSize, math.ceil(mapBounds[1].y / gridSize) * gridSize, math.ceil(mapBounds[1].z / gridSize) * gridSize
 
         print("Generating grid...") -- Depuración
 
-        -- Generar la cuadrícula y asignar temperaturas iniciales aleatorias
-        for x = mapMinX, mapMaxX, gridSize do
-            if not GridMap[x] then
-                GridMap[x] = {} -- Asegurarse de que cada columna esté inicializada
-            end
-            for y = mapMinY, mapMaxY, gridSize do
+        -- Inicializar la cuadrícula
+        for x = minX, maxX, gridSize do
+            GridMap[x] = {}
+            for y = minY, maxY, gridSize do
                 GridMap[x][y] = {}
-
-                for z = mapMinZ, mapMaxZ, gridSize do
-                    GridMap[x][y][z] = { temperature = math.random(minTemperature, maxTemperature), humidity = math.random(minHumidity, maxHumidity), pressure = math.random(minPressure, maxPressure), SimulateAirFlow = Vector(0,0,0)}
+                for z = minZ, maxZ, gridSize do
+                    GridMap[x][y][z] = {
+                        temperature = math.random(minTemperature, maxTemperature),
+                        humidity = math.random(minHumidity, maxHumidity),
+                        pressure = math.random(minPressure, maxPressure),
+                        airflow = Vector(0, 0, 0)
+                    }
                     print("Position grid: " .. x .. ", ".. y .. ", " .. z) -- Depuración
                 end
             end
-
         end
 
         print("Grid generated.") -- Depuración
 
-        -- Variables para controlar la actualización por lotes
-        
-        for x = mapMinX, mapMaxX, gridSize do
-            for y = mapMinY, mapMaxY, gridSize do
-                for z = mapMinZ, mapMaxZ, gridSize do
-                    table.insert(cellsToUpdate, {x, y, z})
-                end
-            end
-        end
-
-        local lastUpdateTime = CurTime()
-
-        -- Hook para actualizar la temperatura de las celdas en lotes
-        hook.Add("Think", "UpdateTemperatureGrid", function()
-            if CurTime() - lastUpdateTime >= updateInterval then
-                lastUpdateTime = CurTime()
-
-                -- Actualizar un lote de celdas
-                for i = 1, updateBatchSize do
-                    local cell = table.remove(cellsToUpdate, 1)
-                    if not cell then
-                        -- Reiniciar la lista de celdas para actualizar
-                        for x = mapMinX, mapMaxX, gridSize do
-                            for y = mapMinY, mapMaxY, gridSize do
-                                for z = mapMinZ, mapMaxZ, gridSize do
-                                    table.insert(cellsToUpdate, {x, y, z})
-                                end
+        -- Actualizar la cuadrícula
+        hook.Add("Think2", "UpdateTemperatureGrid", function()
+            -- Actualizar un lote de celdas
+            for i = 1, updateBatchSize do
+                local cell = table.remove(cellsToUpdate, 1)
+                if not cell then
+                    -- Reiniciar la lista de celdas para actualizar
+                    cellsToUpdate = {}
+                    for x = minX, maxX, gridSize do
+                        for y = minY, maxY, gridSize do
+                            for z = minZ, maxZ, gridSize do
+                                table.insert(cellsToUpdate, {x, y, z})
                             end
                         end
-                        cell = table.remove(cellsToUpdate, 1)
                     end
+                    cell = table.remove(cellsToUpdate, 1)
+                end
 
-                    if cell then
-                        local x, y, z = cell[1], cell[2], cell[3]
-                        if GridMap[x] and GridMap[x][y] and GridMap[x][y][z] then
-                            local newTemperature = CalculateTemperature(x, y, z)
-                            local newHumidity = CalculateHumidity(x, y, z)
-                            local newPressure = CalculatePressure(x, y, z)
-                            local newSimulateAirFlow = SimulateAirFlow(x, y, z)
-                            GridMap[x][y][z].temperature = newTemperature
-                            GridMap[x][y][z].humidity = newHumidity
-                            GridMap[x][y][z].pressure = newPressure
-                            GridMap[x][y][z].SimulateAirFlow = newSimulateAirFlow
-                            
-                        end
+                if cell then
+                    local x, y, z = cell[1], cell[2], cell[3]
+                    if GridMap[x] and GridMap[x][y] and GridMap[x][y][z] then
+                        local newTemperature = CalculateTemperature(x, y, z)
+                        local newHumidity = CalculateHumidity(x, y, z)
+                        local newPressure = CalculatePressure(x, y, z)
+                        local newAirFlow = SimulateAirFlow(x, y, z)
+                        GridMap[x][y][z].temperature = newTemperature
+                        GridMap[x][y][z].humidity = newHumidity
+                        GridMap[x][y][z].pressure = newPressure
+                        GridMap[x][y][z].airflow = newAirFlow
                     end
                 end
             end
         end)
 
-        -- Hook para actualizar la temperatura alrededor del jugador
+        -- Actualizar la temperatura alrededor del jugador
         hook.Add("Think", "UpdatePlayerAreaTemperature_" .. ply:SteamID(), function()
             local pos = ply:GetPos()
-            local px = math.floor(pos.x / gridSize) * gridSize
-            local py = math.floor(pos.y / gridSize ) * gridSize
-            local pz = math.floor(pos.z / gridSize ) * gridSize
+            local px, py, pz = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize, math.floor(pos.z / gridSize) * gridSize
             if GridMap[px] and GridMap[px][py] and GridMap[px][py][pz] then
                 GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = CalculateTemperature(px, py, pz)
                 GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = CalculateHumidity(px, py, pz)
                 GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = CalculatePressure(px, py, pz)
+                GLOBAL_SYSTEM_TARGET["Atmosphere"]["AirFlow"] = SimulateAirFlow(px, py, pz)
             end
         end)
     end
@@ -427,11 +433,9 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
             end
         end)
     end
-    
-
-    
-
     -- Llamar a la función para generar la cuadrícula al inicio del juego
     hook.Add("PlayerSpawn", "GenerateTemperatureGrid", GenerateGrid)
-    hook.Add("Think", "AddTemperatureHumiditySources", AddTemperatureHumiditySources)
+    hook.Add("Think3", "UpdateTemperatureHumidity", function()
+        AddTemperatureHumiditySources()
+    end)
 end
