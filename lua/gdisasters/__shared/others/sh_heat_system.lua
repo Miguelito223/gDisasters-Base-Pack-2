@@ -11,8 +11,12 @@ maxWind_speed = 10
 updateInterval = 1 -- Intervalo de actualización en segundos
 updateBatchSize = 100 -- Número de celdas a actualizar por frame
 diffusionCoefficient = 0.1 -- Coeficiente de difusión de calor
+gas_constant = 287.05
+specific_heat_vapor = 2010
 GridMap = {}
 cellsToUpdate = {}
+waterSources = {}
+LandSources = {}
 
 if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then 
 
@@ -115,30 +119,145 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         return math.max(minPressure, math.min(maxPressure, newPressure)) -- Asegurarse de que la presión esté dentro del rango
     end
 
-    function CalculateWindSpeed(x, y, z)
-        local maxDeltaPressure = 0 -- Almacena el cambio máximo de presión
+    -- Función para calcular la presión de una celda basada en temperatura y humedad
+    function CalculatePressure(x, y, z)
+        local temperature = GridMap[x][y][z].temperature
+        local humidity = GridMap[x][y][z].humidity
+
+        local pressure = gas_constant * temperature * (1 + (specific_heat_vapor * humidity / temperature))
+        return pressure
+    end
+
+    function GetCellType(x, y, z)
+        local MapBounds = getMapBounds()
+        local max, min, floor = MapBounds[1], MapBounds[2], MapBounds[3]
+        local mapMinX, mapMinY, mapMaxZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize, math.floor(min.z / gridSize) * gridSize
+        local mapMaxX, mapMaxY, mapMinZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize, math.ceil(max.z / gridSize) * gridSize
+        local MAP_WIDTH = mapMaxX - mapMinX
+        local MAP_DEPTH = mapMaxY - mapMinY
+        local MAP_HEIGHT = mapMaxZ - mapMinZ
+        -- Verificar si las coordenadas están dentro de los límites del mapa
+        if x < 0 or x >= MAP_WIDTH or y < 0 or y >= MAP_DEPTH or z < 0 or z >= MAP_HEIGHT  then
+            return "out_of_bounds" -- Devolver un tipo especial para coordenadas fuera de los límites del mapa
+        end
+
+        -- Simular diferentes tipos de celdas basadas en coordenadas
+        if y <= WATER_LEVEL then
+            return "water" -- Por debajo del nivel del agua es agua
+        elseif y >= MOUNTAIN_LEVEL then
+            return "mountain" -- Por encima del nivel de la montaña es montaña
+        else
+            return "land" -- En otras coordenadas es tierra
+        end
+    end
+
+    -- Función para simular el flujo de aire basado en la presión
+    function SimulateAirFlow(x, y, z)
+        local totalDeltaPressureX = 0
+        local totalDeltaPressureY = 0
+        local totalDeltaPressureZ = 0
 
         -- Calcular la diferencia de presión entre las celdas vecinas
         for i = -1, 1 do
             for j = -1, 1 do
                 for k = -1, 1 do
                     if i ~= 0 or j ~= 0 or k ~= 0 then -- Evitar la celda actual
-                        local nx, ny,nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
+                        local nx, ny, nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
                         if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                            local deltaPressure = GridMap[nx][ny][nz].pressure - GridMap[x][y][z].pressure
-                            if math.abs(deltaPressure) > math.abs(maxDeltaPressure) then
-                                maxDeltaPressure = deltaPressure
-                            end
+                            local deltaPressureX = GridMap[nx][ny][nz].pressure - GridMap[x][y][z].pressure
+                            local deltaPressureY = GridMap[nx][ny][nz].pressure - GridMap[x][y][z].pressure
+                            local deltaPressureZ = GridMap[nx][ny][nz].pressure - GridMap[x][y][z].pressure
+                            totalDeltaPressureX = totalDeltaPressureX + deltaPressureX
+                            totalDeltaPressureY = totalDeltaPressureY + deltaPressureY
+                            totalDeltaPressureZ = totalDeltaPressureZ + deltaPressureZ
                         end
                     end
                 end
             end
         end
 
-        -- Calcular la velocidad del viento en función de la diferencia de presión
-        local windSpeed = maxDeltaPressure * (maxWind_speed - minWind_speed) / (maxPressure - minPressure)
+        -- Ajustar la velocidad del flujo de aire en función de la diferencia de presión
+        local airflowX = totalDeltaPressureX * airflowCoefficientX
+        local airflowY = totalDeltaPressureY * airflowCoefficientY
+        local airflowZ = totalDeltaPressureZ * airflowCoefficientZ
 
-        return math.max(minWind_speed, math.min(maxWind_speed, windSpeed))
+        return airflowX, airflowY, airflowZ
+    end
+
+    function AddTemperatureHumiditySources()
+        local waterSources = GetWaterSources() -- Obtener las coordenadas de las fuentes de agua
+        local landSources = GetLandSources() -- Obtener las coordenadas de las fuentes de tierra
+
+        -- Iterar sobre todas las celdas en la cuadrícula
+        for x, column in pairs(GridMap) do
+            for y, row in pairs(column) do
+                for z, cell in pairs(row) do
+                    -- Calcular la distancia a las fuentes de agua y tierra más cercanas
+                    local closestWaterDist = GetClosestDistance(x, y, z, waterSources)
+                    local closestLandDist = GetClosestDistance(x, y, z, landSources)
+
+                    -- Ajustar la temperatura y la humedad en función de las fuentes de agua y tierra
+                    if closestWaterDist < closestLandDist then
+                        -- La celda está más cerca del agua que de la tierra
+                        GridMap[x][y][z].temperature = GridMap[x][y][z].temperature - waterTemperatureEffect
+                        GridMap[x][y][z].humidity = math.min(maxHumidity, GridMap[x][y][z].humidity + waterHumidityEffect)
+                    else
+                        -- La celda está más cerca de la tierra que del agua
+                        GridMap[x][y][z].temperature = GridMap[x][y][z].temperature + landTemperatureEffect
+                        GridMap[x][y][z].humidity = math.max(minHumidity, GridMap[x][y][z].humidity - landHumidityEffect)
+                    end
+                end
+            end
+        end
+    end
+
+    function GetWaterSources()
+        local waterSources = {} -- Lista para almacenar las coordenadas de las fuentes de agua
+
+        -- Supongamos que tienes una función GetCellType(x, y, z) que devuelve el tipo de la celda en las coordenadas dadas
+        -- Esta función podría ser proporcionada por tu motor de juego o implementada por ti mismo
+
+        local mapBounds = getMapBounds() -- Obtener los límites del mapa
+        local minX, minY, maxZ = mapBounds[2].x, mapBounds[2].y, mapBounds[2].z -- Límites mínimos del mapa
+        local maxX, maxY, minZ = mapBounds[1].x, mapBounds[1].y, mapBounds[1].z -- Límites máximos del mapa
+
+        -- Recorrer el mapa para encontrar las fuentes de agua
+        for x = minX, maxX do
+            for y = minY, maxY do
+                for z = minZ, maxZ do
+                    if GetCellType(x, y, z) == "water" then
+                        table.insert(waterSources, {x = x, y = y, z = z}) -- Agregar las coordenadas de la fuente de agua
+                    end
+                end
+            end
+        end
+
+        return waterSources
+    end
+
+    -- Función para detectar automáticamente las fuentes de tierra en el entorno del juego
+    function GetLandSources()
+        local landSources = {} -- Lista para almacenar las coordenadas de las fuentes de tierra
+
+        -- Supongamos que tienes una función GetCellType(x, y, z) que devuelve el tipo de la celda en las coordenadas dadas
+        -- Esta función podría ser proporcionada por tu motor de juego o implementada por ti mismo
+
+        local mapBounds = getMapBounds() -- Obtener los límites del mapa
+        local minX, minY, minZ = mapBounds[2].x, mapBounds[2].y, mapBounds[2].z -- Límites mínimos del mapa
+        local maxX, maxY, maxZ = mapBounds[1].x, mapBounds[1].y, mapBounds[1].z -- Límites máximos del mapa
+
+        -- Recorrer el mapa para encontrar las fuentes de tierra
+        for x = minX, maxX do
+            for y = minY, maxY do
+                for z = minZ, maxZ do
+                    if GetCellType(x, y, z) == "land" then
+                        table.insert(landSources, {x = x, y = y, z = z}) -- Agregar las coordenadas de la fuente de tierra
+                    end
+                end
+            end
+        end
+
+        return landSources
     end
 
     -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
@@ -161,7 +280,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                 GridMap[x][y] = {}
 
                 for z = mapMinZ, mapMaxZ, gridSize do
-                    GridMap[x][y][z] = { temperature = math.random(minTemperature, maxTemperature), humidity = math.random(minHumidity, maxHumidity), pressure = math.random(minPressure, maxPressure), wind_speed = math.random(minWind_speed, maxWind_speed)}
+                    GridMap[x][y][z] = { temperature = math.random(minTemperature, maxTemperature), humidity = math.random(minHumidity, maxHumidity), pressure = math.random(minPressure, maxPressure), SimulateAirFlow = Vector(0,0,0)}
                     print("Position grid: " .. x .. ", ".. y .. ", " .. z) -- Depuración
                 end
             end
@@ -208,11 +327,12 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                             local newTemperature = CalculateTemperature(x, y, z)
                             local newHumidity = CalculateHumidity(x, y, z)
                             local newPressure = CalculatePressure(x, y, z)
-                            local newWind_speed = CalculateWindSpeed(x, y, z)
+                            local newSimulateAirFlow = SimulateAirFlow(x, y, z)
                             GridMap[x][y][z].temperature = newTemperature
                             GridMap[x][y][z].humidity = newHumidity
                             GridMap[x][y][z].pressure = newPressure
-                            GridMap[x][y][z].wind_speed = newWind_speed
+                            GridMap[x][y][z].SimulateAirFlow = newSimulateAirFlow
+                            
                         end
                     end
                 end
@@ -229,7 +349,6 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                 GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = CalculateTemperature(px, py, pz)
                 GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = CalculateHumidity(px, py, pz)
                 GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = CalculatePressure(px, py, pz)
-                GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = CalculateWindSpeed(px, py, pz)
             end
         end)
     end
@@ -322,4 +441,5 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
 
     -- Llamar a la función para generar la cuadrícula al inicio del juego
     hook.Add("PlayerSpawn", "GenerateTemperatureGrid", GenerateGrid)
+    hook.Add("Think", "AddTemperatureHumiditySources", AddTemperatureHumiditySources)
 end
