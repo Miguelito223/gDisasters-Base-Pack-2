@@ -2,7 +2,7 @@ function gDisasters_PostSpawnSH()
     local function gDisasters_SetupConvars()
         --S37K map bounds
 
-        CreateConVar( "gdisasters_mapbounds_S37K", "0", {FCVAR_ARCHIVE}, "" )
+        CreateConVar( "gdisasters_heat_system", "0", {FCVAR_ARCHIVE}, "" )
 
         --dnc
 

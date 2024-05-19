@@ -224,7 +224,7 @@ local function gDisastersAutospawn( CPanel )
 
 	CreateTickboxConVariable(CPanel, "gd_59"  , "gdisasters_autospawn_getridmaptor");
 	CreateTickboxConVariable(CPanel, "gd_60"  , "gdisasters_autospawn_chat");
-	
+	CreateTickboxConVariable(CPanel, "gd_88", "gdisasters_heat_system");
 	CreateTickboxConVariable(CPanel, "gd_61"  , "gdisasters_autospawn_enable");
 
 	
@@ -288,12 +288,6 @@ local function gDisastersAddonsCompatibility( CPanel )
 	lb:SetSize(500, 500)
 	
 	CreateTickboxConVariable(CPanel, "gd_86"  , "gdisasters_stormfox_enabled");
-	
-	local lb4 = AddControlLabel( CPanel, "gd_87" )
-	lb4:SetTextColor(Color( 0, 0, 0))
-	lb4:SetSize(500, 500)
-
-	CreateTickboxConVariable(CPanel, "gd_88", "gdisasters_mapbounds_S37K");
 end
 
 
