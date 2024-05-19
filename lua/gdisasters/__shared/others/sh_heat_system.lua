@@ -1,5 +1,5 @@
 -- Tamaño de la cuadrícula y rango de temperatura
-gridSize = 100 -- Tamaño de cada cuadrado en unidades
+gridSize = 1000 -- Tamaño de cada cuadrado en unidades
 minTemperature = 20 -- Temperatura mínima
 maxTemperature = 35 -- Temperatura máxima
 minHumidity = 30 -- Humedad mínima
@@ -88,37 +88,6 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         return math.max(minHumidity, math.min(maxHumidity, newHumidity)) -- Asegurarse de que la humedad esté dentro del rango
     end
 
-    function CalculatePressure(x, y, z)
-        local totalPressure = 0
-        local count = 0
-
-        -- Sumar la presión de las celdas vecinas
-        for i = -1, 1 do
-            for j = -1, 1 do
-                for k = -1, 1 do
-                    local nx, ny, nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
-                    if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                        totalPressure = totalPressure + GridMap[nx][ny][nz].pressure
-                        count = count + 1
-                    end
-                end
-            end
-        end
-
-        -- Si no hay celdas vecinas válidas, retornar la presión actual
-        if count == 0 then return GridMap[x][y][z].pressure end
-
-        -- Calcular la presión promedio de las vecinas
-        local averagePressure = totalPressure / count
-
-        -- Ajustar la presión de la celda actual
-        local currentPressure = GridMap[x][y][z].pressure
-        local newPressure = currentPressure + diffusionCoefficient * (averagePressure - currentPressure)
-        local altitudeEffect = z * 12 -- La temperatura desciende aproximadamente 0.0065 grados por metro de altitud
-        newPressure = newPressure - altitudeEffect
-        return math.max(minPressure, math.min(maxPressure, newPressure)) -- Asegurarse de que la presión esté dentro del rango
-    end
-
     -- Función para calcular la presión de una celda basada en temperatura y humedad
     function CalculatePressure(x, y, z)
         local temperature = GridMap[x][y][z].temperature
@@ -182,6 +151,29 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         local airflowZ = totalDeltaPressureZ * airflowCoefficientZ
 
         return airflowX, airflowY, airflowZ
+    end
+   
+    function GetClosestDistance(x1, y1, z1, x2, y2, z2)
+        local dx = x2 - x1
+        local dy = y2 - y1
+        local dz = z2 - z1
+        return math.sqrt(dx*dx + dy*dy + dz*dz)
+    end
+    
+    -- Función para encontrar la fuente de agua más cercana a un punto dado
+    function GetClosestWaterSource(x, y, z, source)
+        local closestDistance = math.huge
+        local closestSource = nil
+
+        for _, source in ipairs(source) do
+            local distance = GetClosestDistance(x, y, z, source.x, source.y, source.z)
+            if distance < closestDistance then
+                closestDistance = distance
+                closestSource = source
+            end
+        end
+
+        return closestSource, closestDistance
     end
 
     function AddTemperatureHumiditySources()
