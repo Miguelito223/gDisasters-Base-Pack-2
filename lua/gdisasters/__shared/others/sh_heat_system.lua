@@ -178,20 +178,30 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                 GLOBAL_SYSTEM["Atmosphere"]["Pressure"] = CalculatePressure(px, py)
             end
         end)
-        if CLIENT then
-            hook.Add("PostDrawOpaqueRenderables", "DrawGridDebug", function()
-                for x = mapMinX, mapMaxX, gridSize do
-                    for y = mapMinY, mapMaxY, gridSize do
-                        local pos1 = Vector(x, y, min.z)
-                        local pos2 = Vector(x + gridSize, y + gridSize, max.z)
-                        render.DrawBox(pos1, Angle(0, 0, 0), pos1, pos2, Color(255, 0, 0))
-                    end
-                end
-            end)
-        end
     end
 
-    
+    if CLIENT then
+        hook.Add("PostDrawOpaqueRenderables", "DrawGridDebug", function()
+            local MapBounds = getMapBounds()
+            local max, min, floor = MapBounds[1], MapBounds[2], MapBounds[3]
+            local mapMinX, mapMinY = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize
+            local mapMaxX, mapMaxY = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize
+
+            for x = mapMinX, mapMaxX, gridSize do
+                local pos1 = Vector(x, mapMinY, floor.z + 5)
+                local pos2 = Vector(x + gridSize, mapMaxY, floor.z + 5)
+                render.SetColorMaterial()
+                render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+
+                for y = mapMinY, mapMaxY, gridSize do
+                    local pos1 = Vector(mapMinX, y, floor.z + 5)
+                    local pos2 = Vector(mapMaxX, y + gridSize, floor.z + 5)
+                    render.SetColorMaterial()
+                    render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+                end
+            end
+        end)
+    end
 
     
 
