@@ -1,6 +1,6 @@
 -- Tamaño de la cuadrícula y rango de temperatura
-local gridSize = 100 -- Tamaño de cada cuadrado en unidades
-local minTemperature = 10 -- Temperatura mínima
+local gridSize = 1000 -- Tamaño de cada cuadrado en unidades
+local minTemperature = -20 -- Temperatura mínima
 local maxTemperature = 40 -- Temperatura máxima
 local updateInterval = 0.01 -- Intervalo de actualización en segundos
 local updateBatchSize = 100 -- Número de celdas a actualizar por frame
@@ -102,10 +102,8 @@ local function GenerateGrid(ply)
         local pos = ply:GetPos()
         local px = math.floor(pos.x / gridSize) * gridSize
         local py = math.floor(pos.y / gridSize ) * gridSize
-        print(px, py)
         if temperatureMap[px] and temperatureMap[px][py] then
             GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = CalculateTemperature(px, py, temperatureMap)
-            print(string.format("Temperatura promedio alrededor del jugador %s: %d grados Celsius", ply:GetName(), GLOBAL_SYSTEM["Atmosphere"]["Temperature"]))
         end
     end)
 
