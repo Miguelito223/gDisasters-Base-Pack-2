@@ -1,25 +1,35 @@
 -- Definir los tipos de clima
-local weatherTypes = {
+weatherTypes = {
     "soleado",
     "lluvioso",
     "nevado",
     "tormentoso",
 }
 
+weatherTransitions = {
+    soleado = { soleado = 0.6, lluvioso = 0.3, nevado = 0.0, tormentoso = 0.1 },
+    lluvioso = { soleado = 0.2, lluvioso = 0.5, nevado = 0.0, tormentoso = 0.3 },
+    nevado = { soleado = 0.1, lluvioso = 0.1, nevado = 0.7, tormentoso = 0.1 },
+    tormentoso = { soleado = 0.2, lluvioso = 0.4, nevado = 0.0, tormentoso = 0.4 },
+}
+
 -- Variables para el clima
-local currentWeather = "soleado"
-local lastWeatherUpdateTime = 0
-local weatherUpdateInterval = 300
+currentWeather = "soleado"
+lastWeatherUpdateTime = 0
+weatherUpdateInterval = 300
 
 if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then 
     -- Función para generar el clima inicial
-    local function generateInitialWeather()
-        currentWeather = weatherTypes[math.random(#weatherTypes)]
+    function generateInitialWeather()
+        if CLIENT then return end
+        applyWeather()
+        SetWeatherEffects()
         print("Clima inicial generado: " .. currentWeather)
     end
 
     -- Función para aplicar efectos climáticos
-    local function applyWeather()
+    function applyWeather()
+        if CLIENT then return end
         -- Aquí puedes implementar los efectos visuales y de juego asociados con cada tipo de clima
         -- Por ahora, solo imprimimos el clima actual en la consola
         print("El clima actual es: " .. currentWeather)
@@ -75,12 +85,55 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
             end
         end
     end
+    -- Función para verificar condiciones climáticas y generar tormentas
+    function checkForStormConditions()
+        if CLIENT then return end
+        local stormProbability = 0
+        for x, column in pairs(GridMap) do
+            for y, cell in pairs(column) do
+                for z, altura in pairs(cell) do
+                    local temperature = GridMap[x][y][z].temperature
+                    local humidity = GridMap[x][y][z].humidity
+                    local pressure = GridMap[x][y][z].pressure
+                    local wind_speed = GridMap[x][y][z].wind_speed
+                    
+                    -- Incrementar la probabilidad de tormenta basada en condiciones específicas
+                    if temperature > 25 and humidity > 70 and pressure < 100000 and wind_speed > 15 then
+                        stormProbability = stormProbability + 1
+                    end
+                end
+            end
+        end
+        
+        -- Determinar si se debe generar una tormenta
+        if stormProbability > 50 then -- Ajusta este valor según sea necesario
+            currentWeather = "tormentoso"
+            print("Condiciones de tormenta detectadas. Generando tormenta.")
+        end
+    end
+
+    function determineNewWeather()
+        local transitionProbabilities = weatherTransitions[currentWeather]
+        local randomValue = math.random()
+        local cumulativeProbability = 0
+
+        for weather, probability in pairs(transitionProbabilities) do
+            cumulativeProbability = cumulativeProbability + probability
+            if randomValue <= cumulativeProbability then
+                return weather
+            end
+        end
+
+        return currentWeather -- Por si acaso algo falla, mantenemos el clima actual
+    end
 
     -- Función para actualizar el clima
-    local function updateWeather()
+    function updateWeather()
+        if CLIENT then return end
         local currentTime = CurTime()
         if currentTime - lastWeatherUpdateTime >= weatherUpdateInterval then
-            currentWeather = weatherTypes[math.random(#weatherTypes)]
+            checkForStormConditions() -- Verificar condiciones para tormentas antes de actualizar el clima
+            currentWeather = determineNewWeather()
             applyWeather()
             SetWeatherEffects()
             print("Clima actualizado: " .. currentWeather)
@@ -88,117 +141,44 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         end
     end
 
-    function CreateSnowDecals()
-        for k, v in pairs(player.GetAll()) do
-            net.Start("gd_createdecals")
-            net.WriteString("snow")
-            net.WriteBool(self.CreatedDecals)
-            net.Send(v)
-        end
-    end
 
-    local function updateWeatherEffects()
+
+    function SetWeatherEffects()
+        if CLIENT then return end
+        
+        local entity
+
         if currentWeather == "soleado" then
-            
+            if not IsValid(entity) then
+                entity = ents.Create("gd_w1_sunny")
+            else
+                entity:Remove()
+                entity = ents.Create("gd_w2_sunny")
+            end
         elseif currentWeather == "lluvioso" then
-            if SERVER then
-                for k, v in pairs(player.GetAll()) do
-                    if v.gDisasters.Area.IsOutdoor then
-                        net.Start("gd_clParticles")
-                        net.WriteString("localized_rain_effect", Angle(0, math.random(1, 40), 0))
-                        net.Send(v)
-                        net.Start("gd_clParticles_ground")
-                        net.WriteString("heavy_rain_splash_effect", Angle(0, math.random(1, 40), 0))
-                        net.Send(v)
-                        
-                        if math.random(1, 2) == 1 then
-                            net.Start("gd_screen_particles")
-                            net.WriteString("hud/warp_ripple3")
-                            net.WriteFloat(math.random(5, 228))
-                            net.WriteFloat(math.random(0, 100) / 100)
-                            net.WriteFloat(math.random(0, 1))
-                            net.WriteVector(Vector(0, math.random(0, 200) / 100, 0))
-                            net.Send(v)
-                        end
-                    end
-                end
+            if not IsValid(entity) then
+                entity = ents.Create("gd_w2_heavyrain")
+            else
+                entity:Remove()
+                entity = ents.Create("gd_w2_heavyrain")
             end
         elseif currentWeather == "nevado" then
-            if SERVER then
-                for k, v in pairs(player.GetAll()) do
-                    if v.gDisasters.Area.IsOutdoor then
-                        if HitChance(0.1) then
-                            net.Start("gd_screen_particles")
-                            net.WriteString("hud/snow")
-                            net.WriteFloat(math.random(5, 128))
-                            net.WriteFloat(math.random(0, 100) / 100)
-                            net.WriteFloat(math.random(0, 1))
-                            net.WriteVector(Vector(0, 2, 0))
-                            net.Send(v)
-                        end
-                        
-                        net.Start("gd_clParticles")
-                        net.WriteString("localized_blizzard_effect")
-                        net.Send(v)
-                        net.Start("gd_clParticles_ground")
-                        net.WriteString("heavy_snow_ground_effect", Angle(0, math.random(1, 40), 0))
-                        net.Send(v)
-                        net.Start("gd_clParticles_ground")
-                        net.WriteString("snow_gust_effect", Angle(0, math.random(1, 40), 0))
-                        net.Send(v)
-                    end
-                end
+            if not IsValid(entity) then
+                entity = ents.Create("gd_w2_blizzard")
+            else
+                entity:Remove()
+                entity = ents.Create("gd_w2_blizzard")
             end
         elseif currentWeather == "tormentoso" then
-            if SERVER then
-                for k, v in pairs(player.GetAll()) do
-                    if v.gDisasters.Area.IsOutdoor then
-                        net.Start("gd_clParticles")
-                        net.WriteString("localized_rain_effect", Angle(0, math.random(1, 40), 0))
-                        net.Send(v)
-                        net.Start("gd_clParticles_ground")
-                        net.WriteString("heavy_rain_splash_effect", Angle(0, math.random(1, 40), 0))
-                        net.Send(v)
-                        
-                        if math.random(1, 2) == 1 then
-                            net.Start("gd_screen_particles")
-                            net.WriteString("hud/warp_ripple3")
-                            net.WriteFloat(math.random(5, 228))
-                            net.WriteFloat(math.random(0, 100) / 100)
-                            net.WriteFloat(math.random(0, 1))
-                            net.WriteVector(Vector(0, math.random(0, 200) / 100, 0))
-                            net.Send(v)
-                        end
-                    end
-                end
-            end
-        end
-    end
-
-    local function SetWeatherEffects()
-        if currentWeather == "soleado" then
-            
-        elseif currentWeather == "lluvioso" then
-            if CLIENT then
-                LocalPlayer().Sounds["Rainstorm_IDLE"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop.wav")
-                LocalPlayer().Sounds["Rainstorm_muffled_IDLE"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop_muffled.wav")
+            if not IsValid(entity) then
+                entity = ents.Create("gd_w2_thunderstorm")
             else
-                setMapLight("d")
+                entity:Remove()
+                entity = ents.Create("gd_w2_thunderstorm")
             end
-        elseif currentWeather == "nevado" then
-            if CLIENT then
-
-            else
-                CreateSnowDecals()
-                setMapLight("d")
-            end
-        elseif currentWeather == "tormentoso" then
-            if CLIENT then
-                LocalPlayer().Sounds["Rainstorm_IDLE"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop.wav")
-                LocalPlayer().Sounds["Rainstorm_muffled_IDLE"] = CreateLoopedSound(LocalPlayer(), "streams/disasters/nature/heavy_rain_loop_muffled.wav")
-            else
-                CreateSnowDecals()
-                setMapLight("d")
+        else
+            if IsValid(entity) then
+                entity:Remove()
             end
         end
     end
@@ -208,5 +188,4 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
 
     -- Hook para actualizar el clima periódicamente
     hook.Add("Think", "UpdateWeather", updateWeather)
-    hook.Add("Think", "UpdateWeatherEffect", updateWeatherEffects)
 end -- Aquí cerramos el if inicial

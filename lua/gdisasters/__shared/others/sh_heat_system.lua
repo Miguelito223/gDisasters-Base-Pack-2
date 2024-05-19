@@ -1,7 +1,7 @@
 -- Tamaño de la cuadrícula y rango de temperatura
-gridSize = 500 -- Tamaño de cada cuadrado en unidades
-minTemperature = -20 -- Temperatura mínima
-maxTemperature = 40 -- Temperatura máxima
+gridSize = 1000 -- Tamaño de cada cuadrado en unidades
+minTemperature = 20 -- Temperatura mínima
+maxTemperature = 35 -- Temperatura máxima
 minHumidity = 30 -- Humedad mínima
 maxHumidity = 80 -- Humedad máxima
 minPressure = 90000 -- Presión mínima en milibares
@@ -143,6 +143,8 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
 
     -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
     function GenerateGrid(ply)
+        if CLIENT then return end
+        
         local MapBounds = getMapBounds()
         local max, min = MapBounds[1], MapBounds[2]
         local mapMinX, mapMinY, mapMaxZ  = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize,math.ceil(min.z / gridSize) * gridSize
@@ -224,9 +226,10 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
             local py = math.floor(pos.y / gridSize ) * gridSize
             local pz = math.floor(pos.z / gridSize ) * gridSize
             if GridMap[px] and GridMap[px][py] and GridMap[px][py][pz] then
-                GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = CalculateTemperature(px, py, pz)
-                GLOBAL_SYSTEM["Atmosphere"]["Humidity"] = CalculateHumidity(px, py, pz)
-                GLOBAL_SYSTEM["Atmosphere"]["Pressure"] = CalculatePressure(px, py, pz)
+                GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = CalculateTemperature(px, py, pz)
+                GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = CalculateHumidity(px, py, pz)
+                GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = CalculatePressure(px, py, pz)
+                GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = CalculateWindSpeed(px, py, pz)
             end
         end)
     end
@@ -238,8 +241,8 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
             local playerPos = LocalPlayer():GetPos()
             local MapBounds = getMapBounds()
             local max, min, floor = MapBounds[1], MapBounds[2], MapBounds[3]
-            local mapMinX, mapMinY, mapMinZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize, math.floor(min.z / gridSize) * gridSize
-            local mapMaxX, mapMaxY, mapMaxZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize, math.ceil(max.z / gridSize) * gridSize
+            local mapMinX, mapMinY, mapMaxZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize, math.floor(min.z / gridSize) * gridSize
+            local mapMaxX, mapMaxY, mapMinZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize, math.ceil(max.z / gridSize) * gridSize
 
             for x = mapMinX, mapMaxX, gridSize do
                 for y = mapMinY, mapMaxY, gridSize do
