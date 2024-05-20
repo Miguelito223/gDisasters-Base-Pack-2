@@ -1,5 +1,6 @@
 -- Tamaño de la cuadrícula y rango de temperatura
 gridSize = 500 -- Tamaño de cada cuadrado en unidades
+
 minTemperature = 20 -- Temperatura mínima
 maxTemperature = 35 -- Temperatura máxima
 minHumidity = 30 -- Humedad mínima
@@ -8,23 +9,34 @@ minPressure = 90000 -- Presión mínima en milibares
 maxPressure = 110000 -- Presión máxima en milibares
 minWind_speed = 0
 maxWind_speed = 10
+
 updateInterval = 1 -- Intervalo de actualización en segundos
 updateBatchSize = 100 -- Número de celdas a actualizar por frame
+
 diffusionCoefficient = 0.1 -- Coeficiente de difusión de calor
 gas_constant = 287.05
 specific_heat_vapor = 2010
 airflowCoefficient = 0.1
+
 waterTemperatureEffect = 2  -- El agua tiende a mantener una temperatura más constante
 landTemperatureEffect = 5    -- La tierra se calienta y enfría más rápido que el agua
 waterHumidityEffect = 5      -- El agua puede aumentar la humedad en su entorno
 landHumidityEffect = 2       -- La tierra puede retener menos humedad que el agua
 mountainTemperatureEffect = -5  -- Las montañas tienden a ser más frías debido a la altitud
 mountainHumidityEffect = 5       -- Las montañas pueden influir en la humedad debido a las corrientes de aire
+
 lastUpdateTime = CurTime()
+
 GridMap = {}
 cellsToUpdate = {}
 waterSources = {}
 LandSources = {}
+
+rainThreshold = 70 -- Umbral de humedad para la generación de lluvia
+stormTemperatureThreshold = 30 -- Umbral de temperatura para la generación de tormentas
+stormPressureThreshold = 100000 -- Umbral de presión para la generación de tormentas
+lowTemperatureThreshold = 10
+lowHumidityThreshold =  40
 
 if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then 
 
@@ -189,6 +201,93 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         return Vector(airflowX, airflowY, airflowZ)
     end
 
+    -- Función para simular la generación de lluvia
+    local function SimulateRain()
+        for x, column in pairs(GridMap) do
+            for y, row in pairs(column) do
+                for z, cell in pairs(row) do
+                    if cell.humidity > rainThreshold then
+                        CreateRaindrops(x, y, z)
+                        AdjustHumiditySurroundingCells(x, y, z)
+                    end
+                end
+            end
+        end
+    end
+
+    -- Función para crear partículas de lluvia
+    local function CreateRaindrops(x, y, z)
+        local particle = ents.Create("env_spritetrail") -- Create a sprite trail entity for raindrop particle
+        particle:SetPos(Vector(x, y, z)) -- Set the position of the particle
+        particle:SetKeyValue("lifetime", "2") -- Set the lifetime of the particle
+        particle:SetKeyValue("startwidth", "2") -- Set the starting width of the particle
+        particle:SetKeyValue("endwidth", "0") -- Set the ending width of the particle
+        particle:SetKeyValue("spritename", "effects/blood_core") -- Set the sprite name for the particle (you can use any sprite)
+        particle:SetKeyValue("rendermode", "5") -- Set the render mode of the particle
+        particle:SetKeyValue("rendercolor", "0 0 255") -- Set the color of the particle (blue for rain)
+        particle:SetKeyValue("spawnflags", "1") -- Set the spawn flags for the particle
+        particle:Spawn() -- Spawn the particle
+        particle:Activate() -- Activate the particle
+    end
+
+    -- Función para ajustar los niveles de humedad en celdas circundantes durante la lluvia
+    local function AdjustHumiditySurroundingCells(x, y, z)
+        -- Ajustar los niveles de humedad en celdas vecinas basándose en la lluvia
+    end
+
+    local function SimulateStorms()
+        for x, column in pairs(GridMap) do
+            for y, row in pairs(column) do
+                for z, cell in pairs(row) do
+                    if cell.temperature > stormTemperatureThreshold and cell.pressure < stormPressureThreshold then
+                        CreateStormClouds(x, y, z)
+                        SimulateLightningAndThunder()
+                    end
+                end
+            end
+        end
+    end
+
+    local function CreateStormClouds(x, y, z)
+        local stormCloud = ents.Create("gd_storm_cloud") -- Create a storm cloud entity
+        stormCloud:SetPos(Vector(x, y, z)) -- Set the position of the storm cloud
+        stormCloud:SetModel("models/clouds/storm_cloud.mdl") -- Set the model for the storm cloud (adjust as needed)
+        stormCloud:SetColor(Color(100, 100, 100)) -- Set the color of the storm cloud (adjust as needed)
+        stormCloud:SetScale(1.5) -- Set the scale of the storm cloud (adjust as needed)
+        stormCloud:Spawn() -- Spawn the storm cloud entity
+    end
+
+    local function SimulateLightningAndThunder()
+        local bounds = getMapSkyBox()
+        local min = bounds[1]
+        local max = bounds[2]
+        local startpos = Vector(math.random(min.x, max.x), math.random(min.y, max.y), max.z)
+        local tr = util.TraceLine({
+            start = startpos,
+            endpos = startpos - Vector(0, 0, 50000),
+        })
+        local endpos = tr.HitPos
+
+        if HitChance(1) then
+            if HitChance(2) then
+                local sprite_pos = Vector(math.random(min.x, max.x), math.random(min.y, max.y), max.z)
+                ParticleEffect(table.Random({"sprite_lightning_main_01", "sprite_lightning_main_02", "sprite_lightning_main_03"}), sprite_pos - Vector(0, 0, math.random(0, 2000)), Angle(0, 0, 0), nil)
+            end
+
+            if HitChance(1) then
+                local elves_pos = Vector(math.random(min.x, max.x), math.random(min.y, max.y), max.z)
+                ParticleEffect(table.Random({"elves_main_01", "elves_main_02"}), elves_pos - Vector(0, 0, math.random(0, 2000)), Angle(0, 0, 0), nil)
+            end
+
+            if HitChance(0.1) then
+                local blue_jet_pos = Vector(math.random(min.x, max.x), math.random(min.y, max.y), max.z)
+                ParticleEffect("blue_jet_lightning_01_main", blue_jet_pos - Vector(0, 0, math.random(2000, 4000)), Angle(0, 0, 0), nil)
+            end
+
+            CreateLightningBolt(startpos - Vector(0, 0, 4000), endpos, {"purple", "blue"}, {"Grounded", "NotGrounded"})
+        end
+    end
+
     function GetDistance(x1, y1, z1, x2, y2, z2)
         local dx = x2 - x1
         local dy = y2 - y1
@@ -341,21 +440,33 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     end
 
     -- Función para simular la formación y movimiento de nubes
-    function SimulateClouds()
+    local function SimulateClouds()
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
-                    local airflow = GridMap[x][y][z].airflow
-                    local pos = Vector(x, y, z) * gridSize
-                    SpawnCloud(pos, airflow)
+                    local humidity = cell.humidity
+                    local temperature = cell.temperature
+                    if humidity < lowHumidityThreshold and temperature < lowTemperatureThreshold then
+                        -- Generate clouds in cells with low humidity and temperature
+                        local airflow = GridMap[x][y][z].airflow
+                        local pos = Vector(x, y, z) * gridSize
+                        local cloud = ents.Create("gd_cloud_cumulus")
+                        cloud:SetPos(pos)
+                        local velocity = Vector(airflow.x, airflow.y, airflow.z) * 10
+                        cloud:SetVelocity(velocity)
+                        cloud:Spawn()
+                        cloud:Activate()
+                    end
                 end
             end
         end
     end
 
     -- Llamar a SimulateClouds() para simular la formación y movimiento de las nubes
-    function UpdateWeather()
+    local function UpdateWeather()
         SimulateClouds()
+        SimulateRain()
+        SimulateStorms()
     end
 
     -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
@@ -540,4 +651,5 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     -- Llamar a la función para generar la cuadrícula al inicio del juego
     hook.Add("PlayerSpawn", "GenerateGrid", GenerateGrid)
     hook.Add("PlayerSpawn", "AddTemperatureHumiditySources", AddTemperatureHumiditySources)
+    hook.Add("Think", "GenerateGrid", UpdateWeather)
 end
