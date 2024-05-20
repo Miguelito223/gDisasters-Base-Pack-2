@@ -264,8 +264,10 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
                     if cell.temperature > stormTemperatureThreshold and cell.pressure < stormPressureThreshold then
-                        CreateStormClouds(x, y, z)
-                        SimulateLightningAndThunder()
+                        local airflow = GridMap[x][y][z].airflow
+                        local pos = Vector(x, y, z) * gridSize
+                        local color = Color(128,128,128)
+                        SpawnCloud(pos, airflow, color)
                     end
                 end
             end
@@ -321,11 +323,12 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         end
     end
 
-    local function SpawnCloud(pos, airflow)
+    local function SpawnCloud(pos, airflow, color)
         if #ents.FindByClass("gd_cloud_cumulus") > MaxClouds then return end
 
         local cloud = ents.Create("gd_cloud_cumulus")
         cloud:SetPos(pos)
+        stormCloud.DefaultColor = color
         cloud:Spawn()
         cloud:Activate()
 
@@ -351,7 +354,8 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                         -- Generate clouds in cells with low humidity and temperature
                         local airflow = GridMap[x][y][z].airflow
                         local pos = Vector(x, y, z) * gridSize
-                        SpawnCloud(pos, airflow)
+                        local color = Color(255,255,255)
+                        SpawnCloud(pos, airflow, color)
                     end
                 end
             end
@@ -676,7 +680,6 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     -- Llamar a la función para generar la cuadrícula al inicio del juego
     hook.Add("PlayerSpawn", "GenerateGrid", GenerateGrid)
     hook.Add("PlayerSpawn", "AddTemperatureHumiditySources", AddTemperatureHumiditySources)
-    hook.Add("Think", "UpdatePlayerGrid", UpdatePlayerGrid)
-    hook.Add("Think", "UpdateGrid", UpdateGrid)
-    hook.Add("Think", "UpdateWeather", UpdateWeather)
+    hook.Add("Think2", "UpdatePlayerGrid", UpdatePlayerGrid)
+    hook.Add("Think2", "UpdateGrid", UpdateGrid)
 end
