@@ -273,6 +273,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         stormCloud:SetColor(Color(100, 100, 100)) -- Set the color of the storm cloud (adjust as needed)
         stormCloud:SetScale(1.5) -- Set the scale of the storm cloud (adjust as needed)
         stormCloud:Spawn() -- Spawn the storm cloud entity
+        cloud:Activate()
     end
 
     function SimulateLightningAndThunder()
