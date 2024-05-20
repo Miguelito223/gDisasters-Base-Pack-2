@@ -139,7 +139,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         local MAP_DEPTH = mapMaxY - mapMinY
         local MAP_HEIGHT = mapMaxZ - mapMinZ
         local WATER_LEVEL = floorz
-        local MOUNTAIN_LEVEL = floorz + 1000
+        local MOUNTAIN_LEVEL = floorz + 5000
 
         -- Verificar si las coordenadas están dentro de los límites del mapa
         if x < 0 or x >= MAP_WIDTH or y < 0 or y >= MAP_DEPTH or z < 0 or z >= MAP_HEIGHT  then
@@ -247,15 +247,15 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                     -- Comparar distancias y ajustar temperatura y humedad en consecuencia
                     if closestWaterDist < closestLandDist and closestWaterDist < closestMountainDist then
                         cell.InWater = true
-                        cell.temperature = cell.temperature - waterTemperatureEffect
+                        cell.temperature = math.min(maxTemperature, cell.temperature - landTemperatureEffect)
                         cell.humidity = math.min(maxHumidity, cell.humidity + waterHumidityEffect)
                     elseif closestLandDist < closestMountainDist then
                         cell.InWater = false
-                        cell.temperature = cell.temperature + landTemperatureEffect
+                        cell.temperature = math.max(minTemperature, cell.temperature + landTemperatureEffect)
                         cell.humidity = math.max(minHumidity, cell.humidity - landHumidityEffect)
                     else
                         cell.InWater = false
-                        cell.temperature = cell.temperature + mountainTemperatureEffect
+                        cell.temperature = math.max(minTemperature, cell.temperature + landTemperatureEffect)
                         cell.humidity = math.max(minHumidity, cell.humidity - mountainHumidityEffect)
                     end
                 end
@@ -345,7 +345,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
-                    local airflow = SimulateAirFlow(x, y, z)
+                    local airflow = GridMap[x][y][z].airflow
                     local pos = Vector(x, y, z) * gridSize
                     SpawnCloud(pos, airflow)
                 end
@@ -375,20 +375,18 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
             for y = minY, maxY, gridSize do
                 GridMap[x][y] = {}
                 for z = minZ, maxZ, gridSize do
-                    GridMap[x][y][z] = {
-                        temperature = math.random(minTemperature, maxTemperature),
-                        humidity = math.random(minHumidity, maxHumidity),
-                        pressure = math.random(minPressure, maxPressure),
-                        airflow = Vector(0, 0, 0)
-                    }
-                    print("Position grid: " .. x .. ", ".. y .. ", " .. z) -- Depuración
+                    GridMap[x][y][z] = {}
+                    GridMap[x][y][z].temperature = math.random(minTemperature, maxTemperature)
+                    GridMap[x][y][z].humidity = math.random(minHumidity, maxHumidity)
+                    GridMap[x][y][z].pressure = math.random(minPressure, maxPressure)
+                    GridMap[x][y][z].airflow = Vector(0,0,0)
+                    print("Position grid: X:" .. x .. ", Y:".. y .. ", Z:" .. z) -- Depuración
                 end
             end
         end
 
         print("Grid generated.") -- Depuración
 
-        AddTemperatureHumiditySources()
 
         -- Actualizar la cuadrícula
         hook.Add("Think2", "UpdateGrid", function()
@@ -441,6 +439,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                     GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
                     GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
                     GLOBAL_SYSTEM_TARGET["Atmosphere"]["AirFlow"] = cell.airflow
+                    print("Actual Position grid: X: " .. px .. ", Y:".. py .. ", Z:" .. pz) -- Depuración
                 else
                     -- Manejo de valores no válidos
                     print("Error: Valores no válidos en la celda de la cuadrícula.")
@@ -539,5 +538,6 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
 
     end
     -- Llamar a la función para generar la cuadrícula al inicio del juego
-    hook.Add("PlayerSpawn", "GenerateTemperatureGrid", GenerateGrid)
+    hook.Add("PlayerSpawn", "GenerateGrid", GenerateGrid)
+    hook.Add("PlayerSpawn", "AddTemperatureHumiditySources", AddTemperatureHumiditySources)
 end
