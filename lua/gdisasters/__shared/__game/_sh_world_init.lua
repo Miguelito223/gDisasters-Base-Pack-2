@@ -10,7 +10,6 @@ GLOBAL_SYSTEM = {
 											["NextThink"]=CurTime()
 										   },
 
-						["AirFlow"] = Vector(0,0,0),
 										
 					
 						["Pressure"]    = 100000,
@@ -31,7 +30,6 @@ GLOBAL_SYSTEM_TARGET = {
 											["Speed"]=0,
 											["Direction"]=Vector(1,0,0)
 										   },
-						["AirFlow"] = Vector(0,0,0),
 					
 						["Pressure"]    = 100000,
 						
@@ -54,7 +52,6 @@ GLOBAL_SYSTEM_ORIGINAL = {
 											["Direction"]=Vector(1,0,0)
 										   },
 						
-						["AirFlow"] = Vector(0,0,0),
 					
 						["Pressure"]    = 100000,
 						
