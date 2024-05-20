@@ -309,6 +309,8 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     local function SpawnCloud(pos, airflow)
         local cloud = ents.Create("gd_cloud_cumulus")
         cloud:SetPos(pos)
+        cloud:Spawn()
+        cloud:Activate()
 
         -- Aplicar el flujo de aire a la velocidad de movimiento de la nube
         local velocity = Vector(airflow.x, airflow.y, airflow.z) * 10 -- Ajusta el factor de escala según sea necesario
@@ -328,12 +330,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                         -- Generate clouds in cells with low humidity and temperature
                         local airflow = GridMap[x][y][z].airflow
                         local pos = Vector(x, y, z) * gridSize
-                        local cloud = ents.Create("gd_cloud_cumulus")
-                        cloud:SetPos(pos)
-                        local velocity = Vector(airflow.x, airflow.y, airflow.z) * 10
-                        cloud:SetVelocity(velocity)
-                        cloud:Spawn()
-                        cloud:Activate()
+                        SpawnCloud(pos, airflow)
                     end
                 end
             end
@@ -671,5 +668,5 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     -- Llamar a la función para generar la cuadrícula al inicio del juego
     hook.Add("PlayerSpawn", "GenerateGrid", GenerateGrid)
     hook.Add("PlayerSpawn", "AddTemperatureHumiditySources", AddTemperatureHumiditySources)
-    hook.Add("Think", "GenerateGrid", UpdateWeather)
+    hook.Add("Think", "UpdateWeather", UpdateWeather)
 end
