@@ -29,14 +29,20 @@ lastUpdateTime = CurTime()
 
 GridMap = {}
 cellsToUpdate = {}
+
 waterSources = {}
 LandSources = {}
+
+Cloud = {}
 
 rainThreshold = 70 -- Umbral de humedad para la generación de lluvia
 stormTemperatureThreshold = 30 -- Umbral de temperatura para la generación de tormentas
 stormPressureThreshold = 100000 -- Umbral de presión para la generación de tormentas
 lowTemperatureThreshold = 10
 lowHumidityThreshold =  40
+MaxClouds = 30
+
+
 
 if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then 
 
@@ -267,13 +273,21 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     end
 
     function CreateStormClouds(x, y, z)
-        local stormCloud = ents.Create("gd_storm_cloud") -- Create a storm cloud entity
+        if #ents.FindByClass("gd_cloud_cumulus") > MaxClouds then return end
+
+        local stormCloud = ents.Create("gd_cloud_cumulus") -- Create a storm cloud entity
         stormCloud:SetPos(Vector(x, y, z)) -- Set the position of the storm cloud
         stormCloud:SetModel("models/clouds/storm_cloud.mdl") -- Set the model for the storm cloud (adjust as needed)
-        stormCloud:SetColor(Color(100, 100, 100)) -- Set the color of the storm cloud (adjust as needed)
-        stormCloud:SetScale(1.5) -- Set the scale of the storm cloud (adjust as needed)
+        stormCloud.DefaultColor = Color(122, 122, 122) -- Set the color of the storm cloud (adjust as needed)
+        stormCloud:SetModelScale(1.5) -- Set the scale of the storm cloud (adjust as needed)
         stormCloud:Spawn() -- Spawn the storm cloud entity
         cloud:Activate()
+
+        table.insert(Cloud, cloud)
+
+        timer.Simple(cloud.Life, function()
+            if cloud:IsValid() then cloud:Remove() end
+        end)
     end
 
     function SimulateLightningAndThunder()
@@ -308,6 +322,8 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     end
 
     local function SpawnCloud(pos, airflow)
+        if #ents.FindByClass("gd_cloud_cumulus") > MaxClouds then return end
+
         local cloud = ents.Create("gd_cloud_cumulus")
         cloud:SetPos(pos)
         cloud:Spawn()
@@ -317,7 +333,11 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         local velocity = Vector(airflow.x, airflow.y, airflow.z) * 10 -- Ajusta el factor de escala según sea necesario
         cloud:SetVelocity(velocity)
 
-        return cloud
+        table.insert(Cloud, cloud)
+
+        timer.Simple(cloud.Life, function()
+            if cloud:IsValid() then cloud:Remove() end
+        end)
     end
 
     -- Función para simular la formación y movimiento de nubes
@@ -416,14 +436,9 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     function GetWaterSources()
         local waterSources = {}
 
-        local mapBounds = getMapBounds()
-        local minX, minY, maxZ = math.floor(mapBounds[2].x / gridSize) * gridSize, math.floor(mapBounds[2].y / gridSize) * gridSize, math.ceil(mapBounds[2].z / gridSize) * gridSize
-        local maxX, maxY, minZ = math.ceil(mapBounds[1].x / gridSize) * gridSize, math.ceil(mapBounds[1].y / gridSize) * gridSize, math.floor(mapBounds[1].z / gridSize) * gridSize
-
-
-        for x = minX, maxX, gridSize do
-            for y = minY, maxY, gridSize do
-                for z = minZ, maxZ, gridSize do
+        for x, column in pairs(GridMap) do
+            for y, row in pairs(column) do
+                for z, cell in pairs(row) do
                     if GetCellType(x, y, z) == "water" then
                         table.insert(waterSources, {x = x, y = y, z = z})
                     end
@@ -438,14 +453,9 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     function GetLandSources()
         local landSources = {}
 
-        local mapBounds = getMapBounds()
-        local minX, minY, maxZ = math.floor(mapBounds[2].x / gridSize) * gridSize, math.floor(mapBounds[2].y / gridSize) * gridSize, math.ceil(mapBounds[2].z / gridSize) * gridSize
-        local maxX, maxY, minZ = math.ceil(mapBounds[1].x / gridSize) * gridSize, math.ceil(mapBounds[1].y / gridSize) * gridSize, math.floor(mapBounds[1].z / gridSize) * gridSize
-
-
-        for x = minX, maxX, gridSize do
-            for y = minY, maxY, gridSize do
-                for z = minZ, maxZ, gridSize do
+        for x, column in pairs(GridMap) do
+            for y, row in pairs(column) do
+                for z, cell in pairs(row) do
                     if GetCellType(x, y, z) == "land" then
                         table.insert(landSources, {x = x, y = y, z = z})
                     end
@@ -459,14 +469,9 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     function GetMountainSources()
         local landSources = {}
 
-        local mapBounds = getMapBounds()
-        local minX, minY, maxZ = math.floor(mapBounds[2].x / gridSize) * gridSize, math.floor(mapBounds[2].y / gridSize) * gridSize, math.ceil(mapBounds[2].z / gridSize) * gridSize
-        local maxX, maxY, minZ = math.ceil(mapBounds[1].x / gridSize) * gridSize, math.ceil(mapBounds[1].y / gridSize) * gridSize, math.floor(mapBounds[1].z / gridSize) * gridSize
-
-
-        for x = minX, maxX, gridSize do
-            for y = minY, maxY, gridSize do
-                for z = minZ, maxZ, gridSize do
+        for x, column in pairs(GridMap) do
+            for y, row in pairs(column) do
+                for z, cell in pairs(row) do
                     if GetCellType(x, y, z) == "mountain" then
                         table.insert(landSources, {x = x, y = y, z = z})
                     end
@@ -489,8 +494,6 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
 
     -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
     function GenerateGrid(ply)
-        if CLIENT then return end
-
         -- Obtener los límites del mapa
         local mapBounds = getMapBounds()
         local minX, minY, maxZ = math.floor(mapBounds[2].x / gridSize) * gridSize, math.floor(mapBounds[2].y / gridSize) * gridSize, math.ceil(mapBounds[2].z / gridSize) * gridSize
@@ -509,75 +512,77 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                     GridMap[x][y][z].humidity = math.random(minHumidity, maxHumidity)
                     GridMap[x][y][z].pressure = math.random(minPressure, maxPressure)
                     GridMap[x][y][z].airflow = Vector(0,0,0)
-                    print("Position grid: X:" .. x .. ", Y:".. y .. ", Z:" .. z) -- Depuración
                 end
             end
         end
 
         print("Grid generated.") -- Depuración
 
+    end
 
-        -- Actualizar la cuadrícula
-        hook.Add("Think2", "UpdateGrid", function()
-            -- Actualizar un lote de celdas
-            for i = 1, updateBatchSize do
-                local cell = table.remove(cellsToUpdate, 1)
-                if not cell then
-                    -- Reiniciar la lista de celdas para actualizar
-                    cellsToUpdate = {}
-                    for x = minX, maxX, gridSize do
-                        for y = minY, maxY, gridSize do
-                            for z = minZ, maxZ, gridSize do
-                                table.insert(cellsToUpdate, {x, y, z})
-                            end
+    function UpdateGrid()
+        -- Obtener los límites del mapa
+        local mapBounds = getMapBounds()
+        local minX, minY, maxZ = math.floor(mapBounds[2].x / gridSize) * gridSize, math.floor(mapBounds[2].y / gridSize) * gridSize, math.ceil(mapBounds[2].z / gridSize) * gridSize
+        local maxX, maxY, minZ = math.ceil(mapBounds[1].x / gridSize) * gridSize, math.ceil(mapBounds[1].y / gridSize) * gridSize, math.floor(mapBounds[1].z / gridSize) * gridSize
+
+        for i = 1, updateBatchSize do
+            local cell = table.remove(cellsToUpdate, 1)
+            if not cell then
+                -- Reiniciar la lista de celdas para actualizar
+                cellsToUpdate = {}
+                for x, column in pairs(GridMap) do
+                    for y, row in pairs(column) do
+                        for z, cell in pairs(row) do
+                            table.insert(cellsToUpdate, {x, y, z})
                         end
                     end
-                    cell = table.remove(cellsToUpdate, 1)
                 end
-
-                if cell then
-                    local x, y, z = cell[1], cell[2], cell[3]
-                    if GridMap[x] and GridMap[x][y] and GridMap[x][y][z] then
-                        local newTemperature = CalculateTemperature(x, y, z)
-                        local newHumidity = CalculateHumidity(x, y, z)
-                        local newPressure = CalculatePressure(x, y, z)
-                        local newAirFlow = SimulateAirFlow(x, y, z)
-                        GridMap[x][y][z].temperature = newTemperature
-                        GridMap[x][y][z].humidity = newHumidity
-                        GridMap[x][y][z].pressure = newPressure
-                        GridMap[x][y][z].airflow = newAirFlow
-                    else
-                        print("Error: Posición fuera de los límites de la cuadrícula.")
-                    end
-                end
+                cell = table.remove(cellsToUpdate, 1)
             end
-        end)
 
-        hook.Add("Think", "UpdatePlayergrid_" .. ply:SteamID(), function()
-            local pos = ply:GetPos()
-            local px, py, pz = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize, math.floor(pos.z / gridSize) * gridSize
-            
-            -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
-            if GridMap[px] and GridMap[px][py] and GridMap[px][py][pz] then
-                local cell = GridMap[px][py][pz]
-
-                -- Verifica si las propiedades de la celda son válidas
-                if cell.temperature and cell.humidity and cell.pressure and cell.airflow then
-                    -- Actualiza las variables de la atmósfera del jugador
-                    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
-                    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
-                    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
-                    GLOBAL_SYSTEM_TARGET["Atmosphere"]["AirFlow"] = cell.airflow
-                    print("Actual Position grid: X: " .. px .. ", Y:".. py .. ", Z:" .. pz) -- Depuración
+            if cell then
+                local x, y, z = cell[1], cell[2], cell[3]
+                if GridMap[x] and GridMap[x][y] and GridMap[x][y][z] then
+                    local newTemperature = CalculateTemperature(x, y, z)
+                    local newHumidity = CalculateHumidity(x, y, z)
+                    local newPressure = CalculatePressure(x, y, z)
+                    local newAirFlow = SimulateAirFlow(x, y, z)
+                    GridMap[x][y][z].temperature = newTemperature
+                    GridMap[x][y][z].humidity = newHumidity
+                    GridMap[x][y][z].pressure = newPressure
+                    GridMap[x][y][z].airflow = newAirFlow
                 else
-                    -- Manejo de valores no válidos
-                    print("Error: Valores no válidos en la celda de la cuadrícula.")
+                    print("Error: Posición fuera de los límites de la cuadrícula.")
                 end
-            else
-                -- Manejo de celdas fuera de los límites de la cuadrícula
-                print("Error: Posición fuera de los límites de la cuadrícula.")
             end
-        end)
+        end
+
+    end
+    function UpdatePlayerGrid(ply)
+        local pos = ply:GetPos()
+        local px, py, pz = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize, math.floor(pos.z / gridSize) * gridSize
+        
+        -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
+        if GridMap[px] and GridMap[px][py] and GridMap[px][py][pz] then
+            local cell = GridMap[px][py][pz]
+
+            -- Verifica si las propiedades de la celda son válidas
+            if cell.temperature and cell.humidity and cell.pressure and cell.airflow then
+                -- Actualiza las variables de la atmósfera del jugador
+                GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
+                GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
+                GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
+                GLOBAL_SYSTEM_TARGET["Atmosphere"]["AirFlow"] = cell.airflow
+                print("Actual Position grid: X: " .. px .. ", Y:".. py .. ", Z:" .. pz) -- Depuración
+            else
+                -- Manejo de valores no válidos
+                print("Error: Valores no válidos en la celda de la cuadrícula.")
+            end
+        else
+            -- Manejo de celdas fuera de los límites de la cuadrícula
+            print("Error: Posición fuera de los límites de la cuadrícula.")
+        end
     end
 
     if CLIENT then
@@ -669,5 +674,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     -- Llamar a la función para generar la cuadrícula al inicio del juego
     hook.Add("PlayerSpawn", "GenerateGrid", GenerateGrid)
     hook.Add("PlayerSpawn", "AddTemperatureHumiditySources", AddTemperatureHumiditySources)
+    hook.Add("Think", "UpdateGrid", UpdateGrid)
+    hook.Add("Think", "UpdatePlayerGrid", UpdatePlayerGrid)
     hook.Add("Think", "UpdateWeather", UpdateWeather)
 end
