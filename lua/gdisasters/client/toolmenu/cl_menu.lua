@@ -79,9 +79,9 @@ local function CreateSliderConVariable(CPanel, desc, minvar, maxvar, dp, convarn
 	return CB
 end
 
---SV MENU 
+--SH MENU 
 
-local function gDisastersSVSettings( CPanel )
+local function gDisastersSHSettings( CPanel )
 
 	local lb = AddControlLabel( CPanel, "gd_1" )
 	lb:SetTextColor(Color( 0, 0, 0))
@@ -99,7 +99,7 @@ local function gDisastersSVSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "gd_7" ,"gdisasters_tvirus_nmrih_zombies");
 end
 
-local function gDisastersSVADVSettings( CPanel )
+local function gDisastersSHADVSettings( CPanel )
 
 	local lb = AddControlLabel( CPanel, "gd_8")
 	local lb2 = AddControlLabel( CPanel, "gd_9")
@@ -174,7 +174,7 @@ local function gDisastersSVADVSettings( CPanel )
 	
 end
 
-local function gDisastersSVGraphics( CPanel )
+local function gDisastersSHGraphics( CPanel )
 
 	local lb = AddControlLabel( CPanel, "gd_42" )
 	lb:SetTextColor(Color( 0, 0, 0))
@@ -224,12 +224,19 @@ local function gDisastersAutospawn( CPanel )
 
 	CreateTickboxConVariable(CPanel, "gd_59"  , "gdisasters_autospawn_getridmaptor");
 	CreateTickboxConVariable(CPanel, "gd_60"  , "gdisasters_autospawn_chat");
-	CreateTickboxConVariable(CPanel, "gd_88", "gdisasters_heat_system");
 	CreateTickboxConVariable(CPanel, "gd_61"  , "gdisasters_autospawn_enable");
 
 	
 end
-local function gDisastersSVhud( CPanel )
+
+local function gDisastersHeatSystemBeta( CPanel )
+
+	CreateTickboxConVariable(CPanel, "gd_88", "gdisasters_heat_system");
+	CreateTickboxConVariable(CPanel, "gd_87", "gdisasters_graphics_draw_heatsystem_grid");
+
+end
+
+local function gDisastersSHhud( CPanel )
 
 	
 	local lb2 = AddControlLabel( CPanel, "gd_62" )
@@ -390,16 +397,18 @@ end)
 hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	
 
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVADSettings", language.GetPhrase("gd_advanced"), "", "", gDisastersSVADVSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVSettings", language.GetPhrase("gd_main"), "", "", gDisastersSVSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAutospawn", language.GetPhrase("gd_autospawn"), "", "", gDisastersAutospawn )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisasterDNC", language.GetPhrase("gd_dnc"), "", "", gDisastersDNC )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVhud", language.GetPhrase("gd_server_hud"), "", "", gDisastersSVhud )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersAddonsCompatibility", language.GetPhrase("gd_addons"), "", "", gDisastersAddonsCompatibility )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Server", "gDisastersSVGraphics", language.GetPhrase("gd_server_graphics"), "", "", gDisastersSVGraphics )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisastersSHADSettings", language.GetPhrase("gd_advanced"), "", "", gDisastersSHADVSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisastersSHSettings", language.GetPhrase("gd_main"), "", "", gDisastersSHSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisastersAutospawn", language.GetPhrase("gd_autospawn"), "", "", gDisastersAutospawn )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisasterDNC", language.GetPhrase("gd_dnc"), "", "", gDisastersDNC )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisastersSHhud", language.GetPhrase("gd_server_hud"), "", "", gDisastersSHhud )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisastersAddonsCompatibility", language.GetPhrase("gd_addons"), "", "", gDisastersAddonsCompatibility )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisastersSHGraphics", language.GetPhrase("gd_server_graphics"), "", "", gDisastersSHGraphics )
+	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisastersHeatSystemSettings", language.GetPhrase("gd_heatsystem"), "", "", gDisastersHeatSystemBeta )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersAudioSettings", language.GetPhrase("gd_volume"), "", "", gDisastersAudioSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersADVGraphicsSettings", language.GetPhrase("gd_advanced_graphics"), "", "", gDisastersADVGraphicsSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "ggDisastersHudSettings", language.GetPhrase("gd_hud"), "", "", gDisastersHudSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersGraphicsSettings", language.GetPhrase("gd_graphics"), "", "", gDisastersGraphicsSettings )
+	
 
 end );
