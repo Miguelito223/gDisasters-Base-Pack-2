@@ -560,7 +560,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
 
     end
     function UpdatePlayerGrid()
-        for k,ply in pairs(player.GetAll())
+        for k,ply in pairs(player.GetAll()) do
             local pos = ply:GetPos()
             local px, py, pz = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize, math.floor(pos.z / gridSize) * gridSize
             
