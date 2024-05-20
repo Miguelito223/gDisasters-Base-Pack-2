@@ -559,29 +559,31 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         end
 
     end
-    function UpdatePlayerGrid(ply)
-        local pos = ply:GetPos()
-        local px, py, pz = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize, math.floor(pos.z / gridSize) * gridSize
-        
-        -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
-        if GridMap[px] and GridMap[px][py] and GridMap[px][py][pz] then
-            local cell = GridMap[px][py][pz]
+    function UpdatePlayerGrid()
+        for k,ply in pairs(player.GetAll())
+            local pos = ply:GetPos()
+            local px, py, pz = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize, math.floor(pos.z / gridSize) * gridSize
+            
+            -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
+            if GridMap[px] and GridMap[px][py] and GridMap[px][py][pz] then
+                local cell = GridMap[px][py][pz]
 
-            -- Verifica si las propiedades de la celda son válidas
-            if cell.temperature and cell.humidity and cell.pressure and cell.airflow then
-                -- Actualiza las variables de la atmósfera del jugador
-                GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
-                GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
-                GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
-                GLOBAL_SYSTEM_TARGET["Atmosphere"]["AirFlow"] = cell.airflow
-                print("Actual Position grid: X: " .. px .. ", Y:".. py .. ", Z:" .. pz) -- Depuración
+                -- Verifica si las propiedades de la celda son válidas
+                if cell.temperature and cell.humidity and cell.pressure and cell.airflow then
+                    -- Actualiza las variables de la atmósfera del jugador
+                    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
+                    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
+                    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
+                    GLOBAL_SYSTEM_TARGET["Atmosphere"]["AirFlow"] = cell.airflow
+                    print("Actual Position grid: X: " .. px .. ", Y:".. py .. ", Z:" .. pz) -- Depuración
+                else
+                    -- Manejo de valores no válidos
+                    print("Error: Valores no válidos en la celda de la cuadrícula.")
+                end
             else
-                -- Manejo de valores no válidos
-                print("Error: Valores no válidos en la celda de la cuadrícula.")
+                -- Manejo de celdas fuera de los límites de la cuadrícula
+                print("Error: Posición fuera de los límites de la cuadrícula.")
             end
-        else
-            -- Manejo de celdas fuera de los límites de la cuadrícula
-            print("Error: Posición fuera de los límites de la cuadrícula.")
         end
     end
 
@@ -674,7 +676,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     -- Llamar a la función para generar la cuadrícula al inicio del juego
     hook.Add("PlayerSpawn", "GenerateGrid", GenerateGrid)
     hook.Add("PlayerSpawn", "AddTemperatureHumiditySources", AddTemperatureHumiditySources)
-    hook.Add("Think", "UpdateGrid", UpdateGrid)
     hook.Add("Think", "UpdatePlayerGrid", UpdatePlayerGrid)
+    hook.Add("Think", "UpdateGrid", UpdateGrid)
     hook.Add("Think", "UpdateWeather", UpdateWeather)
 end
