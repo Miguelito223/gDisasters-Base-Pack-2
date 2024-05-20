@@ -202,7 +202,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     end
 
     -- Función para simular la generación de lluvia
-    local function SimulateRain()
+    function SimulateRain()
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
@@ -216,7 +216,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     end
 
     -- Función para crear partículas de lluvia
-    local function CreateRaindrops(x, y, z)
+    function CreateRaindrops(x, y, z)
         local particle = ents.Create("env_spritetrail") -- Create a sprite trail entity for raindrop particle
         particle:SetPos(Vector(x, y, z)) -- Set the position of the particle
         particle:SetKeyValue("lifetime", "2") -- Set the lifetime of the particle
@@ -230,12 +230,30 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         particle:Activate() -- Activate the particle
     end
 
-    -- Función para ajustar los niveles de humedad en celdas circundantes durante la lluvia
-    local function AdjustHumiditySurroundingCells(x, y, z)
-        -- Ajustar los niveles de humedad en celdas vecinas basándose en la lluvia
+    -- Function to adjust humidity levels in surrounding cells based on rain
+    function AdjustHumiditySurroundingCells(x, y, z)
+        local neighbors = {
+            {dx = -1, dy = 0},  -- Left
+            {dx = 1, dy = 0},   -- Right
+            {dx = 0, dy = -1},  -- Up
+            {dx = 0, dy = 1}    -- Down
+        }
+        
+        local currentHumidity = GridMap[x][y][z].humidity
+        local spreadFactor = 0.2  -- Factor to determine how much humidity spreads to neighbors
+
+        for _, neighbor in ipairs(neighbors) do
+            local nx, ny = x + neighbor.dx, y + neighbor.dy
+            if GridMap[nx] and GridMap[nx][ny] then
+                -- Adjust humidity in neighboring cell based on current cell's humidity
+                local neighborHumidity = GridMap[nx][ny][z].humidity
+                local newHumidity = neighborHumidity + spreadFactor * (currentHumidity - neighborHumidity)
+                GridMap[nx][ny][z].humidity = newHumidity
+            end
+        end
     end
 
-    local function SimulateStorms()
+    function SimulateStorms()
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
@@ -248,7 +266,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         end
     end
 
-    local function CreateStormClouds(x, y, z)
+    function CreateStormClouds(x, y, z)
         local stormCloud = ents.Create("gd_storm_cloud") -- Create a storm cloud entity
         stormCloud:SetPos(Vector(x, y, z)) -- Set the position of the storm cloud
         stormCloud:SetModel("models/clouds/storm_cloud.mdl") -- Set the model for the storm cloud (adjust as needed)
@@ -257,7 +275,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         stormCloud:Spawn() -- Spawn the storm cloud entity
     end
 
-    local function SimulateLightningAndThunder()
+    function SimulateLightningAndThunder()
         local bounds = getMapSkyBox()
         local min = bounds[1]
         local max = bounds[2]
@@ -285,6 +303,40 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
             end
 
             CreateLightningBolt(startpos - Vector(0, 0, 4000), endpos, {"purple", "blue"}, {"Grounded", "NotGrounded"})
+        end
+    end
+
+    local function SpawnCloud(pos, airflow)
+        local cloud = ents.Create("gd_cloud_cumulus")
+        cloud:SetPos(pos)
+
+        -- Aplicar el flujo de aire a la velocidad de movimiento de la nube
+        local velocity = Vector(airflow.x, airflow.y, airflow.z) * 10 -- Ajusta el factor de escala según sea necesario
+        cloud:SetVelocity(velocity)
+
+        return cloud
+    end
+
+    -- Función para simular la formación y movimiento de nubes
+    local function SimulateClouds()
+        for x, column in pairs(GridMap) do
+            for y, row in pairs(column) do
+                for z, cell in pairs(row) do
+                    local humidity = cell.humidity
+                    local temperature = cell.temperature
+                    if humidity < lowHumidityThreshold and temperature < lowTemperatureThreshold then
+                        -- Generate clouds in cells with low humidity and temperature
+                        local airflow = GridMap[x][y][z].airflow
+                        local pos = Vector(x, y, z) * gridSize
+                        local cloud = ents.Create("gd_cloud_cumulus")
+                        cloud:SetPos(pos)
+                        local velocity = Vector(airflow.x, airflow.y, airflow.z) * 10
+                        cloud:SetVelocity(velocity)
+                        cloud:Spawn()
+                        cloud:Activate()
+                    end
+                end
+            end
         end
     end
 
@@ -428,39 +480,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     end
 
 
-    local function SpawnCloud(pos, airflow)
-        local cloud = ents.Create("gd_cloud_cumulus")
-        cloud:SetPos(pos)
 
-        -- Aplicar el flujo de aire a la velocidad de movimiento de la nube
-        local velocity = Vector(airflow.x, airflow.y, airflow.z) * 10 -- Ajusta el factor de escala según sea necesario
-        cloud:SetVelocity(velocity)
-
-        return cloud
-    end
-
-    -- Función para simular la formación y movimiento de nubes
-    local function SimulateClouds()
-        for x, column in pairs(GridMap) do
-            for y, row in pairs(column) do
-                for z, cell in pairs(row) do
-                    local humidity = cell.humidity
-                    local temperature = cell.temperature
-                    if humidity < lowHumidityThreshold and temperature < lowTemperatureThreshold then
-                        -- Generate clouds in cells with low humidity and temperature
-                        local airflow = GridMap[x][y][z].airflow
-                        local pos = Vector(x, y, z) * gridSize
-                        local cloud = ents.Create("gd_cloud_cumulus")
-                        cloud:SetPos(pos)
-                        local velocity = Vector(airflow.x, airflow.y, airflow.z) * 10
-                        cloud:SetVelocity(velocity)
-                        cloud:Spawn()
-                        cloud:Activate()
-                    end
-                end
-            end
-        end
-    end
 
     -- Llamar a SimulateClouds() para simular la formación y movimiento de las nubes
     local function UpdateWeather()
