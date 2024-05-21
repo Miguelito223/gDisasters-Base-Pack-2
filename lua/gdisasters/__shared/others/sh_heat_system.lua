@@ -1,8 +1,8 @@
 -- Tamaño de la cuadrícula y rango de temperatura
-gridSize = 1000 -- Tamaño de cada cuadrado en unidades
+gridSize = 500 -- Tamaño de cada cuadrado en unidades
 
-minTemperature = -40 -- Temperatura mínima
-maxTemperature = 40 -- Temperatura máxima
+minTemperature = -55 -- Temperatura mínima
+maxTemperature = 35 -- Temperatura máxima
 minHumidity = 0 -- Humedad mínima
 maxHumidity = 100 -- Humedad máxima
 minPressure = 80000 -- Presión mínima en milibares
@@ -15,7 +15,7 @@ nextThinkTime = CurTime()
 diffusionCoefficient = 0.1 -- Coeficiente de difusión de calor
 gas_constant = 287.05
 specific_heat_vapor = 2010
-airflowCoefficient = 0.1
+AirflowCoefficient = 0.1
 N = 100
 
 waterTemperatureEffect = 2  -- El agua tiende a mantener una temperatura más constante
@@ -57,11 +57,11 @@ if SERVER then
                     local nx, ny, nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
                     if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
                         local neighborCell = GridMap[nx][ny][nz]
-                        if neighborCell.temperature and neighborCell.airflow then
+                        if neighborCell.temperature and neighborCell.Airflow then
                             totalTemperature = totalTemperature + neighborCell.temperature
-                            totalAirFlow[1] = totalAirFlow[1] + (neighborCell.airflow[1] or 0)
-                            totalAirFlow[2] = totalAirFlow[2] + (neighborCell.airflow[2] or 0)
-                            totalAirFlow[3] = totalAirFlow[3] + (neighborCell.airflow[3] or 0)
+                            totalAirFlow[1] = totalAirFlow[1] + (neighborCell.Airflow[1] or 0)
+                            totalAirFlow[2] = totalAirFlow[2] + (neighborCell.Airflow[2] or 0)
+                            totalAirFlow[3] = totalAirFlow[3] + (neighborCell.Airflow[3] or 0)
                             count = count + 1
                         end
                     end
@@ -84,13 +84,11 @@ if SERVER then
 
         -- Ajustar la temperatura de la celda actual basada en la difusión de calor
         local currentTemperature = GridMap[x][y][z].temperature
-        local altitudeEffect = z * 0.0065 -- Ajustando el coeficiente según el rango de temperaturas
         local temperatureInfluence = GridMap[x][y][z].temperatureInfluence
-        local airflowEffect = airflowCoefficient * (averageAirFlow[1] + averageAirFlow[2] + averageAirFlow[3])
-        local newTemperature = currentTemperature + (diffusionCoefficient * (averageTemperature - currentTemperature)) 
-        newTemperature = newTemperature + airflowEffect
+        local AirflowEffect = AirflowCoefficient * (averageAirFlow[1] + averageAirFlow[2] + averageAirFlow[3])
+        local newTemperature = currentTemperature + diffusionCoefficient * (averageTemperature - currentTemperature)
+        newTemperature = newTemperature + AirflowEffect
         newTemperature = newTemperature + temperatureInfluence
-        newTemperature = newTemperature - altitudeEffect
         -- Asegurarse de que la temperatura esté dentro del rango
         return math.max(minTemperature, math.min(maxTemperature, newTemperature))
     end
@@ -118,16 +116,15 @@ if SERVER then
         -- Si no hay celdas vecinas válidas, retornar la humedad actual
         if count == 0 then return GridMap[x][y][z].humidity end
 
-        -- Calcular la humedad promedio de las vecinas
-        local averageHumidity = totalHumidity / count
-        local altitudeEffect = z * 0.1
-        local humidityinfluence = GridMap[x][y][z].humidityInfluence
+
 
         -- Ajustar la humedad de la celda actual basada en la difusión de humedad
         local currentHumidity = GridMap[x][y][z].humidity
-        local newHumidity = currentHumidity + (diffusionCoefficient * (averageHumidity - currentHumidity))
+        local averageHumidity = totalHumidity / count
+        local humidityinfluence = GridMap[x][y][z].humidityInfluence
+        local altitudeEffect = (z / gridSize) * 0.1
+        local newHumidity = currentHumidity + diffusionCoefficient * (averageHumidity - currentHumidity)
         newHumidity = newHumidity + humidityinfluence
-        newHumidity = newHumidity - altitudeEffect
         -- Asegurarse de que la humedad esté dentro del rango permitido
         return math.max(minHumidity, math.min(maxHumidity, newHumidity))
     end
@@ -144,13 +141,13 @@ if SERVER then
     function GetCellType(x, y, z)
         local MapBounds = getMapBounds()
         local max, min, floor = MapBounds[1], MapBounds[2], MapBounds[3]
-        local mapMinX, mapMinY, mapMaxZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize, math.floor(min.z / gridSize) * gridSize
-        local mapMaxX, mapMaxY, mapMinZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize, math.ceil(max.z / gridSize) * gridSize
+        local minX, minY, maxZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize, math.ceil(max.z / gridSize) * gridSize
+        local maxX, maxY, minZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize, math.floor(min.z / gridSize) * gridSize
         local floorz = math.ceil(floor.z / gridSize) * gridSize
         
-        local MAP_WIDTH = mapMaxX - mapMinX
-        local MAP_DEPTH = mapMaxY - mapMinY
-        local MAP_HEIGHT = mapMaxZ - mapMinZ
+        local MAP_WIDTH = maxX - minX
+        local MAP_DEPTH = maxY - minY
+        local MAP_HEIGHT = maxZ - minZ
         local WATER_LEVEL = floorz
         local MOUNTAIN_LEVEL = floorz + 5000
 
@@ -195,11 +192,11 @@ if SERVER then
         end
 
         -- Ajustar la velocidad del flujo de aire en función de la diferencia de presión
-        local airflowX = totalDeltaPressureX * airflowCoefficient
-        local airflowY = totalDeltaPressureY * airflowCoefficient
-        local airflowZ = totalDeltaPressureZ * airflowCoefficient
+        local AirflowX = totalDeltaPressureX * AirflowCoefficient
+        local AirflowY = totalDeltaPressureY * AirflowCoefficient
+        local AirflowZ = totalDeltaPressureZ * AirflowCoefficient
 
-        return Vector(airflowX, airflowY, airflowZ)
+        return AirflowX, AirflowY, AirflowZ
     end
 
     -- Función para simular la generación de lluvia
@@ -268,10 +265,10 @@ if SERVER then
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
                     if cell.temperature > stormTemperatureThreshold and cell.pressure < stormPressureThreshold then
-                        local airflow = GridMap[x][y][z].airflow
+                        local Airflow = GridMap[x][y][z].VecAirflow
                         local pos = Vector(x, y, z) * gridSize
                         local color = Color(128,128,128)
-                        SpawnCloud(pos, airflow, color)
+                        SpawnCloud(pos, Airflow, color)
                         SimulateLightningAndThunder()
                     end
                 end
@@ -310,7 +307,7 @@ if SERVER then
         end
     end
 
-    function SpawnCloud(pos, airflow, color)
+    function SpawnCloud(pos, Airflow, color)
         if #ents.FindByClass("gd_cloud_cumulus") > MaxClouds then return end
 
 
@@ -325,7 +322,7 @@ if SERVER then
         table.insert(Cloud, cloud)
 
         -- Aplicar el flujo de aire a la velocidad de movimiento de la nube
-        local velocity = Vector(airflow.x, airflow.y, airflow.z) * 10 -- Ajusta el factor de escala según sea necesario
+        local velocity = Vector(Airflow.x, Airflow.y, Airflow.z) * 10 -- Ajusta el factor de escala según sea necesario
         cloud:SetVelocity(velocity)
 
         
@@ -344,10 +341,10 @@ if SERVER then
                     local temperature = cell.temperature
                     if humidity < lowHumidityThreshold and temperature < lowTemperatureThreshold then
                         -- Generate clouds in cells with low humidity and temperature
-                        local airflow = GridMap[x][y][z].airflow
+                        local Airflow = GridMap[x][y][z].VecAirflow
                         local pos = Vector(x, y, z) * gridSize
                         local color = Color(255,255,255)
-                        SpawnCloud(pos, airflow, color)
+                        SpawnCloud(pos, Airflow, color)
                     end
                 end
             end
@@ -509,7 +506,8 @@ if SERVER then
                     GridMap[x][y][z].temperature = math.random(minTemperature, maxTemperature)
                     GridMap[x][y][z].humidity = math.random(minHumidity, maxHumidity)
                     GridMap[x][y][z].pressure = math.random(minPressure, maxPressure)
-                    GridMap[x][y][z].airflow = Vector(0,0,0)
+                    GridMap[x][y][z].Airflow = {0,0,0}
+                    GridMap[x][y][z].VecAirflow = Vector(0,0,0)
                     print("Position grid: X: " .. x .. ", Y:".. y .. ", Z:" .. z) -- Depuración
                 end
             end
@@ -551,7 +549,8 @@ if SERVER then
                         GridMap[x][y][z].temperature = newTemperature
                         GridMap[x][y][z].humidity = newHumidity
                         GridMap[x][y][z].pressure = newPressure
-                        GridMap[x][y][z].airflow = newAirFlow
+                        GridMap[x][y][z].Airflow = newAirFlow
+                        GridMap[x][y][z].VecAirflow = Vector(newAirFlow[1], newAirFlow[2],newAirFlow[3])
                     else
                         print("Error: Posición fuera de los límites de la cuadrícula.")
                     end
