@@ -1,5 +1,5 @@
 -- Tamaño de la cuadrícula y rango de temperatura
-gridSize = 1000 -- Tamaño de cada cuadrado en unidades
+gridSize = 500 -- Tamaño de cada cuadrado en unidades
 
 minTemperature = -55 -- Temperatura mínima
 maxTemperature = 35 -- Temperatura máxima
@@ -33,13 +33,18 @@ LandSources = {}
 
 Cloud = {}
 
-rainThreshold = 70 -- Umbral de humedad para la generación de lluvia
+rainThreshold = 0.8 -- Umbral de humedad para la generación de lluvia
+cloudThreshold = 0.6
+strongStormThreshold = 0.9
+convergenceThreshold = 0.7
 stormTemperatureThreshold = 30 -- Umbral de temperatura para la generación de tormentas
 stormPressureThreshold = 100000 -- Umbral de presión para la generación de tormentas
 lowTemperatureThreshold = 10
 lowHumidityThreshold =  40
 MaxClouds = 30
 MaxRainDrop = 5
+
+maxDrawDistance = 100000
 
 
 
@@ -208,20 +213,9 @@ if SERVER then
         return {AirflowX, AirflowY, AirflowZ}
     end
     
-    function SimulateRain(pos)
-        -- Obtener la posición de la celda de la nube
-        local nubePos = pos
-
-        -- Crear gotas de lluvia en la posición de la nube
-        CreateRaindrops(nubePos.x, nubePos.y, nubePos.z)
-
-        -- Ajustar la humedad de las celdas circundantes si es necesario
-        AdjustHumiditySurroundingCells(nubePos.x, nubePos.y, nubePos.z)
-
-    end
 
     -- Función para crear partículas de lluvia
-    function CreateRaindrops(x, y, z)
+    function CreateRain(x, y, z)
 
         if #ents.FindByClass("env_spritetrail") > MaxRainDrop then return end
 
@@ -269,6 +263,32 @@ if SERVER then
         end
     end
 
+    function AdjustTemperaturePressureSurroundingCells(x, y, z, newTemperature, newPressure)
+        local neighbors = {
+            {dx = -1, dy = 0, dz = 0},  -- Izquierda
+            {dx = 1, dy = 0, dz = 0},   -- Derecha
+            {dx = 0, dy = -1, dz = 0},  -- Arriba
+            {dx = 0, dy = 1, dz = 0},   -- Abajo
+            {dx = 0, dy = 0, dz = -1},  -- Abajo
+            {dx = 0, dy = 0, dz = 1}    -- Arriba
+        }
+
+        local spreadFactor = 0.2  -- Factor para determinar cómo se difunde la temperatura y la presión
+
+        for _, neighbor in ipairs(neighbors) do
+            local nx, ny, nz = x + neighbor.dx, y + neighbor.dy, z + neighbor.dz
+            if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                local neighborCell = GridMap[nx][ny][nz]
+                local neighborTemperature = neighborCell.temperature or 0
+                local neighborPressure = neighborCell.pressure or 0
+
+                -- Ajustar la temperatura y la presión en la celda vecina
+                neighborCell.temperature = neighborTemperature + spreadFactor * (newTemperature - neighborTemperature)
+                neighborCell.pressure = neighborPressure + spreadFactor * (newPressure - neighborPressure)
+            end
+        end
+    end
+
     function SimulateStorms()
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
@@ -279,29 +299,27 @@ if SERVER then
                         local color = Color(128,128,128)
                         SpawnCloud(pos, airflow, color)
                         SimulateLightningAndThunder(Vector(x, y, z))
-                        SimulateRain(Vector(x, y, z))
                     end
                 end
             end
         end
     end
 
-    function SimulateLightningAndThunder(pos)
-        -- Obtener la posición de la celda de la nube
-        local startpos = pos
-
-        -- Calcular la posición final del rayo, más cerca del suelo
-        local endpos = startpos - Vector(0, 0, 50000)
-
-    	local tr = util.TraceLine( {
-		    start = startpos,
-		    endpos = endpos,
-	    } )
-
-        local hitpos = tr.HitPos
-
-        CreateLightningBolt(startpos,hitpos, {"purple", "blue"}, {"Grounded", "NotGrounded"})
-        
+    function CreateLightningAndThunder(x,y,z)
+        if CurTime() > nextThinkTime then
+            local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1
+            nextThinkTime = CurTime() + t
+            
+            local startpos = Vector(x,y,z)
+            local endpos = startpos - Vector(0, 0, 50000)
+            local tr = util.TraceLine({
+                start = startpos,
+                endpos = endpos,
+            })
+            if HitChance(1) then
+                CreateLightningBolt(startpos, tr.HitPos, {"purple", "blue"}, {"Grounded", "NotGrounded"})
+            end
+        end
     end
 
     function SpawnCloud(pos, Airflow, color)
@@ -330,22 +348,35 @@ if SERVER then
     end
 
     -- Función para simular la formación y movimiento de nubes
-    function SimulateClouds()
-        for x, column in pairs(GridMap) do
-            for y, row in pairs(column) do
-                for z, cell in pairs(row) do
-                    local humidity = cell.humidity
-                    local temperature = cell.temperature
-                    if humidity < lowHumidityThreshold and temperature < lowTemperatureThreshold then
-                        -- Generate clouds in cells with low humidity and temperature
-                        local airflow = GridMap[x][y][z].VecAirflow
-                        local pos = Vector(x, y, z) * gridSize
-                        local color = Color(255,255,255)
-                        SpawnCloud(pos, airflow, color)
-                    end
-                end
-            end
+    function CreateClouds(x,y,z)
+
+        local humidity = cell.humidity
+        local temperature = cell.temperature
+        if humidity < lowHumidityThreshold and temperature < lowTemperatureThreshold then
+            -- Generate clouds in cells with low humidity and temperature
+            local airflow = GridMap[x][y][z].VecAirflow
+            local pos = Vector(x, y, z) * gridSize
+            local color = Color(255,255,255)
+            SpawnCloud(pos, airflow, color)
         end
+     
+    end
+
+    -- Función para simular la formación y movimiento de nubes
+    function CreateStorm(x,y,z)
+
+        local humidity = cell.humidity
+        local temperature = cell.temperature
+        if humidity < lowHumidityThreshold and temperature < lowTemperatureThreshold then
+            -- Generate clouds in cells with low humidity and temperature
+            local airflow = GridMap[x][y][z].VecAirflow
+            local pos = Vector(x, y, z) * gridSize
+            local color = Color(117,117,117)
+            SpawnCloud(pos, airflow, color)
+            CreateLightningAndThunder(x,y,z)
+            
+        end
+     
     end
 
     function GetDistance(x1, y1, z1, x2, y2, z2)
@@ -470,6 +501,46 @@ if SERVER then
         return landSources
     end
 
+    function SimulateConvergence()
+        for x, column in pairs(GridMap) do
+            for y, row in pairs(column) do
+                for z, cell in pairs(row) do
+                    local neighbors = {
+                        {dx = -1, dy = 0, dz = 0},  -- Izquierda
+                        {dx = 1, dy = 0, dz = 0},   -- Derecha
+                        {dx = 0, dy = -1, dz = 0},  -- Arriba
+                        {dx = 0, dy = 1, dz = 0},   -- Abajo
+                        {dx = 0, dy = 0, dz = -1},  -- Abajo
+                        {dx = 0, dy = 0, dz = 1}    -- Arriba
+                    }
+
+                    local convergenceStrength = 0
+                    local airSpeedSum = 0
+
+                    for _, neighbor in ipairs(neighbors) do
+                        local nx, ny, nz = x + neighbor.dx, y + neighbor.dy, z + neighbor.dz
+                        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                            local neighborCell = GridMap[nx][ny][nz]
+                            local airSpeed = math.abs((cell.pressure or 0) - (neighborCell.pressure or 0))
+                            airSpeedSum = airSpeedSum + airSpeed
+                        end
+                    end
+
+                    convergenceStrength = airSpeedSum / #neighbors
+
+                    if convergenceStrength > convergenceThreshold then
+                        if convergenceStrength > strongStormThreshold then
+                            CreateStorm(x, y, z)
+                        elseif convergenceStrength > rainThreshold then
+                            CreateRain(x, y, z)
+                        elseif convergenceStrength > cloudThreshold then
+                            CreateCloud(x, y, z)
+                        end
+                    end
+                end
+            end
+        end
+    end
 
 
 
@@ -478,8 +549,7 @@ if SERVER then
         if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
             if CurTime() > nextThinkTime then
                 nextThinkTime = CurTime() + 0.1
-                SimulateClouds()
-                SimulateStorms()
+                SimulateConvergence()
             end
         end
     end
@@ -592,83 +662,35 @@ if SERVER then
 end
 
 if CLIENT then
-    
-    local maxDrawDistance = 5000 -- Distancia máxima en unidades para dibujar la cuadrícula
+    -- Función para convertir la temperatura en un color
+    function TemperatureToColor(temperature)
+        -- Aquí definimos una escala de colores basada en la temperatura
+        local minTemp, maxTemp = 0, 100  -- Define el rango de temperatura
+        local normalizedTemp = math.Clamp((temperature - minTemp) / (maxTemp - minTemp), 0, 1)
+        
+        local r = math.Clamp(255 * normalizedTemp, 0, 255)
+        local b = math.Clamp(255 * (1 - normalizedTemp), 0, 255)
+        local g = 0
+
+        return Color(r, g, b, 150)  -- Alpha para semi-transparencia
+    end
 
     hook.Add("PostDrawOpaqueRenderables", "DrawGridDebug", function()
         if GetConVar("gdisasters_graphics_draw_heatsystem_grid"):GetInt() >= 1 then 
             local playerPos = LocalPlayer():GetPos()
-            local MapBounds = getMapBounds()
-            local max, min, floor = MapBounds[1], MapBounds[2], MapBounds[3]
-            local mapMinX, mapMinY, mapMaxZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize, math.floor(min.z / gridSize) * gridSize
-            local mapMaxX, mapMaxY, mapMinZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize, math.ceil(max.z / gridSize) * gridSize
-
-            for x = mapMinX, mapMaxX, gridSize do
-                for y = mapMinY, mapMaxY, gridSize do
-                    for z = mapMinZ, mapMaxZ, gridSize do
-                        local cellCenter = Vector(x + gridSize / 2, y + gridSize / 2, z + gridSize / 2)
+                       
+            for x, column in pairs(GridMap) do
+                for y, row in pairs(column) do
+                    for z, cell in pairs(row) do
+                        local cellCenter = Vector(x * gridSize + gridSize / 2, y * gridSize + gridSize / 2, z * gridSize + gridSize / 2)
                         if playerPos:DistToSqr(cellCenter) < maxDrawDistance * maxDrawDistance then
-                            local pos1, pos2
-
-                            pos1 = Vector(x, y, z)
-                            pos2 = Vector(x + gridSize, y, z)
-                            render.SetColorMaterial()
-                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
-
-                            pos1 = Vector(x, y, z)
-                            pos2 = Vector(x, y + gridSize, z)
-                            render.SetColorMaterial()
-                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
-
-                            pos1 = Vector(x, y, z)
-                            pos2 = Vector(x, y, z + gridSize)
-                            render.SetColorMaterial()
-                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
-
-                            pos1 = Vector(x + gridSize, y + gridSize, z + gridSize)
-                            pos2 = Vector(x, y + gridSize, z + gridSize)
-                            render.SetColorMaterial()
-                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
-
-                            pos1 = Vector(x + gridSize, y + gridSize, z + gridSize)
-                            pos2 = Vector(x + gridSize, y, z + gridSize)
-                            render.SetColorMaterial()
-                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
-
-                            pos1 = Vector(x + gridSize, y + gridSize, z + gridSize)
-                            pos2 = Vector(x + gridSize, y + gridSize, z)
-                            render.SetColorMaterial()
-                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
-
-                            pos1 = Vector(x + gridSize, y, z)
-                            pos2 = Vector(x + gridSize, y, z + gridSize)
-                            render.SetColorMaterial()
-                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
-
-                            pos1 = Vector(x + gridSize, y, z)
-                            pos2 = Vector(x + gridSize, y + gridSize, z)
-                            render.SetColorMaterial()
-                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
-
-                            pos1 = Vector(x, y + gridSize, z)
-                            pos2 = Vector(x, y + gridSize, z + gridSize)
-                            render.SetColorMaterial()
-                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
-
-                            pos1 = Vector(x, y + gridSize, z)
-                            pos2 = Vector(x + gridSize, y + gridSize, z)
-                            render.SetColorMaterial()
-                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
-
-                            pos1 = Vector(x, y, z + gridSize)
-                            pos2 = Vector(x + gridSize, y, z + gridSize)
-                            render.SetColorMaterial()
-                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
-
-                            pos1 = Vector(x, y, z + gridSize)
-                            pos2 = Vector(x, y + gridSize, z + gridSize)
-                            render.SetColorMaterial()
-                            render.DrawLine(pos1, pos2, Color(255, 0, 0), true)
+                            if cell then
+                                local temperature = cell.temperature or 0
+                                local color = TemperatureToColor(temperature)
+                                
+                                render.SetColorMaterial()
+                                render.DrawBox(cellCenter, Angle(0, 0, 0), Vector(-gridSize / 2, -gridSize / 2, -gridSize / 2), Vector(gridSize / 2, gridSize / 2, gridSize / 2), color)
+                            end
                         end
                     end
                 end
