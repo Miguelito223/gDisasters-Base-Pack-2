@@ -1,5 +1,5 @@
 -- Tamaño de la cuadrícula y rango de temperatura
-gridSize = 500 -- Tamaño de cada cuadrado en unidades
+gridSize = 1000 -- Tamaño de cada cuadrado en unidades
 
 minTemperature = -55 -- Temperatura mínima
 maxTemperature = 35 -- Temperatura máxima
@@ -13,8 +13,8 @@ updateBatchSize = 100 -- Número de celdas a actualizar por frame
 nextThinkTime = CurTime()
 
 diffusionCoefficient = 0.1 -- Coeficiente de difusión de calor
-gas_constant = 287.05
-specific_heat_vapor = 2010
+gas_constant = 8.314
+specific_heat_vapor = 0.018
 AirflowCoefficient = 0.1
 N = 100
 
@@ -86,9 +86,10 @@ if SERVER then
         local currentTemperature = GridMap[x][y][z].temperature
         local temperatureInfluence = GridMap[x][y][z].temperatureInfluence
         local AirflowEffect = AirflowCoefficient * (averageAirFlow[1] + averageAirFlow[2] + averageAirFlow[3])
+        local altitudeEffect = z * 0.065
         local newTemperature = currentTemperature + diffusionCoefficient * (averageTemperature - currentTemperature)
-        newTemperature = newTemperature + AirflowEffect
-        newTemperature = newTemperature + temperatureInfluence
+        newTemperature = newTemperature + AirflowEffect + temperatureInfluence - altitudeEffect
+        
         -- Asegurarse de que la temperatura esté dentro del rango
         return math.max(minTemperature, math.min(maxTemperature, newTemperature))
     end
@@ -122,20 +123,28 @@ if SERVER then
         local currentHumidity = GridMap[x][y][z].humidity
         local averageHumidity = totalHumidity / count
         local humidityinfluence = GridMap[x][y][z].humidityInfluence
-        local altitudeEffect = (z / gridSize) * 0.1
+        local altitudeEffect = z * 0.1
         local newHumidity = currentHumidity + diffusionCoefficient * (averageHumidity - currentHumidity)
-        newHumidity = newHumidity + humidityinfluence
+        newHumidity = newHumidity + humidityinfluence - altitudeEffect
         -- Asegurarse de que la humedad esté dentro del rango permitido
         return math.max(minHumidity, math.min(maxHumidity, newHumidity))
     end
 
     -- Función para calcular la presión de una celda basada en temperatura y humedad
     function CalculatePressure(x, y, z)
-        local temperature = GridMap[x][y][z].temperature
-        local humidity = GridMap[x][y][z].humidity
+        local cell = GridMap[x][y][z]
+        if not cell then return 0 end -- Si la celda no existe, retornar 0
 
-        local pressure = gas_constant * temperature * (1 + (specific_heat_vapor * humidity / temperature))
-        return pressure
+        local temperature = cell.temperature or 0
+        local humidity = cell.humidity or 0
+
+        if temperature == 0 then
+            temperature = 0.01 -- Ajuste mínimo para evitar división por cero
+        end
+
+        -- Calcular la presión basada en la temperatura y la humedad
+        local newpressure = gas_constant * temperature * (1 + (specific_heat_vapor * humidity / temperature))
+        return math.max(minPressure, math.min(maxPressure, newpressure))
     end
 
     function GetCellType(x, y, z)
@@ -196,20 +205,20 @@ if SERVER then
         local AirflowY = totalDeltaPressureY * AirflowCoefficient
         local AirflowZ = totalDeltaPressureZ * AirflowCoefficient
 
-        return AirflowX, AirflowY, AirflowZ
+        return {AirflowX, AirflowY, AirflowZ}
     end
+    
+    function SimulateRain(pos)
+        -- Obtener la posición de la celda de la nube
+        local nubePos = pos
 
-    -- Función para simular la generación de lluvia
-    function SimulateRain()
-        for x, column in pairs(GridMap) do
-            for y, row in pairs(column) do
-                for z, cell in pairs(row) do
-                    if cell.humidity > rainThreshold then
-                        CreateRaindrops(x, y, z)
-                        AdjustHumiditySurroundingCells(x, y, z)
-                    end
-                end
-            end
+        -- Iterar sobre las celdas de la nube y simular la lluvia solo en esas celdas
+        for _, cell in pairs(nube.cells) do
+            -- Crear gotas de lluvia en la posición de la nube
+            CreateRaindrops(nubePos.x, nubePos.y, nubePos.z)
+
+            -- Ajustar la humedad de las celdas circundantes si es necesario
+            AdjustHumiditySurroundingCells(nubePos.x, nubePos.y, nubePos.z)
         end
     end
 
@@ -265,27 +274,24 @@ if SERVER then
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
                     if cell.temperature > stormTemperatureThreshold and cell.pressure < stormPressureThreshold then
-                        local Airflow = GridMap[x][y][z].VecAirflow
+                        local airflow = GridMap[x][y][z].VecAirflow
                         local pos = Vector(x, y, z) * gridSize
                         local color = Color(128,128,128)
-                        SpawnCloud(pos, Airflow, color)
-                        SimulateLightningAndThunder()
+                        SpawnCloud(pos, airflow, color)
+                        SimulateLightningAndThunder(pos)
+                        SimulateRain(pos)
                     end
                 end
             end
         end
     end
 
-    function SimulateLightningAndThunder()
-        local bounds = getMapSkyBox()
-        local min = bounds[1]
-        local max = bounds[2]
-        local startpos = Vector(math.random(min.x, max.x), math.random(min.y, max.y), max.z)
-        local tr = util.TraceLine({
-            start = startpos,
-            endpos = startpos - Vector(0, 0, 50000),
-        })
-        local endpos = tr.HitPos
+    function SimulateLightningAndThunder(pos)
+        -- Obtener la posición de la celda de la nube
+        local startpos = pos
+
+        -- Calcular la posición final del rayo, más cerca del suelo
+        local endpos = startpos - Vector(0, 0, 50000)
 
         if HitChance(1) then
             if HitChance(2) then
@@ -303,13 +309,13 @@ if SERVER then
                 ParticleEffect("blue_jet_lightning_01_main", blue_jet_pos - Vector(0, 0, math.random(2000, 4000)), Angle(0, 0, 0), nil)
             end
 
-            CreateLightningBolt(startpos - Vector(0, 0, 4000), endpos, {"purple", "blue"}, {"Grounded", "NotGrounded"})
+            -- Crear el rayo desde la posición de la nube hacia el suelo
+            CreateLightningBolt(startpos, endpos, {"purple", "blue"}, {"Grounded", "NotGrounded"})
         end
     end
 
     function SpawnCloud(pos, Airflow, color)
         if #ents.FindByClass("gd_cloud_cumulus") > MaxClouds then return end
-
 
         local cloud = ents.Create("gd_cloud_cumulus")
         if not IsValid(cloud) then return end -- Verifica si la entidad fue creada correctamente
@@ -325,11 +331,12 @@ if SERVER then
         local velocity = Vector(Airflow.x, Airflow.y, Airflow.z) * 10 -- Ajusta el factor de escala según sea necesario
         cloud:SetVelocity(velocity)
 
-        
-
         timer.Simple(cloud.Life, function()
             if IsValid(cloud) then cloud:Remove() end
         end)
+
+        return cloud
+        
     end
 
     -- Función para simular la formación y movimiento de nubes
@@ -341,10 +348,10 @@ if SERVER then
                     local temperature = cell.temperature
                     if humidity < lowHumidityThreshold and temperature < lowTemperatureThreshold then
                         -- Generate clouds in cells with low humidity and temperature
-                        local Airflow = GridMap[x][y][z].VecAirflow
+                        local airflow = GridMap[x][y][z].VecAirflow
                         local pos = Vector(x, y, z) * gridSize
                         local color = Color(255,255,255)
-                        SpawnCloud(pos, Airflow, color)
+                        SpawnCloud(pos, airflow, color)
                     end
                 end
             end
