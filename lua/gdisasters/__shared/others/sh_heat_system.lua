@@ -212,14 +212,12 @@ if SERVER then
         -- Obtener la posición de la celda de la nube
         local nubePos = pos
 
-        -- Iterar sobre las celdas de la nube y simular la lluvia solo en esas celdas
-        for _, cell in pairs(nube.cells) do
-            -- Crear gotas de lluvia en la posición de la nube
-            CreateRaindrops(nubePos.x, nubePos.y, nubePos.z)
+        -- Crear gotas de lluvia en la posición de la nube
+        CreateRaindrops(nubePos.x, nubePos.y, nubePos.z)
 
-            -- Ajustar la humedad de las celdas circundantes si es necesario
-            AdjustHumiditySurroundingCells(nubePos.x, nubePos.y, nubePos.z)
-        end
+        -- Ajustar la humedad de las celdas circundantes si es necesario
+        AdjustHumiditySurroundingCells(nubePos.x, nubePos.y, nubePos.z)
+
     end
 
     -- Función para crear partículas de lluvia
@@ -249,22 +247,24 @@ if SERVER then
     -- Function to adjust humidity levels in surrounding cells based on rain
     function AdjustHumiditySurroundingCells(x, y, z)
         local neighbors = {
-            {dx = -1, dy = 0},  -- Left
-            {dx = 1, dy = 0},   -- Right
-            {dx = 0, dy = -1},  -- Up
-            {dx = 0, dy = 1}    -- Down
+            {dx = -1, dy = 0, dz = 0},  -- Left
+            {dx = 1, dy = 0, dz = 0},   -- Right
+            {dx = 0, dy = -1, dz = 0},  -- Up
+            {dx = 0, dy = 1, dz = 0},   -- Down
+            {dx = 0, dy = 0, dz = -1},  -- Backward
+            {dx = 0, dy = 0, dz = 1}    -- Forward
         }
         
         local currentHumidity = GridMap[x][y][z].humidity
         local spreadFactor = 0.2  -- Factor to determine how much humidity spreads to neighbors
 
         for _, neighbor in ipairs(neighbors) do
-            local nx, ny = x + neighbor.dx, y + neighbor.dy
-            if GridMap[nx] and GridMap[nx][ny] then
+            local nx, ny, nz = x + neighbor.dx, y + neighbor.dy, z + neighbor.dz
+            if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
                 -- Adjust humidity in neighboring cell based on current cell's humidity
-                local neighborHumidity = GridMap[nx][ny][z].humidity
+                local neighborHumidity = GridMap[nx][ny][nz].humidity
                 local newHumidity = neighborHumidity + spreadFactor * (currentHumidity - neighborHumidity)
-                GridMap[nx][ny][z].humidity = newHumidity
+                GridMap[nx][ny][nz].humidity = newHumidity
             end
         end
     end
@@ -278,8 +278,8 @@ if SERVER then
                         local pos = Vector(x, y, z) * gridSize
                         local color = Color(128,128,128)
                         SpawnCloud(pos, airflow, color)
-                        SimulateLightningAndThunder(pos)
-                        SimulateRain(pos)
+                        SimulateLightningAndThunder(Vector(x, y, z))
+                        SimulateRain(Vector(x, y, z))
                     end
                 end
             end
@@ -293,25 +293,15 @@ if SERVER then
         -- Calcular la posición final del rayo, más cerca del suelo
         local endpos = startpos - Vector(0, 0, 50000)
 
-        if HitChance(1) then
-            if HitChance(2) then
-                local sprite_pos = Vector(math.random(min.x, max.x), math.random(min.y, max.y), max.z)
-                ParticleEffect(table.Random({"sprite_lightning_main_01", "sprite_lightning_main_02", "sprite_lightning_main_03"}), sprite_pos - Vector(0, 0, math.random(0, 2000)), Angle(0, 0, 0), nil)
-            end
+    	local tr = util.TraceLine( {
+		    start = startpos,
+		    endpos = endpos,
+	    } )
 
-            if HitChance(1) then
-                local elves_pos = Vector(math.random(min.x, max.x), math.random(min.y, max.y), max.z)
-                ParticleEffect(table.Random({"elves_main_01", "elves_main_02"}), elves_pos - Vector(0, 0, math.random(0, 2000)), Angle(0, 0, 0), nil)
-            end
+        local hitpos = tr.HitPos
 
-            if HitChance(0.1) then
-                local blue_jet_pos = Vector(math.random(min.x, max.x), math.random(min.y, max.y), max.z)
-                ParticleEffect("blue_jet_lightning_01_main", blue_jet_pos - Vector(0, 0, math.random(2000, 4000)), Angle(0, 0, 0), nil)
-            end
-
-            -- Crear el rayo desde la posición de la nube hacia el suelo
-            CreateLightningBolt(startpos, endpos, {"purple", "blue"}, {"Grounded", "NotGrounded"})
-        end
+        CreateLightningBolt(startpos,hitpos, {"purple", "blue"}, {"Grounded", "NotGrounded"})
+        
     end
 
     function SpawnCloud(pos, Airflow, color)
