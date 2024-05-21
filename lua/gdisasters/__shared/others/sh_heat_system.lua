@@ -1,7 +1,7 @@
 -- Tamaño de la cuadrícula y rango de temperatura
 gridSize = 1000 -- Tamaño de cada cuadrado en unidades
 
-minTemperature = -20 -- Temperatura mínima
+minTemperature = -40 -- Temperatura mínima
 maxTemperature = 40 -- Temperatura máxima
 minHumidity = 0 -- Humedad mínima
 maxHumidity = 100 -- Humedad máxima
@@ -675,5 +675,5 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     hook.Add("PlayerSpawn", "AddTemperatureHumiditySources", AddTemperatureHumiditySources)
     hook.Add("Think", "UpdatePlayerGrid", UpdatePlayerGrid)
     hook.Add("Think", "UpdateGrid", UpdateGrid)
-    hook.Add("Think", "UpdateGrid", UpdateWeather)
+    hook.Add("Think", "UpdateWeather", UpdateWeather)
 end
