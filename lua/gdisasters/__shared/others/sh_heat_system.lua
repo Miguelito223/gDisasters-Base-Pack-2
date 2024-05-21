@@ -12,7 +12,7 @@ maxWind_speed = 10
 
 updateInterval = 1 -- Intervalo de actualización en segundos
 updateBatchSize = 100 -- Número de celdas a actualizar por frame
-nextThinkTime = 0
+nextThinkTime = CurTime()
 
 diffusionCoefficient = 0.1 -- Coeficiente de difusión de calor
 gas_constant = 287.05
@@ -40,6 +40,7 @@ stormPressureThreshold = 100000 -- Umbral de presión para la generación de tor
 lowTemperatureThreshold = 10
 lowHumidityThreshold =  40
 MaxClouds = 30
+MaxRainDrop = 30
 
 
 
@@ -222,6 +223,12 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
 
     -- Función para crear partículas de lluvia
     function CreateRaindrops(x, y, z)
+
+        if CurTime() < nextThinkTime then return end 
+        if #ents.FindByClass("env_spritetrail") > MaxRainDrop then return end
+
+        nextThinkTime = CurTime() + 1
+
         local particle = ents.Create("env_spritetrail") -- Create a sprite trail entity for raindrop particle
         if not IsValid(particle) then return end -- Verifica si la entidad fue creada correctamente
 
@@ -311,7 +318,10 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     end
 
     function SpawnCloud(pos, airflow, color)
+        if CurTime() < nextThinkTime then return end 
         if #ents.FindByClass("gd_cloud_cumulus") > MaxClouds then return end
+
+        nextThinkTime = CurTime() + 0.1
 
         local cloud = ents.Create("gd_cloud_cumulus")
         if not IsValid(cloud) then return end -- Verifica si la entidad fue creada correctamente
