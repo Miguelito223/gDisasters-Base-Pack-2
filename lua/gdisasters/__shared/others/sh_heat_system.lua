@@ -1,5 +1,5 @@
 -- Tamaño de la cuadrícula y rango de temperatura
-gridSize = 500 -- Tamaño de cada cuadrado en unidades
+gridSize = 1000 -- Tamaño de cada cuadrado en unidades
 
 minTemperature = 20 -- Temperatura mínima
 maxTemperature = 35 -- Temperatura máxima
@@ -564,8 +564,8 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                     end
                 end
             end
+            nextThinkTime = CurTime() + 1
         end
-        nextThinkTime = CurTime() + 1
     end
     function UpdatePlayerGrid()
         if CurTime() >= nextThinkTime then
