@@ -1,14 +1,12 @@
 -- Tamaño de la cuadrícula y rango de temperatura
 gridSize = 1000 -- Tamaño de cada cuadrado en unidades
 
-minTemperature = 20 -- Temperatura mínima
-maxTemperature = 35 -- Temperatura máxima
-minHumidity = 30 -- Humedad mínima
-maxHumidity = 80 -- Humedad máxima
-minPressure = 90000 -- Presión mínima en milibares
-maxPressure = 110000 -- Presión máxima en milibares
-minWind_speed = 0
-maxWind_speed = 10
+minTemperature = -20 -- Temperatura mínima
+maxTemperature = 40 -- Temperatura máxima
+minHumidity = 0 -- Humedad mínima
+maxHumidity = 100 -- Humedad máxima
+minPressure = 80000 -- Presión mínima en milibares
+maxPressure = 130000 -- Presión máxima en milibares
 
 updateInterval = 1 -- Intervalo de actualización en segundos
 updateBatchSize = 100 -- Número de celdas a actualizar por frame
@@ -40,7 +38,7 @@ stormPressureThreshold = 100000 -- Umbral de presión para la generación de tor
 lowTemperatureThreshold = 10
 lowHumidityThreshold =  40
 MaxClouds = 30
-MaxRainDrop = 30
+MaxRainDrop = 5
 
 
 
@@ -224,10 +222,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     -- Función para crear partículas de lluvia
     function CreateRaindrops(x, y, z)
 
-        if CurTime() < nextThinkTime then return end 
         if #ents.FindByClass("env_spritetrail") > MaxRainDrop then return end
-
-        nextThinkTime = CurTime() + 1
 
         local particle = ents.Create("env_spritetrail") -- Create a sprite trail entity for raindrop particle
         if not IsValid(particle) then return end -- Verifica si la entidad fue creada correctamente
@@ -318,10 +313,8 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     end
 
     function SpawnCloud(pos, airflow, color)
-        if CurTime() < nextThinkTime then return end 
         if #ents.FindByClass("gd_cloud_cumulus") > MaxClouds then return end
 
-        nextThinkTime = CurTime() + 0.1
 
         local cloud = ents.Create("gd_cloud_cumulus")
         if not IsValid(cloud) then return end -- Verifica si la entidad fue creada correctamente
@@ -331,11 +324,13 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         cloud:Spawn()
         cloud:Activate()
 
+        table.insert(Cloud, cloud)
+
         -- Aplicar el flujo de aire a la velocidad de movimiento de la nube
         local velocity = Vector(airflow.x, airflow.y, airflow.z) * 10 -- Ajusta el factor de escala según sea necesario
         cloud:SetVelocity(velocity)
 
-        table.insert(Cloud, cloud)
+        
 
         timer.Simple(cloud.Life, function()
             if IsValid(cloud) then cloud:Remove() end
@@ -343,7 +338,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     end
 
     -- Función para simular la formación y movimiento de nubes
-    local function SimulateClouds()
+    function SimulateClouds()
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
@@ -417,7 +412,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                     -- Comparar distancias y ajustar temperatura y humedad en consecuencia
                     if closestWaterDist < closestLandDist and closestWaterDist < closestMountainDist then
                         cell.InWater = true
-                        cell.temperature = math.min(maxTemperature, cell.temperature - landTemperatureEffect)
+                        cell.temperature = math.min(maxTemperature, cell.temperature - waterTemperatureEffect)
                         cell.humidity = math.min(maxHumidity, cell.humidity + waterHumidityEffect)
                     elseif closestLandDist < closestMountainDist then
                         cell.InWater = false
@@ -425,7 +420,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                         cell.humidity = math.max(minHumidity, cell.humidity - landHumidityEffect)
                     else
                         cell.InWater = false
-                        cell.temperature = math.max(minTemperature, cell.temperature + landTemperatureEffect)
+                        cell.temperature = math.max(minTemperature, cell.temperature + mountainTemperatureEffect)
                         cell.humidity = math.max(minHumidity, cell.humidity - mountainHumidityEffect)
                     end
                 end
@@ -488,12 +483,11 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
 
     -- Llamar a SimulateClouds() para simular la formación y movimiento de las nubes
     function UpdateWeather()
-
-        SimulateClouds()
-        SimulateRain()
-        SimulateStorms()
-       
-
+        if CurTime() > nextThinkTime then
+            nextThinkTime = CurTime() + 0.1
+            SimulateClouds()
+            SimulateStorms()
+        end
     end
 
     -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
@@ -526,7 +520,6 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
     end
 
     function UpdateGrid()
-
         -- Obtener los límites del mapa
         local mapBounds = getMapBounds()
         local minX, minY, maxZ = math.floor(mapBounds[2].x / gridSize) * gridSize, math.floor(mapBounds[2].y / gridSize) * gridSize, math.ceil(mapBounds[2].z / gridSize) * gridSize
@@ -563,10 +556,8 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                 end
             end
         end
-
     end
     function UpdatePlayerGrid()
-
         for k,ply in pairs(player.GetAll()) do
             local pos = ply:GetPos()
             local px, py, pz = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize, math.floor(pos.z / gridSize) * gridSize
@@ -591,7 +582,6 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                 print("Error: Posición fuera de los límites de la cuadrícula.")
             end
         end
-
     end
 
     if CLIENT then

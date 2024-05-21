@@ -47,7 +47,9 @@ function ENT:Initialize()
 		end 
 
 		self:SetAngles( Angle(0,math.random(1,180), 0))
-		self:AtmosphericReposition()
+		if GetConVar("gdisasters_heat_system"):GetInt() <= 0 then 
+			self:AtmosphericReposition()
+		end
 		self:SetColor(self.DefaultColor)
 		self:AddLightningLight(self.LightningColor)
 		self:SetNoDraw(false)
