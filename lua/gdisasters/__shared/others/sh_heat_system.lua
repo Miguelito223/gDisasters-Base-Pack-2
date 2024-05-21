@@ -382,8 +382,6 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         return closestDistance
     end
 
-    lastUpdateTime = CurTime()
-
     function AddTemperatureHumiditySources()
         local waterSources = GetWaterSources()
         local landSources = GetLandSources()
@@ -489,7 +487,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
 
 
     -- Llamar a SimulateClouds() para simular la formación y movimiento de las nubes
-    local function UpdateWeather()
+    function UpdateWeather()
         if CurTime() >= nextThinkTime then
             SimulateClouds()
             SimulateRain()
