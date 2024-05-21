@@ -44,7 +44,6 @@ MaxRainDrop = 5
 
 if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then 
 
-    -- Función para calcular la temperatura de una celda basada en sus vecinos
     function CalculateTemperature(x, y, z)
         local totalTemperature = 0
         local totalAirFlow = {0, 0, 0} -- Para almacenar la suma de los componentes del flujo de aire
@@ -57,11 +56,13 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                     local nx, ny, nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
                     if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
                         local neighborCell = GridMap[nx][ny][nz]
-                        totalTemperature = totalTemperature + neighborCell.temperature
-                        totalAirFlow[1] = totalAirFlow[1] + neighborCell.airflow[1]
-                        totalAirFlow[2] = totalAirFlow[2] + neighborCell.airflow[2]
-                        totalAirFlow[3] = totalAirFlow[3] + neighborCell.airflow[3]
-                        count = count + 1
+                        if neighborCell.temperature and neighborCell.airflow then
+                            totalTemperature = totalTemperature + neighborCell.temperature
+                            totalAirFlow[1] = totalAirFlow[1] + (neighborCell.airflow[1] or 0)
+                            totalAirFlow[2] = totalAirFlow[2] + (neighborCell.airflow[2] or 0)
+                            totalAirFlow[3] = totalAirFlow[3] + (neighborCell.airflow[3] or 0)
+                            count = count + 1
+                        end
                     end
                 end
             end
@@ -92,13 +93,12 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         -- Ajustar la temperatura en función de la altitud
         local altitudeEffect = z * 0.0065 -- La temperatura desciende aproximadamente 0.0065 grados por metro de altitud
         newTemperature = newTemperature - altitudeEffect
+        local temperatureInfluence = GridMap[x][y][z].temperatureInfluence
+        newTemperature = newTemperature + temperatureInfluence
 
         -- Asegurarse de que la temperatura esté dentro del rango
         return math.max(minTemperature, math.min(maxTemperature, newTemperature))
     end
-
-
-
 
     function CalculateHumidity(x, y, z)
         local totalHumidity = 0
@@ -110,8 +110,11 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                 for k = -1, 1 do
                     local nx, ny, nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
                     if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                        totalHumidity = totalHumidity + GridMap[nx][ny][nz].humidity
-                        count = count + 1
+                        local neighborCell = GridMap[nx][ny][nz]
+                        if neighborCell.humidity then
+                            totalHumidity = totalHumidity + neighborCell.humidity
+                            count = count + 1
+                        end
                     end
                 end
             end
@@ -130,6 +133,8 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         -- Ajustar la humedad en función de la altitud
         local altitudeEffect = z * 0.1 -- La humedad disminuye con la altitud
         newHumidity = newHumidity - altitudeEffect
+        local humidityinfluence = GridMap[x][y][z].humidityInfluence
+        newHumidity = newHumidity + humidityinfluence
 
         -- Asegurarse de que la humedad esté dentro del rango permitido
         return math.max(minHumidity, math.min(maxHumidity, newHumidity))
@@ -172,7 +177,6 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         end
     end
 
-    -- Función para simular el flujo de aire basado en la presión
     function SimulateAirFlow(x, y, z)
         local totalDeltaPressureX = 0
         local totalDeltaPressureY = 0
@@ -183,14 +187,15 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
             for j = -1, 1 do
                 for k = -1, 1 do
                     if i ~= 0 or j ~= 0 or k ~= 0 then -- Evitar la celda actual
-                        local nx, ny, nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
+                        local nx, ny, nz = x + i, y + j, z + k
                         if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                            local deltaPressureX = GridMap[nx][ny][nz].pressure - GridMap[x][y][z].pressure
-                            local deltaPressureY = GridMap[nx][ny][nz].pressure - GridMap[x][y][z].pressure
-                            local deltaPressureZ = GridMap[nx][ny][nz].pressure - GridMap[x][y][z].pressure
-                            totalDeltaPressureX = totalDeltaPressureX + deltaPressureX
-                            totalDeltaPressureY = totalDeltaPressureY + deltaPressureY
-                            totalDeltaPressureZ = totalDeltaPressureZ + deltaPressureZ
+                            local neighborCell = GridMap[nx][ny][nz]
+                            local currentCell = GridMap[x][y][z]
+
+                            -- Diferencia de presión específica para cada eje
+                            totalDeltaPressureX = totalDeltaPressureX + (neighborCell.pressure - currentCell.pressure) * i
+                            totalDeltaPressureY = totalDeltaPressureY + (neighborCell.pressure - currentCell.pressure) * j
+                            totalDeltaPressureZ = totalDeltaPressureZ + (neighborCell.pressure - currentCell.pressure) * k
                         end
                     end
                 end
@@ -409,20 +414,23 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                         end
                     end
 
-                    -- Comparar distancias y ajustar temperatura y humedad en consecuencia
+                    -- Comparar distancias y ajustar temperatura, humedad y presión en consecuencia
                     if closestWaterDist < closestLandDist and closestWaterDist < closestMountainDist then
                         cell.InWater = true
-                        cell.temperature = math.min(maxTemperature, cell.temperature - waterTemperatureEffect)
-                        cell.humidity = math.min(maxHumidity, cell.humidity + waterHumidityEffect)
+                        cell.temperatureInfluence = -waterTemperatureEffect
+                        cell.humidityInfluence = waterHumidityEffect
+                        cell.pressureInfluence = waterPressureEffect -- Asegúrate de definir waterPressureEffect
                     elseif closestLandDist < closestMountainDist then
                         cell.InWater = false
-                        cell.temperature = math.max(minTemperature, cell.temperature + landTemperatureEffect)
-                        cell.humidity = math.max(minHumidity, cell.humidity - landHumidityEffect)
+                        cell.temperatureInfluence = landTemperatureEffect
+                        cell.humidityInfluence = -landHumidityEffect
+                        cell.pressureInfluence = landPressureEffect -- Asegúrate de definir landPressureEffect
                     else
                         cell.InWater = false
-                        cell.temperature = math.max(minTemperature, cell.temperature + mountainTemperatureEffect)
-                        cell.humidity = math.max(minHumidity, cell.humidity - mountainHumidityEffect)
-                    end
+                        cell.temperatureInfluence = mountainTemperatureEffect
+                        cell.humidityInfluence = -mountainHumidityEffect
+                        cell.pressureInfluence = mountainPressureEffect -- Asegúrate de definir mountainPressureEffect
+                    end 
                 end
             end
         end
@@ -572,7 +580,7 @@ if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
                     GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
                     GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
                     GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
-                    print("Actual Position grid: X: " .. px .. ", Y:".. py .. ", Z:" .. pz) -- Depuración
+                    print("Actual Position grid: X: " .. px .. ", Y:".. py .. ", Z:" .. pz .. ", Temperature Grid: " .. cell.temperature ) -- Depuración
                 else
                     -- Manejo de valores no válidos
                     print("Error: Valores no válidos en la celda de la cuadrícula.")
