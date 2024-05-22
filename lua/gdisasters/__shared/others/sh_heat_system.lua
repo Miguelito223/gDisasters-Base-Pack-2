@@ -2,7 +2,7 @@
 gridSize = 1000 -- Tamaño de cada cuadrado en unidades
 
 minTemperature = -55 -- Temperatura mínima
-maxTemperature = 35 -- Temperatura máxima
+maxTemperature = 55 -- Temperatura máxima
 minHumidity = 0 -- Humedad mínima
 maxHumidity = 100 -- Humedad máxima
 minPressure = 80000 -- Presión mínima en milibares
@@ -10,7 +10,9 @@ maxPressure = 130000 -- Presión máxima en milibares
 
 updateInterval = 1 -- Intervalo de actualización en segundos
 updateBatchSize = 100 -- Número de celdas a actualizar por frame
-nextThinkTime = CurTime()
+nextUpdateGrid = CurTime()
+nextUpdateGridPlayer = CurTime()
+nextUpdateWeather = CurTime()
 
 diffusionCoefficient = 0.1 -- Coeficiente de difusión de calor
 gas_constant = 8.314
@@ -43,6 +45,7 @@ lowTemperatureThreshold = 10
 lowHumidityThreshold =  40
 MaxClouds = 30
 MaxRainDrop = 5
+MaxHail = 5
 
 maxDrawDistance = 100000
 
@@ -91,10 +94,26 @@ if SERVER then
         local currentTemperature = GridMap[x][y][z].temperature
         local temperatureInfluence = GridMap[x][y][z].temperatureInfluence
         local AirflowEffect = AirflowCoefficient * (averageAirFlow[1] + averageAirFlow[2] + averageAirFlow[3])
-        local altitudeEffect = z * 0.065
-        local newTemperature = currentTemperature + diffusionCoefficient * (averageTemperature - currentTemperature)
-        newTemperature = newTemperature + AirflowEffect + temperatureInfluence - altitudeEffect
-        
+       
+        -- Aplicar efectos específicos del terreno
+        local terrainType = GridMap[x][y][z].terrainType
+        local terrainTemperatureEffect = 0
+
+        if terrainType == "water" then
+            terrainTemperatureEffect = waterTemperatureEffect
+        elseif terrainType == "land" then
+            terrainTemperatureEffect = landTemperatureEffect
+        elseif terrainType == "mountain" then
+            terrainTemperatureEffect = mountainTemperatureEffect
+        end
+
+        -- Limitar el cambio de temperatura por actualización para evitar cambios bruscos
+        local maxTemperatureChange = 0.1 -- Ajusta este valor según sea necesario
+        local temperatureChange = diffusionCoefficient * (averageTemperature - currentTemperature)
+        temperatureChange = math.Clamp(temperatureChange, -maxTemperatureChange, maxTemperatureChange)
+
+        -- Calcular la nueva temperatura
+        local newTemperature = currentTemperature + temperatureChange  + AirflowEffect + temperatureInfluence  + terrainTemperatureEffect
         -- Asegurarse de que la temperatura esté dentro del rango
         return math.max(minTemperature, math.min(maxTemperature, newTemperature))
     end
@@ -122,16 +141,31 @@ if SERVER then
         -- Si no hay celdas vecinas válidas, retornar la humedad actual
         if count == 0 then return GridMap[x][y][z].humidity end
 
-
-
         -- Ajustar la humedad de la celda actual basada en la difusión de humedad
-        local currentHumidity = GridMap[x][y][z].humidity
         local averageHumidity = totalHumidity / count
+        local currentHumidity = GridMap[x][y][z].humidity
         local humidityinfluence = GridMap[x][y][z].humidityInfluence
-        local altitudeEffect = z * 0.1
-        local newHumidity = currentHumidity + diffusionCoefficient * (averageHumidity - currentHumidity)
-        newHumidity = newHumidity + humidityinfluence - altitudeEffect
-        -- Asegurarse de que la humedad esté dentro del rango permitido
+        -- Aplicar efectos específicos del terreno
+        local terrainType = GridMap[x][y][z].terrainType
+        local terrainHumidityEffect = 0
+
+        if terrainType == "water" then
+            terrainHumidityEffect = waterHumidityEffect
+        elseif terrainType == "land" then
+            terrainHumidityEffect = landHumidityEffect
+        elseif terrainType == "mountain" then
+            terrainHumidityEffect = mountainHumidityEffect
+        end
+
+        -- Limitar el cambio de humedad por actualización para evitar cambios bruscos
+        local maxHumidityChange = 0.05 -- Ajusta este valor según sea necesario
+        local humidityChange = diffusionCoefficient * (averageHumidity - currentHumidity)
+        humidityChange = math.Clamp(humidityChange, -maxHumidityChange, maxHumidityChange)
+
+        -- Calcular la nueva humedad
+        local newHumidity = currentHumidity + humidityChange + humidityinfluence + terrainHumidityEffect
+
+        -- Asegurarse de que la humedad esté dentro del rango
         return math.max(minHumidity, math.min(maxHumidity, newHumidity))
     end
 
@@ -155,20 +189,17 @@ if SERVER then
     function GetCellType(x, y, z)
         local MapBounds = getMapBounds()
         local max, min, floor = MapBounds[1], MapBounds[2], MapBounds[3]
-        local minX, minY, maxZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize, math.ceil(max.z / gridSize) * gridSize
-        local maxX, maxY, minZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize, math.floor(min.z / gridSize) * gridSize
-        local floorz = math.ceil(floor.z / gridSize) * gridSize
-        
-        local MAP_WIDTH = maxX - minX
-        local MAP_DEPTH = maxY - minY
-        local MAP_HEIGHT = maxZ - minZ
-        local WATER_LEVEL = floorz
-        local MOUNTAIN_LEVEL = floorz + 5000
+        local minX, minY, maxZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize,  math.ceil(min.z / gridSize) * gridSize
+        local maxX, maxY, minZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize,  math.floor(max.z / gridSize) * gridSize
+        local floorz = math.floor(floor.z / gridSize) * gridSize
 
         -- Verificar si las coordenadas están dentro de los límites del mapa
-        if x < 0 or x >= MAP_WIDTH or y < 0 or y >= MAP_DEPTH or z < 0 or z >= MAP_HEIGHT  then
+        if x < minX or x >= maxX or y < minY or y >= maxY or z < minZ or z >= maxZ then
             return "out_of_bounds" -- Devolver un tipo especial para coordenadas fuera de los límites del mapa
         end
+
+        local WATER_LEVEL = floorz
+        local MOUNTAIN_LEVEL = floorz + 5000 -- Ajusta la altura de la montaña según sea necesario
 
         -- Simular diferentes tipos de celdas basadas en coordenadas
         if z <= WATER_LEVEL then
@@ -400,6 +431,19 @@ if SERVER then
         return closestDistance
     end
 
+    function LowerLandHeating()
+        for x, column in pairs(GridMap) do
+            for y, row in pairs(column) do
+                for z, cell in pairs(row) do
+                    if cell.terrainType == "land" then
+                        local heatingVariation = math.random() * 0.2 - 0.1
+                        cell.temperature = cell.temperature + heatingVariation
+                    end
+                end
+            end
+        end
+    end
+
     function AddTemperatureHumiditySources()
         local waterSources = GetWaterSources()
         local landSources = GetLandSources()
@@ -408,41 +452,22 @@ if SERVER then
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
-                    local closestWaterDist = math.huge
-                    local closestLandDist = math.huge
-                    local closestMountainDist = math.huge
+                    local closestWaterDist = GetClosestDistance(x, y, z, waterSources)
+                    local closestLandDist = GetClosestDistance(x, y, z, landSources)
+                    local closestMountainDist = GetClosestDistance(x, y, z, mountainSources)
 
-                    for _, source in ipairs(waterSources) do
-                        local dist = GetDistance(x, y, z, source.x, source.y, source.z)
-                        if dist < closestWaterDist then
-                            closestWaterDist = dist
-                        end
-                    end
-
-                    for _, source in ipairs(landSources) do
-                        local dist = GetDistance(x, y, z, source.x, source.y, source.z)
-                        if dist < closestLandDist then
-                            closestLandDist = dist
-                        end
-                    end
-                    for _, source in ipairs(mountainSources) do
-                        local dist = GetDistance(x, y, z, source.x, source.y, source.z)
-                        if dist < closestMountainDist then
-                            closestMountainDist = dist
-                        end
-                    end
 
                     -- Comparar distancias y ajustar temperatura, humedad y presión en consecuencia
                     if closestWaterDist < closestLandDist and closestWaterDist < closestMountainDist then
-                        cell.InWater = true
+                        cell.terrainType = "water"
                         cell.temperatureInfluence = -waterTemperatureEffect
                         cell.humidityInfluence = waterHumidityEffect
-                    elseif closestLandDist < closestMountainDist then
-                        cell.InWater = false
+                    elseif closestLandDist < closestMountainDist and closestLandDist < closestWaterDist then
+                        cell.terrainType = "land"
                         cell.temperatureInfluence = landTemperatureEffect
-                        cell.humidityInfluence = -landHumidityEffect
+                        cell.humidityInfluence = -landTemperatureEffect
                     else
-                        cell.InWater = false
+                        cell.terrainType = "mountain"
                         cell.temperatureInfluence = mountainTemperatureEffect
                         cell.humidityInfluence = -mountainHumidityEffect
                     end 
@@ -458,8 +483,13 @@ if SERVER then
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
-                    if GetCellType(x, y, z) == "water" then
-                        table.insert(waterSources, {x = x, y = y, z = z})
+                    local celltype = GetCellType(x, y, z)
+                    if celltype == "water" then
+                        table.insert(waterSources, {x = x, y = y , z = z})
+                    elseif celltype == "out_of_bounds" then
+                        print("Out of bound")
+                    else
+                        print("no water")
                     end
                 end
             end
@@ -475,8 +505,13 @@ if SERVER then
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
-                    if GetCellType(x, y, z) == "land" then
-                        table.insert(landSources, {x = x, y = y, z = z})
+                    local celltype = GetCellType(x, y, z)
+                    if celltype == "land" then
+                        table.insert(landSources, {x = x, y = y , z = z})
+                    elseif celltype == "out_of_bounds" then
+                        print("Out of bound")
+                    else
+                        print("no land")
                     end
                 end
             end
@@ -486,21 +521,93 @@ if SERVER then
     end
 
     function GetMountainSources()
-        local landSources = {}
+        local MountainSources = {}
 
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
-                    if GetCellType(x, y, z) == "mountain" then
-                        table.insert(landSources, {x = x, y = y, z = z})
+                    local celltype = GetCellType(x, y, z)
+                    if celltype == "mountain" then
+                        table.insert(MountainSources, {x = x, y = y , z = z})
+                    elseif celltype == "out_of_bounds" then
+                        print("Out of bound")
+                    else
+                        print("no mountain")
                     end
                 end
             end
         end
 
-        return landSources
+        return MountainSources
     end
 
+    function AdjustCloudBaseHeight(pos)
+        local nubegrid = GridMap[pos.x][pos.y][pos.z]
+        local humidity = nubegrid.humidity or 0
+        local baseHeightAdjustment = (1 - humidity) * 0.1
+
+        nubegrid.baseHeight = (nubegrid.baseHeight or 0) + baseHeightAdjustment
+    end
+   
+    function SimulateRain()
+        for x, column in pairs(GridMap) do
+            for y, row in pairs(column) do
+                for z, nubegrid in pairs(row) do
+                    CreateRain(x, y, z)
+
+                    local coolingFactor = 0.1  -- Factor base de enfriamiento
+                    local pressureIncreaseFactor = 0.2  -- Factor base de aumento de presión
+                    
+                    local originalTemperature = nubegrid.temperature or 0
+                    local originalHumidity = nubegrid.humidity or 0
+
+                    -- Cálculo de enfriamiento y aumento de presión basado en la humedad
+                    local humidityModifier = 1 - originalHumidity  -- Más seco = más enfriamiento y aumento de presión
+
+                    local temperatureChange = coolingFactor * humidityModifier
+                    local pressureChange = pressureIncreaseFactor * humidityModifier
+
+                    nubegrid.temperature = originalTemperature - temperatureChange
+                    nubegrid.pressure = (nubegrid.pressure or 0) + pressureChange
+
+                    AdjustTemperaturePressureSurroundingCells(x, y, z, nubegrid.temperature, nubegrid.pressure)
+                    AdjustHumiditySurroundingCells(x, y, z)
+                end
+            end
+        end
+    end
+
+    function CreateHail(x, y, z)
+        if #ents.FindByClass("gd_d1_hail_ch") > MaxHail then return end
+        
+        local hail = ents.Create("gd_d1_hail_ch")
+        hail:SetPos(Vector(x, y, z))
+        hail:Spawn()
+        hail:Activate()
+
+        timer.Simple(2, function() -- Remove the particle after 2 seconds
+            if IsValid(hail) then hail:Remove() end
+        end)
+    end
+
+    function SimulateHail()
+        for x, column in pairs(GridMap) do
+            for y, row in pairs(column) do
+                for z, nubegrid in pairs(row) do
+                    local convergenceFactor = 0.3
+                    local temperatureThreshold = 0.5
+                    local humidityThreshold = 0.8
+
+                    if nubegrid.humidity > humidityThreshold and nubegrid.temperature < temperatureThreshold then
+                        CreateHail(x, y, z)
+                    end
+
+                    AdjustTemperaturePressureSurroundingCells(x, y, z, nubegrid.temperature, nubegrid.pressure)
+                    AdjustHumiditySurroundingCells(x, y, z)
+                end
+            end
+        end
+    end
     function SimulateConvergence()
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
@@ -547,8 +654,8 @@ if SERVER then
     -- Llamar a SimulateClouds() para simular la formación y movimiento de las nubes
     function UpdateWeather()
         if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
-            if CurTime() > nextThinkTime then
-                nextThinkTime = CurTime() + 0.1
+            if CurTime() > nextUpdateWeather then
+                nextUpdateWeather = CurTime() + updateInterval
                 SimulateConvergence()
             end
         end
@@ -586,12 +693,7 @@ if SERVER then
 
     function UpdateGrid()
         if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
-            -- Obtener los límites del mapa
-            local mapBounds = getMapBounds()
-            local minX, minY, maxZ = math.floor(mapBounds[2].x / gridSize) * gridSize, math.floor(mapBounds[2].y / gridSize) * gridSize, math.ceil(mapBounds[2].z / gridSize) * gridSize
-            local maxX, maxY, minZ = math.ceil(mapBounds[1].x / gridSize) * gridSize, math.ceil(mapBounds[1].y / gridSize) * gridSize, math.floor(mapBounds[1].z / gridSize) * gridSize
-
-            for i = 1, updateBatchSize do
+            for i= 1, updateBatchSize do
                 local cell = table.remove(cellsToUpdate, 1)
                 if not cell then
                     -- Reiniciar la lista de celdas para actualizar
@@ -617,9 +719,10 @@ if SERVER then
                         GridMap[x][y][z].humidity = newHumidity
                         GridMap[x][y][z].pressure = newPressure
                         GridMap[x][y][z].Airflow = newAirFlow
-                        GridMap[x][y][z].VecAirflow = Vector(newAirFlow[1], newAirFlow[2],newAirFlow[3])
+                        GridMap[x][y][z].VecAirflow = Vector(newAirFlow[1], newAirFlow[2], newAirFlow[3])
+                        print("Updated cell at:", x, y, z)
                     else
-                        print("Error: Posición fuera de los límites de la cuadrícula.")
+                        print("Error: Cell position out of grid bounds.")
                     end
                 end
             end
@@ -627,28 +730,31 @@ if SERVER then
     end
     function UpdatePlayerGrid()
         if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
-            for k,ply in pairs(player.GetAll()) do
-                local pos = ply:GetPos()
-                local px, py, pz = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize, math.floor(pos.z / gridSize) * gridSize
-                
-                -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
-                if GridMap[px] and GridMap[px][py] and GridMap[px][py][pz] then
-                    local cell = GridMap[px][py][pz]
+            if CurTime() > nextUpdateGridPlayer then
+                nextUpdateGridPlayer = CurTime() + updateInterval
+                for k,ply in pairs(player.GetAll()) do
+                    local pos = ply:GetPos()
+                    local px, py, pz = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize, math.floor(pos.z / gridSize) * gridSize
+                    
+                    -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
+                    if GridMap[px] and GridMap[px][py] and GridMap[px][py][pz] then
+                        local cell = GridMap[px][py][pz]
 
-                    -- Verifica si las propiedades de la celda son válidas
-                    if cell.temperature and cell.humidity and cell.pressure then
-                        -- Actualiza las variables de la atmósfera del jugador
-                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
-                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
-                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
-                        print("Actual Position grid: X: " .. px .. ", Y:".. py .. ", Z:" .. pz .. ", Temperature Grid: " .. cell.temperature ) -- Depuración
+                        -- Verifica si las propiedades de la celda son válidas
+                        if cell.temperature and cell.humidity and cell.pressure then
+                            -- Actualiza las variables de la atmósfera del jugador
+                            GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
+                            GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
+                            GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
+                            print("Actual Position grid: X: " .. px .. ", Y:".. py .. ", Z:" .. pz .. ", Temperature Grid: " .. cell.temperature ) -- Depuración
+                        else
+                            -- Manejo de valores no válidos
+                            print("Error: Valores no válidos en la celda de la cuadrícula.")
+                        end
                     else
-                        -- Manejo de valores no válidos
-                        print("Error: Valores no válidos en la celda de la cuadrícula.")
+                        -- Manejo de celdas fuera de los límites de la cuadrícula
+                        print("Error: Posición fuera de los límites de la cuadrícula.")
                     end
-                else
-                    -- Manejo de celdas fuera de los límites de la cuadrícula
-                    print("Error: Posición fuera de los límites de la cuadrícula.")
                 end
             end
         end
@@ -656,23 +762,17 @@ if SERVER then
     -- Llamar a la función para generar la cuadrícula al inicio del juego
     hook.Add("PlayerSpawn", "GenerateGrid", GenerateGrid)
     hook.Add("PlayerSpawn", "AddTemperatureHumiditySources", AddTemperatureHumiditySources)
-    hook.Add("Think", "UpdatePlayerGrid", UpdatePlayerGrid)
     hook.Add("Think", "UpdateGrid", UpdateGrid)
+    hook.Add("Think", "UpdatePlayerGrid", UpdatePlayerGrid)
     hook.Add("Think", "UpdateWeather", UpdateWeather)
 end
 
 if CLIENT then
-    -- Función para convertir la temperatura en un color
     function TemperatureToColor(temperature)
-        -- Aquí definimos una escala de colores basada en la temperatura
-        local minTemp, maxTemp = 0, 100  -- Define el rango de temperatura
-        local normalizedTemp = math.Clamp((temperature - minTemp) / (maxTemp - minTemp), 0, 1)
-        
-        local r = math.Clamp(255 * normalizedTemp, 0, 255)
-        local b = math.Clamp(255 * (1 - normalizedTemp), 0, 255)
-        local g = 0
-
-        return Color(r, g, b, 150)  -- Alpha para semi-transparencia
+        -- Define una función simple para convertir la temperatura en un color
+        local r = math.Clamp(temperature / 100, 0, 1)
+        local b = math.Clamp(1 - r, 0, 1)
+        return Color(r * 255, 0, b * 255)
     end
 
     hook.Add("PostDrawOpaqueRenderables", "DrawGridDebug", function()
@@ -687,7 +787,7 @@ if CLIENT then
                             if cell then
                                 local temperature = cell.temperature or 0
                                 local color = TemperatureToColor(temperature)
-                                
+                                    
                                 render.SetColorMaterial()
                                 render.DrawBox(cellCenter, Angle(0, 0, 0), Vector(-gridSize / 2, -gridSize / 2, -gridSize / 2), Vector(gridSize / 2, gridSize / 2, gridSize / 2), color)
                             end
