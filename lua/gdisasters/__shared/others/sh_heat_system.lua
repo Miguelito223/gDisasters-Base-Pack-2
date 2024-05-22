@@ -1,8 +1,8 @@
 -- Tamaño de la cuadrícula y rango de temperatura
 gridSize = 1000 -- Tamaño de cada cuadrado en unidades
 
-minTemperature = 10 -- Temperatura mínima
-maxTemperature = 35 -- Temperatura máxima
+minTemperature = -44 -- Temperatura mínima
+maxTemperature = 44 -- Temperatura máxima
 minHumidity = 0 -- Humedad mínima
 maxHumidity = 100 -- Humedad máxima
 minPressure = 94000 -- Presión mínima en milibares
@@ -622,6 +622,7 @@ end
 -- Llamar a SimulateClouds() para simular la formación y movimiento de las nubes
 function UpdateWeather()
     if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
+        if CLIENT then return end
         if CurTime() > nextUpdateWeather then
             nextUpdateWeather = CurTime() + updateInterval
             SimulateConvergence()
