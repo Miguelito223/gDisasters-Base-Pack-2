@@ -13,6 +13,7 @@ updateBatchSize = 100 -- Número de celdas a actualizar por frame
 nextUpdateGrid = CurTime()
 nextUpdateGridPlayer = CurTime()
 nextUpdateWeather = CurTime()
+nextThunderThink = CurTime()
 
 diffusionCoefficient = 0.1 -- Coeficiente de difusión de calor
 gas_constant = 8.314
@@ -341,26 +342,10 @@ if SERVER then
         end
     end
 
-    function SimulateStorms()
-        for x, column in pairs(GridMap) do
-            for y, row in pairs(column) do
-                for z, cell in pairs(row) do
-                    if cell.temperature > stormTemperatureThreshold and cell.pressure < stormPressureThreshold then
-                        local airflow = GridMap[x][y][z].VecAirflow
-                        local pos = Vector(x, y, z) * gridSize
-                        local color = Color(128,128,128)
-                        SpawnCloud(pos, airflow, color)
-                        SimulateLightningAndThunder(Vector(x, y, z))
-                    end
-                end
-            end
-        end
-    end
-
     function CreateLightningAndThunder(x,y,z)
-        if CurTime() > nextThinkTime then
+        if CurTime() > nextThunderThink then
             local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1
-            nextThinkTime = CurTime() + t
+            nextThunderThink = CurTime() + t
             
             local startpos = Vector(x,y,z)
             local endpos = startpos - Vector(0, 0, 50000)
@@ -401,6 +386,7 @@ if SERVER then
 
     -- Función para simular la formación y movimiento de nubes
     function CreateClouds(x,y,z)
+        local cell = GridMap[x][y][z]
 
         local humidity = cell.humidity
         local temperature = cell.temperature
@@ -416,6 +402,7 @@ if SERVER then
 
     -- Función para simular la formación y movimiento de nubes
     function CreateStorm(x,y,z)
+        local cell = GridMap[x][y][z]
 
         local humidity = cell.humidity
         local temperature = cell.temperature
@@ -633,36 +620,37 @@ if SERVER then
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
-                    local neighbors = {
-                        {dx = -1, dy = 0, dz = 0},  -- Izquierda
-                        {dx = 1, dy = 0, dz = 0},   -- Derecha
-                        {dx = 0, dy = -1, dz = 0},  -- Arriba
-                        {dx = 0, dy = 1, dz = 0},   -- Abajo
-                        {dx = 0, dy = 0, dz = -1},  -- Abajo
-                        {dx = 0, dy = 0, dz = 1}    -- Arriba
-                    }
-
                     local convergenceStrength = 0
                     local airSpeedSum = 0
+                    local neighborCount = 0
 
-                    for _, neighbor in ipairs(neighbors) do
-                        local nx, ny, nz = x + neighbor.dx, y + neighbor.dy, z + neighbor.dz
-                        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                            local neighborCell = GridMap[nx][ny][nz]
-                            local airSpeed = math.abs((cell.pressure or 0) - (neighborCell.pressure or 0))
-                            airSpeedSum = airSpeedSum + airSpeed
+                    for dx = -1, 1 do
+                        for dy = -1, 1 do
+                            for dz = -1, 1 do
+                                if not (dx == 0 and dy == 0 and dz == 0) then -- Evitar la celda actual
+                                    local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                                    if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                                        local neighborCell = GridMap[nx][ny][nz]
+                                        local airSpeed = math.abs((cell.pressure or 0) - (neighborCell.pressure or 0))
+                                        airSpeedSum = airSpeedSum + airSpeed
+                                        neighborCount = neighborCount + 1
+                                    end
+                                end
+                            end
                         end
                     end
 
-                    convergenceStrength = airSpeedSum / #neighbors
+                    if neighborCount > 0 then
+                        convergenceStrength = airSpeedSum / neighborCount
 
-                    if convergenceStrength > convergenceThreshold then
-                        if convergenceStrength > strongStormThreshold then
-                            CreateStorm(x, y, z)
-                        elseif convergenceStrength > rainThreshold then
-                            CreateRain(x, y, z)
-                        elseif convergenceStrength > cloudThreshold then
-                            CreateCloud(x, y, z)
+                        if convergenceStrength > convergenceThreshold then
+                            if convergenceStrength > strongStormThreshold then
+                                CreateStorm(x, y, z)
+                            elseif convergenceStrength > rainThreshold then
+                                CreateRain(x, y, z)
+                            elseif convergenceStrength > cloudThreshold then
+                                CreateCloud(x, y, z)
+                            end
                         end
                     end
                 end
