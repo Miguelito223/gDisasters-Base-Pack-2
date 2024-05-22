@@ -1,5 +1,5 @@
 -- Tamaño de la cuadrícula y rango de temperatura
-gridSize = 1000 -- Tamaño de cada cuadrado en unidades
+gridSize = 500 -- Tamaño de cada cuadrado en unidades
 
 minTemperature = -55 -- Temperatura mínima
 maxTemperature = 55 -- Temperatura máxima
@@ -9,7 +9,7 @@ minPressure = 94000 -- Presión mínima en milibares
 maxPressure = 106000 -- Presión máxima en milibares
 
 updateInterval = 1 -- Intervalo de actualización en segundos
-updateBatchSize = 100 -- Número de celdas a actualizar por frame
+updateBatchSize = 50 -- Número de celdas a actualizar por frame
 nextUpdateGrid = CurTime()
 nextUpdateGridPlayer = CurTime()
 nextUpdateWeather = CurTime()
@@ -228,7 +228,7 @@ if SERVER then
         end
     end
 
-    function SimulateAirFlow(x, y, z)
+    function CalculateAirFlow(x, y, z)
         local totalDeltaPressureX = 0
         local totalDeltaPressureY = 0
         local totalDeltaPressureZ = 0
@@ -392,10 +392,13 @@ if SERVER then
         local temperature = cell.temperature
         if humidity < lowHumidityThreshold and temperature < lowTemperatureThreshold then
             -- Generate clouds in cells with low humidity and temperature
-            local airflow = GridMap[x][y][z].VecAirflow
-            local pos = Vector(x, y, z)
-            local color = Color(255,255,255)
             AdjustCloudBaseHeight(x, y, z)
+            
+            local airflow = GridMap[x][y][z].VecAirflow
+            local baseHeight = cell.baseHeight or (z * gridSize)
+            local pos = Vector(x * gridSize, y * gridSize, baseHeight)
+            local color = Color(255,255,255)
+            
             SpawnCloud(pos, airflow, color)
             
             
@@ -410,11 +413,14 @@ if SERVER then
         local humidity = cell.humidity
         local temperature = cell.temperature
         if humidity < lowHumidityThreshold and temperature < lowTemperatureThreshold then
+            AdjustCloudBaseHeight(x, y, z)
+
             -- Generate clouds in cells with low humidity and temperature
             local airflow = GridMap[x][y][z].VecAirflow
-            local pos = Vector(x, y, z)
+            local baseHeight = cell.baseHeight or (z * gridSize)
+            local pos = Vector(x * gridSize, y * gridSize, baseHeight)
             local color = Color(117,117,117)
-            AdjustCloudBaseHeight(x, y, z)
+           
             SpawnCloud(pos, airflow, color)
             CreateLightningAndThunder(x,y,z)
             
@@ -581,7 +587,7 @@ if SERVER then
         if #ents.FindByClass("gd_d1_hail_ch") > MaxHail then return end
         
         local hail = ents.Create("gd_d1_hail_ch")
-        hail:SetPos(Vector(x, y, z))
+        hail:SetPos(Vector(x * gridSize, y * gridSize, z * gridSize))
         hail:Spawn()
         hail:Activate()
 
@@ -715,7 +721,7 @@ if SERVER then
                         local newTemperature = CalculateTemperature(x, y, z)
                         local newHumidity = CalculateHumidity(x, y, z)
                         local newPressure = CalculatePressure(x, y, z)
-                        local newAirFlow = SimulateAirFlow(x, y, z)
+                        local newAirFlow = CalculateAirFlow(x, y, z)
                         GridMap[x][y][z].temperature = newTemperature
                         GridMap[x][y][z].humidity = newHumidity
                         GridMap[x][y][z].pressure = newPressure
