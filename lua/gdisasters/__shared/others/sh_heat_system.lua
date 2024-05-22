@@ -21,12 +21,12 @@ specific_heat_vapor = 1.996
 AirflowCoefficient = 0.1
 N = 100
 
-waterTemperatureEffect = 0.2  -- El agua tiende a mantener una temperatura más constante
-landTemperatureEffect = 0.5    -- La tierra se calienta y enfría más rápido que el agua
-waterHumidityEffect = 0.5      -- El agua puede aumentar la humedad en su entorno
-landHumidityEffect = 0.2       -- La tierra puede retener menos humedad que el agua
-mountainTemperatureEffect = -0.5  -- Las montañas tienden a ser más frías debido a la altitud
-mountainHumidityEffect = 0.5    -- Las montañas pueden influir en la humedad debido a las corrientes de aire
+waterTemperatureEffect = 2  -- El agua tiende a mantener una temperatura más constante
+landTemperatureEffect = 5    -- La tierra se calienta y enfría más rápido que el agua
+waterHumidityEffect = 5      -- El agua puede aumentar la humedad en su entorno
+landHumidityEffect = 2       -- La tierra puede retener menos humedad que el agua
+mountainTemperatureEffect = -5  -- Las montañas tienden a ser más frías debido a la altitud
+mountainHumidityEffect = 5    -- Las montañas pueden influir en la humedad debido a las corrientes de aire
 
 rainThreshold = 0.8 -- Umbral de humedad para la generación de lluvia
 cloudThreshold = 0.6
