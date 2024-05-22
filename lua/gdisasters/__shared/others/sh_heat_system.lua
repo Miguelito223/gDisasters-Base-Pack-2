@@ -1,8 +1,8 @@
 -- Tamaño de la cuadrícula y rango de temperatura
 gridSize = 1000 -- Tamaño de cada cuadrado en unidades
 
-minTemperature = -44 -- Temperatura mínima
-maxTemperature = 44 -- Temperatura máxima
+minTemperature = -44.00 -- Temperatura mínima
+maxTemperature = 44.00 -- Temperatura máxima
 minHumidity = 0 -- Humedad mínima
 maxHumidity = 100 -- Humedad máxima
 minPressure = 94000 -- Presión mínima en milibares
@@ -21,12 +21,12 @@ specific_heat_vapor = 1.996
 AirflowCoefficient = 0.1
 N = 100
 
-waterTemperatureEffect = 2  -- El agua tiende a mantener una temperatura más constante
-landTemperatureEffect = 5    -- La tierra se calienta y enfría más rápido que el agua
-waterHumidityEffect = 5      -- El agua puede aumentar la humedad en su entorno
-landHumidityEffect = 2       -- La tierra puede retener menos humedad que el agua
-mountainTemperatureEffect = -5  -- Las montañas tienden a ser más frías debido a la altitud
-mountainHumidityEffect = 5       -- Las montañas pueden influir en la humedad debido a las corrientes de aire
+waterTemperatureEffect = 0.2  -- El agua tiende a mantener una temperatura más constante
+landTemperatureEffect = 0.5    -- La tierra se calienta y enfría más rápido que el agua
+waterHumidityEffect = 0.5      -- El agua puede aumentar la humedad en su entorno
+landHumidityEffect = 0.2       -- La tierra puede retener menos humedad que el agua
+mountainTemperatureEffect = -0.5  -- Las montañas tienden a ser más frías debido a la altitud
+mountainHumidityEffect = 0.5    -- Las montañas pueden influir en la humedad debido a las corrientes de aire
 
 rainThreshold = 0.8 -- Umbral de humedad para la generación de lluvia
 cloudThreshold = 0.6
@@ -49,217 +49,6 @@ waterSources = {}
 LandSources = {}
 
 Cloud = {}
-
-
-function CalculateTemperature(x, y, z)
-    local totalTemperature = 0
-    local totalAirFlow = {0, 0, 0} -- Para almacenar la suma de los componentes del flujo de aire
-    local count = 0
-
-    -- Sumar la temperatura de las celdas vecinas y el flujo de aire
-    for i = -1, 1 do
-        for j = -1, 1 do
-            for k = -1, 1 do
-                local nx, ny, nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
-                if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                    local neighborCell = GridMap[nx][ny][nz]
-                    if neighborCell.temperature and neighborCell.Airflow then
-                        totalTemperature = totalTemperature + neighborCell.temperature
-                        totalAirFlow[1] = totalAirFlow[1] + (neighborCell.Airflow[1] or 0)
-                        totalAirFlow[2] = totalAirFlow[2] + (neighborCell.Airflow[2] or 0)
-                        totalAirFlow[3] = totalAirFlow[3] + (neighborCell.Airflow[3] or 0)
-                        count = count + 1
-                    end
-                end
-            end
-        end
-    end
-
-    -- Si no hay celdas vecinas válidas, retornar la temperatura actual
-    if count == 0 then return GridMap[x][y][z].temperature end
-
-    -- Calcular la temperatura promedio de las vecinas
-    local averageTemperature = totalTemperature / count
-
-    -- Calcular el flujo de aire promedio
-    local averageAirFlow = {
-        totalAirFlow[1] / count,
-        totalAirFlow[2] / count,
-        totalAirFlow[3] / count
-    }
-
-    -- Ajustar la temperatura de la celda actual basada en la difusión de calor
-    local currentTemperature = GridMap[x][y][z].temperature
-    local temperatureInfluence = GridMap[x][y][z].temperatureInfluence
-    local AirflowEffect = AirflowCoefficient * (averageAirFlow[1] + averageAirFlow[2] + averageAirFlow[3])
-    local maxTemperatureChange = 0.1 -- Ajusta este valor según sea necesario
-    local temperatureChange = diffusionCoefficient * (averageTemperature - currentTemperature)
-    temperatureChange = math.Clamp(temperatureChange, -maxTemperatureChange, maxTemperatureChange)
-
-    -- Calcular la nueva temperatura
-    local newTemperature = currentTemperature + temperatureChange  + AirflowEffect + temperatureInfluence
-    -- Asegurarse de que la temperatura esté dentro del rango
-    return math.max(minTemperature, math.min(maxTemperature, newTemperature))
-end
-
-function CalculateHumidity(x, y, z)
-    local totalHumidity = 0
-    local count = 0
-
-    -- Sumar la humedad de las celdas vecinas
-    for i = -1, 1 do
-        for j = -1, 1 do
-            for k = -1, 1 do
-                local nx, ny, nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
-                if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                    local neighborCell = GridMap[nx][ny][nz]
-                    if neighborCell.humidity then
-                        totalHumidity = totalHumidity + neighborCell.humidity
-                        count = count + 1
-                    end
-                end
-            end
-        end
-    end
-
-    -- Si no hay celdas vecinas válidas, retornar la humedad actual
-    if count == 0 then return GridMap[x][y][z].humidity end
-
-    -- Ajustar la humedad de la celda actual basada en la difusión de humedad
-    local averageHumidity = totalHumidity / count
-    local currentHumidity = GridMap[x][y][z].humidity
-    local humidityinfluence = GridMap[x][y][z].humidityInfluence
-    local maxHumidityChange = 0.05 -- Ajusta este valor según sea necesario
-    local humidityChange = diffusionCoefficient * (averageHumidity - currentHumidity)
-    humidityChange = math.Clamp(humidityChange, -maxHumidityChange, maxHumidityChange)
-
-    -- Calcular la nueva humedad
-    local newHumidity = currentHumidity + humidityChange + humidityinfluence
-
-    -- Asegurarse de que la humedad esté dentro del rango
-    return math.max(minHumidity, math.min(maxHumidity, newHumidity))
-end
-
--- Función para calcular la presión de una celda basada en temperatura y humedad
-function CalculatePressure(x, y, z)
-    local cell = GridMap[x][y][z]
-    if not cell then return 0 end -- Si la celda no existe, retornar 0
-
-    local temperature = cell.temperature or 0 
-    
-    if temperature == 0 then
-        temperature = 0.01 -- Ajuste mínimo para evitar división por cero
-    end
-
-    local humidity = cell.humidity or 0
-
-    -- Calcular la presión basada en la temperatura y la humedad
-    local newpressure = (gas_constant * temperature * (1 + ((specific_heat_vapor * humidity) / temperature))) * 100
-    return math.max(minPressure, math.min(maxPressure, newpressure))
-end
-
-function GetCellType(x, y, z)
-    local MapBounds = getMapBounds()
-    local max, min, floor = MapBounds[1], MapBounds[2], MapBounds[3]
-    local minX, minY, maxZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize,  math.ceil(min.z / gridSize) * gridSize
-    local maxX, maxY, minZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize,  math.floor(max.z / gridSize) * gridSize
-    local floorz = math.floor(floor.z / gridSize) * gridSize
-
-    -- Verificar si las coordenadas están dentro de los límites del mapa
-    if x < minX or x >= maxX or y < minY or y >= maxY or z < minZ or z >= maxZ then
-        return "out_of_bounds" -- Devolver un tipo especial para coordenadas fuera de los límites del mapa
-    end
-    
-    local traceStart = Vector(x, y, z)
-    local traceEnd = traceStart - Vector(0, 0, 10) 
-    traceEnd.z = math.max(traceEnd.z, minZ)
-    local tr = util.TraceLine( {
-        startpos = traceStart,
-        endpos = traceEnd,
-        mask = MASK_WATER, -- Solo colisionar con agua
-        filter = function(ent) return ent:IsValid() end  -- Filtrar cualquier entidad válida
-    } )
-
-    -- Si el trazado de línea colisiona con agua, la celda es de tipo "water"
-    if tr.Hit then
-        return "water"
-    end
-
-    local WATER_LEVEL = tr.HitPos.z
-    local MOUNTAIN_LEVEL = floorz + 50000 -- Ajusta la altura de la montaña según sea necesario
-
-    -- Simular diferentes tipos de celdas basadas en coordenadas
-    if z <= WATER_LEVEL then
-        return "water" -- Por debajo del nivel del agua es agua
-    elseif z >= MOUNTAIN_LEVEL then
-        return "mountain" -- Por encima del nivel de la montaña es montaña
-    else
-        return "land" -- En otras coordenadas es tierra
-    end
-end
-
-function CalculateAirFlow(x, y, z)
-    local totalDeltaPressureX = 0
-    local totalDeltaPressureY = 0
-    local totalDeltaPressureZ = 0
-
-    -- Calcular la diferencia de presión entre las celdas vecinas
-    for i = -1, 1 do
-        for j = -1, 1 do
-            for k = -1, 1 do
-                if i ~= 0 or j ~= 0 or k ~= 0 then -- Evitar la celda actual
-                    local nx, ny, nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
-                    if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                        local neighborCell = GridMap[nx][ny][nz]
-                        local currentCell = GridMap[x][y][z]
-
-                        -- Diferencia de presión específica para cada eje
-                        local deltaPressureX = neighborCell.pressure - currentCell.pressure
-                        local deltaPressureY = neighborCell.pressure - currentCell.pressure
-                        local deltaPressureZ = neighborCell.pressure - currentCell.pressure
-                        
-                        -- Añadir la diferencia de presión al total en cada eje
-                        totalDeltaPressureX = totalDeltaPressureX + deltaPressureX
-                        totalDeltaPressureY = totalDeltaPressureY + deltaPressureY
-                        totalDeltaPressureZ = totalDeltaPressureZ + deltaPressureZ
-                    end
-                end
-            end
-        end
-    end
-
-    -- Ajustar la velocidad del flujo de aire en función de la diferencia de presión
-    local AirflowX = totalDeltaPressureX * AirflowCoefficient
-    local AirflowY = totalDeltaPressureY * AirflowCoefficient
-    local AirflowZ = totalDeltaPressureZ * AirflowCoefficient
-
-    return {AirflowX, AirflowY, AirflowZ}
-end
-
-
--- Función para crear partículas de lluvia
-function CreateRain(x, y, z)
-
-    if #ents.FindByClass("env_spritetrail") > MaxRainDrop then return end
-
-    local particle = ents.Create("env_spritetrail") -- Create a sprite trail entity for raindrop particle
-    if not IsValid(particle) then return end -- Verifica si la entidad fue creada correctamente
-
-    particle:SetPos(Vector(x * gridSize, y * gridSize, z * gridSize)) -- Set the position of the particle
-    particle:SetKeyValue("lifetime", "2") -- Set the lifetime of the particle
-    particle:SetKeyValue("startwidth", "2") -- Set the starting width of the particle
-    particle:SetKeyValue("endwidth", "0") -- Set the ending width of the particle
-    particle:SetKeyValue("spritename", "effects/blood_core") -- Set the sprite name for the particle (you can use any sprite)
-    particle:SetKeyValue("rendermode", "5") -- Set the render mode of the particle
-    particle:SetKeyValue("rendercolor", "0 0 255") -- Set the color of the particle (blue for rain)
-    particle:SetKeyValue("spawnflags", "1") -- Set the spawn flags for the particle
-    particle:Spawn() -- Spawn the particle
-    particle:Activate() -- Activate the particle
-
-    timer.Simple(2, function() -- Remove the particle after 2 seconds
-        if IsValid(particle) then particle:Remove() end
-    end)
-end
 
 -- Function to adjust humidity levels in surrounding cells based on rain
 function AdjustHumiditySurroundingCells(x, y, z)
@@ -311,6 +100,272 @@ function AdjustTemperaturePressureSurroundingCells(x, y, z, newTemperature, newP
         end
     end
 end
+
+function CalculateTemperature(x, y, z)
+    local totalTemperature = 0
+    local totalAirFlow = {0, 0, 0} -- Para almacenar la suma de los componentes del flujo de aire
+    local count = 0
+
+    -- Definir los vecinos y sus desplazamientos
+    local neighbors = {
+        {dx = -1, dy = 0, dz = 0},  -- Izquierda
+        {dx = 1, dy = 0, dz = 0},   -- Derecha
+        {dx = 0, dy = -1, dz = 0},  -- Arriba
+        {dx = 0, dy = 1, dz = 0},   -- Abajo
+        {dx = 0, dy = 0, dz = -1},  -- Atrás
+        {dx = 0, dy = 0, dz = 1}    -- Adelante
+    }
+
+    -- Ajustar la temperatura de las celdas vecinas y sumar la temperatura y el flujo de aire
+    for _, neighbor in pairs(neighbors) do
+        local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
+        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+            local neighborCell = GridMap[nx][ny][nz]
+            if neighborCell.temperature and neighborCell.Airflow then
+                totalTemperature = totalTemperature + neighborCell.temperature
+                totalAirFlow[1] = totalAirFlow[1] + (neighborCell.Airflow[1] or 0)
+                totalAirFlow[2] = totalAirFlow[2] + (neighborCell.Airflow[2] or 0)
+                totalAirFlow[3] = totalAirFlow[3] + (neighborCell.Airflow[3] or 0)
+                count = count + 1
+            end
+        end
+    end
+
+    -- Si no hay celdas vecinas válidas, retornar la temperatura actual
+    if count == 0 then return GridMap[x][y][z].temperature end
+
+    -- Calcular la temperatura promedio de las vecinas
+    local averageTemperature = totalTemperature / count
+
+    -- Calcular el flujo de aire promedio
+    local averageAirFlow = {
+        totalAirFlow[1] / count,
+        totalAirFlow[2] / count,
+        totalAirFlow[3] / count
+    }
+
+    -- Ajustar la temperatura de la celda actual basada en la difusión de calor
+    local currentTemperature = GridMap[x][y][z].temperature
+    local temperatureInfluence = GridMap[x][y][z].temperatureInfluence
+    local AirflowEffect = AirflowCoefficient * (averageAirFlow[1] + averageAirFlow[2] + averageAirFlow[3])
+    local temperatureChange = diffusionCoefficient * (averageTemperature - currentTemperature)
+
+    -- Calcular la nueva temperatura
+    local newTemperature = currentTemperature + temperatureChange + AirflowEffect + temperatureInfluence
+
+    -- Asegurarse de que la temperatura esté dentro del rango
+    return math.max(minTemperature, math.min(maxTemperature, newTemperature))
+end
+
+function CalculateHumidity(x, y, z)
+    local totalHumidity = 0
+    local count = 0
+
+    -- Definir los vecinos y sus desplazamientos
+    local neighbors = {
+        {dx = -1, dy = 0, dz = 0},  -- Izquierda
+        {dx = 1, dy = 0, dz = 0},   -- Derecha
+        {dx = 0, dy = -1, dz = 0},  -- Arriba
+        {dx = 0, dy = 1, dz = 0},   -- Abajo
+        {dx = 0, dy = 0, dz = -1},  -- Atrás
+        {dx = 0, dy = 0, dz = 1}    -- Adelante
+    }
+
+    -- Ajustar la humedad de las celdas vecinas
+    for _, neighbor in pairs(neighbors) do
+        local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
+        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+            local neighborCell = GridMap[nx][ny][nz]
+            if neighborCell.humidity then
+                totalHumidity = totalHumidity + neighborCell.humidity
+                count = count + 1
+            end
+        end
+    end
+
+    -- Si no hay celdas vecinas válidas, retornar la humedad actual
+    if count == 0 then return GridMap[x][y][z].humidity end
+
+    -- Ajustar la humedad de la celda actual basada en la difusión de humedad
+    local averageHumidity = totalHumidity / count
+    local currentHumidity = GridMap[x][y][z].humidity
+    local humidityInfluence = GridMap[x][y][z].humidityInfluence
+    local humidityChange = diffusionCoefficient * (averageHumidity - currentHumidity)
+
+    -- Calcular la nueva humedad
+    local newHumidity = currentHumidity + humidityChange + humidityInfluence
+
+    -- Asegurarse de que la humedad esté dentro del rango
+    return math.max(minHumidity, math.min(maxHumidity, newHumidity))
+end
+
+-- Función para calcular la presión de una celda basada en temperatura y humedad
+function CalculatePressure(x, y, z)
+    local cell = GridMap[x][y][z]
+    if not cell then return 0 end -- Si la celda no existe, retornar 0
+
+    local temperature = cell.temperature or 0 
+    
+    if temperature == 0 then
+        temperature = 0.01 -- Ajuste mínimo para evitar división por cero
+    end
+
+    local humidity = cell.humidity or 0
+
+    -- Calcular la presión basada en la temperatura y la humedad
+    local newpressure = (gas_constant * temperature * (1 + ((specific_heat_vapor * humidity) / temperature))) * 100
+    
+    -- Transmitir la presión a las celdas vecinas
+    local neighbors = {
+        {dx = -1, dy = 0, dz = 0},  -- Izquierda
+        {dx = 1, dy = 0, dz = 0},   -- Derecha
+        {dx = 0, dy = -1, dz = 0},  -- Arriba
+        {dx = 0, dy = 1, dz = 0},   -- Abajo
+        {dx = 0, dy = 0, dz = -1},  -- Atrás
+        {dx = 0, dy = 0, dz = 1}    -- Adelante
+    }
+
+    local pressureChangeFactor = 0.1 -- Factor de cambio de presión entre celdas vecinas
+
+    for _, neighbor in pairs(neighbors) do
+        local nx, ny, nz = x + neighbor.dx, y + neighbor.dy, z + neighbor.dz
+        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+            local neighborCell = GridMap[nx][ny][nz]
+            if neighborCell.pressure then
+                -- Calcular la diferencia de presión y ajustar la presión de la celda vecina
+                local pressureDifference = newpressure - neighborCell.pressure
+                neighborCell.pressure = neighborCell.pressure + pressureDifference * pressureChangeFactor
+            end
+        end
+    end
+
+    -- Asegurarse de que la presión esté dentro del rango
+    return math.max(minPressure, math.min(maxPressure, newpressure))
+end
+
+function GetCellType(x, y, z)
+    local MapBounds = getMapBounds()
+    local max, min, floor = MapBounds[1], MapBounds[2], MapBounds[3]
+    local minX, minY, maxZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize,  math.ceil(min.z / gridSize) * gridSize
+    local maxX, maxY, minZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize,  math.floor(max.z / gridSize) * gridSize
+    local floorz = math.floor(floor.z / gridSize) * gridSize
+
+    -- Verificar si las coordenadas están dentro de los límites del mapa
+    if x < minX or x >= maxX or y < minY or y >= maxY or z < minZ or z >= maxZ then
+        return "out_of_bounds" -- Devolver un tipo especial para coordenadas fuera de los límites del mapa
+    end
+    
+    local traceStart = Vector(x, y, z)
+    local traceEnd = traceStart - Vector(0, 0, 10) 
+    traceEnd.z = math.max(traceEnd.z, minZ)
+    local tr = util.TraceLine( {
+        startpos = traceStart,
+        endpos = traceEnd,
+        mask = MASK_WATER, -- Solo colisionar con agua
+        filter = function(ent) return ent:IsValid() end  -- Filtrar cualquier entidad válida
+    } )
+
+    -- Si el trazado de línea colisiona con agua, la celda es de tipo "water"
+    if tr.Hit then
+        return "water"
+    end
+
+    local WATER_LEVEL = tr.HitPos.z
+    local MOUNTAIN_LEVEL = floorz + 50000 -- Ajusta la altura de la montaña según sea necesario
+
+    -- Simular diferentes tipos de celdas basadas en coordenadas
+    if z <= WATER_LEVEL then
+        return "water" -- Por debajo del nivel del agua es agua
+    elseif z >= MOUNTAIN_LEVEL then
+        return "mountain" -- Por encima del nivel de la montaña es montaña
+    else
+        return "land" -- En otras coordenadas es tierra
+    end
+end
+
+function CalculateAirFlow(x, y, z)
+    local totalDeltaPressureX = 0
+    local totalDeltaPressureY = 0
+    local totalDeltaPressureZ = 0
+
+    -- Calcular la diferencia de presión entre las celdas vecinas y sumarlas
+    for i = -1, 1 do
+        for j = -1, 1 do
+            for k = -1, 1 do
+                if i ~= 0 or j ~= 0 or k ~= 0 then -- Evitar la celda actual
+                    local nx, ny, nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
+                    if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                        local neighborCell = GridMap[nx][ny][nz]
+                        local currentCell = GridMap[x][y][z]
+
+                        -- Diferencia de presión específica para cada eje
+                        local deltaPressureX = neighborCell.pressure - currentCell.pressure
+                        local deltaPressureY = neighborCell.pressure - currentCell.pressure
+                        local deltaPressureZ = neighborCell.pressure - currentCell.pressure
+                        
+                        -- Sumar la diferencia de presión al total en cada eje
+                        totalDeltaPressureX = totalDeltaPressureX + deltaPressureX
+                        totalDeltaPressureY = totalDeltaPressureY + deltaPressureY
+                        totalDeltaPressureZ = totalDeltaPressureZ + deltaPressureZ
+                    end
+                end
+            end
+        end
+    end
+
+    -- Ajustar la velocidad del flujo de aire en función de la diferencia de presión
+    local AirflowX = totalDeltaPressureX * AirflowCoefficient
+    local AirflowY = totalDeltaPressureY * AirflowCoefficient
+    local AirflowZ = totalDeltaPressureZ * AirflowCoefficient
+
+    -- Transmitir el flujo de aire a las celdas vecinas
+    local neighbors = {
+        {dx = -1, dy = 0, dz = 0},  -- Izquierda
+        {dx = 1, dy = 0, dz = 0},   -- Derecha
+        {dx = 0, dy = -1, dz = 0},  -- Arriba
+        {dx = 0, dy = 1, dz = 0},   -- Abajo
+        {dx = 0, dy = 0, dz = -1},  -- Atrás
+        {dx = 0, dy = 0, dz = 1}    -- Adelante
+    }
+
+    for _, neighbor in pairs(neighbors) do
+        local nx, ny, nz = x + neighbor.dx, y + neighbor.dy, z + neighbor.dz
+        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+            local neighborCell = GridMap[nx][ny][nz]
+            neighborCell.Airflow = {AirflowX, AirflowY, AirflowZ}
+        end
+    end
+
+    return {AirflowX, AirflowY, AirflowZ}
+end
+
+
+-- Función para crear partículas de lluvia
+function CreateRain(x, y, z)
+
+    if #ents.FindByClass("env_spritetrail") > MaxRainDrop then return end
+
+    local particle = ents.Create("env_spritetrail") -- Create a sprite trail entity for raindrop particle
+    if not IsValid(particle) then return end -- Verifica si la entidad fue creada correctamente
+
+    particle:SetPos(Vector(x * gridSize, y * gridSize, z * gridSize)) -- Set the position of the particle
+    particle:SetKeyValue("lifetime", "2") -- Set the lifetime of the particle
+    particle:SetKeyValue("startwidth", "2") -- Set the starting width of the particle
+    particle:SetKeyValue("endwidth", "0") -- Set the ending width of the particle
+    particle:SetKeyValue("spritename", "effects/blood_core") -- Set the sprite name for the particle (you can use any sprite)
+    particle:SetKeyValue("rendermode", "5") -- Set the render mode of the particle
+    particle:SetKeyValue("rendercolor", "0 0 255") -- Set the color of the particle (blue for rain)
+    particle:SetKeyValue("spawnflags", "1") -- Set the spawn flags for the particle
+    particle:Spawn() -- Spawn the particle
+    particle:Activate() -- Activate the particle
+
+    timer.Simple(2, function() -- Remove the particle after 2 seconds
+        if IsValid(particle) then particle:Remove() end
+    end)
+end
+
+
+
 
 function CreateLightningAndThunder(x,y,z)
     if CurTime() > nextThunderThink then
@@ -537,8 +592,7 @@ function SimulateRain()
                 nubegrid.temperature = originalTemperature - temperatureChange
                 nubegrid.pressure = (nubegrid.pressure or 0) + pressureChange
 
-                AdjustTemperaturePressureSurroundingCells(x, y, z, nubegrid.temperature, nubegrid.pressure)
-                AdjustHumiditySurroundingCells(x, y, z)
+
             end
         end
     end
@@ -568,9 +622,6 @@ function SimulateHail()
                 if nubegrid.humidity > humidityThreshold and nubegrid.temperature < temperatureThreshold then
                     CreateHail(x, y, z)
                 end
-
-                AdjustTemperaturePressureSurroundingCells(x, y, z, nubegrid.temperature, nubegrid.pressure)
-                AdjustHumiditySurroundingCells(x, y, z)
             end
         end
     end
@@ -750,17 +801,15 @@ function DrawGridDebug()
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
                     local cellpos = Vector(x, y, z)
-                    if playerPos:DistToSqr(cellpos) < maxDrawDistance * maxDrawDistance then
-                        if cell then
-                            local temperature = cell.temperature or 0
-                            local color = TemperatureToColor(temperature) or Color(255, 255, 255)  -- Asegúrate de que siempre haya un color
+                    if cell then
+                        local temperature = cell.temperature or 0
+                        local color = TemperatureToColor(temperature) or Color(255, 255, 255)  -- Asegúrate de que siempre haya un color
 
-                            render.SetColorMaterial()
-                            render.DrawBox(cellpos, Angle(0, 0, 0), Vector(-gridSize / 2, -gridSize / 2, -gridSize / 2), Vector(gridSize / 2, gridSize / 2, gridSize / 2), color)
-                        else
-                            -- Mensaje de depuración para celdas nulas
-                            print("Cell at ", cellpos, " is nil.")
-                        end
+                        render.SetColorMaterial()
+                        render.DrawBox(cellpos, Angle(0, 0, 0), Vector(-gridSize / 2, -gridSize / 2, -gridSize / 2), Vector(gridSize / 2, gridSize / 2, gridSize / 2), color)
+                    else
+                        -- Mensaje de depuración para celdas nulas
+                        print("Cell at ", cellpos, " is nil.")
                     end
                 end
             end
