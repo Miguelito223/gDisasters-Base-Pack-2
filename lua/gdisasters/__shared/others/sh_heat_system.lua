@@ -748,17 +748,17 @@ function DrawGridDebug()
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
-                    local cellCenter = Vector(x * gridSize + gridSize / 2, y * gridSize + gridSize / 2, z * gridSize + gridSize / 2)
-                    if playerPos:DistToSqr(cellCenter) < maxDrawDistance * maxDrawDistance then
+                    local cellpos = Vector(x, y, z)
+                    if playerPos:DistToSqr(cellpos) < maxDrawDistance * maxDrawDistance then
                         if cell then
                             local temperature = cell.temperature or 0
                             local color = TemperatureToColor(temperature) or Color(255, 255, 255)  -- Asegúrate de que siempre haya un color
 
                             render.SetColorMaterial()
-                            render.DrawBox(cellCenter, Angle(0, 0, 0), Vector(-gridSize / 2, -gridSize / 2, -gridSize / 2), Vector(gridSize / 2, gridSize / 2, gridSize / 2), color)
+                            render.DrawBox(cellpos, Angle(0, 0, 0), Vector(-gridSize / 2, -gridSize / 2, -gridSize / 2), Vector(gridSize / 2, gridSize / 2, gridSize / 2), color)
                         else
                             -- Mensaje de depuración para celdas nulas
-                            print("Cell at ", cellCenter, " is nil.")
+                            print("Cell at ", cellpos, " is nil.")
                         end
                     end
                 end
