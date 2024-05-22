@@ -36,7 +36,7 @@ stormTemperatureThreshold = 30 -- Umbral de temperatura para la generación de t
 stormPressureThreshold = 100000 -- Umbral de presión para la generación de tormentas
 lowTemperatureThreshold = 10
 lowHumidityThreshold =  40
-MaxClouds = 30
+MaxClouds = 5
 MaxRainDrop = 5
 MaxHail = 5
 
@@ -49,57 +49,6 @@ waterSources = {}
 LandSources = {}
 
 Cloud = {}
-
--- Function to adjust humidity levels in surrounding cells based on rain
-function AdjustHumiditySurroundingCells(x, y, z)
-    local neighbors = {
-        {dx = -1, dy = 0, dz = 0},  -- Left
-        {dx = 1, dy = 0, dz = 0},   -- Right
-        {dx = 0, dy = -1, dz = 0},  -- Up
-        {dx = 0, dy = 1, dz = 0},   -- Down
-        {dx = 0, dy = 0, dz = -1},  -- Backward
-        {dx = 0, dy = 0, dz = 1}    -- Forward
-    }
-    
-    local currentHumidity = GridMap[x][y][z].humidity
-    local spreadFactor = 0.2  -- Factor to determine how much humidity spreads to neighbors
-
-    for _, neighbor in ipairs(neighbors) do
-        local nx, ny, nz = x + neighbor.dx, y + neighbor.dy, z + neighbor.dz
-        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-            -- Adjust humidity in neighboring cell based on current cell's humidity
-            local neighborHumidity = GridMap[nx][ny][nz].humidity
-            local newHumidity = neighborHumidity + spreadFactor * (currentHumidity - neighborHumidity)
-            GridMap[nx][ny][nz].humidity = newHumidity
-        end
-    end
-end
-
-function AdjustTemperaturePressureSurroundingCells(x, y, z, newTemperature, newPressure)
-    local neighbors = {
-        {dx = -1, dy = 0, dz = 0},  -- Izquierda
-        {dx = 1, dy = 0, dz = 0},   -- Derecha
-        {dx = 0, dy = -1, dz = 0},  -- Arriba
-        {dx = 0, dy = 1, dz = 0},   -- Abajo
-        {dx = 0, dy = 0, dz = -1},  -- Abajo
-        {dx = 0, dy = 0, dz = 1}    -- Arriba
-    }
-
-    local spreadFactor = 0.2  -- Factor para determinar cómo se difunde la temperatura y la presión
-
-    for _, neighbor in ipairs(neighbors) do
-        local nx, ny, nz = x + neighbor.dx, y + neighbor.dy, z + neighbor.dz
-        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-            local neighborCell = GridMap[nx][ny][nz]
-            local neighborTemperature = neighborCell.temperature or 0
-            local neighborPressure = neighborCell.pressure or 0
-
-            -- Ajustar la temperatura y la presión en la celda vecina
-            neighborCell.temperature = neighborTemperature + spreadFactor * (newTemperature - neighborTemperature)
-            neighborCell.pressure = neighborPressure + spreadFactor * (newPressure - neighborPressure)
-        end
-    end
-end
 
 function CalculateTemperature(x, y, z)
     local totalTemperature = 0
@@ -392,6 +341,7 @@ function SpawnCloud(pos, Airflow, color)
 
     cloud:SetPos(pos)
     cloud.DefaultColor = color
+    cloud:SetModelScale(0.5, 0)
     cloud:Spawn()
     cloud:Activate()
 
