@@ -5,8 +5,8 @@ minTemperature = -55 -- Temperatura mínima
 maxTemperature = 55 -- Temperatura máxima
 minHumidity = 0 -- Humedad mínima
 maxHumidity = 100 -- Humedad máxima
-minPressure = 80000 -- Presión mínima en milibares
-maxPressure = 130000 -- Presión máxima en milibares
+minPressure = 94000 -- Presión mínima en milibares
+maxPressure = 106000 -- Presión máxima en milibares
 
 updateInterval = 1 -- Intervalo de actualización en segundos
 updateBatchSize = 100 -- Número de celdas a actualizar por frame
@@ -16,7 +16,7 @@ nextUpdateWeather = CurTime()
 
 diffusionCoefficient = 0.1 -- Coeficiente de difusión de calor
 gas_constant = 8.314
-specific_heat_vapor = 0.018
+specific_heat_vapor = 1.996
 AirflowCoefficient = 0.1
 N = 100
 
@@ -174,15 +174,16 @@ if SERVER then
         local cell = GridMap[x][y][z]
         if not cell then return 0 end -- Si la celda no existe, retornar 0
 
-        local temperature = cell.temperature or 0
-        local humidity = cell.humidity or 0
-
+        local temperature = cell.temperature or 0 
+       
         if temperature == 0 then
             temperature = 0.01 -- Ajuste mínimo para evitar división por cero
         end
 
+        local humidity = cell.humidity or 0
+
         -- Calcular la presión basada en la temperatura y la humedad
-        local newpressure = gas_constant * temperature * (1 + (specific_heat_vapor * humidity / temperature))
+        local newpressure = (gas_constant * temperature * (1 + ((specific_heat_vapor * humidity) / temperature))) * 100
         return math.max(minPressure, math.min(maxPressure, newpressure))
     end
 
