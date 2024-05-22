@@ -1,5 +1,5 @@
 -- Tamaño de la cuadrícula y rango de temperatura
-gridSize = 1000 -- Tamaño de cada cuadrado en unidades
+gridSize = 5000 -- Tamaño de cada cuadrado en unidades
 
 minTemperature = -44.00 -- Temperatura mínima
 maxTemperature = 44.00 -- Temperatura máxima
@@ -52,7 +52,7 @@ Cloud = {}
 
 function CalculateTemperature(x, y, z)
     local totalTemperature = 0
-    local totalAirFlow = {0, 0, 0} -- Para almacenar la suma de los componentes del flujo de aire
+    local totalAirFlow = 0 -- Para almacenar la suma de los componentes del flujo de aire
     local count = 0
 
     -- Definir los vecinos y sus desplazamientos
@@ -72,9 +72,7 @@ function CalculateTemperature(x, y, z)
             local neighborCell = GridMap[nx][ny][nz]
             if neighborCell.temperature and neighborCell.Airflow then
                 totalTemperature = totalTemperature + neighborCell.temperature
-                totalAirFlow[1] = totalAirFlow[1] + (neighborCell.Airflow[1] or 0)
-                totalAirFlow[2] = totalAirFlow[2] + (neighborCell.Airflow[2] or 0)
-                totalAirFlow[3] = totalAirFlow[3] + (neighborCell.Airflow[3] or 0)
+                totalAirFlow = totalAirFlow + (neighborCell.Airflow or 0)
                 count = count + 1
             end
         end
@@ -87,16 +85,12 @@ function CalculateTemperature(x, y, z)
     local averageTemperature = totalTemperature / count
 
     -- Calcular el flujo de aire promedio
-    local averageAirFlow = {
-        totalAirFlow[1] / count,
-        totalAirFlow[2] / count,
-        totalAirFlow[3] / count
-    }
+    local averageAirFlow = totalAirFlow / count
 
     -- Ajustar la temperatura de la celda actual basada en la difusión de calor
     local currentTemperature = GridMap[x][y][z].temperature
     local temperatureInfluence = GridMap[x][y][z].temperatureInfluence
-    local AirflowEffect = AirflowCoefficient * (averageAirFlow[1] + averageAirFlow[2] + averageAirFlow[3])
+    local AirflowEffect = AirflowCoefficient * averageAirFlow
     local temperatureChange = diffusionCoefficient * (averageTemperature - currentTemperature)
 
     -- Calcular la nueva temperatura
@@ -233,9 +227,7 @@ function GetCellType(x, y, z)
 end
 
 function CalculateAirFlow(x, y, z)
-    local totalDeltaPressureX = 0
-    local totalDeltaPressureY = 0
-    local totalDeltaPressureZ = 0
+    local totalDeltaPressure = 0
 
     -- Calcular la diferencia de presión entre las celdas vecinas y sumarlas
     for i = -1, 1 do
@@ -248,14 +240,10 @@ function CalculateAirFlow(x, y, z)
                         local currentCell = GridMap[x][y][z]
 
                         -- Diferencia de presión específica para cada eje
-                        local deltaPressureX = neighborCell.pressure - currentCell.pressure
-                        local deltaPressureY = neighborCell.pressure - currentCell.pressure
-                        local deltaPressureZ = neighborCell.pressure - currentCell.pressure
+                        local deltaPressure = neighborCell.pressure - currentCell.pressure
                         
                         -- Sumar la diferencia de presión al total en cada eje
-                        totalDeltaPressureX = totalDeltaPressureX + deltaPressureX
-                        totalDeltaPressureY = totalDeltaPressureY + deltaPressureY
-                        totalDeltaPressureZ = totalDeltaPressureZ + deltaPressureZ
+                        totalDeltaPressure = totalDeltaPressure + deltaPressure
                     end
                 end
             end
@@ -263,9 +251,7 @@ function CalculateAirFlow(x, y, z)
     end
 
     -- Ajustar la velocidad del flujo de aire en función de la diferencia de presión
-    local AirflowX = totalDeltaPressureX * AirflowCoefficient
-    local AirflowY = totalDeltaPressureY * AirflowCoefficient
-    local AirflowZ = totalDeltaPressureZ * AirflowCoefficient
+    local Airflow = totalDeltaPressure * AirflowCoefficient
 
     -- Transmitir el flujo de aire a las celdas vecinas
     local neighbors = {
@@ -281,11 +267,11 @@ function CalculateAirFlow(x, y, z)
         local nx, ny, nz = x + neighbor.dx, y + neighbor.dy, z + neighbor.dz
         if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
             local neighborCell = GridMap[nx][ny][nz]
-            neighborCell.Airflow = {AirflowX, AirflowY, AirflowZ}
+            neighborCell.Airflow = Airflow
         end
     end
 
-    return {AirflowX, AirflowY, AirflowZ}
+    return Airflow
 end
 
 
@@ -347,10 +333,6 @@ function SpawnCloud(pos, Airflow, color)
 
     table.insert(Cloud, cloud)
 
-    -- Aplicar el flujo de aire a la velocidad de movimiento de la nube
-    local velocity = Vector(Airflow.x, Airflow.y, Airflow.z) * 10 -- Ajusta el factor de escala según sea necesario
-    cloud:SetVelocity(velocity)
-
     timer.Simple(cloud.Life, function()
         if IsValid(cloud) then cloud:Remove() end
     end)
@@ -369,12 +351,11 @@ function CreateClouds(x,y,z)
         -- Generate clouds in cells with low humidity and temperature
         AdjustCloudBaseHeight(x, y, z)
         
-        local airflow = GridMap[x][y][z].VecAirflow
         local baseHeight = cell.baseHeight or (z * gridSize)
         local pos = Vector(x * gridSize, y * gridSize, baseHeight)
         local color = Color(255,255,255)
         
-        SpawnCloud(pos, airflow, color)
+        SpawnCloud(pos, color)
         
         
     end
@@ -391,13 +372,34 @@ function CreateStorm(x,y,z)
         AdjustCloudBaseHeight(x, y, z)
 
         -- Generate clouds in cells with low humidity and temperature
-        local airflow = GridMap[x][y][z].VecAirflow
         local baseHeight = cell.baseHeight or (z * gridSize)
         local pos = Vector(x * gridSize, y * gridSize, baseHeight)
         local color = Color(117,117,117)
         
-        SpawnCloud(pos, airflow, color)
-        CreateLightningAndThunder(x,y,z)
+        local cloud = SpawnCloud(pos, color)
+
+        if not IsValid(cloud) then
+            return
+        end
+        
+        -- Crear rayo y trueno en intervalos regulares
+        local lightningInterval = 10 -- Intervalo en segundos
+        local lightningTimerName = "LightningTimer_" .. cloud:EntIndex()
+
+        timer.Create(lightningTimerName, lightningInterval, 0, function()
+            timer.Remove(lightningTimerName)
+            CreateLightningAndThunder(pos.x, pos.y, pos.z)
+        end)
+
+       
+        -- Detener el temporizador cuando la nube se elimina
+        timer.Simple(cloud.Life, function()
+            
+            cloud:Remove()
+            timer.Remove(lightningTimerName)
+            
+        end)
+
         
     end
     
@@ -647,11 +649,10 @@ function GenerateGrid(ply)
             GridMap[x][y] = {}
             for z = minZ, maxZ, gridSize do
                 GridMap[x][y][z] = {}
-                GridMap[x][y][z].temperature = math.random(minTemperature, maxTemperature)
-                GridMap[x][y][z].humidity = math.random(minHumidity, maxHumidity)
-                GridMap[x][y][z].pressure = math.random(minPressure, maxPressure)
-                GridMap[x][y][z].Airflow = {0,0,0}
-                GridMap[x][y][z].VecAirflow = Vector(0,0,0)
+                GridMap[x][y][z].temperature = 23
+                GridMap[x][y][z].humidity = 25
+                GridMap[x][y][z].pressure = 103000
+                GridMap[x][y][z].Airflow = 0
             end
         end
     end
@@ -688,7 +689,6 @@ function UpdateGrid()
                     GridMap[x][y][z].humidity = newHumidity
                     GridMap[x][y][z].pressure = newPressure
                     GridMap[x][y][z].Airflow = newAirFlow
-                    GridMap[x][y][z].VecAirflow = Vector(newAirFlow[1], newAirFlow[2], newAirFlow[3])
                 else
                     print("Error: Cell position out of grid bounds.")
                 end
@@ -712,6 +712,7 @@ function UpdatePlayerGrid()
                     GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
                     GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
                     GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
+                    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = cell.Airflow
                 else
                     -- Manejo de valores no válidos
                     print("Error: Valores no válidos en la celda de la cuadrícula.")
