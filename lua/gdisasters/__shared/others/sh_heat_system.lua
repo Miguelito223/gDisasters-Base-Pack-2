@@ -393,9 +393,12 @@ if SERVER then
         if humidity < lowHumidityThreshold and temperature < lowTemperatureThreshold then
             -- Generate clouds in cells with low humidity and temperature
             local airflow = GridMap[x][y][z].VecAirflow
-            local pos = Vector(x, y, z) * gridSize
+            local pos = Vector(x, y, z)
             local color = Color(255,255,255)
+            AdjustCloudBaseHeight(x, y, z)
             SpawnCloud(pos, airflow, color)
+            
+            
         end
      
     end
@@ -409,8 +412,9 @@ if SERVER then
         if humidity < lowHumidityThreshold and temperature < lowTemperatureThreshold then
             -- Generate clouds in cells with low humidity and temperature
             local airflow = GridMap[x][y][z].VecAirflow
-            local pos = Vector(x, y, z) * gridSize
+            local pos = Vector(x, y, z)
             local color = Color(117,117,117)
+            AdjustCloudBaseHeight(x, y, z)
             SpawnCloud(pos, airflow, color)
             CreateLightningAndThunder(x,y,z)
             
@@ -437,19 +441,6 @@ if SERVER then
         end
 
         return closestDistance
-    end
-
-    function LowerLandHeating()
-        for x, column in pairs(GridMap) do
-            for y, row in pairs(column) do
-                for z, cell in pairs(row) do
-                    if cell.terrainType == "land" then
-                        local heatingVariation = math.random() * 0.2 - 0.1
-                        cell.temperature = cell.temperature + heatingVariation
-                    end
-                end
-            end
-        end
     end
 
     function AddTemperatureHumiditySources()
@@ -549,12 +540,13 @@ if SERVER then
         return MountainSources
     end
 
-    function AdjustCloudBaseHeight(pos)
-        local nubegrid = GridMap[pos.x][pos.y][pos.z]
+    function AdjustCloudBaseHeight(x,y,z)
+        local nubegrid = GridMap[x][y][z]
         local humidity = nubegrid.humidity or 0
         local baseHeightAdjustment = (1 - humidity) * 0.1
-
+        
         nubegrid.baseHeight = (nubegrid.baseHeight or 0) + baseHeightAdjustment
+        return nubegrid.baseHeight
     end
    
     function SimulateRain()
@@ -783,7 +775,15 @@ if CLIENT then
     hook.Add("PostDrawOpaqueRenderables", "DrawGridDebug", function()
         if GetConVar("gdisasters_graphics_draw_heatsystem_grid"):GetInt() >= 1 then 
             local playerPos = LocalPlayer():GetPos()
-                       
+            
+            -- Verificar existencia de GridMap y maxDrawDistance
+            if not GridMap then
+                print("GridMap is not defined.")
+                return
+            end
+            
+            local maxDrawDistance = maxDrawDistance or 1000  -- Ajusta este valor según sea necesario
+            
             for x, column in pairs(GridMap) do
                 for y, row in pairs(column) do
                     for z, cell in pairs(row) do
@@ -791,10 +791,16 @@ if CLIENT then
                         if playerPos:DistToSqr(cellCenter) < maxDrawDistance * maxDrawDistance then
                             if cell then
                                 local temperature = cell.temperature or 0
-                                local color = TemperatureToColor(temperature)
-                                    
+                                local color = TemperatureToColor(temperature) or Color(255, 255, 255)  -- Asegúrate de que siempre haya un color
+
+                                -- Mensaje de depuración
+                                print("Rendering cell at ", cellCenter, " with temperature ", temperature)
+
                                 render.SetColorMaterial()
                                 render.DrawBox(cellCenter, Angle(0, 0, 0), Vector(-gridSize / 2, -gridSize / 2, -gridSize / 2), Vector(gridSize / 2, gridSize / 2, gridSize / 2), color)
+                            else
+                                -- Mensaje de depuración para celdas nulas
+                                print("Cell at ", cellCenter, " is nil.")
                             end
                         end
                     end
