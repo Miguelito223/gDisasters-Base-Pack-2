@@ -420,6 +420,7 @@ function GetClosestDistance(x, y, z, sources)
 end
 
 function AddTemperatureHumiditySources()
+    print("Adding Sources...")
     local waterSources = GetWaterSources()
     local landSources = GetLandSources()
     local mountainSources = GetMountainSources()
@@ -449,6 +450,8 @@ function AddTemperatureHumiditySources()
             end
         end
     end
+
+    print("Adding Finish")
 end
 
 -- Función para obtener las coordenadas de las fuentes de agua
@@ -742,8 +745,6 @@ function DrawGridDebug()
             return
         end
 
-        print("Starting to iterate over GridMap...")
-
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
@@ -752,9 +753,6 @@ function DrawGridDebug()
                         if cell then
                             local temperature = cell.temperature or 0
                             local color = TemperatureToColor(temperature) or Color(255, 255, 255)  -- Asegúrate de que siempre haya un color
-
-                            -- Mensaje de depuración
-                            print("Rendering cell at ", cellCenter, " with temperature ", temperature)
 
                             render.SetColorMaterial()
                             render.DrawBox(cellCenter, Angle(0, 0, 0), Vector(-gridSize / 2, -gridSize / 2, -gridSize / 2), Vector(gridSize / 2, gridSize / 2, gridSize / 2), color)
@@ -769,10 +767,9 @@ function DrawGridDebug()
     end
 end
 
-
-hook.Add("InitPostEntity", "GenerateGrid", GenerateGrid)
-hook.Add("InitPostEntity", "AddTemperatureHumiditySources", AddTemperatureHumiditySources)
-hook.Add("Think", "UpdateGrid", UpdateGrid)
-hook.Add("Think", "UpdatePlayerGrid", UpdatePlayerGrid)
-hook.Add("Think", "UpdateWeather", UpdateWeather)
-hook.Add("PostDrawTranslucentRenderables", "DrawGridDebug", DrawGridDebug)
+hook.Add("InitPostEntity", "gDisasters_GenerateGrid", GenerateGrid)
+hook.Add("InitPostEntity", "gDisasters_AddTemperatureHumiditySources", AddTemperatureHumiditySources)
+hook.Add("Think", "gDisasters_UpdateGrid", UpdateGrid)
+hook.Add("Think", "gDisasters_UpdatePlayerGrid", UpdatePlayerGrid)
+hook.Add("Think", "gDisasters_UpdateWeather", UpdateWeather)
+hook.Add("PostDrawTranslucentRenderables", "gDisasters_DrawGridDebug", DrawGridDebug)
