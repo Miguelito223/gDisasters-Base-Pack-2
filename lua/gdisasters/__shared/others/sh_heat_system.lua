@@ -200,7 +200,7 @@ if SERVER then
         end
 
         local WATER_LEVEL = floorz
-        local MOUNTAIN_LEVEL = floorz + 5000 -- Ajusta la altura de la montaña según sea necesario
+        local MOUNTAIN_LEVEL = floorz + 50000 -- Ajusta la altura de la montaña según sea necesario
 
         -- Simular diferentes tipos de celdas basadas en coordenadas
         if z <= WATER_LEVEL then
