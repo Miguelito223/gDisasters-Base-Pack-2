@@ -198,8 +198,23 @@ if SERVER then
         if x < minX or x >= maxX or y < minY or y >= maxY or z < minZ or z >= maxZ then
             return "out_of_bounds" -- Devolver un tipo especial para coordenadas fuera de los límites del mapa
         end
+        
+        local traceStart = Vector(x, y, z)
+        local traceEnd = traceStart - Vector(0, 0, 10) 
+        traceEnd.z = math.max(traceEnd.z, minZ)
+        local tr = util.TraceLine( {
+            startpos = traceStart,
+            endpos = traceEnd,
+            mask = MASK_WATER, -- Solo colisionar con agua
+            filter = function(ent) return ent:IsValid() end  -- Filtrar cualquier entidad válida
+        } )
 
-        local WATER_LEVEL = floorz
+        -- Si el trazado de línea colisiona con agua, la celda es de tipo "water"
+        if tr.Hit then
+            return "water"
+        end
+
+        local WATER_LEVEL = tr.HitPos.z
         local MOUNTAIN_LEVEL = floorz + 50000 -- Ajusta la altura de la montaña según sea necesario
 
         -- Simular diferentes tipos de celdas basadas en coordenadas
@@ -735,31 +750,28 @@ if SERVER then
     end
     function UpdatePlayerGrid()
         if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
-            if CurTime() > nextUpdateGridPlayer then
-                nextUpdateGridPlayer = CurTime() + updateInterval
-                for k,ply in pairs(player.GetAll()) do
-                    local pos = ply:GetPos()
-                    local px, py, pz = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize, math.floor(pos.z / gridSize) * gridSize
-                    
-                    -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
-                    if GridMap[px] and GridMap[px][py] and GridMap[px][py][pz] then
-                        local cell = GridMap[px][py][pz]
+            for k,ply in pairs(player.GetAll()) do
+                local pos = ply:GetPos()
+                local px, py, pz = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize, math.floor(pos.z / gridSize) * gridSize
+                
+                -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
+                if GridMap[px] and GridMap[px][py] and GridMap[px][py][pz] then
+                    local cell = GridMap[px][py][pz]
 
-                        -- Verifica si las propiedades de la celda son válidas
-                        if cell.temperature and cell.humidity and cell.pressure then
-                            -- Actualiza las variables de la atmósfera del jugador
-                            GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
-                            GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
-                            GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
-                            print("Actual Position grid: X: " .. px .. ", Y:".. py .. ", Z:" .. pz .. ", Temperature Grid: " .. cell.temperature ) -- Depuración
-                        else
-                            -- Manejo de valores no válidos
-                            print("Error: Valores no válidos en la celda de la cuadrícula.")
-                        end
+                    -- Verifica si las propiedades de la celda son válidas
+                    if cell.temperature and cell.humidity and cell.pressure then
+                        -- Actualiza las variables de la atmósfera del jugador
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
+                        print("Actual Position grid: X: " .. px .. ", Y:".. py .. ", Z:" .. pz .. ", Temperature Grid: " .. cell.temperature .. ", Terrain Type: " .. cell.terrainType ) -- Depuración
                     else
-                        -- Manejo de celdas fuera de los límites de la cuadrícula
-                        print("Error: Posición fuera de los límites de la cuadrícula.")
+                        -- Manejo de valores no válidos
+                        print("Error: Valores no válidos en la celda de la cuadrícula.")
                     end
+                else
+                    -- Manejo de celdas fuera de los límites de la cuadrícula
+                    print("Error: Posición fuera de los límites de la cuadrícula.")
                 end
             end
         end
