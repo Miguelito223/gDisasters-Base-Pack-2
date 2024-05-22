@@ -222,15 +222,20 @@ if SERVER then
             for j = -1, 1 do
                 for k = -1, 1 do
                     if i ~= 0 or j ~= 0 or k ~= 0 then -- Evitar la celda actual
-                        local nx, ny, nz = x + i, y + j, z + k
+                        local nx, ny, nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
                         if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
                             local neighborCell = GridMap[nx][ny][nz]
                             local currentCell = GridMap[x][y][z]
 
                             -- Diferencia de presión específica para cada eje
-                            totalDeltaPressureX = totalDeltaPressureX + (neighborCell.pressure - currentCell.pressure) * i
-                            totalDeltaPressureY = totalDeltaPressureY + (neighborCell.pressure - currentCell.pressure) * j
-                            totalDeltaPressureZ = totalDeltaPressureZ + (neighborCell.pressure - currentCell.pressure) * k
+                            local deltaPressureX = neighborCell.pressure - currentCell.pressure
+                            local deltaPressureY = neighborCell.pressure - currentCell.pressure
+                            local deltaPressureZ = neighborCell.pressure - currentCell.pressure
+                            
+                            -- Añadir la diferencia de presión al total en cada eje
+                            totalDeltaPressureX = totalDeltaPressureX + deltaPressureX
+                            totalDeltaPressureY = totalDeltaPressureY + deltaPressureY
+                            totalDeltaPressureZ = totalDeltaPressureZ + deltaPressureZ
                         end
                     end
                 end
@@ -721,7 +726,6 @@ if SERVER then
                         GridMap[x][y][z].pressure = newPressure
                         GridMap[x][y][z].Airflow = newAirFlow
                         GridMap[x][y][z].VecAirflow = Vector(newAirFlow[1], newAirFlow[2], newAirFlow[3])
-                        print("Updated cell at:", x, y, z)
                     else
                         print("Error: Cell position out of grid bounds.")
                     end
