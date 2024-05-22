@@ -1,5 +1,5 @@
 -- Tamaño de la cuadrícula y rango de temperatura
-gridSize = 5000 -- Tamaño de cada cuadrado en unidades
+gridSize = 1000 -- Tamaño de cada cuadrado en unidades
 
 minTemperature = -44.00 -- Temperatura mínima
 maxTemperature = 44.00 -- Temperatura máxima
