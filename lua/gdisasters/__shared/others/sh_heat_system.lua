@@ -214,7 +214,7 @@ function GetCellType(x, y, z)
     end
 
     local WATER_LEVEL = tr.HitPos.z
-    local MOUNTAIN_LEVEL = floorz + 5000 -- Ajusta la altura de la montaña según sea necesario
+    local MOUNTAIN_LEVEL = floorz + 8000 -- Ajusta la altura de la montaña según sea necesario
 
     -- Simular diferentes tipos de celdas basadas en coordenadas
     if z <= WATER_LEVEL then
