@@ -1,15 +1,15 @@
 -- Tamaño de la cuadrícula y rango de temperatura
-gridSize = 500 -- Tamaño de cada cuadrado en unidades
+gridSize = 1000 -- Tamaño de cada cuadrado en unidades
 
-minTemperature = -55 -- Temperatura mínima
-maxTemperature = 55 -- Temperatura máxima
+minTemperature = -273.3 -- Temperatura mínima
+maxTemperature = 273.3 -- Temperatura máxima
 minHumidity = 0 -- Humedad mínima
 maxHumidity = 100 -- Humedad máxima
 minPressure = 94000 -- Presión mínima en milibares
 maxPressure = 106000 -- Presión máxima en milibares
 
 updateInterval = 1 -- Intervalo de actualización en segundos
-updateBatchSize = 50 -- Número de celdas a actualizar por frame
+updateBatchSize = 100 -- Número de celdas a actualizar por frame
 nextUpdateGrid = CurTime()
 nextUpdateGridPlayer = CurTime()
 nextUpdateWeather = CurTime()
@@ -763,8 +763,8 @@ if SERVER then
         end
     end
     -- Llamar a la función para generar la cuadrícula al inicio del juego
-    hook.Add("PlayerSpawn", "GenerateGrid", GenerateGrid)
-    hook.Add("PlayerSpawn", "AddTemperatureHumiditySources", AddTemperatureHumiditySources)
+    hook.Add("PlayerInitialSpawn", "GenerateGrid", GenerateGrid)
+    hook.Add("PlayerInitialSpawn", "AddTemperatureHumiditySources", AddTemperatureHumiditySources)
     hook.Add("Think", "UpdateGrid", UpdateGrid)
     hook.Add("Think", "UpdatePlayerGrid", UpdatePlayerGrid)
     hook.Add("Think", "UpdateWeather", UpdateWeather)
