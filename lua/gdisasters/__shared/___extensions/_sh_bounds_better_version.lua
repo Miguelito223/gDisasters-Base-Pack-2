@@ -110,9 +110,10 @@ MAP_BOUNDS["gm_natural_disaster_survival_destruct1"] = { Vector(5119,5119,-4095)
 MAP_BOUNDS["gm_natural_disaster_survival"] = { Vector(5119,5119,-4095),       Vector(-5119,-5119,4095), 	    Vector(0,0,-948)		}
 
 function IsMapRegistered()
-	local worldEnt = ents.FindByClass("worldspawn")[1]
+	local worldEnt = #ents.FindByClass("worldspawn")
+	local map = game.GetMap()
 	
-	if worldEnt then
+	if worldEnt > 0 and MAP_BOUNDS[map] != nil then
 		return true
 	else 
 		return false

@@ -171,7 +171,7 @@ function CalculatePressure(x, y, z)
     local pressureChangeFactor = 0.1 -- Factor de cambio de presión entre celdas vecinas
 
     for _, neighbor in pairs(neighbors) do
-        local nx, ny, nz = x + neighbor.dx, y + neighbor.dy, z + neighbor.dz
+        local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
         if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
             local neighborCell = GridMap[nx][ny][nz]
             if neighborCell.pressure then
@@ -189,31 +189,6 @@ end
 function CalculateAirFlow(x, y, z)
     local totalDeltaPressure = 0
 
-    -- Calcular la diferencia de presión entre las celdas vecinas y sumarlas
-    for i = -1, 1 do
-        for j = -1, 1 do
-            for k = -1, 1 do
-                if i ~= 0 or j ~= 0 or k ~= 0 then -- Evitar la celda actual
-                    local nx, ny, nz = x + i * gridSize, y + j * gridSize, z + k * gridSize
-                    if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                        local neighborCell = GridMap[nx][ny][nz]
-                        local currentCell = GridMap[x][y][z]
-
-                        -- Diferencia de presión específica para cada eje
-                        local deltaPressure = neighborCell.pressure - currentCell.pressure
-                        
-                        -- Sumar la diferencia de presión al total en cada eje
-                        totalDeltaPressure = totalDeltaPressure + deltaPressure
-                    end
-                end
-            end
-        end
-    end
-
-    -- Ajustar la velocidad del flujo de aire en función de la diferencia de presión
-    local Airflow = totalDeltaPressure * AirflowCoefficient
-
-    -- Transmitir el flujo de aire a las celdas vecinas
     local neighbors = {
         {dx = -1, dy = 0, dz = 0},  -- Izquierda
         {dx = 1, dy = 0, dz = 0},   -- Derecha
@@ -224,12 +199,18 @@ function CalculateAirFlow(x, y, z)
     }
 
     for _, neighbor in pairs(neighbors) do
-        local nx, ny, nz = x + neighbor.dx, y + neighbor.dy, z + neighbor.dz
+        local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
         if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
             local neighborCell = GridMap[nx][ny][nz]
-            neighborCell.Airflow = Airflow
+            local currentCell = GridMap[x][y][z]
+
+            local deltaPressure = neighborCell.pressure - currentCell.pressure
+
+            totalDeltaPressure = totalDeltaPressure + deltaPressure
         end
     end
+
+    local Airflow = totalDeltaPressure * AirflowCoefficient
 
     return Airflow
 end
