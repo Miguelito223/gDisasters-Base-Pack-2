@@ -88,7 +88,7 @@ function CalculateTemperature(x, y, z)
     local AirflowEffect = AirflowCoefficient * averageAirFlow
     local temperatureChange = diffusionCoefficient * (averageTemperature - currentTemperature)
 
-    local newTemperature = currentTemperature + temperatureChange + AirflowEffect + temperatureInfluence
+    local newTemperature = currentTemperature + temperatureChange + temperatureInfluence
 
     return math.max(minTemperature, math.min(maxTemperature, newTemperature))
 end
@@ -129,7 +129,7 @@ function CalculateHumidity(x, y, z)
     local AirflowEffect = AirflowCoefficient * averageAirFlow
     local humidityChange = diffusionCoefficient * (averageHumidity - currentHumidity)
 
-    local newHumidity = currentHumidity + humidityChange + AirflowEffect + humidityInfluence
+    local newHumidity = currentHumidity + humidityChange + humidityInfluence
 
     return math.max(minHumidity, math.min(maxHumidity, newHumidity))
 end
@@ -620,9 +620,9 @@ function SimulateConvergence()
                         if convergenceStrength > strongStormThreshold then
                             CreateStorm(x, y, z)
                         elseif convergenceStrength > hailThreshold then
-                            CreateHail(x, y, z)
+                            
                         elseif convergenceStrength > rainThreshold then
-                            CreateRain(x, y, z)
+                            
                         elseif convergenceStrength > cloudThreshold then
                             CreateCloud(x, y, z)
                         end
