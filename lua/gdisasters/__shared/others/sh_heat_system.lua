@@ -206,13 +206,60 @@ function CalculateAirFlow(x, y, z)
 
             local deltaPressure = neighborCell.pressure - currentCell.pressure
 
-            totalDeltaPressure = totalDeltaPressure + deltaPressure
+            totalDeltaPressure = math.abs(totalDeltaPressure + deltaPressure)
         end
     end
 
     local Airflow = totalDeltaPressure * AirflowCoefficient
 
     return Airflow
+end
+
+function CalculateAirFlowDirection(x, y, z)
+    local totalDeltaPressureX = 0
+    local totalDeltaPressureY = 0
+    local totalDeltaPressureZ = 0
+
+    local neighbors = {
+        {dx = -1, dy = 0, dz = 0},  -- Izquierda
+        {dx = 1, dy = 0, dz = 0},   -- Derecha
+        {dx = 0, dy = -1, dz = 0},  -- Arriba
+        {dx = 0, dy = 1, dz = 0},   -- Abajo
+        {dx = 0, dy = 0, dz = -1},  -- Atrás
+        {dx = 0, dy = 0, dz = 1}    -- Adelante
+    }
+
+    local currentCell = GridMap[x][y][z]
+
+    for _, neighbor in pairs(neighbors) do
+        local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
+        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+            local neighborCell = GridMap[nx][ny][nz]
+
+            local deltaPressure = neighborCell.pressure - currentCell.pressure
+
+            -- Sumar la diferencia de presión a los totales en cada eje
+            totalDeltaPressureX = totalDeltaPressureX + deltaPressure * neighbor.dx
+            totalDeltaPressureY = totalDeltaPressureY + deltaPressure * neighbor.dy
+            totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * neighbor.dz
+        end
+    end
+
+    -- Crear un vector de flujo de aire
+    local airflowVector = {x = totalDeltaPressureX, y = totalDeltaPressureY, z = totalDeltaPressureZ}
+
+    -- Calcular la magnitud del flujo de aire
+    local airflowMagnitude = math.sqrt(airflowVector.x^2 + airflowVector.y^2 + airflowVector.z^2)
+
+    -- Normalizar el vector de flujo de aire para obtener la dirección del viento
+    local windDirection = Vector(0, 0, 0)
+    if airflowMagnitude > 0 then
+        windDirection.x = airflowVector.x / airflowMagnitude
+        windDirection.y = airflowVector.y / airflowMagnitude
+        windDirection.z = airflowVector.z / airflowMagnitude
+    end
+
+    return windDirection
 end
 
 function GetCellType(x, y, z)
@@ -636,6 +683,7 @@ function GenerateGrid(ply)
                 GridMap[x][y][z].humidity = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
                 GridMap[x][y][z].pressure = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
                 GridMap[x][y][z].Airflow = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Speed"]
+                GridMap[x][y][z].Airflow_Direction = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Direction"]
             end
         end
     end
@@ -670,10 +718,12 @@ function UpdateGrid()
                         local newHumidity = CalculateHumidity(x, y, z)
                         local newPressure = CalculatePressure(x, y, z)
                         local newAirFlow = CalculateAirFlow(x, y, z)
+                        local newAirFlowDirection = CalculateAirFlowDirection(x, y, z)
                         GridMap[x][y][z].temperature = newTemperature
                         GridMap[x][y][z].humidity = newHumidity
                         GridMap[x][y][z].pressure = newPressure
                         GridMap[x][y][z].Airflow = newAirFlow
+                        GridMap[x][y][z].Airflow_Direction = newAirFlowDirection
                     else
                         print("Error: Cell position out of grid bounds.")
                     end
@@ -702,6 +752,7 @@ function UpdatePlayerGrid()
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = cell.Airflow
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = cell.Airflow_Direction
                         print("Actual grid: x: " .. px .. ", y: ".. py .. ", z: " .. pz .. ", Terrain Type: " .. cell.terrainType)
                     else
                         -- Manejo de valores no válidos
