@@ -1,15 +1,17 @@
 -- Tamaño de la cuadrícula y rango de temperatura
-gridSize = 1000 -- Tamaño de cada cuadrado en unidades
+gridSize = 5000 -- Tamaño de cada cuadrado en unidades
 
-minTemperature = -44.00 -- Temperatura mínima
-maxTemperature = 44.00 -- Temperatura máxima
+minTemperature = 5 -- Temperatura mínima
+maxTemperature = 35 -- Temperatura máxima
 minHumidity = 0 -- Humedad mínima
 maxHumidity = 100 -- Humedad máxima
 minPressure = 94000 -- Presión mínima en milibares
 maxPressure = 106000 -- Presión máxima en milibares
+minAirflow = 0 -- Presión mínima en milibares
+maxAirflow = 256 -- Presión máxima en milibares
 
 updateInterval = 1 -- Intervalo de actualización en segundos
-updateBatchSize = 100 -- Número de celdas a actualizar por frame
+updateBatchSize = 500 -- Número de celdas a actualizar por frame
 nextUpdateGrid = CurTime()
 nextUpdateGridPlayer = CurTime()
 nextUpdateWeather = CurTime()
@@ -210,9 +212,9 @@ function CalculateAirFlow(x, y, z)
         end
     end
 
-    local Airflow = totalDeltaPressure * AirflowCoefficient
+    local newAirflow = totalDeltaPressure * AirflowCoefficient
 
-    return Airflow
+    return math.max(minAirflow, math.min(maxAirflow, newAirflow))
 end
 
 function CalculateAirFlowDirection(x, y, z)
