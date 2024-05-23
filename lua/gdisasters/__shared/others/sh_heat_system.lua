@@ -89,7 +89,7 @@ function CalculateTemperature(x, y, z)
 
     -- Ajustar la temperatura de la celda actual basada en la difusión de calor
     local currentTemperature = GridMap[x][y][z].temperature
-    local temperatureInfluence = GridMap[x][y][z].temperatureInfluence
+    local temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0
     local AirflowEffect = AirflowCoefficient * averageAirFlow
     local temperatureChange = diffusionCoefficient * (averageTemperature - currentTemperature)
 
@@ -132,7 +132,7 @@ function CalculateHumidity(x, y, z)
     -- Ajustar la humedad de la celda actual basada en la difusión de humedad
     local averageHumidity = totalHumidity / count
     local currentHumidity = GridMap[x][y][z].humidity
-    local humidityInfluence = GridMap[x][y][z].humidityInfluence
+    local humidityInfluence = GridMap[x][y][z].humidityInfluence or 0
     local humidityChange = diffusionCoefficient * (averageHumidity - currentHumidity)
 
     -- Calcular la nueva humedad
