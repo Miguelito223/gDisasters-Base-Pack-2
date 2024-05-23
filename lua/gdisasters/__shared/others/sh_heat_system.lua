@@ -90,7 +90,7 @@ function CalculateTemperature(x, y, z)
     local averageAirFlow = totalAirFlow / count
 
     -- Ajustar la temperatura de la celda actual basada en la difusión de calor
-    local currentTemperature = GridMap[x][y][z].temperature
+    local currentTemperature = GridMap[x][y][z].temperature 
     local temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0
     local AirflowEffect = AirflowCoefficient * averageAirFlow
     local temperatureChange = diffusionCoefficient * (averageTemperature - currentTemperature)
@@ -159,30 +159,6 @@ function CalculatePressure(x, y, z)
 
     -- Calcular la presión basada en la temperatura y la humedad
     local newpressure = (gas_constant * temperature * (1 + ((specific_heat_vapor * humidity) / temperature))) * 100
-    
-    -- Transmitir la presión a las celdas vecinas
-    local neighbors = {
-        {dx = -1, dy = 0, dz = 0},  -- Izquierda
-        {dx = 1, dy = 0, dz = 0},   -- Derecha
-        {dx = 0, dy = -1, dz = 0},  -- Arriba
-        {dx = 0, dy = 1, dz = 0},   -- Abajo
-        {dx = 0, dy = 0, dz = -1},  -- Atrás
-        {dx = 0, dy = 0, dz = 1}    -- Adelante
-    }
-
-    local pressureChangeFactor = 0.1 -- Factor de cambio de presión entre celdas vecinas
-
-    for _, neighbor in pairs(neighbors) do
-        local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
-        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-            local neighborCell = GridMap[nx][ny][nz]
-            if neighborCell.pressure then
-                -- Calcular la diferencia de presión y ajustar la presión de la celda vecina
-                local pressureDifference = newpressure - neighborCell.pressure
-                neighborCell.pressure = neighborCell.pressure + pressureDifference * pressureChangeFactor
-            end
-        end
-    end
 
     -- Asegurarse de que la presión esté dentro del rango
     return math.max(minPressure, math.min(maxPressure, newpressure))
@@ -202,10 +178,13 @@ function CalculateAirFlow(x, y, z)
         {dx = 0, dy = 0, dz = 1}    -- Adelante
     }
 
+    local currentCell = GridMap[x][y][z]
+
     for _, neighbor in pairs(neighbors) do
         local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
         if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
             local neighborCell = GridMap[nx][ny][nz]
+            
 
             local deltaPressure = neighborCell.pressure - currentCell.pressure
 
