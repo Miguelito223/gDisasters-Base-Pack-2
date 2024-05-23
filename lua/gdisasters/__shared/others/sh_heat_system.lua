@@ -10,7 +10,7 @@ maxPressure = 106000 -- Presión máxima en milibares
 minAirflow = 0 -- Presión mínima en milibares
 maxAirflow = 256 -- Presión máxima en milibares
 
-updateInterval = 1 -- Intervalo de actualización en segundos
+updateInterval = 0.01 -- Intervalo de actualización en segundos
 updateBatchSize = 500 -- Número de celdas a actualizar por frame
 nextUpdateGrid = CurTime()
 nextUpdateGridPlayer = CurTime()
@@ -189,7 +189,9 @@ function CalculatePressure(x, y, z)
 end
 
 function CalculateAirFlow(x, y, z)
-    local totalDeltaPressure = 0
+    local totalDeltaPressureX = 0
+    local totalDeltaPressureY = 0
+    local totalDeltaPressureZ = 0
 
     local neighbors = {
         {dx = -1, dy = 0, dz = 0},  -- Izquierda
@@ -204,15 +206,23 @@ function CalculateAirFlow(x, y, z)
         local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
         if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
             local neighborCell = GridMap[nx][ny][nz]
-            local currentCell = GridMap[x][y][z]
 
             local deltaPressure = neighborCell.pressure - currentCell.pressure
 
-            totalDeltaPressure = math.abs(totalDeltaPressure + deltaPressure)
+            -- Sumar la diferencia de presión a los totales en cada eje
+            totalDeltaPressureX = totalDeltaPressureX + deltaPressure * neighbor.dx
+            totalDeltaPressureY = totalDeltaPressureY + deltaPressure * neighbor.dy
+            totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * neighbor.dz
         end
     end
+   
+    -- Crear un vector de flujo de aire
+    local airflowVector = Vector(totalDeltaPressureX, totalDeltaPressureY, totalDeltaPressureZ)
 
-    local newAirflow = totalDeltaPressure * AirflowCoefficient
+    -- Calcular la magnitud del flujo de aire
+    local airflowMagnitude = math.sqrt(airflowVector.x^2 + airflowVector.y^2 + airflowVector.z^2)
+
+    local newAirflow = airflowMagnitude * AirflowCoefficient
 
     return math.max(minAirflow, math.min(maxAirflow, newAirflow))
 end
@@ -248,7 +258,7 @@ function CalculateAirFlowDirection(x, y, z)
     end
 
     -- Crear un vector de flujo de aire
-    local airflowVector = {x = totalDeltaPressureX, y = totalDeltaPressureY, z = totalDeltaPressureZ}
+    local airflowVector = Vector(totalDeltaPressureX, totalDeltaPressureY, totalDeltaPressureZ)
 
     -- Calcular la magnitud del flujo de aire
     local airflowMagnitude = math.sqrt(airflowVector.x^2 + airflowVector.y^2 + airflowVector.z^2)
