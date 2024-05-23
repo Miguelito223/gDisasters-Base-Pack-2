@@ -1,5 +1,6 @@
 -- Tamaño de la cuadrícula y rango de temperatura
 gridSize = 5000 -- Tamaño de cada cuadrado en unidades
+timeStep = 1.0
 
 minTemperature = -44 -- Temperatura mínima
 maxTemperature = 44 -- Temperatura máxima
@@ -17,17 +18,20 @@ nextUpdateGridPlayer = CurTime()
 nextUpdateWeather = CurTime()
 nextThunderThink = CurTime()
 
-diffusionCoefficient = 0.1 -- Coeficiente de difusión de calor
-AirflowCoefficient = 0.1
+tempdiffusionCoefficient = 0.001 -- Coeficiente de difusión de calor
+AirflowCoefficient = 0.001
+humidityDiffusionCoefficient = 0.001
+ChangeFactor = 0.001  -- Ajusta este valor según sea necesario
 gas_constant = 8.314
 specific_heat_vapor = 1.996
 
-waterTemperatureEffect = 0.2  -- El agua tiende a mantener una temperatura más constante
-landTemperatureEffect = 0.5    -- La tierra se calienta y enfría más rápido que el agua
-waterHumidityEffect = 0.5      -- El agua puede aumentar la humedad en su entorno
-landHumidityEffect = 0.2       -- La tierra puede retener menos humedad que el agua
-mountainTemperatureEffect = -0.5  -- Las montañas tienden a ser más frías debido a la altitud
-mountainHumidityEffect = 0.5    -- Las montañas pueden influir en la humedad debido a las corrientes de aire
+
+waterTemperatureEffect = 0.1   -- El agua tiende a mantener una temperatura más constante
+landTemperatureEffect = 0.8     -- La tierra se calienta y enfría más rápido que el agua
+waterHumidityEffect = 0.8       -- El agua puede aumentar significativamente la humedad en su entorno
+landHumidityEffect = 0.3        -- La tierra puede retener menos humedad que el agua
+mountainTemperatureEffect = -0.6  -- Las montañas tienden a ser más frías debido a la altitud
+mountainHumidityEffect = 0.4    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
 
 convergenceThreshold = 0.5
 strongStormThreshold = 2.0
@@ -51,6 +55,57 @@ waterSources = {}
 LandSources = {}
 
 Cloud = {}
+
+local function CalculatetempdiffusionCoefficient(gridSize, timeStep)
+    -- Supón que tienes una conductividad térmica k y un calor específico c.
+    local k = 0.5  -- Conductividad térmica del medio (ajusta según sea necesario)
+    local c = 1.0  -- Calor específico del medio (ajusta según sea necesario)
+
+    return k / (c * gridSize^2) * timeStep
+end
+
+local function CalculateHumidityDiffusionCoefficient(gridSize, timeStep)
+    local vaporConductivity = 0.1  -- Conductividad de vapor del medio (ajusta según sea necesario)
+    local specificHeat = 1.0  -- Calor específico del medio (ajusta según sea necesario)
+
+    return vaporConductivity / (specificHeat * gridSize^2) * timeStep
+end
+
+function CalculateAirflowCoefficient(x, y, z)
+    local pressureDifferenceSum = 0
+    local neighborCount = 0
+
+    local neighbors = {
+        {dx = -1, dy = 0, dz = 0},  -- Izquierda
+        {dx = 1, dy = 0, dz = 0},   -- Derecha
+        {dx = 0, dy = -1, dz = 0},  -- Arriba
+        {dx = 0, dy = 1, dz = 0},   -- Abajo
+        {dx = 0, dy = 0, dz = -1},  -- Atrás
+        {dx = 0, dy = 0, dz = 1}    -- Adelante
+    }
+
+    for _, neighbor in pairs(neighbors) do
+        local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
+        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+            local neighborCell = GridMap[nx][ny][nz]
+            if neighborCell.pressure then
+                local pressureDifference = math.abs((GridMap[x][y][z].pressure or 0) - (neighborCell.pressure or 0))
+                pressureDifferenceSum = pressureDifferenceSum + pressureDifference
+                neighborCount = neighborCount + 1
+            end
+        end
+    end
+
+    if neighborCount == 0 then return 0 end
+
+    -- Calcular el promedio de la diferencia de presión
+    local averagePressureDifference = pressureDifferenceSum / neighborCount
+
+    -- Ajustar el coeficiente de flujo de aire según el promedio de la diferencia de presión
+    local AirflowCoefficient = averagePressureDifference * 0.01  -- Ajusta este valor según sea necesario
+
+    return AirflowCoefficient
+end
 
 function CalculateTemperature(x, y, z)
     local totalTemperature = 0
@@ -79,23 +134,23 @@ function CalculateTemperature(x, y, z)
     end
 
     if count == 0 then return GridMap[x][y][z].temperature or 0 end
+    
+    tempdiffusionCoefficient = CalculatetempdiffusionCoefficient(gridSize, timeStep)
+    AirflowCoefficient = CalculateAirflowCoefficient(x, y, z)
 
     local averageTemperature = totalTemperature / count
     local averageAirFlow = totalAirFlow / count
 
     local currentTemperature = GridMap[x][y][z].temperature or 0
-   
     local temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0
-
     local AirflowEffect = AirflowCoefficient * averageAirFlow
-    
-    local temperatureChangeFactor = 0.1  -- Ajusta este valor según sea necesario
-    local temperatureChange = diffusionCoefficient * (averageTemperature - currentTemperature) * temperatureChangeFactor
+    local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature) * ChangeFactor
     
     local newTemperature = currentTemperature + temperatureChange  + AirflowEffect + temperatureInfluence
 
     return math.max(minTemperature, math.min(maxTemperature, newTemperature))
 end
+
 
 function CalculateHumidity(x, y, z)
     local totalHumidity = 0
@@ -125,6 +180,9 @@ function CalculateHumidity(x, y, z)
 
     if count == 0 then return GridMap[x][y][z].humidity or 0 end
 
+    humidityDiffusionCoefficient = CalculateHumidityDiffusionCoefficient(gridSize, timeStep)
+    AirflowCoefficient = CalculateAirflowCoefficient(x, y, z)
+
     local averageHumidity = totalHumidity / count
     local averageAirFlow = totalAirFlow / count
 
@@ -132,10 +190,7 @@ function CalculateHumidity(x, y, z)
     local humidityInfluence = GridMap[x][y][z].humidityInfluence or 0
 
     local AirflowEffect = AirflowCoefficient * averageAirFlow
-   
-    local humidityChangeFactor = 0.1  -- Ajusta este valor según sea necesario
-    local humidityChange = diffusionCoefficient * (averageHumidity - currentHumidity) * humidityChangeFactor
-
+    local humidityChange = humidityDiffusionCoefficient * (averageHumidity - currentHumidity) * ChangeFactor
     local newHumidity = currentHumidity + humidityChange + AirflowEffect + humidityInfluence 
 
     return math.max(minHumidity, math.min(maxHumidity, newHumidity))
@@ -744,7 +799,7 @@ function UpdatePlayerGrid()
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = cell.Airflow
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = cell.Airflow_Direction
-                        print("Actual grid: x: " .. px .. ", y: ".. py .. ", z: " .. pz .. ", Terrain Type: " .. cell.terrainType)
+                        print("Actual grid: x: " .. px .. ", y: ".. py .. ", z: " .. pz .. ", Terrain Type: " .. cell.terrainType .. ", Temp: " .. cell.temperature)
                     else
                         -- Manejo de valores no válidos
                         print("Error: Valores no válidos en la celda de la cuadrícula.")
