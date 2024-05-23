@@ -715,6 +715,7 @@ function UpdatePlayerGrid()
                     GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
                     GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
                     GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = cell.Airflow
+                    print("Actual grid: x: " .. px .. ", y: ".. py .. ", z: " .. pz .. ", Terrain Type: " .. cell.terrainType)
                 else
                     -- Manejo de valores no válidos
                     print("Error: Valores no válidos en la celda de la cuadrícula.")
