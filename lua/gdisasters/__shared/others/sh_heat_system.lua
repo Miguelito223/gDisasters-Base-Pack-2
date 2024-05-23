@@ -18,10 +18,9 @@ nextUpdateWeather = CurTime()
 nextThunderThink = CurTime()
 
 diffusionCoefficient = 0.1 -- Coeficiente de difusión de calor
+AirflowCoefficient = 0.1
 gas_constant = 8.314
 specific_heat_vapor = 1.996
-AirflowCoefficient = 0.1
-N = 100
 
 waterTemperatureEffect = 2  -- El agua tiende a mantener una temperatura más constante
 landTemperatureEffect = 5    -- La tierra se calienta y enfría más rápido que el agua
@@ -30,17 +29,18 @@ landHumidityEffect = 2       -- La tierra puede retener menos humedad que el agu
 mountainTemperatureEffect = -5  -- Las montañas tienden a ser más frías debido a la altitud
 mountainHumidityEffect = 5    -- Las montañas pueden influir en la humedad debido a las corrientes de aire
 
-rainThreshold = 0.8 -- Umbral de humedad para la generación de lluvia
-cloudThreshold = 0.6
-strongStormThreshold = 0.9
-convergenceThreshold = 0.7
+convergenceThreshold = 0.5
+strongStormThreshold = 2.0
+hailThreshold = 1.5
+rainThreshold = 1.0
+cloudThreshold = 0.5
 stormTemperatureThreshold = 30 -- Umbral de temperatura para la generación de tormentas
 stormPressureThreshold = 100000 -- Umbral de presión para la generación de tormentas
 lowTemperatureThreshold = 10
 lowHumidityThreshold =  40
 MaxClouds = 5
-MaxRainDrop = 5
-MaxHail = 5
+MaxRainDrop = 1
+MaxHail = 1
 
 maxDrawDistance = 100000
 
@@ -54,10 +54,9 @@ Cloud = {}
 
 function CalculateTemperature(x, y, z)
     local totalTemperature = 0
-    local totalAirFlow = 0 -- Para almacenar la suma de los componentes del flujo de aire
+    local totalAirFlow = 0
     local count = 0
 
-    -- Definir los vecinos y sus desplazamientos
     local neighbors = {
         {dx = -1, dy = 0, dz = 0},  -- Izquierda
         {dx = 1, dy = 0, dz = 0},   -- Derecha
@@ -67,46 +66,38 @@ function CalculateTemperature(x, y, z)
         {dx = 0, dy = 0, dz = 1}    -- Adelante
     }
 
-    -- Ajustar la temperatura de las celdas vecinas y sumar la temperatura y el flujo de aire
     for _, neighbor in pairs(neighbors) do
         local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
         if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
             local neighborCell = GridMap[nx][ny][nz]
             if neighborCell.temperature and neighborCell.Airflow then
                 totalTemperature = totalTemperature + neighborCell.temperature
-                totalAirFlow = totalAirFlow + (neighborCell.Airflow or 0)
+                totalAirFlow = totalAirFlow + neighborCell.Airflow
                 count = count + 1
             end
         end
     end
 
-    -- Si no hay celdas vecinas válidas, retornar la temperatura actual
-    if count == 0 then return GridMap[x][y][z].temperature end
+    if count == 0 then return GridMap[x][y][z].temperature or 0 end
 
-    -- Calcular la temperatura promedio de las vecinas
     local averageTemperature = totalTemperature / count
-
-    -- Calcular el flujo de aire promedio
     local averageAirFlow = totalAirFlow / count
 
-    -- Ajustar la temperatura de la celda actual basada en la difusión de calor
-    local currentTemperature = GridMap[x][y][z].temperature 
+    local currentTemperature = GridMap[x][y][z].temperature or 0
     local temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0
     local AirflowEffect = AirflowCoefficient * averageAirFlow
     local temperatureChange = diffusionCoefficient * (averageTemperature - currentTemperature)
 
-    -- Calcular la nueva temperatura
     local newTemperature = currentTemperature + temperatureChange + AirflowEffect + temperatureInfluence
 
-    -- Asegurarse de que la temperatura esté dentro del rango
     return math.max(minTemperature, math.min(maxTemperature, newTemperature))
 end
 
 function CalculateHumidity(x, y, z)
     local totalHumidity = 0
+    local totalAirFlow = 0
     local count = 0
 
-    -- Definir los vecinos y sus desplazamientos
     local neighbors = {
         {dx = -1, dy = 0, dz = 0},  -- Izquierda
         {dx = 1, dy = 0, dz = 0},   -- Derecha
@@ -116,31 +107,30 @@ function CalculateHumidity(x, y, z)
         {dx = 0, dy = 0, dz = 1}    -- Adelante
     }
 
-    -- Ajustar la humedad de las celdas vecinas
     for _, neighbor in pairs(neighbors) do
         local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
         if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
             local neighborCell = GridMap[nx][ny][nz]
-            if neighborCell.humidity then
+            if neighborCell.humidity and neighborCell.Airflow then
                 totalHumidity = totalHumidity + neighborCell.humidity
+                totalAirFlow = totalAirFlow + neighborCell.Airflow
                 count = count + 1
             end
         end
     end
 
-    -- Si no hay celdas vecinas válidas, retornar la humedad actual
-    if count == 0 then return GridMap[x][y][z].humidity end
+    if count == 0 then return GridMap[x][y][z].humidity or 0 end
 
-    -- Ajustar la humedad de la celda actual basada en la difusión de humedad
     local averageHumidity = totalHumidity / count
-    local currentHumidity = GridMap[x][y][z].humidity
+    local averageAirFlow = totalAirFlow / count
+
+    local currentHumidity = GridMap[x][y][z].humidity or 0
     local humidityInfluence = GridMap[x][y][z].humidityInfluence or 0
+    local AirflowEffect = AirflowCoefficient * averageAirFlow
     local humidityChange = diffusionCoefficient * (averageHumidity - currentHumidity)
 
-    -- Calcular la nueva humedad
-    local newHumidity = currentHumidity + humidityChange + humidityInfluence
+    local newHumidity = currentHumidity + humidityChange + AirflowEffect + humidityInfluence
 
-    -- Asegurarse de que la humedad esté dentro del rango
     return math.max(minHumidity, math.min(maxHumidity, newHumidity))
 end
 
@@ -363,7 +353,7 @@ function SpawnCloud(pos, color)
 end
 
 -- Función para simular la formación y movimiento de nubes
-function CreateClouds(x,y,z)
+function CreateCloud(x,y,z)
     local cell = GridMap[x][y][z]
 
     local humidity = cell.humidity
@@ -629,6 +619,8 @@ function SimulateConvergence()
                     if convergenceStrength > convergenceThreshold then
                         if convergenceStrength > strongStormThreshold then
                             CreateStorm(x, y, z)
+                        elseif convergenceStrength > hailThreshold then
+                            CreateHail(x, y, z)
                         elseif convergenceStrength > rainThreshold then
                             CreateRain(x, y, z)
                         elseif convergenceStrength > cloudThreshold then
@@ -687,6 +679,7 @@ function UpdateGrid()
     if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
         if CurTime() > nextUpdateGrid then
             nextUpdateGrid = CurTime() + updateInterval
+
             for i= 1, updateBatchSize do
                 local cell = table.remove(cellsToUpdate, 1)
                 if not cell then
