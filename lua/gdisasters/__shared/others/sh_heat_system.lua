@@ -1,8 +1,8 @@
 -- Tamaño de la cuadrícula y rango de temperatura
 gridSize = 5000 -- Tamaño de cada cuadrado en unidades
 
-minTemperature = -10 -- Temperatura mínima
-maxTemperature = 40 -- Temperatura máxima
+minTemperature = -44 -- Temperatura mínima
+maxTemperature = 44 -- Temperatura máxima
 minHumidity = 0 -- Humedad mínima
 maxHumidity = 100 -- Humedad máxima
 minPressure = 94000 -- Presión mínima en milibares
@@ -10,7 +10,7 @@ maxPressure = 106000 -- Presión máxima en milibares
 minAirflow = 0 -- Presión mínima en milibares
 maxAirflow = 256 -- Presión máxima en milibares
 
-updateInterval = 0.01 -- Intervalo de actualización en segundos
+updateInterval = 1 -- Intervalo de actualización en segundos
 updateBatchSize = 500 -- Número de celdas a actualizar por frame
 nextUpdateGrid = CurTime()
 nextUpdateGridPlayer = CurTime()
@@ -22,12 +22,12 @@ AirflowCoefficient = 0.1
 gas_constant = 8.314
 specific_heat_vapor = 1.996
 
-waterTemperatureEffect = 2  -- El agua tiende a mantener una temperatura más constante
-landTemperatureEffect = 5    -- La tierra se calienta y enfría más rápido que el agua
-waterHumidityEffect = 5      -- El agua puede aumentar la humedad en su entorno
-landHumidityEffect = 2       -- La tierra puede retener menos humedad que el agua
-mountainTemperatureEffect = -5  -- Las montañas tienden a ser más frías debido a la altitud
-mountainHumidityEffect = 5    -- Las montañas pueden influir en la humedad debido a las corrientes de aire
+waterTemperatureEffect = 0.2  -- El agua tiende a mantener una temperatura más constante
+landTemperatureEffect = 0.5    -- La tierra se calienta y enfría más rápido que el agua
+waterHumidityEffect = 0.5      -- El agua puede aumentar la humedad en su entorno
+landHumidityEffect = 0.2       -- La tierra puede retener menos humedad que el agua
+mountainTemperatureEffect = -0.5  -- Las montañas tienden a ser más frías debido a la altitud
+mountainHumidityEffect = 0.5    -- Las montañas pueden influir en la humedad debido a las corrientes de aire
 
 convergenceThreshold = 0.5
 strongStormThreshold = 2.0
@@ -84,11 +84,15 @@ function CalculateTemperature(x, y, z)
     local averageAirFlow = totalAirFlow / count
 
     local currentTemperature = GridMap[x][y][z].temperature or 0
+   
     local temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0
-    local AirflowEffect = AirflowCoefficient * averageAirFlow
-    local temperatureChange = diffusionCoefficient * (averageTemperature - currentTemperature)
 
-    local newTemperature = currentTemperature + temperatureChange + temperatureInfluence
+    local AirflowEffect = AirflowCoefficient * averageAirFlow
+    
+    local temperatureChangeFactor = 0.1  -- Ajusta este valor según sea necesario
+    local temperatureChange = diffusionCoefficient * (averageTemperature - currentTemperature) * temperatureChangeFactor
+    
+    local newTemperature = currentTemperature + temperatureChange  + AirflowEffect + temperatureInfluence
 
     return math.max(minTemperature, math.min(maxTemperature, newTemperature))
 end
@@ -126,10 +130,13 @@ function CalculateHumidity(x, y, z)
 
     local currentHumidity = GridMap[x][y][z].humidity or 0
     local humidityInfluence = GridMap[x][y][z].humidityInfluence or 0
-    local AirflowEffect = AirflowCoefficient * averageAirFlow
-    local humidityChange = diffusionCoefficient * (averageHumidity - currentHumidity)
 
-    local newHumidity = currentHumidity + humidityChange + humidityInfluence
+    local AirflowEffect = AirflowCoefficient * averageAirFlow
+   
+    local humidityChangeFactor = 0.1  -- Ajusta este valor según sea necesario
+    local humidityChange = diffusionCoefficient * (averageHumidity - currentHumidity) * humidityChangeFactor
+
+    local newHumidity = currentHumidity + humidityChange + AirflowEffect + humidityInfluence 
 
     return math.max(minHumidity, math.min(maxHumidity, newHumidity))
 end
@@ -237,7 +244,7 @@ function CalculateAirFlowDirection(x, y, z)
     if airflowMagnitude > 0 then
         windDirection.x = airflowVector.x / airflowMagnitude
         windDirection.y = airflowVector.y / airflowMagnitude
-        windDirection.z = airflowVector.z / airflowMagnitude
+        windDirection.z = 0
     end
 
     return windDirection
