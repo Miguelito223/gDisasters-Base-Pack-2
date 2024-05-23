@@ -651,10 +651,10 @@ function GenerateGrid(ply)
             GridMap[x][y] = {}
             for z = minZ, maxZ, gridSize do
                 GridMap[x][y][z] = {}
-                GridMap[x][y][z].temperature = GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"]
-                GridMap[x][y][z].humidity = GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"]
-                GridMap[x][y][z].pressure = GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"]
-                GridMap[x][y][z].Airflow = GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"]
+                GridMap[x][y][z].temperature = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Temperature"]
+                GridMap[x][y][z].humidity = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
+                GridMap[x][y][z].pressure = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
+                GridMap[x][y][z].Airflow = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Speed"]
             end
         end
     end
@@ -665,34 +665,37 @@ end
 
 function UpdateGrid()
     if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
-        for i= 1, updateBatchSize do
-            local cell = table.remove(cellsToUpdate, 1)
-            if not cell then
-                -- Reiniciar la lista de celdas para actualizar
-                cellsToUpdate = {}
-                for x, column in pairs(GridMap) do
-                    for y, row in pairs(column) do
-                        for z, cell in pairs(row) do
-                            table.insert(cellsToUpdate, {x, y, z})
+        if CurTime() > nextUpdateGrid then
+            nextUpdateGrid = CurTime() + updateInterval
+            for i= 1, updateBatchSize do
+                local cell = table.remove(cellsToUpdate, 1)
+                if not cell then
+                    -- Reiniciar la lista de celdas para actualizar
+                    cellsToUpdate = {}
+                    for x, column in pairs(GridMap) do
+                        for y, row in pairs(column) do
+                            for z, cell in pairs(row) do
+                                table.insert(cellsToUpdate, {x, y, z})
+                            end
                         end
                     end
+                    cell = table.remove(cellsToUpdate, 1)
                 end
-                cell = table.remove(cellsToUpdate, 1)
-            end
 
-            if cell then
-                local x, y, z = cell[1], cell[2], cell[3]
-                if GridMap[x] and GridMap[x][y] and GridMap[x][y][z] then
-                    local newTemperature = CalculateTemperature(x, y, z)
-                    local newHumidity = CalculateHumidity(x, y, z)
-                    local newPressure = CalculatePressure(x, y, z)
-                    local newAirFlow = CalculateAirFlow(x, y, z)
-                    GridMap[x][y][z].temperature = newTemperature
-                    GridMap[x][y][z].humidity = newHumidity
-                    GridMap[x][y][z].pressure = newPressure
-                    GridMap[x][y][z].Airflow = newAirFlow
-                else
-                    print("Error: Cell position out of grid bounds.")
+                if cell then
+                    local x, y, z = cell[1], cell[2], cell[3]
+                    if GridMap[x] and GridMap[x][y] and GridMap[x][y][z] then
+                        local newTemperature = CalculateTemperature(x, y, z)
+                        local newHumidity = CalculateHumidity(x, y, z)
+                        local newPressure = CalculatePressure(x, y, z)
+                        local newAirFlow = CalculateAirFlow(x, y, z)
+                        GridMap[x][y][z].temperature = newTemperature
+                        GridMap[x][y][z].humidity = newHumidity
+                        GridMap[x][y][z].pressure = newPressure
+                        GridMap[x][y][z].Airflow = newAirFlow
+                    else
+                        print("Error: Cell position out of grid bounds.")
+                    end
                 end
             end
         end
@@ -700,29 +703,33 @@ function UpdateGrid()
 end
 function UpdatePlayerGrid()
     if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
-        for k,ply in pairs(player.GetAll()) do
-            local pos = ply:GetPos()
-            local px, py, pz = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize, math.floor(pos.z / gridSize) * gridSize
-            
-            -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
-            if GridMap[px] and GridMap[px][py] and GridMap[px][py][pz] then
-                local cell = GridMap[px][py][pz]
+        if CurTime() > nextUpdateGridPlayer then
+            nextUpdateGridPlayer = CurTime() + updateInterval
 
-                -- Verifica si las propiedades de la celda son válidas
-                if cell.temperature and cell.humidity and cell.pressure then
-                    -- Actualiza las variables de la atmósfera del jugador
-                    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
-                    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
-                    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
-                    GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = cell.Airflow
-                    print("Actual grid: x: " .. px .. ", y: ".. py .. ", z: " .. pz .. ", Terrain Type: " .. cell.terrainType)
+            for k,ply in pairs(player.GetAll()) do
+                local pos = ply:GetPos()
+                local px, py, pz = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize, math.floor(pos.z / gridSize) * gridSize
+                
+                -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
+                if GridMap[px] and GridMap[px][py] and GridMap[px][py][pz] then
+                    local cell = GridMap[px][py][pz]
+
+                    -- Verifica si las propiedades de la celda son válidas
+                    if cell.temperature and cell.humidity and cell.pressure then
+                        -- Actualiza las variables de la atmósfera del jugador
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = cell.Airflow
+                        print("Actual grid: x: " .. px .. ", y: ".. py .. ", z: " .. pz .. ", Terrain Type: " .. cell.terrainType)
+                    else
+                        -- Manejo de valores no válidos
+                        print("Error: Valores no válidos en la celda de la cuadrícula.")
+                    end
                 else
-                    -- Manejo de valores no válidos
-                    print("Error: Valores no válidos en la celda de la cuadrícula.")
+                    -- Manejo de celdas fuera de los límites de la cuadrícula
+                    print("Error: Posición fuera de los límites de la cuadrícula.")
                 end
-            else
-                -- Manejo de celdas fuera de los límites de la cuadrícula
-                print("Error: Posición fuera de los límites de la cuadrícula.")
             end
         end
     end
