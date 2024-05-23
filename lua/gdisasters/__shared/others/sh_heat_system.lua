@@ -321,7 +321,7 @@ function CreateLightningAndThunder(x,y,z)
     end
 end
 
-function SpawnCloud(pos, Airflow, color)
+function SpawnCloud(pos, color)
     if #ents.FindByClass("gd_cloud_cumulus") > MaxClouds then return end
 
     local cloud = ents.Create("gd_cloud_cumulus")
