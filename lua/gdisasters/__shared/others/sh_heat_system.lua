@@ -186,46 +186,6 @@ function CalculatePressure(x, y, z)
     return math.max(minPressure, math.min(maxPressure, newpressure))
 end
 
-function GetCellType(x, y, z)
-    local MapBounds = getMapBounds()
-    local max, min, floor = MapBounds[1], MapBounds[2], MapBounds[3]
-    local minX, minY, maxZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize,  math.ceil(min.z / gridSize) * gridSize
-    local maxX, maxY, minZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize,  math.floor(max.z / gridSize) * gridSize
-    local floorz = math.floor(floor.z / gridSize) * gridSize
-
-    -- Verificar si las coordenadas están dentro de los límites del mapa
-    if x < minX or x >= maxX or y < minY or y >= maxY or z < minZ or z >= maxZ then
-        return "out_of_bounds" -- Devolver un tipo especial para coordenadas fuera de los límites del mapa
-    end
-    
-    local traceStart = Vector(x, y, z)
-    local traceEnd = traceStart - Vector(0, 0, 10) 
-    traceEnd.z = math.max(traceEnd.z, minZ)
-    local tr = util.TraceLine( {
-        startpos = traceStart,
-        endpos = traceEnd,
-        mask = MASK_WATER, -- Solo colisionar con agua
-        filter = function(ent) return ent:IsValid() end  -- Filtrar cualquier entidad válida
-    } )
-
-    -- Si el trazado de línea colisiona con agua, la celda es de tipo "water"
-    if tr.Hit then
-        return "water"
-    end
-
-    local WATER_LEVEL = tr.HitPos.z
-    local MOUNTAIN_LEVEL = floorz + 8000 -- Ajusta la altura de la montaña según sea necesario
-
-    -- Simular diferentes tipos de celdas basadas en coordenadas
-    if z <= WATER_LEVEL then
-        return "water" -- Por debajo del nivel del agua es agua
-    elseif z >= MOUNTAIN_LEVEL then
-        return "mountain" -- Por encima del nivel de la montaña es montaña
-    else
-        return "land" -- En otras coordenadas es tierra
-    end
-end
-
 function CalculateAirFlow(x, y, z)
     local totalDeltaPressure = 0
 
@@ -273,6 +233,48 @@ function CalculateAirFlow(x, y, z)
 
     return Airflow
 end
+
+function GetCellType(x, y, z)
+    local MapBounds = getMapBounds()
+    local max, min, floor = MapBounds[1], MapBounds[2], MapBounds[3]
+    local minX, minY, maxZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize,  math.ceil(min.z / gridSize) * gridSize
+    local maxX, maxY, minZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize,  math.floor(max.z / gridSize) * gridSize
+    local floorz = math.floor(floor.z / gridSize) * gridSize
+
+    -- Verificar si las coordenadas están dentro de los límites del mapa
+    if x < minX or x >= maxX or y < minY or y >= maxY or z < minZ or z >= maxZ then
+        return "out_of_bounds" -- Devolver un tipo especial para coordenadas fuera de los límites del mapa
+    end
+    
+    local traceStart = Vector(x, y, z)
+    local traceEnd = traceStart - Vector(0, 0, 10) 
+    traceEnd.z = math.max(traceEnd.z, minZ)
+    local tr = util.TraceLine( {
+        startpos = traceStart,
+        endpos = traceEnd,
+        mask = MASK_WATER, -- Solo colisionar con agua
+        filter = function(ent) return ent:IsValid() end  -- Filtrar cualquier entidad válida
+    } )
+
+    -- Si el trazado de línea colisiona con agua, la celda es de tipo "water"
+    if tr.Hit then
+        return "water"
+    end
+
+    local WATER_LEVEL = tr.HitPos.z
+    local MOUNTAIN_LEVEL = floorz + 10000 -- Ajusta la altura de la montaña según sea necesario
+
+    -- Simular diferentes tipos de celdas basadas en coordenadas
+    if z <= WATER_LEVEL then
+        return "water" -- Por debajo del nivel del agua es agua
+    elseif z >= MOUNTAIN_LEVEL then
+        return "mountain" -- Por encima del nivel de la montaña es montaña
+    else
+        return "land" -- En otras coordenadas es tierra
+    end
+end
+
+
 
 
 -- Función para crear partículas de lluvia
@@ -649,10 +651,10 @@ function GenerateGrid(ply)
             GridMap[x][y] = {}
             for z = minZ, maxZ, gridSize do
                 GridMap[x][y][z] = {}
-                GridMap[x][y][z].temperature = 23
-                GridMap[x][y][z].humidity = 25
-                GridMap[x][y][z].pressure = 103000
-                GridMap[x][y][z].Airflow = 0
+                GridMap[x][y][z].temperature = GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"]
+                GridMap[x][y][z].humidity = GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"]
+                GridMap[x][y][z].pressure = GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"]
+                GridMap[x][y][z].Airflow = GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"]
             end
         end
     end
