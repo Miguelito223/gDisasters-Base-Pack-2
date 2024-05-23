@@ -620,9 +620,9 @@ function SimulateConvergence()
                         if convergenceStrength > strongStormThreshold then
                             CreateStorm(x, y, z)
                         elseif convergenceStrength > hailThreshold then
-                            
+                            CreateHail(x,y,z)
                         elseif convergenceStrength > rainThreshold then
-                            
+                            CreateRain(x,y,z)
                         elseif convergenceStrength > cloudThreshold then
                             CreateCloud(x, y, z)
                         end
