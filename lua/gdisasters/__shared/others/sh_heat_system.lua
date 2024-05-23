@@ -1,8 +1,8 @@
 -- Tamaño de la cuadrícula y rango de temperatura
 gridSize = 5000 -- Tamaño de cada cuadrado en unidades
 
-minTemperature = 5 -- Temperatura mínima
-maxTemperature = 35 -- Temperatura máxima
+minTemperature = -10 -- Temperatura mínima
+maxTemperature = 40 -- Temperatura máxima
 minHumidity = 0 -- Humedad mínima
 maxHumidity = 100 -- Humedad máxima
 minPressure = 94000 -- Presión mínima en milibares
