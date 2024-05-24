@@ -15,7 +15,7 @@ local maxHumidity = 100 -- Humedad máxima
 local minPressure = 94000 -- Presión mínima en milibares
 local maxPressure = 106000 -- Presión máxima en milibares
 local minAirflow = 0 -- Presión mínima en milibares
-local maxAirflow = 256 -- Presión máxima en milibares
+local maxAirflow = 10000 -- Presión máxima en milibares
 
 local updateInterval = 1 -- Intervalo de actualización en segundos
 local updateBatchSize = 500 -- Número de celdas a actualizar por frame
@@ -34,12 +34,12 @@ local gas_constant = 8.314 -- J/(mol·K)
 local specific_heat_vapor = 1.996 -- J/(g·K)
 
 
-local waterTemperatureEffect = 0.1   -- El agua tiende a mantener una temperatura más constante
-local landTemperatureEffect = 0.8     -- La tierra se calienta y enfría más rápido que el agua
-local waterHumidityEffect = 0.8       -- El agua puede aumentar significativamente la humedad en su entorno
-local landHumidityEffect = 0.3        -- La tierra puede retener menos humedad que el agua
-local mountainTemperatureEffect = -0.6  -- Las montañas tienden a ser más frías debido a la altitud
-local mountainHumidityEffect = 0.4    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
+local waterTemperatureEffect = 0.01   -- El agua tiende a mantener una temperatura más constante
+local landTemperatureEffect = 0.08     -- La tierra se calienta y enfría más rápido que el agua
+local waterHumidityEffect = 0.08       -- El agua puede aumentar significativamente la humedad en su entorno
+local landHumidityEffect = 0.03        -- La tierra puede retener menos humedad que el agua
+local mountainTemperatureEffect = -0.06  -- Las montañas tienden a ser más frías debido a la altitud
+local mountainHumidityEffect = 0.04    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
 
 local convergenceThreshold = 0.5
 local strongStormThreshold = 2.0
@@ -47,17 +47,34 @@ local hailThreshold = 1.5
 local rainThreshold = 1.0
 local cloudThreshold = 0.5
 local stormTemperatureThreshold = 30 -- Umbral de temperatura para la generación de tormentas
-local stormPressureThreshold = 100000 -- Umbral de presión para la generación de tormentas
+local stormPressureThreshold = 10000 -- Umbral de presión para la generación de tormentas
 local lowTemperatureThreshold = 10
-local lowHumidityThreshold =  40
+local lowHumidityThreshold = 40 -- Umbral de humedad para la formación de nubes
+local convergenceFactor = 0.001
+local temperatureThreshold = 20
+local humidityThreshold = 75
 local MaxClouds = 5
 local MaxRainDrop = 1
 local MaxHail = 1
+local cloudDensityCoefficient = 0.01  -- Coeficiente para convertir humedad en densidad de nubes
+local freezingTemperature = 0
+
+local condensationLatentHeat = 25  -- Reduciendo el valor a un nivel más razonable
+local freezingLatentHeat = 33  -- Mantenemos este valor para el calor latente de congelación
+local stormLatentHeatThreshold = 10  -- Ajustamos este valor a uno más bajo para una formación de tormenta más realista
+local hailLatentHeatThreshold = 20  -- Ajustamos este valor también a uno más bajo
 
 local maxDrawDistance = 100000
 
+-- Function to calculate latent heat released during condensation
+local function calculateCondensationLatentHeat(cloudDensity)
+    return cloudDensity * condensationLatentHeat
+end
 
-
+-- Function to calculate latent heat released during freezing
+local function calculateFreezingLatentHeat(cloudDensity)
+    return cloudDensity * freezingLatentHeat
+end
 -- Función para normalizar un vector
 function NormalizeVector(v)
     if not v then return nil end
@@ -101,7 +118,7 @@ function CalculateSolarRadiation(cellPosition, sunDirection)
     return solarRadiation
 end
 
-function CalculateTemperature(x, y, z, hourOfDay)
+function CalculateTemperature(x, y, z)
     local totalTemperature = 0
     local totalAirFlow = 0
     local count = 0
@@ -130,9 +147,7 @@ function CalculateTemperature(x, y, z, hourOfDay)
     local averageAirFlow = totalAirFlow / count
 
     local currentTemperature = GridMap[x][y][z].temperature or 0
-    local temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0
-    local AirflowEffect = AirflowCoefficient * averageAirFlow
-    local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature)
+    local temperatureInfluence = 0  -- Inicializamos en 0
 
     -- Obtener la dirección del sol y calcular la radiación solar
     local sunDirection = gDisasters_GetSunDir()
@@ -140,17 +155,40 @@ function CalculateTemperature(x, y, z, hourOfDay)
     if sunDirection then
         local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
         solarInfluence = solarRadiation * solarInfluenceCoefficient
+        temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0  -- Aplicamos solo si hay sol
     end
 
     -- Enfriamiento nocturno
     local coolingEffect = 0
     if not sunDirection or solarInfluence == 0 then
         coolingEffect = -coolingFactor
+       print("Aplicando enfriamiento nocturno: ", coolingEffect)
+    else
+        print("Sin enfriamiento nocturno. Sol presente.")
+    end
+    
+    local AirflowEffect = AirflowCoefficient * averageAirFlow
+    local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature)
+    
+    -- Adding latent heat release
+    local cloudDensity = GridMap[x][y][z].cloudDensity or 0
+    local latentHeat = 0
+    if cloudDensity > 0 then
+        if currentTemperature > freezingTemperature then
+            latentHeat = calculateCondensationLatentHeat(cloudDensity)
+        else
+            latentHeat = calculateFreezingLatentHeat(cloudDensity)
+        end
     end
 
-    local newTemperature = currentTemperature + temperatureChange + AirflowEffect + temperatureInfluence + solarInfluence + coolingEffect
+    print("Airflow Effect: ", AirflowEffect)
+    print("Latent Heat: ", latentHeat)
 
-    return math.max(minTemperature, math.min(maxTemperature, newTemperature))
+    local newTemperature = math.Clamp(currentTemperature + temperatureChange + AirflowEffect + temperatureInfluence + solarInfluence + coolingEffect + latentHeat, minTemperature, maxTemperature)
+    
+    print("Nueva temperatura calculada: ", newTemperature)
+
+    return newTemperature
 end
 
 function CalculateHumidity(x, y, z)
@@ -180,12 +218,14 @@ function CalculateHumidity(x, y, z)
 
     local averageHumidity = totalHumidity / count
     local averageAirFlow = totalAirFlow / count
+    local humidityInfluence = 0
 
     -- Obtener la dirección del sol y calcular la radiación solar
     local sunDirection = gDisasters_GetSunDir()
     local solarHumidityInfluence = 0
     if sunDirection then
         local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
+        humidityInfluence = GridMap[x][y][z].humidityInfluence or 0
         solarHumidityInfluence = solarRadiation * solarInfluenceCoefficient
     end
 
@@ -196,14 +236,16 @@ function CalculateHumidity(x, y, z)
     end
 
     local currentHumidity = GridMap[x][y][z].humidity or 0
-    local humidityInfluence = GridMap[x][y][z].humidityInfluence or 0
+    
     
     local AirflowEffect = AirflowCoefficient * averageAirFlow
     local humidityChange = HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
-    local newHumidity = currentHumidity + humidityChange + AirflowEffect + solarHumidityInfluence + nighttimeHumidityIncrease
+    local newHumidity = math.Clamp(currentHumidity + humidityChange + AirflowEffect + humidityInfluence + solarHumidityInfluence + nighttimeHumidityIncrease,minHumidity,maxHumidity)
 
-    return math.max(minHumidity, math.min(maxHumidity, newHumidity))
+    return newHumidity
 end
+
+
 
 -- Función para calcular la presión de una celda basada en temperatura y humedad
 function CalculatePressure(x, y, z)
@@ -219,10 +261,10 @@ function CalculatePressure(x, y, z)
     local humidity = cell.humidity or 0
 
     -- Calcular la presión basada en la temperatura y la humedad
-    local newpressure = (gas_constant * temperature * (1 + ((specific_heat_vapor * humidity) / temperature))) * 100
+    local newpressure = math.Clamp((gas_constant * temperature * (1 + ((specific_heat_vapor * humidity) / temperature))) * 100, minPressure,maxPressure)
 
     -- Asegurarse de que la presión esté dentro del rango
-    return math.max(minPressure, math.min(maxPressure, newpressure))
+    return newpressure
 end
 
 function CalculateAirFlow(x, y, z)
@@ -257,9 +299,9 @@ function CalculateAirFlow(x, y, z)
     -- Calcular la magnitud del flujo de aire
     local airflowMagnitude = math.sqrt(airflowVector.x^2 + airflowVector.y^2 + airflowVector.z^2)
 
-    local newAirflow = airflowMagnitude * AirflowCoefficient
+    local newAirflow = math.Clamp(airflowMagnitude * AirflowCoefficient, minAirflow, maxAirflow)
 
-    return math.max(minAirflow, math.min(maxAirflow, newAirflow))
+    return newAirflow 
 end
 
 function CalculateAirFlowDirection(x, y, z)
@@ -360,7 +402,7 @@ function CreateRain(x, y, z)
     local particle = ents.Create("env_spritetrail") -- Create a sprite trail entity for raindrop particle
     if not IsValid(particle) then return end -- Verifica si la entidad fue creada correctamente
 
-    particle:SetPos(Vector(x * gridSize, y * gridSize, z * gridSize)) -- Set the position of the particle
+    particle:SetPos(Vector(x, y, z)) -- Set the position of the particle
     particle:SetKeyValue("lifetime", "2") -- Set the lifetime of the particle
     particle:SetKeyValue("startwidth", "2") -- Set the starting width of the particle
     particle:SetKeyValue("endwidth", "0") -- Set the ending width of the particle
@@ -376,7 +418,50 @@ function CreateRain(x, y, z)
     end)
 end
 
+function UpdateCloudDensity(x, y, z)
+    local currentCell = GridMap[x][y][z]
+    local humidity = currentCell.humidity or 0
 
+    if humidity > humidityThreshold then
+        currentCell.cloudDensity = (humidity - humidityThreshold) * cloudDensityCoefficient
+    else
+        currentCell.cloudDensity = 0
+    end
+end
+
+function CheckStormFormation(x, y, z)
+    local currentCell = GridMap[x][y][z]
+    local latentHeat = 0
+
+    if currentCell.cloudDensity and currentCell.cloudDensity > 0 then
+        if currentCell.temperature > freezingTemperature then
+            latentHeat = calculateCondensationLatentHeat(currentCell.cloudDensity)
+        else
+            latentHeat = calculateFreezingLatentHeat(currentCell.cloudDensity)
+        end
+    end
+
+    if latentHeat > stormLatentHeatThreshold then
+        -- Trigger storm formation logic here
+        CreateStorm(x, y, z)
+    end
+end
+
+function CheckHailFormation(x, y, z)
+    local currentCell = GridMap[x][y][z]
+    local latentHeat = 0
+
+    if currentCell.cloudDensity and currentCell.cloudDensity > 0 then
+        if currentCell.temperature <= freezingTemperature then
+            latentHeat = calculateFreezingLatentHeat(currentCell.cloudDensity)
+        end
+    end
+
+    if latentHeat > hailLatentHeatThreshold then
+        -- Trigger hail formation logic here
+        CreateHail(x, y, z)
+    end
+end
 
 
 function CreateLightningAndThunder(x,y,z)
@@ -428,8 +513,8 @@ function CreateCloud(x,y,z)
         -- Generate clouds in cells with low humidity and temperature
         AdjustCloudBaseHeight(x, y, z)
         
-        local baseHeight = cell.baseHeight or (z * gridSize)
-        local pos = Vector(x * gridSize, y * gridSize, baseHeight)
+        local baseHeight = cell.baseHeight or z
+        local pos = Vector(x, y, baseHeight)
         local color = Color(255,255,255)
         
         SpawnCloud(pos, color)
@@ -449,8 +534,8 @@ function CreateStorm(x,y,z)
         AdjustCloudBaseHeight(x, y, z)
 
         -- Generate clouds in cells with low humidity and temperature
-        local baseHeight = cell.baseHeight or (z * gridSize)
-        local pos = Vector(x * gridSize, y * gridSize, baseHeight)
+        local baseHeight = cell.baseHeight or z
+        local pos = Vector(x, y, baseHeight)
         local color = Color(117,117,117)
         
         local cloud = SpawnCloud(pos, color)
@@ -630,7 +715,7 @@ function CreateHail(x, y, z)
     if #ents.FindByClass("gd_d1_hail_ch") > MaxHail then return end
     
     local hail = ents.Create("gd_d1_hail_ch")
-    hail:SetPos(Vector(x * gridSize, y * gridSize, z * gridSize))
+    hail:SetPos(Vector(x, y, z))
     hail:Spawn()
     hail:Activate()
 
@@ -643,9 +728,6 @@ function SimulateHail()
     for x, column in pairs(GridMap) do
         for y, row in pairs(column) do
             for z, nubegrid in pairs(row) do
-                local convergenceFactor = 0.3
-                local temperatureThreshold = 0.5
-                local humidityThreshold = 0.8
 
                 if nubegrid.humidity > humidityThreshold and nubegrid.temperature < temperatureThreshold then
                     CreateHail(x, y, z)
@@ -654,48 +736,46 @@ function SimulateHail()
         end
     end
 end
-function SimulateConvergence()
-    for x, column in pairs(GridMap) do
-        for y, row in pairs(column) do
-            for z, cell in pairs(row) do
-                local convergenceStrength = 0
-                local airSpeedSum = 0
-                local neighborCount = 0
+function SimulateConvergence(x,y,z)
+  
+    local convergenceStrength = 0
+    local airSpeedSum = 0
+    local neighborCount = 0
 
-                for dx = -1, 1 do
-                    for dy = -1, 1 do
-                        for dz = -1, 1 do
-                            if not (dx == 0 and dy == 0 and dz == 0) then -- Evitar la celda actual
-                                local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
-                                if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                                    local neighborCell = GridMap[nx][ny][nz]
-                                    local airSpeed = math.abs((cell.pressure or 0) - (neighborCell.pressure or 0))
-                                    airSpeedSum = airSpeedSum + airSpeed
-                                    neighborCount = neighborCount + 1
-                                end
-                            end
-                        end
-                    end
-                end
+    local cell = GridMap[x][y][z]
 
-                if neighborCount > 0 then
-                    convergenceStrength = airSpeedSum / neighborCount
-
-                    if convergenceStrength > convergenceThreshold then
-                        if convergenceStrength > strongStormThreshold then
-                            CreateStorm(x, y, z)
-                        elseif convergenceStrength > hailThreshold then
-                            CreateHail(x,y,z)
-                        elseif convergenceStrength > rainThreshold then
-                            CreateRain(x,y,z)
-                        elseif convergenceStrength > cloudThreshold then
-                            CreateCloud(x, y, z)
-                        end
+    for dx = -1, 1 do
+        for dy = -1, 1 do
+            for dz = -1, 1 do
+                if not (dx == 0 and dy == 0 and dz == 0) then -- Evitar la celda actual
+                    local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                    if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                        local neighborCell = GridMap[nx][ny][nz]
+                        local airSpeed = math.abs((cell.pressure or 0) - (neighborCell.pressure or 0))
+                        airSpeedSum = airSpeedSum + airSpeed
+                        neighborCount = neighborCount + 1
                     end
                 end
             end
         end
     end
+
+    if neighborCount > 0 then
+        convergenceStrength = airSpeedSum / neighborCount
+
+        if convergenceStrength > convergenceThreshold then
+            if convergenceStrength > strongStormThreshold then
+                CreateStorm(x, y, z)
+            elseif convergenceStrength > hailThreshold then
+                CreateHail(x,y,z)
+            elseif convergenceStrength > rainThreshold then
+                CreateRain(x,y,z)
+            elseif convergenceStrength > cloudThreshold then
+                CreateCloud(x, y, z)
+            end
+        end
+    end
+   
 end
 
 
@@ -706,7 +786,22 @@ function UpdateWeather()
         if CLIENT then return end
         if CurTime() > nextUpdateWeather then
             nextUpdateWeather = CurTime() + updateInterval
-            SimulateConvergence()
+            for x, column in pairs(GridMap) do
+                for y, row in pairs(column) do
+                    for z, cell in pairs(row) do
+                        
+                        UpdateCloudDensity(x,y,z)
+
+                        SimulateConvergence(x, y, z)
+                        -- Check for storm formation
+                        CheckStormFormation(x, y, z)
+                        -- Check for hail formation
+                        CheckHailFormation(x, y, z)
+
+                        
+                    end
+                end
+            end
         end
     end
 end

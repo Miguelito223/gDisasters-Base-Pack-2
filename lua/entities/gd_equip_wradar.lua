@@ -351,19 +351,41 @@ function ENT:UpdateDisplay()
 		
 		
 	end
+	
+	local function GenerateHeatMapForHeatSystem (x, y)
+	    
+		local cx, cy = (8*x+1)/8  , (8*y-15)/8 
+	    
+		self:AddPixelIntensityInRadius(x+1,y-1,6,0.4,0.9,1, "Add", cx, cy) -- rain
+		
+		
+		
+	
+	end
 
 	local function UpdateForTornado()
 		local targets = ents.FindByClass("env_tornado")
 		
 		for k, v in pairs(targets) do 
 			local pos = ConvertVectorToScreenSpace(v:GetPos() * Vector(-1,1,1))
-
 			
 			GenerateHeatMapForTornado(pos[1], pos[2])
 		
 		end
 		
+		
+	end
 	
+	local function UpdateForHeatSystem()
+		local targets2 = ents.FindByClass("gd_cloud_cumulus")
+		
+		for k, v in pairs(targets2) do 
+			local pos = ConvertVectorToScreenSpace(v:GetPos() * Vector(-1,1,1))
+
+			GenerateHeatMapForHeatSystem(pos[1], pos[2])
+		
+		end
+		
 		
 	end
 
@@ -372,6 +394,7 @@ function ENT:UpdateDisplay()
 	end
 	
 	UpdateForTornado()
+	UpdateForHeatSystem()
 
 end
 
