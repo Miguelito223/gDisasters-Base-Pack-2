@@ -6,7 +6,7 @@ Cloud = {}
 
 -- Tamaño de la cuadrícula y rango de temperatura
 local gridSize = 5000 -- Tamaño de cada cuadrado en unidades
-local timeStep = 1.0
+local timeStep = 500
 
 local minTemperature = -44 -- Temperatura mínima
 local maxTemperature = 44 -- Temperatura máxima
@@ -24,9 +24,18 @@ local nextUpdateGridPlayer = CurTime()
 local nextUpdateWeather = CurTime()
 local nextThunderThink = CurTime()
 
+local conductividadTermicaMedio = 0.025
+local difusividadVaporAguaMedio = 0.2e-5
+local solarIntensity = 1000
 
-local gas_constant = 8.314
-local specific_heat_vapor = 1.996
+local tempdiffusionCoefficient = (conductividadTermicaMedio * timeStep) / (gridSize ^ 2)
+local HumidityDiffusionCoefficient = (difusividadVaporAguaMedio * timeStep) / (gridSize ^ 2)
+local solarInfluenceCoefficient = solarIntensity / 10000
+local AirflowCoefficient = gridSize / timeStep
+local coolingFactor = 0.5
+local nighttimeHumidityIncrease = 0.05
+local gas_constant = 8.314 -- J/(mol·K)
+local specific_heat_vapor = 1.996 -- J/(g·K)
 
 
 local waterTemperatureEffect = 0.1   -- El agua tiende a mantener una temperatura más constante
@@ -52,58 +61,6 @@ local MaxHail = 1
 local maxDrawDistance = 100000
 
 
-
-function CalculateTempdiffusionCoefficient(gridSize, timeStep)
-    -- Supón que tienes una conductividad térmica k y un calor específico c.
-    local k = 0.5  -- Conductividad térmica del medio (ajusta según sea necesario)
-    local c = 1.0  -- Calor específico del medio (ajusta según sea necesario)
-
-    return k / (c * gridSize^2) * timeStep
-end
-
-function CalculateHumidityDiffusionCoefficient(gridSize, timeStep)
-    local vaporConductivity = 0.1  -- Conductividad de vapor del medio (ajusta según sea necesario)
-    local specificHeat = 1.0  -- Calor específico del medio (ajusta según sea necesario)
-
-    return vaporConductivity / (specificHeat * gridSize^2) * timeStep
-end
-
-function CalculateAirflowCoefficient()
-    -- Definir constantes y factores de ajuste
-    local baseCoefficient = 1.0  -- Valor base del coeficiente
-    local pressureFactor = 0.5   -- Ajuste para la diferencia de presión
-    local temperatureFactor = 0.1  -- Ajuste para la temperatura
-    local humidityFactor = 0.1  -- Ajuste para la humedad
-
-    -- Ajustar el coeficiente base según los factores
-    local adjustedCoefficient = baseCoefficient * pressureFactor * temperatureFactor * humidityFactor
-
-    return adjustedCoefficient
-end
-function CalculateTemperatureChangeFactor(gridSize, timeStep)
-    -- Ajusta estos valores según las propiedades del medio y la estabilidad deseada
-    local thermalConductivity = 0.1
-    local specificHeat = 1.0
-
-    return thermalConductivity / (specificHeat * gridSize^2) * timeStep
-end
-
-function CalculateHumidityChangeFactor(gridSize, timeStep)
-    -- Ajusta estos valores según las propiedades del medio y la estabilidad deseada
-    local vaporConductivity = 0.05
-    local specificHeat = 1.0
-
-    return vaporConductivity / (specificHeat * gridSize^2) * timeStep
-end
-
-local tempdiffusionCoefficient = CalculateTempdiffusionCoefficient(gridSize, timeStep)
-local HumidityDiffusionCoefficient = CalculateHumidityDiffusionCoefficient(gridSize, timeStep)
-local solarInfluenceCoefficient = 0.1
-local AirflowCoefficient = CalculateAirflowCoefficient()
-local ChangeTempFactor = CalculateTemperatureChangeFactor(gridSize, timeStep)
-local ChangeHumidityFactor = CalculateHumidityChangeFactor(gridSize, timeStep)
-local coolingFactor = 0.5
-local nighttimeHumidityIncrease = 0.05
 
 -- Función para normalizar un vector
 function NormalizeVector(v)
@@ -148,7 +105,7 @@ function CalculateSolarRadiation(cellPosition, sunDirection)
     return solarRadiation
 end
 
-function CalculateTemperature(x, y, z)
+function CalculateTemperature(x, y, z, hourOfDay)
     local totalTemperature = 0
     local totalAirFlow = 0
     local count = 0
@@ -176,23 +133,26 @@ function CalculateTemperature(x, y, z)
     local averageTemperature = totalTemperature / count
     local averageAirFlow = totalAirFlow / count
 
-    local sunDirection = gDisasters_GetSunDir()
-    local cellPosition = Vector(x, y, z)
-
     local currentTemperature = GridMap[x][y][z].temperature or 0
     local temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0
-    local solarRadiation = CalculateSolarRadiation(cellPosition, sunDirection) * solarInfluenceCoefficient
     local AirflowEffect = AirflowCoefficient * averageAirFlow
-    local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature) * ChangeTempFactor
-    local newTemperature = currentTemperature + temperatureChange  + AirflowEffect + solarRadiation
-    
-    if solarRadiation > 0 then
-        newTemperature = newTemperature + temperatureInfluence
-    else
-        -- Aplicar un factor de enfriamiento durante la noche
-        newTemperature = newTemperature - coolingFactor
+    local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature)
+
+    -- Obtener la dirección del sol y calcular la radiación solar
+    local sunDirection = gDisasters_GetSunDir()
+    local solarInfluence = 0
+    if sunDirection then
+        local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
+        solarInfluence = solarRadiation * solarInfluenceCoefficient
     end
-    
+
+    -- Enfriamiento nocturno
+    local coolingEffect = 0
+    if not sunDirection or solarInfluence == 0 then
+        coolingEffect = -coolingFactor
+    end
+
+    local newTemperature = currentTemperature + temperatureChange + AirflowEffect + temperatureInfluence + solarInfluence + coolingEffect
 
     return math.max(minTemperature, math.min(maxTemperature, newTemperature))
 end
@@ -225,20 +185,26 @@ function CalculateHumidity(x, y, z)
     local averageHumidity = totalHumidity / count
     local averageAirFlow = totalAirFlow / count
 
+    -- Obtener la dirección del sol y calcular la radiación solar
     local sunDirection = gDisasters_GetSunDir()
-    local cellPosition = Vector(x, y, z)
+    local solarHumidityInfluence = 0
+    if sunDirection then
+        local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
+        solarHumidityInfluence = solarRadiation * solarInfluenceCoefficient
+    end
+
+   -- Enfriamiento nocturno
+    local coolingHumidityEffect = 0
+    if not sunDirection or solarHumidityInfluence == 0 then
+        coolingHumidityEffect = nighttimeHumidityIncrease
+    end
 
     local currentHumidity = GridMap[x][y][z].humidity or 0
     local humidityInfluence = GridMap[x][y][z].humidityInfluence or 0
-    local solarRadiation = CalculateSolarRadiation(cellPosition, sunDirection) * solarInfluenceCoefficient
+    
     local AirflowEffect = AirflowCoefficient * averageAirFlow
-    local humidityChange = HumidityDiffusionCoefficient * (averageHumidity - currentHumidity) * ChangeHumidityFactor
-    local newHumidity = currentHumidity + humidityChange + AirflowEffect 
-    if solarRadiation > 0 then
-        newHumidity = newHumidity + humidityInfluence 
-    else
-        newHumidity = newHumidity + nighttimeHumidityIncrease
-    end
+    local humidityChange = HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
+    local newHumidity = currentHumidity + humidityChange + AirflowEffect + solarHumidityInfluence + nighttimeHumidityIncrease
 
     return math.max(minHumidity, math.min(maxHumidity, newHumidity))
 end
@@ -644,7 +610,6 @@ function SimulateRain()
             for z, nubegrid in pairs(row) do
                 CreateRain(x, y, z)
 
-                local coolingFactor = 0.1  -- Factor base de enfriamiento
                 local pressureIncreaseFactor = 0.2  -- Factor base de aumento de presión
                 
                 local originalTemperature = nubegrid.temperature or 0
