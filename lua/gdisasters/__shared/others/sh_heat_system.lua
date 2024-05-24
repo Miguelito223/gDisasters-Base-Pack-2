@@ -24,14 +24,10 @@ local nextUpdateGridPlayer = CurTime()
 local nextUpdateWeather = CurTime()
 local nextThunderThink = CurTime()
 
-local conductividadTermicaMedio = 0.025
-local difusividadVaporAguaMedio = 0.2e-5
-local solarIntensity = 1000
-
-local tempdiffusionCoefficient = (conductividadTermicaMedio * timeStep) / (gridSize ^ 2)
-local HumidityDiffusionCoefficient = (difusividadVaporAguaMedio * timeStep) / (gridSize ^ 2)
-local solarInfluenceCoefficient = solarIntensity / 10000
-local AirflowCoefficient = gridSize / timeStep
+local tempdiffusionCoefficient = 0.01
+local HumidityDiffusionCoefficient = 0.01
+local solarInfluenceCoefficient = 0.01
+local AirflowCoefficient = 0.01
 local coolingFactor = 0.5
 local nighttimeHumidityIncrease = 0.05
 local gas_constant = 8.314 -- J/(mol·K)
@@ -731,11 +727,11 @@ function GenerateGrid(ply)
             GridMap[x][y] = {}
             for z = minZ, maxZ, gridSize do
                 GridMap[x][y][z] = {}
-                GridMap[x][y][z].temperature = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Temperature"]
-                GridMap[x][y][z].humidity = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
-                GridMap[x][y][z].pressure = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
-                GridMap[x][y][z].Airflow = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Speed"]
-                GridMap[x][y][z].Airflow_Direction = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Direction"]
+                GridMap[x][y][z].temperature = math.random(minTemperature, maxTemperature)
+                GridMap[x][y][z].humidity = math.random(minHumidity, maxHumidity)
+                GridMap[x][y][z].pressure = math.random(minPressure, maxPressure)
+                GridMap[x][y][z].Airflow = math.random(minAirflow, maxAirflow)
+                GridMap[x][y][z].Airflow_Direction = Vector(1,0,0)
             end
         end
     end
