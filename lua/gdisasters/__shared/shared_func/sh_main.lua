@@ -855,12 +855,12 @@ end
 
 function gDisasters_GetMoonDir()
 
-	return GetGlobalAngle("gdMoonDir")
+	return -GetGlobalAngle("gdMoonDir")
 end
 
 function gDisasters_GetSunDir()
 
-	return GetGlobalAngle("gdSunDir")
+	return -GetGlobalAngle("gdSunDir")
 end
 
 function gDisasters_EntityExists(entname)

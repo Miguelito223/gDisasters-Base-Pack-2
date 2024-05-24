@@ -98,33 +98,75 @@ end
 
 local tempdiffusionCoefficient = CalculateTempdiffusionCoefficient(gridSize, timeStep)
 local HumidityDiffusionCoefficient = CalculateHumidityDiffusionCoefficient(gridSize, timeStep)
+local solarInfluenceCoefficient = 0.1
 local AirflowCoefficient = CalculateAirflowCoefficient()
 local ChangeTempFactor = CalculateTemperatureChangeFactor(gridSize, timeStep)
 local ChangeHumidityFactor = CalculateHumidityChangeFactor(gridSize, timeStep)
+local coolingFactor = 0.5
+local nighttimeHumidityIncrease = 0.05
 
+-- Función para normalizar un vector
+function NormalizeVector(v)
+    if not v then return nil end
+    local length = math.sqrt(v.x^2 + v.y^2 + v.z^2)
+    if length == 0 then return nil end
+    return Vector(v.x / length, v.y / length, v.z / length)
+end
+
+-- Función para calcular la radiación solar
+function CalculateSolarRadiation(cellPosition, sunDirection)
+    if not sunDirection or not cellPosition then
+        return 0  -- Si falta alguna dirección, no hay radiación solar
+    end
+
+    -- Calcular la altura solar (ángulo entre la dirección del sol y el eje Y)
+    local solarAltitude = math.acos(sunDirection.y)
+    
+    -- Verificar si el sol está por encima del horizonte
+    if solarAltitude <= 0 then
+        return 0  -- Si el sol está debajo del horizonte, no hay radiación solar
+    end
+
+    -- Normalizar la dirección del sol y la posición de la celda
+    local normalizedSunDirection = NormalizeVector(sunDirection)
+    local normalizedCellPosition = NormalizeVector(cellPosition)
+
+    if not normalizedSunDirection or not normalizedCellPosition then
+        return 0  -- Si la normalización falla, no hay radiación solar
+    end
+
+    -- Calcular el ángulo entre la dirección del sol y la posición de la celda
+    local dotProduct = normalizedSunDirection.x * normalizedCellPosition.x +
+                       normalizedSunDirection.y * normalizedCellPosition.y +
+                       normalizedSunDirection.z * normalizedCellPosition.z
+    dotProduct = math.max(-1, math.min(1, dotProduct))  -- Asegurarse de que el valor esté dentro del rango [-1, 1]
+    local angleToSun = math.acos(dotProduct)
+
+    -- Asumir que la radiación solar disminuye linealmente con el ángulo
+    local solarRadiation = math.cos(angleToSun)
+
+    return solarRadiation
+end
 
 function CalculateTemperature(x, y, z)
     local totalTemperature = 0
     local totalAirFlow = 0
     local count = 0
 
-    local neighbors = {
-        {dx = -1, dy = 0, dz = 0},  -- Izquierda
-        {dx = 1, dy = 0, dz = 0},   -- Derecha
-        {dx = 0, dy = -1, dz = 0},  -- Arriba
-        {dx = 0, dy = 1, dz = 0},   -- Abajo
-        {dx = 0, dy = 0, dz = -1},  -- Atrás
-        {dx = 0, dy = 0, dz = 1}    -- Adelante
-    }
+    local currentCell = GridMap[x][y][z]
 
-    for _, neighbor in pairs(neighbors) do
-        local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
-        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-            local neighborCell = GridMap[nx][ny][nz]
-            if neighborCell.temperature and neighborCell.Airflow then
-                totalTemperature = totalTemperature + neighborCell.temperature
-                totalAirFlow = totalAirFlow + neighborCell.Airflow
-                count = count + 1
+    for dx = -1, 1 do
+        for dy = -1, 1 do
+            for dz = -1, 1 do
+                local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                    local neighborCell = GridMap[nx][ny][nz]
+                    if neighborCell.temperature and neighborCell.Airflow then
+                        totalTemperature = totalTemperature + neighborCell.temperature
+                        totalAirFlow = totalAirFlow + neighborCell.Airflow
+                        count = count + 1
+                    end
+                end
             end
         end
     end
@@ -134,39 +176,46 @@ function CalculateTemperature(x, y, z)
     local averageTemperature = totalTemperature / count
     local averageAirFlow = totalAirFlow / count
 
+    local sunDirection = gDisasters_GetSunDir()
+    local cellPosition = Vector(x, y, z)
+
     local currentTemperature = GridMap[x][y][z].temperature or 0
     local temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0
+    local solarRadiation = CalculateSolarRadiation(cellPosition, sunDirection) * solarInfluenceCoefficient
     local AirflowEffect = AirflowCoefficient * averageAirFlow
     local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature) * ChangeTempFactor
+    local newTemperature = currentTemperature + temperatureChange  + AirflowEffect + solarRadiation
     
-    local newTemperature = currentTemperature + temperatureChange  + AirflowEffect + temperatureInfluence
+    if solarRadiation > 0 then
+        newTemperature = newTemperature + temperatureInfluence
+    else
+        -- Aplicar un factor de enfriamiento durante la noche
+        newTemperature = newTemperature - coolingFactor
+    end
+    
 
     return math.max(minTemperature, math.min(maxTemperature, newTemperature))
 end
-
 
 function CalculateHumidity(x, y, z)
     local totalHumidity = 0
     local totalAirFlow = 0
     local count = 0
 
-    local neighbors = {
-        {dx = -1, dy = 0, dz = 0},  -- Izquierda
-        {dx = 1, dy = 0, dz = 0},   -- Derecha
-        {dx = 0, dy = -1, dz = 0},  -- Arriba
-        {dx = 0, dy = 1, dz = 0},   -- Abajo
-        {dx = 0, dy = 0, dz = -1},  -- Atrás
-        {dx = 0, dy = 0, dz = 1}    -- Adelante
-    }
+    local currentCell = GridMap[x][y][z]
 
-    for _, neighbor in pairs(neighbors) do
-        local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
-        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-            local neighborCell = GridMap[nx][ny][nz]
-            if neighborCell.humidity and neighborCell.Airflow then
-                totalHumidity = totalHumidity + neighborCell.humidity
-                totalAirFlow = totalAirFlow + neighborCell.Airflow
-                count = count + 1
+    for dx = -1, 1 do
+        for dy = -1, 1 do
+            for dz = -1, 1 do
+                local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                    local neighborCell = GridMap[nx][ny][nz]
+                    if neighborCell.humidity and neighborCell.Airflow then
+                        totalHumidity = totalHumidity + neighborCell.humidity
+                        totalAirFlow = totalAirFlow + neighborCell.Airflow
+                        count = count + 1
+                    end
+                end
             end
         end
     end
@@ -176,12 +225,20 @@ function CalculateHumidity(x, y, z)
     local averageHumidity = totalHumidity / count
     local averageAirFlow = totalAirFlow / count
 
+    local sunDirection = gDisasters_GetSunDir()
+    local cellPosition = Vector(x, y, z)
+
     local currentHumidity = GridMap[x][y][z].humidity or 0
     local humidityInfluence = GridMap[x][y][z].humidityInfluence or 0
-
+    local solarRadiation = CalculateSolarRadiation(cellPosition, sunDirection) * solarInfluenceCoefficient
     local AirflowEffect = AirflowCoefficient * averageAirFlow
     local humidityChange = HumidityDiffusionCoefficient * (averageHumidity - currentHumidity) * ChangeHumidityFactor
-    local newHumidity = currentHumidity + humidityChange + AirflowEffect + humidityInfluence 
+    local newHumidity = currentHumidity + humidityChange + AirflowEffect 
+    if solarRadiation > 0 then
+        newHumidity = newHumidity + humidityInfluence 
+    else
+        newHumidity = newHumidity + nighttimeHumidityIncrease
+    end
 
     return math.max(minHumidity, math.min(maxHumidity, newHumidity))
 end
@@ -211,29 +268,24 @@ function CalculateAirFlow(x, y, z)
     local totalDeltaPressureY = 0
     local totalDeltaPressureZ = 0
 
-    local neighbors = {
-        {dx = -1, dy = 0, dz = 0},  -- Izquierda
-        {dx = 1, dy = 0, dz = 0},   -- Derecha
-        {dx = 0, dy = -1, dz = 0},  -- Arriba
-        {dx = 0, dy = 1, dz = 0},   -- Abajo
-        {dx = 0, dy = 0, dz = -1},  -- Atrás
-        {dx = 0, dy = 0, dz = 1}    -- Adelante
-    }
-
     local currentCell = GridMap[x][y][z]
 
-    for _, neighbor in pairs(neighbors) do
-        local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
-        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-            local neighborCell = GridMap[nx][ny][nz]
-            
+    for dx = -1, 1 do
+        for dy = -1, 1 do
+            for dz = -1, 1 do
+                local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                    local neighborCell = GridMap[nx][ny][nz]
+                    
 
-            local deltaPressure = neighborCell.pressure - currentCell.pressure
+                    local deltaPressure = neighborCell.pressure - currentCell.pressure
 
-            -- Sumar la diferencia de presión a los totales en cada eje
-            totalDeltaPressureX = totalDeltaPressureX + deltaPressure * neighbor.dx
-            totalDeltaPressureY = totalDeltaPressureY + deltaPressure * neighbor.dy
-            totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * neighbor.dz
+                    -- Sumar la diferencia de presión a los totales en cada eje
+                    totalDeltaPressureX = totalDeltaPressureX + deltaPressure * dx
+                    totalDeltaPressureY = totalDeltaPressureY + deltaPressure * dy
+                    totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * dz
+                end
+            end
         end
     end
    
@@ -511,7 +563,7 @@ function AddTemperatureHumiditySources()
                 elseif closestLandDist < closestMountainDist and closestLandDist < closestWaterDist then
                     cell.terrainType = "land"
                     cell.temperatureInfluence = landTemperatureEffect
-                    cell.humidityInfluence = -landTemperatureEffect
+                    cell.humidityInfluence = -landHumidityEffect
                 else
                     cell.terrainType = "mountain"
                     cell.temperatureInfluence = mountainTemperatureEffect
