@@ -34,12 +34,12 @@ local gas_constant = 8.314 -- J/(mol·K)
 local specific_heat_vapor = 1.996 -- J/(g·K)
 
 
-local waterTemperatureEffect = 0.01   -- El agua tiende a mantener una temperatura más constante
-local landTemperatureEffect = 0.08     -- La tierra se calienta y enfría más rápido que el agua
-local waterHumidityEffect = 0.08       -- El agua puede aumentar significativamente la humedad en su entorno
-local landHumidityEffect = 0.03        -- La tierra puede retener menos humedad que el agua
-local mountainTemperatureEffect = -0.06  -- Las montañas tienden a ser más frías debido a la altitud
-local mountainHumidityEffect = 0.04    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
+local waterTemperatureEffect = 1   -- El agua tiende a mantener una temperatura más constante
+local landTemperatureEffect = 4     -- La tierra se calienta y enfría más rápido que el agua
+local waterHumidityEffect = 5       -- El agua puede aumentar significativamente la humedad en su entorno
+local landHumidityEffect = 5        -- La tierra puede retener menos humedad que el agua
+local mountainTemperatureEffect = -3  -- Las montañas tienden a ser más frías debido a la altitud
+local mountainHumidityEffect = 4    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
 
 local convergenceThreshold = 0.5
 local strongStormThreshold = 2.0
