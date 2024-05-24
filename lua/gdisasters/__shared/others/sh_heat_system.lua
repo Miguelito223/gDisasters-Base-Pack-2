@@ -6,7 +6,6 @@ Cloud = {}
 
 -- Tamaño de la cuadrícula y rango de temperatura
 local gridSize = 5000 -- Tamaño de cada cuadrado en unidades
-local timeStep = 500
 
 local minTemperature = -44 -- Temperatura mínima
 local maxTemperature = 44 -- Temperatura máxima
@@ -34,12 +33,12 @@ local gas_constant = 8.314 -- J/(mol·K)
 local specific_heat_vapor = 1.996 -- J/(g·K)
 
 
-local waterTemperatureEffect = 1   -- El agua tiende a mantener una temperatura más constante
-local landTemperatureEffect = 4     -- La tierra se calienta y enfría más rápido que el agua
-local waterHumidityEffect = 5       -- El agua puede aumentar significativamente la humedad en su entorno
-local landHumidityEffect = 5        -- La tierra puede retener menos humedad que el agua
-local mountainTemperatureEffect = -3  -- Las montañas tienden a ser más frías debido a la altitud
-local mountainHumidityEffect = 4    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
+local waterTemperatureEffect = 0.1   -- El agua tiende a mantener una temperatura más constante
+local landTemperatureEffect = 0.4     -- La tierra se calienta y enfría más rápido que el agua
+local waterHumidityEffect = 0.5       -- El agua puede aumentar significativamente la humedad en su entorno
+local landHumidityEffect = 0.5        -- La tierra puede retener menos humedad que el agua
+local mountainTemperatureEffect = -0.3  -- Las montañas tienden a ser más frías debido a la altitud
+local mountainHumidityEffect = 0.4    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
 
 local convergenceThreshold = 0.5
 local strongStormThreshold = 2.0
@@ -145,8 +144,6 @@ function CalculateTemperature(x, y, z)
 
     local averageTemperature = totalTemperature / count
     local averageAirFlow = totalAirFlow / count
-
-    local currentTemperature = GridMap[x][y][z].temperature or 0
     local temperatureInfluence = 0  -- Inicializamos en 0
 
     -- Obtener la dirección del sol y calcular la radiación solar
@@ -154,22 +151,18 @@ function CalculateTemperature(x, y, z)
     local solarInfluence = 0
     if sunDirection then
         local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
-        solarInfluence = solarRadiation * solarInfluenceCoefficient
         temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0  -- Aplicamos solo si hay sol
+        solarInfluence = solarRadiation * solarInfluenceCoefficient
     end
 
     -- Enfriamiento nocturno
     local coolingEffect = 0
     if not sunDirection or solarInfluence == 0 then
         coolingEffect = -coolingFactor
-       print("Aplicando enfriamiento nocturno: ", coolingEffect)
-    else
-        print("Sin enfriamiento nocturno. Sol presente.")
     end
     
-    local AirflowEffect = AirflowCoefficient * averageAirFlow
-    local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature)
-    
+    local currentTemperature = GridMap[x][y][z].temperature or 0
+
     -- Adding latent heat release
     local cloudDensity = GridMap[x][y][z].cloudDensity or 0
     local latentHeat = 0
@@ -181,13 +174,11 @@ function CalculateTemperature(x, y, z)
         end
     end
 
-    print("Airflow Effect: ", AirflowEffect)
-    print("Latent Heat: ", latentHeat)
-
+    
+    local AirflowEffect = AirflowCoefficient * averageAirFlow
+    local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature)
     local newTemperature = math.Clamp(currentTemperature + temperatureChange + AirflowEffect + temperatureInfluence + solarInfluence + coolingEffect + latentHeat, minTemperature, maxTemperature)
     
-    print("Nueva temperatura calculada: ", newTemperature)
-
     return newTemperature
 end
 
@@ -236,8 +227,6 @@ function CalculateHumidity(x, y, z)
     end
 
     local currentHumidity = GridMap[x][y][z].humidity or 0
-    
-    
     local AirflowEffect = AirflowCoefficient * averageAirFlow
     local humidityChange = HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
     local newHumidity = math.Clamp(currentHumidity + humidityChange + AirflowEffect + humidityInfluence + solarHumidityInfluence + nighttimeHumidityIncrease,minHumidity,maxHumidity)
@@ -309,28 +298,23 @@ function CalculateAirFlowDirection(x, y, z)
     local totalDeltaPressureY = 0
     local totalDeltaPressureZ = 0
 
-    local neighbors = {
-        {dx = -1, dy = 0, dz = 0},  -- Izquierda
-        {dx = 1, dy = 0, dz = 0},   -- Derecha
-        {dx = 0, dy = -1, dz = 0},  -- Arriba
-        {dx = 0, dy = 1, dz = 0},   -- Abajo
-        {dx = 0, dy = 0, dz = -1},  -- Atrás
-        {dx = 0, dy = 0, dz = 1}    -- Adelante
-    }
-
     local currentCell = GridMap[x][y][z]
 
-    for _, neighbor in pairs(neighbors) do
-        local nx, ny, nz = x + neighbor.dx * gridSize, y + neighbor.dy * gridSize, z + neighbor.dz * gridSize
-        if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-            local neighborCell = GridMap[nx][ny][nz]
+    for dx = -1, 1 do
+        for dy = -1, 1 do
+            for dz = -1, 1 do
+                local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                    local neighborCell = GridMap[nx][ny][nz]
 
-            local deltaPressure = neighborCell.pressure - currentCell.pressure
+                    local deltaPressure = neighborCell.pressure - currentCell.pressure
 
-            -- Sumar la diferencia de presión a los totales en cada eje
-            totalDeltaPressureX = totalDeltaPressureX + deltaPressure * neighbor.dx
-            totalDeltaPressureY = totalDeltaPressureY + deltaPressure * neighbor.dy
-            totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * neighbor.dz
+                    -- Sumar la diferencia de presión a los totales en cada eje
+                    totalDeltaPressureX = totalDeltaPressureX + deltaPressure * dx
+                    totalDeltaPressureY = totalDeltaPressureY + deltaPressure * dy
+                    totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * dz
+                end
+            end
         end
     end
 
@@ -822,11 +806,11 @@ function GenerateGrid(ply)
             GridMap[x][y] = {}
             for z = minZ, maxZ, gridSize do
                 GridMap[x][y][z] = {}
-                GridMap[x][y][z].temperature = math.random(minTemperature, maxTemperature)
-                GridMap[x][y][z].humidity = math.random(minHumidity, maxHumidity)
-                GridMap[x][y][z].pressure = math.random(minPressure, maxPressure)
-                GridMap[x][y][z].Airflow = math.random(minAirflow, maxAirflow)
-                GridMap[x][y][z].Airflow_Direction = Vector(1,0,0)
+                GridMap[x][y][z].temperature = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Temperature"]
+                GridMap[x][y][z].humidity = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
+                GridMap[x][y][z].pressure = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
+                GridMap[x][y][z].Airflow = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Speed"]
+                GridMap[x][y][z].Airflow_Direction = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Direction"]
             end
         end
     end
