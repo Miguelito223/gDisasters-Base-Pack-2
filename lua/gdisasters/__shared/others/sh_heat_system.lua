@@ -18,7 +18,7 @@ local maxPressure = 106000 -- Presión máxima en milibares
 local minAirflow = 0 -- Presión mínima en milibares
 local maxAirflow = 10000 -- Presión máxima en milibares
 
-local maxBatchSize = 500 -- Número máximo de celdas a actualizar por frame
+local maxBatchSize = 5000 -- Número máximo de celdas a actualizar por frame
 local updatePercentage = 0.01 -- Porcentaje del grid a actualizar por frame
 local updateInterval = 1 -- Intervalo de actualización en segundos
 local updateBatchSize = math.ceil(totalgridSize * updatePercentage)
@@ -90,6 +90,7 @@ end
 function CalculateSolarRadiation(cellPosition, sunDirection)
     -- Verificar si se proporcionan ambas direcciones
     if not sunDirection or not cellPosition then
+        print("Error: No se encontro la direccion del sol o posicion de celda")
         return 0  -- Si falta alguna dirección, no hay radiación solar
     end
 
@@ -97,6 +98,13 @@ function CalculateSolarRadiation(cellPosition, sunDirection)
     local normalizedCellPosition = cellPosition:GetNormalized()
 
     if not normalizedCellPosition then
+        print("Error: la celda Normalizada devuelve nulo")
+        return 0
+    end
+
+    -- Verificar que ambos vectores tienen el método Dot
+    if type(sunDirection.Dot) ~= "function" or type(normalizedCellPosition.Dot) ~= "function" then
+        print("Error: Uno de los vectores no tiene el método Dot.")
         return 0
     end
 
@@ -823,16 +831,11 @@ function UpdateGrid()
                 if cell then
                     local x, y, z = cell[1], cell[2], cell[3]
                     if GridMap[x] and GridMap[x][y] and GridMap[x][y][z] then
-                        local newTemperature = CalculateTemperature(x, y, z)
-                        local newHumidity = CalculateHumidity(x, y, z)
-                        local newPressure = CalculatePressure(x, y, z)
-                        local newAirFlow = CalculateAirFlow(x, y, z)
-                        local newAirFlowDirection = CalculateAirFlowDirection(x, y, z)
-                        GridMap[x][y][z].temperature = newTemperature
-                        GridMap[x][y][z].humidity = newHumidity
-                        GridMap[x][y][z].pressure = newPressure
-                        GridMap[x][y][z].Airflow = newAirFlow
-                        GridMap[x][y][z].Airflow_Direction = newAirFlowDirection
+                        GridMap[x][y][z].temperature =  CalculateTemperature(x, y, z)
+                        GridMap[x][y][z].humidity = CalculateHumidity(x, y, z)
+                        GridMap[x][y][z].pressure = CalculatePressure(x, y, z)
+                        GridMap[x][y][z].Airflow = CalculateAirFlow(x, y, z)
+                        GridMap[x][y][z].Airflow_Direction =  CalculateAirFlowDirection(x, y, z)
                     else
                         print("Error: Cell position out of grid bounds.")
                     end

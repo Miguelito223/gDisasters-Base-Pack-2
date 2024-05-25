@@ -852,16 +852,24 @@ function gDisasters_GetSunDir()
 end
 
 function gDisasters_GetSunEnvDir()
-	-- Encuentra la entidad env_sun
-	local sunEntity = ents.FindByClass("env_sun")[1]
+    -- Encuentra la entidad env_sun
+    local sunEntities = ents.FindByClass("env_sun")
+    local sunEntity = sunEntities and sunEntities[1] or nil
 
-	if sunEntity then
-		-- Obtén la dirección del sol desde la entidad env_sun
-		local sunDir = sunEntity:GetAngles():Forward()
-		return sunDir
-	else
-		return nil
-	end
+    if sunEntity then
+        -- Obtén la dirección del sol desde la entidad env_sun
+        local sunDir = sunEntity:GetInternalVariable("sun_dir")
+
+        if sunDir then
+            return sunDir
+        else
+            print("Sun direction is nil.")
+            return nil
+        end
+    else
+        print("No env_sun entity found.")
+        return nil
+    end
 end
 
 function gDisasters_SetMoonDir(value)
