@@ -75,32 +75,20 @@ local function calculateFreezingLatentHeat(cloudDensity)
     return cloudDensity * freezingLatentHeat
 end
 -- Función para normalizar un vector
-
--- Función para calcular la radiación solar
 function CalculateSolarRadiation(cellPosition, sunDirection)
+    -- Verificar si se proporcionan ambas direcciones
     if not sunDirection or not cellPosition then
         return 0  -- Si falta alguna dirección, no hay radiación solar
     end
 
-    -- Calcular la altura solar (ángulo entre la dirección del sol y el eje Y)
-    local solarAltitude = math.acos(sunDirection.y)
-    
-    -- Verificar si el sol está por encima del horizonte
-    if solarAltitude <= 0 then
-        return 0  -- Si el sol está debajo del horizonte, no hay radiación solar
-    end
-
     -- Normalizar la dirección del sol y la posición de la celda
-    local normalizedCellPosition = cellPosition:Normalize()
+    local normalizedCellPosition = cellPosition:GetNormalized()
 
-    if not normalizedCellPosition then
-        return 0  -- Si la normalización falla, no hay radiación solar
-    end
+    -- Calcular el producto escalar normalizado entre los vectores
+    local dotProduct = sunDirection:Dot(normalizedCellPosition)
 
-    local angleToSun = math.acos(sunDirection:Dot(normalizedCellPosition))
-
-    -- Asumir que la radiación solar disminuye linealmente con el ángulo
-    local solarRadiation = math.cos(angleToSun)
+    -- Tomar el valor absoluto del producto escalar normalizado
+    local solarRadiation = math.abs(dotProduct)
 
     return solarRadiation
 end
@@ -132,17 +120,20 @@ function CalculateTemperature(x, y, z)
 
     local averageTemperature = totalTemperature / count
     local averageAirFlow = totalAirFlow / count
-    local temperatureInfluence = 0  -- Inicializamos en 0
+    
 
     -- Obtener la dirección del sol y calcular la radiación solar
-    local sunDirection = gDisasters_GetSunDir() or gDisasters_GetSunEnvDir()
+    local sunDirection = gDisasters_GetSunEnvDir() or gDisasters_GetSunDir()
     local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
     local solarInfluence = solarRadiation * solarInfluenceCoefficient
     local coolingEffect = 0
-    if sunDirection or solarInfluence > 0 then
+    local temperatureInfluence = 0  -- Inicializamos en 0
+    if solarInfluence > 0 then
         temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0  -- Aplicamos solo si hay sol 
+        print("Its Day")
     else
         coolingEffect = -coolingFactor
+        print("Its Night")
     end
     
     local currentTemperature = GridMap[x][y][z].temperature or 0
@@ -193,14 +184,15 @@ function CalculateHumidity(x, y, z)
 
     local averageHumidity = totalHumidity / count
     local averageAirFlow = totalAirFlow / count
-    local humidityInfluence = 0
+    
 
     -- Obtener la dirección del sol y calcular la radiación solar
-    local sunDirection = gDisasters_GetSunDir() or gDisasters_GetSunEnvDir()
+    local sunDirection = gDisasters_GetSunEnvDir() or gDisasters_GetSunDir()
     local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
     local solarHumidityInfluence = solarRadiation * solarInfluenceCoefficient
     local coolingHumidityEffect = 0
-    if sunDirection or solarHumidityInfluence > 0 then
+    local humidityInfluence = 0
+    if solarHumidityInfluence > 0 then
         humidityInfluence = GridMap[x][y][z].humidityInfluence or 0
     else
         coolingHumidityEffect = nighttimeHumidityIncrease
@@ -470,7 +462,7 @@ function CreateCloud(x,y,z)
 
     local humidity = cell.humidity
     local temperature = cell.temperature
-    if humidity < lowHumidityThreshold and temperature < lowTemperatureThreshold then
+    if humidity > humidityThreshold and temperature < temperatureThreshold then
         -- Generate clouds in cells with low humidity and temperature
         AdjustCloudBaseHeight(x, y, z)
         
