@@ -467,15 +467,11 @@ function convert_KevintoCelcius(Kevin)
 end
 
 function convert_VectorToAngle(vector)
-	local x = vector.x
-	local y = vector.y
-	local z = vector.z
-	
-	return math.atan2(y,x)
-end
 
-function convert_VectorToAngle2(vector)
-	return vector:Angle()
+    return vector:Angle()
+end
+function convert_AngleToVector(angle)
+    return angle:Forward()
 end
 
 function convert_RadiantsToDegrees(radiants)
@@ -498,15 +494,7 @@ function convert_AngletoRoll(angle)
 	return angle.z
 end
 
-function convert_AngleToVector(angle)
-	angle.x = math.cos(angle.x)
-	angle.y = math.sin(angle.y)
-	return Vector(angle.x, angle.y, 0)
-end
 
-function convert_AngleToVector2(angle)
-	return angle:Forward()
-end
 
 function FixedSortedPairsByMemberValue( pTable, pValueName, Desc )
 
@@ -837,20 +825,20 @@ end
 
 function gDisasters_GetMoonAngleInRadians()
 
-	return convert_VectorToAngle(gDisasters_GetMoonDir())
+	return math.rad(gDisasters_GetMoonAngleInDegs())
 end
 
 function gDisasters_GetMoonAngleInDegs()
 
-	return convert_RadiantsToDegrees(convert_VectorToAngle(gDisasters_GetSunDir()))
+	return convert_VectorToAngle(gDisasters_GetSunDir()).x
 end
 
 function gDisasters_GetSunAngleInRadians()
-	return convert_VectorToAngle(gDisasters_GetSunDir())
+	return math.rad(gDisasters_GetSunAngleInDegs())
 end
 
 function gDisasters_GetSunAngleInDegs()
-	return convert_RadiantsToDegrees(convert_VectorToAngle(gDisasters_GetSunDir()))
+	return convert_VectorToAngle(gDisasters_GetSunDir()).x
 end
 
 function gDisasters_GetMoonDir()

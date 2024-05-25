@@ -75,12 +75,6 @@ local function calculateFreezingLatentHeat(cloudDensity)
     return cloudDensity * freezingLatentHeat
 end
 -- Función para normalizar un vector
-function NormalizeVector(v)
-    if not v then return nil end
-    local length = math.sqrt(v.x^2 + v.y^2 + v.z^2)
-    if length == 0 then return nil end
-    return Vector(v.x / length, v.y / length, v.z / length)
-end
 
 -- Función para calcular la radiación solar
 function CalculateSolarRadiation(cellPosition, sunDirection)
@@ -97,19 +91,14 @@ function CalculateSolarRadiation(cellPosition, sunDirection)
     end
 
     -- Normalizar la dirección del sol y la posición de la celda
-    local normalizedSunDirection = NormalizeVector(sunDirection)
-    local normalizedCellPosition = NormalizeVector(cellPosition)
+    local normalizedSunDirection = sunDirection
+    local normalizedCellPosition = cellPosition:Normalize()
 
     if not normalizedSunDirection or not normalizedCellPosition then
         return 0  -- Si la normalización falla, no hay radiación solar
     end
 
-    -- Calcular el ángulo entre la dirección del sol y la posición de la celda
-    local dotProduct = normalizedSunDirection.x * normalizedCellPosition.x +
-                       normalizedSunDirection.y * normalizedCellPosition.y +
-                       normalizedSunDirection.z * normalizedCellPosition.z
-    dotProduct = math.max(-1, math.min(1, dotProduct))  -- Asegurarse de que el valor esté dentro del rango [-1, 1]
-    local angleToSun = math.acos(dotProduct)
+    local angleToSun = math.acos(normalizedSunDirection:Dot(normalizedCellPosition))
 
     -- Asumir que la radiación solar disminuye linealmente con el ángulo
     local solarRadiation = math.cos(angleToSun)
@@ -150,6 +139,7 @@ function CalculateTemperature(x, y, z)
     local sunDirection = gDisasters_GetSunDir() or gDisasters_GetSunEnvDir()
     local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
     local solarInfluence = solarRadiation * solarInfluenceCoefficient
+    print(solarInfluence)
     local coolingEffect = 0
     if sunDirection or solarInfluence > 0 then
         temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0  -- Aplicamos solo si hay sol 

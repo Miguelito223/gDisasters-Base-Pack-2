@@ -389,7 +389,7 @@ function hud_DrawBasicINFO()
 	local body_Oxygen  = math.Round(LocalPlayer():GetNWFloat("BodyOxygen"))
 	local hm        = math.Round(GetGlobalFloat("gDisasters_Humidity"))
 	local windspd   = math.Round(GetGlobalFloat("gDisasters_Wind"),1)
-	local winddir   =  math.Round(convert_RadiantsToDegrees(convert_VectorToAngle(-GetGlobalVector("gDisasters_Wind_Direction"))))
+	local winddir   =  math.Round(convert_VectorToAngle(-GetGlobalVector("gDisasters_Wind_Direction")).y)
 	local lwindspd  = math.Round(LocalPlayer():GetNWFloat("LocalWind"),1)
 
 	local air_temp   =  tostring( air_tmp )
