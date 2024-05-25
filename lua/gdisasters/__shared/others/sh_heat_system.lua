@@ -74,6 +74,21 @@ end
 local function calculateFreezingLatentHeat(cloudDensity)
     return cloudDensity * freezingLatentHeat
 end
+
+function heat_GetSunDir()
+    -- Encuentra la entidad env_sun
+    local sunEntity = ents.FindByClass("env_sun")[1]
+
+    if sunEntity then
+        -- Obtén la dirección del sol desde la entidad env_sun
+        local sunDir = sunEntity:GetAngles():Forward()
+        print("Dirección del sol:", sunDir)
+        return sunDir
+    else
+        print("No se encontró la entidad env_sun")
+        return nil
+    end
+end
 -- Función para normalizar un vector
 function NormalizeVector(v)
     if not v then return nil end
@@ -147,17 +162,13 @@ function CalculateTemperature(x, y, z)
     local temperatureInfluence = 0  -- Inicializamos en 0
 
     -- Obtener la dirección del sol y calcular la radiación solar
-    local sunDirection = gDisasters_GetSunDir()
-    local solarInfluence = 0
-    if sunDirection then
-        local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
-        temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0  -- Aplicamos solo si hay sol
-        solarInfluence = solarRadiation * solarInfluenceCoefficient
-    end
-
-    -- Enfriamiento nocturno
+    local sunDirection = gDisasters_GetSunDir() or heat_GetSunDir()
+    local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
+    local solarInfluence = solarRadiation * solarInfluenceCoefficient
     local coolingEffect = 0
-    if not sunDirection or solarInfluence == 0 then
+    if sunDirection or solarInfluence > 0 then
+        temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0  -- Aplicamos solo si hay sol 
+    else
         coolingEffect = -coolingFactor
     end
     
@@ -212,19 +223,16 @@ function CalculateHumidity(x, y, z)
     local humidityInfluence = 0
 
     -- Obtener la dirección del sol y calcular la radiación solar
-    local sunDirection = gDisasters_GetSunDir()
-    local solarHumidityInfluence = 0
-    if sunDirection then
-        local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
-        humidityInfluence = GridMap[x][y][z].humidityInfluence or 0
-        solarHumidityInfluence = solarRadiation * solarInfluenceCoefficient
-    end
-
-   -- Enfriamiento nocturno
+    local sunDirection = gDisasters_GetSunDir() or heat_GetSunDir()
+    local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
+    local solarHumidityInfluence = solarRadiation * solarInfluenceCoefficient
     local coolingHumidityEffect = 0
-    if not sunDirection or solarHumidityInfluence == 0 then
+    if sunDirection or solarHumidityInfluence > 0 then
+        humidityInfluence = GridMap[x][y][z].humidityInfluence or 0
+    else
         coolingHumidityEffect = nighttimeHumidityIncrease
     end
+
 
     local currentHumidity = GridMap[x][y][z].humidity or 0
     local AirflowEffect = AirflowCoefficient * averageAirFlow
