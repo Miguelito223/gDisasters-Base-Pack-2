@@ -299,7 +299,7 @@ gDisasters.DayNightSystem.Think = function()
 		if ( gDisasters.DayNightSystem.Time >= gDisasters.DayNightSystem.InternalVars.time.Dawn_Start and gDisasters.DayNightSystem.Time <= gDisasters.DayNightSystem.InternalVars.time.Dusk_End ) then
 			local sunfrac = 1 - ( ( gDisasters.DayNightSystem.Time - gDisasters.DayNightSystem.InternalVars.time.Dawn_Start ) / ( gDisasters.DayNightSystem.InternalVars.time.Dusk_End - gDisasters.DayNightSystem.InternalVars.time.Dawn_Start ) );
 			local angle = Angle( 180 * sunfrac, 15, 0 );
-			SetGlobalAngle("gdSunDir", -angle:Forward())
+			gDisasters_SetSunDir(-angle:Forward())
 
 			gDisasters.DayNightSystem.EnvSun:SetKeyValue( "sun_dir", tostring(gDisasters_GetSunDir()) );
 		end
@@ -465,7 +465,7 @@ gDisasters.DayNightSystem.RenderMoon = function()
 		end
 
 		local angle = Angle( 180 * mul, 15, 0 );
-		SetGlobalAngle("gdMoonDir", angle:Forward() )
+		gDisasters_SetMoonDir(angle:Forward())
 
         local moonPos = gDisasters_GetMoonDir() * ( LastFarZ * 0.900 );
         local moonNormal = ( vector_origin - moonPos ):GetNormal();

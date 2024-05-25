@@ -74,21 +74,6 @@ end
 local function calculateFreezingLatentHeat(cloudDensity)
     return cloudDensity * freezingLatentHeat
 end
-
-function heat_GetSunDir()
-    -- Encuentra la entidad env_sun
-    local sunEntity = ents.FindByClass("env_sun")[1]
-
-    if sunEntity then
-        -- Obtén la dirección del sol desde la entidad env_sun
-        local sunDir = sunEntity:GetAngles():Forward()
-        print("Dirección del sol:", sunDir)
-        return sunDir
-    else
-        print("No se encontró la entidad env_sun")
-        return nil
-    end
-end
 -- Función para normalizar un vector
 function NormalizeVector(v)
     if not v then return nil end
@@ -162,7 +147,7 @@ function CalculateTemperature(x, y, z)
     local temperatureInfluence = 0  -- Inicializamos en 0
 
     -- Obtener la dirección del sol y calcular la radiación solar
-    local sunDirection = gDisasters_GetSunDir() or heat_GetSunDir()
+    local sunDirection = gDisasters_GetSunDir() or gDisasters_GetSunEnvDir()
     local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
     local solarInfluence = solarRadiation * solarInfluenceCoefficient
     local coolingEffect = 0
@@ -223,7 +208,7 @@ function CalculateHumidity(x, y, z)
     local humidityInfluence = 0
 
     -- Obtener la dirección del sol y calcular la radiación solar
-    local sunDirection = gDisasters_GetSunDir() or heat_GetSunDir()
+    local sunDirection = gDisasters_GetSunDir() or gDisasters_GetSunEnvDir()
     local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
     local solarHumidityInfluence = solarRadiation * solarInfluenceCoefficient
     local coolingHumidityEffect = 0
@@ -457,20 +442,16 @@ end
 
 
 function CreateLightningAndThunder(x,y,z)
-    if CurTime() > nextThunderThink then
-        local t =  ( (1 / (engine.TickInterval())) ) / 66.666 * 0.1
-        nextThunderThink = CurTime() + t
-        
-        local startpos = Vector(x,y,z)
-        local endpos = startpos - Vector(0, 0, 50000)
-        local tr = util.TraceLine({
-            start = startpos,
-            endpos = endpos,
-        })
-        if HitChance(1) then
-            CreateLightningBolt(startpos, tr.HitPos, {"purple", "blue"}, {"Grounded", "NotGrounded"})
-        end
+    local startpos = Vector(x,y,z)
+    local endpos = startpos - Vector(0, 0, 50000)
+    local tr = util.TraceLine({
+        start = startpos,
+        endpos = endpos,
+    })
+    if HitChance(1) then
+        CreateLightningBolt(startpos, tr.HitPos, {"purple", "blue"}, {"Grounded", "NotGrounded"})
     end
+
 end
 
 function SpawnCloud(pos, color)
