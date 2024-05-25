@@ -5,10 +5,10 @@ LandSources = {}
 Cloud = {}
 
 -- Tamaño de la cuadrícula y rango de temperatura
-local gridSize = 5000 -- Tamaño de cada cuadrado en unidades
+local gridSize = 1000 -- Tamaño de cada cuadrado en unidades
 
-local minTemperature = -44 -- Temperatura mínima
-local maxTemperature = 44 -- Temperatura máxima
+local minTemperature = -50 -- Temperatura mínima
+local maxTemperature = 50 -- Temperatura máxima
 local minHumidity = 0 -- Humedad mínima
 local maxHumidity = 100 -- Humedad máxima
 local minPressure = 94000 -- Presión mínima en milibares
@@ -16,29 +16,33 @@ local maxPressure = 106000 -- Presión máxima en milibares
 local minAirflow = 0 -- Presión mínima en milibares
 local maxAirflow = 10000 -- Presión máxima en milibares
 
-local updateInterval = 0.1 -- Intervalo de actualización en segundos
-local updateBatchSize = 500 -- Número de celdas a actualizar por frame
+local updateInterval = 1 -- Intervalo de actualización en segundos
+local updateBatchSize = 100 -- Número de celdas a actualizar por frame
 local nextUpdateGrid = CurTime()
 local nextUpdateGridPlayer = CurTime()
 local nextUpdateWeather = CurTime()
 local nextThunderThink = CurTime()
 
-local tempdiffusionCoefficient = 0.01
-local HumidityDiffusionCoefficient = 0.01
-local solarInfluenceCoefficient = 0.01
-local AirflowCoefficient = 0.01
 local coolingFactor = 0.5
 local nighttimeHumidityIncrease = 0.05
 local gas_constant = 8.314 -- J/(mol·K)
 local specific_heat_vapor = 1.996 -- J/(g·K)
 
 
-local waterTemperatureEffect = 0.01   -- El agua tiende a mantener una temperatura más constante
-local landTemperatureEffect = 0.04     -- La tierra se calienta y enfría más rápido que el agua
-local waterHumidityEffect = 0.05       -- El agua puede aumentar significativamente la humedad en su entorno
-local landHumidityEffect = 0.05        -- La tierra puede retener menos humedad que el agua
-local mountainTemperatureEffect = -0.03  -- Las montañas tienden a ser más frías debido a la altitud
-local mountainHumidityEffect = 0.04    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
+local tempdiffusionCoefficient = 0.01
+local HumidityDiffusionCoefficient = 0.01
+local solarInfluenceCoefficient = 0.01
+local AirflowCoefficient = 0.01
+local cloudDensityCoefficient = 0.01  -- Coeficiente para convertir humedad en densidad de nubes
+
+
+
+local waterTemperatureEffect = -1   -- El agua tiende a mantener una temperatura más constante
+local landTemperatureEffect = 4     -- La tierra se calienta y enfría más rápido que el agua
+local waterHumidityEffect = 5       -- El agua puede aumentar significativamente la humedad en su entorno
+local landHumidityEffect = 5        -- La tierra puede retener menos humedad que el agua
+local mountainTemperatureEffect = -3  -- Las montañas tienden a ser más frías debido a la altitud
+local mountainHumidityEffect = -4    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
 
 local convergenceThreshold = 0.5
 local strongStormThreshold = 2.0
@@ -52,10 +56,12 @@ local lowHumidityThreshold = 40 -- Umbral de humedad para la formación de nubes
 local convergenceFactor = 0.001
 local temperatureThreshold = 20
 local humidityThreshold = 75
+
+
 local MaxClouds = 5
 local MaxRainDrop = 1
 local MaxHail = 1
-local cloudDensityCoefficient = 0.01  -- Coeficiente para convertir humedad en densidad de nubes
+
 local freezingTemperature = 0
 
 local condensationLatentHeat = 25  -- Reduciendo el valor a un nivel más razonable
@@ -81,14 +87,20 @@ function CalculateSolarRadiation(cellPosition, sunDirection)
         return 0  -- Si falta alguna dirección, no hay radiación solar
     end
 
-    -- Normalizar la dirección del sol y la posición de la celda
+    -- Normalizar la posición de la celda
     local normalizedCellPosition = cellPosition:GetNormalized()
 
     -- Calcular el producto escalar normalizado entre los vectores
     local dotProduct = sunDirection:Dot(normalizedCellPosition)
 
-    -- Tomar el valor absoluto del producto escalar normalizado
-    local solarRadiation = math.abs(dotProduct)
+    -- Asegurarse de que el valor esté entre 0 y 1
+    local solarRadiation = math.max(0, dotProduct)
+
+    -- Factor de intensidad solar máximo
+    local maxSolarIntensity = 1000 -- Puedes ajustar este valor según sea necesario
+
+    -- Escalar la radiación solar para obtener un valor más realista
+    solarRadiation = solarRadiation * maxSolarIntensity
 
     return solarRadiation
 end
@@ -116,43 +128,35 @@ function CalculateTemperature(x, y, z)
         end
     end
 
-    if count == 0 then return GridMap[x][y][z].temperature or 0 end
+    if count == 0 then 
+        print("Count is 0")
+        return currentCell.temperature or 0 
+    end
 
     local averageTemperature = totalTemperature / count
     local averageAirFlow = totalAirFlow / count
     
-
-    -- Obtener la dirección del sol y calcular la radiación solar
     local sunDirection = gDisasters_GetSunEnvDir() or gDisasters_GetSunDir()
     local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
     local solarInfluence = solarRadiation * solarInfluenceCoefficient
-    local coolingEffect = 0
-    local temperatureInfluence = 0  -- Inicializamos en 0
-    if solarInfluence > 0 then
-        temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0  -- Aplicamos solo si hay sol 
-    else
-        coolingEffect = -coolingFactor
-    end
+    local coolingEffect = (solarInfluence > 0) and 0 or -coolingFactor
     
-    local currentTemperature = GridMap[x][y][z].temperature or 0
+    local currentTemperature = currentCell.temperature or 0
+    local cloudDensity = currentCell.cloudDensity or 0
+    local terrainType = currentCell.terrainType or "land"
+    local terrainTemperatureEffect = (terrainType == "water" and waterTemperatureEffect) or (terrainType == "mountain" and mountainTemperatureEffect) or landTemperatureEffect
 
-    -- Adding latent heat release
-    local cloudDensity = GridMap[x][y][z].cloudDensity or 0
     local latentHeat = 0
     if cloudDensity > 0 then
-        if currentTemperature > freezingTemperature then
-            latentHeat = calculateCondensationLatentHeat(cloudDensity)
-        else
-            latentHeat = calculateFreezingLatentHeat(cloudDensity)
-        end
+        latentHeat = (currentTemperature > freezingTemperature) and calculateCondensationLatentHeat(cloudDensity) or calculateFreezingLatentHeat(cloudDensity)
     end
 
-    
     local AirflowEffect = AirflowCoefficient * averageAirFlow
     local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature)
-    local newTemperature = math.Clamp(currentTemperature + temperatureChange + AirflowEffect + temperatureInfluence + solarInfluence + coolingEffect + latentHeat, minTemperature, maxTemperature)
     
-    return newTemperature
+    local newTemperature = currentTemperature + temperatureChange + AirflowEffect + terrainTemperatureEffect + solarInfluence + coolingEffect + latentHeat
+    
+    return math.Clamp(newTemperature, minTemperature, maxTemperature)
 end
 
 function CalculateHumidity(x, y, z)
@@ -178,33 +182,26 @@ function CalculateHumidity(x, y, z)
         end
     end
 
-    if count == 0 then return GridMap[x][y][z].humidity or 0 end
+    if count == 0 then return currentCell.humidity or 0 end
 
     local averageHumidity = totalHumidity / count
     local averageAirFlow = totalAirFlow / count
-    
 
-    -- Obtener la dirección del sol y calcular la radiación solar
     local sunDirection = gDisasters_GetSunEnvDir() or gDisasters_GetSunDir()
     local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
     local solarHumidityInfluence = solarRadiation * solarInfluenceCoefficient
-    local coolingHumidityEffect = 0
-    local humidityInfluence = 0
-    if solarHumidityInfluence > 0 then
-        humidityInfluence = GridMap[x][y][z].humidityInfluence or 0
-    else
-        coolingHumidityEffect = nighttimeHumidityIncrease
-    end
+    local coolingHumidityEffect = (solarHumidityInfluence > 0) and 0 or nighttimeHumidityIncrease
 
+    local currentHumidity = currentCell.humidity or 0
+    local terrainType = currentCell.terrainType or "land"
+    local terrainHumidityEffect = (terrainType == "water" and waterHumidityEffect) or (terrainType == "mountain" and mountainHumidityEffect) or landHumidityEffect
 
-    local currentHumidity = GridMap[x][y][z].humidity or 0
     local AirflowEffect = AirflowCoefficient * averageAirFlow
     local humidityChange = HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
-    local newHumidity = math.Clamp(currentHumidity + humidityChange + AirflowEffect + humidityInfluence + solarHumidityInfluence + coolingHumidityEffect,minHumidity,maxHumidity)
+    local newHumidity = currentHumidity + humidityChange + AirflowEffect + terrainHumidityEffect + solarHumidityInfluence + coolingHumidityEffect
 
-    return newHumidity
+    return math.Clamp(newHumidity, minHumidity, maxHumidity)
 end
-
 
 
 -- Función para calcular la presión de una celda basada en temperatura y humedad
@@ -221,10 +218,10 @@ function CalculatePressure(x, y, z)
     local humidity = cell.humidity or 0
 
     -- Calcular la presión basada en la temperatura y la humedad
-    local newpressure = math.Clamp((gas_constant * temperature * (1 + ((specific_heat_vapor * humidity) / temperature))) * 100, minPressure,maxPressure)
+    local newpressure = (gas_constant * temperature * (1 + ((specific_heat_vapor * humidity) / temperature))) * 100
 
     -- Asegurarse de que la presión esté dentro del rango
-    return newpressure
+    return math.Clamp(newpressure, minPressure,maxPressure)
 end
 
 function CalculateAirFlow(x, y, z)
@@ -259,9 +256,9 @@ function CalculateAirFlow(x, y, z)
     -- Calcular la magnitud del flujo de aire
     local airflowMagnitude = math.sqrt(airflowVector.x^2 + airflowVector.y^2 + airflowVector.z^2)
 
-    local newAirflow = math.Clamp(airflowMagnitude * AirflowCoefficient, minAirflow, maxAirflow)
+    local newAirflow = airflowMagnitude * AirflowCoefficient
 
-    return newAirflow 
+    return math.Clamp(newAirflow , minAirflow, maxAirflow)
 end
 
 function CalculateAirFlowDirection(x, y, z)
@@ -351,7 +348,7 @@ end
 
 -- Función para crear partículas de lluvia
 function CreateRain(x, y, z)
-
+    if CLIENT then return end  
     if #ents.FindByClass("env_spritetrail") > MaxRainDrop then return end
 
     local particle = ents.Create("env_spritetrail") -- Create a sprite trail entity for raindrop particle
@@ -420,6 +417,7 @@ end
 
 
 function CreateLightningAndThunder(x,y,z)
+    if CLIENT then return end
     local startpos = Vector(x,y,z)
     local endpos = startpos - Vector(0, 0, 50000)
     local tr = util.TraceLine({
@@ -433,6 +431,7 @@ function CreateLightningAndThunder(x,y,z)
 end
 
 function SpawnCloud(pos, color)
+    if CLIENT then return end
     if #ents.FindByClass("gd_cloud_cumulus") > MaxClouds then return end
 
     local cloud = ents.Create("gd_cloud_cumulus")
@@ -556,16 +555,10 @@ function AddTemperatureHumiditySources()
                 -- Comparar distancias y ajustar temperatura, humedad y presión en consecuencia
                 if closestWaterDist < closestLandDist and closestWaterDist < closestMountainDist then
                     cell.terrainType = "water"
-                    cell.temperatureInfluence = -waterTemperatureEffect
-                    cell.humidityInfluence = waterHumidityEffect
                 elseif closestLandDist < closestMountainDist and closestLandDist < closestWaterDist then
                     cell.terrainType = "land"
-                    cell.temperatureInfluence = landTemperatureEffect
-                    cell.humidityInfluence = -landHumidityEffect
                 else
                     cell.terrainType = "mountain"
-                    cell.temperatureInfluence = mountainTemperatureEffect
-                    cell.humidityInfluence = -mountainHumidityEffect
                 end 
             end
         end
@@ -663,6 +656,7 @@ function SimulateRain()
 end
 
 function CreateHail(x, y, z)
+    if CLIENT then return end
     if #ents.FindByClass("gd_d1_hail_ch") > MaxHail then return end
     
     local hail = ents.Create("gd_d1_hail_ch")
@@ -734,7 +728,6 @@ end
 -- Llamar a SimulateClouds() para simular la formación y movimiento de las nubes
 function UpdateWeather()
     if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
-        if CLIENT then return end
         if CurTime() > nextUpdateWeather then
             nextUpdateWeather = CurTime() + updateInterval
             for x, column in pairs(GridMap) do
@@ -848,7 +841,7 @@ function UpdatePlayerGrid()
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = cell.Airflow
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = cell.Airflow_Direction
-                        print("Actual grid: x: " .. px .. ", y: ".. py .. ", z: " .. pz .. ", Terrain Type: " .. cell.terrainType .. ", Temp: " .. cell.temperature .. ", Humidity: " .. cell.humidity .. ", Pressure: " .. cell.pressure .. ", Arflow Speed: " .. cell.Airflow )
+                        print("Actual grid: x: " .. px .. ", y: ".. py .. ", z: " .. pz .. ", Terrain Type: " .. cell.terrainType .. ", Temp: " .. cell.temperature .. ", Humidity: " .. cell.humidity .. ", Pressure: " .. cell.pressure .. ", Airflow Speed: " .. cell.Airflow .. ", Cloud Density: " .. cell.cloudDensity)
                     else
                         -- Manejo de valores no válidos
                         print("Error: Valores no válidos en la celda de la cuadrícula.")
