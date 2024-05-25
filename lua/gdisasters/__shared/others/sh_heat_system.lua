@@ -42,7 +42,7 @@ local cloudDensityCoefficient = 0.01  -- Coeficiente para convertir humedad en d
 local waterTemperatureEffect = -0.01   -- El agua tiende a mantener una temperatura más constante
 local landTemperatureEffect = 0.04     -- La tierra se calienta y enfría más rápido que el agua
 local waterHumidityEffect = 0.05       -- El agua puede aumentar significativamente la humedad en su entorno
-local landHumidityEffect = 0.05        -- La tierra puede retener menos humedad que el agua
+local landHumidityEffect = -0.05        -- La tierra puede retener menos humedad que el agua
 local mountainTemperatureEffect = -0.03  -- Las montañas tienden a ser más frías debido a la altitud
 local mountainHumidityEffect = -0.04    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
 
@@ -158,11 +158,23 @@ function CalculateTemperature(x, y, z)
     local currentTemperature = currentCell.temperature or 0
     local cloudDensity = currentCell.cloudDensity or 0
     local terrainType = currentCell.terrainType or "land"
-    local terrainTemperatureEffect = (terrainType == "water" and waterTemperatureEffect) or (terrainType == "mountain" and mountainTemperatureEffect) or landTemperatureEffect
+    local terrainTemperatureEffect = 0
+    
+    if (terrainType == "water" and waterTemperatureEffect) then
+        terrainTemperatureEffect = waterTemperatureEffect
+    elseif (terrainType == "mountain" and mountainTemperatureEffect) then
+        terrainTemperatureEffect = mountainTemperatureEffect
+    else 
+        terrainTemperatureEffect = landTemperatureEffect
+    end
 
     local latentHeat = 0
     if cloudDensity > 0 then
-        latentHeat = (currentTemperature > freezingTemperature) and calculateCondensationLatentHeat(cloudDensity) or calculateFreezingLatentHeat(cloudDensity)
+        if (currentTemperature > freezingTemperature) then 
+            latentHeat = calculateCondensationLatentHeat(cloudDensity) 
+        else 
+            latentHeat = calculateFreezingLatentHeat(cloudDensity) 
+        end
     end
 
     local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature)
@@ -210,7 +222,15 @@ function CalculateHumidity(x, y, z)
 
     local currentHumidity = currentCell.humidity or 0
     local terrainType = currentCell.terrainType or "land"
-    local terrainHumidityEffect = (terrainType == "water" and waterHumidityEffect) or (terrainType == "mountain" and mountainHumidityEffect) or landHumidityEffect
+    local terrainHumidityEffect = 0
+    
+    if (terrainType == "water" and waterHumidityEffect) then
+        terrainHumidityEffect = waterHumidityEffect
+    elseif (terrainType == "mountain" and mountainHumidityEffect) then
+        terrainHumidityEffect = mountainHumidityEffect
+    else 
+        terrainHumidityEffect = landHumidityEffect
+    end
 
     local humidityChange = HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
     local newHumidity = currentHumidity + humidityChange + terrainHumidityEffect + solarHumidityInfluence
