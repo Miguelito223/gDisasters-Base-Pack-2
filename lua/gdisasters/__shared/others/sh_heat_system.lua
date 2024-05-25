@@ -91,14 +91,13 @@ function CalculateSolarRadiation(cellPosition, sunDirection)
     end
 
     -- Normalizar la dirección del sol y la posición de la celda
-    local normalizedSunDirection = sunDirection
     local normalizedCellPosition = cellPosition:Normalize()
 
-    if not normalizedSunDirection or not normalizedCellPosition then
+    if not normalizedCellPosition then
         return 0  -- Si la normalización falla, no hay radiación solar
     end
 
-    local angleToSun = math.acos(normalizedSunDirection:Dot(normalizedCellPosition))
+    local angleToSun = math.acos(sunDirection:Dot(normalizedCellPosition))
 
     -- Asumir que la radiación solar disminuye linealmente con el ángulo
     local solarRadiation = math.cos(angleToSun)
@@ -139,7 +138,6 @@ function CalculateTemperature(x, y, z)
     local sunDirection = gDisasters_GetSunDir() or gDisasters_GetSunEnvDir()
     local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
     local solarInfluence = solarRadiation * solarInfluenceCoefficient
-    print(solarInfluence)
     local coolingEffect = 0
     if sunDirection or solarInfluence > 0 then
         temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0  -- Aplicamos solo si hay sol 
