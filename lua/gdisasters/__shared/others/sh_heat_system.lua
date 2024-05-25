@@ -130,10 +130,8 @@ function CalculateTemperature(x, y, z)
     local temperatureInfluence = 0  -- Inicializamos en 0
     if solarInfluence > 0 then
         temperatureInfluence = GridMap[x][y][z].temperatureInfluence or 0  -- Aplicamos solo si hay sol 
-        print("Its Day")
     else
         coolingEffect = -coolingFactor
-        print("Its Night")
     end
     
     local currentTemperature = GridMap[x][y][z].temperature or 0
