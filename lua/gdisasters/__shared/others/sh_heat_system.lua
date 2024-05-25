@@ -5,7 +5,7 @@ LandSources = {}
 Cloud = {}
 
 -- Tamaño de la cuadrícula y rango de temperatura
-local gridSize = 1000 -- Tamaño de cada cuadrado en unidades
+local gridSize = 5000 -- Tamaño de cada cuadrado en unidades
 local totalgridSize = gridSize * gridSize * gridSize
 
 
@@ -18,12 +18,8 @@ local maxPressure = 106000 -- Presión máxima en milibares
 local minAirflow = 0 -- Presión mínima en milibares
 local maxAirflow = 10000 -- Presión máxima en milibares
 
-local maxBatchSize = 100 -- Número máximo de celdas a actualizar por frame
-local updatePercentage = 0.01 -- Porcentaje del grid a actualizar por frame
 local updateInterval = 1 -- Intervalo de actualización en segundos
-local updateBatchSize = math.ceil(totalgridSize * updatePercentage)
-updateBatchSize = math.min(updateBatchSize, maxBatchSize)
-updateBatchSize = math.max(1, updateBatchSize) -- Número de celdas a actualizar por frame
+local updateBatchSize = 500
 local nextUpdateGrid = CurTime()
 local nextUpdateGridPlayer = CurTime()
 local nextUpdateWeather = CurTime()
@@ -125,44 +121,40 @@ end
 
 function CalculateTemperature(x, y, z)
     local totalTemperature = 0
-    local totalAirFlow = 0
     local count = 0
 
     local currentCell = GridMap[x][y][z]
+    if not currentCell then return 0 end -- Verificar que la celda actual exista
 
     for dx = -1, 1 do
         for dy = -1, 1 do
             for dz = -1, 1 do
-                local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
-                if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                    local neighborCell = GridMap[nx][ny][nz]
-                    if neighborCell.temperature and neighborCell.Airflow then
-                        totalTemperature = totalTemperature + neighborCell.temperature
-                        totalAirFlow = totalAirFlow + neighborCell.Airflow
-                        count = count + 1
+                if dx ~= 0 or dy ~= 0 or dz ~= 0 then
+                    local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                    if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                        local neighborCell = GridMap[nx][ny][nz]
+                        if neighborCell.temperature then
+                            totalTemperature = totalTemperature + neighborCell.temperature
+                            count = count + 1
+                        end
                     end
                 end
             end
         end
     end
 
-    if count == 0 then 
-        print("Count is 0")
-        return currentCell.temperature or 0 
-    end
+    if count == 0 then return currentCell.temperature or 0 end
 
     local averageTemperature = totalTemperature / count
-    local averageAirFlow = totalAirFlow / count
-    
+
+    -- Factores adicionales (solar, terreno, etc.)
     local sunDirection = gDisasters_GetSunEnvDir() or gDisasters_GetSunDir()
     local solarInfluence = 0
-    local coolingEffect = 0
     if sunDirection then
         local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
         solarInfluence = solarRadiation * solarInfluenceCoefficient
-        coolingEffect = (solarInfluence > 0) and 0 or -coolingFactor
     end
-    
+
     local currentTemperature = currentCell.temperature or 0
     local cloudDensity = currentCell.cloudDensity or 0
     local terrainType = currentCell.terrainType or "land"
@@ -173,31 +165,31 @@ function CalculateTemperature(x, y, z)
         latentHeat = (currentTemperature > freezingTemperature) and calculateCondensationLatentHeat(cloudDensity) or calculateFreezingLatentHeat(cloudDensity)
     end
 
-    local AirflowEffect = AirflowCoefficient * averageAirFlow
     local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature)
     
-    local newTemperature = currentTemperature + temperatureChange + AirflowEffect + terrainTemperatureEffect + solarInfluence + coolingEffect + latentHeat
-    
+    local newTemperature = currentTemperature + temperatureChange + terrainTemperatureEffect + solarInfluence + latentHeat
+
     return math.Clamp(newTemperature, minTemperature, maxTemperature)
 end
 
 function CalculateHumidity(x, y, z)
     local totalHumidity = 0
-    local totalAirFlow = 0
     local count = 0
 
     local currentCell = GridMap[x][y][z]
+    if not currentCell then return 0 end -- Verificar que la celda actual exista
 
     for dx = -1, 1 do
         for dy = -1, 1 do
             for dz = -1, 1 do
-                local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
-                if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                    local neighborCell = GridMap[nx][ny][nz]
-                    if neighborCell.humidity and neighborCell.Airflow then
-                        totalHumidity = totalHumidity + neighborCell.humidity
-                        totalAirFlow = totalAirFlow + neighborCell.Airflow
-                        count = count + 1
+                if dx ~= 0 or dy ~= 0 or dz ~= 0 then
+                    local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                    if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                        local neighborCell = GridMap[nx][ny][nz]
+                        if neighborCell.humidity then
+                            totalHumidity = totalHumidity + neighborCell.humidity
+                            count = count + 1
+                        end
                     end
                 end
             end
@@ -207,25 +199,21 @@ function CalculateHumidity(x, y, z)
     if count == 0 then return currentCell.humidity or 0 end
 
     local averageHumidity = totalHumidity / count
-    local averageAirFlow = totalAirFlow / count
 
+    -- Factores adicionales (solar, terreno, etc.)
     local sunDirection = gDisasters_GetSunEnvDir() or gDisasters_GetSunDir()
     local solarHumidityInfluence = 0
-    local coolingHumidityEffect = 0
     if sunDirection then
         local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
         solarHumidityInfluence = solarRadiation * solarInfluenceCoefficient
-        coolingHumidityEffect = (solarHumidityInfluence > 0) and 0 or nighttimeHumidityIncrease
     end
-
 
     local currentHumidity = currentCell.humidity or 0
     local terrainType = currentCell.terrainType or "land"
     local terrainHumidityEffect = (terrainType == "water" and waterHumidityEffect) or (terrainType == "mountain" and mountainHumidityEffect) or landHumidityEffect
 
-    local AirflowEffect = AirflowCoefficient * averageAirFlow
     local humidityChange = HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
-    local newHumidity = currentHumidity + humidityChange + AirflowEffect + terrainHumidityEffect + solarHumidityInfluence + coolingHumidityEffect
+    local newHumidity = currentHumidity + humidityChange + terrainHumidityEffect + solarHumidityInfluence
 
     return math.Clamp(newHumidity, minHumidity, maxHumidity)
 end
@@ -236,8 +224,7 @@ function CalculatePressure(x, y, z)
     local cell = GridMap[x][y][z]
     if not cell then return 0 end -- Si la celda no existe, retornar 0
 
-    local temperature = cell.temperature or 0 
-    
+    local temperature = cell.temperature or 0
     if temperature == 0 then
         temperature = 0.01 -- Ajuste mínimo para evitar división por cero
     end
@@ -248,7 +235,7 @@ function CalculatePressure(x, y, z)
     local newpressure = (gas_constant * temperature * (1 + ((specific_heat_vapor * humidity) / temperature))) * 100
 
     -- Asegurarse de que la presión esté dentro del rango
-    return math.Clamp(newpressure, minPressure,maxPressure)
+    return math.Clamp(newpressure, minPressure, maxPressure)
 end
 
 function CalculateAirFlow(x, y, z)
@@ -258,34 +245,42 @@ function CalculateAirFlow(x, y, z)
 
     local currentCell = GridMap[x][y][z]
 
+    -- Verificar que la celda actual exista
+    if not currentCell then
+        return 0
+    end
+
     for dx = -1, 1 do
         for dy = -1, 1 do
             for dz = -1, 1 do
-                local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
-                if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                    local neighborCell = GridMap[nx][ny][nz]
-                    
+                -- Evitar la celda actual en el cálculo
+                if dx ~= 0 or dy ~= 0 or dz ~= 0 then
+                    local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                    if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                        local neighborCell = GridMap[nx][ny][nz]
+                        
+                        local deltaPressure = neighborCell.pressure - currentCell.pressure
 
-                    local deltaPressure = neighborCell.pressure - currentCell.pressure
-
-                    -- Sumar la diferencia de presión a los totales en cada eje
-                    totalDeltaPressureX = totalDeltaPressureX + deltaPressure * dx
-                    totalDeltaPressureY = totalDeltaPressureY + deltaPressure * dy
-                    totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * dz
+                        -- Sumar la diferencia de presión a los totales en cada eje
+                        totalDeltaPressureX = totalDeltaPressureX + deltaPressure * dx
+                        totalDeltaPressureY = totalDeltaPressureY + deltaPressure * dy
+                        totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * dz
+                    end
                 end
             end
         end
     end
-   
+
     -- Crear un vector de flujo de aire
     local airflowVector = Vector(totalDeltaPressureX, totalDeltaPressureY, totalDeltaPressureZ)
 
     -- Calcular la magnitud del flujo de aire
-    local airflowMagnitude = math.sqrt(airflowVector.x^2 + airflowVector.y^2 + airflowVector.z^2)
+    local airflowMagnitude = airflowVector:Length()
 
     local newAirflow = airflowMagnitude * AirflowCoefficient
 
-    return math.Clamp(newAirflow , minAirflow, maxAirflow)
+    -- Clampear el flujo de aire entre los valores mínimos y máximos permitidos
+    return math.Clamp(newAirflow, minAirflow, maxAirflow)
 end
 
 function CalculateAirFlowDirection(x, y, z)
@@ -295,19 +290,27 @@ function CalculateAirFlowDirection(x, y, z)
 
     local currentCell = GridMap[x][y][z]
 
+    -- Verificar que la celda actual exista
+    if not currentCell then
+        return Vector(0, 0, 0)
+    end
+
     for dx = -1, 1 do
         for dy = -1, 1 do
             for dz = -1, 1 do
-                local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
-                if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                    local neighborCell = GridMap[nx][ny][nz]
+                -- Evitar la celda actual en el cálculo
+                if dx ~= 0 or dy ~= 0 or dz ~= 0 then
+                    local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                    if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                        local neighborCell = GridMap[nx][ny][nz]
+                        
+                        local deltaPressure = neighborCell.pressure - currentCell.pressure
 
-                    local deltaPressure = neighborCell.pressure - currentCell.pressure
-
-                    -- Sumar la diferencia de presión a los totales en cada eje
-                    totalDeltaPressureX = totalDeltaPressureX + deltaPressure * dx
-                    totalDeltaPressureY = totalDeltaPressureY + deltaPressure * dy
-                    totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * dz
+                        -- Sumar la diferencia de presión a los totales en cada eje
+                        totalDeltaPressureX = totalDeltaPressureX + deltaPressure * dx
+                        totalDeltaPressureY = totalDeltaPressureY + deltaPressure * dy
+                        totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * dz
+                    end
                 end
             end
         end
@@ -317,14 +320,14 @@ function CalculateAirFlowDirection(x, y, z)
     local airflowVector = Vector(totalDeltaPressureX, totalDeltaPressureY, totalDeltaPressureZ)
 
     -- Calcular la magnitud del flujo de aire
-    local airflowMagnitude = math.sqrt(airflowVector.x^2 + airflowVector.y^2 + airflowVector.z^2)
+    local airflowMagnitude = airflowVector:Length()
 
     -- Normalizar el vector de flujo de aire para obtener la dirección del viento
     local windDirection = Vector(0, 0, 0)
     if airflowMagnitude > 0 then
         windDirection.x = airflowVector.x / airflowMagnitude
         windDirection.y = airflowVector.y / airflowMagnitude
-        windDirection.z = 0
+        windDirection.z = airflowVector.z / airflowMagnitude
     end
 
     return windDirection
