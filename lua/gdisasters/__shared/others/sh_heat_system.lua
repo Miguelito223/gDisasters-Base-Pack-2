@@ -229,7 +229,7 @@ function CalculateHumidity(x, y, z)
     local currentHumidity = GridMap[x][y][z].humidity or 0
     local AirflowEffect = AirflowCoefficient * averageAirFlow
     local humidityChange = HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
-    local newHumidity = math.Clamp(currentHumidity + humidityChange + AirflowEffect + humidityInfluence + solarHumidityInfluence + nighttimeHumidityIncrease,minHumidity,maxHumidity)
+    local newHumidity = math.Clamp(currentHumidity + humidityChange + AirflowEffect + humidityInfluence + solarHumidityInfluence + coolingHumidityEffect,minHumidity,maxHumidity)
 
     return newHumidity
 end
@@ -881,7 +881,7 @@ function UpdatePlayerGrid()
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = cell.Airflow
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = cell.Airflow_Direction
-                        print("Actual grid: x: " .. px .. ", y: ".. py .. ", z: " .. pz .. ", Terrain Type: " .. cell.terrainType .. ", Temp: " .. cell.temperature)
+                        print("Actual grid: x: " .. px .. ", y: ".. py .. ", z: " .. pz .. ", Terrain Type: " .. cell.terrainType .. ", Temp: " .. cell.temperature .. ", Humidity: " .. cell.humidity .. ", Pressure: " .. cell.pressure .. ", Arflow Speed: " .. cell.Airflow )
                     else
                         -- Manejo de valores no válidos
                         print("Error: Valores no válidos en la celda de la cuadrícula.")
