@@ -18,7 +18,7 @@ local maxPressure = 106000 -- Presión máxima en milibares
 local minAirflow = 0 -- Presión mínima en milibares
 local maxAirflow = 10000 -- Presión máxima en milibares
 
-local maxBatchSize = 5000 -- Número máximo de celdas a actualizar por frame
+local maxBatchSize = 100 -- Número máximo de celdas a actualizar por frame
 local updatePercentage = 0.01 -- Porcentaje del grid a actualizar por frame
 local updateInterval = 1 -- Intervalo de actualización en segundos
 local updateBatchSize = math.ceil(totalgridSize * updatePercentage)
