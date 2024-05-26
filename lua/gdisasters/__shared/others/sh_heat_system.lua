@@ -39,12 +39,12 @@ local convergenceCoefficient = 0.01
 local TerrainCoefficient = 0.01
 
 
-local waterTemperatureEffect = -1   -- El agua tiende a mantener una temperatura más constante
+local waterTemperatureEffect = 1   -- El agua tiende a mantener una temperatura más constante
 local landTemperatureEffect = 4     -- La tierra se calienta y enfría más rápido que el agua
 local waterHumidityEffect = 5       -- El agua puede aumentar significativamente la humedad en su entorno
-local landHumidityEffect = -5        -- La tierra puede retener menos humedad que el agua
-local mountainTemperatureEffect = -3  -- Las montañas tienden a ser más frías debido a la altitud
-local mountainHumidityEffect = -4    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
+local landHumidityEffect = 5        -- La tierra puede retener menos humedad que el agua
+local mountainTemperatureEffect = 3  -- Las montañas tienden a ser más frías debido a la altitud
+local mountainHumidityEffect = 4    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
 
 local convergenceThreshold = 0.5
 local strongStormThreshold = 2.0
