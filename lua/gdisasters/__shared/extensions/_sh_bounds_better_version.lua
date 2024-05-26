@@ -122,10 +122,34 @@ end
 
 
 function getMapBounds()
-	if IsMapRegistered()==false then error("This map no have Bounds") return nil end 
+    if not IsMapRegistered() then
+        error("This map has no bounds")
+        return nil
+    end
 
-	local minVector, maxVector = game.GetWorld():GetModelBounds()
-	local map = game.GetMap()
+    local minVector, maxVector = game.GetWorld():GetModelBounds()
+    local map = game.GetMap()
+
+    -- Obtener los límites del mapa
+    local mapBounds = MAP_BOUNDS[map]
+
+    -- Verificar si los límites del mapa están disponibles
+    if mapBounds then
+		-- Definir límites del mapa
+		local mapMinX, mapMinY, mapMaxZ = mapBounds[2].x, mapBounds[2].y, mapBounds[2].z
+		local mapMaxX, mapMaxY, mapMinZ = mapBounds[1].x, mapBounds[1].y, mapBounds[1].z
+
+		-- Asegurar que las posiciones estén dentro de los límites del mapa
+		minVector.x = math.Clamp(minVector.x, mapMinX, mapMaxX)
+		minVector.y = math.Clamp(minVector.y, mapMinY, mapMaxY)
+		minVector.z = math.Clamp(minVector.z, mapMinZ, mapMaxZ)
+
+		maxVector.x = math.Clamp(maxVector.x, mapMinX, mapMaxX)
+		maxVector.y = math.Clamp(maxVector.y, mapMinY, mapMaxY)
+		maxVector.z = math.Clamp(maxVector.z, mapMinZ, mapMaxZ)
+	else
+        print("Map bounds not defined for this map, using spawn bounds")
+    end
 
 	return { Vector(maxVector.x,maxVector.y,minVector.z),Vector(minVector.x,minVector.y,maxVector.z), MAP_BOUNDS[map][3]}
 
