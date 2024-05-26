@@ -73,7 +73,7 @@ local MaxHail = GetConVar("gdisasters_heat_system_maxhail"):GetInt()
 
 local freezingTemperature = 0
 
-  -- Mantenemos este valor para el calor latente de congelación
+-- Mantenemos este valor para el calor latente de congelación
 local stormLatentHeatThreshold = 180  -- Ajustamos este valor a uno más bajo para una formación de tormenta más realista
 local hailLatentHeatThreshold = 200  -- Ajustamos este valor también a uno más bajo
 local cloudLatentHeatThreshold = 100  -- Umbral de calor latente necesario para la formación de nubes
@@ -82,37 +82,54 @@ local rainLatentHeatThreshold = 120   -- Umbral de calor latente necesario para 
 
 local maxDrawDistance = 100000
 
+function CalculateHourFromSunVector(sunDirection)
+    -- Parámetros para el modelo lineal
+    local sunrise = gDisasters.DayNightSystem.InternalVars.time.Dawn_End   -- Hora de salida del sol
+    local sunset = gDisasters.DayNightSystem.InternalVars.time.Dusk_End   -- Hora de puesta del sol
+    local noon = (sunrise + sunset) / 2  -- Hora del mediodía
+
+    -- Normalizar el vector de dirección del sol
+    local normalizedSunDirection = sunDirection:GetNormalized()
+
+    -- Calcular el ángulo de azimut del sol en grados
+    local sunAzimuth = math.deg(math.atan2(normalizedSunDirection.y, normalizedSunDirection.x))
+    if sunAzimuth < 0 then
+        sunAzimuth = sunAzimuth + 360
+    end
+
+    -- Convertir el ángulo de azimut a una hora aproximada del día
+    local hour = sunrise + (sunAzimuth / 360) * (sunset - sunrise)
+    if hour < 0 then
+        hour = hour + 24
+    end
+    return hour
+end
 
 -- Función para normalizar un vector
-function CalculateSolarRadiation(cellPosition, sunDirection)
-    -- Verificar si se proporcionan ambas direcciones
-    if not sunDirection or not cellPosition then
-        print("Error: No se encontro la direccion del sol o posicion de celda")
-        return 0  -- Si falta alguna dirección, no hay radiación solar
-    end
+function CalculateSolarRadiation(hour)
+    if not hour then return 0 end
 
-    if sunDirection.y < 0 then
-        print("El sol se escondio")
+    -- Parámetros para el modelo senoidal
+    local sunrise = 6   -- Hora de salida del sol
+    local sunset = 18   -- Hora de puesta del sol
+    local maxRadiation = 1  -- Radiación máxima normalizada (puede ser ajustada)
+
+    -- Verificar si la hora está fuera del rango de la luz solar
+    if hour < sunrise or hour > sunset then
+        print("Es de noche")
         return 0
     end
 
-    -- Normalizar la posición de la celda
-    local normalizedCellPosition = cellPosition:GetNormalized()
+    -- Calcular la fracción del día solar
+    local dayFraction = (hour - sunrise) / (sunset - sunrise)
 
-    if not normalizedCellPosition then
-        print("Error: la celda Normalizada devuelve nulo")
-        return 0
-    end
+    -- Calcular la radiación solar usando una función senoidal
+    local solarRadiation = maxRadiation * math.sin(math.pi * dayFraction)
 
-    -- Verificar que ambos vectores tienen el método Dot
-    if type(sunDirection.Dot) ~= "function" or type(normalizedCellPosition.Dot) ~= "function" then
-        print("Error: Uno de los vectores no tiene el método Dot.")
-        return 0
-    end
-
-    -- Calcular el producto escalar normalizado entre los vectores
-    local solarRadiation = sunDirection:Dot(normalizedCellPosition)
-    return math.Clamp(solarRadiation,0,5)
+    -- Asegurarse de que la radiación esté en el rango de 0 a maxRadiation
+    solarRadiation = math.max(solarRadiation, 0)
+    
+    return solarRadiation
 end
 
 function CalculateTemperature(x, y, z)
@@ -144,9 +161,11 @@ function CalculateTemperature(x, y, z)
     local averageTemperature = totalTemperature / count
 
     -- Factores adicionales (solar, terreno, etc.)
-    local sunDirection = gDisasters_GetSunDir()
-    local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
+    local Hour = CalculateHourFromSunVector(gDisasters_GetSunDir())
+    print(Hour)
+    local solarRadiation = CalculateSolarRadiation(Hour)
     local solarInfluence = solarRadiation * solarInfluenceCoefficient
+    print(solarInfluence )
     
     local coldeffect = 0
     if solarInfluence <= 0 then

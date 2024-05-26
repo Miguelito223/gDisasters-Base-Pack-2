@@ -256,4 +256,12 @@ concommand.Add( "gdisasters_dnc_gettime", function( pl, cmd, args )
 	end
 
 end );
-
+hook.Add( "Think", "gDisastersSettingSunDir", function()
+	if GetConVar("gdisasters_graphics_atmosphere"):GetInt() >= 1 and gDisasters.DayNightSystem.InternalVars.Enabled:GetInt() <= 0 then 
+		local env_sun = ents.FindByClass("env_sun")[1]
+		if env_sun then
+			local sunDir = env_sun:GetInternalVariable("sun_dir")
+			gDisasters_SetSunDir(sunDir)
+		end
+	end
+end)
