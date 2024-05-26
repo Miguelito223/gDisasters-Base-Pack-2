@@ -37,6 +37,7 @@ local AirflowCoefficient = 0.01
 local cloudDensityCoefficient = 0.01  -- Coeficiente para convertir humedad en densidad de nubes
 local convergenceCoefficient = 0.01
 local TerrainCoefficient = 0.01
+local CoolingCoefficient = 0.01
 
 
 local waterTemperatureEffect = 1   -- El agua tiende a mantener una temperatura más constante
@@ -143,7 +144,7 @@ function CalculateTemperature(x, y, z)
     
     local coldeffect = 0
     if solarInfluence <= 0 then
-        coldeffect = -coolingFactor
+        coldeffect = -coolingFactor * CoolingCoefficient
     end
 
     local currentTemperature = currentCell.temperature or 0
