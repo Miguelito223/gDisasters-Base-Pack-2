@@ -25,8 +25,7 @@ local nextUpdateGridPlayer = CurTime()
 local nextUpdateWeather = CurTime()
 local nextThunderThink = CurTime()
 
-local coolingFactor = 0.5
-local nighttimeHumidityIncrease = 0.05
+local coolingFactor = 0.05
 local gas_constant = 8.314 -- J/(mol·K)
 local specific_heat_vapor = 1.996 -- J/(g·K)
 
@@ -36,7 +35,7 @@ local HumidityDiffusionCoefficient = 0.01
 local solarInfluenceCoefficient = 0.01
 local AirflowCoefficient = 0.01
 local cloudDensityCoefficient = 0.01  -- Coeficiente para convertir humedad en densidad de nubes
-
+local convergenceCoefficient = 0.01
 
 
 local waterTemperatureEffect = 0.01   -- El agua tiende a mantener una temperatura más constante
@@ -50,6 +49,11 @@ local convergenceThreshold = 0.5
 local strongStormThreshold = 2.0
 local hailThreshold = 1.5
 local rainThreshold = 1.0
+local cloudFormationThreshold = 0.3 -- This is a starting point; adjust based on testing
+local rainFormationThreshold = 0.6 -- This is a starting point; adjust based on testing
+local hailFormationThreshold = 0.3 -- This is a starting point; adjust based on testing
+local snowTemperatureThreshold = 0
+local snowFormationThreshold = 0.5
 local thunderstormThreshold = 0.8 
 local cloudThreshold = 0.5
 local cloudDensityThreshold = 0.7
@@ -92,6 +96,11 @@ function CalculateSolarRadiation(cellPosition, sunDirection)
         return 0  -- Si falta alguna dirección, no hay radiación solar
     end
 
+    if sunDirection.z < 0 then
+        print("El sol se escondio")
+        return 0
+    end
+
     -- Normalizar la posición de la celda
     local normalizedCellPosition = cellPosition:GetNormalized()
 
@@ -110,7 +119,7 @@ function CalculateSolarRadiation(cellPosition, sunDirection)
     local dotProduct = sunDirection:Dot(normalizedCellPosition)
 
     -- Asegurarse de que el valor esté entre 0 y 1
-    local solarRadiation = math.max(0, dotProduct)
+    local solarRadiation = math.Clamp(dotProduct, 0, 1)
 
     return solarRadiation
 end
@@ -144,11 +153,16 @@ function CalculateTemperature(x, y, z)
     local averageTemperature = totalTemperature / count
 
     -- Factores adicionales (solar, terreno, etc.)
-    local sunDirection = gDisasters_GetSunEnvDir() or gDisasters_GetSunDir()
+    local sunDirection = gDisasters_GetSunEnvDir()
     local solarInfluence = 0
     if sunDirection then
         local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
         solarInfluence = solarRadiation * solarInfluenceCoefficient
+    end
+    
+    local coldeffect = 0
+    if solarInfluence <= 0 then
+        coldeffect = -coolingFactor
     end
 
     local currentTemperature = currentCell.temperature or 0
@@ -175,7 +189,7 @@ function CalculateTemperature(x, y, z)
 
     local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature)
     
-    local newTemperature = currentTemperature + temperatureChange + terrainTemperatureEffect + solarInfluence + latentHeat 
+    local newTemperature = currentTemperature + temperatureChange + terrainTemperatureEffect + solarInfluence + latentHeat + coldeffect
 
     return math.Clamp(newTemperature, minTemperature, maxTemperature)
 end
@@ -381,7 +395,32 @@ function GetCellType(x, y, z)
 end
 
 
-
+function CreateSnow(x, y, z)
+    if CLIENT then return end -- No ejecutar en el cliente (solo en el servidor)
+    
+    -- Crear una entidad de partículas para la nieve
+    local particle = ents.Create("env_spritetrail")
+    if not IsValid(particle) then return end -- Verificar si la entidad fue creada correctamente
+    
+    -- Establecer las propiedades de la partícula de nieve
+    particle:SetPos(Vector(x, y, z)) -- Establecer la posición de la partícula
+    particle:SetKeyValue("lifetime", "3") -- Duración de la partícula
+    particle:SetKeyValue("startwidth", "1") -- Ancho inicial de la partícula
+    particle:SetKeyValue("endwidth", "0") -- Ancho final de la partícula
+    particle:SetKeyValue("spritename", "effects/snowflake") -- Nombre del sprite para la partícula de nieve
+    particle:SetKeyValue("rendermode", "5") -- Modo de renderizado de la partícula
+    particle:SetKeyValue("rendercolor", "255 255 255") -- Color de la partícula de nieve (blanco)
+    particle:SetKeyValue("spawnflags", "1") -- Banderas de aparición para la partícula
+    particle:Spawn() -- Generar la partícula
+    particle:Activate() -- Activar la partícula
+    
+    -- Programar la eliminación de la partícula después de un tiempo
+    timer.Simple(5, function()
+        if IsValid(particle) then
+            particle:Remove() -- Eliminar la partícula
+        end
+    end)
+end
 
 -- Función para crear partículas de lluvia
 function CreateRain(x, y, z)
@@ -402,7 +441,7 @@ function CreateRain(x, y, z)
     particle:Spawn() -- Spawn the particle
     particle:Activate() -- Activate the particle
 
-    timer.Simple(2, function() -- Remove the particle after 2 seconds
+    timer.Simple(5, function() -- Remove the particle after 2 seconds
         if IsValid(particle) then particle:Remove() end
     end)
 end
@@ -449,6 +488,30 @@ function CheckHailFormation(x, y, z)
     if latentHeat > hailLatentHeatThreshold then
         -- Trigger hail formation logic here
         CreateHail(x, y, z)
+    end
+end
+
+function CheckSnowFormation(x, y, z)
+    local currentCell = GridMap[x][y][z]
+    if currentCell.cloudDensity >= snowFormationThreshold and currentCell.temperature <= snowTemperatureThreshold then
+        -- Trigger snow formation logic here
+        CreateSnow(x, y, z)
+    end
+end
+
+function CheckCloudFormation(x, y, z)
+    local currentCell = GridMap[x][y][z]
+    if currentCell.cloudDensity >= cloudFormationThreshold then
+        -- Trigger cloud formation logic here
+        CreateCloud(x, y, z)
+    end
+end
+
+function CheckRainFormation(x, y, z)
+    local currentCell = GridMap[x][y][z]
+    if currentCell.cloudDensity >= rainFormationThreshold then
+        -- Trigger rain formation logic here
+        CreateRain(x, y, z)
     end
 end
 
@@ -701,7 +764,7 @@ function CreateHail(x, y, z)
     hail:Spawn()
     hail:Activate()
 
-    timer.Simple(2, function() -- Remove the particle after 2 seconds
+    timer.Simple(5, function() -- Remove the particle after 2 seconds
         if IsValid(hail) then hail:Remove() end
     end)
 end
@@ -718,46 +781,32 @@ function SimulateHail()
         end
     end
 end
-function SimulateConvergence(x,y,z)
-  
-    local convergenceStrength = 0
-    local airSpeedSum = 0
-    local neighborCount = 0
+function SimulateConvergence(x, y, z)
+    local currentCell = GridMap[x][y][z]
+    if not currentCell then return end
 
-    local cell = GridMap[x][y][z]
+    local totalCloudDensity = 0
+    local count = 0
 
     for dx = -1, 1 do
         for dy = -1, 1 do
             for dz = -1, 1 do
-                if not (dx == 0 and dy == 0 and dz == 0) then -- Evitar la celda actual
-                    local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
-                    if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
-                        local neighborCell = GridMap[nx][ny][nz]
-                        local airSpeed = math.abs((cell.pressure or 0) - (neighborCell.pressure or 0))
-                        airSpeedSum = airSpeedSum + airSpeed
-                        neighborCount = neighborCount + 1
+                local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                if GridMap[nx] and GridMap[nx][ny] and GridMap[nx][ny][nz] then
+                    local neighborCell = GridMap[nx][ny][nz]
+                    if neighborCell.cloudDensity then
+                        totalCloudDensity = totalCloudDensity + neighborCell.cloudDensity
+                        count = count + 1
                     end
                 end
             end
         end
     end
 
-    if neighborCount > 0 then
-        convergenceStrength = airSpeedSum / neighborCount
+    if count == 0 then return end
 
-        if convergenceStrength > convergenceThreshold then
-            if convergenceStrength > strongStormThreshold then
-                CreateStorm(x, y, z)
-            elseif convergenceStrength > hailThreshold then
-                CreateHail(x,y,z)
-            elseif convergenceStrength > rainThreshold then
-                CreateRain(x,y,z)
-            elseif convergenceStrength > cloudThreshold then
-                CreateCloud(x, y, z)
-            end
-        end
-    end
-   
+    local averageCloudDensity = totalCloudDensity / count
+    currentCell.cloudDensity = math.min(currentCell.cloudDensity + (averageCloudDensity * convergenceCoefficient), 1)
 end
 
 function SpawnWeatherEntity(weatherType, x, y, z)
@@ -837,12 +886,13 @@ function UpdateWeather()
                         
                         UpdateCloudDensity(x,y,z)
                         UpdateWeatherInCell(x, y, z)
-
-                        SimulateConvergence(x, y, z)
-                        -- Check for storm formation
                         CheckStormFormation(x, y, z)
-                        -- Check for hail formation
                         CheckHailFormation(x, y, z)
+                        CheckCloudFormation(x, y, z)
+                        CheckRainFormation(x, y, z)
+                        CheckSnowFormation(x,y,z)
+                        SimulateConvergence(x, y, z)
+
 
                         
                     end

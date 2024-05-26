@@ -858,16 +858,14 @@ function gDisasters_GetSunEnvDir()
 
     if sunEntity then
         -- Obtén la dirección del sol desde la entidad env_sun
-        local sunDir = sunEntity:GetInternalVariable("sun_dir")
+        local sunDir = sunEntity:GetAngles():Forward()
 
         if sunDir then
             return sunDir
         else
-            print("Sun direction is nil.")
             return nil
         end
     else
-        print("No env_sun entity found.")
         return nil
     end
 end
