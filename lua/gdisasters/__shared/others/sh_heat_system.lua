@@ -82,29 +82,6 @@ local rainLatentHeatThreshold = 120   -- Umbral de calor latente necesario para 
 
 local maxDrawDistance = 100000
 
-function CalculateHourFromSunVector(sunDirection)
-    -- Parámetros para el modelo lineal
-    local sunrise = gDisasters.DayNightSystem.InternalVars.time.Dawn_End   -- Hora de salida del sol
-    local sunset = gDisasters.DayNightSystem.InternalVars.time.Dusk_End   -- Hora de puesta del sol
-    local noon = (sunrise + sunset) / 2  -- Hora del mediodía
-
-    -- Normalizar el vector de dirección del sol
-    local normalizedSunDirection = sunDirection:GetNormalized()
-
-    -- Calcular el ángulo de azimut del sol en grados
-    local sunAzimuth = math.deg(math.atan2(normalizedSunDirection.y, normalizedSunDirection.x))
-    if sunAzimuth < 0 then
-        sunAzimuth = sunAzimuth + 360
-    end
-
-    -- Convertir el ángulo de azimut a una hora aproximada del día
-    local hour = sunrise + (sunAzimuth / 360) * (sunset - sunrise)
-    if hour < 0 then
-        hour = hour + 24
-    end
-    return hour
-end
-
 -- Función para normalizar un vector
 function CalculateSolarRadiation(hour)
     if not hour then return 0 end
@@ -161,7 +138,7 @@ function CalculateTemperature(x, y, z)
     local averageTemperature = totalTemperature / count
 
     -- Factores adicionales (solar, terreno, etc.)
-    local Hour = CalculateHourFromSunVector(gDisasters_GetSunDir())
+    local Hour = gDisasters.DayNightSystem.Time
     print(Hour)
     local solarRadiation = CalculateSolarRadiation(Hour)
     local solarInfluence = solarRadiation * solarInfluenceCoefficient
