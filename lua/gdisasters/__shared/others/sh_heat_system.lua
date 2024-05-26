@@ -760,7 +760,72 @@ function SimulateConvergence(x,y,z)
    
 end
 
+function SpawnWeatherEntity(weatherType, x, y, z)
+    local entityName = ""
+    if weatherType == "rain" then
+        entityName = "gd_heatsys_raincell"
+    elseif weatherType == "thunder" then
+        entityName = "gd_heatsys_thundercell"
+    elseif weatherType == "hail" then
+        entityName = "gd_heatsys_hailcell"
+    else
+        return
+    end
 
+    local weatherEntity = ents.Create(entityName)
+    if not IsValid(weatherEntity) then return end
+
+    weatherEntity:SetPos(Vector(x, y, z))
+    weatherEntity:Spawn()
+    weatherEntity:SetNoDraw(true) -- Make the entity invisible
+    weatherEntity:SetCollisionGroup(COLLISION_GROUP_WORLD) -- Disable collision
+
+    -- Store the entity in the grid map for later reference
+    GridMap[x][y][z][weatherType .. "Entity"] = weatherEntity
+end
+
+-- Function to remove weather entities
+function RemoveWeatherEntity(weatherType, x, y, z)
+    local weatherEntity = GridMap[x][y][z][weatherType .. "Entity"]
+    if IsValid(weatherEntity) then
+        weatherEntity:Remove()
+        GridMap[x][y][z][weatherType .. "Entity"] = nil
+    end
+end
+
+
+function UpdateWeatherInCell(x, y, z)
+    local cell = GridMap[x][y][z]
+    if not cell then return end
+
+    -- Determine the weather type based on current conditions
+    local weatherType = "clear"
+    if cell.cloudDensity > someThreshold then
+        if cell.temperature < freezingTemperature then
+            weatherType = "hail"
+        elseif someThunderstormCondition then
+            weatherType = "thunder"
+        elseif someRainCondition then
+            weatherType = "rain"
+        end
+    end
+
+    -- If the weather type has changed, update the entity
+    if cell.weather ~= weatherType then
+        -- Remove old weather entity if it exists
+        if cell.weather and cell.weather ~= "clear" then
+            RemoveWeatherEntity(cell.weather, x, y, z)
+        end
+        
+        -- Spawn new weather entity if necessary
+        if weatherType ~= "clear" then
+            SpawnWeatherEntity(weatherType, x, y, z)
+        end
+
+        -- Update the cell's weather type
+        cell.weather = weatherType
+    end
+end
 
 -- Llamar a SimulateClouds() para simular la formación y movimiento de las nubes
 function UpdateWeather()
@@ -772,6 +837,7 @@ function UpdateWeather()
                     for z, cell in pairs(row) do
                         
                         UpdateCloudDensity(x,y,z)
+                        UpdateWeatherCell(x, y, z)
 
                         SimulateConvergence(x, y, z)
                         -- Check for storm formation
@@ -810,6 +876,7 @@ function GenerateGrid(ply)
                 GridMap[x][y][z].Airflow_Direction = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Direction"]
                 GridMap[x][y][z].cloudDensity = 0
                 GridMap[x][y][z].terrainType = "land"
+                GridMap[x][y][z].weather = "clear"
             end
         end
     end
