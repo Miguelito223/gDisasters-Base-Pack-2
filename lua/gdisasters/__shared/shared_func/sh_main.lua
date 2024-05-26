@@ -848,10 +848,6 @@ end
 
 function gDisasters_GetSunDir()
 
-	return GetGlobalAngle("gdSunDir")
-end
-
-function gDisasters_GetSunEnvDir()
     -- Encuentra la entidad env_sun
     local sunEntities = ents.FindByClass("env_sun")
     local sunEntity = sunEntities and sunEntities[1] or nil
@@ -859,16 +855,22 @@ function gDisasters_GetSunEnvDir()
     if sunEntity then
         -- Obtén la dirección del sol desde la entidad env_sun
         local sunDir = sunEntity:GetAngles():Forward()
+		local sundirdnc = GetGlobalAngle("gdSunDir")
 
         if sunDir then
             return sunDir
+		elseif sundirdnc then
+			return sundirdnc
         else
             return nil
         end
     else
         return nil
     end
+
+	
 end
+
 
 function gDisasters_SetMoonDir(value)
 

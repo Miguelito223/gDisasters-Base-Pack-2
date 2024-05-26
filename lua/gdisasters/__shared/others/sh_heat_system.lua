@@ -153,7 +153,7 @@ function CalculateTemperature(x, y, z)
     local averageTemperature = totalTemperature / count
 
     -- Factores adicionales (solar, terreno, etc.)
-    local sunDirection = gDisasters_GetSunEnvDir()
+    local sunDirection = gDisasters_GetSunDir()
     local solarInfluence = 0
     if sunDirection then
         local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
