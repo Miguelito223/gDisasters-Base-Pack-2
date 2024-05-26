@@ -2,9 +2,23 @@ function gDisasters_PostSpawnSH()
     local function gDisasters_SetupConvars()
         --Heat System
 
-        CreateConVar( "gdisasters_heat_system", "0", {FCVAR_ARCHIVE}, "" )
-
-        --dnc
+        CreateConVar( "gdisasters_heat_system_enabled", "0", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_heat_system_updatebatchsize", "100", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_heat_system_gridsize", "1000", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_heat_system_maxclouds", "5", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_heat_system_maxraindrop", "5", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_heat_system_maxhail", "5", {FCVAR_ARCHIVE}, "" )
+  		CreateConVar( "gdisasters_heat_system_maxtemp", "-50", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_heat_system_maxhumidity", "100", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_heat_system_maxpressure", "106000", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_heat_system_maxairflow", "10000", {FCVAR_ARCHIVE}, "" )
+   		CreateConVar( "gdisasters_heat_system_mintemp", "-50", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_heat_system_minhumidity", "0", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_heat_system_minpressure", "94000", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_heat_system_minairflow", "10000", {FCVAR_ARCHIVE}, "" )
+                           
+		
+		--dnc
 
         gDisasters.DayNightSystem.InternalVars.Enabled = CreateConVar( "gdisasters_dnc_enabled", "0", {FCVAR_ARCHIVE}, "" )
         gDisasters.DayNightSystem.InternalVars.RealTime = CreateConVar( "gdisasters_dnc_realtime", "0", {FCVAR_ARCHIVE}, "" )

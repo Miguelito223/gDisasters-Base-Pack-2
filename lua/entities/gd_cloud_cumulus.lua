@@ -47,7 +47,7 @@ function ENT:Initialize()
 		end 
 
 		self:SetAngles( Angle(0,math.random(1,180), 0))
-		if GetConVar("gdisasters_heat_system"):GetInt() <= 0 then 
+		if GetConVar("gdisasters_heat_system_enabled"):GetInt() <= 0 then 
 			self:AtmosphericReposition()
 		end
 		self:SetColor(self.DefaultColor)
@@ -104,11 +104,19 @@ function ENT:AtmosphericReposition()
 end
 
 function ENT:MoveCloud()
-	local wind_speed, wind_dir = GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"], GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]
-	local next_pos = self:GetPos() + (wind_dir * (wind_speed/10))
-	self:SetPos(next_pos)
-end
+    -- Obtener la velocidad y la dirección del viento del sistema global
+    local wind_speed = GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"]
+    local wind_dir = GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]
 
+    -- Normalizar la dirección del viento para asegurar que tenga una magnitud de 1
+    local normalized_wind_dir = -wind_dir:GetNormalized()
+
+    -- Calcular la nueva posición de la nube
+    local next_pos = self:GetPos() + (normalized_wind_dir * (wind_speed / 10))
+
+    -- Establecer la nueva posición de la nube
+    self:SetPos(next_pos)
+end
 
 function ENT:Think()
 	if (CLIENT) then 

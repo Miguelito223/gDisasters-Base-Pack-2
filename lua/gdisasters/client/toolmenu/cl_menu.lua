@@ -230,10 +230,22 @@ local function gDisastersAutospawn( CPanel )
 end
 
 local function gDisastersHeatSystemBeta( CPanel )
+	CreateSliderConVariable(CPanel, "Grid Size", 1, 5000, 0, "gdisasters_heat_system_gridsize" )
+	CreateSliderConVariable(CPanel, "Update Batch size", 1, 5000, 0, "gdisasters_heat_system_updatebatchsize" )
+	CreateSliderConVariable(CPanel, "Max hail", 1, 100, 0, "gdisasters_heat_system_maxhail" )
+	CreateSliderConVariable(CPanel, "Max raindrop", 1, 100, 0, "gdisasters_heat_system_maxraindrop" )
+	CreateSliderConVariable(CPanel, "Max clouds", 1, 100, 0, "gdisasters_heat_system_maxclouds" )
+	CreateSliderConVariable(CPanel, "Max Temp", -273, 273, 0, "gdisasters_heat_system_maxtemp" )
+	CreateSliderConVariable(CPanel, "Max Humidity", 0, 100, 0, "gdisasters_heat_system_maxhumidity" )
+	CreateSliderConVariable(CPanel, "Max Pressure", 94000, 106000, 0, "gdisasters_heat_system_maxpressure" )
+	CreateSliderConVariable(CPanel, "Max Airflow", 0, 100000, 0, "gdisasters_heat_system_maxairflow" )
+	CreateSliderConVariable(CPanel, "Min Temp", -273, 273, 0, "gdisasters_heat_system_mintemp" )
+	CreateSliderConVariable(CPanel, "Min Humidity", 0, 100, 0, "gdisasters_heat_system_minhumidity" )
+	CreateSliderConVariable(CPanel, "Min Pressure", 94000, 106000, 0, "gdisasters_heat_system_minpressure" )
+	CreateSliderConVariable(CPanel, "Min Airflow", 0, 100000, 0, "gdisasters_heat_system_minairflow" )
 
-	CreateTickboxConVariable(CPanel, "gd_88", "gdisasters_heat_system");
+	CreateTickboxConVariable(CPanel, "gd_88", "gdisasters_heat_system_enabled");
 	CreateTickboxConVariable(CPanel, "gd_87", "gdisasters_graphics_draw_heatsystem_grid");
-
 end
 
 local function gDisastersSHhud( CPanel )

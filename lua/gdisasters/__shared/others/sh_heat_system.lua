@@ -5,21 +5,21 @@ LandSources = {}
 Cloud = {}
 
 -- Tamaño de la cuadrícula y rango de temperatura
-local gridSize = 5000 -- Tamaño de cada cuadrado en unidades
+local gridSize = GetConVar("gdisasters_heat_system_gridsize"):GetInt() -- Tamaño de cada cuadrado en unidades
 local totalgridSize = gridSize * gridSize * gridSize
 
 
-local minTemperature = -50 -- Temperatura mínima
-local maxTemperature = 50 -- Temperatura máxima
-local minHumidity = 0 -- Humedad mínima
-local maxHumidity = 100 -- Humedad máxima
-local minPressure = 94000 -- Presión mínima en milibares
-local maxPressure = 106000 -- Presión máxima en milibares
-local minAirflow = 0 -- Presión mínima en milibares
-local maxAirflow = 10000 -- Presión máxima en milibares
+local minTemperature = GetConVar("gdisasters_heat_system_mintemp"):GetInt()
+local maxTemperature = GetConVar("gdisasters_heat_system_maxtemp"):GetInt()
+local minHumidity = GetConVar("gdisasters_heat_system_minhumidity"):GetInt()
+local maxHumidity = GetConVar("gdisasters_heat_system_maxhumidity"):GetInt()
+local minPressure = GetConVar("gdisasters_heat_system_minpressure"):GetInt()
+local maxPressure = GetConVar("gdisasters_heat_system_maxpressure"):GetInt()
+local minAirflow = GetConVar("gdisasters_heat_system_minairflow"):GetInt()
+local maxAirflow = GetConVar("gdisasters_heat_system_maxairflow"):GetInt()
 
 local updateInterval = 1 -- Intervalo de actualización en segundos
-local updateBatchSize = 500
+local updateBatchSize = GetConVar("gdisasters_heat_system_updateBatchSize"):GetInt()
 local nextUpdateGrid = CurTime()
 local nextUpdateGridPlayer = CurTime()
 local nextUpdateWeather = CurTime()
@@ -39,12 +39,12 @@ local cloudDensityCoefficient = 0.01  -- Coeficiente para convertir humedad en d
 
 
 
-local waterTemperatureEffect = -0.01   -- El agua tiende a mantener una temperatura más constante
-local landTemperatureEffect = 0.04     -- La tierra se calienta y enfría más rápido que el agua
-local waterHumidityEffect = 0.05       -- El agua puede aumentar significativamente la humedad en su entorno
-local landHumidityEffect = -0.05        -- La tierra puede retener menos humedad que el agua
-local mountainTemperatureEffect = -0.03  -- Las montañas tienden a ser más frías debido a la altitud
-local mountainHumidityEffect = -0.04    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
+local waterTemperatureEffect = 0.1   -- El agua tiende a mantener una temperatura más constante
+local landTemperatureEffect = 0.4     -- La tierra se calienta y enfría más rápido que el agua
+local waterHumidityEffect = 0.5       -- El agua puede aumentar significativamente la humedad en su entorno
+local landHumidityEffect = 0.5        -- La tierra puede retener menos humedad que el agua
+local mountainTemperatureEffect = 0.3  -- Las montañas tienden a ser más frías debido a la altitud
+local mountainHumidityEffect = 0.4    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
 
 local convergenceThreshold = 0.5
 local strongStormThreshold = 2.0
@@ -60,16 +60,16 @@ local temperatureThreshold = 20
 local humidityThreshold = 75
 
 
-local MaxClouds = 5
-local MaxRainDrop = 1
-local MaxHail = 1
+local MaxClouds = GetConVar("gdisasters_heat_system_maxclouds"):GetInt()
+local MaxRainDrop = GetConVar("gdisasters_heat_system_maxraindrop"):GetInt()
+local MaxHail = GetConVar("gdisasters_heat_system_maxhail"):GetInt()
 
 local freezingTemperature = 0
 
-local condensationLatentHeat = 25  -- Reduciendo el valor a un nivel más razonable
-local freezingLatentHeat = 33  -- Mantenemos este valor para el calor latente de congelación
-local stormLatentHeatThreshold = 10  -- Ajustamos este valor a uno más bajo para una formación de tormenta más realista
-local hailLatentHeatThreshold = 20  -- Ajustamos este valor también a uno más bajo
+local condensationLatentHeat = 5  -- Reduciendo el valor a un nivel más razonable
+local freezingLatentHeat = -5  -- Mantenemos este valor para el calor latente de congelación
+local stormLatentHeatThreshold = -10  -- Ajustamos este valor a uno más bajo para una formación de tormenta más realista
+local hailLatentHeatThreshold = -5  -- Ajustamos este valor también a uno más bajo
 
 local maxDrawDistance = 100000
 
@@ -110,11 +110,7 @@ function CalculateSolarRadiation(cellPosition, sunDirection)
     -- Asegurarse de que el valor esté entre 0 y 1
     local solarRadiation = math.max(0, dotProduct)
 
-    -- Factor de intensidad solar máximo
-    local maxSolarIntensity = 1000 -- Puedes ajustar este valor según sea necesario
-
-    -- Escalar la radiación solar para obtener un valor más realista
-    solarRadiation = solarRadiation * maxSolarIntensity
+    solarRadiation = solarRadiation
 
     return solarRadiation
 end
@@ -161,9 +157,9 @@ function CalculateTemperature(x, y, z)
     local terrainTemperatureEffect = 0
     
     if (terrainType == "water" and waterTemperatureEffect) then
-        terrainTemperatureEffect = waterTemperatureEffect
+        terrainTemperatureEffect = -waterTemperatureEffect
     elseif (terrainType == "mountain" and mountainTemperatureEffect) then
-        terrainTemperatureEffect = mountainTemperatureEffect
+        terrainTemperatureEffect = -mountainTemperatureEffect
     else 
         terrainTemperatureEffect = landTemperatureEffect
     end
@@ -179,7 +175,7 @@ function CalculateTemperature(x, y, z)
 
     local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature)
     
-    local newTemperature = currentTemperature + temperatureChange + terrainTemperatureEffect + solarInfluence + latentHeat
+    local newTemperature = currentTemperature + temperatureChange + terrainTemperatureEffect + solarInfluence + latentHeat 
 
     return math.Clamp(newTemperature, minTemperature, maxTemperature)
 end
@@ -211,15 +207,6 @@ function CalculateHumidity(x, y, z)
     if count == 0 then return currentCell.humidity or 0 end
 
     local averageHumidity = totalHumidity / count
-
-    -- Factores adicionales (solar, terreno, etc.)
-    local sunDirection = gDisasters_GetSunEnvDir() or gDisasters_GetSunDir()
-    local solarHumidityInfluence = 0
-    if sunDirection then
-        local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
-        solarHumidityInfluence = solarRadiation * solarInfluenceCoefficient
-    end
-
     local currentHumidity = currentCell.humidity or 0
     local terrainType = currentCell.terrainType or "land"
     local terrainHumidityEffect = 0
@@ -227,13 +214,13 @@ function CalculateHumidity(x, y, z)
     if (terrainType == "water" and waterHumidityEffect) then
         terrainHumidityEffect = waterHumidityEffect
     elseif (terrainType == "mountain" and mountainHumidityEffect) then
-        terrainHumidityEffect = mountainHumidityEffect
+        terrainHumidityEffect = -mountainHumidityEffect
     else 
-        terrainHumidityEffect = landHumidityEffect
+        terrainHumidityEffect = -landHumidityEffect
     end
 
     local humidityChange = HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
-    local newHumidity = currentHumidity + humidityChange + terrainHumidityEffect + solarHumidityInfluence
+    local newHumidity = currentHumidity + humidityChange + terrainHumidityEffect
 
     return math.Clamp(newHumidity, minHumidity, maxHumidity)
 end
@@ -347,7 +334,7 @@ function CalculateAirFlowDirection(x, y, z)
     if airflowMagnitude > 0 then
         windDirection.x = airflowVector.x / airflowMagnitude
         windDirection.y = airflowVector.y / airflowMagnitude
-        windDirection.z = airflowVector.z / airflowMagnitude
+        windDirection.z = 0
     end
 
     return windDirection
@@ -777,7 +764,7 @@ end
 
 -- Llamar a SimulateClouds() para simular la formación y movimiento de las nubes
 function UpdateWeather()
-    if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
+    if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
         if CurTime() > nextUpdateWeather then
             nextUpdateWeather = CurTime() + updateInterval
             for x, column in pairs(GridMap) do
@@ -832,7 +819,7 @@ function GenerateGrid(ply)
 end
 
 function UpdateGrid()
-    if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
+    if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
         if CurTime() > nextUpdateGrid then
             nextUpdateGrid = CurTime() + updateInterval
 
@@ -868,7 +855,7 @@ function UpdateGrid()
     end
 end
 function UpdatePlayerGrid()
-    if GetConVar("gdisasters_heat_system"):GetInt() >= 1 then
+    if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
         if CurTime() > nextUpdateGridPlayer then
             nextUpdateGridPlayer = CurTime() + updateInterval
 
