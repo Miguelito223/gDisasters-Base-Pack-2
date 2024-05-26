@@ -50,7 +50,9 @@ local convergenceThreshold = 0.5
 local strongStormThreshold = 2.0
 local hailThreshold = 1.5
 local rainThreshold = 1.0
+local thunderstormThreshold = 0.8 
 local cloudThreshold = 0.5
+local cloudDensityThreshold = 0.7
 local stormTemperatureThreshold = 30 -- Umbral de temperatura para la generación de tormentas
 local stormPressureThreshold = 10000 -- Umbral de presión para la generación de tormentas
 local lowTemperatureThreshold = 10
@@ -796,14 +798,13 @@ function UpdateWeatherInCell(x, y, z)
     local cell = GridMap[x][y][z]
     if not cell then return end
 
-    -- Determine the weather type based on current conditions
     local weatherType = "clear"
-    if cell.cloudDensity > someThreshold then
-        if cell.temperature < freezingTemperature then
+    if cell.cloudDensity > cloudDensityThreshold then
+        if cell.temperature < freezingTemperature and cell.cloudDensity > hailThreshold then
             weatherType = "hail"
-        elseif someThunderstormCondition then
+        elseif cell.cloudDensity > thunderstormThreshold then
             weatherType = "thunder"
-        elseif someRainCondition then
+        elseif cell.cloudDensity > rainThreshold then
             weatherType = "rain"
         end
     end
@@ -835,7 +836,7 @@ function UpdateWeather()
                     for z, cell in pairs(row) do
                         
                         UpdateCloudDensity(x,y,z)
-                        UpdateWeatherCell(x, y, z)
+                        UpdateWeatherInCell(x, y, z)
 
                         SimulateConvergence(x, y, z)
                         -- Check for storm formation
