@@ -352,13 +352,36 @@ function ENT:UpdateDisplay()
 		
 	end
 	
-	local function GenerateHeatMapForHeatSystem (x, y)
+	local function GenerateHeatMapForRain (x, y)
 	    
 		local cx, cy = (8*x+1)/8  , (8*y-15)/8 
 	    
-		self:AddPixelIntensityInRadius(x+1,y-1,6,0.4,0.9,1, "Add", cx, cy) -- rain
+		self:AddPixelIntensityInRadius(x+1,y-1,6,0.3,0.6,1, "Add", cx, cy) -- rain
+		self:AddPixelIntensityInRadius(x+math.random(-6, 6),y-math.random(-3, 3),3,0.3,0.3,1, "Add", cx, cy) -- rain
+		self:AddPixelIntensityInRadius(x+math.random(-6, 6),y-math.random(-3, 3),3,0.3,0.3,1, "Add", cx, cy) -- rain
 		
+	
+	end
+	
+	local function GenerateHeatMapForThunder (x, y)
+	    
+		local cx, cy = (8*x+1)/8  , (8*y-15)/8 
+	    
+		self:AddPixelIntensityInRadius(x+1,y-1,9,0.7,0.9,1, "Add", cx, cy) -- rain
+		self:AddPixelIntensityInRadius(x+math.random(-6, 6),y-math.random(-3, 3),5,0.2,0.2,1, "Add", cx, cy) -- rain
+		self:AddPixelIntensityInRadius(x+math.random(-6, 6),y-math.random(-3, 3),5,0.2,0.2,1, "Add", cx, cy) -- rain
+		self:AddPixelIntensityInRadius(x+math.random(-6, 6),y-math.random(-3, 3),5,0.2,0.2,1, "Add", cx, cy) -- rain
+		self:AddPixelIntensityInRadius(x+math.random(-6, 6),y-math.random(-3, 3),5,0.2,0.2,1, "Add", cx, cy) -- rain
 		
+	
+	end
+	
+	local function GenerateHeatMapForHail (x, y)
+	    
+		local cx, cy = (8*x+1)/8  , (8*y-15)/8 
+	    
+		self:AddPixelIntensityInRadius(x+1,y-1,4.2,2,1,1, "Add", cx, cy) -- rain
+		self:AddPixelIntensityInRadius(x+math.random(-2, 2),y-math.random(-2, 2),2,0.8,0.8,1, "Add", cx, cy) -- rain
 		
 	
 	end
@@ -376,13 +399,39 @@ function ENT:UpdateDisplay()
 		
 	end
 	
-	local function UpdateForHeatSystem()
-		local targets2 = ents.FindByClass("gd_cloud_cumulus")
+	local function UpdateForRain()
+		local targets2 = ents.FindByClass("gd_heatsys_raincell")
 		
 		for k, v in pairs(targets2) do 
 			local pos = ConvertVectorToScreenSpace(v:GetPos() * Vector(-1,1,1))
 
-			GenerateHeatMapForHeatSystem(pos[1], pos[2])
+			GenerateHeatMapForRain(pos[1], pos[2])
+		
+		end
+		
+		
+	end
+	
+	local function UpdateForHail()
+		local targets2 = ents.FindByClass("gd_heatsys_hailcell")
+		
+		for k, v in pairs(targets2) do 
+			local pos = ConvertVectorToScreenSpace(v:GetPos() * Vector(-1,1,1))
+
+			GenerateHeatMapForHail(pos[1], pos[2])
+		
+		end
+		
+		
+	end
+	
+	local function UpdateForThunder()
+		local targets2 = ents.FindByClass("gd_heatsys_thundercell")
+		
+		for k, v in pairs(targets2) do 
+			local pos = ConvertVectorToScreenSpace(v:GetPos() * Vector(-1,1,1))
+
+			GenerateHeatMapForThunder(pos[1], pos[2])
 		
 		end
 		
@@ -394,7 +443,9 @@ function ENT:UpdateDisplay()
 	end
 	
 	UpdateForTornado()
-	UpdateForHeatSystem()
+	UpdateForRain()
+	UpdateForThunder()
+	UpdateForHail()
 
 end
 

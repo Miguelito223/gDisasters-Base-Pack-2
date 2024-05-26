@@ -19,7 +19,11 @@ function gDisasters_PostSpawnSH()
                            
 		
 		--dnc
-
+		if not gDisasters.DayNightSystem then 
+			gDisasters.DayNightSystem = {}
+			gDisasters.DayNightSystem.InternalVars = {}
+		end
+		
         gDisasters.DayNightSystem.InternalVars.Enabled = CreateConVar( "gdisasters_dnc_enabled", "0", {FCVAR_ARCHIVE}, "" )
         gDisasters.DayNightSystem.InternalVars.RealTime = CreateConVar( "gdisasters_dnc_realtime", "0", {FCVAR_ARCHIVE}, "" )
         gDisasters.DayNightSystem.InternalVars.Paused = CreateConVar( "gdisasters_dnc_paused", "0", {FCVAR_ARCHIVE}, "" )

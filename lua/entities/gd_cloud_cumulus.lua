@@ -104,17 +104,12 @@ function ENT:AtmosphericReposition()
 end
 
 function ENT:MoveCloud()
-    -- Obtener la velocidad y la dirección del viento del sistema global
-    local wind_speed = GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"]
-    local wind_dir = GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]
-
-    -- Normalizar la dirección del viento para asegurar que tenga una magnitud de 1
-    local normalized_wind_dir = -wind_dir:GetNormalized()
-
-    -- Calcular la nueva posición de la nube
-    local next_pos = self:GetPos() + (normalized_wind_dir * (wind_speed / 10))
-
-    -- Establecer la nueva posición de la nube
+    local wind_speed, wind_dir = GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"], GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]
+    
+    -- Reducir la velocidad del viento aplicada a las nubes
+    local wind_speed_reduction_factor = 0.1  -- Ajusta este valor según sea necesario
+    
+    local next_pos = self:GetPos() + (wind_dir * (wind_speed * wind_speed_reduction_factor))
     self:SetPos(next_pos)
 end
 

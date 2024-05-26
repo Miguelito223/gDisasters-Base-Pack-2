@@ -39,9 +39,17 @@ hook.Add( "PostInit", "gDisastersInitFix", function()
 		end
 
 		gDisasters:Msg("changed sv_skyname to painted")
-		
+
+		gDisasters:Msg("Setting global var gdsundir")
+		local env_sun = ents.FindByClass("env_sun")[1]
+		if env_sun then
+			local sunDir = env_sun:GetInternalVariable("sun_dir")
+			gDisasters_SetSunDir(sunDir)
+		end
+		gDisasters:Msg("Finish")
 	end
 end)
+
 
 
 
