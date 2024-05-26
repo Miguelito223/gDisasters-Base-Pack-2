@@ -93,7 +93,6 @@ function CalculateSolarRadiation(hour)
 
     -- Verificar si la hora está fuera del rango de la luz solar
     if hour < sunrise or hour > sunset then
-        print("Es de noche")
         return 0
     end
 
@@ -139,10 +138,8 @@ function CalculateTemperature(x, y, z)
 
     -- Factores adicionales (solar, terreno, etc.)
     local Hour = gDisasters.DayNightSystem.Time
-    print(Hour)
     local solarRadiation = CalculateSolarRadiation(Hour)
     local solarInfluence = solarRadiation * solarInfluenceCoefficient
-    print(solarInfluence )
     
     local coldeffect = 0
     if solarInfluence <= 0 then
