@@ -88,8 +88,8 @@ function CalculateSolarRadiation(hour)
     if not hour then return 0 end
 
     -- Parámetros para el modelo senoidal
-    local sunrise = 6   -- Hora de salida del sol
-    local sunset = 18   -- Hora de puesta del sol
+    local sunrise = gDisasters.DayNightSystem.InternalVars.time.Dawn_Start   -- Hora de salida del sol
+    local sunset = gDisasters.DayNightSystem.InternalVars.time.Dusk_Start   -- Hora de puesta del sol
     local maxRadiation = 1  -- Radiación máxima normalizada (puede ser ajustada)
 
     -- Verificar si la hora está fuera del rango de la luz solar
