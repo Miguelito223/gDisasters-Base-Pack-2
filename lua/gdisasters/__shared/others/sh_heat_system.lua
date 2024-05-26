@@ -72,22 +72,16 @@ local MaxHail = GetConVar("gdisasters_heat_system_maxhail"):GetInt()
 
 local freezingTemperature = 0
 
-local condensationLatentHeat = 5  -- Reduciendo el valor a un nivel más razonable
-local freezingLatentHeat = -5  -- Mantenemos este valor para el calor latente de congelación
-local stormLatentHeatThreshold = -10  -- Ajustamos este valor a uno más bajo para una formación de tormenta más realista
-local hailLatentHeatThreshold = -5  -- Ajustamos este valor también a uno más bajo
+  -- Mantenemos este valor para el calor latente de congelación
+local stormLatentHeatThreshold = 180  -- Ajustamos este valor a uno más bajo para una formación de tormenta más realista
+local hailLatentHeatThreshold = 200  -- Ajustamos este valor también a uno más bajo
+local cloudLatentHeatThreshold = 100  -- Umbral de calor latente necesario para la formación de nubes
+local snowLatentHeatThreshold = 150   -- Umbral de calor latente necesario para la formación de nieve
+local rainLatentHeatThreshold = 120   -- Umbral de calor latente necesario para la formación de lluvia
 
 local maxDrawDistance = 100000
 
--- Function to calculate latent heat released during condensation
-function calculateCondensationLatentHeat(cloudDensity)
-    return cloudDensity * condensationLatentHeat
-end
 
--- Function to calculate latent heat released during freezing
-function calculateFreezingLatentHeat(cloudDensity)
-    return cloudDensity * freezingLatentHeat
-end
 -- Función para normalizar un vector
 function CalculateSolarRadiation(cellPosition, sunDirection)
     -- Verificar si se proporcionan ambas direcciones
@@ -445,6 +439,34 @@ function CreateRain(x, y, z)
         if IsValid(particle) then particle:Remove() end
     end)
 end
+-- Function to calculate latent heat released during condensation
+function calculateCondensationLatentHeat(cloudDensity)
+    local condensationLatentHeat = 60
+    return cloudDensity * condensationLatentHeat
+end
+
+-- Function to calculate latent heat released during freezing
+function calculateFreezingLatentHeat(cloudDensity)
+    local freezingLatentHeat = 80 
+    return cloudDensity * freezingLatentHeat
+end
+
+function CalculateCloudLatentHeat(cloudDensity)
+    local CloudLatentHeat = 100
+    return cloudDensity * CloudLatentHeat   -- Este valor es un ejemplo, puedes ajustarlo según tus necesidades.
+end
+
+-- Función para calcular el calor latente necesario para la formación de lluvia
+function CalculateRainLatentHeat(cloudDensity)
+    RainLatentHeat = 120 
+    return cloudDensity * RainLatentHeat-- Este valor es un ejemplo, puedes ajustarlo según tus necesidades.
+end
+
+-- Función para calcular el calor latente necesario para la formación de nieve
+function CalculateSnowLatentHeat(cloudDensity)
+    SnowLatentHeat = 150
+    return cloudDensity * SnowLatentHeat-- Este valor es un ejemplo, puedes ajustarlo según tus necesidades.
+end
 
 function UpdateCloudDensity(x, y, z)
     local currentCell = GridMap[x][y][z]
@@ -493,24 +515,45 @@ end
 
 function CheckSnowFormation(x, y, z)
     local currentCell = GridMap[x][y][z]
+    local latentHeat = 0
+
     if currentCell.cloudDensity >= snowFormationThreshold and currentCell.temperature <= snowTemperatureThreshold then
-        -- Trigger snow formation logic here
+        -- Calcular el calor latente necesario para la formación de nieve
+        latentHeat = CalculateSnowLatentHeat(currentCell.cloudDensity)
+    end
+
+    if latentHeat >= snowLatentHeatThreshold then
+        -- Disparar la lógica de formación de nieve aquí
         CreateSnow(x, y, z)
     end
 end
 
 function CheckCloudFormation(x, y, z)
     local currentCell = GridMap[x][y][z]
+    local latentHeat = 0
+
     if currentCell.cloudDensity >= cloudFormationThreshold then
-        -- Trigger cloud formation logic here
+        -- Calcular el calor latente necesario para la formación de nubes
+        latentHeat = CalculateCloudLatentHeat(currentCell.cloudDensity)
+    end
+
+    if latentHeat >= cloudLatentHeatThreshold then
+        -- Disparar la lógica de formación de nubes aquí
         CreateCloud(x, y, z)
     end
 end
 
 function CheckRainFormation(x, y, z)
     local currentCell = GridMap[x][y][z]
+    local latentHeat = 0
+
     if currentCell.cloudDensity >= rainFormationThreshold then
-        -- Trigger rain formation logic here
+        -- Calcular el calor latente necesario para la formación de lluvia
+        latentHeat = CalculateRainLatentHeat(currentCell.cloudDensity)
+    end
+
+    if latentHeat >= rainLatentHeatThreshold then
+        -- Disparar la lógica de formación de lluvia aquí
         CreateRain(x, y, z)
     end
 end
@@ -849,7 +892,7 @@ function UpdateWeatherInCell(x, y, z)
 
     local weatherType = "clear"
     if cell.cloudDensity > cloudDensityThreshold then
-        if cell.temperature < freezingTemperature and cell.cloudDensity > hailThreshold then
+        if cell.temperature <= freezingTemperature and cell.cloudDensity > hailThreshold then
             weatherType = "hail"
         elseif cell.cloudDensity > thunderstormThreshold then
             weatherType = "thunder"
@@ -886,12 +929,13 @@ function UpdateWeather()
                         
                         UpdateCloudDensity(x,y,z)
                         UpdateWeatherInCell(x, y, z)
+                        SimulateConvergence(x, y, z)
                         CheckStormFormation(x, y, z)
                         CheckHailFormation(x, y, z)
                         CheckCloudFormation(x, y, z)
                         CheckRainFormation(x, y, z)
                         CheckSnowFormation(x,y,z)
-                        SimulateConvergence(x, y, z)
+                        
 
 
                         
@@ -925,7 +969,6 @@ function GenerateGrid(ply)
                 GridMap[x][y][z].Airflow_Direction = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Direction"]
                 GridMap[x][y][z].cloudDensity = 0
                 GridMap[x][y][z].terrainType = "land"
-                GridMap[x][y][z].weather = "clear"
             end
         end
     end
