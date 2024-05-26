@@ -854,13 +854,14 @@ function gDisasters_GetSunDir()
 
     if sunEntity then
         -- Obtén la dirección del sol desde la entidad env_sun
-        local sunDir = sunEntity:GetAngles():Forward()
 		local sundirdnc = GetGlobalAngle("gdSunDir")
+        local sunDir = sunEntity:GetAngles():Forward()
+		
 
-        if sunDir then
-            return sunDir
-		elseif sundirdnc then
-			return sundirdnc
+        if sundirdnc then
+            return sundirdnc
+		elseif sunDir then
+			return sunDir
         else
             return nil
         end
