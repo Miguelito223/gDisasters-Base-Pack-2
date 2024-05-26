@@ -19,7 +19,7 @@ local minAirflow = GetConVar("gdisasters_heat_system_minairflow"):GetInt()
 local maxAirflow = GetConVar("gdisasters_heat_system_maxairflow"):GetInt()
 
 local updateInterval = 1 -- Intervalo de actualización en segundos
-local updateBatchSize = GetConVar("gdisasters_heat_system_updateBatchSize"):GetInt()
+local updateBatchSize = GetConVar("gdisasters_heat_system_updatebatchsize"):GetInt()
 local nextUpdateGrid = CurTime()
 local nextUpdateGridPlayer = CurTime()
 local nextUpdateWeather = CurTime()
@@ -39,12 +39,12 @@ local cloudDensityCoefficient = 0.01  -- Coeficiente para convertir humedad en d
 
 
 
-local waterTemperatureEffect = 0.1   -- El agua tiende a mantener una temperatura más constante
-local landTemperatureEffect = 0.4     -- La tierra se calienta y enfría más rápido que el agua
-local waterHumidityEffect = 0.5       -- El agua puede aumentar significativamente la humedad en su entorno
-local landHumidityEffect = 0.5        -- La tierra puede retener menos humedad que el agua
-local mountainTemperatureEffect = 0.3  -- Las montañas tienden a ser más frías debido a la altitud
-local mountainHumidityEffect = 0.4    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
+local waterTemperatureEffect = 0.01   -- El agua tiende a mantener una temperatura más constante
+local landTemperatureEffect = 0.04     -- La tierra se calienta y enfría más rápido que el agua
+local waterHumidityEffect = 0.05       -- El agua puede aumentar significativamente la humedad en su entorno
+local landHumidityEffect = 0.05        -- La tierra puede retener menos humedad que el agua
+local mountainTemperatureEffect = 0.03  -- Las montañas tienden a ser más frías debido a la altitud
+local mountainHumidityEffect = 0.04    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
 
 local convergenceThreshold = 0.5
 local strongStormThreshold = 2.0
@@ -109,8 +109,6 @@ function CalculateSolarRadiation(cellPosition, sunDirection)
 
     -- Asegurarse de que el valor esté entre 0 y 1
     local solarRadiation = math.max(0, dotProduct)
-
-    solarRadiation = solarRadiation
 
     return solarRadiation
 end
