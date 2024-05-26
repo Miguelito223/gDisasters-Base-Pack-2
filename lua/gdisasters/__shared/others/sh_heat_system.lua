@@ -36,14 +36,15 @@ local solarInfluenceCoefficient = 0.01
 local AirflowCoefficient = 0.01
 local cloudDensityCoefficient = 0.01  -- Coeficiente para convertir humedad en densidad de nubes
 local convergenceCoefficient = 0.01
+local TerrainCoefficient = 0.01
 
 
-local waterTemperatureEffect = 0.01   -- El agua tiende a mantener una temperatura más constante
-local landTemperatureEffect = 0.04     -- La tierra se calienta y enfría más rápido que el agua
-local waterHumidityEffect = 0.05       -- El agua puede aumentar significativamente la humedad en su entorno
-local landHumidityEffect = 0.05        -- La tierra puede retener menos humedad que el agua
-local mountainTemperatureEffect = 0.03  -- Las montañas tienden a ser más frías debido a la altitud
-local mountainHumidityEffect = 0.04    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
+local waterTemperatureEffect = -1   -- El agua tiende a mantener una temperatura más constante
+local landTemperatureEffect = 4     -- La tierra se calienta y enfría más rápido que el agua
+local waterHumidityEffect = 5       -- El agua puede aumentar significativamente la humedad en su entorno
+local landHumidityEffect = -5        -- La tierra puede retener menos humedad que el agua
+local mountainTemperatureEffect = -3  -- Las montañas tienden a ser más frías debido a la altitud
+local mountainHumidityEffect = -4    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
 
 local convergenceThreshold = 0.5
 local strongStormThreshold = 2.0
@@ -90,7 +91,7 @@ function CalculateSolarRadiation(cellPosition, sunDirection)
         return 0  -- Si falta alguna dirección, no hay radiación solar
     end
 
-    if sunDirection.z < 0 then
+    if sunDirection.y < 0 then
         print("El sol se escondio")
         return 0
     end
@@ -110,12 +111,8 @@ function CalculateSolarRadiation(cellPosition, sunDirection)
     end
 
     -- Calcular el producto escalar normalizado entre los vectores
-    local dotProduct = sunDirection:Dot(normalizedCellPosition)
-
-    -- Asegurarse de que el valor esté entre 0 y 1
-    local solarRadiation = math.Clamp(dotProduct, 0, 1)
-
-    return solarRadiation
+    local solarRadiation = sunDirection:Dot(normalizedCellPosition)
+    return math.Clamp(solarRadiation,0,5)
 end
 
 function CalculateTemperature(x, y, z)
@@ -148,11 +145,8 @@ function CalculateTemperature(x, y, z)
 
     -- Factores adicionales (solar, terreno, etc.)
     local sunDirection = gDisasters_GetSunDir()
-    local solarInfluence = 0
-    if sunDirection then
-        local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
-        solarInfluence = solarRadiation * solarInfluenceCoefficient
-    end
+    local solarRadiation = CalculateSolarRadiation(Vector(x, y, z), sunDirection)
+    local solarInfluence = solarRadiation * solarInfluenceCoefficient
     
     local coldeffect = 0
     if solarInfluence <= 0 then
@@ -165,11 +159,11 @@ function CalculateTemperature(x, y, z)
     local terrainTemperatureEffect = 0
     
     if (terrainType == "water" and waterTemperatureEffect) then
-        terrainTemperatureEffect = -waterTemperatureEffect
+        terrainTemperatureEffect = -waterTemperatureEffect * TerrainCoefficient
     elseif (terrainType == "mountain" and mountainTemperatureEffect) then
-        terrainTemperatureEffect = -mountainTemperatureEffect
+        terrainTemperatureEffect = -mountainTemperatureEffect * TerrainCoefficient
     else 
-        terrainTemperatureEffect = landTemperatureEffect
+        terrainTemperatureEffect = landTemperatureEffect * TerrainCoefficient
     end
 
     local latentHeat = 0
@@ -220,11 +214,11 @@ function CalculateHumidity(x, y, z)
     local terrainHumidityEffect = 0
     
     if (terrainType == "water" and waterHumidityEffect) then
-        terrainHumidityEffect = waterHumidityEffect
+        terrainHumidityEffect = waterHumidityEffect * TerrainCoefficient
     elseif (terrainType == "mountain" and mountainHumidityEffect) then
-        terrainHumidityEffect = -mountainHumidityEffect
+        terrainHumidityEffect = -mountainHumidityEffect * TerrainCoefficient
     else 
-        terrainHumidityEffect = -landHumidityEffect
+        terrainHumidityEffect = -landHumidityEffect * TerrainCoefficient
     end
 
     local humidityChange = HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)

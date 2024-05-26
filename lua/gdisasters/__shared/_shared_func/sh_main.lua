@@ -842,42 +842,20 @@ function gDisasters_GetSunAngleInDegs()
 end
 
 function gDisasters_GetMoonDir()
-
 	return GetGlobalAngle("gdMoonDir")
 end
 
 function gDisasters_GetSunDir()
-
-    -- Encuentra la entidad env_sun
-    local sunEntities = ents.FindByClass("env_sun")
-    local sunEntity = sunEntities and sunEntities[1] or nil
-
-    if sunEntity then
-		return GetGlobalAngle("gdSunDir")
-    else
-        return nil
-    end
-
-	
+	return GetGlobalAngle("gdSunDir")
 end
 
 
 function gDisasters_SetMoonDir(value)
-
-	return SetGlobalAngle("gdMoonDir", value)
+	SetGlobalAngle("gdMoonDir", value)
 end
 
 function gDisasters_SetSunDir(value)
-
-    -- Encuentra la entidad env_sun
-    local sunEntities = ents.FindByClass("env_sun")
-    local sunEntity = sunEntities and sunEntities[1] or nil
-
-    if sunEntity then
-       	return SetGlobalAngle("gdSunDir", value)
-    else
-        return nil
-    end
+    SetGlobalAngle("gdSunDir", value)
 end
 
 function gDisasters_EntityExists(entname)
