@@ -3,6 +3,14 @@
 gDisasters.DayNightSystem        = {}
 gDisasters.DayNightSystem.InternalVars = {}
 
+gDisasters.DayNightSystem.InternalVars.Enabled = GetConVar( "gdisasters_dnc_enabled", "0", {FCVAR_ARCHIVE}, "" )
+gDisasters.DayNightSystem.InternalVars.RealTime = GetConVar( "gdisasters_dnc_realtime", "0", {FCVAR_ARCHIVE}, "" )
+gDisasters.DayNightSystem.InternalVars.Paused = GetConVar( "gdisasters_dnc_paused", "0", {FCVAR_ARCHIVE}, "" )
+gDisasters.DayNightSystem.InternalVars.Length_Day = GetConVar( "gDisasters_dnc_length_day", "600", {FCVAR_ARCHIVE}, "" )
+gDisasters.DayNightSystem.InternalVars.Length_Night = GetConVar( "gDisasters_dnc_length_night", "600", {FCVAR_ARCHIVE}, "" )
+gDisasters.DayNightSystem.InternalVars.MoonSize = GetConVar( "gdisasters_dnc_moon_size", "3000", {FCVAR_ARCHIVE}, "" )
+gDisasters.DayNightSystem.InternalVars.Createlight_environment = GetConVar( "gdisasters_dnc_create_light_environment", "1", {FCVAR_ARCHIVE}, "" )
+
 gDisasters.DayNightSystem.InternalVars.time = {}
 
 gDisasters.DayNightSystem.InternalVars.time.Noon = 12
