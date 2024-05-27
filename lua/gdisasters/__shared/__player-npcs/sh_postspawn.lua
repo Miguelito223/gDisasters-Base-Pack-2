@@ -19,6 +19,7 @@ function gDisasters_PostSpawnSH()
                            
 		
 		--dnc
+		
 		if not gDisasters.DayNightSystem then 
 			gDisasters.DayNightSystem = {}
 			gDisasters.DayNightSystem.InternalVars = {}
