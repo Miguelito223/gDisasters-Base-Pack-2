@@ -30,14 +30,14 @@ local gas_constant = 8.314 -- J/(mol·K)
 local specific_heat_vapor = 1.996 -- J/(g·K)
 
 
-local tempdiffusionCoefficient = 0.01
-local HumidityDiffusionCoefficient = 0.01
-local solarInfluenceCoefficient = 0.01
-local AirflowCoefficient = 0.01
-local cloudDensityCoefficient = 0.01  -- Coeficiente para convertir humedad en densidad de nubes
-local convergenceCoefficient = 0.01
-local TerrainCoefficient = 0.01
-local CoolingCoefficient = 0.01
+local tempdiffusionCoefficient = 0.1
+local HumidityDiffusionCoefficient = 0.1
+local solarInfluenceCoefficient = 0.1
+local AirflowCoefficient = 0.1
+local cloudDensityCoefficient = 0.1  -- Coeficiente para convertir humedad en densidad de nubes
+local convergenceCoefficient = 0.1
+local TerrainCoefficient = 0.1
+local CoolingCoefficient = 0.1
 
 
 local waterTemperatureEffect = 2   -- El agua tiende a mantener una temperatura más constante
@@ -73,6 +73,7 @@ local MaxRainDrop = GetConVar("gdisasters_heat_system_maxraindrop"):GetInt()
 local MaxHail = GetConVar("gdisasters_heat_system_maxhail"):GetInt()
 
 local freezingTemperature = 0
+local boilingTemperature = 100
 
 -- Mantenemos este valor para el calor latente de congelación
 local stormLatentHeatThreshold = 180  -- Ajustamos este valor a uno más bajo para una formación de tormenta más realista
@@ -1045,34 +1046,25 @@ end
 
 function DrawGridDebug()
     if GetConVar("gdisasters_graphics_draw_heatsystem_grid"):GetInt() >= 1 then 
-        local playerPos = LocalPlayer():GetPos()
-        
-        -- Verificar existencia de GridMap y maxDrawDistance
-        if not GridMap then
-            print("GridMap is not defined.")
-            return
-        end
-        
-        -- Verificar existencia de maxDrawDistance y gridSize
-        if not maxDrawDistance or not gridSize then
-            print("maxDrawDistance or gridSize is not defined.")
-            return
-        end
-
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
-                    local cellpos = Vector(x, y, z)
-                    if cell then
-                        local temperature = cell.temperature or 0
-                        local color = TemperatureToColor(temperature) or Color(255, 255, 255)  -- Asegúrate de que siempre haya un color
+                    local temperature = cell.temperature -- Obtener la temperatura de la celda
+                    local color = Color(0, 0, 0) -- Color por defecto (negro)
 
-                        render.SetColorMaterial()
-                        render.DrawBox(cellpos, Angle(0, 0, 0), Vector(-gridSize / 2, -gridSize / 2, -gridSize / 2), Vector(gridSize / 2, gridSize / 2, gridSize / 2), color)
+                    -- Asignar un color según la temperatura
+                    if temperature < freezingTemperature then
+                        color = Color(0, 0, 255) -- Azul para temperaturas bajo cero
+                    elseif temperature > boilingTemperature then
+                        color = Color(255, 0, 0) -- Rojo para temperaturas sobre el punto de ebullición
                     else
-                        -- Mensaje de depuración para celdas nulas
-                        print("Cell at ", cellpos, " is nil.")
+                        local greenValue = math.Clamp((temperature - freezingTemperature) / (boilingTemperature - freezingTemperature) * 255, 0, 255)
+                        color = Color(0, greenValue, 255 - greenValue) -- Gradiente de azul a verde para temperaturas entre el punto de congelación y el de ebullición
                     end
+
+                    -- Dibujar el cubo en la posición correspondiente con el color calculado
+                    render.SetColorMaterial()
+                    render.DrawBox(Vector(x * gridSize, y * gridSize, z * gridSize), Angle(0, 0, 0), Vector(-gridSize/2, -gridSize/2, -gridSize/2), Vector(gridSize/2, gridSize/2, gridSize/2), color)
                 end
             end
         end
