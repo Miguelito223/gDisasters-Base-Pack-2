@@ -40,7 +40,7 @@ local TerrainCoefficient = 0.01
 local CoolingCoefficient = 0.01
 
 
-local waterTemperatureEffect = 1   -- El agua tiende a mantener una temperatura más constante
+local waterTemperatureEffect = 2   -- El agua tiende a mantener una temperatura más constante
 local landTemperatureEffect = 4     -- La tierra se calienta y enfría más rápido que el agua
 local waterHumidityEffect = 5       -- El agua puede aumentar significativamente la humedad en su entorno
 local landHumidityEffect = 5        -- La tierra puede retener menos humedad que el agua
@@ -104,7 +104,7 @@ function CalculateSolarRadiation(hour)
     local solarRadiation = maxRadiation * math.sin(math.pi * dayFraction)
 
     -- Asegurarse de que la radiación esté en el rango de 0 a maxRadiation
-    solarRadiation = math.max(solarRadiation, 0)
+    solarRadiation = math.Clamp(solarRadiation, 0, 5)
     
     return solarRadiation
 end
