@@ -127,19 +127,24 @@ function getMapBounds()
     end
 
     local minVector, maxVector = game.GetWorld():GetModelBounds()
+	local map = game.GetMap()
 
-	local startpos = Vector(maxVector.x,maxVector.y, maxVector.z - 100)
-    local traceParams = {
-        start = startpos,
-        endpos = minVector,
-        filter = function(ent) return ent:IsWorld() and ent:GetBrushSurfaces()[1]:IsSky() end
-    }
-    
-    local traceResult = util.TraceLine(traceParams)
+	if MAP_BOUNDS[map] != nil then
+    	return { Vector(maxVector.x, maxVector.y, minVector.z), Vector(minVector.x, minVector.y, maxVector.z), MAP_BOUNDS[map][3]}
+	else
+		local startpos = Vector(0, 0, maxVector.z - 500)
+		local traceParams = {
+			start = startpos,
+			endpos = minVector,
+			filter = function(ent) return ent:IsWorld() end
+		}
+		
+		local traceResult = util.TraceLine(traceParams)
 
-    local groundPosition = traceResult.HitPos
+		local groundPosition = traceResult.HitPos
 
-    return { Vector(maxVector.x, maxVector.y, minVector.z), Vector(minVector.x, minVector.y, maxVector.z), groundPosition}
+		return { Vector(maxVector.x, maxVector.y, minVector.z), Vector(minVector.x, minVector.y, maxVector.z), groundPosition}
+	end
 end
 
 function getMapCeiling()
