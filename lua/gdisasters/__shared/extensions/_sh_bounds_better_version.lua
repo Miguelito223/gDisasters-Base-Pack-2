@@ -129,7 +129,7 @@ function getMapBounds()
     local minVector, maxVector = game.GetWorld():GetModelBounds()
 	local map = game.GetMap()
 
-	if MAP_BOUNDS[map] != nil then
+	if MAP_BOUNDS[map] then
     	return { Vector(maxVector.x, maxVector.y, minVector.z), Vector(minVector.x, minVector.y, maxVector.z), MAP_BOUNDS[map][3]}
 	else
 		local startpos = Vector(0, 0, maxVector.z - 500)
