@@ -18,7 +18,7 @@ local maxPressure = GetConVar("gdisasters_heat_system_maxpressure"):GetInt()
 local minAirflow = GetConVar("gdisasters_heat_system_minairflow"):GetInt()
 local maxAirflow = GetConVar("gdisasters_heat_system_maxairflow"):GetInt()
 
-local updateInterval = 1 -- Intervalo de actualización en segundos
+local updateInterval = GetConVar("gdisasters_heat_system_updateinterval"):GetFloat() -- Intervalo de actualización en segundos
 local updateBatchSize = GetConVar("gdisasters_heat_system_updatebatchsize"):GetInt()
 local nextUpdateGrid = CurTime()
 local nextUpdateGridPlayer = CurTime()
@@ -30,14 +30,14 @@ local gas_constant = 8.314 -- J/(mol·K)
 local specific_heat_vapor = 1.996 -- J/(g·K)
 
 
-local tempdiffusionCoefficient = 0.1
-local HumidityDiffusionCoefficient = 0.1
-local solarInfluenceCoefficient = 0.1
-local AirflowCoefficient = 0.1
-local cloudDensityCoefficient = 0.1  -- Coeficiente para convertir humedad en densidad de nubes
-local convergenceCoefficient = 0.1
-local TerrainCoefficient = 0.1
-local CoolingCoefficient = 0.1
+local tempdiffusionCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()
+local HumidityDiffusionCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()
+local solarInfluenceCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()
+local AirflowCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()
+local cloudDensityCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()  -- Coeficiente para convertir humedad en densidad de nubes
+local convergenceCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()
+local TerrainCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()
+local CoolingCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()
 
 
 local waterTemperatureEffect = 2   -- El agua tiende a mantener una temperatura más constante
@@ -82,7 +82,7 @@ local cloudLatentHeatThreshold = 100  -- Umbral de calor latente necesario para 
 local snowLatentHeatThreshold = 150   -- Umbral de calor latente necesario para la formación de nieve
 local rainLatentHeatThreshold = 120   -- Umbral de calor latente necesario para la formación de lluvia
 
-local maxDrawDistance = 100000
+local maxDistance = 100000
 
 -- Función para normalizar un vector
 function CalculateSolarRadiation(hour)
@@ -1044,27 +1044,34 @@ function TemperatureToColor(temperature)
     return Color(r * 255, 0, b * 255)
 end
 
-function DrawGridDebug()
+local function DrawGridDebug()
     if GetConVar("gdisasters_graphics_draw_heatsystem_grid"):GetInt() >= 1 then 
+        local playerPos = LocalPlayer():GetPos() -- Obtener la posición del jugador
+
         for x, column in pairs(GridMap) do
             for y, row in pairs(column) do
                 for z, cell in pairs(row) do
-                    local temperature = cell.temperature -- Obtener la temperatura de la celda
-                    local color = Color(0, 0, 0) -- Color por defecto (negro)
+                    local cellPos = Vector(x, y, z) -- Posición de la celda
+                    local distance = playerPos:DistToSqr(cellPos) -- Distancia al cuadrado del jugador a la celda
 
-                    -- Asignar un color según la temperatura
-                    if temperature < freezingTemperature then
-                        color = Color(0, 0, 255) -- Azul para temperaturas bajo cero
-                    elseif temperature > boilingTemperature then
-                        color = Color(255, 0, 0) -- Rojo para temperaturas sobre el punto de ebullición
-                    else
-                        local greenValue = math.Clamp((temperature - freezingTemperature) / (boilingTemperature - freezingTemperature) * 255, 0, 255)
-                        color = Color(0, greenValue, 255 - greenValue) -- Gradiente de azul a verde para temperaturas entre el punto de congelación y el de ebullición
+                    if distance <= maxDistance * maxDistance then -- Comparar con la distancia máxima al cuadrado
+                        local temperature = cell.temperature -- Obtener la temperatura de la celda
+                        local color = Color(0, 0, 0) -- Color por defecto (negro)
+
+                        -- Asignar un color según la temperatura
+                        if temperature < freezingTemperature then
+                            color = Color(0, 0, 255) -- Azul para temperaturas bajo cero
+                        elseif temperature > boilingTemperature then
+                            color = Color(255, 0, 0) -- Rojo para temperaturas sobre el punto de ebullición
+                        else
+                            local greenValue = math.Clamp((temperature - freezingTemperature) / (boilingTemperature - freezingTemperature) * 255, 0, 255)
+                            color = Color(0, greenValue, 255 - greenValue) -- Gradiente de azul a verde para temperaturas entre el punto de congelación y el de ebullición
+                        end
+
+                        -- Dibujar el cubo en la posición correspondiente con el color calculado
+                        render.SetColorMaterial()
+                        render.DrawBox(cellPos, Angle(0, 0, 0), Vector(-gridSize / 2, -gridSize / 2, -gridSize / 2), Vector(gridSize / 2, gridSize / 2, gridSize / 2), color)
                     end
-
-                    -- Dibujar el cubo en la posición correspondiente con el color calculado
-                    render.SetColorMaterial()
-                    render.DrawBox(Vector(x * gridSize, y * gridSize, z * gridSize), Angle(0, 0, 0), Vector(-gridSize/2, -gridSize/2, -gridSize/2), Vector(gridSize/2, gridSize/2, gridSize/2), color)
                 end
             end
         end

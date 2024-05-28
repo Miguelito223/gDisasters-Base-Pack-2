@@ -231,6 +231,7 @@ end
 
 local function gDisastersHeatSystemBeta( CPanel )
 	CreateSliderConVariable(CPanel, "Grid Size", 1, 5000, 0, "gdisasters_heat_system_gridsize" )
+	CreateSliderConVariable(CPanel, "Update interval", 0, 5, 1, "gdisasters_heat_system_updateinterval" )
 	CreateSliderConVariable(CPanel, "Update Batch size", 1, 5000, 0, "gdisasters_heat_system_updatebatchsize" )
 	CreateSliderConVariable(CPanel, "Max hail", 1, 100, 0, "gdisasters_heat_system_maxhail" )
 	CreateSliderConVariable(CPanel, "Max raindrop", 1, 100, 0, "gdisasters_heat_system_maxraindrop" )
@@ -243,6 +244,7 @@ local function gDisastersHeatSystemBeta( CPanel )
 	CreateSliderConVariable(CPanel, "Min Humidity", 0, 100, 0, "gdisasters_heat_system_minhumidity" )
 	CreateSliderConVariable(CPanel, "Min Pressure", 94000, 106000, 0, "gdisasters_heat_system_minpressure" )
 	CreateSliderConVariable(CPanel, "Min Airflow", 0, 100000, 0, "gdisasters_heat_system_minairflow" )
+	CreateSliderConVariable(CPanel, "Coeficcient Influencie", 0, 1, 2, "gdisasters_heat_system_coefficient" )
 
 	CreateTickboxConVariable(CPanel, "gd_88", "gdisasters_heat_system_enabled");
 	CreateTickboxConVariable(CPanel, "gd_87", "gdisasters_graphics_draw_heatsystem_grid");

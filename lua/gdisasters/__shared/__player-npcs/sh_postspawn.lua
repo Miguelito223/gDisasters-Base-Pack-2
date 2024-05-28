@@ -4,6 +4,8 @@ function gDisasters_PostSpawnSH()
 
         CreateConVar( "gdisasters_heat_system_enabled", "0", {FCVAR_ARCHIVE}, "" )
 		CreateConVar( "gdisasters_heat_system_updatebatchsize", "100", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_heat_system_updateinterval", "1", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_heat_system_coefficient", "0.01", {FCVAR_ARCHIVE}, "" )
 		CreateConVar( "gdisasters_heat_system_gridsize", "1000", {FCVAR_ARCHIVE}, "" )
 		CreateConVar( "gdisasters_heat_system_maxclouds", "5", {FCVAR_ARCHIVE}, "" )
 		CreateConVar( "gdisasters_heat_system_maxraindrop", "5", {FCVAR_ARCHIVE}, "" )
