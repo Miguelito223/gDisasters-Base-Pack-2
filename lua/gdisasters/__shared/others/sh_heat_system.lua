@@ -105,7 +105,7 @@ function CalculateSolarRadiation(hour)
     local solarRadiation = maxRadiation * math.sin(math.pi * dayFraction)
 
     -- Asegurarse de que la radiación esté en el rango de 0 a maxRadiation
-    solarRadiation = math.Clamp(solarRadiation, 0, 5)
+    solarRadiation = math.Clamp(solarRadiation, 0, maxRadiation)
     
     return solarRadiation
 end
