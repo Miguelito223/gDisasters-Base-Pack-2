@@ -231,7 +231,7 @@ end
 
 local function gDisastersHeatSystemBeta( CPanel )
 	CreateSliderConVariable(CPanel, "Grid Size", 1, 5000, 0, "gdisasters_heat_system_gridsize" )
-	CreateSliderConVariable(CPanel, "Update interval", 0, 5, 1, "gdisasters_heat_system_updateinterval" )
+	CreateSliderConVariable(CPanel, "Update interval", 0, 5, 2, "gdisasters_heat_system_updateinterval" )
 	CreateSliderConVariable(CPanel, "Update Batch size", 1, 5000, 0, "gdisasters_heat_system_updatebatchsize" )
 	CreateSliderConVariable(CPanel, "Max hail", 1, 100, 0, "gdisasters_heat_system_maxhail" )
 	CreateSliderConVariable(CPanel, "Max raindrop", 1, 100, 0, "gdisasters_heat_system_maxraindrop" )
