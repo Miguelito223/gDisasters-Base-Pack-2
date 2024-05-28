@@ -111,9 +111,8 @@ MAP_BOUNDS["gm_natural_disaster_survival"] = { Vector(5119,5119,-4095),       Ve
 
 function IsMapRegistered()
 	local worldEnt = #ents.FindByClass("worldspawn")
-	local map = game.GetMap()
 	
-	if worldEnt > 0 and MAP_BOUNDS[map] != nil then
+	if worldEnt > 0 then
 		return true
 	else 
 		return false
@@ -128,10 +127,19 @@ function getMapBounds()
     end
 
     local minVector, maxVector = game.GetWorld():GetModelBounds()
-    local map = game.GetMap()
 
-	return { Vector(maxVector.x,maxVector.y,minVector.z),Vector(minVector.x,minVector.y,maxVector.z), MAP_BOUNDS[map][3]}
+	local startpos = Vector(maxVector.x,maxVector.y, maxVector.z - 100)
+    local traceParams = {
+        start = startpos,
+        endpos = minVector,
+        filter = function(ent) return ent:IsWorld() and ent:GetBrushSurfaces()[1]:IsSky() end
+    }
+    
+    local traceResult = util.TraceLine(traceParams)
 
+    local groundPosition = traceResult.HitPos
+
+    return { Vector(maxVector.x, maxVector.y, minVector.z), Vector(minVector.x, minVector.y, maxVector.z), groundPosition}
 end
 
 function getMapCeiling()
