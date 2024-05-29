@@ -30,14 +30,14 @@ local gas_constant = 8.314 -- J/(mol·K)
 local specific_heat_vapor = 1.996 -- J/(g·K)
 
 
-local tempdiffusionCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()
-local HumidityDiffusionCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()
-local solarInfluenceCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()
-local AirflowCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()
-local cloudDensityCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()  -- Coeficiente para convertir humedad en densidad de nubes
-local convergenceCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()
-local TerrainCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()
-local CoolingCoefficient = GetConVar("gdisasters_heat_system_coefficient"):GetFloat()
+local TempDiffusionCoefficient = GetConVar("gdisasters_heat_system_tempdifussioncoefficient"):GetFloat()
+local HumidityDiffusionCoefficient = GetConVar("gdisasters_heat_system_humiditydifussioncoefficient"):GetFloat()
+local solarInfluenceCoefficient = GetConVar("gdisasters_heat_system_solarinfluencecoefficient"):GetFloat()
+local AirflowCoefficient = GetConVar("gdisasters_heat_system_airflowcoefficient"):GetFloat()
+local cloudDensityCoefficient = GetConVar("gdisasters_heat_system_clouddensitycoefficient"):GetFloat()  -- Coeficiente para convertir humedad en densidad de nubes
+local convergenceCoefficient = GetConVar("gdisasters_heat_system_convergencecoefficient"):GetFloat()
+local TerrainCoefficient = GetConVar("gdisasters_heat_system_terraincoefficient"):GetFloat()
+local CoolingCoefficient = GetConVar("gdisasters_heat_system_coolingcoefficient"):GetFloat()
 
 
 local waterTemperatureEffect = 2   -- El agua tiende a mantener una temperatura más constante
@@ -169,7 +169,7 @@ function CalculateTemperature(x, y, z)
         end
     end
 
-    local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature)
+    local temperatureChange = TempDiffusionCoefficient * (averageTemperature - currentTemperature)
     local newTemperature = currentTemperature + temperatureChange + terrainTemperatureEffect + solarInfluence + latentHeat + coldeffect
 
     return math.Clamp(newTemperature, minTemperature, maxTemperature)

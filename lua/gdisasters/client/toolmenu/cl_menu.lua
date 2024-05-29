@@ -233,6 +233,14 @@ local function gDisastersHeatSystemBeta( CPanel )
 	CreateSliderConVariable(CPanel, "Grid Size", 1, 5000, 0, "gdisasters_heat_system_gridsize" )
 	CreateSliderConVariable(CPanel, "Update interval", 0, 5, 2, "gdisasters_heat_system_updateinterval" )
 	CreateSliderConVariable(CPanel, "Update Batch size", 1, 5000, 0, "gdisasters_heat_system_updatebatchsize" )
+	CreateSliderConVariable(CPanel, "Temp Difussion Coeficcient", 0, 1, 2, "gdisasters_heat_system_tempdifussioncoefficient" )
+	CreateSliderConVariable(CPanel, "Humidity Difussion Coeficcient", 0, 1, 2, "gdisasters_heat_system_humiditydifussioncoefficient" )
+	CreateSliderConVariable(CPanel, "Solar Influencies Coeficcient", 0, 1, 2, "gdisasters_heat_system_solarinfluencecoefficient" )
+	CreateSliderConVariable(CPanel, "Airflow Coeficcient", 0, 1, 2, "gdisasters_heat_system_airflowcoefficient" )
+	CreateSliderConVariable(CPanel, "cloud density Coeficcient", 0, 1, 2, "gdisasters_heat_system_clouddensitycoefficient" )
+	CreateSliderConVariable(CPanel, "convergence Coeficcient", 0, 1, 2, "gdisasters_heat_system_convergencecoefficient" )
+	CreateSliderConVariable(CPanel, "Terrain Coeficcient", 0, 1, 2, "gdisasters_heat_system_terraincoefficient" )
+	CreateSliderConVariable(CPanel, "Cooling Coeficcient", 0, 1, 2, "gdisasters_heat_system_coolingcoefficient" )
 	CreateSliderConVariable(CPanel, "Max hail", 1, 100, 0, "gdisasters_heat_system_maxhail" )
 	CreateSliderConVariable(CPanel, "Max raindrop", 1, 100, 0, "gdisasters_heat_system_maxraindrop" )
 	CreateSliderConVariable(CPanel, "Max clouds", 1, 100, 0, "gdisasters_heat_system_maxclouds" )
@@ -244,7 +252,7 @@ local function gDisastersHeatSystemBeta( CPanel )
 	CreateSliderConVariable(CPanel, "Min Humidity", 0, 100, 0, "gdisasters_heat_system_minhumidity" )
 	CreateSliderConVariable(CPanel, "Min Pressure", 94000, 106000, 0, "gdisasters_heat_system_minpressure" )
 	CreateSliderConVariable(CPanel, "Min Airflow", 0, 100000, 0, "gdisasters_heat_system_minairflow" )
-	CreateSliderConVariable(CPanel, "Coeficcient Influencie", 0, 1, 2, "gdisasters_heat_system_coefficient" )
+	
 
 	CreateTickboxConVariable(CPanel, "gd_88", "gdisasters_heat_system_enabled");
 	CreateTickboxConVariable(CPanel, "gd_87", "gdisasters_graphics_draw_heatsystem_grid");
