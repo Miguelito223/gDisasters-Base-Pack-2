@@ -202,6 +202,7 @@ function CalculateHumidity(x, y, z)
     if count == 0 then return currentCell.humidity or 0 end
 
     local averageHumidity = totalHumidity / count
+    
     local currentHumidity = currentCell.humidity or 0
     local terrainType = currentCell.terrainType or "land"
     local terrainHumidityEffect = 0
