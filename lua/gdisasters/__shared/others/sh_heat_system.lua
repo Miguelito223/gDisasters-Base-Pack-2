@@ -9,8 +9,8 @@ local gridSize = GetConVar("gdisasters_heat_system_gridsize"):GetInt() -- Tamañ
 local totalgridSize = gridSize * gridSize * gridSize
 
 
-local minTemperature = GetConVar("gdisasters_heat_system_mintemp"):GetInt()
-local maxTemperature = GetConVar("gdisasters_heat_system_maxtemp"):GetInt()
+local minTemperature = GetConVar("gdisasters_heat_system_mintemp"):GetFloat()
+local maxTemperature = GetConVar("gdisasters_heat_system_maxtemp"):GetFloat()
 local minHumidity = GetConVar("gdisasters_heat_system_minhumidity"):GetInt()
 local maxHumidity = GetConVar("gdisasters_heat_system_maxhumidity"):GetInt()
 local minPressure = GetConVar("gdisasters_heat_system_minpressure"):GetInt()
@@ -25,7 +25,7 @@ local nextUpdateGridPlayer = CurTime()
 local nextUpdateWeather = CurTime()
 local nextThunderThink = CurTime()
 
-local coolingFactor = 0.05
+local coolingFactor = 5
 local gas_constant = 8.314 -- J/(mol·K)
 local specific_heat_vapor = 1.996 -- J/(g·K)
 
@@ -139,8 +139,7 @@ function CalculateTemperature(x, y, z)
     local averageTemperature = totalTemperature / count
 
     -- Factores adicionales (solar, terreno, etc.)
-    local Hour = gDisasters.DayNightSystem.Time
-    local solarRadiation = CalculateSolarRadiation(Hour)
+    local solarRadiation = CalculateSolarRadiation(gDisasters.DayNightSystem.Time)
     local solarInfluence = solarRadiation * solarInfluenceCoefficient
     
     local coldeffect = 0
@@ -171,7 +170,6 @@ function CalculateTemperature(x, y, z)
     end
 
     local temperatureChange = tempdiffusionCoefficient * (averageTemperature - currentTemperature)
-    
     local newTemperature = currentTemperature + temperatureChange + terrainTemperatureEffect + solarInfluence + latentHeat + coldeffect
 
     return math.Clamp(newTemperature, minTemperature, maxTemperature)
