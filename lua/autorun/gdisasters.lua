@@ -271,38 +271,36 @@ gDisasters:Msg("FINISH")
 
 --adding particles
 
-if CLIENT then
+gDisasters:Msg("LOADING PARTICLES...")
 
-	gDisasters:Msg("LOADING PARTICLES...")
+gDisasters.root_Directory = "particles/gdisasters"
 
-	gDisasters.root_Directory = "particles/gdisasters"
-
-	function gDisasters:AddParticleFile( File, directory )
-		game.AddParticles( directory .. File )
-		self:Msg( "ADDING: " .. File )
-	end
-
-	function gDisasters:loadparticlesfiles( directory )
-		directory = directory .. "/"
-
-		local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
-
-		for _, v in ipairs( files ) do
-			if string.EndsWith( v, ".pcf" ) then
-				self:AddParticleFile( v, directory )
-			end
-		end
-
-		for _, v in ipairs( directories ) do
-			self:Msg( "Directory: " .. v )
-			self:loadparticlesfiles( directory .. v )
-		end
-	end
-
-	gDisasters:loadparticlesfiles( gDisasters.root_Directory)
-
-	gDisasters:Msg("FINISH")
+function gDisasters:AddParticleFile( File, directory )
+	game.AddParticles( directory .. File )
+	self:Msg( "ADDING: " .. File )
 end
+
+function gDisasters:loadparticlesfiles( directory )
+	directory = directory .. "/"
+
+	local files, directories = file.Find( directory .. "*", "THIRDPARTY" )
+
+	for _, v in ipairs( files ) do
+		if string.EndsWith( v, ".pcf" ) then
+			self:AddParticleFile( v, directory )
+		end
+	end
+
+	for _, v in ipairs( directories ) do
+		self:Msg( "Directory: " .. v )
+		self:loadparticlesfiles( directory .. v )
+	end
+end
+
+gDisasters:loadparticlesfiles( gDisasters.root_Directory)
+
+gDisasters:Msg("FINISH")
+
 
 --prechaching the particles
 
