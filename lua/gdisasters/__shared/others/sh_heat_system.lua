@@ -117,6 +117,9 @@ function CalculateTemperature(x, y, z)
     local currentCell = GridMap[x][y][z]
     if not currentCell then return 0 end -- Verificar que la celda actual exista
 
+    -- Inicializar las diferencias de temperatura en cada dirección a cero
+    local temperatureDifferenceX, temperatureDifferenceY, temperatureDifferenceZ = 0, 0, 0
+
     for dx = -1, 1 do
         for dy = -1, 1 do
             for dz = -1, 1 do
@@ -127,6 +130,17 @@ function CalculateTemperature(x, y, z)
                         if neighborCell.temperature then
                             totalTemperature = totalTemperature + neighborCell.temperature
                             count = count + 1
+
+                            -- Calcular las diferencias de temperatura en cada dirección
+                            if dx ~= 0 then
+                                temperatureDifferenceX = temperatureDifferenceX + (neighborCell.temperature - currentCell.temperature)
+                            end
+                            if dy ~= 0 then
+                                temperatureDifferenceY = temperatureDifferenceY + (neighborCell.temperature - currentCell.temperature)
+                            end
+                            if dz ~= 0 then
+                                temperatureDifferenceZ = temperatureDifferenceZ + (neighborCell.temperature - currentCell.temperature)
+                            end
                         end
                     end
                 end
@@ -172,6 +186,11 @@ function CalculateTemperature(x, y, z)
     local temperatureChange = TempDiffusionCoefficient * (averageTemperature - currentTemperature)
     local newTemperature = currentTemperature + temperatureChange + terrainTemperatureEffect + solarInfluence + latentHeat + coldeffect
 
+    -- Guardar las diferencias de temperatura calculadas en la celda actual
+    currentCell.temperatureDifferenceX = temperatureDifferenceX
+    currentCell.temperatureDifferenceY = temperatureDifferenceY
+    currentCell.temperatureDifferenceZ = temperatureDifferenceZ
+
     return math.Clamp(newTemperature, minTemperature, maxTemperature)
 end
 
@@ -181,6 +200,8 @@ function CalculateHumidity(x, y, z)
 
     local currentCell = GridMap[x][y][z]
     if not currentCell then return 0 end -- Verificar que la celda actual exista
+
+    local humidityDifferenceX, humidityDifferenceY, humidityDifferenceZ = 0, 0, 0
 
     for dx = -1, 1 do
         for dy = -1, 1 do
@@ -192,6 +213,18 @@ function CalculateHumidity(x, y, z)
                         if neighborCell.humidity then
                             totalHumidity = totalHumidity + neighborCell.humidity
                             count = count + 1
+
+
+                            -- Calcular las diferencias de temperatura en cada dirección
+                            if dx ~= 0 then
+                                humidityDifferenceX = humidityDifferenceX + (neighborCell.humidity - currentCell.humidity)
+                            end
+                            if dy ~= 0 then
+                                humidityDifferenceY = humidityDifferenceY + (neighborCell.humidity - currentCell.humidity)
+                            end
+                            if dz ~= 0 then
+                                humidityDifferenceZ = humidityDifferenceZ + (neighborCell.humidity - currentCell.humidity)
+                            end
                         end
                     end
                 end
@@ -217,6 +250,10 @@ function CalculateHumidity(x, y, z)
 
     local humidityChange = HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
     local newHumidity = currentHumidity + humidityChange + terrainHumidityEffect
+
+    currentCell.humidityDifferenceX = humidityDifferenceX
+    currentCell.humidityDifferenceY = humidityDifferenceY
+    currentCell.humidityDifferenceZ = humidityDifferenceZ
 
     return math.Clamp(newHumidity, minHumidity, maxHumidity)
 end
@@ -274,8 +311,17 @@ function CalculateAirFlow(x, y, z)
         end
     end
 
+    -- Contribución adicional del flujo de aire debido a la difusión natural
+    local combinedDiffusionContributionX = currentCell.temperatureDifferenceX + currentCell.humidityDifferenceX
+    local combinedDiffusionContributionY = currentCell.temperatureDifferenceY + currentCell.humidityDifferenceY
+    local combinedDiffusionContributionZ = currentCell.temperatureDifferenceZ + currentCell.humidityDifferenceZ
+
+    local diffusionContributionX = combinedDiffusionContributionX * AirflowCoefficient
+    local diffusionContributionY = combinedDiffusionContributionY * AirflowCoefficient
+    local diffusionContributionZ = combinedDiffusionContributionZ * AirflowCoefficient
+
     -- Crear un vector de flujo de aire
-    local airflowVector = Vector(totalDeltaPressureX, totalDeltaPressureY, totalDeltaPressureZ)
+    local airflowVector = Vector(totalDeltaPressureX + diffusionContributionX, totalDeltaPressureY + diffusionContributionY, totalDeltaPressureZ + diffusionContributionZ)
 
     -- Calcular la magnitud del flujo de aire
     local airflowMagnitude = airflowVector:Length()
@@ -318,9 +364,17 @@ function CalculateAirFlowDirection(x, y, z)
             end
         end
     end
+    -- Contribución adicional del flujo de aire debido a la difusión natural
+    local combinedDiffusionContributionX = currentCell.temperatureDifferenceX + currentCell.humidityDifferenceX
+    local combinedDiffusionContributionY = currentCell.temperatureDifferenceY + currentCell.humidityDifferenceY
+    local combinedDiffusionContributionZ = currentCell.temperatureDifferenceZ + currentCell.humidityDifferenceZ
+    -- Contribución adicional del flujo de aire debido a la difusión natural
+    local diffusionContributionX = combinedDiffusionContributionX * AirflowCoefficient
+    local diffusionContributionY = combinedDiffusionContributionY * AirflowCoefficient
+    local diffusionContributionZ = combinedDiffusionContributionZ * AirflowCoefficient
 
     -- Crear un vector de flujo de aire
-    local airflowVector = Vector(totalDeltaPressureX, totalDeltaPressureY, totalDeltaPressureZ)
+    local airflowVector = Vector(totalDeltaPressureX + diffusionContributionX, totalDeltaPressureY + diffusionContributionY, totalDeltaPressureZ + diffusionContributionZ)
 
     -- Calcular la magnitud del flujo de aire
     local airflowMagnitude = airflowVector:Length()
