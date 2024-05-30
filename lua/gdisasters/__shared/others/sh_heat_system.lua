@@ -841,6 +841,8 @@ function SimulateConvergence(x, y, z)
 end
 
 function SpawnWeatherEntity(weatherType, x, y, z)
+    if CLIENT then return end
+    
     local entityName = ""
     if weatherType == "rain" then
         entityName = "gd_heatsys_raincell"
