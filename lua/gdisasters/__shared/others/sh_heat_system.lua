@@ -1043,11 +1043,12 @@ function UpdateGrid()
                 if cell then
                     local x, y, z = cell[1], cell[2], cell[3]
                     if GridMap[x] and GridMap[x][y] and GridMap[x][y][z] then
-                        GridMap[x][y][z].temperature =  CalculateTemperature(x, y, z)
-                        GridMap[x][y][z].humidity = CalculateHumidity(x, y, z)
-                        GridMap[x][y][z].pressure = CalculatePressure(x, y, z)
-                        GridMap[x][y][z].Airflow = CalculateAirFlow(x, y, z)
-                        GridMap[x][y][z].Airflow_Direction =  CalculateAirFlowDirection(x, y, z)
+                        local currentcell = GridMap[x][y][z]
+                        currentcell.temperature =  CalculateTemperature(x, y, z)
+                        currentcell.humidity = CalculateHumidity(x, y, z)
+                        currentcell.pressure = CalculatePressure(x, y, z)
+                        currentcell.Airflow = CalculateAirFlow(x, y, z)
+                        currentcell.Airflow_Direction =  CalculateAirFlowDirection(x, y, z)
                     else
                         print("Error: Cell position out of grid bounds.")
                     end
