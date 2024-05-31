@@ -63,7 +63,6 @@ local stormTemperatureThreshold = 30 -- Umbral de temperatura para la generació
 local stormPressureThreshold = 10000 -- Umbral de presión para la generación de tormentas
 local lowTemperatureThreshold = 10
 local lowHumidityThreshold = 40 -- Umbral de humedad para la formación de nubes
-local convergenceFactor = 0.001
 local temperatureThreshold = 20
 local humidityThreshold = 75
 
