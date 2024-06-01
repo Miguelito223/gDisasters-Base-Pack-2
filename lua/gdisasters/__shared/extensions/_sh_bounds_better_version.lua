@@ -125,9 +125,9 @@ function getMapBounds()
         error("This map has no bounds")
         return nil
     end
+	local map = game.GetMap()
 
 	if MAP_BOUNDS[map] then
-		local map = game.GetMap()
     	return { MAP_BOUNDS[map][1], MAP_BOUNDS[map][2], MAP_BOUNDS[map][3]}
 	else
 		local minVector, maxVector = game.GetWorld():GetModelBounds()
