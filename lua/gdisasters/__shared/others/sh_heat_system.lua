@@ -1073,11 +1073,11 @@ function UpdatePlayerGrid()
                     -- Verifica si las propiedades de la celda son válidas
                     if cell.temperature and cell.humidity and cell.pressure and cell.Airflow and cell.Airflow_Direction and cell.terrainType and cell.cloudDensity then
                         -- Actualiza las variables de la atmósfera del jugador
-                        GLOBAL_SYSTEM["Atmosphere"]["Temperature"] = cell.temperature
-                        GLOBAL_SYSTEM["Atmosphere"]["Humidity"] = cell.humidity
-                        GLOBAL_SYSTEM["Atmosphere"]["Pressure"] = cell.pressure
-                        GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"] = cell.Airflow
-                        GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"] = cell.Airflow_Direction
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = cell.Airflow
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = cell.Airflow_Direction
                         print("Actual grid: x: " .. px .. ", y: ".. py .. ", z: " .. pz .. ", Terrain Type: " .. cell.terrainType .. ", Temp: " .. cell.temperature .. ", Humidity: " .. cell.humidity .. ", Pressure: " .. cell.pressure .. ", Airflow Speed: " .. cell.Airflow .. ", Cloud Density: " .. cell.cloudDensity)
                     else
                         -- Manejo de valores no válidos
