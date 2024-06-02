@@ -38,7 +38,8 @@ function ENT:Initialize()
 		
 		if (phys:IsValid()) then
 			phys:SetMass(self.Mass)
-		end 		
+			phys:AddGameFlag(128)
+		end 			
 		
 		self.NextPhysicsTime = CurTime()
 

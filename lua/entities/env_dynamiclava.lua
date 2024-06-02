@@ -9,6 +9,7 @@ ENT.PrintName		                 =  "Lava Flash Flood"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
+ENT.Mass                             =  100
 ENT.MaxlavaLevel                    =   9000
 ENT.WedgeSound							= "streams/disasters/nature/volcano_idle.wav"
 
@@ -26,6 +27,13 @@ function ENT:Initialize()
 		self:SetMoveType( MOVETYPE_NONE  )
 		self:SetUseType( ONOFF_USE )
 		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+
+		local phys = self:GetPhysicsObject()
+		
+		if (phys:IsValid()) then
+			phys:SetMass(self.Mass)
+			phys:AddGameFlag(128)
+		end 	
 				
 		self.lavaHeight = 0
 		self:SetNWFloat("lavaHeight", self.lavaHeight)

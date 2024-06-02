@@ -9,6 +9,7 @@ ENT.PrintName		                 =  "Flash Flood"
 ENT.Author			                 =  "Hmm"
 ENT.Contact		                     =  "Hmm"
 ENT.Category                         =  "Hmm"
+ENT.Mass                             =  100
 ENT.MaxFloodLevel                    =  9000
 
 function ENT:Initialize()	
@@ -22,6 +23,13 @@ function ENT:Initialize()
 		self:SetMoveType( MOVETYPE_NONE  )
 		self:SetUseType( ONOFF_USE )
 		self:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+
+		local phys = self:GetPhysicsObject()
+		
+		if (phys:IsValid()) then
+			phys:SetMass(self.Mass)
+			phys:AddGameFlag(128)
+		end 	
 				
 		self.FloodHeight = 0
 		self:SetNWFloat("FloodHeight", self.FloodHeight)
