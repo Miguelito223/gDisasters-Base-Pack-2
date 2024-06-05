@@ -158,7 +158,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     
     local coldeffect = 0
     if solarInfluence <= 0 then
-        coldeffect = -coolingFactor * gDisasters.HeatSystem.CoolingCoefficient
+        coldeffect = -gDisasters.HeatSystem.coolingFactor * gDisasters.HeatSystem.CoolingCoefficient
     end
 
     local currentTemperature = currentCell.temperature or 0
@@ -176,7 +176,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
 
     local latentHeat = 0
     if cloudDensity > 0 then
-        if (currentTemperature > freezingTemperature) then 
+        if (currentTemperature > gDisasters.HeatSystem.freezingTemperature) then 
             latentHeat = gDisasters.HeatSystem.calculateCondensationLatentHeat(cloudDensity) 
         else 
             latentHeat = gDisasters.HeatSystem.calculateFreezingLatentHeat(cloudDensity) 
