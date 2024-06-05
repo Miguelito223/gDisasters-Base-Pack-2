@@ -7,7 +7,7 @@ gDisasters.HeatSystem.Cloud = {}
 
 -- Tamaño de la cuadrícula y rango de temperatura
 gDisasters.HeatSystem.gridSize = GetConVar("gdisasters_heat_system_gridsize"):GetInt() -- Tamaño de cada cuadrado en unidades
-gDisasters.HeatSystem.totalgridSize = gridSize * gridSize * gridSize
+gDisasters.HeatSystem.totalgridSize = gDisasters.HeatSystem.gridSize * gDisasters.HeatSystem.gridSize * gDisasters.HeatSystem.gridSize
 
 
 gDisasters.HeatSystem.minTemperature = GetConVar("gdisasters_heat_system_mintemp"):GetFloat()
@@ -124,7 +124,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
         for dy = -1, 1 do
             for dz = -1, 1 do
                 if dx ~= 0 or dy ~= 0 or dz ~= 0 then
-                    local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                    local nx, ny, nz = x + dx * gDisasters.HeatSystem.gridSize, y + dy * gDisasters.HeatSystem.gridSize, z + dz * gDisasters.HeatSystem.gridSize
                     if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
                         local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
                         if neighborCell.temperature then
@@ -207,7 +207,7 @@ gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)
         for dy = -1, 1 do
             for dz = -1, 1 do
                 if dx ~= 0 or dy ~= 0 or dz ~= 0 then
-                    local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                    local nx, ny, nz = x + dx * gDisasters.HeatSystem.gridSize, y + dy * gDisasters.HeatSystem.gridSize, z + dz * gDisasters.HeatSystem.gridSize
                     if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
                         local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
                         if neighborCell.humidity then
@@ -272,7 +272,7 @@ gDisasters.HeatSystem.CalculatePressure = function(x, y, z)
     local humidity = cell.humidity or 0
 
     -- Calcular la presión basada en la temperatura y la humedad
-    local newpressure = (gas_constant * temperature * (1 + ((specific_heat_vapor * humidity) / temperature))) * 100
+    local newpressure = (gDisasters.HeatSystem.gas_constant * temperature * (1 + ((gDisasters.HeatSystem.specific_heat_vapor * humidity) / temperature))) * 100
 
     -- Asegurarse de que la presión esté dentro del rango
     return math.Clamp(newpressure, gDisasters.HeatSystem.minPressure, gDisasters.HeatSystem.maxPressure)
@@ -295,7 +295,7 @@ gDisasters.HeatSystem.CalculateAirFlow = function(x, y, z)
             for dz = -1, 1 do
                 -- Evitar la celda actual en el cálculo
                 if dx ~= 0 or dy ~= 0 or dz ~= 0 then
-                    local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                    local nx, ny, nz = x + dx * gDisasters.HeatSystem.gridSize, y + dy * gDisasters.HeatSystem.gridSize, z + dz * gDisasters.HeatSystem.gridSize
                     if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
                         local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
                         
@@ -349,7 +349,7 @@ gDisasters.HeatSystem.CalculateAirFlowDirection = function(x, y, z)
             for dz = -1, 1 do
                 -- Evitar la celda actual en el cálculo
                 if dx ~= 0 or dy ~= 0 or dz ~= 0 then
-                    local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                    local nx, ny, nz = x + dx * gDisasters.HeatSystem.gridSize, y + dy * gDisasters.HeatSystem.gridSize, z + dz * gDisasters.HeatSystem.gridSize
                     if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
                         local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
                         
@@ -393,9 +393,9 @@ end
 gDisasters.HeatSystem.GetCellType = function(x, y, z)
     local MapBounds = getMapBounds()
     local max, min, floor = MapBounds[1], MapBounds[2], MapBounds[3]
-    local minX, minY, maxZ = math.floor(min.x / gridSize) * gridSize, math.floor(min.y / gridSize) * gridSize,  math.ceil(min.z / gridSize) * gridSize
-    local maxX, maxY, minZ = math.ceil(max.x / gridSize) * gridSize, math.ceil(max.y / gridSize) * gridSize,  math.floor(max.z / gridSize) * gridSize
-    local floorz = math.floor(floor.z / gridSize) * gridSize
+    local minX, minY, maxZ = math.floor(min.x / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize, math.floor(min.y / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize,  math.ceil(min.z / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize
+    local maxX, maxY, minZ = math.ceil(max.x / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize, math.ceil(max.y / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize,  math.floor(max.z / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize
+    local floorz = math.floor(floor.z / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize
 
     -- Verificar si las coordenadas están dentro de los límites del mapa
     if x < minX or x >= maxX or y < minY or y >= maxY or z < minZ or z >= maxZ then
@@ -514,8 +514,8 @@ gDisasters.HeatSystem.UpdateCloudDensity = function(x, y, z)
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
     local humidity = currentCell.humidity or 0
 
-    if humidity > humidityThreshold then
-        currentCell.cloudDensity = (humidity - humidityThreshold) * gDisasters.HeatSystem.cloudDensityCoefficient
+    if humidity > gDisasters.HeatSystem.humidityThreshold then
+        currentCell.cloudDensity = (humidity - gDisasters.HeatSystem.humidityThreshold) * gDisasters.HeatSystem.cloudDensityCoefficient
     else
         currentCell.cloudDensity = 0
     end
@@ -526,14 +526,14 @@ gDisasters.HeatSystem.CheckStormFormation = function(x, y, z)
     local latentHeat = 0
 
     if currentCell.cloudDensity and currentCell.cloudDensity > 0 then
-        if currentCell.temperature > freezingTemperature then
+        if currentCell.temperature > gDisasters.HeatSystem.freezingTemperature then
             latentHeat = gDisasters.HeatSystem.calculateCondensationLatentHeat(currentCell.cloudDensity)
         else
             latentHeat = gDisasters.HeatSystem.calculateFreezingLatentHeat(currentCell.cloudDensity)
         end
     end
 
-    if latentHeat > stormLatentHeatThreshold then
+    if latentHeat > gDisasters.HeatSystem.stormLatentHeatThreshold then
         -- Trigger storm formation logic here
         gDisasters.HeatSystem.CreateStorm(x, y, z)
     end
@@ -544,12 +544,12 @@ gDisasters.HeatSystem.CheckHailFormation = function(x, y, z)
     local latentHeat = 0
 
     if currentCell.cloudDensity and currentCell.cloudDensity > 0 then
-        if currentCell.temperature <= freezingTemperature then
+        if currentCell.temperature <= gDisasters.HeatSystem.freezingTemperature then
             latentHeat = gDisasters.HeatSystem.calculateFreezingLatentHeat(currentCell.cloudDensity)
         end
     end
 
-    if latentHeat > hailLatentHeatThreshold then
+    if latentHeat > gDisasters.HeatSystem.hailLatentHeatThreshold then
         -- Trigger hail formation logic here
         gDisasters.HeatSystem.CreateHail(x, y, z)
     end
@@ -559,12 +559,12 @@ gDisasters.HeatSystem.CheckSnowFormation = function(x, y, z)
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
     local latentHeat = 0
 
-    if currentCell.cloudDensity >= snowFormationThreshold and currentCell.temperature <= snowTemperatureThreshold then
+    if currentCell.cloudDensity >= gDisasters.HeatSystem.snowFormationThreshold and currentCell.temperature <= gDisasters.HeatSystem.snowTemperatureThreshold then
         -- Calcular el calor latente necesario para la formación de nieve
         latentHeat = gDisasters.HeatSystem.CalculateSnowLatentHeat(currentCell.cloudDensity)
     end
 
-    if latentHeat >= snowLatentHeatThreshold then
+    if latentHeat >= gDisasters.HeatSystem.snowLatentHeatThreshold then
         -- Disparar la lógica de formación de nieve aquí
         gDisasters.HeatSystem.CreateSnow(x, y, z)
     end
@@ -574,12 +574,12 @@ gDisasters.HeatSystem.CheckCloudFormation = function(x, y, z)
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
     local latentHeat = 0
 
-    if currentCell.cloudDensity >= cloudFormationThreshold then
+    if currentCell.cloudDensity >= gDisasters.HeatSystem.cloudFormationThreshold then
         -- Calcular el calor latente necesario para la formación de nubes
         latentHeat = gDisasters.HeatSystem.CalculateCloudLatentHeat(currentCell.cloudDensity)
     end
 
-    if latentHeat >= cloudLatentHeatThreshold then
+    if latentHeat >= gDisasters.HeatSystem.cloudLatentHeatThreshold then
         -- Disparar la lógica de formación de nubes aquí
         gDisasters.HeatSystem.CreateCloud(x, y, z)
     end
@@ -589,12 +589,12 @@ gDisasters.HeatSystem.CheckRainFormation = function(x, y, z)
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
     local latentHeat = 0
 
-    if currentCell.cloudDensity >= rainFormationThreshold then
+    if currentCell.cloudDensity >= gDisasters.HeatSystem.rainFormationThreshold then
         -- Calcular el calor latente necesario para la formación de lluvia
         latentHeat = gDisasters.HeatSystem.CalculateRainLatentHeat(currentCell.cloudDensity)
     end
 
-    if latentHeat >= rainLatentHeatThreshold then
+    if latentHeat >= gDisasters.HeatSystem.rainLatentHeatThreshold then
         -- Disparar la lógica de formación de lluvia aquí
         gDisasters.HeatSystem.CreateRain(x, y, z)
     end
@@ -644,7 +644,7 @@ gDisasters.HeatSystem.CreateCloud = function(x,y,z)
 
     local humidity = cell.humidity
     local temperature = cell.temperature
-    if humidity > humidityThreshold and temperature < temperatureThreshold then
+    if humidity > gDisasters.HeatSystem.humidityThreshold and temperature < gDisasters.HeatSystem.temperatureThreshold then
         -- Generate clouds in cells with low humidity and temperature
         gDisasters.HeatSystem.AdjustCloudBaseHeight(x, y, z)
         
@@ -665,7 +665,7 @@ gDisasters.HeatSystem.CreateStorm = function(x,y,z)
 
     local humidity = cell.humidity
     local temperature = cell.temperature
-    if humidity < lowHumidityThreshold and temperature < lowTemperatureThreshold then
+    if humidity < gDisasters.HeatSystem.lowHumidityThreshold and temperature < gDisasters.HeatSystem.lowTemperatureThreshold then
         gDisasters.HeatSystem.AdjustCloudBaseHeight(x, y, z)
 
         -- Generate clouds in cells with low humidity and temperature
@@ -710,7 +710,7 @@ gDisasters.HeatSystem.GetDistance = function(x1, y1, z1, x2, y2, z2)
 end
 
 -- Función para obtener la distancia a la fuente más cercana
-gDisasters.HeatSystem.GetClosestDistance(x, y, z, sources)
+gDisasters.HeatSystem.GetClosestDistance = function(x, y, z, sources)
     local closestDistance = math.huge
 
     for _, source in ipairs(sources) do
@@ -859,7 +859,7 @@ gDisasters.HeatSystem.SimulateHail = function()
         for y, row in pairs(column) do
             for z, nubegrid in pairs(row) do
 
-                if nubegrid.humidity > humidityThreshold and nubegrid.temperature < temperatureThreshold then
+                if nubegrid.humidity > gDisasters.HeatSystem.humidityThreshold and nubegrid.temperature < temperatureThreshold then
                     gDisasters.HeatSystem.CreateHail(x, y, z)
                 end
             end
@@ -876,7 +876,7 @@ gDisasters.HeatSystem.SimulateConvergence = function(x, y, z)
     for dx = -1, 1 do
         for dy = -1, 1 do
             for dz = -1, 1 do
-                local nx, ny, nz = x + dx * gridSize, y + dy * gridSize, z + dz * gridSize
+                local nx, ny, nz = x + dx * gDisasters.HeatSystem.gridSize, y + dy * gDisasters.HeatSystem.gridSize, z + dz * gDisasters.HeatSystem.gridSize
                 if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
                     local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
                     if neighborCell.cloudDensity then
@@ -935,12 +935,12 @@ gDisasters.HeatSystem.UpdateWeatherInCell = function(x, y, z)
     if not cell then return end
 
     local weatherType = "clear"
-    if cell.cloudDensity > cloudDensityThreshold then
-        if cell.temperature <= freezingTemperature and cell.cloudDensity > hailThreshold then
+    if cell.cloudDensity > gDisasters.HeatSystem.cloudDensityThreshold then
+        if cell.temperature <= gDisasters.HeatSystem.freezingTemperature and cell.cloudDensity > gDisasters.HeatSystem.hailThreshold then
             weatherType = "hail"
-        elseif cell.cloudDensity > thunderstormThreshold then
+        elseif cell.cloudDensity > gDisasters.HeatSystem.thunderstormThreshold then
             weatherType = "thunder"
-        elseif cell.cloudDensity > rainThreshold then
+        elseif cell.cloudDensity > gDisasters.HeatSystem.rainThreshold then
             weatherType = "rain"
         end
     end
@@ -994,17 +994,17 @@ end
 gDisasters.HeatSystem.GenerateGrid = function(ply)
     -- Obtener los límites del mapa
     local mapBounds = getMapBounds()
-    local minX, minY, maxZ = math.floor(mapBounds[2].x / gridSize) * gridSize, math.floor(mapBounds[2].y / gridSize) * gridSize, math.ceil(mapBounds[2].z / gridSize) * gridSize
-    local maxX, maxY, minZ = math.ceil(mapBounds[1].x / gridSize) * gridSize, math.ceil(mapBounds[1].y / gridSize) * gridSize, math.floor(mapBounds[1].z / gridSize) * gridSize
+    local minX, minY, maxZ = math.floor(mapBounds[2].x / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize, math.floor(mapBounds[2].y / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize, math.ceil(mapBounds[2].z / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize
+    local maxX, maxY, minZ = math.ceil(mapBounds[1].x / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize, math.ceil(mapBounds[1].y / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize, math.floor(mapBounds[1].z / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize
 
     print("Generating grid...") -- Depuración
 
     -- Inicializar la cuadrícula
-    for x = minX, maxX, gridSize do
+    for x = minX, maxX, gDisasters.HeatSystem.gridSize do
         gDisasters.HeatSystem.GridMap[x] = {}
-        for y = minY, maxY, gridSize do
+        for y = minY, maxY, gDisasters.HeatSystem.gridSize do
             gDisasters.HeatSystem.GridMap[x][y] = {}
-            for z = minZ, maxZ, gridSize do
+            for z = minZ, maxZ, gDisasters.HeatSystem.gridSize do
                 gDisasters.HeatSystem.GridMap[x][y][z] = {}
                 gDisasters.HeatSystem.GridMap[x][y][z].temperature = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Temperature"]
                 gDisasters.HeatSystem.GridMap[x][y][z].humidity = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
@@ -1026,19 +1026,19 @@ gDisasters.HeatSystem.UpdateGrid = function()
         if CurTime() > gDisasters.HeatSystem.nextUpdateGrid then
             gDisasters.HeatSystem.nextUpdateGrid = CurTime() + gDisasters.HeatSystem.updateInterval
 
-            for i= 1, updateBatchSize do
-                local cell = table.remove(cellsToUpdate, 1)
+            for i= 1, gDisasters.HeatSystem.updateBatchSize do
+                local cell = table.remove(gDisasters.HeatSystem.cellsToUpdate, 1)
                 if not cell then
                     -- Reiniciar la lista de celdas para actualizar
-                    cellsToUpdate = {}
+                    gDisasters.HeatSystem.cellsToUpdate = {}
                     for x, column in pairs(gDisasters.HeatSystem.GridMap) do
                         for y, row in pairs(column) do
                             for z, cell in pairs(row) do
-                                table.insert(cellsToUpdate, {x, y, z})
+                                table.insert(gDisasters.HeatSystem.cellsToUpdate, {x, y, z})
                             end
                         end
                     end
-                    cell = table.remove(cellsToUpdate, 1)
+                    cell = table.remove(gDisasters.HeatSystem.cellsToUpdate, 1)
                 end
 
                 if cell then
@@ -1065,7 +1065,7 @@ gDisasters.HeatSystem.UpdatePlayerGrid = function()
 
             for k,ply in pairs(player.GetAll()) do
                 local pos = ply:GetPos()
-                local px, py, pz = math.floor(pos.x / gridSize) * gridSize, math.floor(pos.y / gridSize) * gridSize, math.floor(pos.z / gridSize) * gridSize
+                local px, py, pz = math.floor(pos.x / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize, math.floor(pos.y / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize, math.floor(pos.z / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize
                 
                 -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
                 if gDisasters.HeatSystem.GridMap[px] and gDisasters.HeatSystem.GridMap[px][py] and gDisasters.HeatSystem.GridMap[px][py][pz] then
@@ -1115,9 +1115,9 @@ gDisasters.HeatSystem.DrawGridDebug = function()
                         local color = Color(0, 0, 0) -- Color por defecto (negro)
 
                         -- Asignar un color según la temperatura
-                        if temperature < freezingTemperature then
+                        if temperature < gDisasters.HeatSystem.freezingTemperature then
                             color = Color(0, 0, 255) -- Azul para temperaturas bajo cero
-                        elseif temperature > boilingTemperature then
+                        elseif temperature > gDisasters.HeatSystem.boilingTemperature then
                             color = Color(255, 0, 0) -- Rojo para temperaturas sobre el punto de ebullición
                         else
                             local greenValue = math.Clamp((temperature - freezingTemperature) / (boilingTemperature - freezingTemperature) * 255, 0, 255)
@@ -1126,7 +1126,7 @@ gDisasters.HeatSystem.DrawGridDebug = function()
 
                         -- Dibujar el cubo en la posición correspondiente con el color calculado
                         render.SetColorMaterial()
-                        render.DrawBox(cellPos, Angle(0, 0, 0), Vector(-gridSize / 2, -gridSize / 2, -gridSize / 2), Vector(gridSize / 2, gridSize / 2, gridSize / 2), color)
+                        render.DrawBox(cellPos, Angle(0, 0, 0), Vector(-gDisasters.HeatSystem.gridSize / 2, -gDisasters.HeatSystem.gridSize / 2, -gDisasters.HeatSystem.gridSize / 2), Vector(gDisasters.HeatSystem.gridSize / 2, gDisasters.HeatSystem.gridSize / 2, gDisasters.HeatSystem.gridSize / 2), color)
                     end
                 end
             end
