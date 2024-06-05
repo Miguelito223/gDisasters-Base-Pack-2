@@ -1120,7 +1120,7 @@ gDisasters.HeatSystem.DrawGridDebug = function()
                         elseif temperature > gDisasters.HeatSystem.boilingTemperature then
                             color = Color(255, 0, 0) -- Rojo para temperaturas sobre el punto de ebullición
                         else
-                            local greenValue = math.Clamp((temperature - freezingTemperature) / (boilingTemperature - freezingTemperature) * 255, 0, 255)
+                            local greenValue = math.Clamp((temperature - gDisasters.HeatSystem.freezingTemperature) / (gDisasters.HeatSystem.boilingTemperature - gDisasters.HeatSystem.freezingTemperature) * 255, 0, 255)
                             color = Color(0, greenValue, 255 - greenValue) -- Gradiente de azul a verde para temperaturas entre el punto de congelación y el de ebullición
                         end
 
