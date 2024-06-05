@@ -965,8 +965,8 @@ end
 -- Llamar a SimulateClouds() para simular la formación y movimiento de las nubes
 gDisasters.HeatSystem.UpdateWeather = function()
     if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
-        if CurTime() > nextUpdateWeather then
-            nextUpdateWeather = CurTime() + updateInterval
+        if CurTime() > gDisasters.HeatSystem.nextUpdateWeather then
+            gDisasters.HeatSystem.nextUpdateWeather = CurTime() + gDisasters.HeatSystem.updateInterval
             for x, column in pairs(gDisasters.HeatSystem.GridMap) do
                 for y, row in pairs(column) do
                     for z, cell in pairs(row) do
@@ -1023,8 +1023,8 @@ end
 
 gDisasters.HeatSystem.UpdateGrid = function()
     if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
-        if CurTime() > nextUpdateGrid then
-            nextUpdateGrid = CurTime() + updateInterval
+        if CurTime() > gDisasters.HeatSystem.nextUpdateGrid then
+            gDisasters.HeatSystem.nextUpdateGrid = CurTime() + gDisasters.HeatSystem.updateInterval
 
             for i= 1, updateBatchSize do
                 local cell = table.remove(cellsToUpdate, 1)
@@ -1060,8 +1060,8 @@ gDisasters.HeatSystem.UpdateGrid = function()
 end
 gDisasters.HeatSystem.UpdatePlayerGrid = function()
     if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
-        if CurTime() > nextUpdateGridPlayer then
-            nextUpdateGridPlayer = CurTime() + updateInterval
+        if CurTime() > gDisasters.HeatSystem.nextUpdateGridPlayer then
+            gDisasters.HeatSystem.nextUpdateGridPlayer = CurTime() + gDisasters.HeatSystem.updateInterval
 
             for k,ply in pairs(player.GetAll()) do
                 local pos = ply:GetPos()
