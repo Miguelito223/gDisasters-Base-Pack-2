@@ -1100,7 +1100,7 @@ gDisasters.HeatSystem.TemperatureToColor = function(temperature)
     return Color(r * 255, 0, b * 255)
 end
 
-local gDisasters.HeatSystem.DrawGridDebug = function()
+gDisasters.HeatSystem.DrawGridDebug = function()
     if GetConVar("gdisasters_graphics_draw_heatsystem_grid"):GetInt() >= 1 then 
         local playerPos = LocalPlayer():GetPos() -- Obtener la posición del jugador
 
