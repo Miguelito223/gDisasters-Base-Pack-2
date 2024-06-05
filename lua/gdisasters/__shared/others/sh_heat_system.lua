@@ -1045,11 +1045,11 @@ gDisasters.HeatSystem.UpdateGrid = function()
                     local x, y, z = cell[1], cell[2], cell[3]
                     if gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z] then
                         local currentcell = gDisasters.HeatSystem.GridMap[x][y][z]
-                        currentcell.temperature =  gDisassters.HeatSystem.CalculateTemperature(x, y, z)
-                        currentcell.humidity = gDisassters.HeatSystem.CalculateHumidity(x, y, z)
-                        currentcell.pressure = gDisassters.HeatSystem.CalculatePressure(x, y, z)
-                        currentcell.Airflow = gDisassters.HeatSystem.CalculateAirFlow(x, y, z)
-                        currentcell.Airflow_Direction =  gDisassters.HeatSystem.CalculateAirFlowDirection(x, y, z)
+                        currentcell.temperature =  gDisasters.HeatSystem.CalculateTemperature(x, y, z)
+                        currentcell.humidity = gDisasters.HeatSystem.CalculateHumidity(x, y, z)
+                        currentcell.pressure = gDisasters.HeatSystem.CalculatePressure(x, y, z)
+                        currentcell.Airflow = gDisasters.HeatSystem.CalculateAirFlow(x, y, z)
+                        currentcell.Airflow_Direction =  gDisasters.HeatSystem.CalculateAirFlowDirection(x, y, z)
                     else
                         print("Error: Cell position out of grid bounds.")
                     end
