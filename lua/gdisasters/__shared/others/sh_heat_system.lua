@@ -154,11 +154,11 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
 
     -- Factores adicionales (solar, terreno, etc.)
     local solarRadiation = gDisasters.HeatSystem.CalculateSolarRadiation(gDisasters.DayNightSystem.Time)
-    local solarInfluence = solarRadiation * solarInfluenceCoefficient
+    local solarInfluence = solarRadiation * gDisasters.HeatSystem.solarInfluenceCoefficient
     
     local coldeffect = 0
     if solarInfluence <= 0 then
-        coldeffect = -coolingFactor * CoolingCoefficient
+        coldeffect = -coolingFactor * gDisasters.HeatSystem.CoolingCoefficient
     end
 
     local currentTemperature = currentCell.temperature or 0
@@ -166,12 +166,12 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local terrainType = currentCell.terrainType or "land"
     local terrainTemperatureEffect = 0
     
-    if (terrainType == "water" and waterTemperatureEffect) then
-        terrainTemperatureEffect = -waterTemperatureEffect * TerrainCoefficient
-    elseif (terrainType == "mountain" and mountainTemperatureEffect) then
-        terrainTemperatureEffect = -mountainTemperatureEffect * TerrainCoefficient
+    if (terrainType == "water" and gDisasters.HeatSystem.waterTemperatureEffect) then
+        terrainTemperatureEffect = -gDisasters.HeatSystem.waterTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
+    elseif (terrainType == "mountain" and gDisasters.HeatSystem.mountainTemperatureEffect) then
+        terrainTemperatureEffect = -gDisasters.HeatSystem.mountainTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
     else 
-        terrainTemperatureEffect = landTemperatureEffect * TerrainCoefficient
+        terrainTemperatureEffect = gDisasters.HeatSystem.landTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
     end
 
     local latentHeat = 0
@@ -183,7 +183,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
         end
     end
 
-    local temperatureChange = TempDiffusionCoefficient * (averageTemperature - currentTemperature)
+    local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
     local newTemperature = currentTemperature + temperatureChange + terrainTemperatureEffect + solarInfluence + latentHeat + coldeffect
 
     -- Guardar las diferencias de temperatura calculadas en la celda actual
@@ -240,15 +240,15 @@ gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)
     local terrainType = currentCell.terrainType or "land"
     local terrainHumidityEffect = 0
     
-    if (terrainType == "water" and waterHumidityEffect) then
-        terrainHumidityEffect = waterHumidityEffect * TerrainCoefficient
-    elseif (terrainType == "mountain" and mountainHumidityEffect) then
-        terrainHumidityEffect = -mountainHumidityEffect * TerrainCoefficient
+    if (terrainType == "water" and gDisasters.HeatSystem.waterHumidityEffect) then
+        terrainHumidityEffect =gDisasters.HeatSystem. waterHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
+    elseif (terrainType == "mountain" and gDisasters.HeatSystem.mountainHumidityEffect) then
+        terrainHumidityEffect = -gDisasters.HeatSystem.mountainHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
     else 
-        terrainHumidityEffect = -landHumidityEffect * TerrainCoefficient
+        terrainHumidityEffect = -gDisasters.HeatSystem.landHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
     end
 
-    local humidityChange = HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
+    local humidityChange = gDisasters.HeatSystem.HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
     local newHumidity = currentHumidity + humidityChange + terrainHumidityEffect
 
     currentCell.humidityDifferenceX = humidityDifferenceX
@@ -316,9 +316,9 @@ gDisasters.HeatSystem.CalculateAirFlow = function(x, y, z)
     local combinedDiffusionContributionY = currentCell.temperatureDifferenceY + currentCell.humidityDifferenceY
     local combinedDiffusionContributionZ = currentCell.temperatureDifferenceZ + currentCell.humidityDifferenceZ
 
-    local diffusionContributionX = combinedDiffusionContributionX * AirflowCoefficient
-    local diffusionContributionY = combinedDiffusionContributionY * AirflowCoefficient
-    local diffusionContributionZ = combinedDiffusionContributionZ * AirflowCoefficient
+    local diffusionContributionX = combinedDiffusionContributionX * gDisasters.HeatSystem.AirflowCoefficient
+    local diffusionContributionY = combinedDiffusionContributionY * gDisasters.HeatSystem.AirflowCoefficient
+    local diffusionContributionZ = combinedDiffusionContributionZ * gDisasters.HeatSystem.AirflowCoefficient
 
     -- Crear un vector de flujo de aire
     local airflowVector = Vector(totalDeltaPressureX + diffusionContributionX, totalDeltaPressureY + diffusionContributionY, totalDeltaPressureZ + diffusionContributionZ)
@@ -326,7 +326,7 @@ gDisasters.HeatSystem.CalculateAirFlow = function(x, y, z)
     -- Calcular la magnitud del flujo de aire
     local airflowMagnitude = airflowVector:Length()
 
-    local newAirflow = airflowMagnitude * AirflowCoefficient
+    local newAirflow = airflowMagnitude * gDisasters.HeatSystem.AirflowCoefficient
 
     -- Clampear el flujo de aire entre los valores mínimos y máximos permitidos
     return math.Clamp(newAirflow, gDisasters.HeatSystem.minAirflow, gDisasters.HeatSystem.maxAirflow)
@@ -369,9 +369,9 @@ gDisasters.HeatSystem.CalculateAirFlowDirection = function(x, y, z)
     local combinedDiffusionContributionY = currentCell.temperatureDifferenceY + currentCell.humidityDifferenceY
     local combinedDiffusionContributionZ = currentCell.temperatureDifferenceZ + currentCell.humidityDifferenceZ
     -- Contribución adicional del flujo de aire debido a la difusión natural
-    local diffusionContributionX = combinedDiffusionContributionX * AirflowCoefficient
-    local diffusionContributionY = combinedDiffusionContributionY * AirflowCoefficient
-    local diffusionContributionZ = combinedDiffusionContributionZ * AirflowCoefficient
+    local diffusionContributionX = combinedDiffusionContributionX * gDisasters.HeatSystem.AirflowCoefficient
+    local diffusionContributionY = combinedDiffusionContributionY * gDisasters.HeatSystem.AirflowCoefficient
+    local diffusionContributionZ = combinedDiffusionContributionZ * gDisasters.HeatSystem.AirflowCoefficient
 
     -- Crear un vector de flujo de aire
     local airflowVector = Vector(totalDeltaPressureX + diffusionContributionX, totalDeltaPressureY + diffusionContributionY, totalDeltaPressureZ + diffusionContributionZ)
@@ -515,7 +515,7 @@ gDisasters.HeatSystem.UpdateCloudDensity = function(x, y, z)
     local humidity = currentCell.humidity or 0
 
     if humidity > humidityThreshold then
-        currentCell.cloudDensity = (humidity - humidityThreshold) * cloudDensityCoefficient
+        currentCell.cloudDensity = (humidity - humidityThreshold) * gDisasters.HeatSystem.cloudDensityCoefficient
     else
         currentCell.cloudDensity = 0
     end
@@ -576,7 +576,7 @@ gDisasters.HeatSystem.CheckCloudFormation = function(x, y, z)
 
     if currentCell.cloudDensity >= cloudFormationThreshold then
         -- Calcular el calor latente necesario para la formación de nubes
-        latentHeat = CalculateCloudLatentHeat(currentCell.cloudDensity)
+        latentHeat = gDisasters.HeatSystem.CalculateCloudLatentHeat(currentCell.cloudDensity)
     end
 
     if latentHeat >= cloudLatentHeatThreshold then
@@ -949,12 +949,12 @@ gDisasters.HeatSystem.UpdateWeatherInCell = function(x, y, z)
     if cell.weather ~= weatherType then
         -- Remove old weather entity if it exists
         if cell.weather and cell.weather ~= "clear" then
-            RemoveWeatherEntity(cell.weather, x, y, z)
+            gDisasters.HeatSystem.RemoveWeatherEntity(cell.weather, x, y, z)
         end
         
         -- Spawn new weather entity if necessary
         if weatherType ~= "clear" then
-            SpawnWeatherEntity(weatherType, x, y, z)
+            gDisasters.HeatSystem.SpawnWeatherEntity(weatherType, x, y, z)
         end
 
         -- Update the cell's weather type
@@ -1110,7 +1110,7 @@ gDisasters.HeatSystem.DrawGridDebug = function()
                     local cellPos = Vector(x, y, z) -- Posición de la celda
                     local distance = playerPos:DistToSqr(cellPos) -- Distancia al cuadrado del jugador a la celda
 
-                    if distance <= maxDistance * maxDistance then -- Comparar con la distancia máxima al cuadrado
+                    if distance <= gDisasters.HeatSystem.maxDistance * gDisasters.HeatSystem.maxDistance then -- Comparar con la distancia máxima al cuadrado
                         local temperature = cell.temperature -- Obtener la temperatura de la celda
                         local color = Color(0, 0, 0) -- Color por defecto (negro)
 
