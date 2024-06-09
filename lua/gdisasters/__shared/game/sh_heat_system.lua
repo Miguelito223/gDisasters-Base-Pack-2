@@ -184,7 +184,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     end
 
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
-    local newTemperature = currentTemperature + temperatureChange + terrainTemperatureEffect + solarInfluence + latentHeat + coldeffect
+    local newTemperature = currentTemperature + temperatureChange + terrainTemperatureEffect + solarInfluence + coldeffect
 
     -- Guardar las diferencias de temperatura calculadas en la celda actual
     currentCell.temperatureDifferenceX = temperatureDifferenceX
@@ -435,7 +435,7 @@ end
 
 gDisasters.HeatSystem.CreateSnow = function(x, y, z) 
     if CLIENT then return end -- No ejecutar en el cliente (solo en el servidor)
-    if #ents.FindByClass("env_spritetrail") > gDisasters.HeatSystem.MaxSnow then return end
+    if #ents.FindByClass("env_spritetrail") > gDisasters.HeatSystem.MaxRainDrop then return end
     
     -- Crear una entidad de partículas para la nieve
     local particle = ents.Create("env_spritetrail")
