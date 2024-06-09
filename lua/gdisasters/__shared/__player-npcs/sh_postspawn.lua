@@ -24,7 +24,7 @@ function gDisasters_PostSpawnSH()
    		CreateConVar( "gdisasters_heat_system_mintemp", "-50", {FCVAR_ARCHIVE}, "" )
 		CreateConVar( "gdisasters_heat_system_minhumidity", "0", {FCVAR_ARCHIVE}, "" )
 		CreateConVar( "gdisasters_heat_system_minpressure", "94000", {FCVAR_ARCHIVE}, "" )
-		CreateConVar( "gdisasters_heat_system_minairflow", "10000", {FCVAR_ARCHIVE}, "" )
+		CreateConVar( "gdisasters_heat_system_minairflow", "0", {FCVAR_ARCHIVE}, "" )
 		--dnc
         CreateConVar( "gdisasters_dnc_enabled", "0", {FCVAR_ARCHIVE}, "" )
         CreateConVar( "gdisasters_dnc_realtime", "0", {FCVAR_ARCHIVE}, "" )
