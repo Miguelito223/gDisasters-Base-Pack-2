@@ -127,7 +127,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
                     local nx, ny, nz = x + dx * gDisasters.HeatSystem.gridSize, y + dy * gDisasters.HeatSystem.gridSize, z + dz * gDisasters.HeatSystem.gridSize
                     if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
                         local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
-                        if neighborCell.temperature then
+                        if neighborCell.temperature and neighborCell.terrainType and neighborCell.terrainType == currentCell.terrainType then
                             totalTemperature = totalTemperature + neighborCell.temperature
                             count = count + 1
 
@@ -210,7 +210,7 @@ gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)
                     local nx, ny, nz = x + dx * gDisasters.HeatSystem.gridSize, y + dy * gDisasters.HeatSystem.gridSize, z + dz * gDisasters.HeatSystem.gridSize
                     if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
                         local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
-                        if neighborCell.humidity then
+                        if neighborCell.humidity and neighborCell.terrainType and neighborCell.terrainType == currentCell.terrainType then
                             totalHumidity = totalHumidity + neighborCell.humidity
                             count = count + 1
 
@@ -298,13 +298,14 @@ gDisasters.HeatSystem.CalculateAirFlow = function(x, y, z)
                     local nx, ny, nz = x + dx * gDisasters.HeatSystem.gridSize, y + dy * gDisasters.HeatSystem.gridSize, z + dz * gDisasters.HeatSystem.gridSize
                     if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
                         local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
-                        
-                        local deltaPressure = neighborCell.pressure - currentCell.pressure
+                        if neighborCell.pressure and neighborCell.terrainType and neighborCell.terrainType == currentCell.terrainType then
+                            local deltaPressure = neighborCell.pressure - currentCell.pressure
 
-                        -- Sumar la diferencia de presión a los totales en cada eje
-                        totalDeltaPressureX = totalDeltaPressureX + deltaPressure * dx
-                        totalDeltaPressureY = totalDeltaPressureY + deltaPressure * dy
-                        totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * dz
+                            -- Sumar la diferencia de presión a los totales en cada eje
+                            totalDeltaPressureX = totalDeltaPressureX + deltaPressure * dx
+                            totalDeltaPressureY = totalDeltaPressureY + deltaPressure * dy
+                            totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * dz
+                        end
                     end
                 end
             end
@@ -352,13 +353,14 @@ gDisasters.HeatSystem.CalculateAirFlowDirection = function(x, y, z)
                     local nx, ny, nz = x + dx * gDisasters.HeatSystem.gridSize, y + dy * gDisasters.HeatSystem.gridSize, z + dz * gDisasters.HeatSystem.gridSize
                     if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
                         local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
-                        
-                        local deltaPressure = neighborCell.pressure - currentCell.pressure
+                        if neighborCell.pressure and neighborCell.terrainType and neighborCell.terrainType == currentCell.terrainType then
+                            local deltaPressure = neighborCell.pressure - currentCell.pressure
 
-                        -- Sumar la diferencia de presión a los totales en cada eje
-                        totalDeltaPressureX = totalDeltaPressureX + deltaPressure * dx
-                        totalDeltaPressureY = totalDeltaPressureY + deltaPressure * dy
-                        totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * dz
+                            -- Sumar la diferencia de presión a los totales en cada eje
+                            totalDeltaPressureX = totalDeltaPressureX + deltaPressure * dx
+                            totalDeltaPressureY = totalDeltaPressureY + deltaPressure * dy
+                            totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * dz
+                        end
                     end
                 end
             end
@@ -433,6 +435,7 @@ end
 
 gDisasters.HeatSystem.CreateSnow = function(x, y, z) 
     if CLIENT then return end -- No ejecutar en el cliente (solo en el servidor)
+    if #ents.FindByClass("env_spritetrail") > gDisasters.HeatSystem.MaxSnow then return end
     
     -- Crear una entidad de partículas para la nieve
     local particle = ents.Create("env_spritetrail")
@@ -461,7 +464,7 @@ end
 -- Función para crear partículas de lluvia
 gDisasters.HeatSystem.CreateRain = function(x, y, z)
     if CLIENT then return end  
-    if #ents.FindByClass("env_spritetrail") > MaxRainDrop then return end
+    if #ents.FindByClass("env_spritetrail") > gDisasters.HeatSystem.MaxRainDrop then return end
 
     local particle = ents.Create("env_spritetrail") -- Create a sprite trail entity for raindrop particle
     if not IsValid(particle) then return end -- Verifica si la entidad fue creada correctamente
@@ -617,7 +620,7 @@ end
 
 gDisasters.HeatSystem.SpawnCloud = function(pos, color)
     if CLIENT then return end
-    if #ents.FindByClass("gd_cloud_cumulus") > MaxClouds then return end
+    if #ents.FindByClass("gd_cloud_cumulus") > gDisasters.HeatSystem.MaxClouds then return end
 
     local cloud = ents.Create("gd_cloud_cumulus")
     if not IsValid(cloud) then return end -- Verifica si la entidad fue creada correctamente
@@ -842,7 +845,7 @@ end
 
 gDisasters.HeatSystem.CreateHail = function(x, y, z)
     if CLIENT then return end
-    if #ents.FindByClass("gd_d1_hail_ch") > MaxHail then return end
+    if #ents.FindByClass("gd_d1_hail_ch") > gDisasters.HeatSystem.MaxHail then return end
     
     local hail = ents.Create("gd_d1_hail_ch")
     hail:SetPos(Vector(x, y, z))
