@@ -631,7 +631,7 @@ gDisasters.HeatSystem.SpawnCloud = function(pos, color)
     cloud:Spawn()
     cloud:Activate()
 
-    table.insert(Cloud, cloud)
+    table.insert(gDisasters.HeatSystem.Cloud, cloud)
 
     timer.Simple(cloud.Life, function()
         if IsValid(cloud) then cloud:Remove() end
