@@ -1013,6 +1013,7 @@ gDisasters.HeatSystem.GenerateGrid = function(ply)
                 gDisasters.HeatSystem.GridMap[x][y][z].Airflow_Direction = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Direction"]
                 gDisasters.HeatSystem.GridMap[x][y][z].cloudDensity = 0
                 gDisasters.HeatSystem.GridMap[x][y][z].terrainType = "land"
+                print("Grid generated in position (" .. x .. "," .. y .. "," .. z .. ")") -- Depuración
             end
         end
     end
@@ -1079,7 +1080,6 @@ gDisasters.HeatSystem.UpdatePlayerGrid = function()
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = cell.Airflow
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = cell.Airflow_Direction
-                        print("Actual grid: x: " .. px .. ", y: ".. py .. ", z: " .. pz .. ", Terrain Type: " .. cell.terrainType .. ", Temp: " .. cell.temperature .. ", Humidity: " .. cell.humidity .. ", Pressure: " .. cell.pressure .. ", Airflow Speed: " .. cell.Airflow .. ", Cloud Density: " .. cell.cloudDensity)
                     else
                         -- Manejo de valores no válidos
                         print("Error: Valores no válidos en la celda de la cuadrícula.")
