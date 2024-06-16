@@ -117,7 +117,7 @@ gDisasters.HeatSystem.CalculateSolarRadiation = function(x, y, z, hour)
     local solarRadiation = maxRadiation * math.sin(math.pi * dayFraction)
 
     -- Asegurarse de que la radiación esté en el rango de 0 a maxRadiation
-    cell.solarInfluence = math.Clamp(solarRadiation, 0, maxRadiation) * gDisasters.HeatSystem.solarInfluenceCoefficient
+    return math.Clamp(solarRadiation, 0, maxRadiation) * gDisasters.HeatSystem.solarInfluenceCoefficient
     
 end
 
@@ -127,7 +127,7 @@ gDisasters.HeatSystem.CalculateCoolEffect = function(x, y, z)
 
     local solarInfluence = cell.solarInfluence or 0
     if solarInfluence <= 0 then
-        cell.coldeffect = gDisasters.HeatSystem.coolingFactor * gDisasters.HeatSystem.CoolingCoefficient
+        return gDisasters.HeatSystem.coolingFactor * gDisasters.HeatSystem.CoolingCoefficient
     end
 end
 
@@ -140,9 +140,9 @@ gDisasters.HeatSystem.CalculatelatentHeat = function(x, y, z)
 
     if cloudDensity > 0 then
         if (currentTemperature > gDisasters.HeatSystem.freezingTemperature) then 
-            cell.latentHeat = gDisasters.HeatSystem.calculateCondensationLatentHeat(cloudDensity) * gDisasters.HeatSystem.LatentHeatCoefficient
+            return gDisasters.HeatSystem.calculateCondensationLatentHeat(cloudDensity) * gDisasters.HeatSystem.LatentHeatCoefficient
         else 
-            cell.latentHeat = gDisasters.HeatSystem.calculateFreezingLatentHeat(cloudDensity) * gDisasters.HeatSystem.LatentHeatCoefficient
+            return gDisasters.HeatSystem.calculateFreezingLatentHeat(cloudDensity) * gDisasters.HeatSystem.LatentHeatCoefficient
         end
     end
 end
@@ -214,10 +214,10 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local cloudDensity = currentCell.cloudDensity or 0
     local solarInfluence = currentCell.solarInfluence or 0
     local terraintemperatureEffect = currentCell.terrainTemperatureEffect or 0
-    local Latentheat = currentCell.Latentheat or 0
-    local coldeffect = currentCell.coldeffect or 0
+    local Latentheat = currentCell.LatentHeat or 0
+    local coolingEffect = currentCell.coolingEffect or 0
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
-    local newTemperature = currentTemperature + temperatureChange + terraintemperatureEffect + Latentheat + solarInfluence + coldeffect
+    local newTemperature = currentTemperature + temperatureChange + terraintemperatureEffect + Latentheat + solarInfluence + coolingEffect
 
     -- Guardar las diferencias de temperatura calculadas en la celda actual
     currentCell.temperatureDifferenceX = temperatureDifferenceX
@@ -1072,10 +1072,10 @@ gDisasters.HeatSystem.UpdateGrid = function()
                     local x, y, z = cell[1], cell[2], cell[3]
                     if gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z] then
                         local currentcell = gDisasters.HeatSystem.GridMap[x][y][z]
-                        gDisasters.HeatSystem.CalculateSolarRadiation(x, y, z, gDisasters.DayNightSystem.Time)
                         gDisasters.HeatSystem.CalculateTerrainInfluence(x, y, z)
-                        gDisasters.HeatSystem.CalculateCoolEffect(x, y, z)
-                        gDisasters.HeatSystem.CalculatelatentHeat(x, y, z)
+                        currentcell.solarInfluence = gDisasters.HeatSystem.CalculateSolarRadiation(x, y, z, gDisasters.DayNightSystem.Time)
+                        currentcell.coolingEffect = gDisasters.HeatSystem.CalculateCoolEffect(x, y, z)
+                        currentcell.LatentHeat = gDisasters.HeatSystem.CalculatelatentHeat(x, y, z)
                         currentcell.temperature = gDisasters.HeatSystem.CalculateTemperature(x, y, z)
                         currentcell.humidity = gDisasters.HeatSystem.CalculateHumidity(x, y, z)
                         currentcell.pressure = gDisasters.HeatSystem.CalculatePressure(x, y, z)
