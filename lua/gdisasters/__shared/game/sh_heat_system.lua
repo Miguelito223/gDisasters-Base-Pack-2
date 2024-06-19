@@ -1140,6 +1140,7 @@ gDisasters.HeatSystem.UpdatePlayerGrid = function()
 end
 
 gDisasters.HeatSystem.UpdateEntityGrid = function()
+    if CLIENT then return end
     if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
         
         if CurTime() > gDisasters.HeatSystem.nextUpdateGridEntity then
