@@ -1238,9 +1238,6 @@ gDisasters.HeatSystem.UpdateEntityGrid = function()
                                 end
 
                             end
-                        else
-                            -- Manejo de valores no válidos
-                            print("Error: Valores no válidos en la celda de la cuadrícula.")
                         end
                     else
                         -- Manejo de celdas fuera de los límites de la cuadrícula
