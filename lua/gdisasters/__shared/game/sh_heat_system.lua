@@ -1125,6 +1125,7 @@ end
 
 gDisasters.HeatSystem.UpdateEntityGrid = function()
     if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
+        
         if CurTime() > gDisasters.HeatSystem.nextUpdateGridEntity then
             gDisasters.HeatSystem.nextUpdateGridEntity = CurTime() + gDisasters.HeatSystem.updateInterval
 
@@ -1136,16 +1137,107 @@ gDisasters.HeatSystem.UpdateEntityGrid = function()
                     -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
                     if gDisasters.HeatSystem.GridMap[px] and gDisasters.HeatSystem.GridMap[px][py] and gDisasters.HeatSystem.GridMap[px][py][pz] then
                         local cell = gDisasters.HeatSystem.GridMap[px][py][pz]
+                        local windspeed  = cell.Airflow
+	                    local winddir    = cell.Airflow_Direction
+                        local windphysics_enabled = GetConVar( "gdisasters_wind_physics_enabled" ):GetInt() == 1 
+                        local windconstraints_remove = GetConVar( "gdisasters_wind_candamageconstraints" ):GetInt() == 1
 
-                        -- Verifica si las propiedades de la celda son válidas
-                        if cell.Airflow and cell.Airflow_Direction then
+                        local function WindUnweld(ent)
+                            local wind_mul   = (math.Clamp(windspeed,200, 256) -200) / 10
                             local phys = ent:GetPhysicsObject()
 
-                            -- Calcula la fuerza a aplicar
-                            local airflowForce = cell.Airflow * cell.Airflow_Direction * gDisasters.HeatSystem.airflowForceMultiplier
+                            if HitChance(0.01 + wind_mul ) then
+                                local can_play_sound = false
 
-                            -- Aplica la fuerza al objeto
-                            phys:ApplyForceCenter(airflowForce)
+
+                                if #constraint.GetTable( ent ) != 0 then
+                                    can_play_sound = true 
+                                elseif phys:IsMotionEnabled()==false then
+                                    can_play_sound = true 
+                                end	
+
+                                if can_play_sound then
+                                    local material_type = GetMaterialType(ent)
+
+
+                                    if material_type == "wood" then 
+                                        sound.Play(table.Random(Break_Sounds.Wood), ent:GetPos(), 80, math.random(90,110), 1)
+                                    
+                                    elseif material_type == "metal" then 
+                                        sound.Play(table.Random(Break_Sounds.Metal), ent:GetPos(), 80, math.random(90,110), 1)
+                                    
+                                    elseif material_type == "plastic" then 
+                                        sound.Play(table.Random(Break_Sounds.Plastic), ent:GetPos(), 80, math.random(90,110), 1)
+
+                                    elseif material_type == "rock" then 
+                                        sound.Play(table.Random(Break_Sounds.Rock), ent:GetPos(), 80, math.random(90,110), 1)
+
+                                    elseif material_type == "glass" then 
+                                        sound.Play(table.Random(Break_Sounds.Glass), ent:GetPos(), 80, math.random(90,110), 1)
+
+                                    elseif material_type == "ice" then 
+                                        sound.Play(table.Random(Break_Sounds.Ice), ent:GetPos(), 80, math.random(90,110), 1)
+                                    
+                                    else
+                                        sound.Play(table.Random(Break_Sounds.Generic), ent:GetPos(), 80, math.random(90,110), 1)
+                                    
+                                    end
+
+                                    phys:EnableMotion(true)
+                                    phys:Wake()
+                                    constraint.RemoveAll( ent )
+                                end
+                            end
+
+                        end
+
+                        local function performTrace(ply, direction)
+                        
+                            local tr = util.TraceLine( {
+                                start = ply:GetPos(),
+                                endpos = ply:GetPos() + direction * 60000,
+                                filter = function( ent ) if ent:IsWorld() then return true end end
+                            } )
+                        
+                        
+                            
+                            return tr.HitPos
+                        end
+
+                        -- Verifica si las propiedades de la celda son válidas
+                        if cell.Airflow and cell.Airflow_Direction and windphysics_enabled and windspeed >= 1 and CurTime() >= GLOBAL_SYSTEM["Atmosphere"]["Wind"]["NextThink"] then
+                            local phys = ent:GetPhysicsObject()
+                            local outdoor = isOutdoor(ent, true) 
+				            local blocked = IsSomethingBlockingWind(ent)
+                            if blocked==false and outdoor==true then
+                                -- Calcula la fuerza a aplicar
+                                local area    = Area(ent)
+                                local mass    = phys:GetMass()
+
+                                local force_mul_area     = math.Clamp((area/680827),0,1) -- bigger the area >> higher the f multiplier is
+                                local friction_mul       = math.Clamp((mass/50000),0,1) -- lower the mass  >> lower frictional force 
+                                local avrg_mul           = (force_mul_area + friction_mul) / 2 
+
+                                local windvel           = convert_MetoSU(convert_KMPHtoMe(windspeed / 2.9225)) * winddir 
+                                local frictional_scalar = math.Clamp(windvel:Length(), 0, mass)
+                                local frictional_velocity = frictional_scalar * -windvel:GetNormalized()
+                                local windvel_new         = (windvel + frictional_velocity) * -1
+
+                                local windvel_cap         = windvel_new:Length() - ent:GetVelocity():Length() 
+
+                                if windvel_cap > 0 then
+                                    
+                                    phys:AddVelocity(windvel_new )
+                                
+                                end
+                        
+
+                                if windconstraints_remove then 
+                                    WindUnweld(ent)
+                                
+                                end
+
+                            end
                         else
                             -- Manejo de valores no válidos
                             print("Error: Valores no válidos en la celda de la cuadrícula.")
