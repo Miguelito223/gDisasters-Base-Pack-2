@@ -442,13 +442,29 @@ gDisasters.HeatSystem.GetCellType = function(x, y, z)
         return "water"
     end
 
-    local WATER_LEVEL = tr.HitPos.z
-    local MOUNTAIN_LEVEL = floorz + 10000 -- Ajusta la altura de la montaña según sea necesario
+    
+    local WATER_LEVEL = math.floor(tr.HitPos.z / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize
+    local MOUNTAIN_LEVEL = math.floor((floorz + 10000) / gDisasters.HeatSystem.gridSize) * gDisasters.HeatSystem.gridSize -- Ajusta la altura de la montaña según sea necesario
+   
+    -- Trace to check for land
+    local trLand = util.TraceLine({
+        start = traceStart,
+        endpos = traceEnd - Vector(0, 0, 100), -- Un trace más largo para detectar el terreno
+        mask = MASK_SOLID_BRUSHONLY, -- Colisionar solo con el terreno sólido
+        filter = function(ent) return ent:IsValid() end -- Filtrar cualquier entidad válida
+    })
+
+    -- Si el trazado de línea colisiona con tierra, la celda es de tipo "land"
+    if trLand.Hit then
+        if trLand.HitPos.z <= WATER_LEVEL then
+            return "water" -- La celda es agua si está por debajo del nivel del agua detectado
+        else
+            return "land" -- La celda es tierra si está por encima del nivel del agua
+        end
+    end
 
     -- Simular diferentes tipos de celdas basadas en coordenadas
-    if z <= WATER_LEVEL then
-        return "water" -- Por debajo del nivel del agua es agua
-    elseif z >= MOUNTAIN_LEVEL then
+    if z >= MOUNTAIN_LEVEL then
         return "mountain" -- Por encima del nivel de la montaña es montaña
     else
         return "land" -- En otras coordenadas es tierra
