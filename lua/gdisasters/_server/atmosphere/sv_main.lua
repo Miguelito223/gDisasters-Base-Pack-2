@@ -699,7 +699,7 @@ function Wind()
 		
 		
 		local local_wind      = area_percentage * windspeed
-		if isOutdoor==false then local_wind = 0 end 
+		if isOutdoor==false and  IsSomethingBlockingWind(v) then local_wind = 0 end 
 		
 		v.gDisasters.Area.LocalWind = local_wind
 		v:SetNWFloat("LocalWind", local_wind)
