@@ -38,11 +38,11 @@ gDisasters.HeatSystem.specific_heat_vapor = 1.996 -- J/(g·K)
 
 gDisasters.HeatSystem.TempDiffusionCoefficient = GetConVar("gdisasters_heat_system_tempdifussioncoefficient"):GetFloat()
 gDisasters.HeatSystem.HumidityDiffusionCoefficient = GetConVar("gdisasters_heat_system_humiditydifussioncoefficient"):GetFloat()
-gDisasters.HeatSystem.solarInfluenceCoefficient = GetConVar("gdisasters_heat_system_solarinfluencecoefficient"):GetFloat()
+gDisasters.HeatSystem.SolarInfluenceCoefficient = GetConVar("gdisasters_heat_system_solarinfluencecoefficient"):GetFloat()
 gDisasters.HeatSystem.LatentHeatCoefficient = GetConVar("gdisasters_heat_system_latentheatcoefficient"):GetFloat()
 gDisasters.HeatSystem.AirflowCoefficient = GetConVar("gdisasters_heat_system_airflowcoefficient"):GetFloat()
-gDisasters.HeatSystem.cloudDensityCoefficient = GetConVar("gdisasters_heat_system_clouddensitycoefficient"):GetFloat()  -- Coeficiente para convertir humedad en densidad de nubes
-gDisasters.HeatSystem.convergenceCoefficient = GetConVar("gdisasters_heat_system_convergencecoefficient"):GetFloat()
+gDisasters.HeatSystem.CloudDensityCoefficient = GetConVar("gdisasters_heat_system_clouddensitycoefficient"):GetFloat()  -- Coeficiente para convertir humedad en densidad de nubes
+gDisasters.HeatSystem.ConvergenceCoefficient = GetConVar("gdisasters_heat_system_convergencecoefficient"):GetFloat()
 gDisasters.HeatSystem.TerrainCoefficient = GetConVar("gdisasters_heat_system_terraincoefficient"):GetFloat()
 gDisasters.HeatSystem.CoolingCoefficient = GetConVar("gdisasters_heat_system_coolingcoefficient"):GetFloat()
 
@@ -117,7 +117,7 @@ gDisasters.HeatSystem.CalculateSolarRadiation = function(x, y, z, hour)
     local solarRadiation = maxRadiation * math.sin(math.pi * dayFraction)
 
     -- Asegurarse de que la radiación esté en el rango de 0 a maxRadiation
-    return math.Clamp(solarRadiation, 0, maxRadiation) * gDisasters.HeatSystem.solarInfluenceCoefficient
+    return math.Clamp(solarRadiation, 0, maxRadiation) * gDisasters.HeatSystem.SolarInfluenceCoefficient
     
 end
 
@@ -557,7 +557,7 @@ gDisasters.HeatSystem.UpdateCloudDensity = function(x, y, z)
     local humidity = currentCell.humidity or 0
 
     if humidity > gDisasters.HeatSystem.humidityThreshold then
-        currentCell.cloudDensity = (humidity - gDisasters.HeatSystem.humidityThreshold) * gDisasters.HeatSystem.cloudDensityCoefficient
+        currentCell.cloudDensity = (humidity - gDisasters.HeatSystem.humidityThreshold) * gDisasters.HeatSystem.CloudDensityCoefficient
     else
         currentCell.cloudDensity = 0
     end
@@ -933,7 +933,7 @@ gDisasters.HeatSystem.SimulateConvergence = function(x, y, z)
     if count == 0 then return end
 
     local averageCloudDensity = totalCloudDensity / count
-    currentCell.cloudDensity = math.min(currentCell.cloudDensity + (averageCloudDensity * gDisasters.HeatSystem.convergenceCoefficient), 1)
+    currentCell.cloudDensity = math.min(currentCell.cloudDensity + (averageCloudDensity * gDisasters.HeatSystem.ConvergenceCoefficient), 1)
 end
 
 gDisasters.HeatSystem.SpawnWeatherEntity = function(weatherType, x, y, z)
@@ -1051,8 +1051,8 @@ gDisasters.HeatSystem.GenerateGrid = function(ply)
                 gDisasters.HeatSystem.GridMap[x][y][z].temperature = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Temperature"]
                 gDisasters.HeatSystem.GridMap[x][y][z].humidity = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
                 gDisasters.HeatSystem.GridMap[x][y][z].pressure = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
-                gDisasters.HeatSystem.GridMap[x][y][z].Airflow = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Speed"]
-                gDisasters.HeatSystem.GridMap[x][y][z].Airflow_Direction = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Direction"]
+                gDisasters.HeatSystem.GridMap[x][y][z].airflow = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Speed"]
+                gDisasters.HeatSystem.GridMap[x][y][z].airflow_direction = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Direction"]
                 gDisasters.HeatSystem.GridMap[x][y][z].cloudDensity = 0
                 gDisasters.HeatSystem.GridMap[x][y][z].terrainType = "land"
                 print("Grid generated in position (" .. x .. "," .. y .. "," .. z .. ")") -- Depuración
@@ -1095,8 +1095,8 @@ gDisasters.HeatSystem.UpdateGrid = function()
                         currentcell.temperature = gDisasters.HeatSystem.CalculateTemperature(x, y, z)
                         currentcell.humidity = gDisasters.HeatSystem.CalculateHumidity(x, y, z)
                         currentcell.pressure = gDisasters.HeatSystem.CalculatePressure(x, y, z)
-                        currentcell.Airflow = gDisasters.HeatSystem.CalculateAirFlow(x, y, z)
-                        currentcell.Airflow_Direction =  gDisasters.HeatSystem.CalculateAirFlowDirection(x, y, z)
+                        currentcell.airflow = gDisasters.HeatSystem.CalculateAirFlow(x, y, z)
+                        currentcell.airflow_direction =  gDisasters.HeatSystem.CalculateAirFlowDirection(x, y, z)
                     else
                         print("Error: Cell position out of grid bounds.")
                     end
@@ -1119,13 +1119,13 @@ gDisasters.HeatSystem.UpdatePlayerGrid = function()
                     local cell = gDisasters.HeatSystem.GridMap[px][py][pz]
 
                     -- Verifica si las propiedades de la celda son válidas
-                    if cell.temperature and cell.humidity and cell.pressure and cell.Airflow and cell.Airflow_Direction and cell.terrainType and cell.cloudDensity then
+                    if cell.temperature and cell.humidity and cell.pressure and cell.airflow and cell.airflow_direction and cell.terrainType and cell.cloudDensity then
                         -- Actualiza las variables de la atmósfera del jugador
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
-                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = cell.Airflow
-                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = cell.Airflow_Direction
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = cell.airflow
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = cell.airflow_direction
                     else
                         -- Manejo de valores no válidos
                         print("Error: Valores no válidos en la celda de la cuadrícula.")
@@ -1154,8 +1154,8 @@ gDisasters.HeatSystem.UpdateEntityGrid = function()
                     -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
                     if gDisasters.HeatSystem.GridMap[px] and gDisasters.HeatSystem.GridMap[px][py] and gDisasters.HeatSystem.GridMap[px][py][pz] then
                         local cell = gDisasters.HeatSystem.GridMap[px][py][pz]
-                        local windspeed  = cell.Airflow
-	                    local winddir    = cell.Airflow_Direction
+                        local windspeed  = cell.airflow
+	                    local winddir    = cell.airflow_direction
                         local windphysics_enabled = GetConVar( "gdisasters_wind_physics_enabled" ):GetInt() == 1 
                         local windconstraints_remove = GetConVar( "gdisasters_wind_candamageconstraints" ):GetInt() == 1
 
@@ -1222,7 +1222,7 @@ gDisasters.HeatSystem.UpdateEntityGrid = function()
                         end
 
                         -- Verifica si las propiedades de la celda son válidas
-                        if cell.Airflow and cell.Airflow_Direction and windphysics_enabled and windspeed >= 1 and CurTime() >= GLOBAL_SYSTEM["Atmosphere"]["Wind"]["NextThink"] then
+                        if cell.airflow and cell.airflow_direction and windphysics_enabled and windspeed >= 1 and CurTime() >= GLOBAL_SYSTEM["Atmosphere"]["Wind"]["NextThink"] then
                             local phys = ent:GetPhysicsObject()
                             local outdoor = isOutdoor(ent, true) 
 				            local blocked = IsSomethingBlockingWind(ent)
