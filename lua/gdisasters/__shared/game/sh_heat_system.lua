@@ -301,6 +301,44 @@ gDisasters.HeatSystem.CalculatePressure = function(x, y, z)
     return math.Clamp(newpressure, gDisasters.HeatSystem.minPressure, gDisasters.HeatSystem.maxPressure)
 end
 
+-- Función para calcular la presión de una celda basada en temperatura y humedad
+gDisasters.HeatSystem.CalculateDewPoint = function(x, y, z) 
+    local cell = gDisasters.HeatSystem.GridMap[x][y][z]
+    if not cell then return 0 end -- Si la celda no existe, retornar 0
+
+    local temperature = cell.temperature or 0
+    if temperature == 0 then
+        temperature = 0.01 -- Ajuste mínimo para evitar división por cero
+    end
+
+    local humidity = cell.humidity or 0
+
+    -- Calcular la presión basada en la temperatura y la humedad
+    local newdewpoint =  temperature - ((100 - humidity) / 5)
+
+    -- Asegurarse de que la presión esté dentro del rango
+    return newdewpoint
+end
+
+gDisasters.HeatSystem.CalculateRelativeHumidity = function(x, y, z) 
+    local cell = gDisasters.HeatSystem.GridMap[x][y][z]
+    if not cell then return 0 end -- Si la celda no existe, retornar 0
+
+    local temperature = cell.temperature or 0
+    if temperature == 0 then
+        temperature = 0.01 -- Ajuste mínimo para evitar división por cero
+    end
+
+    local dewPoint = cell.dewpoint or 0
+
+    -- Calcular la presión basada en la temperatura y la humedad
+    local newRelativeHumidity =  100 - (5 * (temperature - dewPoint))
+
+    -- Asegurarse de que la presión esté dentro del rango
+    return newRelativeHumidity
+end
+
+
 gDisasters.HeatSystem.CalculateAirFlow = function(x, y, z)
     local totalDeltaPressureX = 0
     local totalDeltaPressureY = 0
@@ -1094,6 +1132,8 @@ gDisasters.HeatSystem.UpdateGrid = function()
                         currentcell.LatentHeat = gDisasters.HeatSystem.CalculatelatentHeat(x, y, z)
                         currentcell.temperature = gDisasters.HeatSystem.CalculateTemperature(x, y, z)
                         currentcell.humidity = gDisasters.HeatSystem.CalculateHumidity(x, y, z)
+                        currentcell.relative_humidity = gDisasters.HeatSystem.CalculateRelativeHumidity(x, y, z)
+                        currentcell.dewpoint = gDisasters.HeatSystem.CalculateDewPoint(x, y, z)
                         currentcell.pressure = gDisasters.HeatSystem.CalculatePressure(x, y, z)
                         currentcell.airflow = gDisasters.HeatSystem.CalculateAirFlow(x, y, z)
                         currentcell.airflow_direction =  gDisasters.HeatSystem.CalculateAirFlowDirection(x, y, z)
