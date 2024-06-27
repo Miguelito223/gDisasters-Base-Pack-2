@@ -53,9 +53,9 @@ gDisasters.HeatSystem.mountainTemperatureEffect = -3  -- Las montañas tienden a
 gDisasters.HeatSystem.waterHumidityEffect = 5       -- El agua puede aumentar significativamente la humedad en su entorno
 gDisasters.HeatSystem.landHumidityEffect = -5        -- La tierra puede retener menos humedad que el agua
 gDisasters.HeatSystem.mountainHumidityEffect = -4    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
-gDisasters.HeatSystem.landAirflowEffect = 5         -- La tierra puede aumentar significativamente el flujo de aire
+gDisasters.HeatSystem.landAirflowEffect = -5         -- La tierra puede disminuir significativamente el flujo de aire
 gDisasters.HeatSystem.waterAirflowEffect = 5        -- El agua puede aumentar significativamente el flujo de aire
-gDisasters.HeatSystem.mountainairflowEffect = 5     -- Las montaña pueden aumentar significativamente el flujo de aire
+gDisasters.HeatSystem.mountainairflowEffect = -5     -- Las montaña pueden disminuir significativamente el flujo de aire
 
 
 gDisasters.HeatSystem.convergenceThreshold = 0.5
@@ -320,25 +320,6 @@ gDisasters.HeatSystem.CalculateDewPoint = function(x, y, z)
     return newdewpoint
 end
 
-gDisasters.HeatSystem.CalculateRelativeHumidity = function(x, y, z) 
-    local cell = gDisasters.HeatSystem.GridMap[x][y][z]
-    if not cell then return 0 end -- Si la celda no existe, retornar 0
-
-    local temperature = cell.temperature or 0
-    if temperature == 0 then
-        temperature = 0.01 -- Ajuste mínimo para evitar división por cero
-    end
-
-    local dewPoint = cell.dewpoint or 0
-
-    -- Calcular la presión basada en la temperatura y la humedad
-    local newRelativeHumidity =  100 - (5 * (temperature - dewPoint))
-
-    -- Asegurarse de que la presión esté dentro del rango
-    return newRelativeHumidity
-end
-
-
 gDisasters.HeatSystem.CalculateAirFlow = function(x, y, z)
     local totalDeltaPressureX = 0
     local totalDeltaPressureY = 0
@@ -387,8 +368,8 @@ gDisasters.HeatSystem.CalculateAirFlow = function(x, y, z)
 
     -- Calcular la magnitud del flujo de aire
     local airflowMagnitude = airflowVector:Length()
-
-    local newAirflow = airflowMagnitude * gDisasters.HeatSystem.AirflowCoefficient
+ 
+    local newAirflow = airflowMagnitude * gDisasters.HeatSystem.AirflowCoefficient * currentCell.terrainAirflowEffect
 
     -- Clampear el flujo de aire entre los valores mínimos y máximos permitidos
     return math.Clamp(newAirflow, gDisasters.HeatSystem.minAirflow, gDisasters.HeatSystem.maxAirflow)
@@ -447,7 +428,7 @@ gDisasters.HeatSystem.CalculateAirFlowDirection = function(x, y, z)
     if airflowMagnitude > 0 then
         windDirection.x = airflowVector.x / airflowMagnitude
         windDirection.y = airflowVector.y / airflowMagnitude
-        windDirection.z = 0
+        windDirection.z = airflowVector.z / airflowMagnitude
     end
 
     return windDirection
@@ -1132,7 +1113,6 @@ gDisasters.HeatSystem.UpdateGrid = function()
                         currentcell.LatentHeat = gDisasters.HeatSystem.CalculatelatentHeat(x, y, z)
                         currentcell.temperature = gDisasters.HeatSystem.CalculateTemperature(x, y, z)
                         currentcell.humidity = gDisasters.HeatSystem.CalculateHumidity(x, y, z)
-                        currentcell.relative_humidity = gDisasters.HeatSystem.CalculateRelativeHumidity(x, y, z)
                         currentcell.dewpoint = gDisasters.HeatSystem.CalculateDewPoint(x, y, z)
                         currentcell.pressure = gDisasters.HeatSystem.CalculatePressure(x, y, z)
                         currentcell.airflow = gDisasters.HeatSystem.CalculateAirFlow(x, y, z)
