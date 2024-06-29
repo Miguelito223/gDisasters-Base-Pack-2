@@ -194,7 +194,7 @@ gDisasters.HeatSystem.CalculateVaporPressure = function(x, y, z)
     local VPshb = cell.VPsHb
 
     -- Calcular la presión de vapor (Pv) usando la fórmula proporcionada
-    local Pv = VPshb - a1 * P * (T - Tbh)
+    local Pv = VPshb - (a1 * P * (T - Tbh))
 
     return Pv
 end
@@ -290,7 +290,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
 
     -- Factores adicionales (solar, terreno, etc.)
 
-    local currentTemperature = currentCell.temperature or 0
+    local currentTemperature = currentCell.temperature or 0.01
     local cloudDensity = currentCell.cloudDensity or 0
     local solarInfluence = currentCell.solarInfluence or 0
     local terraintemperatureEffect = currentCell.terrainTemperatureEffect or 0
@@ -304,7 +304,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     currentCell.temperatureDifferenceY = temperatureDifferenceY
     currentCell.temperatureDifferenceZ = temperatureDifferenceZ
 
-    return newTemperature
+    return math.Clamp(newTemperature, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
 end
 
 gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)    local totalHumidity = 0
@@ -348,7 +348,7 @@ gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)    local totalHumidi
 
     local averageHumidity = totalHumidity / count
 
-    local currentHumidity = currentCell.humidity or 0
+    local currentHumidity = currentCell.humidity or 0.01
     local terrainHumidityEffect = currentCell.terrainHumidityEffect
     local humidityChange = gDisasters.HeatSystem.HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
     local newHumidity = currentHumidity + humidityChange + terrainHumidityEffect
