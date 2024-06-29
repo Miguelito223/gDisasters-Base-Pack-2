@@ -125,12 +125,7 @@ gDisasters.HeatSystem.CalculateVPs = function(x, y, z)
     local cell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not cell then return 0 end -- Si la celda no existe, retornar 0
 
-    local temperature = cell.temperature or 0
-    if temperature == 0 then
-        temperature = 0.01 -- Ajuste mínimo para evitar división por cero
-    end
-
-    local T = temperature -- Convertir la temperatura a Kelvin
+    local T = cell.temperature or 0.01
 
     -- Calcular la presión de vapor saturada usando la fórmula adecuada
     local VPs
@@ -149,17 +144,8 @@ gDisasters.HeatSystem.Calculatetemperaturebh = function(x, y, z)
     local cell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not cell then return 0 end -- Si la celda no existe, retornar 0
 
-    local temperature = cell.temperature or 0
-    if temperature == 0 then
-        temperature = 0.01 -- Ajuste mínimo para evitar división por cero
-    end
-
-    local humidity = cell.humidity or 0
-
-    local T = temperature
-
-    -- Convertir la humedad relativa a decimal (por ejemplo, 50% -> 0.5)
-    local HR = humidity
+    local T = cell.temperature or 0.01
+    local HR = cell.humidity or 0.01
 
     local Tbh = T * math.atan(0.151977 * math.sqrt(HR + 8.313659)) + math.atan(T + HR) - math.atan(HR - 1.676331) + 0.00391838 * math.pow(HR, 1.5) * math.atan(0.023101 * HR) - 4.686035
 
@@ -171,12 +157,7 @@ gDisasters.HeatSystem.CalculateVPsHb = function(x, y, z)
     local cell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not cell then return 0 end -- Si la celda no existe, retornar 0
 
-    local temperaturebh = cell.temperaturebh or 0
-    if temperaturebh == 0 then
-        temperaturebh = 0.01 -- Ajuste mínimo para evitar división por cero
-    end
-
-    local Tbh = temperaturebh
+    local Tbh = cell.temperaturebh or 0.01
 
     -- Calcular la presión de vapor saturada usando la fórmula adecuada
     local VPshb
@@ -195,14 +176,11 @@ gDisasters.HeatSystem.CalculateVaporPressure = function(x, y, z)
     local cell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not cell then return 0 end -- Si la celda no existe, retornar 0
 
-    local temperature = cell.temperature or 0
-    if temperature == 0 then
-        temperature = 0.01 -- Ajuste mínimo para evitar división por cero
-    end
+    local T = cell.temperature or 0.01
 
     -- Constantes
-    local P = cell.pressure / 100 -- Presión atmosférica en Pascales (a nivel del mar)
-    local Tbh = cell.temperaturebh -- Temperatura base de referencia en Celsius (ajusta según tu caso)
+    local P = (cell.pressure or 94000) / 100 -- Presión en hPa
+    local Tbh = cell.temperaturebh or 0.01 -- Temperatura base de referencia en Celsius (ajusta según tu caso)
     local Cp = 1005 -- Capacidad calorífica del aire seco en kJ/kg·K
     local Lv = 2.5e6 -- Calor latente de vaporización del agua en J/kg
 
@@ -211,15 +189,12 @@ gDisasters.HeatSystem.CalculateVaporPressure = function(x, y, z)
 
     -- Calcular el factor psicrométrico
     local a1 = (Cp * P) / Lv
-
-    -- Convertir la temperatura de Celsius a Kelvin
-    local T = temperature
     
     -- Calcular la presión de vapor saturada a la temperatura base de referencia (VPs,bh)
     local VPshb = cell.VPsHb
 
     -- Calcular la presión de vapor (Pv) usando la fórmula proporcionada
-    local Pv = VPshb - (a1 * P * (T - Tbh))
+    local Pv = VPshb - a1 * P * (T - Tbh)
 
     return Pv
 end
@@ -329,13 +304,58 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     currentCell.temperatureDifferenceY = temperatureDifferenceY
     currentCell.temperatureDifferenceZ = temperatureDifferenceZ
 
-    return math.Clamp(newTemperature, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
+    return newTemperature
 end
 
-gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)
+gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)    local totalHumidity = 0
+    local count = 0
+
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not currentCell then return 0 end -- Verificar que la celda actual exista
-    
+
+    local humidityDifferenceX, humidityDifferenceY, humidityDifferenceZ = 0, 0, 0
+
+    for dx = -1, 1 do
+        for dy = -1, 1 do
+            for dz = -1, 1 do
+                if dx ~= 0 or dy ~= 0 or dz ~= 0 then
+                    local nx, ny, nz = x + dx * gDisasters.HeatSystem.gridSize, y + dy * gDisasters.HeatSystem.gridSize, z + dz * gDisasters.HeatSystem.gridSize
+                    if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
+                        local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
+                        if neighborCell.humidity and neighborCell.terrainType and neighborCell.terrainType == currentCell.terrainType then
+                            totalHumidity = totalHumidity + neighborCell.humidity
+                            count = count + 1
+
+
+                            -- Calcular las diferencias de temperatura en cada dirección
+                            if dx ~= 0 then
+                                humidityDifferenceX = humidityDifferenceX + (neighborCell.humidity - currentCell.humidity)
+                            end
+                            if dy ~= 0 then
+                                humidityDifferenceY = humidityDifferenceY + (neighborCell.humidity - currentCell.humidity)
+                            end
+                            if dz ~= 0 then
+                                humidityDifferenceZ = humidityDifferenceZ + (neighborCell.humidity - currentCell.humidity)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    if count == 0 then return currentCell.humidity or 0 end
+
+    local averageHumidity = totalHumidity / count
+
+    local currentHumidity = currentCell.humidity or 0
+    local terrainHumidityEffect = currentCell.terrainHumidityEffect
+    local humidityChange = gDisasters.HeatSystem.HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
+    local newHumidity = currentHumidity + humidityChange + terrainHumidityEffect
+
+    currentCell.humidityDifferenceX = humidityDifferenceX
+    currentCell.humidityDifferenceY = humidityDifferenceY
+    currentCell.humidityDifferenceZ = humidityDifferenceZ
     local vp = currentCell.VP
     local vps = currentCell.VPs
     local newHumidity = (vp/vps) * 100
@@ -351,13 +371,27 @@ gDisasters.HeatSystem.CalculatePressure = function(x, y, z)
 
     -- Definir valores de los parámetros
     local Po = 1013.25 -- Presión al nivel del mar estándar en hPa
+    local To = 288.15 -- Temperatura media en Kelvin
     local altitude = 1000 -- Altitud de 1000 metros
     local gravity = 9.80665 -- Aceleración debido a la gravedad en m/s²
     local gas_constant = 8.31447 -- Constante específica del aire en J/(mol·K)
-    local Tm = 288.15 -- Temperatura media en Kelvin
+    local y = 0.65/100
+    local T1 = To-gravity*z
+    local Tm = (To + T1) / 2 -- Temperatura media en Kelvin
    
-    local P1 = Po / math.exp(z * gravity / (gas_constant * Tm))
-    return math.Clamp(P1, gDisasters.HeatSystem.minPressure, gDisasters.HeatSystem.maxPressure)
+    local P1 = (Po / math.exp(z * gravity / (gas_constant * Tm))) * 100
+    return P1
+end
+
+gDisasters.HeatSystem.Alpha = function(T, HR)
+    -- Definir las constantes a y b
+    local a = 17.625
+    local b = 243.04
+
+    -- Calcular α(T, HR) usando la fórmula proporcionada
+    local alpha = math.log(HR / 100) + (a * T) / (b + T)
+
+    return alpha
 end
 
 -- Función para calcular la presión de una celda basada en temperatura y humedad
@@ -365,14 +399,15 @@ gDisasters.HeatSystem.CalculateDewPoint = function(x, y, z)
     local cell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not cell then return 0 end -- Si la celda no existe, retornar 0
     
-    local temperature = cell.temperature or 0
-    if temperature == 0 then
-        temperature = 0.01 -- Ajuste mínimo para evitar división por cero
-    end
+    local T = cell.temperature or 0.01
+    local HR = cell.humidity or 0.01
 
-    local humidity = cell.humidity or 0
+    local a = 17.625
+    local b = 243.04
 
-    local Td = temperature + 35 * math.log(humidity)
+    local alpha = gDisasters.HeatSystem.Alpha(T, HR)
+
+    local Td = (b * alpha) / (a - alpha)
 
     return Td
 end
@@ -412,9 +447,9 @@ gDisasters.HeatSystem.CalculateAirFlow = function(x, y, z)
     end
 
     -- Contribución adicional del flujo de aire debido a la difusión natural
-    local combinedDiffusionContributionX = currentCell.temperatureDifferenceX
-    local combinedDiffusionContributionY = currentCell.temperatureDifferenceY
-    local combinedDiffusionContributionZ = currentCell.temperatureDifferenceZ
+    local combinedDiffusionContributionX = currentCell.temperatureDifferenceX + currentCell.humidityDifferenceX
+    local combinedDiffusionContributionY = currentCell.temperatureDifferenceY + currentCell.humidityDifferenceY
+    local combinedDiffusionContributionZ = currentCell.temperatureDifferenceZ + currentCell.humidityDifferenceZ
 
     local diffusionContributionX = combinedDiffusionContributionX * gDisasters.HeatSystem.AirflowCoefficient
     local diffusionContributionY = combinedDiffusionContributionY * gDisasters.HeatSystem.AirflowCoefficient
@@ -466,10 +501,10 @@ gDisasters.HeatSystem.CalculateAirFlowDirection = function(x, y, z)
         end
     end
     -- Contribución adicional del flujo de aire debido a la difusión natural
-    local combinedDiffusionContributionX = currentCell.temperatureDifferenceX
-    local combinedDiffusionContributionY = currentCell.temperatureDifferenceY
-    local combinedDiffusionContributionZ = currentCell.temperatureDifferenceZ
-    -- Contribución adicional del flujo de aire debido a la difusión natural
+    local combinedDiffusionContributionX = currentCell.temperatureDifferenceX + currentCell.humidityDifferenceX
+    local combinedDiffusionContributionY = currentCell.temperatureDifferenceY + currentCell.humidityDifferenceY
+    local combinedDiffusionContributionZ = currentCell.temperatureDifferenceZ + currentCell.humidityDifferenceZ
+
     local diffusionContributionX = combinedDiffusionContributionX * gDisasters.HeatSystem.AirflowCoefficient
     local diffusionContributionY = combinedDiffusionContributionY * gDisasters.HeatSystem.AirflowCoefficient
     local diffusionContributionZ = combinedDiffusionContributionZ * gDisasters.HeatSystem.AirflowCoefficient
@@ -1169,13 +1204,13 @@ gDisasters.HeatSystem.UpdateGrid = function()
                         currentcell.coolingEffect = gDisasters.HeatSystem.CalculateCoolEffect(x, y, z)
                         currentcell.LatentHeat = gDisasters.HeatSystem.CalculatelatentHeat(x, y, z)
                         currentcell.temperature = gDisasters.HeatSystem.CalculateTemperature(x, y, z)
-                        currentcell.temperaturebh = gDisasters.HeatSystem.Calculatetemperaturebh(x, y, z)
                         currentcell.pressure = gDisasters.HeatSystem.CalculatePressure(x, y, z)
+                        currentcell.humidity = gDisasters.HeatSystem.CalculateHumidity(x, y, z)
+                        currentcell.dewpoint = gDisasters.HeatSystem.CalculateDewPoint(x, y, z)
+                        currentcell.temperaturebh = gDisasters.HeatSystem.Calculatetemperaturebh(x, y, z)
                         currentcell.VPs = gDisasters.HeatSystem.CalculateVPs(x, y, z)
                         currentcell.VPsHb = gDisasters.HeatSystem.CalculateVPsHb(x, y, z)
                         currentcell.VP = gDisasters.HeatSystem.CalculateVaporPressure(x, y, z)
-                        currentcell.humidity = gDisasters.HeatSystem.CalculateHumidity(x, y, z)
-                        currentcell.dewpoint = gDisasters.HeatSystem.CalculateDewPoint(x, y, z)
                         currentcell.airflow = gDisasters.HeatSystem.CalculateAirFlow(x, y, z)
                         currentcell.airflow_direction =  gDisasters.HeatSystem.CalculateAirFlowDirection(x, y, z)
                     else
