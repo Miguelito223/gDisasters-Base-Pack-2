@@ -366,18 +366,17 @@ gDisasters.HeatSystem.CalculatePressure = function(x, y, z)
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not currentCell then return 0 end -- Verificar que la celda actual exista
 
+    local T = currentCell.temperature or 0.01
+
     -- Definir valores de los parámetros
-    local Po = 1013.25 -- Presión al nivel del mar estándar en hPa
-    local To = 288.15 -- Temperatura media en Kelvin
-    local altitude = 1000 -- Altitud de 1000 metros
+    local P0 = 1013.25 -- Presión al nivel del mar estándar en hPa
+    local h0 = 0 -- Altitud de 0 metros
     local gravity = 9.80665 -- Aceleración debido a la gravedad en m/s²
+    local molarmass = 0.02897 -- Masa molar del aire en kg/mol
     local gas_constant = 8.31447 -- Constante específica del aire en J/(mol·K)
-    local y = 0.65/100
-    local T1 = To-gravity*z
-    local Tm = (To + T1) / 2 -- Temperatura media en Kelvin
    
-    local P1 = (Po / math.exp(z * gravity / (gas_constant * Tm))) * 100
-    return P1
+    local P1 = (P0 * math.exp(-gravity * molarmass * (z - h0) / (gas_constant * T))) * 100
+    return math.Clamp(P1, gDisasters.HeatSystem.minPressure, gDisasters.HeatSystem.maxPressure)
 end
 
 gDisasters.HeatSystem.Alpha = function(T, HR)
