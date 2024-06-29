@@ -356,9 +356,6 @@ gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)    local totalHumidi
     currentCell.humidityDifferenceX = humidityDifferenceX
     currentCell.humidityDifferenceY = humidityDifferenceY
     currentCell.humidityDifferenceZ = humidityDifferenceZ
-    local vp = currentCell.VP
-    local vps = currentCell.VPs
-    local newHumidity = (vp/vps) * 100
 
     return math.Clamp(newHumidity, gDisasters.HeatSystem.minHumidity, gDisasters.HeatSystem.maxHumidity)
 end
