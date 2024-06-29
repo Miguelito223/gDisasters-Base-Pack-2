@@ -128,14 +128,8 @@ gDisasters.HeatSystem.CalculateVPs = function(x, y, z)
     local T = cell.temperature or 0.01
 
     -- Calcular la presión de vapor saturada usando la fórmula adecuada
-    local VPs
-    if T < 0 then
-        -- Usar la fórmula para temperaturas bajo cero
-        VPs = math.exp(31.9602 - (6270.3605 / T) - (0.46057 * math.log(T)))
-    else
-        -- Usar la fórmula para temperaturas sobre cero
-        VPs = math.exp(60.433 - (6834.271 / T) - (5.16923 * math.log(T)))
-    end
+    local exponent = (7.5 * T) / (237.3 + T)
+    local VPs = 6.11 * math.pow(10, exponent)
 
     return VPs
 end
@@ -160,14 +154,10 @@ gDisasters.HeatSystem.CalculateVPsHb = function(x, y, z)
     local Tbh = cell.temperaturebh or 0.01
 
     -- Calcular la presión de vapor saturada usando la fórmula adecuada
-    local VPshb
-    if Tbh < 0 then
-        -- Usar la fórmula para temperaturas bajo cero
-        VPshb = math.exp(31.9602 - (6270.3605 / Tbh) - (0.46057 * math.log(Tbh)))
-    else
-        -- Usar la fórmula para temperaturas sobre cero
-        VPshb = math.exp(60.433 - (6834.271 / Tbh) - (5.16923 * math.log(Tbh)))
-    end
+    -- Calcular la presión de vapor usando la fórmula proporcionada
+    local exponent = (7.5 * Tbh) / (237.3 + Tbh)
+    local VPshb = 6.11 * math.pow(10, exponent)
+
     return VPshb
 
 end
@@ -176,27 +166,13 @@ gDisasters.HeatSystem.CalculateVaporPressure = function(x, y, z)
     local cell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not cell then return 0 end -- Si la celda no existe, retornar 0
 
-    local T = cell.temperature or 0.01
+    local Td = cell.dewpoint or 0.01
 
-    -- Constantes
-    local P = (cell.pressure or 94000) / 100 -- Presión en hPa
-    local Tbh = cell.temperaturebh or 0.01 -- Temperatura base de referencia en Celsius (ajusta según tu caso)
-    local Cp = 1005 -- Capacidad calorífica del aire seco en kJ/kg·K
-    local Lv = 2.5e6 -- Calor latente de vaporización del agua en J/kg
+    -- Calcular la presión de vapor usando la fórmula proporcionada
+    local exponent = (7.5 * Td) / (237.3 + Td)
+    local e = 6.11 * math.pow(10, exponent)
 
-    -- Convertir Cp a J/kg·K para que las unidades sean consistentes
-    Cp = Cp * 1000
-
-    -- Calcular el factor psicrométrico
-    local a1 = (Cp * P) / Lv
-    
-    -- Calcular la presión de vapor saturada a la temperatura base de referencia (VPs,bh)
-    local VPshb = cell.VPsHb
-
-    -- Calcular la presión de vapor (Pv) usando la fórmula proporcionada
-    local Pv = VPshb - (a1 * P * (T - Tbh))
-
-    return Pv
+    return e
 end
 
 
