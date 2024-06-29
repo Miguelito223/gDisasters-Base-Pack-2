@@ -130,11 +130,19 @@ gDisasters.HeatSystem.CalculateVPs = function(x, y, z)
         temperature = 0.01 -- Ajuste mínimo para evitar división por cero
     end
 
-    -- Calcular la presión de vapor saturada usando la fórmula proporcionada
-    local VPs = math.exp(31.9602 - (6270.3605 / temperature) - (0.46057 * math.log(temperature)))
+    local T = temperature -- Convertir la temperatura a Kelvin
+
+    -- Calcular la presión de vapor saturada usando la fórmula adecuada
+    local VPs
+    if T < 0 then
+        -- Usar la fórmula para temperaturas bajo cero
+        VPs = math.exp(31.9602 - (6270.3605 / T) - (0.46057 * math.log(T)))
+    else
+        -- Usar la fórmula para temperaturas sobre cero
+        VPs = math.exp(60.433 - (6834.271 / T) - (5.16923 * math.log(T)))
+    end
 
     return VPs
-
 end
 
 gDisasters.HeatSystem.Calculatetemperaturebh = function(x, y, z)
@@ -151,44 +159,11 @@ gDisasters.HeatSystem.Calculatetemperaturebh = function(x, y, z)
     local T = temperature
 
     -- Convertir la humedad relativa a decimal (por ejemplo, 50% -> 0.5)
-    local HR = humidity / 100.0
+    local HR = humidity
 
-    -- Calcular la constante psicométrica gamma
-    local Cp = 1.005 -- Capacidad calorífica del aire seco en kJ/kg·K
-    local Lv = 2.5e6 -- Calor latente de vaporización del agua en J/kg
-    local P = 1013.25 -- Presión atmosférica estándar en hPa
+    local Tbh = T * math.atan(0.151977 * math.sqrt(HR + 8.313659)) + math.atan(T + HR) - math.atan(HR - 1.676331) + 0.00391838 * math.pow(HR, 1.5) * math.atan(0.023101 * HR) - 4.686035
 
-    local gamma = (Cp * P) / Lv
-
-    -- Calcular constantes A y B
-    local A = (gamma * T) / (T + gamma)
-    local B = Lv / (Cp * (T + gamma))
-
-    -- Estimar la temperatura de bulbo húmedo inicial (inicialmente igual a la temperatura del aire seco)
-    local Twb_initial = temperature
-
-    -- Iterar para converger hacia la temperatura de bulbo húmedo
-    local max_iterations = 100
-    local tolerance = 0.01 -- Tolerancia para la convergencia
-    local Twb_old = Twb_initial
-    local Twb_new = Twb_old
-
-    for i = 1, max_iterations do
-        -- Calcular presión de vapor en el bulbo húmedo (e_wb) usando la temperatura de bulbo húmedo estimada
-        local e_wb = 6.112 * math.exp((17.67 * Twb_old) / (Twb_old + 243.5))
-
-        -- Calcular la nueva temperatura de bulbo húmedo (Twb_new) usando la fórmula principal
-        Twb_new = (A * T + B * e_wb) / (A + B)
-
-        -- Comprobar la convergencia
-        if math.abs(Twb_new - Twb_old) < tolerance then
-            break
-        end
-
-        Twb_old = Twb_new
-    end
-
-    return Twb_new
+    return Tbh
 
 end
 
@@ -201,10 +176,18 @@ gDisasters.HeatSystem.CalculateVPsHb = function(x, y, z)
         temperaturebh = 0.01 -- Ajuste mínimo para evitar división por cero
     end
 
-    -- Calcular la presión de vapor saturada usando la fórmula proporcionada
-    local VPs = math.exp(31.9602 - (6270.3605 / temperaturebh) - (0.46057 * math.log(temperaturebh)))
+    local Tbh = temperaturebh
 
-    return VPs
+    -- Calcular la presión de vapor saturada usando la fórmula adecuada
+    local VPshb
+    if Tbh < 0 then
+        -- Usar la fórmula para temperaturas bajo cero
+        VPshb = math.exp(31.9602 - (6270.3605 / Tbh) - (0.46057 * math.log(Tbh)))
+    else
+        -- Usar la fórmula para temperaturas sobre cero
+        VPshb = math.exp(60.433 - (6834.271 / Tbh) - (5.16923 * math.log(Tbh)))
+    end
+    return VPshb
 
 end
 
@@ -218,15 +201,25 @@ gDisasters.HeatSystem.CalculateVaporPressure = function(x, y, z)
     end
 
     -- Constantes
-    local P = cell.pressure -- Presión atmosférica en Pascales (a nivel del mar)
+    local P = cell.pressure / 100 -- Presión atmosférica en Pascales (a nivel del mar)
     local Tbh = cell.temperaturebh -- Temperatura base de referencia en Celsius (ajusta según tu caso)
-    local a1 = 0.66 * 10^3 -- Constante dada
+    local Cp = 1005 -- Capacidad calorífica del aire seco en kJ/kg·K
+    local Lv = 2.5e6 -- Calor latente de vaporización del agua en J/kg
 
+    -- Convertir Cp a J/kg·K para que las unidades sean consistentes
+    Cp = Cp * 1000
+
+    -- Calcular el factor psicrométrico
+    local a1 = (Cp * P) / Lv
+
+    -- Convertir la temperatura de Celsius a Kelvin
+    local T = temperature
+    
     -- Calcular la presión de vapor saturada a la temperatura base de referencia (VPs,bh)
-    local VPs = cell.VPs
+    local VPshb = cell.VPsHb
 
     -- Calcular la presión de vapor (Pv) usando la fórmula proporcionada
-    local Pv = VPs - (a1 * P * (temperature - Tbh))
+    local Pv = VPshb - (a1 * P * (T - Tbh))
 
     return Pv
 end
