@@ -176,6 +176,52 @@ gDisasters.HeatSystem.CalculateVaporPressure = function(x, y, z)
 end
 
 
+gDisasters.HeatSystem.CalculateWindChill = function(x, y, z)
+    local cell = gDisasters.HeatSystem.GridMap[x][y][z]
+    if not cell then return 0 end -- Si la celda no existe, retornar 0
+
+    local T = cell.temperature or 0.01-- Temperatura en Celsius
+    local V = cell.airflow or 0.01 -- Velocidad del viento en km/h
+
+    -- Calcular la sensación térmica usando la fórmula proporcionada
+    local windChill = 13.12 + 0.6215 * T - 11.37 * math.pow(V, 0.16) + 0.3965 * T * math.pow(V, 0.16)
+
+    return windChill
+end
+
+gDisasters.HeatSystem.CalculateHeatIndex = function(x, y, z)
+    local cell = gDisasters.HeatSystem.GridMap[x][y][z]
+    if not cell then return 0 end -- Si la celda no existe, retornar 0
+
+    local T = cell.temperature or 0.01 -- Temperatura en Celsius
+    local RH = cell.humidity or 0.01 -- Humedad relativa en %
+
+    -- Convertir la temperatura de Celsius a Fahrenheit
+    T = T * 9 / 5 + 32
+
+    -- Coeficientes para la fórmula del índice de calor
+    local c1 = -42.379
+    local c2 = 2.04901523
+    local c3 = 10.14333127
+    local c4 = -0.22475541
+    local c5 = -0.00683783
+    local c6 = -0.05481717
+    local c7 = 0.00122874
+    local c8 = 0.00085282
+    local c9 = -0.00000199
+
+    -- Calcular el índice de calor usando la fórmula proporcionada
+    local HI = c1 + (c2 * T) + (c3 * RH) + (c4 * T * RH) + (c5 * T * T) + (c6 * RH * RH) +
+               (c7 * T * T * RH) + (c8 * T * RH * RH) + (c9 * T * T * RH * RH)
+
+    -- Convertir el índice de calor de Fahrenheit a Celsius
+    HI = (HI - 32) * 5 / 9
+
+    return HI
+end
+
+
+
 
 gDisasters.HeatSystem.CalculateCoolEffect = function(x, y, z)
     local cell = gDisasters.HeatSystem.GridMap[x][y][z]
@@ -626,7 +672,7 @@ end
 
 gDisasters.HeatSystem.UpdateCloudDensity = function(x, y, z)
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
-    local humidity = currentCell.humidity or 0
+    local humidity = currentCell.humidity or 0.01
 
     if humidity > gDisasters.HeatSystem.humidityThreshold then
         currentCell.cloudDensity = (humidity - gDisasters.HeatSystem.humidityThreshold) * gDisasters.HeatSystem.CloudDensityCoefficient
@@ -1125,8 +1171,17 @@ gDisasters.HeatSystem.GenerateGrid = function(ply)
                 gDisasters.HeatSystem.GridMap[x][y][z].pressure = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
                 gDisasters.HeatSystem.GridMap[x][y][z].airflow = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Speed"]
                 gDisasters.HeatSystem.GridMap[x][y][z].airflow_direction = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Direction"]
+                gDisasters.HeatSystem.GridMap[x][y][z].solarInfluence = gDisasters.HeatSystem.CalculateSolarRadiation(x, y, z, gDisasters.DayNightSystem.Time)
+                gDisasters.HeatSystem.GridMap[x][y][z].coolingEffect = gDisasters.HeatSystem.CalculateCoolEffect(x, y, z)
+                gDisasters.HeatSystem.GridMap[x][y][z].LatentHeat = gDisasters.HeatSystem.CalculatelatentHeat(x, y, z)
                 gDisasters.HeatSystem.GridMap[x][y][z].cloudDensity = 0
                 gDisasters.HeatSystem.GridMap[x][y][z].terrainType = "land"
+                gDisasters.HeatSystem.GridMap[x][y][z].dewpoint = gDisasters.HeatSystem.CalculateDewPoint(x, y, z)
+                gDisasters.HeatSystem.GridMap[x][y][z].windchill = gDisasters.HeatSystem.CalculateWindChill(x, y, z)
+                gDisasters.HeatSystem.GridMap[x][y][z].heatindex = gDisasters.HeatSystem.CalculateHeatIndex(x, y, z)
+                gDisasters.HeatSystem.GridMap[x][y][z].VPs = gDisasters.HeatSystem.CalculateVPs(x, y, z)
+                gDisasters.HeatSystem.GridMap[x][y][z].VPsHb = gDisasters.HeatSystem.CalculateVPsHb(x, y, z)
+                gDisasters.HeatSystem.GridMap[x][y][z].VP = gDisasters.HeatSystem.CalculateVaporPressure(x, y, z)
                 print("Grid generated in position (" .. x .. "," .. y .. "," .. z .. ")") -- Depuración
             end
         end
@@ -1161,14 +1216,16 @@ gDisasters.HeatSystem.UpdateGrid = function()
                     if gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z] then
                         local currentcell = gDisasters.HeatSystem.GridMap[x][y][z]
                         gDisasters.HeatSystem.CalculateTerrainInfluence(x, y, z)
+                        currentcell.temperature = gDisasters.HeatSystem.CalculateTemperature(x, y, z)
+                        currentcell.humidity = gDisasters.HeatSystem.CalculateHumidity(x, y, z)
+                        currentcell.pressure = gDisasters.HeatSystem.CalculatePressure(x, y, z)
+                        currentcell.dewpoint = gDisasters.HeatSystem.CalculateDewPoint(x, y, z)
+                        currentcell.temperaturebh = gDisasters.HeatSystem.Calculatetemperaturebh(x, y, z)
                         currentcell.solarInfluence = gDisasters.HeatSystem.CalculateSolarRadiation(x, y, z, gDisasters.DayNightSystem.Time)
                         currentcell.coolingEffect = gDisasters.HeatSystem.CalculateCoolEffect(x, y, z)
                         currentcell.LatentHeat = gDisasters.HeatSystem.CalculatelatentHeat(x, y, z)
-                        currentcell.temperature = gDisasters.HeatSystem.CalculateTemperature(x, y, z)
-                        currentcell.pressure = gDisasters.HeatSystem.CalculatePressure(x, y, z)
-                        currentcell.humidity = gDisasters.HeatSystem.CalculateHumidity(x, y, z)
-                        currentcell.dewpoint = gDisasters.HeatSystem.CalculateDewPoint(x, y, z)
-                        currentcell.temperaturebh = gDisasters.HeatSystem.Calculatetemperaturebh(x, y, z)
+                        currentcell.heatindex = gDisasters.HeatSystem.CalculateHeatIndex(x, y, z)
+                        currentcell.windchill = gDisasters.HeatSystem.CalculateWindChill(x, y, z)
                         currentcell.VPs = gDisasters.HeatSystem.CalculateVPs(x, y, z)
                         currentcell.VPsHb = gDisasters.HeatSystem.CalculateVPsHb(x, y, z)
                         currentcell.VP = gDisasters.HeatSystem.CalculateVaporPressure(x, y, z)
