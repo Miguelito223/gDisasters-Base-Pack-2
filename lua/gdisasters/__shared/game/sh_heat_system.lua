@@ -379,17 +379,6 @@ gDisasters.HeatSystem.CalculatePressure = function(x, y, z)
     return math.Clamp(P1, gDisasters.HeatSystem.minPressure, gDisasters.HeatSystem.maxPressure)
 end
 
-gDisasters.HeatSystem.Alpha = function(T, HR)
-    -- Definir las constantes a y b
-    local a = 17.625
-    local b = 243.04
-
-    -- Calcular α(T, HR) usando la fórmula proporcionada
-    local alpha = math.log(HR / 100) + (a * T) / (b + T)
-
-    return alpha
-end
-
 -- Función para calcular la presión de una celda basada en temperatura y humedad
 gDisasters.HeatSystem.CalculateDewPoint = function(x, y, z) 
     local cell = gDisasters.HeatSystem.GridMap[x][y][z]
@@ -401,7 +390,7 @@ gDisasters.HeatSystem.CalculateDewPoint = function(x, y, z)
     local a = 17.625
     local b = 243.04
 
-    local alpha = gDisasters.HeatSystem.Alpha(T, HR)
+    local alpha = math.log(HR / 100) + (a * T) / (b + T)
 
     local Td = (b * alpha) / (a - alpha)
 
