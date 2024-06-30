@@ -230,7 +230,7 @@ local function gDisastersAutospawn( CPanel )
 end
 
 local function gDisastersHeatSystemBeta( CPanel )
-	CreateSliderConVariable(CPanel, "Grid Size", 1, 5000, 0, "gdisasters_heat_system_gridsize" )
+	CreateSliderConVariable(CPanel, "Cell Size", 1, 5000, 0, "gdisasters_heat_system_cellsize" )
 	CreateSliderConVariable(CPanel, "Update interval", 0, 5, 2, "gdisasters_heat_system_updateinterval" )
 	CreateSliderConVariable(CPanel, "Update Batch size", 1, 5000, 0, "gdisasters_heat_system_updatebatchsize" )
 	CreateSliderConVariable(CPanel, "Temp Difussion Coeficcient", 0, 1, 2, "gdisasters_heat_system_tempdifussioncoefficient" )
