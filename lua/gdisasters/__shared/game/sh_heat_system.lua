@@ -663,7 +663,7 @@ gDisasters.HeatSystem.CheckStormFormation = function(x, y, z)
 
     if currentCell.cloudDensity and currentCell.cloudDensity > 0 then
         if currentCell.humidity < gDisasters.HeatSystem.lowHumidityThreshold and currentCell.temperature < gDisasters.HeatSystem.lowTemperatureThreshold then
-            latentHeat = gDisasters.HeatSystem.calculateStormLatentHeat(currentCell.cloudDensity)
+            latentHeat = gDisasters.HeatSystem.CalculateStormLatentHeat(currentCell.cloudDensity)
         end
     end
 
@@ -679,7 +679,7 @@ gDisasters.HeatSystem.CheckHailFormation = function(x, y, z)
 
     if currentCell.cloudDensity and currentCell.cloudDensity > 0 then
         if currentCell.temperature <= gDisasters.HeatSystem.hailTemperatureThreshold and currentCell.humidity >= gDisasters.HeatSystem.hailHumidityThreshold then
-            latentHeat = gDisasters.HeatSystem.calculateHailLatentHeat(currentCell.cloudDensity)
+            latentHeat = gDisasters.HeatSystem.CalculateHailLatentHeat(currentCell.cloudDensity)
         end
     end
 
