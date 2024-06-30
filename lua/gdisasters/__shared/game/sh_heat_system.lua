@@ -1,8 +1,13 @@
 gDisasters.HeatSystem = {}
+
 gDisasters.HeatSystem.GridMap = {}
+
 gDisasters.HeatSystem.cellsToUpdate = {}
-gDisasters.HeatSystem.waterSources = {}
+
+gDisasters.HeatSystem.WaterSources = {}
 gDisasters.HeatSystem.LandSources = {}
+gDisasters.HeatSystem.MountainSources = {}
+
 gDisasters.HeatSystem.Cloud = {}
 
 -- Tamaño de la cuadrícula y rango de temperatura
@@ -16,8 +21,8 @@ gDisasters.HeatSystem.minHumidity = GetConVar("gdisasters_heat_system_minhumidit
 gDisasters.HeatSystem.maxHumidity = GetConVar("gdisasters_heat_system_maxhumidity"):GetInt()
 gDisasters.HeatSystem.minPressure = GetConVar("gdisasters_heat_system_minpressure"):GetInt()
 gDisasters.HeatSystem.maxPressure = GetConVar("gdisasters_heat_system_maxpressure"):GetInt()
-gDisasters.HeatSystem.minAirflow = GetConVar("gdisasters_heat_system_minairflow"):GetInt()
-gDisasters.HeatSystem.maxAirflow = GetConVar("gdisasters_heat_system_maxairflow"):GetInt()
+gDisasters.HeatSystem.minwind = GetConVar("gdisasters_heat_system_minwind"):GetInt()
+gDisasters.HeatSystem.maxwind = GetConVar("gdisasters_heat_system_maxwind"):GetInt()
 
 gDisasters.HeatSystem.updateInterval = GetConVar("gdisasters_heat_system_updateinterval"):GetFloat() -- Intervalo de actualización en segundos
 gDisasters.HeatSystem.updateBatchSize = GetConVar("gdisasters_heat_system_updatebatchsize"):GetInt()
@@ -28,7 +33,7 @@ gDisasters.HeatSystem.nextThunderThink = CurTime()
 gDisasters.HeatSystem.nextUpdateGridEntity = CurTime()
 
 
-gDisasters.HeatSystem.airflowForceMultiplier = 10 -- Ajusta este valor según la intensidad deseada del flujo de aire
+gDisasters.HeatSystem.windForceMultiplier = 10 -- Ajusta este valor según la intensidad deseada del flujo de aire
 
 
 gDisasters.HeatSystem.coolingFactor = -5
@@ -40,7 +45,7 @@ gDisasters.HeatSystem.TempDiffusionCoefficient = GetConVar("gdisasters_heat_syst
 gDisasters.HeatSystem.HumidityDiffusionCoefficient = GetConVar("gdisasters_heat_system_humiditydifussioncoefficient"):GetFloat()
 gDisasters.HeatSystem.SolarInfluenceCoefficient = GetConVar("gdisasters_heat_system_solarinfluencecoefficient"):GetFloat()
 gDisasters.HeatSystem.LatentHeatCoefficient = GetConVar("gdisasters_heat_system_latentheatcoefficient"):GetFloat()
-gDisasters.HeatSystem.AirflowCoefficient = GetConVar("gdisasters_heat_system_airflowcoefficient"):GetFloat()
+gDisasters.HeatSystem.windCoefficient = GetConVar("gdisasters_heat_system_windcoefficient"):GetFloat()
 gDisasters.HeatSystem.CloudDensityCoefficient = GetConVar("gdisasters_heat_system_clouddensitycoefficient"):GetFloat()  -- Coeficiente para convertir humedad en densidad de nubes
 gDisasters.HeatSystem.ConvergenceCoefficient = GetConVar("gdisasters_heat_system_convergencecoefficient"):GetFloat()
 gDisasters.HeatSystem.TerrainCoefficient = GetConVar("gdisasters_heat_system_terraincoefficient"):GetFloat()
@@ -53,9 +58,9 @@ gDisasters.HeatSystem.mountainTemperatureEffect = -3  -- Las montañas tienden a
 gDisasters.HeatSystem.waterHumidityEffect = 5       -- El agua puede aumentar significativamente la humedad en su entorno
 gDisasters.HeatSystem.landHumidityEffect = -5        -- La tierra puede retener menos humedad que el agua
 gDisasters.HeatSystem.mountainHumidityEffect = -4    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
-gDisasters.HeatSystem.landAirflowEffect = -5         -- La tierra puede disminuir significativamente el flujo de aire
-gDisasters.HeatSystem.waterAirflowEffect = 5        -- El agua puede aumentar significativamente el flujo de aire
-gDisasters.HeatSystem.mountainairflowEffect = -5     -- Las montaña pueden disminuir significativamente el flujo de aire
+gDisasters.HeatSystem.landwindEffect = -5         -- La tierra puede disminuir significativamente el flujo de aire
+gDisasters.HeatSystem.waterwindEffect = 5        -- El agua puede aumentar significativamente el flujo de aire
+gDisasters.HeatSystem.mountainwindEffect = -5     -- Las montaña pueden disminuir significativamente el flujo de aire
 
 
 gDisasters.HeatSystem.convergenceThreshold = 0.5
@@ -181,7 +186,7 @@ gDisasters.HeatSystem.CalculateWindChill = function(x, y, z)
     if not cell then return 0 end -- Si la celda no existe, retornar 0
 
     local T = cell.temperature or 0.01-- Temperatura en Celsius
-    local V = cell.airflow or 0.01 -- Velocidad del viento en km/h
+    local V = cell.wind or 0.01 -- Velocidad del viento en km/h
 
     -- Calcular la sensación térmica usando la fórmula proporcionada
     local windChill = 13.12 + 0.6215 * T - 11.37 * math.pow(V, 0.16) + 0.3965 * T * math.pow(V, 0.16)
@@ -256,15 +261,15 @@ gDisasters.HeatSystem.CalculateTerrainInfluence = function(x, y, z)
     if cell.terrainType == "land" then
         cell.terrainTemperatureEffect = gDisasters.HeatSystem.landTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
         cell.terrainHumidityEffect = gDisasters.HeatSystem.landHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
-        cell.terrainAirflowEffect = gDisasters.HeatSystem.landAirflowEffect * gDisasters.HeatSystem.TerrainCoefficient
+        cell.terrainwindEffect = gDisasters.HeatSystem.landwindEffect * gDisasters.HeatSystem.TerrainCoefficient
     elseif cell.terrainType == "water" then
         cell.terrainTemperatureEffect = gDisasters.HeatSystem.waterTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
         cell.terrainHumidityEffect = gDisasters.HeatSystem.waterHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
-        cell.terrainAirflowEffect = gDisasters.HeatSystem.waterAirflowEffect * gDisasters.HeatSystem.TerrainCoefficient
+        cell.terrainwindEffect = gDisasters.HeatSystem.waterwindEffect * gDisasters.HeatSystem.TerrainCoefficient
     elseif cell.terrainType == "mountain" then
         cell.terrainTemperatureEffect = gDisasters.HeatSystem.mountainTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
         cell.terrainHumidityEffect = gDisasters.HeatSystem.mountainHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
-        cell.terrainAirflowEffect = gDisasters.HeatSystem.mountainairflowEffect * gDisasters.HeatSystem.TerrainCoefficient
+        cell.terrainwindEffect = gDisasters.HeatSystem.mountainwindEffect * gDisasters.HeatSystem.TerrainCoefficient
     end
 end
 
@@ -419,7 +424,7 @@ gDisasters.HeatSystem.CalculateDewPoint = function(x, y, z)
     return Td
 end
 
-gDisasters.HeatSystem.CalculateAirFlow = function(x, y, z)
+gDisasters.HeatSystem.Calculatewind = function(x, y, z)
     local totalDeltaPressureX = 0
     local totalDeltaPressureY = 0
     local totalDeltaPressureZ = 0
@@ -458,80 +463,81 @@ gDisasters.HeatSystem.CalculateAirFlow = function(x, y, z)
     local combinedDiffusionContributionY = currentCell.temperatureDifferenceY + currentCell.humidityDifferenceY
     local combinedDiffusionContributionZ = currentCell.temperatureDifferenceZ + currentCell.humidityDifferenceZ
 
-    local diffusionContributionX = combinedDiffusionContributionX * gDisasters.HeatSystem.AirflowCoefficient
-    local diffusionContributionY = combinedDiffusionContributionY * gDisasters.HeatSystem.AirflowCoefficient
-    local diffusionContributionZ = combinedDiffusionContributionZ * gDisasters.HeatSystem.AirflowCoefficient
+    local diffusionContributionX = combinedDiffusionContributionX * gDisasters.HeatSystem.windCoefficient
+    local diffusionContributionY = combinedDiffusionContributionY * gDisasters.HeatSystem.windCoefficient
+    local diffusionContributionZ = combinedDiffusionContributionZ * gDisasters.HeatSystem.windCoefficient
 
     -- Crear un vector de flujo de aire
-    local airflowVector = Vector(totalDeltaPressureX + diffusionContributionX, totalDeltaPressureY + diffusionContributionY, totalDeltaPressureZ + diffusionContributionZ)
+    local windVector = Vector(totalDeltaPressureX + diffusionContributionX, totalDeltaPressureY + diffusionContributionY, totalDeltaPressureZ + diffusionContributionZ)
 
     -- Calcular la magnitud del flujo de aire
-    local airflowMagnitude = airflowVector:Length()
+    local windMagnitude = windVector:Length()
  
-    local newAirflow = airflowMagnitude * gDisasters.HeatSystem.AirflowCoefficient * currentCell.terrainAirflowEffect
+    local newwind = windMagnitude * gDisasters.HeatSystem.windCoefficient * currentCell.terrainwindEffect
 
     -- Clampear el flujo de aire entre los valores mínimos y máximos permitidos
-    return math.Clamp(newAirflow, gDisasters.HeatSystem.minAirflow, gDisasters.HeatSystem.maxAirflow)
+    return math.Clamp(newwind, gDisasters.HeatSystem.minwind, gDisasters.HeatSystem.maxwind)
 end
 
-gDisasters.HeatSystem.CalculateAirFlowDirection = function(x, y, z)
-    local totalDeltaPressureX = 0
-    local totalDeltaPressureY = 0
-    local totalDeltaPressureZ = 0
-
+gDisasters.HeatSystem.calculateAirDensity = function(pressure, temperature)
+    local R = 287.05 -- J/(kg·K)
+    return pressure / (R * temperature)
+end
+-- Definir la función para calcular la velocidad del viento geostrófico
+gDisasters.HeatSystem.CalculateWindSpeed = function(x, y, z)
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
+    if not currentCell then return 0 end -- Si la celda no existe, retornar 0
 
-    -- Verificar que la celda actual exista
-    if not currentCell then
-        return Vector(0, 0, 0)
-    end
+    local temperature = currentCell.temperature or 0.01
+    local pressure = currentCell.pressure or 0.01
 
-    for dx = -1, 1 do
-        for dy = -1, 1 do
-            for dz = -1, 1 do
-                -- Evitar la celda actual en el cálculo
-                if dx ~= 0 or dy ~= 0 or dz ~= 0 then
-                    local nx, ny, nz = x + dx * gDisasters.HeatSystem.gridSize, y + dy * gDisasters.HeatSystem.gridSize, z + dz * gDisasters.HeatSystem.gridSize
-                    if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
-                        local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
-                        if neighborCell.pressure and neighborCell.terrainType and neighborCell.terrainType == currentCell.terrainType then
-                            local deltaPressure = neighborCell.pressure - currentCell.pressure
+    -- Calcular la densidad del aire
+    local airDensity = gDisasters.HeatSystem.calculateAirDensity(pressure, temperature)
 
-                            -- Sumar la diferencia de presión a los totales en cada eje
-                            totalDeltaPressureX = totalDeltaPressureX + deltaPressure * dx
-                            totalDeltaPressureY = totalDeltaPressureY + deltaPressure * dy
-                            totalDeltaPressureZ = totalDeltaPressureZ + deltaPressure * dz
-                        end
-                    end
-                end
-            end
-        end
-    end
-    -- Contribución adicional del flujo de aire debido a la difusión natural
-    local combinedDiffusionContributionX = currentCell.temperatureDifferenceX + currentCell.humidityDifferenceX
-    local combinedDiffusionContributionY = currentCell.temperatureDifferenceY + currentCell.humidityDifferenceY
-    local combinedDiffusionContributionZ = currentCell.temperatureDifferenceZ + currentCell.humidityDifferenceZ
+    -- Suponer un gradiente de presión horizontal constante (en Pascales por metro)
+    local pressureGradient = 0.01 -- Ajusta este valor según sea necesario
 
-    local diffusionContributionX = combinedDiffusionContributionX * gDisasters.HeatSystem.AirflowCoefficient
-    local diffusionContributionY = combinedDiffusionContributionY * gDisasters.HeatSystem.AirflowCoefficient
-    local diffusionContributionZ = combinedDiffusionContributionZ * gDisasters.HeatSystem.AirflowCoefficient
+    -- Calcular la velocidad del viento geostrófico
+    local windSpeed = (1 / airDensity) * pressureGradient
 
-    -- Crear un vector de flujo de aire
-    local airflowVector = Vector(totalDeltaPressureX + diffusionContributionX, totalDeltaPressureY + diffusionContributionY, totalDeltaPressureZ + diffusionContributionZ)
-
-    -- Calcular la magnitud del flujo de aire
-    local airflowMagnitude = airflowVector:Length()
-
-    -- Normalizar el vector de flujo de aire para obtener la dirección del viento
-    local windDirection = Vector(0, 0, 0)
-    if airflowMagnitude > 0 then
-        windDirection.x = airflowVector.x / airflowMagnitude
-        windDirection.y = airflowVector.y / airflowMagnitude
-        windDirection.z = airflowVector.z / airflowMagnitude
-    end
-
-    return windDirection
+    return windSpeed
 end
+
+gDisasters.HeatSystem.CalculateWindDirection = function(x, y, z)
+    local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
+    if not currentCell then return 0 end -- Si la celda no existe, retornar un vector nulo
+
+    local temperature = currentCell.temperature or 0.01
+    local pressure = currentCell.pressure or 0.01
+
+    -- Calcular la densidad del aire
+    local airDensity = gDisasters.HeatSystem.calculateAirDensity(pressure, temperature)
+
+    -- Recuperar presiones de las celdas adyacentes
+    local pressureLeft = (gDisasters.HeatSystem.GridMap[x-1] and gDisasters.HeatSystem.GridMap[x-1][y] and gDisasters.HeatSystem.GridMap[x-1][y][z] and gDisasters.HeatSystem.GridMap[x-1][y][z].pressure) or pressure
+    local pressureRight = (gDisasters.HeatSystem.GridMap[x+1] and gDisasters.HeatSystem.GridMap[x+1][y] and gDisasters.HeatSystem.GridMap[x+1][y][z] and gDisasters.HeatSystem.GridMap[x+1][y][z].pressure) or pressure
+    local pressureUp = (gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y+1] and gDisasters.HeatSystem.GridMap[x][y+1][z] and gDisasters.HeatSystem.GridMap[x][y+1][z].pressure) or pressure
+    local pressureDown = (gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y-1] and gDisasters.HeatSystem.GridMap[x][y-1][z] and gDisasters.HeatSystem.GridMap[x][y-1][z].pressure) or pressure
+    local pressureAbove = (gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z+1] and gDisasters.HeatSystem.GridMap[x][y][z+1].pressure) or pressure
+    local pressureBelow = (gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z-1] and gDisasters.HeatSystem.GridMap[x][y][z-1].pressure) or pressure
+
+    -- Calcular gradientes de presión básicos
+    local dPdx = (pressureRight - pressureLeft) / 2
+    local dPdy = (pressureAbove - pressureBelow) / 2
+    local dPdz = (pressureUp - pressureDown) / 2
+
+    -- Calcular la velocidad del viento geostrófico en las direcciones x, y, y z
+    local windSpeedX = (1 / airDensity) * dPdx
+    local windSpeedY = (1 / airDensity) * dPdy
+    local windSpeedZ = (1 / airDensity) * dPdz
+
+    -- Crear el vector del viento
+    local windVector = Vector(windSpeedX, windSpeedY, windSpeedZ)
+
+    return windVector
+end
+
+
 
 gDisasters.HeatSystem.GetCellType = function(x, y, z)
     local MapBounds = getMapBounds()
@@ -885,16 +891,17 @@ end
 
 gDisasters.HeatSystem.AddTemperatureHumiditySources = function()
     print("Adding Sources...")
-    local waterSources = gDisasters.HeatSystem.GetWaterSources()
-    local landSources = gDisasters.HeatSystem.GetLandSources()
-    local mountainSources = gDisasters.HeatSystem.GetMountainSources()
+
+    gDisasters.HeatSystem.AddLandSources()
+    gDisasters.HeatSystem.AddWaterSources()
+    gDisasters.HeatSystem.AddMountainSources()
 
     for x, column in pairs(gDisasters.HeatSystem.GridMap) do
         for y, row in pairs(column) do
             for z, cell in pairs(row) do
-                local closestWaterDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, waterSources)
-                local closestLandDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, landSources)
-                local closestMountainDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, mountainSources)
+                local closestWaterDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.WaterSources)
+                local closestLandDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.LandSources)
+                local closestMountainDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.MountainSources)
 
 
                 -- Comparar distancias y ajustar temperatura, humedad y presión en consecuencia
@@ -913,56 +920,44 @@ gDisasters.HeatSystem.AddTemperatureHumiditySources = function()
 end
 
 -- Función para obtener las coordenadas de las fuentes de agua
-gDisasters.HeatSystem.GetWaterSources = function()
-    local waterSources = {}
-
+gDisasters.HeatSystem.AddWaterSources = function()
     for x, column in pairs(gDisasters.HeatSystem.GridMap) do
         for y, row in pairs(column) do
             for z, cell in pairs(row) do
                 local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
                 if celltype == "water" then
-                    table.insert(waterSources, {x = x, y = y , z = z})
+                    table.insert(gDisasters.HeatSystem.WaterSources, {x = x, y = y , z = z})
                 end
             end
         end
     end
-
-    return waterSources
 end
 
 -- Función para obtener las coordenadas de las fuentes de tierra
-gDisasters.HeatSystem.GetLandSources = function()
-    local landSources = {}
-
+gDisasters.HeatSystem.AddLandSources = function()
     for x, column in pairs(gDisasters.HeatSystem.GridMap) do
         for y, row in pairs(column) do
             for z, cell in pairs(row) do
                 local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
                 if celltype == "land" then
-                    table.insert(landSources, {x = x, y = y , z = z})
+                    table.insert(gDisasters.HeatSystem.LandSources, {x = x, y = y , z = z})
                 end
             end
         end
     end
-
-    return landSources
 end
 
-gDisasters.HeatSystem.GetMountainSources = function()
-    local MountainSources = {}
-
+gDisasters.HeatSystem.AddMountainSources = function()
     for x, column in pairs(gDisasters.HeatSystem.GridMap) do
         for y, row in pairs(column) do
             for z, cell in pairs(row) do
                 local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
                 if celltype == "mountain" then
-                    table.insert(MountainSources, {x = x, y = y , z = z})
+                    table.insert(gDisasters.HeatSystem.MountainSources, {x = x, y = y , z = z})
                 end
             end
         end
     end
-
-    return MountainSources
 end
 
 gDisasters.HeatSystem.AdjustCloudBaseHeight = function(x,y,z)
@@ -1169,8 +1164,8 @@ gDisasters.HeatSystem.GenerateGrid = function(ply)
                 gDisasters.HeatSystem.GridMap[x][y][z].temperature = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Temperature"]
                 gDisasters.HeatSystem.GridMap[x][y][z].humidity = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
                 gDisasters.HeatSystem.GridMap[x][y][z].pressure = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
-                gDisasters.HeatSystem.GridMap[x][y][z].airflow = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Speed"]
-                gDisasters.HeatSystem.GridMap[x][y][z].airflow_direction = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Direction"]
+                gDisasters.HeatSystem.GridMap[x][y][z].windspeed = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Speed"]
+                gDisasters.HeatSystem.GridMap[x][y][z].winddirection = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Direction"]
                 gDisasters.HeatSystem.GridMap[x][y][z].solarInfluence = gDisasters.HeatSystem.CalculateSolarRadiation(x, y, z, gDisasters.DayNightSystem.Time)
                 gDisasters.HeatSystem.GridMap[x][y][z].coolingEffect = gDisasters.HeatSystem.CalculateCoolEffect(x, y, z)
                 gDisasters.HeatSystem.GridMap[x][y][z].LatentHeat = gDisasters.HeatSystem.CalculatelatentHeat(x, y, z)
@@ -1229,8 +1224,8 @@ gDisasters.HeatSystem.UpdateGrid = function()
                         currentcell.VPs = gDisasters.HeatSystem.CalculateVPs(x, y, z)
                         currentcell.VPsHb = gDisasters.HeatSystem.CalculateVPsHb(x, y, z)
                         currentcell.VP = gDisasters.HeatSystem.CalculateVaporPressure(x, y, z)
-                        currentcell.airflow = gDisasters.HeatSystem.CalculateAirFlow(x, y, z)
-                        currentcell.airflow_direction =  gDisasters.HeatSystem.CalculateAirFlowDirection(x, y, z)
+                        currentcell.windspeed = gDisasters.HeatSystem.CalculateWindSpeed(x, y, z)
+                        currentcell.winddirection =  gDisasters.HeatSystem.CalculateWindDirection(x, y, z)
                     else
                         print("Error: Cell position out of grid bounds.")
                     end
@@ -1253,13 +1248,13 @@ gDisasters.HeatSystem.UpdatePlayerGrid = function()
                     local cell = gDisasters.HeatSystem.GridMap[px][py][pz]
 
                     -- Verifica si las propiedades de la celda son válidas
-                    if cell.temperature and cell.humidity and cell.pressure and cell.airflow and cell.airflow_direction and cell.terrainType and cell.cloudDensity then
+                    if cell.temperature and cell.humidity and cell.pressure and cell.windspeed and cell.winddirection and cell.terrainType and cell.cloudDensity then
                         -- Actualiza las variables de la atmósfera del jugador
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = cell.temperature
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = cell.humidity
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"] = cell.pressure
-                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = cell.airflow
-                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = cell.airflow_direction
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"] = cell.windspeed
+                        GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Direction"] = cell.winddirection
                     else
                         -- Manejo de valores no válidos
                         print("Error: Valores no válidos en la celda de la cuadrícula.")
@@ -1288,8 +1283,8 @@ gDisasters.HeatSystem.UpdateEntityGrid = function()
                     -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
                     if gDisasters.HeatSystem.GridMap[px] and gDisasters.HeatSystem.GridMap[px][py] and gDisasters.HeatSystem.GridMap[px][py][pz] then
                         local cell = gDisasters.HeatSystem.GridMap[px][py][pz]
-                        local windspeed  = cell.airflow
-	                    local winddir    = cell.airflow_direction
+                        local windspeed  = cell.windspeed
+	                    local winddir    = cell.winddirection
                         local windphysics_enabled = GetConVar( "gdisasters_wind_physics_enabled" ):GetInt() == 1 
                         local windconstraints_remove = GetConVar( "gdisasters_wind_candamageconstraints" ):GetInt() == 1
 
@@ -1356,7 +1351,7 @@ gDisasters.HeatSystem.UpdateEntityGrid = function()
                         end
 
                         -- Verifica si las propiedades de la celda son válidas
-                        if cell.airflow and cell.airflow_direction and windphysics_enabled and windspeed >= 1 and CurTime() >= GLOBAL_SYSTEM["Atmosphere"]["Wind"]["NextThink"] then
+                        if cell.windspeed and cell.winddirection and windphysics_enabled and windspeed >= 1 and CurTime() >= GLOBAL_SYSTEM["Atmosphere"]["Wind"]["NextThink"] then
                             local phys = ent:GetPhysicsObject()
                             local outdoor = isOutdoor(ent, true) 
 				            local blocked = IsSomethingBlockingWind(ent)
