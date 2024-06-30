@@ -56,7 +56,11 @@ gDisasters.HeatSystem.coolingFactor = -5
 gDisasters.HeatSystem.convergenceThreshold = 0.5
 gDisasters.HeatSystem.strongStormThreshold = 2.0
 gDisasters.HeatSystem.hailThreshold = 1.5
+gDisasters.HeatSystem.hailHumidityThreshold = 0.8
+gDisasters.HeatSystem.hailTemperatureThreshold = 0 
 gDisasters.HeatSystem.rainThreshold = 1.0
+gDisasters.HeatSystem.rainTemperatureThreshold = 15
+gDisasters.HeatSystem.rainHumidityThreshold = 0.7
 gDisasters.HeatSystem.cloudFormationThreshold = 0.3 -- This is a starting point; adjust based on testing
 gDisasters.HeatSystem.rainFormationThreshold = 0.6 -- This is a starting point; adjust based on testing
 gDisasters.HeatSystem.hailFormationThreshold = 0.3 -- This is a starting point; adjust based on testing
@@ -614,6 +618,17 @@ gDisasters.HeatSystem.calculateFreezingLatentHeat = function(cloudDensity)
     return cloudDensity * freezingLatentHeat
 end
 
+gDisasters.HeatSystem.CalculateStormLatentHeat = function(cloudDensity)
+    local StormLatentHeat = 150  -- Este valor es un ejemplo, puedes ajustarlo según tus necesidades.
+    return cloudDensity * StormLatentHeat
+end
+
+gDisasters.HeatSystem.CalculateHailLatentHeat = function(cloudDensity)
+    local HailLatentHeat = 200  -- Este valor es un ejemplo, puedes ajustarlo según tus necesidades.
+    return cloudDensity * HailLatentHeat
+end
+
+
 gDisasters.HeatSystem.CalculateCloudLatentHeat = function(cloudDensity)
     local CloudLatentHeat = 100
     return cloudDensity * CloudLatentHeat   -- Este valor es un ejemplo, puedes ajustarlo según tus necesidades.
@@ -647,10 +662,8 @@ gDisasters.HeatSystem.CheckStormFormation = function(x, y, z)
     local latentHeat = 0
 
     if currentCell.cloudDensity and currentCell.cloudDensity > 0 then
-        if currentCell.temperature > gDisasters.HeatSystem.freezingTemperature then
-            latentHeat = gDisasters.HeatSystem.calculateCondensationLatentHeat(currentCell.cloudDensity)
-        else
-            latentHeat = gDisasters.HeatSystem.calculateFreezingLatentHeat(currentCell.cloudDensity)
+        if currentCell.humidity < gDisasters.HeatSystem.lowHumidityThreshold and currentCell.temperature < gDisasters.HeatSystem.lowTemperatureThreshold then
+            latentHeat = gDisasters.HeatSystem.calculateStormLatentHeat(currentCell.cloudDensity)
         end
     end
 
@@ -665,8 +678,8 @@ gDisasters.HeatSystem.CheckHailFormation = function(x, y, z)
     local latentHeat = 0
 
     if currentCell.cloudDensity and currentCell.cloudDensity > 0 then
-        if currentCell.temperature <= gDisasters.HeatSystem.freezingTemperature then
-            latentHeat = gDisasters.HeatSystem.calculateFreezingLatentHeat(currentCell.cloudDensity)
+        if currentCell.temperature <= gDisasters.HeatSystem.hailTemperatureThreshold and currentCell.humidity >= gDisasters.HeatSystem.hailHumidityThreshold then
+            latentHeat = gDisasters.HeatSystem.calculateHailLatentHeat(currentCell.cloudDensity)
         end
     end
 
@@ -680,9 +693,11 @@ gDisasters.HeatSystem.CheckSnowFormation = function(x, y, z)
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
     local latentHeat = 0
 
-    if currentCell.cloudDensity >= gDisasters.HeatSystem.snowFormationThreshold and currentCell.temperature <= gDisasters.HeatSystem.snowTemperatureThreshold then
-        -- Calcular el calor latente necesario para la formación de nieve
-        latentHeat = gDisasters.HeatSystem.CalculateSnowLatentHeat(currentCell.cloudDensity)
+    if currentCell.cloudDensity >= gDisasters.HeatSystem.snowFormationThreshold then
+        if currentCell.temperature <= gDisasters.HeatSystem.snowTemperatureThreshold then
+            -- Calcular el calor latente necesario para la formación de nieve
+            latentHeat = gDisasters.HeatSystem.CalculateSnowLatentHeat(currentCell.cloudDensity)
+        end
     end
 
     if latentHeat >= gDisasters.HeatSystem.snowLatentHeatThreshold then
@@ -696,8 +711,10 @@ gDisasters.HeatSystem.CheckCloudFormation = function(x, y, z)
     local latentHeat = 0
 
     if currentCell.cloudDensity >= gDisasters.HeatSystem.cloudFormationThreshold then
-        -- Calcular el calor latente necesario para la formación de nubes
-        latentHeat = gDisasters.HeatSystem.CalculateCloudLatentHeat(currentCell.cloudDensity)
+        if currentCell.humidity > gDisasters.HeatSystem.humidityThreshold and currentCell.temperature < gDisasters.HeatSystem.temperatureThreshold then
+            -- Calcular el calor latente necesario para la formación de nubes
+            latentHeat = gDisasters.HeatSystem.CalculateCloudLatentHeat(currentCell.cloudDensity)
+        end
     end
 
     if latentHeat >= gDisasters.HeatSystem.cloudLatentHeatThreshold then
@@ -711,8 +728,10 @@ gDisasters.HeatSystem.CheckRainFormation = function(x, y, z)
     local latentHeat = 0
 
     if currentCell.cloudDensity >= gDisasters.HeatSystem.rainFormationThreshold then
-        -- Calcular el calor latente necesario para la formación de lluvia
-        latentHeat = gDisasters.HeatSystem.CalculateRainLatentHeat(currentCell.cloudDensity)
+        if currentCell.temperature <= gDisasters.HeatSystem.rainTemperatureThreshold and currentCell.humidity >= gDisasters.HeatSystem.rainHumidityThreshold then
+            -- Calcular el calor latente necesario para la formación de lluvia
+            latentHeat = gDisasters.HeatSystem.CalculateRainLatentHeat(currentCell.cloudDensity)
+        end
     end
 
     if latentHeat >= gDisasters.HeatSystem.rainLatentHeatThreshold then
@@ -762,21 +781,15 @@ end
 -- Función para simular la formación y movimiento de nubes
 gDisasters.HeatSystem.CreateCloud = function(x,y,z)
     local cell = gDisasters.HeatSystem.GridMap[x][y][z]
-
-    local humidity = cell.humidity
-    local temperature = cell.temperature
-    if humidity > gDisasters.HeatSystem.humidityThreshold and temperature < gDisasters.HeatSystem.temperatureThreshold then
-        -- Generate clouds in cells with low humidity and temperature
-        gDisasters.HeatSystem.AdjustCloudBaseHeight(x, y, z)
-        
-        local baseHeight = cell.baseHeight or z
-        local pos = Vector(x, y, baseHeight)
-        local color = Color(255,255,255)
-        
-        gDisasters.HeatSystem.SpawnCloud(pos, color)
-        
-        
-    end
+    
+    -- Generate clouds in cells with low humidity and temperature
+    gDisasters.HeatSystem.AdjustCloudBaseHeight(x, y, z)
+    
+    local baseHeight = cell.baseHeight or z
+    local pos = Vector(x, y, baseHeight)
+    local color = Color(255,255,255)
+    
+    gDisasters.HeatSystem.SpawnCloud(pos, color)
     
 end
 
@@ -784,42 +797,39 @@ end
 gDisasters.HeatSystem.CreateStorm = function(x,y,z)
     local cell = gDisasters.HeatSystem.GridMap[x][y][z]
 
-    local humidity = cell.humidity
-    local temperature = cell.temperature
-    if humidity < gDisasters.HeatSystem.lowHumidityThreshold and temperature < gDisasters.HeatSystem.lowTemperatureThreshold then
-        gDisasters.HeatSystem.AdjustCloudBaseHeight(x, y, z)
+    gDisasters.HeatSystem.AdjustCloudBaseHeight(x, y, z)
 
-        -- Generate clouds in cells with low humidity and temperature
-        local baseHeight = cell.baseHeight or z
-        local pos = Vector(x, y, baseHeight)
-        local color = Color(117,117,117)
-        
-        local cloud = SpawnCloud(pos, color)
+    -- Generate clouds in cells with low humidity and temperature
+    local baseHeight = cell.baseHeight or z
+    local pos = Vector(x, y, baseHeight)
+    local color = Color(117,117,117)
+    
+    local cloud = SpawnCloud(pos, color)
 
-        if not IsValid(cloud) then
-            return
-        end
-        
-        -- Crear rayo y trueno en intervalos regulares
-        local lightningInterval = 10 -- Intervalo en segundos
-        local lightningTimerName = "LightningTimer_" .. cloud:EntIndex()
-
-        timer.Create(lightningTimerName, lightningInterval, 0, function()
-            timer.Remove(lightningTimerName)
-            gDisasters.HeatSystem.CreateLightningAndThunder(pos.x, pos.y, pos.z)
-        end)
-
-       
-        -- Detener el temporizador cuando la nube se elimina
-        timer.Simple(cloud.Life, function()
-            
-            cloud:Remove()
-            timer.Remove(lightningTimerName)
-            
-        end)
-
-        
+    if not IsValid(cloud) then
+        return
     end
+    
+    -- Crear rayo y trueno en intervalos regulares
+    local lightningInterval = 10 -- Intervalo en segundos
+    local lightningTimerName = "LightningTimer_" .. cloud:EntIndex()
+
+    timer.Create(lightningTimerName, lightningInterval, 0, function()
+        timer.Remove(lightningTimerName)
+        gDisasters.HeatSystem.CreateLightningAndThunder(pos.x, pos.y, pos.z)
+    end)
+
+    
+    -- Detener el temporizador cuando la nube se elimina
+    timer.Simple(cloud.Life, function()
+        
+        cloud:Remove()
+        timer.Remove(lightningTimerName)
+        
+    end)
+
+        
+    
     
 end
 
@@ -1032,6 +1042,7 @@ end
 
 -- Function to remove weather entities
 gDisasters.HeatSystem.RemoveWeatherEntity = function(weatherType, x, y, z)
+    if CLIENT then return end
     local weatherEntity = gDisasters.HeatSystem.GridMap[x][y][z][weatherType .. "Entity"]
     if IsValid(weatherEntity) then
         weatherEntity:Remove()
@@ -1129,6 +1140,7 @@ gDisasters.HeatSystem.GenerateGrid = function(ply)
                 gDisasters.HeatSystem.GridMap[x][y][z].dewpoint = gDisasters.HeatSystem.CalculateDewPoint(x, y, z)
                 gDisasters.HeatSystem.GridMap[x][y][z].windchill = gDisasters.HeatSystem.CalculateWindChill(x, y, z)
                 gDisasters.HeatSystem.GridMap[x][y][z].heatindex = gDisasters.HeatSystem.CalculateHeatIndex(x, y, z)
+                gDisasters.HeatSystem.GridMap[x][y][z].airflow = gDisasters.HeatSystem.CalculateAirflow(x, y, z)
                 gDisasters.HeatSystem.GridMap[x][y][z].VPs = gDisasters.HeatSystem.CalculateVPs(x, y, z)
                 gDisasters.HeatSystem.GridMap[x][y][z].VPsHb = gDisasters.HeatSystem.CalculateVPsHb(x, y, z)
                 gDisasters.HeatSystem.GridMap[x][y][z].VP = gDisasters.HeatSystem.CalculateVaporPressure(x, y, z)
@@ -1178,6 +1190,7 @@ gDisasters.HeatSystem.UpdateGrid = function()
                         currentcell.LatentHeat = gDisasters.HeatSystem.CalculatelatentHeat(x, y, z)
                         currentcell.heatindex = gDisasters.HeatSystem.CalculateHeatIndex(x, y, z)
                         currentcell.windchill = gDisasters.HeatSystem.CalculateWindChill(x, y, z)
+                        currentcell.airflow = gDisasters.HeatSystem.CalculateAirflow(x, y, z)
                         currentcell.VPs = gDisasters.HeatSystem.CalculateVPs(x, y, z)
                         currentcell.VPsHb = gDisasters.HeatSystem.CalculateVPsHb(x, y, z)
                         currentcell.VP = gDisasters.HeatSystem.CalculateVaporPressure(x, y, z)
@@ -1374,7 +1387,7 @@ gDisasters.HeatSystem.DrawGridDebug = function()
 
                         -- Dibujar el cubo en la posición correspondiente con el color calculado
                         render.SetColorMaterial()
-                        render.DrawBox(cellPos, Angle(0, 0, 0), Vector(-gDisasters.HeatSystem.cellSize / 2, -gDisasters.HeatSystem.cellSize / 2, -gDisasters.HeatSystem.cellSize / 2), Vector(gDisasters.HeatSystem.cellSize / 2, gDisasters.HeatSystem.cellSize / 2, gDisasters.HeatSystem.cellSize / 2), color)
+                        render.DrawBox(cellPos, Angle(0, 0, 0), Vector(-gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize), Vector(gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize), color)
                     end
                 end
             end
