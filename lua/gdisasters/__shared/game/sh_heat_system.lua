@@ -1030,72 +1030,103 @@ end
 
 -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
 gDisasters.HeatSystem.GenerateGrid = function(ply)
-    -- Obtener los límites del mapa
-    local mapBounds = getMapBounds()
-    local minX, minY, maxZ = math.floor(mapBounds[2].x / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(mapBounds[2].y / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.ceil(mapBounds[2].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
-    local maxX, maxY, minZ = math.ceil(mapBounds[1].x / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.ceil(mapBounds[1].y / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(mapBounds[1].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
+    if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
 
-    print("Generating grid...") -- Depuración
+        if file.Exists( "gDisasters/grid_" .. game.GetMap() .. ".txt", "DATA" ) then
+            gDisasters.HeatSystem.LoadGrid()
+        else
+            -- Obtener los límites del mapa
+            local mapBounds = getMapBounds()
+            local minX, minY, maxZ = math.floor(mapBounds[2].x / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(mapBounds[2].y / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.ceil(mapBounds[2].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
+            local maxX, maxY, minZ = math.ceil(mapBounds[1].x / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.ceil(mapBounds[1].y / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(mapBounds[1].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
 
-    -- Inicializar la cuadrícula
-    for x = minX, maxX, gDisasters.HeatSystem.cellSize do
-        gDisasters.HeatSystem.GridMap[x] = {}
-        for y = minY, maxY, gDisasters.HeatSystem.cellSize do
-            gDisasters.HeatSystem.GridMap[x][y] = {}
-            for z = minZ, maxZ, gDisasters.HeatSystem.cellSize do
-                gDisasters.HeatSystem.GridMap[x][y][z] = {}
+            print("Generating grid...") -- Depuración
 
-                -- Agregar fuente de temperatura    
-                gDisasters.HeatSystem.GridMap[x][y][z].terrainType = gDisasters.HeatSystem.CalculateTemperatureHumiditySources(x, y, z)
+            -- Inicializar la cuadrícula
+            for x = minX, maxX, gDisasters.HeatSystem.cellSize do
+                gDisasters.HeatSystem.GridMap[x] = {}
+                for y = minY, maxY, gDisasters.HeatSystem.cellSize do
+                    gDisasters.HeatSystem.GridMap[x][y] = {}
+                    for z = minZ, maxZ, gDisasters.HeatSystem.cellSize do
+                        gDisasters.HeatSystem.GridMap[x][y][z] = {}
 
-                -- Calcular la influencia de terreno
-                gDisasters.HeatSystem.CalculateTerrainInfluence(x, y, z)
+                        -- Agregar fuente de temperatura    
+                        gDisasters.HeatSystem.GridMap[x][y][z].terrainType = gDisasters.HeatSystem.CalculateTemperatureHumiditySources(x, y, z)
 
-                -- Calcular la temperatura y la humedad de la celda actual 
-                gDisasters.HeatSystem.GridMap[x][y][z].temperature = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Temperature"]
-                gDisasters.HeatSystem.GridMap[x][y][z].humidity = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
-                gDisasters.HeatSystem.GridMap[x][y][z].pressure = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
-                gDisasters.HeatSystem.GridMap[x][y][z].temperaturebh = gDisasters.HeatSystem.Calculatetemperaturebh(x, y, z)
+                        -- Calcular la influencia de terreno
+                        gDisasters.HeatSystem.CalculateTerrainInfluence(x, y, z)
 
-                -- Calcular la velocidad de aire
-                gDisasters.HeatSystem.GridMap[x][y][z].windspeed = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Speed"]
-                gDisasters.HeatSystem.GridMap[x][y][z].winddirection =  GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Direction"]
-                
-                -- Calcular el flujo de aire
-                gDisasters.HeatSystem.GridMap[x][y][z].airflow = gDisasters.HeatSystem.CalculateAirflow(x, y, z)
+                        -- Calcular la temperatura y la humedad de la celda actual 
+                        gDisasters.HeatSystem.GridMap[x][y][z].temperature = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Temperature"]
+                        gDisasters.HeatSystem.GridMap[x][y][z].humidity = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Humidity"]
+                        gDisasters.HeatSystem.GridMap[x][y][z].pressure = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Pressure"]
+                        gDisasters.HeatSystem.GridMap[x][y][z].temperaturebh = gDisasters.HeatSystem.Calculatetemperaturebh(x, y, z)
 
-                -- Calcular el punto de rocio
-                gDisasters.HeatSystem.GridMap[x][y][z].dewpoint = gDisasters.HeatSystem.CalculateDewPoint(x, y, z)
-                
-                -- Calcular la radiación solar
-                gDisasters.HeatSystem.GridMap[x][y][z].solarInfluence = gDisasters.HeatSystem.CalculateSolarRadiation(x, y, z, gDisasters.DayNightSystem.Time)
-                gDisasters.HeatSystem.GridMap[x][y][z].coolingEffect = gDisasters.HeatSystem.CalculateCoolEffect(x, y, z)
+                        -- Calcular la velocidad de aire
+                        gDisasters.HeatSystem.GridMap[x][y][z].windspeed = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Speed"]
+                        gDisasters.HeatSystem.GridMap[x][y][z].winddirection =  GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Direction"]
+                        
+                        -- Calcular el flujo de aire
+                        gDisasters.HeatSystem.GridMap[x][y][z].airflow = gDisasters.HeatSystem.CalculateAirflow(x, y, z)
 
-                -- Calcular la latencia
-                gDisasters.HeatSystem.GridMap[x][y][z].LatentHeat = gDisasters.HeatSystem.CalculatelatentHeat(x, y, z)
-                
-                -- Calcular el indice de calor 
-                gDisasters.HeatSystem.GridMap[x][y][z].heatindex = gDisasters.HeatSystem.CalculateHeatIndex(x, y, z)
-                gDisasters.HeatSystem.GridMap[x][y][z].windchill = gDisasters.HeatSystem.CalculateWindChill(x, y, z)
-                
-                
-                -- Calcular la presión de vapor
-                gDisasters.HeatSystem.GridMap[x][y][z].VPs = gDisasters.HeatSystem.CalculateVPs(x, y, z)
-                gDisasters.HeatSystem.GridMap[x][y][z].VPsHb = gDisasters.HeatSystem.CalculateVPsHb(x, y, z)
-                gDisasters.HeatSystem.GridMap[x][y][z].VP = gDisasters.HeatSystem.CalculateVaporPressure(x, y, z)
-                
-                -- Calcular la densidad de nubes
-                gDisasters.HeatSystem.GridMap[x][y][z].cloudDensity = gDisasters.HeatSystem.CalculateCloudDensity(x,y,z)
-                
-                
+                        -- Calcular el punto de rocio
+                        gDisasters.HeatSystem.GridMap[x][y][z].dewpoint = gDisasters.HeatSystem.CalculateDewPoint(x, y, z)
+                        
+                        -- Calcular la radiación solar
+                        gDisasters.HeatSystem.GridMap[x][y][z].solarInfluence = gDisasters.HeatSystem.CalculateSolarRadiation(x, y, z, gDisasters.DayNightSystem.Time)
+                        gDisasters.HeatSystem.GridMap[x][y][z].coolingEffect = gDisasters.HeatSystem.CalculateCoolEffect(x, y, z)
 
-                print("Grid generated in position (" .. x .. "," .. y .. "," .. z .. ")") -- Depuración
+                        -- Calcular la latencia
+                        gDisasters.HeatSystem.GridMap[x][y][z].LatentHeat = gDisasters.HeatSystem.CalculatelatentHeat(x, y, z)
+                        
+                        -- Calcular el indice de calor 
+                        gDisasters.HeatSystem.GridMap[x][y][z].heatindex = gDisasters.HeatSystem.CalculateHeatIndex(x, y, z)
+                        gDisasters.HeatSystem.GridMap[x][y][z].windchill = gDisasters.HeatSystem.CalculateWindChill(x, y, z)
+                        
+                        
+                        -- Calcular la presión de vapor
+                        gDisasters.HeatSystem.GridMap[x][y][z].VPs = gDisasters.HeatSystem.CalculateVPs(x, y, z)
+                        gDisasters.HeatSystem.GridMap[x][y][z].VPsHb = gDisasters.HeatSystem.CalculateVPsHb(x, y, z)
+                        gDisasters.HeatSystem.GridMap[x][y][z].VP = gDisasters.HeatSystem.CalculateVaporPressure(x, y, z)
+                        
+                        -- Calcular la densidad de nubes
+                        gDisasters.HeatSystem.GridMap[x][y][z].cloudDensity = gDisasters.HeatSystem.CalculateCloudDensity(x,y,z)
+                        
+                        
+
+                        print("Grid generated in position (" .. x .. "," .. y .. "," .. z .. ")") -- Depuración
+                    end
+                end
             end
+          
+            gDisasters.HeatSystem.SaveGrid()
+
+            print("Grid generated.") -- Depuración
+        
         end
+
+
     end
 
-    print("Grid generated.") -- Depuración
+end
 
+gDisasters.HeatSystem.SaveGrid = function()
+    if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
+        print("Saving grid...")
+        
+        if not file.IsDir("gDisasters", "DATA") then
+            file.CreateDir("gDisasters")
+        end
+
+        file.Write("gDisasters/grid_" .. game.GetMap() .. ".txt", util.TableToJSON(gDisasters.HeatSystem.GridMap))
+    end
+end
+
+gDisasters.HeatSystem.LoadGrid = function()
+    if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
+        print("Saving grid...")
+        gDisasters.HeatSystem.GridMap = util.JSONToTable(file.Read("gDisasters/grid_" .. game.GetMap() .. ".txt", "DATA")) or file.Read("gDisasters/grid_" .. game.GetMap() .. ".txt", "DATA")
+    end
 end
 
 gDisasters.HeatSystem.UpdateGrid = function()
