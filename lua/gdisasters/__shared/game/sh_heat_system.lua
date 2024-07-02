@@ -33,8 +33,6 @@ gDisasters.HeatSystem.nextUpdateGridEntity = CurTime()
 gDisasters.HeatSystem.TempDiffusionCoefficient = GetConVar("gdisasters_heat_system_tempdifussioncoefficient"):GetFloat()
 gDisasters.HeatSystem.HumidityDiffusionCoefficient = GetConVar("gdisasters_heat_system_humiditydifussioncoefficient"):GetFloat()
 gDisasters.HeatSystem.SolarInfluenceCoefficient = GetConVar("gdisasters_heat_system_solarinfluencecoefficient"):GetFloat()
-gDisasters.HeatSystem.LatentHeatCoefficient = GetConVar("gdisasters_heat_system_latentheatcoefficient"):GetFloat()
-gDisasters.HeatSystem.windCoefficient = GetConVar("gdisasters_heat_system_windcoefficient"):GetFloat()
 gDisasters.HeatSystem.CloudDensityCoefficient = GetConVar("gdisasters_heat_system_clouddensitycoefficient"):GetFloat()  -- Coeficiente para convertir humedad en densidad de nubes
 gDisasters.HeatSystem.ConvergenceCoefficient = GetConVar("gdisasters_heat_system_convergencecoefficient"):GetFloat()
 gDisasters.HeatSystem.TerrainCoefficient = GetConVar("gdisasters_heat_system_terraincoefficient"):GetFloat()
@@ -241,11 +239,11 @@ gDisasters.HeatSystem.CalculatelatentHeat = function(x, y, z)
 
     if cloudDensity > 0 then
         if (currentTemperature > gDisasters.HeatSystem.freezingTemperature) then 
-            return gDisasters.HeatSystem.calculateCondensationLatentHeat(cloudDensity) * gDisasters.HeatSystem.LatentHeatCoefficient
+            return gDisasters.HeatSystem.calculateCondensationLatentHeat(cloudDensity)
         elseif (currentTemperature >= gDisasters.HeatSystem.boilingTemperature) then 
-            return gDisasters.HeatSystem.calculateVaporizationLatentHeat(cloudDensity) * gDisasters.HeatSystem.LatentHeatCoefficient
+            return gDisasters.HeatSystem.calculateVaporizationLatentHeat(cloudDensity)
         elseif (currentTemperature <= gDisasters.HeatSystem.freezingTemperature) then 
-           return gDisasters.HeatSystem.calculateFreezingLatentHeat(cloudDensity) * gDisasters.HeatSystem.LatentHeatCoefficient
+           return gDisasters.HeatSystem.calculateFreezingLatentHeat(cloudDensity)
         end
     end
 end
@@ -806,32 +804,27 @@ gDisasters.HeatSystem.GetClosestDistance = function(x, y, z, sources)
     return closestDistance
 end
 
-gDisasters.HeatSystem.CalculateTemperatureHumiditySources = function()
+gDisasters.HeatSystem.CalculateTemperatureHumiditySources = function(x,y,z)
     print("Adding Sources...")
 
     gDisasters.HeatSystem.AddLandSources()
     gDisasters.HeatSystem.AddWaterSources()
     gDisasters.HeatSystem.AddMountainSources()
 
-    for x, column in pairs(gDisasters.HeatSystem.GridMap) do
-        for y, row in pairs(column) do
-            for z, cell in pairs(row) do
-                local closestWaterDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.WaterSources)
-                local closestLandDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.LandSources)
-                local closestMountainDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.MountainSources)
+    local closestWaterDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.WaterSources)
+    local closestLandDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.LandSources)
+    local closestMountainDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.MountainSources)
 
 
-                -- Comparar distancias y ajustar temperatura, humedad y presión en consecuencia
-                if closestWaterDist < closestLandDist and closestWaterDist < closestMountainDist then
-                    return "water"
-                elseif closestLandDist < closestMountainDist and closestLandDist < closestWaterDist then
-                    return "land"
-                else
-                    return "mountain"
-                end 
-            end
-        end
-    end
+    -- Comparar distancias y ajustar temperatura, humedad y presión en consecuencia
+    if closestWaterDist < closestLandDist and closestWaterDist < closestMountainDist then
+        return "water"
+    elseif closestLandDist < closestMountainDist and closestLandDist < closestWaterDist then
+        return "land"
+    else
+        return "mountain"
+    end 
+  
 
     print("Adding Finish")
 end

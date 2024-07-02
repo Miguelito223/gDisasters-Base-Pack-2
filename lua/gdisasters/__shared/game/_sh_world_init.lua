@@ -120,6 +120,11 @@ concommand.Add("getpropnum", function()
 	print(#ents.FindByClass("prop_physics"))
 end)
 
+concommand.Add("gdisasters_heat_system_getgridlist", function()
+
+	PrintTable(gDisasters.HeatSystem.GridMap)
+end)
+
 concommand.Add("ent_getinfo", function(ply)
 
 	local ent = ply:GetEyeTrace().Entity
