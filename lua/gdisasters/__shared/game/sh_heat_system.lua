@@ -558,27 +558,20 @@ gDisasters.HeatSystem.CreateSnow = function(x, y, z)
     if CLIENT then return end -- No ejecutar en el cliente (solo en el servidor)
     if #ents.FindByClass("env_spritetrail") > gDisasters.HeatSystem.MaxRainDrop then return end
     
-    -- Crear una entidad de partículas para la nieve
-    local particle = ents.Create("env_spritetrail")
-    if not IsValid(particle) then return end -- Verificar si la entidad fue creada correctamente
-    
-    -- Establecer las propiedades de la partícula de nieve
-    particle:SetPos(Vector(x, y, z)) -- Establecer la posición de la partícula
-    particle:SetKeyValue("lifetime", "3") -- Duración de la partícula
-    particle:SetKeyValue("startwidth", "1") -- Ancho inicial de la partícula
-    particle:SetKeyValue("endwidth", "0") -- Ancho final de la partícula
-    particle:SetKeyValue("spritename", "effects/snowflake") -- Nombre del sprite para la partícula de nieve
-    particle:SetKeyValue("rendermode", "5") -- Modo de renderizado de la partícula
-    particle:SetKeyValue("rendercolor", "255 255 255") -- Color de la partícula de nieve (blanco)
-    particle:SetKeyValue("spawnflags", "1") -- Banderas de aparición para la partícula
-    particle:Spawn() -- Generar la partícula
-    particle:Activate() -- Activar la partícula
-    
-    -- Programar la eliminación de la partícula después de un tiempo
-    timer.Simple(5, function()
-        if IsValid(particle) then
-            particle:Remove() -- Eliminar la partícula
-        end
+    local pos = Vector(x, y, z)
+    local snowFlake = ents.Create("prop_physics")
+    if not IsValid(snowFlake) then return end
+
+    snowFlake:SetModel("models/props_junk/PopCan01a.mdl") -- Any small model will work
+    snowFlake:SetPos(pos)
+    snowFlake:SetColor(Color(255, 255, 255, 0)) -- Invisible model
+    snowFlake:SetNoDraw(true) -- Don't draw the model
+    snowFlake:Spawn()
+
+    util.SpriteTrail(snowFlake, 0, Color(255, 255, 255), false, 1, 0, 3, 1 / (1 + 0) * 0.5, "effects/snowflake")
+
+    timer.Simple(3, function() -- Remove the snowFlake after 3 seconds
+        if IsValid(snowFlake) then snowFlake:Remove() end
     end)
 end
 
@@ -587,22 +580,20 @@ gDisasters.HeatSystem.CreateRain = function(x, y, z)
     if CLIENT then return end  
     if #ents.FindByClass("env_spritetrail") > gDisasters.HeatSystem.MaxRainDrop then return end
 
-    local particle = ents.Create("env_spritetrail") -- Create a sprite trail entity for raindrop particle
-    if not IsValid(particle) then return end -- Verifica si la entidad fue creada correctamente
+    local pos = Vector(x, y, z)
+    local rainDrop = ents.Create("prop_physics")
+    if not IsValid(rainDrop) then return end
 
-    particle:SetPos(Vector(x, y, z)) -- Set the position of the particle
-    particle:SetKeyValue("lifetime", "2") -- Set the lifetime of the particle
-    particle:SetKeyValue("startwidth", "2") -- Set the starting width of the particle
-    particle:SetKeyValue("endwidth", "0") -- Set the ending width of the particle
-    particle:SetKeyValue("spritename", "effects/blood_core") -- Set the sprite name for the particle (you can use any sprite)
-    particle:SetKeyValue("rendermode", "5") -- Set the render mode of the particle
-    particle:SetKeyValue("rendercolor", "0 0 255") -- Set the color of the particle (blue for rain)
-    particle:SetKeyValue("spawnflags", "1") -- Set the spawn flags for the particle
-    particle:Spawn() -- Spawn the particle
-    particle:Activate() -- Activate the particle
+    rainDrop:SetModel("models/props_junk/PopCan01a.mdl") -- Any small model will work
+    rainDrop:SetPos(pos)
+    rainDrop:SetColor(Color(0, 0, 255, 0)) -- Invisible model
+    rainDrop:SetNoDraw(true) -- Don't draw the model
+    rainDrop:Spawn()
 
-    timer.Simple(5, function() -- Remove the particle after 2 seconds
-        if IsValid(particle) then particle:Remove() end
+    util.SpriteTrail(rainDrop, 0, Color(0, 0, 255), false, 2, 0, 2, 1 / (2 + 0) * 0.5, "effects/blood_core")
+
+    timer.Simple(2, function() -- Remove the rainDrop after 2 seconds
+        if IsValid(rainDrop) then rainDrop:Remove() end
     end)
 end
 -- Function to calculate latent heat released during condensation
