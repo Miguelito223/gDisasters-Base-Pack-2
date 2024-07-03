@@ -10,7 +10,7 @@ gDisasters.HeatSystem.MountainSources = {}
 
 gDisasters.HeatSystem.Cloud = {}
 
-gDisasters.HeatSystem.cellSize = GetConVar("gdisasters_heat_system_cellsize"):GetInt()
+gDisasters.HeatSystem.cellSize = GetConVar("gdisasters_heat_system_cellsize"):GetInt() or 5000
 gDisasters.HeatSystem.cellArea = gDisasters.HeatSystem.cellSize * gDisasters.HeatSystem.cellSize * gDisasters.HeatSystem.cellSize
 
 gDisasters.HeatSystem.minTemperature = GetConVar("gdisasters_heat_system_mintemp"):GetFloat()
@@ -1032,7 +1032,7 @@ end
 gDisasters.HeatSystem.GenerateGrid = function(ply)
     if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
 
-        if file.Exists( "gDisasters/grid_" .. game.GetMap() .. ".txt", "DATA" ) then
+        if file.Exists( "gDisasters/grid_" .. game.GetMap() .. ".json", "DATA" ) and file.Exists( "gDisasters/cellsize_" .. game.GetMap() .. ".json", "DATA" ) then
             gDisasters.HeatSystem.LoadGrid()
         else
             -- Obtener los límites del mapa
@@ -1098,10 +1098,12 @@ gDisasters.HeatSystem.GenerateGrid = function(ply)
                     end
                 end
             end
+
+            print("Grid generated.") -- Depuración
           
             gDisasters.HeatSystem.SaveGrid()
 
-            print("Grid generated.") -- Depuración
+            
         
         end
 
@@ -1118,14 +1120,16 @@ gDisasters.HeatSystem.SaveGrid = function()
             file.CreateDir("gDisasters")
         end
 
-        file.Write("gDisasters/grid_" .. game.GetMap() .. ".txt", util.TableToJSON(gDisasters.HeatSystem.GridMap))
+        file.Write("gDisasters/grid_" .. game.GetMap() .. ".json", util.TableToJSON(gDisasters.HeatSystem.GridMap, true))
+        file.Write("gDisasters/cellsize_" .. game.GetMap() .. ".json", tostring(gDisasters.HeatSystem.cellsize))
     end
 end
 
 gDisasters.HeatSystem.LoadGrid = function()
     if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
         print("Saving grid...")
-        gDisasters.HeatSystem.GridMap = util.JSONToTable(file.Read("gDisasters/grid_" .. game.GetMap() .. ".txt", "DATA")) or file.Read("gDisasters/grid_" .. game.GetMap() .. ".txt", "DATA")
+        gDisasters.HeatSystem.GridMap = util.JSONToTable(file.Read("gDisasters/grid_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/grid_" .. game.GetMap() .. ".json", "DATA")
+        gDisasters.HeatSystem.cellsize = tonumber(file.Read("gDisasters/cellsize_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/cellsize_" .. game.GetMap() .. ".json", "DATA")
     end
 end
 
@@ -1405,3 +1409,4 @@ hook.Add("Think", "gDisasters_UpdateGrid", gDisasters.HeatSystem.UpdateGrid)
 hook.Add("Think", "gDisasters_UpdatePlayerGrid", gDisasters.HeatSystem.UpdatePlayerGrid)
 hook.Add("Think", "gDisasters_UpdateEntityGrid", gDisasters.HeatSystem.UpdateEntityGrid)
 hook.Add("PostDrawTranslucentRenderables", "gDisasters_DrawGridDebug", gDisasters.HeatSystem.DrawGridDebug)
+hook.Add("PlayerDisconnected", "gDisasters_PlayerDisconnectedSave", gDisasters.HeatSystem.SaveGrid)
