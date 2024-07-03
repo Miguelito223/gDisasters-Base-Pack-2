@@ -1121,7 +1121,7 @@ gDisasters.HeatSystem.SaveGrid = function()
         end
 
         file.Write("gDisasters/grid_" .. game.GetMap() .. ".json", util.TableToJSON(gDisasters.HeatSystem.GridMap, true))
-        file.Write("gDisasters/cellsize_" .. game.GetMap() .. ".json", tostring(gDisasters.HeatSystem.cellsize))
+        file.Write("gDisasters/cellsize_" .. game.GetMap() .. ".json", tostring(gDisasters.HeatSystem.cellSize))
     end
 end
 
@@ -1129,7 +1129,7 @@ gDisasters.HeatSystem.LoadGrid = function()
     if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
         print("Saving grid...")
         gDisasters.HeatSystem.GridMap = util.JSONToTable(file.Read("gDisasters/grid_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/grid_" .. game.GetMap() .. ".json", "DATA")
-        gDisasters.HeatSystem.cellsize = tonumber(file.Read("gDisasters/cellsize_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/cellsize_" .. game.GetMap() .. ".json", "DATA")
+        gDisasters.HeatSystem.cellSize = tonumber(file.Read("gDisasters/cellsize_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/cellsize_" .. game.GetMap() .. ".json", "DATA")
     end
 end
 
@@ -1410,3 +1410,7 @@ hook.Add("Think", "gDisasters_UpdatePlayerGrid", gDisasters.HeatSystem.UpdatePla
 hook.Add("Think", "gDisasters_UpdateEntityGrid", gDisasters.HeatSystem.UpdateEntityGrid)
 hook.Add("PostDrawTranslucentRenderables", "gDisasters_DrawGridDebug", gDisasters.HeatSystem.DrawGridDebug)
 hook.Add("PlayerDisconnected", "gDisasters_PlayerDisconnectedSave", gDisasters.HeatSystem.SaveGrid)
+gameevent.Listen( "player_disconnect" )
+gameevent.Listen( "client_disconnect" )
+hook.Add("player_disconnect", "gDisasters_PlayerDisconnectedSave2", gDisasters.HeatSystem.SaveGrid)
+hook.Add("client_disconnect", "gDisasters_ClientDisconnectedSave", gDisasters.HeatSystem.SaveGrid)
