@@ -1208,7 +1208,10 @@ gDisasters.HeatSystem.UpdateGrid = function()
                         print("Error: Cell position out of grid bounds.")
                     end
                 end
+
             end
+            
+            gDisasters.HeatSystem.SaveGrid()
         end
     end
 end
