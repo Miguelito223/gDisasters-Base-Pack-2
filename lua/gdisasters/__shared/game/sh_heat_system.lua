@@ -274,9 +274,6 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not currentCell then return 0 end -- Verificar que la celda actual exista
 
-    -- Inicializar las diferencias de temperatura en cada dirección a cero
-    local temperatureDifferenceX, temperatureDifferenceY, temperatureDifferenceZ = 0, 0, 0
-
     for dx = -1, 1 do
         for dy = -1, 1 do
             for dz = -1, 1 do
@@ -284,20 +281,9 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
                     local nx, ny, nz = x + dx * gDisasters.HeatSystem.cellSize, y + dy * gDisasters.HeatSystem.cellSize, z + dz * gDisasters.HeatSystem.cellSize
                     if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
                         local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
-                        if neighborCell.temperature and neighborCell.terrainType and neighborCell.terrainType == currentCell.terrainType then
+                        if neighborCell.temperature then
                             totalTemperature = totalTemperature + neighborCell.temperature
                             count = count + 1
-
-                            -- Calcular las diferencias de temperatura en cada dirección
-                            if dx ~= 0 then
-                                temperatureDifferenceX = temperatureDifferenceX + (neighborCell.temperature - currentCell.temperature)
-                            end
-                            if dy ~= 0 then
-                                temperatureDifferenceY = temperatureDifferenceY + (neighborCell.temperature - currentCell.temperature)
-                            end
-                            if dz ~= 0 then
-                                temperatureDifferenceZ = temperatureDifferenceZ + (neighborCell.temperature - currentCell.temperature)
-                            end
                         end
                     end
                 end
@@ -319,11 +305,6 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
     local newTemperature = currentTemperature + temperatureChange + terraintemperatureEffect + solarInfluence + coolingEffect
 
-    -- Guardar las diferencias de temperatura calculadas en la celda actual
-    currentCell.temperatureDifferenceX = temperatureDifferenceX
-    currentCell.temperatureDifferenceY = temperatureDifferenceY
-    currentCell.temperatureDifferenceZ = temperatureDifferenceZ
-
     return math.Clamp(newTemperature, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
 end
 
@@ -333,8 +314,6 @@ gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)    local totalHumidi
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not currentCell then return 0 end -- Verificar que la celda actual exista
 
-    local humidityDifferenceX, humidityDifferenceY, humidityDifferenceZ = 0, 0, 0
-
     for dx = -1, 1 do
         for dy = -1, 1 do
             for dz = -1, 1 do
@@ -342,21 +321,9 @@ gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)    local totalHumidi
                     local nx, ny, nz = x + dx * gDisasters.HeatSystem.cellSize, y + dy * gDisasters.HeatSystem.cellSize, z + dz * gDisasters.HeatSystem.cellSize
                     if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
                         local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
-                        if neighborCell.humidity and neighborCell.terrainType and neighborCell.terrainType == currentCell.terrainType then
+                        if neighborCell.humidity then
                             totalHumidity = totalHumidity + neighborCell.humidity
                             count = count + 1
-
-
-                            -- Calcular las diferencias de temperatura en cada dirección
-                            if dx ~= 0 then
-                                humidityDifferenceX = humidityDifferenceX + (neighborCell.humidity - currentCell.humidity)
-                            end
-                            if dy ~= 0 then
-                                humidityDifferenceY = humidityDifferenceY + (neighborCell.humidity - currentCell.humidity)
-                            end
-                            if dz ~= 0 then
-                                humidityDifferenceZ = humidityDifferenceZ + (neighborCell.humidity - currentCell.humidity)
-                            end
                         end
                     end
                 end
@@ -372,10 +339,6 @@ gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)    local totalHumidi
     local terrainHumidityEffect = currentCell.terrainHumidityEffect
     local humidityChange = gDisasters.HeatSystem.HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
     local newHumidity = currentHumidity + humidityChange + terrainHumidityEffect
-
-    currentCell.humidityDifferenceX = humidityDifferenceX
-    currentCell.humidityDifferenceY = humidityDifferenceY
-    currentCell.humidityDifferenceZ = humidityDifferenceZ
 
     return math.Clamp(newHumidity, gDisasters.HeatSystem.minHumidity, gDisasters.HeatSystem.maxHumidity)
 end
