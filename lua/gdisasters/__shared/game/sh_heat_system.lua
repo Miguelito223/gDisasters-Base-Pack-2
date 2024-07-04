@@ -310,7 +310,8 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     return math.Clamp(newTemperature, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
 end
 
-gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)    local totalHumidity = 0
+gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)    
+    local totalHumidity = 0
     local count = 0
 
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
