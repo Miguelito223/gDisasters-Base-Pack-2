@@ -260,10 +260,11 @@ gDisasters.HeatSystem.CalculateTerrainInfluence = function(x, y, z)
         cell.terrainTemperatureEffect = gDisasters.HeatSystem.waterTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
         cell.terrainHumidityEffect = gDisasters.HeatSystem.waterHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
         cell.terrainwindEffect = gDisasters.HeatSystem.waterwindEffect * gDisasters.HeatSystem.TerrainCoefficient
-    elseif cell.terrainType == "mountain" then
-        cell.terrainTemperatureEffect = gDisasters.HeatSystem.mountainTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
-        cell.terrainHumidityEffect = gDisasters.HeatSystem.mountainHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
-        cell.terrainwindEffect = gDisasters.HeatSystem.mountainwindEffect * gDisasters.HeatSystem.TerrainCoefficient
+
+    else
+        cell.terrainTemperatureEffect = 0
+        cell.terrainHumidityEffect = 0
+        cell.terrainwindEffect = 0
     end
 end
 
@@ -304,6 +305,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local coolingEffect = currentCell.coolingEffect or 0.01
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
     local newTemperature = currentTemperature + temperatureChange + terraintemperatureEffect + solarInfluence + coolingEffect
+    newTemperature = newTemperature - (z * 0.00650)
 
     return math.Clamp(newTemperature, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
 end
