@@ -986,7 +986,7 @@ end
 gDisasters.HeatSystem.GenerateGrid = function(ply)
     if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
 
-        if file.Exists( "gDisasters/grid_" .. game.GetMap() .. ".json", "DATA" ) and file.Exists( "gDisasters/cellsize_" .. game.GetMap() .. ".json", "DATA" ) then
+        if file.Exists( "gDisasters/grid_" .. game.GetMap() .. ".json", "DATA" ) and file.Size("gDisasters/grid_" .. game.GetMap() .. ".json", "DATA") > 2 and file.Exists( "gDisasters/cellsize_" .. game.GetMap() .. ".txt", "DATA" ) and file.Size("gDisasters/cellsize_" .. game.GetMap() .. ".txt", "DATA") > 0 then
             gDisasters.HeatSystem.LoadGrid()
         else
             -- Obtener los límites del mapa
@@ -1075,7 +1075,7 @@ gDisasters.HeatSystem.SaveGrid = function()
         end
 
         file.Write("gDisasters/grid_" .. game.GetMap() .. ".json", util.TableToJSON(gDisasters.HeatSystem.GridMap, true))
-        file.Write("gDisasters/cellsize_" .. game.GetMap() .. ".json", tostring(gDisasters.HeatSystem.cellSize))
+        file.Write("gDisasters/cellsize_" .. game.GetMap() .. ".txt", tostring(gDisasters.HeatSystem.cellSize))
     end
 end
 
@@ -1083,7 +1083,7 @@ gDisasters.HeatSystem.LoadGrid = function()
     if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
         print("Saving grid...")
         gDisasters.HeatSystem.GridMap = util.JSONToTable(file.Read("gDisasters/grid_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/grid_" .. game.GetMap() .. ".json", "DATA")
-        gDisasters.HeatSystem.cellSize = tonumber(file.Read("gDisasters/cellsize_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/cellsize_" .. game.GetMap() .. ".json", "DATA")
+        gDisasters.HeatSystem.cellSize = tonumber(file.Read("gDisasters/cellsize_" .. game.GetMap() .. ".txt", "DATA")) or file.Read("gDisasters/cellsize_" .. game.GetMap() .. ".txt", "DATA")
     end
 end
 
