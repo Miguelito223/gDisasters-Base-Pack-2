@@ -785,8 +785,10 @@ gDisasters.HeatSystem.CalculateTemperatureHumiditySources = function(x,y,z)
         return "water"
     elseif closestLandDist < closestMountainDist and closestLandDist < closestWaterDist then
         return "land"
-    else
+    elseif closestMountainDist < closestLandDist and closestWaterDist < closestMountainDist then
         return "mountain"
+    else
+        return "air"
     end 
   
 
