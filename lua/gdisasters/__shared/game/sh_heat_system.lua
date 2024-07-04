@@ -260,6 +260,10 @@ gDisasters.HeatSystem.CalculateTerrainInfluence = function(x, y, z)
         cell.terrainTemperatureEffect = gDisasters.HeatSystem.waterTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
         cell.terrainHumidityEffect = gDisasters.HeatSystem.waterHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
         cell.terrainwindEffect = gDisasters.HeatSystem.waterwindEffect * gDisasters.HeatSystem.TerrainCoefficient
+    elseif cell.terrainType == "mountain" then
+        cell.terrainTemperatureEffect = gDisasters.HeatSystem.waterTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
+        cell.terrainHumidityEffect = gDisasters.HeatSystem.waterHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
+        cell.terrainwindEffect = gDisasters.HeatSystem.waterwindEffect * gDisasters.HeatSystem.TerrainCoefficient
 
     else
         cell.terrainTemperatureEffect = 0
@@ -492,8 +496,9 @@ gDisasters.HeatSystem.GetCellType = function(x, y, z)
 
     
     local WATER_LEVEL = math.floor(tr.HitPos.z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
-    local MOUNTAIN_LEVEL = math.floor((floorz + 10000) / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize -- Ajusta la altura de la montaña según sea necesario
-   
+    local LAND_LEVEL = math.floor((floorz) / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize -- Ajusta la altura de la montaña según sea necesario
+    local MOUNTAIN_LEVEL = math.floor((floorz + 10000) / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
+
     -- Trace to check for land
     local trLand = util.TraceLine({
         start = traceStart,
@@ -512,7 +517,9 @@ gDisasters.HeatSystem.GetCellType = function(x, y, z)
     end
 
     -- Simular diferentes tipos de celdas basadas en coordenadas
-    if z >= MOUNTAIN_LEVEL then
+    if z > LAND_LEVEL then
+        return "air" -- Aparte del nivel de la montaña es aire
+    elseif z >= MOUNTAIN_LEVEL then
         return "mountain" -- Por encima del nivel de la montaña es montaña
     else
         return "land" -- En otras coordenadas es tierra
