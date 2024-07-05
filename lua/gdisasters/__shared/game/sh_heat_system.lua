@@ -301,7 +301,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local coolingEffect = currentCell.coolingEffect or 0.01
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
     -- Ajustar la temperatura según la altitud
-    local altitude = z * gDisasters.HeatSystem.cellSize -- Altitud en metros
+    local altitude = z -- Altitud en metros
     local lapseRate = 0.0065 -- Tasa de disminución de temperatura en °C por metro
     local CalculateTemperatureWithAltitude = currentTemperature - (altitude * lapseRate)
     local newTemperature = currentTemperature + temperatureChange + terraintemperatureEffect + solarInfluence + coolingEffect + CalculateTemperatureWithAltitude
