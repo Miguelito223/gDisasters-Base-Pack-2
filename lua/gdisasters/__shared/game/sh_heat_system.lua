@@ -6,7 +6,7 @@ gDisasters.HeatSystem.cellsToUpdate = {}
 
 gDisasters.HeatSystem.WaterSources = {}
 gDisasters.HeatSystem.LandSources = {}
-gDisasters.HeatSystem.MountainSources = {}
+gDisasters.HeatSystem.AirSources = {}
 
 gDisasters.HeatSystem.Cloud = {}
 
@@ -768,14 +768,16 @@ gDisasters.HeatSystem.CalculateTemperatureHumiditySources = function(x,y,z)
 
     gDisasters.HeatSystem.AddLandSources()
     gDisasters.HeatSystem.AddWaterSources()
+    gDisasters.HeatSystem.AddLandSources()
 
     local closestWaterDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.WaterSources)
     local closestLandDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.LandSources)
+    local closestAirDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.AirSources)
 
     -- Comparar distancias y ajustar temperatura, humedad y presión en consecuencia
-    if closestWaterDist < closestLandDist then
+    if closestWaterDist < closestLandDist and closestAirDist < closestLandDist then
         return "water"
-    elseif closestLandDist < closestWaterDist then
+    elseif closestLandDist < closestWaterDist and closestAirDist < closestWaterDist then
         return "land"
     else
         return "air"
@@ -807,6 +809,20 @@ gDisasters.HeatSystem.AddLandSources = function()
                 local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
                 if celltype == "land" then
                     table.insert(gDisasters.HeatSystem.LandSources, {x = x, y = y , z = z})
+                end
+            end
+        end
+    end
+end
+
+-- Función para obtener las coordenadas de las fuentes de aire
+gDisasters.HeatSystem.AddLandSources = function()
+    for x, column in pairs(gDisasters.HeatSystem.GridMap) do
+        for y, row in pairs(column) do
+            for z, cell in pairs(row) do
+                local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
+                if celltype == "air" then
+                    table.insert(gDisasters.HeatSystem.AirSources, {x = x, y = y , z = z})
                 end
             end
         end
