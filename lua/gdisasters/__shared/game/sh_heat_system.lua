@@ -295,19 +295,17 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     -- Factores adicionales (solar, terreno, etc.)
 
     local currentTemperature = currentCell.temperature or 0.01
-    local cloudDensity = currentCell.cloudDensity or 0.01
     local solarInfluence = currentCell.solarInfluence or 0.01
     local terraintemperatureEffect = currentCell.terrainTemperatureEffect or 0.01
     local coolingEffect = currentCell.coolingEffect or 0.01
+
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
-    -- Ajustar la temperatura según la altitud
-    local altitude = z -- Altitud en metros
-    local lapseRate = 0.0065 -- Tasa de disminución de temperatura en °C por metro
-    local CalculateTemperatureWithAltitude = currentTemperature - (altitude * lapseRate)
-    local newTemperature = currentTemperature + temperatureChange + terraintemperatureEffect + solarInfluence + coolingEffect + CalculateTemperatureWithAltitude
+    local lapseRate = 0.00650 -- Tasa de disminución de temperatura en °C por metro
 
+    -- Calcular la nueva temperatura
+    local newTemperature = currentTemperature + temperatureChange + terraintemperatureEffect + solarInfluence + coolingEffect
+    newTemperature = newTemperature - (z * lapseRate) -- Disminuir la temperatura en la superfície
 
-    
 
     return math.Clamp(newTemperature, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
 end
