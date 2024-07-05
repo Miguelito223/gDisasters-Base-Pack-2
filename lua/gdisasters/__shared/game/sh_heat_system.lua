@@ -41,13 +41,10 @@ gDisasters.HeatSystem.CoolingCoefficient = GetConVar("gdisasters_heat_system_coo
 
 gDisasters.HeatSystem.waterTemperatureEffect = -2   -- El agua tiende a mantener una temperatura más constante
 gDisasters.HeatSystem.landTemperatureEffect = 4     -- La tierra se calienta y enfría más rápido que el agua
-gDisasters.HeatSystem.mountainTemperatureEffect = -3  -- Las montañas tienden a ser más frías debido a la altitud
 gDisasters.HeatSystem.waterHumidityEffect = 5       -- El agua puede aumentar significativamente la humedad en su entorno
 gDisasters.HeatSystem.landHumidityEffect = -5        -- La tierra puede retener menos humedad que el agua
-gDisasters.HeatSystem.mountainHumidityEffect = -4    -- Las montañas pueden influir moderadamente en la humedad debido a las corrientes de aire
 gDisasters.HeatSystem.landwindEffect = -5         -- La tierra puede disminuir significativamente el flujo de aire
 gDisasters.HeatSystem.waterwindEffect = 5        -- El agua puede aumentar significativamente el flujo de aire
-gDisasters.HeatSystem.mountainwindEffect = -5     -- Las montaña pueden disminuir significativamente el flujo de aire
 
 gDisasters.HeatSystem.coolingFactor = -5
 
@@ -260,11 +257,6 @@ gDisasters.HeatSystem.CalculateTerrainInfluence = function(x, y, z)
         cell.terrainTemperatureEffect = gDisasters.HeatSystem.waterTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
         cell.terrainHumidityEffect = gDisasters.HeatSystem.waterHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
         cell.terrainwindEffect = gDisasters.HeatSystem.waterwindEffect * gDisasters.HeatSystem.TerrainCoefficient
-    elseif cell.terrainType == "mountain" then
-        cell.terrainTemperatureEffect = gDisasters.HeatSystem.waterTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
-        cell.terrainHumidityEffect = gDisasters.HeatSystem.waterHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
-        cell.terrainwindEffect = gDisasters.HeatSystem.waterwindEffect * gDisasters.HeatSystem.TerrainCoefficient
-
     else
         cell.terrainTemperatureEffect = 0
         cell.terrainHumidityEffect = 0
@@ -308,12 +300,14 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local terraintemperatureEffect = currentCell.terrainTemperatureEffect or 0.01
     local coolingEffect = currentCell.coolingEffect or 0.01
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
-    local newTemperature = currentTemperature + temperatureChange + terraintemperatureEffect + solarInfluence + coolingEffect
-
     -- Ajustar la temperatura según la altitud
     local altitude = z * gDisasters.HeatSystem.cellSize -- Altitud en metros
     local lapseRate = 0.0065 -- Tasa de disminución de temperatura en °C por metro
-    newTemperature = newTemperature - (altitude * lapseRate)
+    local CalculateTemperatureWithAltitude = currentTemperature - (altitude * lapseRate)
+    local newTemperature = currentTemperature + temperatureChange + terraintemperatureEffect + solarInfluence + coolingEffect + CalculateTemperatureWithAltitude
+
+
+    
 
     return math.Clamp(newTemperature, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
 end
@@ -500,8 +494,7 @@ gDisasters.HeatSystem.GetCellType = function(x, y, z)
 
     
     local WATER_LEVEL = math.floor(tr.HitPos.z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
-    local LAND_LEVEL = math.floor((floorz) / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize -- Ajusta la altura de la montaña según sea necesario
-    local MOUNTAIN_LEVEL = math.floor((floorz + 10000) / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
+    local LAND_LEVEL = floorz -- Ajusta la altura de la montaña según sea necesario
 
     -- Trace to check for land
     local trLand = util.TraceLine({
@@ -523,8 +516,6 @@ gDisasters.HeatSystem.GetCellType = function(x, y, z)
     -- Simular diferentes tipos de celdas basadas en coordenadas
     if z > LAND_LEVEL then
         return "air" -- Aparte del nivel de la montaña es aire
-    elseif z >= MOUNTAIN_LEVEL then
-        return "mountain" -- Por encima del nivel de la montaña es montaña
     else
         return "land" -- En otras coordenadas es tierra
     end
@@ -777,20 +768,15 @@ gDisasters.HeatSystem.CalculateTemperatureHumiditySources = function(x,y,z)
 
     gDisasters.HeatSystem.AddLandSources()
     gDisasters.HeatSystem.AddWaterSources()
-    gDisasters.HeatSystem.AddMountainSources()
 
     local closestWaterDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.WaterSources)
     local closestLandDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.LandSources)
-    local closestMountainDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.MountainSources)
-
 
     -- Comparar distancias y ajustar temperatura, humedad y presión en consecuencia
-    if closestWaterDist < closestLandDist and closestWaterDist < closestMountainDist then
+    if closestWaterDist < closestLandDist then
         return "water"
-    elseif closestLandDist < closestMountainDist and closestLandDist < closestWaterDist then
+    elseif closestLandDist < closestWaterDist then
         return "land"
-    elseif closestMountainDist < closestLandDist and closestWaterDist < closestMountainDist then
-        return "mountain"
     else
         return "air"
     end 
@@ -821,19 +807,6 @@ gDisasters.HeatSystem.AddLandSources = function()
                 local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
                 if celltype == "land" then
                     table.insert(gDisasters.HeatSystem.LandSources, {x = x, y = y , z = z})
-                end
-            end
-        end
-    end
-end
-
-gDisasters.HeatSystem.AddMountainSources = function()
-    for x, column in pairs(gDisasters.HeatSystem.GridMap) do
-        for y, row in pairs(column) do
-            for z, cell in pairs(row) do
-                local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
-                if celltype == "mountain" then
-                    table.insert(gDisasters.HeatSystem.MountainSources, {x = x, y = y , z = z})
                 end
             end
         end
