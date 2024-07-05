@@ -775,9 +775,9 @@ gDisasters.HeatSystem.CalculateTemperatureHumiditySources = function(x,y,z)
     local closestAirDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.AirSources)
 
     -- Comparar distancias y ajustar temperatura, humedad y presión en consecuencia
-    if closestWaterDist < closestLandDist and closestAirDist < closestLandDist then
+    if closestWaterDist < closestLandDist and closestWaterDist < closestAirDist  then
         return "water"
-    elseif closestLandDist < closestWaterDist and closestAirDist < closestWaterDist then
+    elseif closestLandDist < closestWaterDist and closestLandDist < closestAirDist then
         return "land"
     else
         return "air"
