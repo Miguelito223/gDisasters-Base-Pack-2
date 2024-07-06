@@ -857,6 +857,8 @@ gDisasters.HeatSystem.CreateHail = function(x, y, z)
     hail:Spawn()
     hail:Activate()
 
+    table.insert(gDisasters.HeatSystem.Hail, hail)
+
     timer.Simple(5, function() -- Remove the particle after 2 seconds
         if IsValid(hail) then hail:Remove() end
     end)
