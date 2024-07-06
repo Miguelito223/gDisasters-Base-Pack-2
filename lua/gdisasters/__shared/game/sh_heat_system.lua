@@ -764,9 +764,9 @@ end
 gDisasters.HeatSystem.CalculateTemperatureHumiditySources = function(x,y,z)
     print("Adding Sources...")
 
-    gDisasters.HeatSystem.AddLandSources()
-    gDisasters.HeatSystem.AddWaterSources()
-    gDisasters.HeatSystem.AddLandSources()
+    gDisasters.HeatSystem.AddLandSources(x,y,z)
+    gDisasters.HeatSystem.AddWaterSources(x,y,z)
+    gDisasters.HeatSystem.AddLandSources(x,y,z)
 
     local closestWaterDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.WaterSources)
     local closestLandDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.LandSources)
@@ -786,44 +786,28 @@ gDisasters.HeatSystem.CalculateTemperatureHumiditySources = function(x,y,z)
 end
 
 -- Función para obtener las coordenadas de las fuentes de agua
-gDisasters.HeatSystem.AddWaterSources = function()
-    for x, column in pairs(gDisasters.HeatSystem.GridMap) do
-        for y, row in pairs(column) do
-            for z, cell in pairs(row) do
-                local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
-                if celltype == "water" then
-                    table.insert(gDisasters.HeatSystem.WaterSources, {x = x, y = y , z = z})
-                end
-            end
-        end
+gDisasters.HeatSystem.AddWaterSources = function(x,y,z)
+
+    local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
+    if celltype == "water" then
+        table.insert(gDisasters.HeatSystem.WaterSources, {x = x, y = y , z = z})
     end
+
 end
 
 -- Función para obtener las coordenadas de las fuentes de tierra
-gDisasters.HeatSystem.AddLandSources = function()
-    for x, column in pairs(gDisasters.HeatSystem.GridMap) do
-        for y, row in pairs(column) do
-            for z, cell in pairs(row) do
-                local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
-                if celltype == "land" then
-                    table.insert(gDisasters.HeatSystem.LandSources, {x = x, y = y , z = z})
-                end
-            end
-        end
+gDisasters.HeatSystem.AddLandSources = function(x,y,z)
+    local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
+    if celltype == "land" then
+        table.insert(gDisasters.HeatSystem.LandSources, {x = x, y = y , z = z})
     end
 end
 
 -- Función para obtener las coordenadas de las fuentes de aire
-gDisasters.HeatSystem.AddLandSources = function()
-    for x, column in pairs(gDisasters.HeatSystem.GridMap) do
-        for y, row in pairs(column) do
-            for z, cell in pairs(row) do
-                local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
-                if celltype == "air" then
-                    table.insert(gDisasters.HeatSystem.AirSources, {x = x, y = y , z = z})
-                end
-            end
-        end
+gDisasters.HeatSystem.AddLandSources = function(x,y,z)
+    local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
+    if celltype == "air" then
+        table.insert(gDisasters.HeatSystem.AirSources, {x = x, y = y , z = z})
     end
 end
 
