@@ -8,7 +8,10 @@ gDisasters.HeatSystem.WaterSources = {}
 gDisasters.HeatSystem.LandSources = {}
 gDisasters.HeatSystem.AirSources = {}
 
-gDisasters.HeatSystem.Cloud = {}
+gDisasters.HeatSystem.Clouds = {}
+gDisasters.HeatSystem.Rain = {}
+gDisasters.HeatSystem.Hail = {}
+gDisasters.HeatSystem.Snow = {}
 
 gDisasters.HeatSystem.cellSize = GetConVar("gdisasters_heat_system_cellsize"):GetInt() or 5000
 gDisasters.HeatSystem.cellArea = gDisasters.HeatSystem.cellSize * gDisasters.HeatSystem.cellSize * gDisasters.HeatSystem.cellSize
@@ -534,6 +537,8 @@ gDisasters.HeatSystem.CreateSnow = function(x, y, z)
     snowFlake:SetNoDraw(true) -- Don't draw the model
     snowFlake:Spawn()
 
+    table.insert(gDisasters.HeatSystem.Snow, snowFlake)
+
     util.SpriteTrail(snowFlake, 0, Color(255, 255, 255), false, 1, 0, 3, 1 / (1 + 0) * 0.5, "effects/snowflake")
 
     timer.Simple(3, function() -- Remove the snowFlake after 3 seconds
@@ -555,6 +560,8 @@ gDisasters.HeatSystem.CreateRain = function(x, y, z)
     rainDrop:SetColor(Color(0, 0, 255, 0)) -- Invisible model
     rainDrop:SetNoDraw(true) -- Don't draw the model
     rainDrop:Spawn()
+
+    table.insert(gDisasters.HeatSystem.Rain, rainDrop)
 
     util.SpriteTrail(rainDrop, 0, Color(0, 0, 255), false, 2, 0, 2, 1 / (2 + 0) * 0.5, "effects/blood_core")
 
@@ -675,7 +682,7 @@ gDisasters.HeatSystem.SpawnCloud = function(pos, color)
     cloud:Spawn()
     cloud:Activate()
 
-    table.insert(gDisasters.HeatSystem.Cloud, cloud)
+    table.insert(gDisasters.HeatSystem.Clouds, cloud)
 
     timer.Simple(cloud.Life, function()
         if IsValid(cloud) then cloud:Remove() end
@@ -971,7 +978,7 @@ end
 gDisasters.HeatSystem.GenerateGrid = function(ply)
     if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
 
-        if file.Exists( "gDisasters/grid_" .. game.GetMap() .. ".json", "DATA" ) and file.Size("gDisasters/grid_" .. game.GetMap() .. ".json", "DATA") > 2 and file.Exists( "gDisasters/cellsize_" .. game.GetMap() .. ".txt", "DATA" ) and file.Size("gDisasters/cellsize_" .. game.GetMap() .. ".txt", "DATA") > 0 then
+        if file.Exists( "gDisasters/grid_" .. game.GetMap() .. ".json", "DATA" ) and file.Size("gDisasters/grid_" .. game.GetMap() .. ".json", "DATA") > 2 and file.Exists( "gDisasters/cellsize_" .. game.GetMap() .. ".txt", "DATA" ) and file.Size("gDisasters/cellsize_" .. game.GetMap() .. ".txt", "DATA") > 0 and file.Exists( "gDisasters/clouds_" .. game.GetMap() .. ".txt", "DATA" ) and file.Size("gDisasters/clouds_" .. game.GetMap() .. ".txt", "DATA") > 0 and file.Exists( "gDisasters/rain_" .. game.GetMap() .. ".txt", "DATA" ) and file.Size("gDisasters/rain_" .. game.GetMap() .. ".txt", "DATA") > 0 and file.Exists( "gDisasters/snow_" .. game.GetMap() .. ".txt", "DATA" ) and file.Size("gDisasters/snow_" .. game.GetMap() .. ".txt", "DATA") > 0 and file.Exists( "gDisasters/hail_" .. game.GetMap() .. ".txt", "DATA" ) and file.Size("gDisasters/rain_" .. game.GetMap() .. ".txt", "DATA") > 0 then
             gDisasters.HeatSystem.LoadGrid()
         else
             -- Obtener los límites del mapa
@@ -1061,6 +1068,11 @@ gDisasters.HeatSystem.SaveGrid = function()
 
         file.Write("gDisasters/grid_" .. game.GetMap() .. ".json", util.TableToJSON(gDisasters.HeatSystem.GridMap, true))
         file.Write("gDisasters/cellsize_" .. game.GetMap() .. ".txt", tostring(gDisasters.HeatSystem.cellSize))
+        file.Write("gDisasters/clouds_" .. game.GetMap() .. ".json",  util.TableToJSON(gDisasters.HeatSystem.Clouds, true))
+        file.Write("gDisasters/rain_" .. game.GetMap() .. ".json",  util.TableToJSON(gDisasters.HeatSystem.Rain, true))
+        file.Write("gDisasters/snow_" .. game.GetMap() .. ".json",  util.TableToJSON(gDisasters.HeatSystem.Snow, true))
+        file.Write("gDisasters/hail_" .. game.GetMap() .. ".json",  util.TableToJSON(gDisasters.HeatSystem.Hail, true))
+        print("Grid saved.")
     end
 end
 
@@ -1069,6 +1081,26 @@ gDisasters.HeatSystem.LoadGrid = function()
         print("Saving grid...")
         gDisasters.HeatSystem.GridMap = util.JSONToTable(file.Read("gDisasters/grid_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/grid_" .. game.GetMap() .. ".json", "DATA")
         gDisasters.HeatSystem.cellSize = tonumber(file.Read("gDisasters/cellsize_" .. game.GetMap() .. ".txt", "DATA")) or file.Read("gDisasters/cellsize_" .. game.GetMap() .. ".txt", "DATA")
+        gDisasters.HeatSystem.Clouds = util.JSONToTable(file.Read("gDisasters/clouds_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/clouds_" .. game.GetMap() .. ".json", "DATA")
+        gDisasters.HeatSystem.Rain = util.JSONToTable(file.Read("gDisasters/rain_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/rain_" .. game.GetMap() .. ".json", "DATA")
+        gDisasters.HeatSystem.Snow = util.JSONToTable(file.Read("gDisasters/snow_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/snow_" .. game.GetMap() .. ".json", "DATA")
+        gDisasters.HeatSystem.Hail = util.JSONToTable(file.Read("gDisasters/hail_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/hail_" .. game.GetMap() .. ".json", "DATA")
+        for k,v in pairs(gDisasters.HeatSystem.Clouds) do
+            v:Spawn()
+            v:Activate()
+        end
+        for k,v in pairs(gDisasters.HeatSystem.Rain) do
+            v:Spawn()
+            v:Activate()
+        end
+        for k,v in pairs(gDisasters.HeatSystem.Snow) do
+            v:Spawn()
+            v:Activate()
+        end
+        for k,v in pairs(gDisasters.HeatSystem.Hail) do
+            v:Spawn()
+            v:Activate()
+        end
     end
 end
 
