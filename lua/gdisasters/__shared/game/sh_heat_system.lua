@@ -303,11 +303,8 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local coolingEffect = currentCell.coolingEffect or 0.01
 
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
-    local lapseRate = 0.00650 -- Tasa de disminución de temperatura en °C por metro
-
     -- Calcular la nueva temperatura
     local newTemperature = currentTemperature + temperatureChange + terraintemperatureEffect + solarInfluence + coolingEffect
-    newTemperature = newTemperature - (z * lapseRate) -- Disminuir la temperatura en la superfície
 
 
     return math.Clamp(newTemperature, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
