@@ -787,12 +787,10 @@ end
 
 -- Función para obtener las coordenadas de las fuentes de agua
 gDisasters.HeatSystem.AddWaterSources = function(x,y,z)
-
     local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
     if celltype == "water" then
         table.insert(gDisasters.HeatSystem.WaterSources, {x = x, y = y , z = z})
     end
-
 end
 
 -- Función para obtener las coordenadas de las fuentes de tierra
