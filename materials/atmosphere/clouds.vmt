@@ -1,0 +1,11 @@
+"VolumeClouds"
+{
+	"$basetexture" "atmosphere/clouds"
+	"$basetexture2" "atmosphere/clouds"
+	"$basetexture3" "atmosphere/clouds"
+	"$refractamount" 2
+	"$time" 0
+	"$basetexturespeed" 1
+	"$basetexture2speed" 2
+	"$basetexture3speed" 3
+}
