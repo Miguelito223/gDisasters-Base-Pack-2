@@ -40,27 +40,18 @@ end)
 
 
 gDisasters.VolumetricCloud.gDisastersVolumetricCloud = function(_, sky)
-    if sky then return end	// dont render in skybox
-	local offset = LocalPlayer():GetViewOffset()	// copy vector, dont use original memory
-	offset[1] = ((offset[1] + 250 + CurTime() * 0.1) % 500) - 250
-	offset[2] = ((offset[2] + 250 + CurTime() * 0.1) % 500) - 250
-	offset[3] = offset[3] - 10
+	if GetConVar("gdisasters_volumetric_clouds_enabled"):GetInt() >= 1 then
+		if sky then return end	// dont render in skybox
 
-	if coroutine.status(gDisasters.VolumetricCloud.CloudCoro) == "suspended" then
-		coroutine.resume(gDisasters.VolumetricCloud.CloudCoro)
-	end
+		if coroutine.status(gDisasters.VolumetricCloud.CloudCoro) == "suspended" then
+			coroutine.resume(gDisasters.VolumetricCloud.CloudCoro)
+		end
 
-	// render cloud planes
-	if offset[3] > 1 then
 		for i = 1, gDisasters.VolumetricCloud.cloud_layer do	// overlay 10 planes to give amazing 3d look
 			render.SetMaterial(gDisasters.VolumetricCloud.cloud_mats[i])
-			render.DrawQuadEasy((unlocalize_vector(Vector(0, 0, (i - 1) * 10000), -offset)), Vector(0, 0, 1), 20000000, 20000000)
+			render.DrawQuadEasy(Vector(0, 0, (i - 1) * 10000), Vector(0, 0, 1), 200000, 200000)
 		end
-	else
-		for i = gDisasters.VolumetricCloud.cloud_layer, 1, -1 do	// do same thing but render in reverse since we are under clouds
-			render.SetMaterial(gDisasters.VolumetricCloud.cloud_mats[i])
-			render.DrawQuadEasy(unlocalize_vector(Vector(0, 0, (i - 1) * 10000), -offset), Vector(0, 0, 1), 20000000, 20000000)
-		end
+
 	end
 end
 

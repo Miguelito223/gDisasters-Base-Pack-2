@@ -368,10 +368,6 @@ function GetUnweldChanceFromEFCategory(category)
 
 end
 
-function unlocalize_vector(vector, offset)
-	return (offset or Vector()) * 2 + vector
-end
-
 function GetEFCategory(windspeed)
 
 	if windspeed >= 0 and windspeed < 105 then 
