@@ -7,8 +7,8 @@ gDisasters.VolumetricCloud.cloud_layer = 10
 
 gDisasters.VolumetricCloud.CloudCoro = coroutine.create(function()
 	for i = 1, gDisasters.VolumetricCloud.cloud_layer do
-		gDisasters.VolumetricCloud.cloud_rts[i] = GetRenderTarget("infmap_clouds" .. i, 512, 512)
-		gDisasters.VolumetricCloud.cloud_mats[i] = CreateMaterial("infmap_clouds" .. i, "UnlitGeneric", {
+		gDisasters.VolumetricCloud.cloud_rts[i] = GetRenderTarget("gdisasters_volumetric_clouds" .. i, 512, 512)
+		gDisasters.VolumetricCloud.cloud_mats[i] = CreateMaterial("gdisasters_volumetric_clouds" .. i, "UnlitGeneric", {
 			["$basetexture"] = gDisasters.VolumetricCloud.cloud_rts[i]:GetName(),
 			["$model"] = "1",
 			["$nocull"] = "1",
@@ -19,17 +19,19 @@ gDisasters.VolumetricCloud.CloudCoro = coroutine.create(function()
 
 	for y = 0, 511 do
 		for i = 1, gDisasters.VolumetricCloud.cloud_layer do
-			render.PushRenderTarget(gDisasters.VolumetricCloud.cloud_rts[i]) cam.Start2D()
-				for x = 0, 511 do
-					local x1 = x// % (512 / 2)	//loop clouds in grid of 2x2 (since res is 512)
-					local y1 = y// % (512 / 2)
+			render.PushRenderTarget(gDisasters.VolumetricCloud.cloud_rts[i]) 
+				cam.Start2D()
+					for x = 0, 511 do
+						local x1 = x// % (512 / 2)	//loop clouds in grid of 2x2 (since res is 512)
+						local y1 = y// % (512 / 2)
 
-					local col = (Noise.simplex3D(x1 / 30, y1 / 30, i / 50) - i * 0.015) * 1024 + (Noise.simplex3D(x1 / 7, y1 / 7) + 1) * 128
+						local col = (Noise.simplex3D(x1 / 30, y1 / 30, i / 50) - i * 0.015) * 1024 + (Noise.simplex2D(x1 / 7, y1 / 7) + 1) * 128
 
-					surface.SetDrawColor(255, 255, 255, col)
-					surface.DrawRect(x, y, 1, 1)
-				end
-			cam.End2D() render.PopRenderTarget()
+						surface.SetDrawColor(255, 255, 255, col)
+						surface.DrawRect(x, y, 1, 1)
+					end
+				cam.End2D() 
+			render.PopRenderTarget()
 		end
 
 		coroutine.yield()

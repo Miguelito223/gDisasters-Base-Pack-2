@@ -686,6 +686,9 @@ Noise.simplex3D = function(xin, yin, zin)
 	local x2 = x0 - 1 + 2 * Noise.G3
 	local y2 = y0 - 1 + 2 * Noise.G3 
 	local z2 = z0 - 1 + 2 * Noise.G3 
+	local x3 = x0 - 1 + 3 * Noise.G3
+	local y3 = y0 - 1 + 3 * Noise.G3 
+	local z3 = z0 - 1 + 3 * Noise.G3 
 	
 	
 	local ii = bit.band( i , 255) 
