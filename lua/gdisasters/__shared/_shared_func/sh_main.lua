@@ -368,6 +368,10 @@ function GetUnweldChanceFromEFCategory(category)
 
 end
 
+function unlocalize_vector(vector, offset)
+	return (offset or Vector()) * 2 + vector
+end
+
 function GetEFCategory(windspeed)
 
 	if windspeed >= 0 and windspeed < 105 then 
@@ -641,7 +645,80 @@ Noise.simplex2DAdvanced = function(xin, yin, crdscale_x, crdscale_y, xoff, yoff,
 end
 
 
+Noise.simplex3D = function(xin, yin, zin)
+    
+	local n0, n1, n2, n3 = nil, nil, nil, nil
+	
+	local s = (xin+yin+zin)*Noise.F3
+	local i = math.floor(xin+s)
+	local j = math.floor(yin+s)
+	local k = math.floor(zin+s)
+	
+	local t = (i+j+k)*Noise.G3
+	local X0, Y0, Z0 = i-t, j-t, k-t
+	local x0, y0, z0 = xin-X0, yin-Y0, zin-Z0
+	
+	-- determine which simplex we are in 
+	
+	local i1, i2, j1, j2, k1, k2 = nil, nil, nil, nil, nil, nil
 
+    if (x0>=y0) then
+        if (y0>=z0) then
+            i1=1; j1=0; k1=0; i2=1; j2=1; k2=0; -- X Y Z order
+        elseif (x0>=z0) then
+            i1=1; j1=0; k1=0; i2=1; j2=0; k2=1; -- X Z Y order
+        else 
+            i1=0; j1=0; k1=1; i2=1; j2=0; k2=1;  -- Z X Y order
+        end
+    else -- x0<y0
+        if (y0<z0) then 
+            i1=0; j1=0; k1=1; i2=0; j2=1; k2=1; -- Z Y X order
+        elseif (x0<z0) then 
+            i1=0; j1=1; k1=0; i2=0; j2=1; k2=1; -- Y Z X order
+        else 
+            i1=0; j1=1; k1=0; i2=1; j2=1; k2=0; -- Y X Z order
+        end
+    end
+	
+	local x1 = x0 - i1 + Noise.G3
+	local y1 = y0 - j1 + Noise.G3
+	local z1 = z0 - k1 + Noise.G3
+	local x2 = x0 - 1 + 2 * Noise.G3
+	local y2 = y0 - 1 + 2 * Noise.G3 
+	local z2 = z0 - 1 + 2 * Noise.G3 
+	
+	
+	local ii = bit.band( i , 255) 
+	local jj = bit.band( j , 255) 
+	local kk = bit.band( k , 255) 
+	
+	
+	local gi0 = Noise.permMod12[1 + ii+(Noise.perm[jj + 1] )] + 1 
+	local gi1 = Noise.permMod12[1 +ii+i1+(Noise.perm[jj+j1 + 1] )] + 1
+	local gi2 = Noise.permMod12[1 +ii+1+(Noise.perm[jj+2])] + 1
+	local gi3 = Noise.permMod12[1 +ii+1+(Noise.perm[jj+1+Noise.perm[kk+1]])] + 1
+	
+	
+	
+	local t0 = 0.5 - x0*x0-y0*y0-z0*z0
+	
+	if (t0<0) then n0 = 0; else t0 = t0 * t0; n0 = t0 * t0 * Noise.dot3D(Noise.Grad3[gi0 ],x0,y0,z0); end 
+	
+	
+	local t1 = 0.5 - x1*x1-y1*y1-z1*z1
+	
+	if(t1<0) then n1 = 0.0 else t1 = t1 * t1; n1 = t1 * t1 * Noise.dot3D(Noise.Grad3[gi1], x1, y1, z1); end 
+
+	local t2 = 0.5 - x2*x2-y2*y2-z2*z2
+	
+	if(t2<0) then n2 = 0.0; else t2 = t2 * t2; n2 = t2 * t2 * Noise.dot3D(Noise.Grad3[gi2], x2, y2, z2); end 
+
+	local t3 = 0.5 - x3*x3-y3*y3-z3*z3
+
+	if(t3<0) then n3 = 0.0; else t3 = t3 * t3; n3 = t3 * t3 * Noise.dot3D(Noise.Grad3[gi3], x3, y3, z3); end 
+	
+	return 70.0 * (n0 + n1 + n2 + n3);
+end
 
 Noise.simplex2D = function(xin, yin )
 
