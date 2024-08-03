@@ -3,7 +3,7 @@ gDisasters.VolumetricCloud = {}
 gDisasters.VolumetricCloud.cloud_rts = {}
 gDisasters.VolumetricCloud.cloud_mats = {}
 
-gDisasters.VolumetricCloud.cloud_layer = 10
+gDisasters.VolumetricCloud.cloud_layer = 30
 
 -- Coroutine for generating the cloud textures
 gDisasters.VolumetricCloud.CloudCoro = coroutine.create(function()
@@ -50,7 +50,7 @@ gDisasters.VolumetricCloud.gDisastersVolumetricCloud = function(_, sky)
 
     for i = 1, gDisasters.VolumetricCloud.cloud_layer do
         render.SetMaterial(gDisasters.VolumetricCloud.cloud_mats[i])
-        render.DrawQuadEasy(Vector(0, 0, (i - 1) * 100), Vector(0, 0, 1), 200000, 200000)
+        render.DrawQuadEasy(Vector(0, 0, (i - 1) * 50), Vector(0, 0, 1), 200000, 200000)
     end
 end
 

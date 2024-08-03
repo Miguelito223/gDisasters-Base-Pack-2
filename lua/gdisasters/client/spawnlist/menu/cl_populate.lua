@@ -310,6 +310,8 @@ AddToGDSpawnMenu("EF2 Tornado"           , "gd_d5_ef2"           , "Disasters", 
 AddToGDSpawnMenu("≈5.0 Magnitude Earthquake" , "gd_d5_rs5eq"         , "Disasters", "Tier 5", false)
 AddToGDSpawnMenu("Mini Firenado" , "gd_d5_mfirenado"         , "Disasters", "Tier 5", false)
 AddToGDSpawnMenu("Mini Firenado (Smart)" , "gd_d5_mfirenado_pathed"         , "Disasters", "Tier 5", false)
+AddToGDSpawnMenu("Lavanado" , "gd_d5_lavanado"         , "Disasters", "Tier 5", false)
+AddToGDSpawnMenu("Lavanado (Smart)" , "gd_d5_lavanado_pathed"         , "Disasters", "Tier 5", false)
 AddToGDSpawnMenu("EF2 Tornado (Smart)"           , "gd_d5_ef2_pathed"           , "Disasters", "Tier 5", false)
 AddToGDSpawnMenu("Lava Bomb"           , "gd_d5_lavabomb"           , "Disasters", "Tier 5", false)
 AddToGDSpawnMenu("Mature Volcano"           , "gd_d5_maturevolcano"           , "Disasters", "Tier 5", false)
