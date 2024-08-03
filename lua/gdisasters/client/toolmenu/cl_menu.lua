@@ -332,6 +332,7 @@ local function gDisastersADVGraphicsSettings( CPanel )
 	CreateSliderConVariable(CPanel,   "gd_cl_5", 1, 4, 0, "gdisasters_graphics_fog_quality" );
 
 	CreateTickboxConVariable(CPanel, "gd_cl_41"  , "gdisasters_graphics_draw_smarttornado_path");
+	CreateTickboxConVariable(CPanel, "Enable Volumetric Cloud"  , "gdisasters_volumetric_clouds_enabled");
 
 	local lb2 = AddControlLabel( CPanel, "gd_cl_6" )
 	lb2:SetTextColor(Color( 255, 0, 0))
