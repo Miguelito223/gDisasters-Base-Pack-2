@@ -295,19 +295,34 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
 
     local averageTemperature = totalTemperature / count
 
-    -- Factores adicionales (solar, terreno, etc.)
-
     local currentTemperature = currentCell.temperature or 0.01
+
+    local temperatureDropPerMeter = 0.00650 -- Gradiente adiabático estándar en °C por metro
+    local baseTemperature = 23 -- Por ejemplo, 20°C al nivel del suelo
+
+    local minHeightInMeters = convert_SUtoMe(math.floor(getMapBounds()[1].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize)
+    local maxHeightInMeters = convert_SUtoMe(math.ceil(getMapBounds()[2].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize)
+    local FloorHeightinMeters = convert_SUtoMe(math.floor(getMapBounds()[3].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize)
+    local zInMeters = convert_SUtoMe(z)
+    
+
+    local minTemperatureAtMaxHeight = baseTemperature - (FloorHeightinMeters * temperatureDropPerMeter)
+    local maxTemperatureAtMinHeight = baseTemperature + (FloorHeightinMeters * temperatureDropPerMeter)
+
+    local altitudeAdjustment = (zInMeters - minHeightInMeters) * temperatureDropPerMeter
+
+    local currentTemperatureWithHeight = math.Clamp(currentTemperature - altitudeAdjustment, minTemperatureAtMaxHeight, maxTemperatureAtMinHeight)
+   
+    -- Factores adicionales (solar, terreno, etc.)
     local solarInfluence = currentCell.solarInfluence or 0.01
     local terraintemperatureEffect = currentCell.terrainTemperatureEffect or 0.01
     local coolingEffect = currentCell.coolingEffect or 0.01
 
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
     -- Calcular la nueva temperatura
-    local newTemperature = currentTemperature + temperatureChange + terraintemperatureEffect + solarInfluence + coolingEffect
+    local newTemperature = math.Clamp(currentTemperatureWithHeight + temperatureChange + terraintemperatureEffect + solarInfluence + coolingEffect, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
 
-
-    return math.Clamp(newTemperature, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
+    return newTemperature
 end
 
 gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)    
@@ -341,9 +356,9 @@ gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)
     local currentHumidity = currentCell.humidity or 0.01
     local terrainHumidityEffect = currentCell.terrainHumidityEffect
     local humidityChange = gDisasters.HeatSystem.HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
-    local newHumidity = currentHumidity + humidityChange + terrainHumidityEffect
+    local newHumidity = math.Clamp(currentHumidity + humidityChange + terrainHumidityEffect, gDisasters.HeatSystem.minHumidity, gDisasters.HeatSystem.maxHumidity)
 
-    return math.Clamp(newHumidity, gDisasters.HeatSystem.minHumidity, gDisasters.HeatSystem.maxHumidity)
+    return newHumidity
 end
 
 
@@ -361,8 +376,8 @@ gDisasters.HeatSystem.CalculatePressure = function(x, y, z)
     local molarmass = 0.02897 -- Masa molar del aire en kg/mol
     local gas_constant = 8.31447 -- Constante específica del aire en J/(mol·K)
    
-    local P1 = (P0 * math.exp(-gravity * molarmass * (z - h0) / (gas_constant * T))) * 100
-    return math.Clamp(P1, gDisasters.HeatSystem.minPressure, gDisasters.HeatSystem.maxPressure)
+    local P1 = math.Clamp(((P0 * math.exp(-gravity * molarmass * (z - h0) / (gas_constant * T))) * 100), gDisasters.HeatSystem.minPressure, gDisasters.HeatSystem.maxPressure)
+    return P1
 end
 
 -- Función para calcular la presión de una celda basada en temperatura y humedad
@@ -405,9 +420,9 @@ gDisasters.HeatSystem.CalculateWindSpeed = function(x, y, z)
     local windSpeedRef = (1 / airDensity) * pressureGradient
 
     -- Calcular la velocidad del viento real
-    local windSpeed = windSpeedRef * (1 + currentCell.terrainwindEffect)
+    local windSpeed = math.Clamp(windSpeedRef * (1 + currentCell.terrainwindEffect), gDisasters.HeatSystem.minwind, gDisasters.HeatSystem.maxwind)
 
-    return math.Clamp(windSpeed, gDisasters.HeatSystem.minwind, gDisasters.HeatSystem.maxwind)
+    return windSpeed
 end
 
 gDisasters.HeatSystem.CalculateWindDirection = function(x, y, z)
