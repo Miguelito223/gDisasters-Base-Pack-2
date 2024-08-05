@@ -431,8 +431,8 @@ function convert_SUtoMe(units)
 	return (units * 0.75) / 39.37
 end
 
-function convert_VectorDistancetoMe(Vector1, Vector2)
-	return Vector1:Distance(Vector2) * 0.0254
+function convert_GUtoSU(unit)
+	return unit * 0.01905
 end
 	
 function convert_MetoSU(metres)

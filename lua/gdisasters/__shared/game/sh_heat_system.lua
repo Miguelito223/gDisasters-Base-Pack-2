@@ -299,20 +299,19 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
 
     local temperatureDropPerMeter = 0.00650 -- Gradiente adiabático estándar en °C por metro
     local baseTemperature = 23 -- Por ejemplo, 20°C al nivel del suelo
-    local mapbounds = getMapBounds()
 
-    local minHeightInMeters = convert_VectorDistancetoMe(Vector(x,y,z), (mapbounds[1] / gDisasters.HeatSystem.cellSize):Normalize() * gDisasters.HeatSystem.cellSize)
-    local maxHeightInMeters = convert_VectorDistancetoMe(Vector(x,y,z), (mapbounds[2] / gDisasters.HeatSystem.cellSize):Normalize() * gDisasters.HeatSystem.cellSize)
-    local FloorHeightinMeters = convert_VectorDistancetoMe(Vector(x,y,z), (mapbounds[3] / gDisasters.HeatSystem.cellSize):Normalize() * gDisasters.HeatSystem.cellSize)
-    local zInMeters = convert_VectorDistancetoMe(Vector(x,y,z), (mapbounds[3] / gDisasters.HeatSystem.cellSize):Normalize() * gDisasters.HeatSystem.cellSize)
+    local minHeightInMeters = convert_GUtoSU(math.floor(getMapBounds()[1].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize)
+    local maxHeightInMeters = convert_GUtoSU(math.ceil(getMapBounds()[2].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize)
+    local FloorHeightinMeters = convert_GUtoSU(math.floor(getMapBounds()[3].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize)
+    local zInMeters = convert_GUtoSU(z)
     
 
-    local minTemperatureAtMaxHeight = baseTemperature - (FloorHeightinMeters * temperatureDropPerMeter)
-    local maxTemperatureAtMinHeight = baseTemperature + (FloorHeightinMeters * temperatureDropPerMeter)
+    local minTemperatureAtMaxHeight = baseTemperature - ((maxHeightInMeters - minHeightInMeters) * temperatureDropPerMeter)
+    local maxTemperatureAtMinHeight = baseTemperature + ((maxHeightInMeters - minHeightInMeters)  * temperatureDropPerMeter)
 
-    local altitudeAdjustment = (zInMeters - minHeightInMeters) * temperatureDropPerMeter
+    local altitudeAdjustment = (zInMeters - minHeightInMeters) / (maxHeightInMeters - minHeightInMeters) * temperatureDropPerMeter
 
-    local currentTemperatureWithHeight = math.Clamp(currentTemperature - altitudeAdjustment, minTemperatureAtMaxHeight, maxTemperatureAtMinHeight)
+    local currentTemperatureWithHeight = currentTemperature - altitudeAdjustment
    
     -- Factores adicionales (solar, terreno, etc.)
     local solarInfluence = currentCell.solarInfluence or 0.01
