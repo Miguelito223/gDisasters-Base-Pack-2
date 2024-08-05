@@ -299,11 +299,12 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
 
     local temperatureDropPerMeter = 0.00650 -- Gradiente adiabático estándar en °C por metro
     local baseTemperature = 23 -- Por ejemplo, 20°C al nivel del suelo
+    local mapbounds = getMapBounds()
 
-    local minHeightInMeters = convert_SUtoMe(math.floor(getMapBounds()[1].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize)
-    local maxHeightInMeters = convert_SUtoMe(math.ceil(getMapBounds()[2].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize)
-    local FloorHeightinMeters = convert_SUtoMe(math.floor(getMapBounds()[3].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize)
-    local zInMeters = convert_SUtoMe(z)
+    local minHeightInMeters = convert_VectorDistancetoMe(Vector(x,y,z), (mapbounds[1] / gDisasters.HeatSystem.cellSize):Normalize() * gDisasters.HeatSystem.cellSize)
+    local maxHeightInMeters = convert_VectorDistancetoMe(Vector(x,y,z), (mapbounds[2] / gDisasters.HeatSystem.cellSize):Normalize() * gDisasters.HeatSystem.cellSize)
+    local FloorHeightinMeters = convert_VectorDistancetoMe(Vector(x,y,z), (mapbounds[3] / gDisasters.HeatSystem.cellSize):Normalize() * gDisasters.HeatSystem.cellSize)
+    local zInMeters = convert_VectorDistancetoMe(Vector(x,y,z), (mapbounds[3] / gDisasters.HeatSystem.cellSize):Normalize() * gDisasters.HeatSystem.cellSize)
     
 
     local minTemperatureAtMaxHeight = baseTemperature - (FloorHeightinMeters * temperatureDropPerMeter)
