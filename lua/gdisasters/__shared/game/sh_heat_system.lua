@@ -305,10 +305,9 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local FloorHeightinMeters = convert_GUtoMe(math.floor(getMapBounds()[3].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize)
     local zInMeters = convert_GUtoMe(z)
     
+    if zInMeters < 0 then zInMeters = 0 end
 
-    local minTemperatureAtMaxHeight = baseTemperature - ((maxHeightInMeters - minHeightInMeters) * temperatureDropPerMeter)
-    local maxTemperatureAtMinHeight = baseTemperature + ((maxHeightInMeters - minHeightInMeters) * temperatureDropPerMeter)
-
+    -- Calcular la temperatura en la superficie
     local altitudeAdjustment = zInMeters * temperatureDropPerMeter
 
     -- Factores adicionales (solar, terreno, etc.)
@@ -318,10 +317,9 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
 
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
     -- Calcular la nueva temperatura
-    local newTemperature = math.Clamp(currentTemperature + temperatureChange + terraintemperatureEffect + solarInfluence + coolingEffect , gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
-    local newTemperatureWithHeight = math.Clamp(newTemperature - altitudeAdjustment, minTemperatureAtMaxHeight, maxTemperatureAtMinHeight)
+    local newTemperature = math.Clamp(currentTemperature + temperatureChange + terraintemperatureEffect + solarInfluence + coolingEffect - altitudeAdjustment, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
 
-    return newTemperatureWithHeight
+    return newTemperature
 end
 
 gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)    
