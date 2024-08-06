@@ -431,7 +431,7 @@ function convert_SUtoMe(units)
 	return (units * 0.75) / 39.37
 end
 
-function convert_GUtoSU(unit)
+function convert_GUtoMe(unit)
 	return unit * 0.01905
 end
 	
