@@ -61,7 +61,7 @@ function gDisasters_PostSpawnCL()
 		CreateConVar( "gdisasters_volume_Heavy_Wind", 1, {FCVAR_ARCHIVE}, " " )
 
 		--weather
-		CreateConVar( "gdisasters_volumetric_clouds_enabled", 1, {FCVAR_ARCHIVE}, " " )
+		CreateConVar( "gdisasters_volumetric_clouds_enabled", 0, {FCVAR_ARCHIVE}, " " )
 	
 	end
 
