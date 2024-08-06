@@ -298,11 +298,6 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local currentTemperature = currentCell.temperature or 0.01
 
     local temperatureDropPerMeter = 0.00650 -- Gradiente adiabático estándar en °C por metro
-    local baseTemperature = 23 -- Por ejemplo, 23°C al nivel del suelo
-
-    local minHeightInMeters = convert_GUtoMe(math.floor(getMapBounds()[1].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize)
-    local maxHeightInMeters = convert_GUtoMe(math.ceil(getMapBounds()[2].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize)
-    local FloorHeightinMeters = convert_GUtoMe(math.floor(getMapBounds()[3].z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize)
     local zInMeters = convert_GUtoMe(z)
     
     if zInMeters < 0 then zInMeters = 0 end
