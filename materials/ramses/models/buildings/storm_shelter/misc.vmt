@@ -1,9 +1,0 @@
-"VertexLitGeneric"
-{
-	"$basetexture" "ramses/models/buildings/storm_shelter/misc"
-	"$surfaceprop" "wood"
-	"$model" 1
-
-
-}
-

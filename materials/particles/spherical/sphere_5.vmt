@@ -1,8 +1,0 @@
-"UnlitGeneric"
-{
-	"$basetexture" "hd/particles/spherical/sphere_5"
-	"$vertexcolor" "1"
-	"$vertexalpha" "1"
-	"$additive" 1 
-	
-}

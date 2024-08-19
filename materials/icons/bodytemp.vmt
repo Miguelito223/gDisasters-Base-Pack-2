@@ -1,6 +1,0 @@
-"UnlitGeneric"
-	{
-		"$baseTexture" "icons/bodytemp"
-		"$translucent"		"1"
-		"$vertexalpha" "1"
-	}

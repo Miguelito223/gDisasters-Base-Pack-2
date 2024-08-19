@@ -1,7 +1,0 @@
-"VertexLitGeneric"
-{
-	"$basetexture" "models/thedoctor/mat_antimatter/led"
-	"$surfaceprop" "metal"
-	"$model" 1
-}
-

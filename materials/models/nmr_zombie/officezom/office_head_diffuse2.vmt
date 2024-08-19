@@ -1,5 +1,0 @@
-"VertexLitGeneric"
-{
-$basetexture "models\nmr_zombie\officezom\Office_Head_Diffuse2"
-$bumpmap "models\nmr_zombie\officezom\Office_Head_Normals"
-}

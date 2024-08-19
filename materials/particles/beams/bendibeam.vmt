@@ -1,9 +1,0 @@
-"SpriteCard"
-{
-	"$basetexture" "hd/particles/beams/bendibeam"
-	"$additive" "1"
-	"$vertexcolor" "1"
-	"$vertexalpha" "1"
-	"$overbrightfactor" "2"
-	$splinetype 1
-}
