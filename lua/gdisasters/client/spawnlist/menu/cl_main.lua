@@ -45,7 +45,7 @@ search.AddProvider(
 
 )
 
-spawnmenu.AddCreationTab("gDisasters Revived", function()
+spawnmenu.AddCreationTab("gDisasters", function()
 
 	local ctrl = vgui.Create("SpawnmenuContentPanel")
 	ctrl:EnableSearch("gDisastersSearch","PopulategDisasters_Disasters")
