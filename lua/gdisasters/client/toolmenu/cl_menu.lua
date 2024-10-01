@@ -413,24 +413,24 @@ local function gDisastersAudioSettings( CPanel )
 end
 
 hook.Add( "AddToolMenuTabs", "gDisasters_Tab", function()
-	spawnmenu.AddToolTab( "gDisasters Revived", "#gDisasters", "icons/gdlogo.png" )
+	spawnmenu.AddToolTab( "gDisasters", "#gDisasters", "icons/gdlogo.png" )
 end)
 
 hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	
 
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisastersSHADSettings", language.GetPhrase("gd_advanced"), "", "", gDisastersSHADVSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisastersSHSettings", language.GetPhrase("gd_main"), "", "", gDisastersSHSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisastersAutospawn", language.GetPhrase("gd_autospawn"), "", "", gDisastersAutospawn )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisasterDNC", language.GetPhrase("gd_dnc"), "", "", gDisastersDNC )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisastersSHhud", language.GetPhrase("gd_server_hud"), "", "", gDisastersSHhud )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisastersAddonsCompatibility", language.GetPhrase("gd_addons"), "", "", gDisastersAddonsCompatibility )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisastersSHGraphics", language.GetPhrase("gd_server_graphics"), "", "", gDisastersSHGraphics )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Shared", "gDisastersHeatSystemSettings", language.GetPhrase("gd_heatsystem"), "", "", gDisastersHeatSystemBeta )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersAudioSettings", language.GetPhrase("gd_volume"), "", "", gDisastersAudioSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersADVGraphicsSettings", language.GetPhrase("gd_advanced_graphics"), "", "", gDisastersADVGraphicsSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "ggDisastersHudSettings", language.GetPhrase("gd_hud"), "", "", gDisastersHudSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters Revived", "Client", "gDisastersGraphicsSettings", language.GetPhrase("gd_graphics"), "", "", gDisastersGraphicsSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters", "Shared", "gDisastersSHADSettings", language.GetPhrase("gd_advanced"), "", "", gDisastersSHADVSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters", "Shared", "gDisastersSHSettings", language.GetPhrase("gd_main"), "", "", gDisastersSHSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters", "Shared", "gDisastersAutospawn", language.GetPhrase("gd_autospawn"), "", "", gDisastersAutospawn )
+	spawnmenu.AddToolMenuOption( "gDisasters", "Shared", "gDisasterDNC", language.GetPhrase("gd_dnc"), "", "", gDisastersDNC )
+	spawnmenu.AddToolMenuOption( "gDisasters", "Shared", "gDisastersSHhud", language.GetPhrase("gd_server_hud"), "", "", gDisastersSHhud )
+	spawnmenu.AddToolMenuOption( "gDisasters", "Shared", "gDisastersAddonsCompatibility", language.GetPhrase("gd_addons"), "", "", gDisastersAddonsCompatibility )
+	spawnmenu.AddToolMenuOption( "gDisasters", "Shared", "gDisastersSHGraphics", language.GetPhrase("gd_server_graphics"), "", "", gDisastersSHGraphics )
+	spawnmenu.AddToolMenuOption( "gDisasters", "Shared", "gDisastersHeatSystemSettings", language.GetPhrase("gd_heatsystem"), "", "", gDisastersHeatSystemBeta )
+	spawnmenu.AddToolMenuOption( "gDisasters", "Client", "gDisastersAudioSettings", language.GetPhrase("gd_volume"), "", "", gDisastersAudioSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters", "Client", "gDisastersADVGraphicsSettings", language.GetPhrase("gd_advanced_graphics"), "", "", gDisastersADVGraphicsSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters", "Client", "ggDisastersHudSettings", language.GetPhrase("gd_hud"), "", "", gDisastersHudSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters", "Client", "gDisastersGraphicsSettings", language.GetPhrase("gd_graphics"), "", "", gDisastersGraphicsSettings )
 	
 
 end );

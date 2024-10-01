@@ -6,7 +6,7 @@ gDisasters.WorkShopURL = "https://steamcommunity.com/sharedfiles/filedetails/?id
 gDisasters.WorkshopVersion = false
 
 for _,v in pairs(engine.GetAddons()) do
-	if v.downloaded and tonumber(v.wsid) == 2522900784 or v.title == "gDisasters Revived" then
+	if v.downloaded and tonumber(v.wsid) == 2522900784 or v.title == "gDisasters Base Pack 2" then
 		gDisasters.WorkshopVersion = true
 		break
 	end
