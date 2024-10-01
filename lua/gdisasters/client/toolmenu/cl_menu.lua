@@ -413,7 +413,7 @@ local function gDisastersAudioSettings( CPanel )
 end
 
 hook.Add( "AddToolMenuTabs", "gDisasters_Tab", function()
-	spawnmenu.AddToolTab( "gDisasters Revived", "#gDisasters Revived", "icons/gdlogo.png" )
+	spawnmenu.AddToolTab( "gDisasters Revived", "#gDisasters", "icons/gdlogo.png" )
 end)
 
 hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
