@@ -169,6 +169,7 @@ end
 
 function ENT:InsideLavaEffect()
 	local lents, lents2 = self:GetEntitiesInsideLava()
+	local scale = self:GetModelScale()
 	
 
 	if self.OldEntitiesInsideLava != lents2 then
@@ -177,7 +178,7 @@ function ENT:InsideLavaEffect()
 			if self.OldEntitiesInsideLava[v]==true then
 			
 			else
-				ParticleEffect("lava_splash_main", Vector(v:GetPos().x,v:GetPos().y,self:GetLavaLevelPosition().z - 200), Angle(0,0,0), nil)
+				ParticleEffect("lava_splash_main", Vector(v:GetPos().x,v:GetPos().y,self:GetLavaLevelPosition().z - (200 * scale)), Angle(0,0,0), nil)
 			end
 		
 		end

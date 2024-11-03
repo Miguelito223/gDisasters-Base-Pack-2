@@ -127,7 +127,7 @@ end
 function ENT:GetLavaLevelPosition()
 	local crater = self:GetAttachment(self:LookupAttachment("lava_lvl")).Pos
 	local scale = self:GetModelScale()
-	return Vector(crater.x, crater.y, crater.z) - Vector(0,0,150 * scale) - (self:GetForward() * -100)
+	return Vector(crater.x, crater.y, crater.z) - Vector(0,0,100 * scale) - (self:GetForward() * -100)
 end
 
 function ENT:LavaControl()
@@ -168,6 +168,7 @@ end
 
 function ENT:InsideLavaEffect()
 	local lents, lents2 = self:GetEntitiesInsideLava()
+	local scale = self:GetModelScale()
 	
 	if self.OldEntitiesInsideLava != lents2 then
 		for k, v in pairs(lents) do
@@ -175,7 +176,7 @@ function ENT:InsideLavaEffect()
 			if self.OldEntitiesInsideLava[v]==true then
 			
 			else
-				ParticleEffect("lava_splash_main", Vector(v:GetPos().x,v:GetPos().y,self:GetLavaLevelPosition().z - 200), Angle(0,0,0), nil)
+				ParticleEffect("lava_splash_main", Vector(v:GetPos().x,v:GetPos().y,self:GetLavaLevelPosition().z - (200 * scale)), Angle(0,0,0), nil)
 			end
 		
 		end
