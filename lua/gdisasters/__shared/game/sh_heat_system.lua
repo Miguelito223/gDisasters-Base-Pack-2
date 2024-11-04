@@ -178,7 +178,7 @@ gDisasters.HeatSystem.CalculateWindChill = function(x, y, z)
     if not cell then return 0 end -- Si la celda no existe, retornar 0
 
     local T = cell.temperature or 0.01-- Temperatura en Celsius
-    local V = cell.wind or 0.01 -- Velocidad del viento en km/h
+    local V = cell.windspeed or 0.01 -- Velocidad del viento en km/h
 
     -- Calcular la sensación térmica usando la fórmula proporcionada
     local windChill = 13.12 + 0.6215 * T - 11.37 * math.pow(V, 0.16) + 0.3965 * T * math.pow(V, 0.16)
@@ -300,7 +300,7 @@ end
 gDisasters.HeatSystem.CalculateTerrainInfluence = function(x, y, z)
     local cell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not cell then return end
-
+   
     if cell.terrainType == "land" then
         cell.terrainTemperatureEffect = gDisasters.HeatSystem.landTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
         cell.terrainHumidityEffect = gDisasters.HeatSystem.landHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
@@ -314,6 +314,7 @@ gDisasters.HeatSystem.CalculateTerrainInfluence = function(x, y, z)
         cell.terrainHumidityEffect = 0
         cell.terrainwindEffect = 0
     end
+
 end
 
 gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
@@ -904,7 +905,7 @@ gDisasters.HeatSystem.SimulateConvergence = function(x, y, z)
     if count == 0 then return end
 
     local averageCloudDensity = totalCloudDensity / count
-    currentCell.cloudDensity = math.min(currentCell.cloudDensity + (averageCloudDensity * gDisasters.HeatSystem.ConvergenceCoefficient), 1)
+    currentCell.cloudDensity = math.Clamp(currentCell.cloudDensity + (averageCloudDensity * gDisasters.HeatSystem.ConvergenceCoefficient), 0, 1)
 end
 
 gDisasters.HeatSystem.SpawnWeatherEntity = function(precipitationType, x, y, z)
@@ -1026,9 +1027,6 @@ gDisasters.HeatSystem.GenerateGrid = function(ply)
                         
                         -- Calcular la densidad de nubes
                         gDisasters.HeatSystem.GridMap[x][y][z].cloudDensity = gDisasters.HeatSystem.CalculateCloudDensity(x,y,z)
-                        
-                        gDisasters.HeatSystem.UpdateWeatherInCell(x, y, z)
-                        gDisasters.HeatSystem.SimulateConvergence(x, y, z)
 
                         print("Grid generated in position (" .. x .. "," .. y .. "," .. z .. ")") -- Depuración
                     end
@@ -1150,7 +1148,6 @@ gDisasters.HeatSystem.UpdateGrid = function()
 
                         currentcell.precipitation = gDisasters.HeatSystem.CalculatePrecipitation(x, y, z)
                         
-                        
                         -- Calcular la presión de vapor
                         currentcell.VPs = gDisasters.HeatSystem.CalculateVPs(x, y, z)
                         currentcell.VPsHb = gDisasters.HeatSystem.CalculateVPsHb(x, y, z)
@@ -1158,6 +1155,10 @@ gDisasters.HeatSystem.UpdateGrid = function()
                         
                         -- Calcular la densidad de nubes
                         currentcell.cloudDensity = gDisasters.HeatSystem.CalculateCloudDensity(x,y,z)
+                        
+                        gDisasters.HeatSystem.UpdateWeatherInCell(x,y,z)
+                        gDisasters.HeatSystem.SimulateConvergence(x,y,z)
+                    
                     else
                         print("Error: Cell position out of grid bounds.")
                     end
