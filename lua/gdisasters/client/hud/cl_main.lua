@@ -456,6 +456,8 @@ function hud_DrawHeatSystemINFO()
 			draw.DrawText( language.GetPhrase("gd_hud_coolingeffect")..convert_CelciustoKelvin(Cooling_Effect).."°K", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_cooling_Effect.x , pos_cooling_Effect.y, color, TEXT_ALIGN_LEFT )	
 		
 		end
+
+
 		
 		
 		draw.DrawText( language.GetPhrase("gd_hud_latentheat")..Latent_Heat.." J/kg", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_latent_heat.x , pos_latent_heat.y, color, TEXT_ALIGN_LEFT )
@@ -466,8 +468,218 @@ function hud_DrawHeatSystemINFO()
 	
 	end
 
+	local function drawBars()
+		local oxygen_min, oxygen_max   = 100,   200
+		local energy_min, energy_max   = 100,   200
+		local coolant_min, coolant_max   = 100,   200
+
+		
+		local r, g, b                   = 0, 0, 0
+		local r2, g2, b2                = 0, 0, 0
+		local r3, g3, b3               = 0, 0, 0
+		local r4, g4, b4              = 0, 0, 0
+
+		local function drawTempBar()
+			if air_tmpbh >= -273.3 and air_tmpbh <= 0 then 
+				
+				if air_tmpbh <= -136.65 then
+					local p = (air_tmpbh+273.3) / 136.65
+					r = 0
+					g = 255 * p
+					b = 255
+				else 
+					local p = (air_tmpbh+136.65) / 136.65
+					
+					r = 0
+					g = 255 
+					b = 255 * (1 - p)
+				end
+				
+			elseif air_tmpbh > 5 and air_tmpbh < 38 then
+				r = 0
+				g = 255 
+				b = 0
+			elseif air_tmpbh >= 38 and air_tmpbh <= 273.3 then 
+			
+				if air_tmpbh <= 136.65 then
+
+					local p = (air_tmpbh-38) / 98.65
+					r = 255 * p
+					g = 255 
+					b = 0
+				else 
+					local p = (air_tmpbh-136.65) / 136.65
+	
+					r = 255
+					g = 255 * (1 - p)
+					b = 0
+				end
+			end
+			
+			drawPercentageBox( 0, 577, 1020, 22, 150, -1000, 1000, air_tmpbh, Color( r, g, b, 200))
+
+		end
+
+
+		local function drawdewpointBar()
+			if dewpoint >= -273.3 and dewpoint <= 0 then 
+				
+				if dewpoint <= -136.65 then
+					local p = (dewpoint+273.3) / 136.65
+					r = 0
+					g = 255 * p
+					b = 255
+				else 
+					local p = (dewpoint+136.65) / 136.65
+					
+					r = 0
+					g = 255 
+					b = 255 * (1 - p)
+				end
+				
+			elseif dewpoint > 5 and dewpoint < 38 then
+				r = 0
+				g = 255 
+				b = 0
+			elseif dewpoint >= 38 and dewpoint <= 273.3 then 
+			
+				if dewpoint <= 136.65 then
+
+					local p = (dewpoint-38) / 98.65
+					r = 255 * p
+					g = 255 
+					b = 0
+				else 
+					local p = (dewpoint-136.65) / 136.65
+	
+					r = 255
+					g = 255 * (1 - p)
+					b = 0
+				end
+			end
+			
+			drawPercentageBox( 0, 600, 1020, 22, 150, -1000, 1000, dewpoint, Color( r, g, b, 200))
+
+		end
+
+
+		local function drawheatindexBar()
+			if Heatindex >= -273.3 and Heatindex <= 0 then 
+				
+				if Heatindex <= -136.65 then
+					local p = (Heatindex+273.3) / 136.65
+					r = 0
+					g = 255 * p
+					b = 255
+				else 
+					local p = (Heatindex+136.65) / 136.65
+					
+					r = 0
+					g = 255 
+					b = 255 * (1 - p)
+				end
+				
+			elseif Heatindex > 5 and Heatindex < 38 then
+				r = 0
+				g = 255 
+				b = 0
+			elseif Heatindex >= 38 and Heatindex <= 273.3 then 
+			
+				if Heatindex <= 136.65 then
+
+					local p = (Heatindex-38) / 98.65
+					r = 255 * p
+					g = 255 
+					b = 0
+				else 
+					local p = (Heatindex-136.65) / 136.65
+	
+					r = 255
+					g = 255 * (1 - p)
+					b = 0
+				end
+			end
+			
+			drawPercentageBox( 0, 624, 1020, 22, 150, -1000, 1000, Heatindex, Color( r, g, b, 200))
+
+		end
+
+		local function drawWindchillBar()
+			if windchill >= -273.3 and windchill <= 0 then 
+				
+				if windchill <= -136.65 then
+					local p = (windchill+273.3) / 136.65
+					r = 0
+					g = 255 * p
+					b = 255
+				else 
+					local p = (windchill+136.65) / 136.65
+					
+					r = 0
+					g = 255 
+					b = 255 * (1 - p)
+				end
+				
+			elseif windchill > 5 and windchill < 38 then
+				r = 0
+				g = 255 
+				b = 0
+			elseif windchill >= 38 and windchill <= 273.3 then 
+			
+				if windchill <= 136.65 then
+
+					local p = (windchill-38) / 98.65
+					r = 255 * p
+					g = 255 
+					b = 0
+				else 
+					local p = (windchill-136.65) / 136.65
+	
+					r = 255
+					g = 255 * (1 - p)
+					b = 0
+				end
+			end
+			
+			drawPercentageBox( 0, 650, 1020, 22, 150, -1000, 1000, windchill, Color( r, g, b, 200))
+
+		end
+		drawTempBar()
+		drawheatindexBar()
+		drawdewpointBar()
+		drawWindchillBar()
+	end
+
+	local function drawIcons()
+		surface.SetDrawColor( 255, 255,255, 255 )
+		local tempbh     = surface.GetTextureID( "icons/airtemp" )
+		local dewpoint      = surface.GetTextureID( "icons/dewpoint" )
+		local heatindex    = surface.GetTextureID( "icons/heatindex" )
+		local windchill    = surface.GetTextureID( "icons/windchill" )
+		local w, h   = 16 * scale, 16 * scale
+		
+
+		local x, y   = 580, 1025
+		surface.SetTexture( tempbh )
+		surface.DrawTexturedRect(  x * xscale, y * yscale, w * xscale, h * yscale )
+
+		local x, y   = 605, 1025
+		surface.SetTexture( dewpoint )
+		surface.DrawTexturedRect(  x * xscale, y * yscale, w * xscale, h * yscale )
+
+		local x, y   = 624, 1025
+		surface.SetTexture( heatindex )
+		surface.DrawTexturedRect(  x * xscale, y * yscale, w * xscale, h * yscale )
+	
+		local x, y   = 650, 1025
+		surface.SetTexture( windchill )
+		surface.DrawTexturedRect(  x * xscale, y * yscale, w * xscale, h * yscale )
+	end
+
 	drawFrame()
 	drawText()
+	drawBars()
+	drawIcons()
 	
 end
 
