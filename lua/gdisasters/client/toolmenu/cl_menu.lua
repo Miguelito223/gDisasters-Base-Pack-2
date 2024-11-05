@@ -384,7 +384,7 @@ local function gDisastersHudSettings( CPanel )
 	CreateTickboxConVariable(CPanel, "gd_cl_28" ,"gdisasters_hud_underwater_effects");
 	CreateTickboxConVariable(CPanel, "gd_cl_29" ,"gdisasters_hud_underlava_effects");
 	
-	CreateSliderConVariable(CPanel, "gd_cl_30", 1, 4, 0, "gdisasters_hud_type" );
+	CreateSliderConVariable(CPanel, "gd_cl_30", 1, 5, 0, "gdisasters_hud_type" );
 
 	AddComboBox( CPanel, "gd_cl_31", {"km/h", "mph"}, "gdisasters_hud_windtype")
 	AddComboBox( CPanel, "gd_cl_32", {"°C", "°F", "°K"}, "gdisasters_hud_temptype")
@@ -429,7 +429,7 @@ hook.Add( "PopulateToolMenu", "gDisasters_PopulateMenu", function()
 	spawnmenu.AddToolMenuOption( "gDisasters", "Shared", "gDisastersHeatSystemSettings", language.GetPhrase("gd_heatsystem"), "", "", gDisastersHeatSystemBeta )
 	spawnmenu.AddToolMenuOption( "gDisasters", "Client", "gDisastersAudioSettings", language.GetPhrase("gd_volume"), "", "", gDisastersAudioSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters", "Client", "gDisastersADVGraphicsSettings", language.GetPhrase("gd_advanced_graphics"), "", "", gDisastersADVGraphicsSettings )
-	spawnmenu.AddToolMenuOption( "gDisasters", "Client", "ggDisastersHudSettings", language.GetPhrase("gd_hud"), "", "", gDisastersHudSettings )
+	spawnmenu.AddToolMenuOption( "gDisasters", "Client", "gDisastersHudSettings", language.GetPhrase("gd_hud"), "", "", gDisastersHudSettings )
 	spawnmenu.AddToolMenuOption( "gDisasters", "Client", "gDisastersGraphicsSettings", language.GetPhrase("gd_graphics"), "", "", gDisastersGraphicsSettings )
 	
 

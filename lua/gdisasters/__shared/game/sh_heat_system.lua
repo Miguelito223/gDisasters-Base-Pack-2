@@ -276,6 +276,8 @@ gDisasters.HeatSystem.CalculateCoolEffect = function(x, y, z)
     local solarInfluence = cell.solarInfluence or 0
     if solarInfluence <= 0 then
         return gDisasters.HeatSystem.coolingFactor * gDisasters.HeatSystem.CoolingCoefficient
+    else
+        return 0
     end
 end
 
@@ -294,6 +296,8 @@ gDisasters.HeatSystem.CalculatelatentHeat = function(x, y, z)
         elseif (currentTemperature <= gDisasters.HeatSystem.freezingTemperature) then 
            return gDisasters.HeatSystem.calculateFreezingLatentHeat(cloudDensity)
         end
+    else
+        return 0
     end
 end
 
