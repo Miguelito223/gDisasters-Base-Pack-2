@@ -15,6 +15,7 @@ gDisasters.HeatSystem.Snow = {}
 
 gDisasters.HeatSystem.cellSize = GetConVar("gdisasters_heat_system_cellsize"):GetInt() or 5000
 gDisasters.HeatSystem.cellArea = gDisasters.HeatSystem.cellSize * gDisasters.HeatSystem.cellSize * gDisasters.HeatSystem.cellSize
+gDisasters.HeatSystem.cellDistance = math.sqrt(gDisasters.HeatSystem.cellSize^2 + gDisasters.HeatSystem.cellSize^2 + gDisasters.HeatSystem.cellSize^2)
 
 gDisasters.HeatSystem.minTemperature = GetConVar("gdisasters_heat_system_mintemp"):GetFloat()
 gDisasters.HeatSystem.maxTemperature = GetConVar("gdisasters_heat_system_maxtemp"):GetFloat()
@@ -99,8 +100,14 @@ gDisasters.HeatSystem.CalculateSolarRadiation = function(x, y, z, hour)
 
     -- Parámetros para el modelo senoidal
     local sunrise = gDisasters.DayNightSystem.InternalVars.time.Dawn_Start   -- Hora de salida del sol
-    local sunset = gDisasters.DayNightSystem.InternalVars.time.Dusk_Start   -- Hora de puesta del sol
-    local maxRadiation = 1  -- Radiación máxima normalizada (puede ser ajustada)
+    local sunset = gDisasters.DayNightSystem.InternalVars.time.Dusk_Start    -- Hora de puesta del sol
+    local maxRadiation = 1  -- Irradiancia máxima en W/m² (puedes ajustarla)
+
+    -- Parámetros físicos para convertir a cambio de temperatura
+    local exposureTime = 3600   -- Duración de la exposición (en segundos, aquí 1 hora)
+    local area = 1              -- Área de la celda (1 m², ajusta según sea necesario)
+    local materialHeatCapacity = 1005  -- Capacidad calorífica del aire en J/(kg°C)
+    local mass = 1              -- Masa del aire en kg (ajustable)
 
     -- Verificar si la hora está fuera del rango de la luz solar
     if hour < sunrise or hour > sunset then
@@ -110,12 +117,17 @@ gDisasters.HeatSystem.CalculateSolarRadiation = function(x, y, z, hour)
     -- Calcular la fracción del día solar
     local dayFraction = (hour - sunrise) / (sunset - sunrise)
 
-    -- Calcular la radiación solar usando una función senoidal
+    -- Calcular la irradiancia solar usando una función senoidal
     local solarRadiation = maxRadiation * math.sin(math.pi * dayFraction)
 
-    -- Asegurarse de que la radiación esté en el rango de 0 a maxRadiation
-    return math.Clamp(solarRadiation, 0, maxRadiation) * gDisasters.HeatSystem.SolarInfluenceCoefficient
-    
+    -- Calcular la energía absorbida en julios
+    local absorbedEnergy = solarRadiation * area * exposureTime
+
+    -- Calcular el cambio de temperatura usando la capacidad calorífica específica
+    local deltaTemperature = absorbedEnergy / (mass * materialHeatCapacity)
+
+    -- Asegurarse de que el cambio de temperatura esté en el rango permitido
+    return math.Clamp(deltaTemperature, 0, maxRadiation) * gDisasters.HeatSystem.SolarInfluenceCoefficient
 end
 
 gDisasters.HeatSystem.CalculateVPs = function(x, y, z)
@@ -455,73 +467,160 @@ gDisasters.HeatSystem.CalculateWindSpeed = function(x, y, z)
 
     local temperature = currentCell.temperature or 0.01
     local pressure = currentCell.pressure or 0.01
+    local altitude = convert_GUtoMe(z) or 0  -- Altitud de la celda (puede ser en metros)
+    local terrainFriction = currentCell.terrainwindEffect or 1  -- Coeficiente de fricción según el tipo de terreno
 
-    -- Calcular la densidad del aire
+    -- Calcular la densidad del aire en la celda actual
     local airDensity = gDisasters.HeatSystem.calculateAirDensity(pressure, temperature)
 
-    -- Suponer un gradiente de presión horizontal constante (en Pascales por metro)
-    local pressureGradient = 0.01 -- Ajusta este valor según sea necesario
+    -- Variables para el gradiente de presión y temperatura
+    local deltaPressure = 0
+    local deltaTemperature = 0
+    local neighborCount = 0
 
-    -- Calcular la velocidad del viento de referencia
-    local windSpeedRef = (1 / airDensity) * pressureGradient
+    -- Iterar sobre las celdas vecinas para calcular gradientes de presión y temperatura
+    for dx = -1, 1 do
+        for dy = -1, 1 do
+            for dz = -1, 1 do
+                if dx ~= 0 or dy ~= 0 or dz ~= 0 then
+                    local nx, ny, nz = x + dx * gDisasters.HeatSystem.cellSize, y + dy * gDisasters.HeatSystem.cellSize, z + dz * gDisasters.HeatSystem.cellSize
+                    if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
+                        local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
+                        if neighborCell then
+                            deltaPressure = deltaPressure + (neighborCell.pressure - pressure)
+                            deltaTemperature = deltaTemperature + (neighborCell.temperature - temperature)
+                            neighborCount = neighborCount + 1
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    -- Promediar los gradientes si existen celdas vecinas
+    if neighborCount > 0 then
+        deltaPressure = deltaPressure / neighborCount
+        deltaTemperature = deltaTemperature / neighborCount
+    end
+
+    -- Calcular el gradiente de presión en función de las celdas vecinas
+    local pressureGradient = deltaPressure / (neighborCount * gDisasters.HeatSystem.cellDistance)  -- cellDistance es la distancia entre celdas
+
+    -- Ajustar el gradiente de presión por el gradiente de temperatura
+    local temperatureInfluence = deltaTemperature * 0.01  -- Coeficiente para el efecto de temperatura en la presión
+
+    -- Calcular la velocidad del viento de referencia usando la ecuación del gradiente de presión
+    local windSpeedRef = (1 / airDensity) * (pressureGradient + temperatureInfluence)
+
+    -- Ajustar la velocidad del viento por el efecto de altitud (por ejemplo, aumentando un 5% por cada 100 metros)
+    local altitudeEffect = 1 + (altitude * 0.0005)  -- Ajuste para incremento de velocidad de viento con la altitud
 
     -- Calcular la velocidad del viento real
-    local windSpeed = math.Clamp(windSpeedRef * (1 + currentCell.terrainwindEffect), gDisasters.HeatSystem.minwind, gDisasters.HeatSystem.maxwind)
+    local windSpeed = windSpeedRef * altitudeEffect / terrainFriction
 
-    return windSpeed
+    -- Limitar la velocidad del viento a los valores mínimos y máximos establecidos en el sistema
+    return math.Clamp(windSpeed, gDisasters.HeatSystem.minwind, gDisasters.HeatSystem.maxwind)
 end
-
 gDisasters.HeatSystem.CalculateWindDirection = function(x, y, z)
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
-    if not currentCell then return 0 end -- Si la celda no existe, retornar un vector nulo
+    if not currentCell then return Vector(0, 0, 0) end  -- Retorna un vector nulo si la celda no existe
 
     local temperature = currentCell.temperature or 0.01
     local pressure = currentCell.pressure or 0.01
 
-    -- Calcular la densidad del aire
+    -- Calcular la densidad del aire en la celda actual
     local airDensity = gDisasters.HeatSystem.calculateAirDensity(pressure, temperature)
 
-    -- Recuperar presiones de las celdas adyacentes
-    local pressureLeft = (gDisasters.HeatSystem.GridMap[x-1] and gDisasters.HeatSystem.GridMap[x-1][y] and gDisasters.HeatSystem.GridMap[x-1][y][z] and gDisasters.HeatSystem.GridMap[x-1][y][z].pressure) or pressure
-    local pressureRight = (gDisasters.HeatSystem.GridMap[x+1] and gDisasters.HeatSystem.GridMap[x+1][y] and gDisasters.HeatSystem.GridMap[x+1][y][z] and gDisasters.HeatSystem.GridMap[x+1][y][z].pressure) or pressure
-    local pressureUp = (gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y+1] and gDisasters.HeatSystem.GridMap[x][y+1][z] and gDisasters.HeatSystem.GridMap[x][y+1][z].pressure) or pressure
-    local pressureDown = (gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y-1] and gDisasters.HeatSystem.GridMap[x][y-1][z] and gDisasters.HeatSystem.GridMap[x][y-1][z].pressure) or pressure
-    local pressureAbove = (gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z+1] and gDisasters.HeatSystem.GridMap[x][y][z+1].pressure) or pressure
-    local pressureBelow = (gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z-1] and gDisasters.HeatSystem.GridMap[x][y][z-1].pressure) or pressure
+    -- Recuperar presiones de las celdas adyacentes en los ejes x, y y z
+    local pressureLeft = gDisasters.HeatSystem.GridMap[x-1] and gDisasters.HeatSystem.GridMap[x-1][y] and gDisasters.HeatSystem.GridMap[x-1][y][z] and gDisasters.HeatSystem.GridMap[x-1][y][z].pressure or pressure
+    local pressureRight = gDisasters.HeatSystem.GridMap[x+1] and gDisasters.HeatSystem.GridMap[x+1][y] and gDisasters.HeatSystem.GridMap[x+1][y][z] and gDisasters.HeatSystem.GridMap[x+1][y][z].pressure or pressure
+    local pressureAbove = gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y+1] and gDisasters.HeatSystem.GridMap[x][y+1][z] and gDisasters.HeatSystem.GridMap[x][y+1][z].pressure or pressure
+    local pressureBelow = gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y-1] and gDisasters.HeatSystem.GridMap[x][y-1][z] and gDisasters.HeatSystem.GridMap[x][y-1][z].pressure or pressure
+    local pressureUp = gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y][z+1] and gDisasters.HeatSystem.GridMap[x][y][z+1].pressure or pressure
+    local pressureDown = gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y][z-1] and gDisasters.HeatSystem.GridMap[x][y][z-1].pressure or pressure
 
-    -- Calcular gradientes de presión básicos
+    -- Calcular gradientes de presión en cada dirección
     local dPdx = (pressureRight - pressureLeft) / 2
     local dPdy = (pressureAbove - pressureBelow) / 2
     local dPdz = (pressureUp - pressureDown) / 2
 
-    -- Calcular la velocidad del viento geostrófico en las direcciones x, y, z
-    local windSpeedX = (1 / airDensity) * dPdx
-    local windSpeedY = (1 / airDensity) * dPdy
-    local windSpeedZ = (1 / airDensity) * dPdz
+    -- Incorporar el Efecto Coriolis en los gradientes (ajustable, opcional)
+    local coriolisEffect = gDisasters.HeatSystem.CoriolisCoefficient or 0.0001  -- Ajusta este valor según la simulación
+    dPdx = dPdx + coriolisEffect * dPdy
+    dPdy = dPdy - coriolisEffect * dPdx
 
-    -- Crear el vector del viento
+    -- Ajustar el efecto de una dirección de viento general o predominante
+    local backgroundWind = gDisasters.HeatSystem.BackgroundWindDirection or Vector(1, 0, 0)  -- Dirección del viento predominante
+    local backgroundInfluence = 0.2  -- Coeficiente de influencia del viento de fondo (ajustable)
+
+    -- Calcular la velocidad del viento en cada dirección usando la ecuación del gradiente de presión
+    local windSpeedX = (1 / airDensity) * dPdx + backgroundWind.x * backgroundInfluence
+    local windSpeedY = (1 / airDensity) * dPdy + backgroundWind.y * backgroundInfluence
+    local windSpeedZ = (1 / airDensity) * dPdz + backgroundWind.z * backgroundInfluence
+
+    -- Crear el vector final de la dirección del viento
     local windVector = Vector(windSpeedX, windSpeedY, windSpeedZ)
+
+    -- Normalizar para obtener solo la dirección y no la magnitud, si solo necesitas la dirección
+    windVector:Normalize()
 
     return windVector
 end
 
 gDisasters.HeatSystem.CalculateAirflow = function(x, y, z)
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
-    if not currentCell then return 0 end -- Si la celda no existe, retornar 0
+    if not currentCell then return 0 end  -- Si la celda no existe, retornar 0
 
     local windSpeed = currentCell.windspeed or 0.01
     local temperature = currentCell.temperature or 0.01
     local pressure = currentCell.pressure or 0.01
+    local area = gDisasters.HeatSystem.cellArea or 1  -- Área de la celda, en m²
 
-    local area = gDisasters.HeatSystem.cellArea
-
-    -- Calcular la densidad del aire
+    -- Calcular la densidad del aire en la celda actual
     local airDensity = gDisasters.HeatSystem.calculateAirDensity(pressure, temperature)
 
-    -- Calcular el flujo de aire
-    local airflow = windSpeed * area * airDensity
+    -- Ajustar el flujo en función de las diferencias de presión y temperatura con celdas vecinas
+    local deltaPressure = 0
+    local deltaTemperature = 0
+    local neighborCount = 0
 
-    return airflow
+    -- Iterar sobre las celdas vecinas en una cuadrícula 3D
+    for dx = -1, 1 do
+        for dy = -1, 1 do
+            for dz = -1, 1 do
+                if dx ~= 0 or dy ~= 0 or dz ~= 0 then
+                    local nx, ny, nz = x + dx * gDisasters.HeatSystem.cellSize, y + dy * gDisasters.HeatSystem.cellSize, z + dz * gDisasters.HeatSystem.cellSize
+                    if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
+                        local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
+                        if neighborCell then
+                            deltaPressure = deltaPressure + (neighborCell.pressure - pressure)
+                            deltaTemperature = deltaTemperature + (neighborCell.temperature - temperature)
+                            neighborCount = neighborCount + 1
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    -- Promediar las diferencias de presión y temperatura
+    if neighborCount > 0 then
+        deltaPressure = deltaPressure / neighborCount
+        deltaTemperature = deltaTemperature / neighborCount
+    end
+
+    -- Aplicar un ajuste de flujo de aire basado en las diferencias de presión y temperatura
+    local pressureInfluence = deltaPressure * 0.1  -- Coeficiente para el impacto de presión en el flujo
+    local temperatureInfluence = deltaTemperature * 0.05  -- Coeficiente para el impacto de temperatura en el flujo
+
+    -- Calcular el flujo de aire base usando la velocidad del viento y el área de la celda
+    local baseAirflow = windSpeed * area * airDensity
+
+    -- Incorporar las influencias de presión y temperatura en el flujo de aire
+    local airflow = baseAirflow + pressureInfluence + temperatureInfluence
+
+    -- Limitar el flujo de aire a un mínimo de 0
+    return math.max(airflow, 0)
 end
 
 gDisasters.HeatSystem.GetCellType = function(x, y, z)
