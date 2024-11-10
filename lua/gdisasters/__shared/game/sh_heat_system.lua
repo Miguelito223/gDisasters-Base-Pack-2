@@ -161,16 +161,33 @@ gDisasters.HeatSystem.CalculateRadiationEmissionFactor = function(x, y, z)
     local emissivity = cell.emissivity or 0.9  -- Emisividad de la superficie (valor entre 0 y 1)
     local temperatureKelvin = convert_CelciustoKelvin(temperature)  -- Convertir temperatura a Kelvin
     
-    local ambientTemperature = convert_CelciustoKelvin(23)  -- Temperatura ambiente en Kelvin (ajustable)
+    local minTemp = 1 -- Irradiancia máxima en W/m² (ajustado para un efecto más alto)
+    local minRadiation = 0 -- Irradiancia máxima en W/m² (ajustado para un efecto más alto)
+    local maxRadiation = 340  -- Irradiancia máxima en W/m² (ajustado para un efecto más alto)
+    
+    local ambientTemperature = convert_CelciustoKelvin(15)  -- Temperatura ambiente en Kelvin (ajustable)
     
     -- Constante de Stefan-Boltzmann (en W/m²·K⁴)
     local sigma = 5.67e-8  
+
+    if temperatureKelvin < minTemp then 
+        temperatureKelvin = minTemp 
+    end
     
     -- Cálculo de la radiación emitida por la superficie
-    local radiationEmission = sigma * emissivity * area * (temperatureKelvin^4 - ambientTemperature^4)
+    local radiationEmission = (sigma * emissivity * area * (temperatureKelvin^4 - ambientTemperature^4))
+    radiationEmission = radiationEmission * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
+    
+    if radiationEmission < minRadiation then
+        radiationEmission = minRadiation
+    end
+
+    if radiationEmission > maxRadiation then
+        radiationEmission = maxRadiation
+    end
     
     -- Guardar el valor de la emisión de radiación en la celda
-    cell.radiationEmission = radiationEmission
+    cell.radiationEmission = radiationEmission 
     
     return radiationEmission
 end
@@ -184,13 +201,7 @@ gDisasters.HeatSystem.CalculateSolarRadiation = function(x, y, z, hour)
     -- Parámetros para el modelo senoidal
     local sunrise = gDisasters.DayNightSystem.InternalVars.time.Dawn_Start   -- Hora de salida del sol
     local sunset = gDisasters.DayNightSystem.InternalVars.time.Dusk_Start    -- Hora de puesta del sol
-    local maxRadiation = 1200  -- Irradiancia máxima en W/m² (ajustado para un efecto más alto)
-
-    -- Parámetros físicos
-    local exposureTime = 7200   -- Duración de la exposición en segundos (aumentado para simular acumulación de energía)
-    local area = gDisasters.HeatSystem.cellArea -- Área de la celda (1 m², ajusta según sea necesario)
-    local materialHeatCapacity = gDisasters.HeatSystem.materialHeatCapacity  -- Capacidad calorífica del aire en J/(kg°C)
-    local mass = cell.mass  -- Masa del aire en kg (ajustable)
+    local maxRadiation = 340  -- Irradiancia máxima en W/m² (ajustado para un efecto más alto)
 
     -- Verificar si la hora está fuera del rango de la luz solar
     if hour < sunrise or hour > sunset then
@@ -215,14 +226,8 @@ gDisasters.HeatSystem.CalculateSolarRadiation = function(x, y, z, hour)
     -- Calcular la irradiancia solar usando una función senoidal
     local solarRadiation = maxRadiation * math.sin(math.pi * dayFraction) * attenuationFactor
 
-    -- Calcular la energía absorbida en julios
-    local absorbedEnergy = solarRadiation * area * exposureTime
-
-    -- Calcular el cambio de temperatura usando la capacidad calorífica específica
-    local deltaTemperature = absorbedEnergy / (mass * materialHeatCapacity)
-
     -- Ajustar la influencia solar en el cambio de temperatura
-    return deltaTemperature * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 1.5)
+    return solarRadiation * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
 end
 
 gDisasters.HeatSystem.CalculateVPs = function(x, y, z)
@@ -248,6 +253,29 @@ gDisasters.HeatSystem.Calculatetemperaturebh = function(x, y, z)
     local Tbh = T * math.atan(0.151977 * math.sqrt(HR + 8.313659)) + math.atan(T + HR) - math.atan(HR - 1.676331) + 0.00391838 * math.pow(HR, 1.5) * math.atan(0.023101 * HR) - 4.686035
 
     return Tbh
+
+end
+
+gDisasters.HeatSystem.CalculateEmissivity = function(x, y, z)
+    local cell = gDisasters.HeatSystem.GridMap[x][y][z]
+    if not cell then return 0 end -- Si la celda no existe, retornar 0
+
+    -- Asignar el albedo según el tipo de terreno de la celda
+    local terrainType = cell.terrainType
+
+    if terrainType == "Snow" then
+        return 0.80
+    elseif terrainType == "Sand" then
+        return 0.76
+    elseif terrainType == "Water" then
+        return 0.95  -- Albedo para agua
+    elseif terrainType == "Grass" then
+        return 0.92  -- Albedo para bosque
+    elseif terrainType == "Asfalt" then
+        return 0.85   -- Albedo para asfalto
+    else
+        return 0   -- Valor por defecto si no se especifica el tipo de terreno
+    end
 
 end
 
@@ -1283,6 +1311,7 @@ gDisasters.HeatSystem.GenerateGrid = function()
                         gDisasters.HeatSystem.GridMap[x][y][z].airdensity =  gDisasters.HeatSystem.CalculateAirDensity(x, y, z)
                         gDisasters.HeatSystem.GridMap[x][y][z].mass = gDisasters.HeatSystem.CalculateMass(x, y, z)
                         gDisasters.HeatSystem.GridMap[x][y][z].thermalInertia = gDisasters.HeatSystem.CalculateThermalInertia(x, y, z)
+                        gDisasters.HeatSystem.GridMap[x][y][z].emissivity = gDisasters.HeatSystem.CalculateEmissivity(x,y,z)
 
                         -- Calcular la velocidad de aire
                         gDisasters.HeatSystem.GridMap[x][y][z].windspeed = GLOBAL_SYSTEM_ORIGINAL["Atmosphere"]["Wind"]["Speed"]
@@ -1418,6 +1447,7 @@ gDisasters.HeatSystem.UpdateGrid = function()
                         currentcell.airdensity =  gDisasters.HeatSystem.CalculateAirDensity(x, y, z)
                         currentcell.mass = gDisasters.HeatSystem.CalculateMass(x, y, z)
                         currentcell.thermalInertia = gDisasters.HeatSystem.CalculateThermalInertia(x, y, z)
+                        currentcell.emissivity = gDisasters.HeatSystem.CalculateEmissivity(x,y,z)
                         
                         -- Calcular la velocidad de aire
                         currentcell.windspeed = gDisasters.HeatSystem.CalculateWindSpeed(x, y, z)
