@@ -20,7 +20,7 @@ gDisasters.HeatSystem.Hail = {}
 gDisasters.HeatSystem.Snow = {}
 
 gDisasters.HeatSystem.cellSize = GetConVar("gdisasters_heat_system_cellsize"):GetInt() or 5000
-gDisasters.HeatSystem.cellArea = gDisasters.HeatSystem.cellSize * gDisasters.HeatSystem.cellSize * gDisasters.HeatSystem.cellSize
+gDisasters.HeatSystem.cellArea = gDisasters.HeatSystem.cellSize^3
 gDisasters.HeatSystem.cellDistance = math.sqrt(gDisasters.HeatSystem.cellSize^2 + gDisasters.HeatSystem.cellSize^2 + gDisasters.HeatSystem.cellSize^2)
 
 gDisasters.HeatSystem.minTemperature = GetConVar("gdisasters_heat_system_mintemp"):GetFloat()
@@ -159,9 +159,9 @@ gDisasters.HeatSystem.CalculateRadiationEmissionFactor = function(x, y, z)
     local temperature = cell.temperature or 0.01  -- Temperatura de la celda (en °C)
     local area = gDisasters.HeatSystem.cellArea or 1  -- Área de la celda (en m²)
     local emissivity = cell.emissivity or 0.9  -- Emisividad de la superficie (valor entre 0 y 1)
-    local temperatureKelvin = temperature + 273.15  -- Convertir temperatura a Kelvin
+    local temperatureKelvin = convert_CelciustoKelvin(temperature)  -- Convertir temperatura a Kelvin
     
-    local ambientTemperature = 20 + 273.15  -- Temperatura ambiente en Kelvin (ajustable)
+    local ambientTemperature = convert_CelciustoKelvin(23)  -- Temperatura ambiente en Kelvin (ajustable)
     
     -- Constante de Stefan-Boltzmann (en W/m²·K⁴)
     local sigma = 5.67e-8  
@@ -184,13 +184,13 @@ gDisasters.HeatSystem.CalculateSolarRadiation = function(x, y, z, hour)
     -- Parámetros para el modelo senoidal
     local sunrise = gDisasters.DayNightSystem.InternalVars.time.Dawn_Start   -- Hora de salida del sol
     local sunset = gDisasters.DayNightSystem.InternalVars.time.Dusk_Start    -- Hora de puesta del sol
-    local maxRadiation = 1000  -- Irradiancia máxima en W/m² (puedes ajustarla)
+    local maxRadiation = 1200  -- Irradiancia máxima en W/m² (ajustado para un efecto más alto)
 
-    -- Parámetros físicos para convertir a cambio de temperatura
-    local exposureTime = 3600   -- Duración de la exposición (en segundos, aquí 1 hora)
-    local area = 1              -- Área de la celda (1 m², ajusta según sea necesario)
-    local materialHeatCapacity = 1005  -- Capacidad calorífica del aire en J/(kg°C)
-    local mass = 1              -- Masa del aire en kg (ajustable)
+    -- Parámetros físicos
+    local exposureTime = 7200   -- Duración de la exposición en segundos (aumentado para simular acumulación de energía)
+    local area = gDisasters.HeatSystem.cellArea -- Área de la celda (1 m², ajusta según sea necesario)
+    local materialHeatCapacity = gDisasters.HeatSystem.materialHeatCapacity  -- Capacidad calorífica del aire en J/(kg°C)
+    local mass = cell.mass  -- Masa del aire en kg (ajustable)
 
     -- Verificar si la hora está fuera del rango de la luz solar
     if hour < sunrise or hour > sunset then
@@ -198,15 +198,15 @@ gDisasters.HeatSystem.CalculateSolarRadiation = function(x, y, z, hour)
     end
 
     -- Factor de atenuación basado en condiciones climáticas
-    local weatherCondition = cell.Precipitation or "clear" -- Estado del clima en la celda
-    local attenuationFactor = 1.0  -- Factor de atenuación (1.0 es sin atenuación)
+    local weatherCondition = cell.Precipitation or "clear"
+    local attenuationFactor = 1.0
 
     if weatherCondition == "cloudy" then
-        attenuationFactor = 0.5   -- Reducir la radiación al 50% en caso de nubosidad
+        attenuationFactor = 0.7   -- Reducir la radiación al 70% en caso de nubosidad
     elseif weatherCondition == "rainy" then
-        attenuationFactor = 0.3   -- Reducir la radiación al 30% en caso de lluvia
+        attenuationFactor = 0.5   -- Reducir la radiación al 50% en caso de lluvia
     elseif weatherCondition == "stormy" then
-        attenuationFactor = 0.1   -- Reducir la radiación al 10% en caso de tormenta
+        attenuationFactor = 0.3   -- Reducir la radiación al 30% en caso de tormenta
     end
 
     -- Calcular la fracción del día solar
@@ -221,8 +221,8 @@ gDisasters.HeatSystem.CalculateSolarRadiation = function(x, y, z, hour)
     -- Calcular el cambio de temperatura usando la capacidad calorífica específica
     local deltaTemperature = absorbedEnergy / (mass * materialHeatCapacity)
 
-    -- Asegurarse de que el cambio de temperatura esté en el rango permitido
-    return deltaTemperature * gDisasters.HeatSystem.SolarInfluenceCoefficient
+    -- Ajustar la influencia solar en el cambio de temperatura
+    return deltaTemperature * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 1.5)
 end
 
 gDisasters.HeatSystem.CalculateVPs = function(x, y, z)
@@ -425,14 +425,18 @@ gDisasters.HeatSystem.CalculateTerrainInfluence = function(x, y, z)
         cell.terrainTemperatureEffect = gDisasters.HeatSystem.waterTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
         cell.terrainHumidityEffect = gDisasters.HeatSystem.waterHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
         cell.terrainwindEffect = gDisasters.HeatSystem.waterWindEffect * gDisasters.HeatSystem.TerrainCoefficient
-    elseif cell.terrainType == "air" then
+    elseif cell.terrainType == "Land" then
+        cell.terrainTemperatureEffect = gDisasters.HeatSystem.GrassTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
+        cell.terrainHumidityEffect = gDisasters.HeatSystem.GrassHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
+        cell.terrainwindEffect = gDisasters.HeatSystem.GrassWindEffect * gDisasters.HeatSystem.TerrainCoefficient       
+    elseif cell.terrainType == "Air" then
         cell.terrainTemperatureEffect = 0
         cell.terrainHumidityEffect = 0
         cell.terrainwindEffect = 0
     else
-        cell.terrainTemperatureEffect = gDisasters.HeatSystem.GrassTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
-        cell.terrainHumidityEffect = gDisasters.HeatSystem.GrassHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
-        cell.terrainwindEffect = gDisasters.HeatSystem.GrassWindEffect * gDisasters.HeatSystem.TerrainCoefficient       
+        cell.terrainTemperatureEffect = 0
+        cell.terrainHumidityEffect = 0
+        cell.terrainwindEffect = 0
     end
 
 end
@@ -464,7 +468,6 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     if count == 0 then return currentCell.temperature or 0 end
 
     local averageTemperature = totalTemperature / count
-
     local currentTemperature = currentCell.temperature or 0.01
 
     local temperatureDropPerMeter = 0.00650 -- Gradiente adiabático estándar en °C por metro
@@ -546,7 +549,7 @@ gDisasters.HeatSystem.CalculatePressure = function(x, y, z)
     local molarmass = 0.02897 -- Masa molar del aire en kg/mol
     local gas_constant = 8.31447 -- Constante específica del aire en J/(mol·K)
    
-    local P1 = math.Clamp(((P0 * math.exp(-gravity * molarmass * (z - h0) / (gas_constant * T))) * 100), gDisasters.HeatSystem.minPressure, gDisasters.HeatSystem.maxPressure)
+    local P1 = math.Clamp(convert_HpatoPa((P0 * math.exp(-gravity * molarmass * (z - h0) / (gas_constant * T)))), gDisasters.HeatSystem.minPressure, gDisasters.HeatSystem.maxPressure)
     return P1
 end
 
@@ -565,25 +568,18 @@ gDisasters.HeatSystem.CalculateDewPoint = function(x, y, z)
 
     local Td = (b * alpha) / (a - alpha)
 
-    return Td
+    return math.Clamp(Td,gDisasters.HeatSystem.minTemperature,gDisasters.HeatSystem.maxTemperature)
 end
 
 gDisasters.HeatSystem.CalculateAirDensity = function(x, y, z)
     local currentCell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not currentCell then return 0 end -- Si la celda no existe, retornar 0
 
-    local temperature = convert_CelciustoKelvin(currentCell.temperature) or 0.01
+    local temperature = convert_CelciustoKelvin(currentCell.temperature or 0.01) 
     local pressure = currentCell.pressure or 101325  -- Pa, presión a nivel del mar por defecto
 
     local R = 287.05 -- Constante de gas para el aire en J/(kg·K)
     local airdensity = pressure / (R * temperature) 
-
-    -- Establece un límite mínimo para evitar valores no realistas
-    if airdensity < 0.1 then
-        airdensity = 0.1
-    elseif airdensity > 1.5 then
-        airdensity = 1.5
-    end
 
     return airdensity
 end
@@ -762,8 +758,9 @@ gDisasters.HeatSystem.GetCellType = function(x, y, z)
     end
     
     local cellSize = gDisasters.HeatSystem.cellSize
+    local traceStart = Vector(x, y, z)
     -- Limitar la posición final del rayo dentro de los límites de la celda
-    local traceEnd = Vector(x, y, z) - Vector(0, 0, cellSize) -- Asegurarse de que el rayo no salga de la celda
+    local traceEnd = traceStart - Vector(0, 0, cellSize) -- Asegurarse de que el rayo no salga de la celda
     -- Aumentar la distancia del trace para cubrir más terreno pero limitado al tamaño de la celda
     traceEnd = traceStart + Vector(0, 0, -cellSize)
     -- Comprobar colisión con agua
@@ -997,7 +994,7 @@ gDisasters.HeatSystem.GetClosestDistance = function(x, y, z, sources)
     return closestDistance
 end
 
-gDisasters.HeatSystem.CalculateTemperatureHumiditySources = function(x,y,z)
+gDisasters.HeatSystem.CalculateSources = function(x,y,z)
     print("Adding Sources...")
 
     gDisasters.HeatSystem.AddLandSources(x,y,z)
@@ -1017,13 +1014,13 @@ gDisasters.HeatSystem.CalculateTemperatureHumiditySources = function(x,y,z)
         return "Water"
     elseif closestLandDist < closestWaterDist and closestLandDist < closestAirDist then
         return "Land"
-    elseif closestSandDist < closestSnowDist and closestSandDist < closestGrassDist and closestSandDist < closestAsfaltDist then
+    elseif closestSandDist < closestWaterDist and closestSandDist < closestAirDist and closestSandDist < closestSnowDist and closestSandDist < closestGrassDist and closestSandDist < closestAsfaltDist then
         return "Sand"
-    elseif closestGrassDist < closestSandDist and closestGrassDist < closestSnowDist and closestGrassDist < closestAsfaltDist then
+    elseif closestGrassDist < closestWaterDist and closestGrassDist < closestAirDist and closestGrassDist < closestSandDist and closestGrassDist < closestSnowDist and closestGrassDist < closestAsfaltDist then
         return "Grass"
-    elseif closestSnowDist < closestSandDist and closestSnowDist < closestGrassDist and closestSnowDist < closestAsfaltDist then
+    elseif closestSnowDist < closestWaterDist and closestSnowDist < closestAirDist and closestSnowDist < closestSandDist and closestSnowDist < closestGrassDist and closestSnowDist < closestAsfaltDist then
         return "Snow"
-    elseif closestAsfaltDist < closestSandDist and closestAsfaltDist < closestGrassDist and closestAsfaltDist < closestSnowDist then
+    elseif closestAsfaltDist < closestWaterDist and closestAsfaltDist < closestAirDist and closestAsfaltDist < closestSandDist and closestAsfaltDist < closestGrassDist and closestAsfaltDist < closestSnowDist then
         return "Asfalt"
     else
         return "Air"
@@ -1249,7 +1246,7 @@ gDisasters.HeatSystem.CalculateAlbedo = function(x, y, z)
 end
 
 -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
-gDisasters.HeatSystem.GenerateGrid = function(ply)
+gDisasters.HeatSystem.GenerateGrid = function()
     if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
 
         if file.Exists( "gDisasters/grid_" .. game.GetMap() .. ".json", "DATA" ) and file.Size("gDisasters/grid_" .. game.GetMap() .. ".json", "DATA") > 2 and file.Exists( "gDisasters/cellsize_" .. game.GetMap() .. ".txt", "DATA" ) and file.Size("gDisasters/cellsize_" .. game.GetMap() .. ".txt", "DATA") > 0 and file.Exists( "gDisasters/clouds_" .. game.GetMap() .. ".json", "DATA" ) and file.Size("gDisasters/clouds_" .. game.GetMap() .. ".json", "DATA") > 0 and file.Exists( "gDisasters/rain_" .. game.GetMap() .. ".json", "DATA" ) and file.Size("gDisasters/rain_" .. game.GetMap() .. ".json", "DATA") > 0 and file.Exists( "gDisasters/snow_" .. game.GetMap() .. ".json", "DATA" ) and file.Size("gDisasters/snow_" .. game.GetMap() .. ".json", "DATA") > 0 and file.Exists( "gDisasters/hail_" .. game.GetMap() .. ".json", "DATA" ) and file.Size("gDisasters/hail_" .. game.GetMap() .. ".json", "DATA") > 0 then
@@ -1271,7 +1268,7 @@ gDisasters.HeatSystem.GenerateGrid = function(ply)
                         gDisasters.HeatSystem.GridMap[x][y][z] = {}
 
                         -- Agregar fuente de temperatura    
-                        gDisasters.HeatSystem.GridMap[x][y][z].terrainType = gDisasters.HeatSystem.CalculateTemperatureHumiditySources(x, y, z)
+                        gDisasters.HeatSystem.GridMap[x][y][z].terrainType = gDisasters.HeatSystem.CalculateSources(x, y, z)
                         -- Calcular la influencia de terreno
                         gDisasters.HeatSystem.CalculateTerrainInfluence(x, y, z)
 
@@ -1473,7 +1470,7 @@ gDisasters.HeatSystem.UpdatePlayerGrid = function()
             gDisasters.HeatSystem.nextUpdateGridPlayer = CurTime() + gDisasters.HeatSystem.updateInterval
 
             for k,ply in pairs(player.GetAll()) do
-                local pos = ply:GetPos()
+                local pos = ply:EyePos()
                 local px, py, pz = math.floor(pos.x / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.y / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
                 
                 -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula

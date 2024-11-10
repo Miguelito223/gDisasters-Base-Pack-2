@@ -463,11 +463,19 @@ function convert_FahrenheittoCelcius(Fahrenheit)
 end
 
 function convert_CelciustoKelvin(celcius)
-	return celcius + 273
+	return celcius + 273.15
+end
+
+function convert_PatoHpa(Pa)
+	return Pa / 100
+end
+
+function convert_HpatoPa(Hpa)
+	return Hpa * 100
 end
 
 function convert_KevintoCelcius(Kevin)
-	return Kevin - 273
+	return Kevin - 273.15
 end
 
 function convert_VectorToAngle(vector)
