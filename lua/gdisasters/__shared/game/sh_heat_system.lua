@@ -361,8 +361,6 @@ gDisasters.HeatSystem.CalculatePrecipitation = function(x, y, z)
             gDisasters.HeatSystem.CreateSnow(x, y, z)
             return "Snowing"
         end
-    else
-        return "clear"
     end
 
     return "clear"
@@ -1193,11 +1191,11 @@ gDisasters.HeatSystem.SpawnWeatherEntity = function(precipitationType, x, y, z)
     local cell = gDisasters.HeatSystem.GridMap[x][y][z]
     
     local entityName = ""
-    if precipitationType == "rain" then
+    if precipitationType == "Raining" then
         entityName = "gd_heatsys_raincell"
-    elseif precipitationType == "thunder" then
+    elseif precipitationType == "Storming" then
         entityName = "gd_heatsys_thundercell"
-    elseif precipitationType == "hail" then
+    elseif precipitationType == "Hailing" then
         entityName = "gd_heatsys_hailcell"
     else
         return
