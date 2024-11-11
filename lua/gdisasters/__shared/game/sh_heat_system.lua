@@ -5,12 +5,14 @@ gDisasters.HeatSystem.GridMap = {}
 gDisasters.HeatSystem.cellsToUpdate = {}
 
 gDisasters.HeatSystem.LandSources = {}
-gDisasters.HeatSystem.LandSources.SandSources = {}
-gDisasters.HeatSystem.LandSources.GrassSources = {}
-gDisasters.HeatSystem.LandSources.SnowSources = {}
-gDisasters.HeatSystem.LandSources.AsfaltSources = {}
+
+gDisasters.HeatSystem.SandSources = {}
+gDisasters.HeatSystem.GrassSources = {}
+gDisasters.HeatSystem.SnowSources = {}
+gDisasters.HeatSystem.AsfaltSources = {}
 
 gDisasters.HeatSystem.WaterSources = {}
+
 gDisasters.HeatSystem.AirSources = {}
 
 
@@ -160,36 +162,25 @@ gDisasters.HeatSystem.CalculateRadiationEmissionFactor = function(x, y, z)
     local area = gDisasters.HeatSystem.cellArea or 1  -- Área de la celda (en m²)
     local emissivity = cell.emissivity or 0.9  -- Emisividad de la superficie (valor entre 0 y 1)
     local temperatureKelvin = convert_CelciustoKelvin(temperature)  -- Convertir temperatura a Kelvin
-    
-    local minTemp = 1 -- Irradiancia máxima en W/m² (ajustado para un efecto más alto)
-    local minRadiation = 0 -- Irradiancia máxima en W/m² (ajustado para un efecto más alto)
-    local maxRadiation = 340  -- Irradiancia máxima en W/m² (ajustado para un efecto más alto)
-    
-    local ambientTemperature = convert_CelciustoKelvin(15)  -- Temperatura ambiente en Kelvin (ajustable)
-    
+    local ambientTemperature = convert_CelciustoKelvin(23)  -- Temperatura ambiente en Kelvin (ajustable)
+
     -- Constante de Stefan-Boltzmann (en W/m²·K⁴)
     local sigma = 5.67e-8  
 
-    if temperatureKelvin < minTemp then 
-        temperatureKelvin = minTemp 
-    end
-    
     -- Cálculo de la radiación emitida por la superficie
-    local radiationEmission = (sigma * emissivity * area * (temperatureKelvin^4 - ambientTemperature^4))
-    radiationEmission = radiationEmission * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
+    local radiationEmission = sigma * emissivity * area * (temperatureKelvin^4 - ambientTemperature^4)
     
-    if radiationEmission < minRadiation then
-        radiationEmission = minRadiation
-    end
+    local exposureTime = 3600  -- Tiempo en segundos (por ejemplo, 1 hora)
+    local mass = cell.mass or 1  -- Masa del aire en kg (ajustable)
+    local specificHeatCapacity = gDisasters.HeatSystem.materialHeatCapacity or 1005  -- Capacidad calorífica específica del aire en J/(kg°C)
 
-    if radiationEmission > maxRadiation then
-        radiationEmission = maxRadiation
-    end
+    -- Calcular el cambio de temperatura en grados Celsius
+    local deltaTemperature = (radiationEmission * exposureTime) / (mass * specificHeatCapacity)
     
     -- Guardar el valor de la emisión de radiación en la celda
-    cell.radiationEmission = radiationEmission 
+    cell.radiationEmission = deltaTemperature * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
     
-    return radiationEmission
+    return deltaTemperature * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
 end
 
 -- Función para normalizar un vector
@@ -201,7 +192,7 @@ gDisasters.HeatSystem.CalculateSolarRadiation = function(x, y, z, hour)
     -- Parámetros para el modelo senoidal
     local sunrise = gDisasters.DayNightSystem.InternalVars.time.Dawn_Start   -- Hora de salida del sol
     local sunset = gDisasters.DayNightSystem.InternalVars.time.Dusk_Start    -- Hora de puesta del sol
-    local maxRadiation = 340  -- Irradiancia máxima en W/m² (ajustado para un efecto más alto)
+    local maxRadiation = 5.67e+8  -- Irradiancia máxima en W/m² (ajustado para un efecto más alto)
 
     -- Verificar si la hora está fuera del rango de la luz solar
     if hour < sunrise or hour > sunset then
@@ -225,9 +216,16 @@ gDisasters.HeatSystem.CalculateSolarRadiation = function(x, y, z, hour)
 
     -- Calcular la irradiancia solar usando una función senoidal
     local solarRadiation = maxRadiation * math.sin(math.pi * dayFraction) * attenuationFactor
+    
+    local exposureTime = 3600  -- Tiempo en segundos (por ejemplo, 1 hora)
+    local mass = cell.mass or 1  -- Masa del aire en kg (ajustable)
+    local specificHeatCapacity = gDisasters.HeatSystem.materialHeatCapacity or 1005  -- Capacidad calorífica específica del aire en J/(kg°C)
+
+    -- Calcular el cambio de temperatura en grados Celsius
+    local deltaTemperature = (solarRadiation * exposureTime) / (mass * specificHeatCapacity)
 
     -- Ajustar la influencia solar en el cambio de temperatura
-    return solarRadiation * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
+    return deltaTemperature * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
 end
 
 gDisasters.HeatSystem.CalculateVPs = function(x, y, z)
@@ -1022,40 +1020,48 @@ gDisasters.HeatSystem.GetClosestDistance = function(x, y, z, sources)
     return closestDistance
 end
 
-gDisasters.HeatSystem.CalculateSources = function(x,y,z)
+gDisasters.HeatSystem.CalculateSources = function(x, y, z)
     print("Adding Sources...")
 
-    gDisasters.HeatSystem.AddLandSources(x,y,z)
-    gDisasters.HeatSystem.AddWaterSources(x,y,z)
-    gDisasters.HeatSystem.AddAirSources(x,y,z)
+    -- Añadir todas las fuentes pertinentes
+    gDisasters.HeatSystem.AddLandSources(x, y, z)
+    gDisasters.HeatSystem.AddWaterSources(x, y, z)
+    gDisasters.HeatSystem.AddAirSources(x, y, z)
 
-    local closestWaterDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.WaterSources)
-    local closestLandDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.LandSources)
-    local closestSandDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.LandSources.SandSources)
-    local closestGrassDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.LandSources.GrassSources)
-    local closestSnowDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.LandSources.SnowSources)
-    local closestAsfaltDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.LandSources.AsfaltSources)
-    local closestAirDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.AirSources)
+    -- Obtener las distancias más cercanas a cada tipo de fuente
+    local closestWaterDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.WaterSources) or math.huge
+    local closestLandDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.LandSources) or math.huge
+    local closestSandDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.SandSources) or math.huge
+    local closestGrassDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.GrassSources) or math.huge
+    local closestSnowDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.SnowSources) or math.huge
+    local closestAsfaltDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.AsfaltSources) or math.huge
+    local closestAirDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.AirSources) or math.huge
 
-    -- Comparar distancias y ajustar temperatura, humedad y presión en consecuencia
-    if closestWaterDist < closestGrassDist and closestWaterDist < closestAirDist  then
-        return "Water"
-    elseif closestLandDist < closestWaterDist and closestLandDist < closestAirDist then
-        return "Land"
-    elseif closestSandDist < closestWaterDist and closestSandDist < closestAirDist and closestSandDist < closestSnowDist and closestSandDist < closestGrassDist and closestSandDist < closestAsfaltDist then
-        return "Sand"
-    elseif closestGrassDist < closestWaterDist and closestGrassDist < closestAirDist and closestGrassDist < closestSandDist and closestGrassDist < closestSnowDist and closestGrassDist < closestAsfaltDist then
-        return "Grass"
-    elseif closestSnowDist < closestWaterDist and closestSnowDist < closestAirDist and closestSnowDist < closestSandDist and closestSnowDist < closestGrassDist and closestSnowDist < closestAsfaltDist then
-        return "Snow"
-    elseif closestAsfaltDist < closestWaterDist and closestAsfaltDist < closestAirDist and closestAsfaltDist < closestSandDist and closestAsfaltDist < closestGrassDist and closestAsfaltDist < closestSnowDist then
-        return "Asfalt"
-    else
-        return "Air"
-    end 
-  
+    -- Crear una tabla con todas las distancias y sus tipos
+    local distances = {
+        {type = "Water", distance = closestWaterDist},
+        {type = "Sand", distance = closestSandDist},
+        {type = "Grass", distance = closestGrassDist},
+        {type = "Snow", distance = closestSnowDist},
+        {type = "Asfalt", distance = closestAsfaltDist},
+        {type = "Land", distance = closestLandDist},
+        {type = "Air", distance = closestAirDist},
+    }
 
-    print("Adding Finish")
+    -- Encontrar el tipo con la distancia más cercana
+    local closestType = "Air"  -- Valor predeterminado
+    local minDistance = math.huge
+
+    for _, entry in ipairs(distances) do
+        if entry.distance and entry.distance < minDistance then
+            minDistance = entry.distance
+            closestType = entry.type
+        end
+    end
+
+    print(string.format("Closest Type: %s with distance: %.2f", closestType, minDistance))
+
+    return closestType
 end
 
 -- Función para obtener las coordenadas de las fuentes de agua
@@ -1070,13 +1076,13 @@ end
 gDisasters.HeatSystem.AddLandSources = function(x,y,z)
     local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
     if celltype == "Sand" then
-        table.insert(gDisasters.HeatSystem.LandSources.SandSources, {x = x, y = y , z = z})
+        table.insert(gDisasters.HeatSystem.SandSources, {x = x, y = y , z = z})
     elseif celltype == "Grass" then
-        table.insert(gDisasters.HeatSystem.LandSources.GrassSources, {x = x, y = y , z = z})
+        table.insert(gDisasters.HeatSystem.GrassSources, {x = x, y = y , z = z})
     elseif celltype == "Snow" then
-        table.insert(gDisasters.HeatSystem.LandSources.SnowSources, {x = x, y = y , z = z})
+        table.insert(gDisasters.HeatSystem.SnowSources, {x = x, y = y , z = z})
     elseif celltype == "Asfalt" then
-        table.insert(gDisasters.HeatSystem.LandSources.AsfaltSources, {x = x, y = y , z = z})
+        table.insert(gDisasters.HeatSystem.AsfaltSources, {x = x, y = y , z = z})
     elseif celltype == "Land" then
         table.insert(gDisasters.HeatSystem.LandSources, {x = x, y = y , z = z})
     end
@@ -1258,15 +1264,15 @@ gDisasters.HeatSystem.CalculateAlbedo = function(x, y, z)
     -- Asignar el albedo según el tipo de terreno de la celda
     local terrainType = cell.terrainType
 
-    if terrainType == "snow" then
+    if terrainType == "Snow" then
         return 0.85  -- Albedo para nieve
-    elseif terrainType == "sand" then
+    elseif terrainType == "Sand" then
         return 0.4   -- Albedo para arena
-    elseif terrainType == "water" then
+    elseif terrainType == "Water" then
         return 0.08  -- Albedo para agua
-    elseif terrainType == "grass" then
+    elseif terrainType == "Grass" then
         return 0.15  -- Albedo para bosque
-    elseif terrainType == "asfalt" then
+    elseif terrainType == "Asfalt" then
         return 0.1   -- Albedo para asfalto
     else
         return 0.3   -- Valor por defecto si no se especifica el tipo de terreno

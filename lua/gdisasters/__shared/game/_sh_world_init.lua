@@ -120,15 +120,43 @@ concommand.Add("getpropnum", function()
 	print(#ents.FindByClass("prop_physics"))
 end)
 
-concommand.Add("gdisasters_heat_system_getgridlist", function()
+concommand.Add("gdisasters_heat_system_getcellslist", function()
 
 	PrintTable(gDisasters.HeatSystem.GridMap)
 end)
-concommand.Add("gdisasters_heat_system_getcurrentgrid", function(ply)
+concommand.Add("gdisasters_heat_system_getcurrentcell", function(ply)
 	local pos = ply:EyePos()
 	local px, py, pz = math.floor(pos.x / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.y / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
 	
 	PrintTable(gDisasters.HeatSystem.GridMap[px][py][pz])
+end)
+
+concommand.Add("gdisasters_heat_system_getlandcells", function(ply)
+	PrintTable(gDisasters.HeatSystem.LandSources)
+end)
+
+concommand.Add("gdisasters_heat_system_getwatercells", function(ply)
+	PrintTable(gDisasters.HeatSystem.WaterSources)
+end)
+
+concommand.Add("gdisasters_heat_system_getaircells", function(ply)
+	PrintTable(gDisasters.HeatSystem.AirSources)
+end)
+
+concommand.Add("gdisasters_heat_system_getgrasscells", function(ply)
+	PrintTable(gDisasters.HeatSystem.GrassSources)
+end)
+
+concommand.Add("gdisasters_heat_system_getsnowcells", function(ply)
+	PrintTable(gDisasters.HeatSystem.SnowSources)
+end)
+
+concommand.Add("gdisasters_heat_system_getsandcells", function(ply)
+	PrintTable(gDisasters.HeatSystem.SandSources)
+end)
+
+concommand.Add("gdisasters_heat_system_getasfaltcells", function(ply)
+	PrintTable(gDisasters.HeatSystem.AsfaltSources)
 end)
 
 concommand.Add("ent_getinfo", function(ply)
