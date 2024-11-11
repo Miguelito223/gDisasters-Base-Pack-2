@@ -386,6 +386,16 @@ function ENT:UpdateDisplay()
 	
 	end
 
+	local function GenerateHeatMapForSnow(x, y)
+	    
+		local cx, cy = (8*x+1)/8  , (8*y-15)/8 
+	    
+		self:AddPixelIntensityInRadius(x+1,y-1,4.2,2,1,1, "Add", cx, cy) -- rain
+		self:AddPixelIntensityInRadius(x+math.random(-2, 2),y-math.random(-2, 2),2,0.8,0.8,1, "Add", cx, cy) -- rain
+		
+	
+	end
+
 	local function UpdateForTornado()
 		local targets = ents.FindByClass("env_tornado")
 		
@@ -424,6 +434,20 @@ function ENT:UpdateDisplay()
 		
 		
 	end
+
+	local function UpdateForSnow()
+		local targets2 = ents.FindByClass("gd_heatsys_snowcell")
+		
+		for k, v in pairs(targets2) do 
+			local pos = ConvertVectorToScreenSpace(v:GetPos() * Vector(-1,1,1))
+
+			GenerateHeatMapForSnow(pos[1], pos[2])
+		
+		end
+		
+		
+	end
+	
 	
 	local function UpdateForThunder()
 		local targets2 = ents.FindByClass("gd_heatsys_thundercell")
@@ -437,15 +461,12 @@ function ENT:UpdateDisplay()
 		
 		
 	end
-
-	local function UpdateForWeather()
-	
-	end
 	
 	UpdateForTornado()
 	UpdateForRain()
 	UpdateForThunder()
 	UpdateForHail()
+	UpdateForSnow()
 
 end
 

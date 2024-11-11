@@ -122,7 +122,7 @@ gDisasters.HeatSystem.CalculateThermalInertia = function(x, y, z)
 
     local airDensity = cell.airdensity
     local materialHeatCapacity = gDisasters.HeatSystem.materialHeatCapacity  -- Capacidad calorífica del aire (J/(kg·°C))
-    local cellThickness = 0.1  -- Espesor de la celda (en metros, ajustable)
+    local cellThickness = gDisasters.HeatSystem.cellSize  -- Espesor de la celda (en metros, ajustable)
 
     -- Calcular la inercia térmica de la celda (en J/(m²·°C·s))
     local thermalInertia = airDensity * materialHeatCapacity * cellThickness
@@ -511,8 +511,8 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local coolingEffect = currentCell.coolingEffect or 0.01
 
     local incomingEnergy = solarInfluence * (1 - (currentCell.albedo or 0.2))
-    local outgoingRadiation = gDisasters.HeatSystem.CalculateRadiationEmissionFactor(x,y,z) * (currentTemperature ^ 3.8)
-    local convectiveAdjustment = gDisasters.HeatSystem.CalculateConvectiveFactor(x,y,z) * (0.5 * (z / maxAltitude)) * (averageTemperature - currentTemperature)
+    local outgoingRadiation = gDisasters.HeatSystem.CalculateRadiationEmissionFactor(x,y,z)
+    local convectiveAdjustment = gDisasters.HeatSystem.CalculateConvectiveFactor(x,y,z) * (z / maxAltitude) * (averageTemperature - currentTemperature)
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
     local deltaTemperature = (incomingEnergy - outgoingRadiation) / (currentCell.mass * gDisasters.HeatSystem.materialHeatCapacity) * currentCell.thermalInertia
 
@@ -1197,6 +1197,8 @@ gDisasters.HeatSystem.SpawnWeatherEntity = function(precipitationType, x, y, z)
         entityName = "gd_heatsys_thundercell"
     elseif precipitationType == "Hailing" then
         entityName = "gd_heatsys_hailcell"
+    elseif precipitationType == "Snowing" then
+        entityName = "gd_heatsys_snowcell"
     else
         return
     end
