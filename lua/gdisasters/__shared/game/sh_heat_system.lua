@@ -164,10 +164,10 @@ gDisasters.HeatSystem.CalculateRadiationEmissionFactor = function(x, y, z)
     local ambientTemperature = convert_CelciustoKelvin(23)  -- Temperatura ambiente en Kelvin (ajustable)
 
     -- Constante de Stefan-Boltzmann (en W/m²·K⁴)
-    local sigma = -1361  
+    local sigma = 5.67e-8  
 
     -- Cálculo de la radiación emitida por la superficie
-    local radiationEmission = sigma * emissivity * area * (temperatureKelvin^4 - ambientTemperature^4)
+    local radiationEmission = sigma * emissivity * area * temperatureKelvin^4
     
     -- Guardar el valor de la emisión de radiación en la celda
     Cell.radiationEmission = radiationEmission * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
@@ -183,7 +183,7 @@ gDisasters.HeatSystem.CalculateSolarRadiation = function(x, y, z, hour)
 
     -- Parámetros de ubicación y constantes solares
     local latitude = z -- Latitud de la celda
-    local solarConstant = 1361  -- Constante solar en W/m² (promedio en el espacio)
+    local solarConstant = 1361    -- Constante solar en W/m² (promedio en el espacio)
 
     -- Parámetros de amanecer y atardecer
     local sunrise = gDisasters.DayNightSystem.InternalVars.time.Dawn_Start
@@ -648,7 +648,7 @@ gDisasters.HeatSystem.CalculateWindSpeed = function(x, y, z)
 
     local temperature = Cell.temperature or 23
     local pressure = Cell.pressure or 101325
-    local altitude = convert_GUtoMe(z) or 0  -- Altitud de la celda (puede ser en metros)
+    local altitude = z or 0  -- Altitud de la celda (puede ser en metros)
     local terrainFriction = Cell.terrainwindEffect or 1  -- Coeficiente de fricción según el tipo de terreno
 
     -- Calcular la densidad del aire en la celda actual
@@ -1039,6 +1039,7 @@ gDisasters.HeatSystem.CreateStorm = function(x,y,z)
     
 end
 
+-- Función para calcular la distancia entre dos puntos
 gDisasters.HeatSystem.GetDistance = function(x1, y1, z1, x2, y2, z2)
     local dx = x2 - x1
     local dy = y2 - y1
@@ -1049,23 +1050,23 @@ end
 -- Función para obtener la distancia a la fuente más cercana
 gDisasters.HeatSystem.GetClosestDistance = function(x, y, z, sources)
     local closestDistance = math.huge
-
     for _, source in ipairs(sources) do
         local distance = gDisasters.HeatSystem.GetDistance(x, y, z, source.x, source.y, source.z)
         if distance < closestDistance then
             closestDistance = distance
         end
     end
-
     return closestDistance
 end
 
+-- Función para calcular el tipo de terreno más cercano
 gDisasters.HeatSystem.CalculateSources = function(x, y, z)
-    local Cell = gDisasters.HeatSystem.GridMap[x][y][z]
-    if not Cell then return 0 end
-    print("Adding Sources...")
+    local Cell = gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z]
+    if not Cell then return "Air" end  -- Valor predeterminado si la celda no existe
+    
+    print("Calculando tipo de terreno para la celda...")
 
-    -- Añadir todas las fuentes pertinentes
+    -- Añadir todas las fuentes pertinentes (si es necesario)
     gDisasters.HeatSystem.AddLandSources(x, y, z)
     gDisasters.HeatSystem.AddWaterSources(x, y, z)
     gDisasters.HeatSystem.AddAirSources(x, y, z)
@@ -1079,29 +1080,31 @@ gDisasters.HeatSystem.CalculateSources = function(x, y, z)
     local closestAsfaltDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.AsfaltSources) or math.huge
     local closestAirDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.AirSources) or math.huge
 
-    -- Crear una tabla con todas las distancias y sus tipos
+    -- Tabla de distancias con prioridades para cada tipo de fuente
     local distances = {
-        {type = "Water", distance = closestWaterDist},
-        {type = "Sand", distance = closestSandDist},
-        {type = "Grass", distance = closestGrassDist},
-        {type = "Snow", distance = closestSnowDist},
-        {type = "Asfalt", distance = closestAsfaltDist},
-        {type = "Land", distance = closestLandDist},
-        {type = "Air", distance = closestAirDist},
+        {type = "Water", distance = closestWaterDist, priority = 6},
+        {type = "Sand", distance = closestSandDist, priority = 3},
+        {type = "Grass", distance = closestGrassDist, priority = 2},
+        {type = "Snow", distance = closestSnowDist, priority = 5},
+        {type = "Asfalt", distance = closestAsfaltDist, priority = 1},
+        {type = "Land", distance = closestLandDist, priority = 4},
+        {type = "Air", distance = closestAirDist, priority = 7},  -- Última prioridad (si no hay nada cercano)
     }
 
-    -- Encontrar el tipo con la distancia más cercana
+    -- Buscar el tipo de terreno más cercano con la menor distancia y prioridad
     local closestType = "Air"  -- Valor predeterminado
     local minDistance = math.huge
+    local highestPriority = 7
 
     for _, entry in ipairs(distances) do
-        if entry.distance and entry.distance < minDistance then
+        if entry.distance and entry.distance < minDistance and entry.priority <= highestPriority then
             minDistance = entry.distance
             closestType = entry.type
+            highestPriority = entry.priority
         end
     end
 
-    print(string.format("Closest Type: %s with distance: %.2f", closestType, minDistance))
+    print(string.format("Tipo de terreno más cercano: %s con distancia: %.2f", closestType, minDistance))
     Cell.terrainType = closestType
     return Cell.terrainType
 end
@@ -1425,6 +1428,13 @@ gDisasters.HeatSystem.SaveGrid = function()
         end
 
         file.Write("gDisasters/grid_" .. game.GetMap() .. ".json", util.TableToJSON(gDisasters.HeatSystem.GridMap, true))
+        file.Write("gDisasters/landsource_" .. game.GetMap() .. ".json", util.TableToJSON(gDisasters.HeatSystem.LandSources, true))
+        file.Write("gDisasters/watersource_" .. game.GetMap() .. ".json", util.TableToJSON(gDisasters.HeatSystem.WaterSources, true))
+        file.Write("gDisasters/airsource_" .. game.GetMap() .. ".json", util.TableToJSON(gDisasters.HeatSystem.AirSources, true))
+        file.Write("gDisasters/sandsource_" .. game.GetMap() .. ".json", util.TableToJSON(gDisasters.HeatSystem.GrassSources, true))
+        file.Write("gDisasters/grasssource_" .. game.GetMap() .. ".json", util.TableToJSON(gDisasters.HeatSystem.SandSources, true))
+        file.Write("gDisasters/snowsource_" .. game.GetMap() .. ".json", util.TableToJSON(gDisasters.HeatSystem.SnowSources, true))
+        file.Write("gDisasters/asfaltsource_" .. game.GetMap() .. ".json", util.TableToJSON(gDisasters.HeatSystem.AsfaltSources, true))
         file.Write("gDisasters/cellsize_" .. game.GetMap() .. ".txt", tostring(gDisasters.HeatSystem.cellSize))
         file.Write("gDisasters/clouds_" .. game.GetMap() .. ".json",  util.TableToJSON(gDisasters.HeatSystem.Clouds, true))
         file.Write("gDisasters/rain_" .. game.GetMap() .. ".json",  util.TableToJSON(gDisasters.HeatSystem.Rain, true))
@@ -1438,6 +1448,12 @@ gDisasters.HeatSystem.LoadGrid = function()
     if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then
         print("Saving grid...")
         gDisasters.HeatSystem.GridMap = util.JSONToTable(file.Read("gDisasters/grid_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/grid_" .. game.GetMap() .. ".json", "DATA")
+        gDisasters.HeatSystem.LandSources = util.JSONToTable(file.Read("gDisasters/landsource_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/landsource_" .. game.GetMap() .. ".json", "DATA")
+        gDisasters.HeatSystem.WaterSources = util.JSONToTable(file.Read("gDisasters/watersource_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/watersource_" .. game.GetMap() .. ".json", "DATA")
+        gDisasters.HeatSystem.AirSources = util.JSONToTable(file.Read("gDisasters/airsource_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/airsource_" .. game.GetMap() .. ".json", "DATA")
+        gDisasters.HeatSystem.SandSources = util.JSONToTable(file.Read("gDisasters/sandsource_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/sandsource_" .. game.GetMap() .. ".json", "DATA")
+        gDisasters.HeatSystem.SnowSources = util.JSONToTable(file.Read("gDisasters/snowsource_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/snowsource_" .. game.GetMap() .. ".json", "DATA")
+        gDisasters.HeatSystem.AsfaltSources = util.JSONToTable(file.Read("gDisasters/asfaltsource_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/asfaltsource_" .. game.GetMap() .. ".json", "DATA")
         gDisasters.HeatSystem.cellSize = tonumber(file.Read("gDisasters/cellsize_" .. game.GetMap() .. ".txt", "DATA")) or file.Read("gDisasters/cellsize_" .. game.GetMap() .. ".txt", "DATA")
         gDisasters.HeatSystem.Clouds = util.JSONToTable(file.Read("gDisasters/clouds_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/clouds_" .. game.GetMap() .. ".json", "DATA")
         gDisasters.HeatSystem.Rain = util.JSONToTable(file.Read("gDisasters/rain_" .. game.GetMap() .. ".json", "DATA")) or file.Read("gDisasters/rain_" .. game.GetMap() .. ".json", "DATA")
