@@ -164,20 +164,13 @@ gDisasters.HeatSystem.CalculateRadiationEmissionFactor = function(x, y, z)
     local ambientTemperature = convert_CelciustoKelvin(23)  -- Temperatura ambiente en Kelvin (ajustable)
 
     -- Constante de Stefan-Boltzmann (en W/m²·K⁴)
-    local sigma = 5.67e-8  
+    local sigma = -1361  
 
     -- Cálculo de la radiación emitida por la superficie
     local radiationEmission = sigma * emissivity * area * (temperatureKelvin^4 - ambientTemperature^4)
     
-    local exposureTime = 3600  -- Tiempo en segundos (por ejemplo, 1 hora)
-    local mass = Cell.mass or 1  -- Masa del aire en kg (ajustable)
-    local specificHeatCapacity = gDisasters.HeatSystem.materialHeatCapacity or 1005  -- Capacidad calorífica específica del aire en J/(kg°C)
-
-    -- Calcular el cambio de temperatura en grados Celsius
-    local deltaTemperature = (radiationEmission * exposureTime) / (mass * specificHeatCapacity)
-    
     -- Guardar el valor de la emisión de radiación en la celda
-    Cell.radiationEmission = deltaTemperature * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
+    Cell.radiationEmission = radiationEmission * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
     
     return Cell.radiationEmission
 end
@@ -188,43 +181,41 @@ gDisasters.HeatSystem.CalculateSolarRadiation = function(x, y, z, hour)
     local Cell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not Cell then return end
 
-    -- Parámetros para el modelo senoidal
-    local sunrise = gDisasters.DayNightSystem.InternalVars.time.Dawn_Start   -- Hora de salida del sol
-    local sunset = gDisasters.DayNightSystem.InternalVars.time.Dusk_Start    -- Hora de puesta del sol
-    local maxRadiation = 5.67e+8  -- Irradiancia máxima en W/m² (ajustado para un efecto más alto)
+    -- Parámetros de ubicación y constantes solares
+    local latitude = z -- Latitud de la celda
+    local solarConstant = 1361  -- Constante solar en W/m² (promedio en el espacio)
+
+    -- Parámetros de amanecer y atardecer
+    local sunrise = gDisasters.DayNightSystem.InternalVars.time.Dawn_Start
+    local sunset = gDisasters.DayNightSystem.InternalVars.time.Dusk_Start
 
     -- Verificar si la hora está fuera del rango de la luz solar
     if hour < sunrise or hour > sunset then
         return 0
     end
 
-    -- Factor de atenuación basado en condiciones climáticas
+    -- Cálculo simplificado del ángulo de elevación solar (solo usando latitud y hora)
+    local solarDeclination = 23.44  -- Declination promedio sin variación estacional
+    local solarAltitudeAngle = math.asin(math.sin(math.rad(latitude)) * math.sin(math.rad(solarDeclination)) + math.cos(math.rad(latitude)) * math.cos(math.rad(solarDeclination)) * math.cos(math.pi * (hour - 12) / 12))
+    
+    -- Factor de atenuación basado en condiciones atmosféricas y ángulo de incidencia
     local weatherCondition = Cell.Precipitation or "clear"
     local attenuationFactor = 1.0
-
     if weatherCondition == "cloudy" then
-        attenuationFactor = 0.7   -- Reducir la radiación al 70% en caso de nubosidad
+        attenuationFactor = 0.7
     elseif weatherCondition == "rainy" then
-        attenuationFactor = 0.5   -- Reducir la radiación al 50% en caso de lluvia
+        attenuationFactor = 0.5
     elseif weatherCondition == "stormy" then
-        attenuationFactor = 0.3   -- Reducir la radiación al 30% en caso de tormenta
+        attenuationFactor = 0.3
     end
 
-    -- Calcular la fracción del día solar
-    local dayFraction = (hour - sunrise) / (sunset - sunrise)
-
-    -- Calcular la irradiancia solar usando una función senoidal
-    local solarRadiation = maxRadiation * math.sin(math.pi * dayFraction) * attenuationFactor
+    -- Cálculo de la irradiancia en el suelo (W/m²) ajustada para condiciones atmosféricas
+    local airMass = 1 / math.max(0.1, math.sin(solarAltitudeAngle))
+    local irradiance = solarConstant * math.sin(solarAltitudeAngle) * math.exp(-0.1 * airMass) * attenuationFactor
     
-    local exposureTime = 3600  -- Tiempo en segundos (por ejemplo, 1 hora)
-    local mass = Cell.mass or 1  -- Masa del aire en kg (ajustable)
-    local specificHeatCapacity = gDisasters.HeatSystem.materialHeatCapacity or 1005  -- Capacidad calorífica específica del aire en J/(kg°C)
-
-    -- Calcular el cambio de temperatura en grados Celsius
-    local deltaTemperature = (solarRadiation * exposureTime) / (mass * specificHeatCapacity)
-
-    Cell.solarinfluence = deltaTemperature * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
-    -- Ajustar la influencia solar en el cambio de temperatura
+    -- Guardar la influencia solar ajustada en la celda
+    Cell.solarinfluence = irradiance * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
+    
     return Cell.solarinfluence
 end
 
@@ -254,7 +245,7 @@ gDisasters.HeatSystem.Calculatetemperaturebh = function(x, y, z)
     
     Cell.temperaturebh = Tbh
     
-    return Tbh
+    return Cell.temperaturebh
 
 end
 
@@ -536,12 +527,13 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local maxAltitude = skybox[2].z or 1000
 
     -- Factores adicionales (solar, terreno, etc.)
-    local solarInfluence = Cell.solarInfluence or 0.01
-    local terraintemperatureEffect = Cell.terrainTemperatureEffect or 0.01
-    local coolingEffect = Cell.coolingEffect or 0.01
+    local solarInfluence = gDisasters.HeatSystem.CalculateSolarRadiation(x, y, z, gDisasters.DayNightSystem.Time)
+    local terraintemperatureEffect = Cell.terrainTemperatureEffect or 0
+    local coolingEffect = gDisasters.HeatSystem.CalculateCoolEffect(x, y, z)
+                        
 
-    local incomingEnergy = solarInfluence * (1 - (Cell.albedo or 0.2))
-    local outgoingRadiation = gDisasters.HeatSystem.CalculateRadiationEmissionFactor(x,y,z)
+    local incomingEnergy = solarInfluence * (1 - (Cell.albedo or 0.3))
+    local outgoingRadiation = gDisasters.HeatSystem.CalculateRadiationEmissionFactor(x,y,z) * (currentTemperature ^ 4)
     local convectiveAdjustment = gDisasters.HeatSystem.CalculateConvectiveFactor(x,y,z) * (z / maxAltitude) * (averageTemperature - currentTemperature)
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
     local deltaTemperature = (incomingEnergy - outgoingRadiation) / ((Cell.mass or 1) * gDisasters.HeatSystem.materialHeatCapacity) * (Cell.thermalInertia or 1)
@@ -1386,11 +1378,8 @@ gDisasters.HeatSystem.GenerateGrid = function()
                         -- Calcular el flujo de aire
                         gDisasters.HeatSystem.CalculateAirflow(x, y, z)
 
+                        --Calcular el Punto de Rocio
                         gDisasters.HeatSystem.CalculateDewPoint(x, y, z)
-                        
-                        -- Calcular la radiación solar
-                        gDisasters.HeatSystem.CalculateSolarRadiation(x, y, z, gDisasters.DayNightSystem.Time)
-                        gDisasters.HeatSystem.CalculateCoolEffect(x, y, z)
 
                         -- Calcular la latencia
                         gDisasters.HeatSystem.CalculatelatentHeat(x, y, z)
@@ -1523,10 +1512,6 @@ gDisasters.HeatSystem.UpdateGrid = function()
 
                         -- Calcular el punto de rocio
                         gDisasters.HeatSystem.CalculateDewPoint(x, y, z)
-                        
-                        -- Calcular la radiación solar
-                        gDisasters.HeatSystem.CalculateSolarRadiation(x, y, z, gDisasters.DayNightSystem.Time)
-                        gDisasters.HeatSystem.CalculateCoolEffect(x, y, z)
 
                         -- Calcular la latencia
                         gDisasters.HeatSystem.CalculatelatentHeat(x, y, z)
