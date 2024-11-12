@@ -125,7 +125,7 @@ concommand.Add("gdisasters_heat_system_getcellslist", function()
 	PrintTable(gDisasters.HeatSystem.GridMap)
 end)
 concommand.Add("gdisasters_heat_system_getcurrentcell", function(ply)
-	local pos = ply:EyePos()
+	local pos = ply:GetPos()
 	local px, py, pz = math.floor(pos.x / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.y / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
 	
 	PrintTable(gDisasters.HeatSystem.GridMap[px][py][pz])
