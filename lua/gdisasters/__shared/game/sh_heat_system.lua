@@ -21,7 +21,8 @@ gDisasters.HeatSystem.Hail = {}
 gDisasters.HeatSystem.Snow = {}
 
 gDisasters.HeatSystem.cellSize = GetConVar("gdisasters_heat_system_cellsize"):GetInt() or 5000
-gDisasters.HeatSystem.cellArea = gDisasters.HeatSystem.cellSize^3
+gDisasters.HeatSystem.cellArea = 6 * gDisasters.HeatSystem.cellSize^2
+gDisasters.HeatSystem.cellVolumen = gDisasters.HeatSystem.cellSize^3
 gDisasters.HeatSystem.cellDistance = math.sqrt(gDisasters.HeatSystem.cellSize^2 + gDisasters.HeatSystem.cellSize^2 + gDisasters.HeatSystem.cellSize^2)
 
 gDisasters.HeatSystem.minTemperature = GetConVar("gdisasters_heat_system_mintemp"):GetFloat()
@@ -144,6 +145,10 @@ gDisasters.HeatSystem.CalculateConvectiveFactor = function(x, y, z)
     -- Cálculo de la diferencia de temperatura entre la superficie y el aire
     local deltaT = temperature - surroundingTemperature
     
+    -- Reducir la convección si el delta de temperatura es bajo
+    if math.abs(deltaT) < 2 then
+        deltaT = deltaT * 0.5  -- Amortiguación para variaciones de temperatura bajas
+    end
     -- Cálculo del factor de convección (en función de la diferencia de temperatura, la densidad del aire y la velocidad del viento)
     local convectiveFactor = heatTransferCoefficient * airDensity * windSpeed * deltaT
     
@@ -166,8 +171,9 @@ gDisasters.HeatSystem.CalculateRadiationEmissionFactor = function(x, y, z)
     -- Constante de Stefan-Boltzmann (en W/m²·K⁴)
     local sigma = 5.67e-8  
 
+    local temperatureDifference = math.max(temperatureKelvin^4 - ambientTemperature^4, 0) -- Evita valores negativos
     -- Cálculo de la radiación emitida por la superficie
-    local radiationEmission = sigma * emissivity * area * temperatureKelvin^4
+    local radiationEmission = sigma * emissivity * area * temperatureDifference
     
     -- Guardar el valor de la emisión de radiación en la celda
     Cell.radiationEmission = radiationEmission * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
@@ -214,9 +220,9 @@ gDisasters.HeatSystem.CalculateSolarRadiation = function(x, y, z, hour)
     local irradiance = solarConstant * math.sin(solarAltitudeAngle) * math.exp(-0.1 * airMass) * attenuationFactor
     
     -- Guardar la influencia solar ajustada en la celda
-    Cell.solarinfluence = irradiance * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
+    Cell.solarInfluence = irradiance * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
     
-    return Cell.solarinfluence
+    return Cell.solarInfluence
 end
 
 gDisasters.HeatSystem.CalculateVPs = function(x, y, z)
@@ -428,18 +434,18 @@ gDisasters.HeatSystem.CalculatelatentHeat = function(x, y, z)
 
     if cloudDensity > 0 then
         if (currentTemperature > gDisasters.HeatSystem.freezingTemperature) then 
-            Cell.latentheat = gDisasters.HeatSystem.calculateCondensationLatentHeat(cloudDensity)
-            return Cell.latentheat
+            Cell.LatentHeat = gDisasters.HeatSystem.calculateCondensationLatentHeat(cloudDensity)
+            return Cell.LatentHeat
         elseif (currentTemperature >= gDisasters.HeatSystem.boilingTemperature) then 
-            Cell.latentheat = gDisasters.HeatSystem.CalculateVaporizationLatentHeat(cloudDensity)
-            return Cell.latentheat
+            Cell.LatentHeat = gDisasters.HeatSystem.CalculateVaporizationLatentHeat(cloudDensity)
+            return Cell.LatentHeat
         elseif (currentTemperature <= gDisasters.HeatSystem.freezingTemperature) then 
-            Cell.latentheat = gDisasters.HeatSystem.calculateFreezingLatentHeat(cloudDensity)
-            return Cell.latentheat
+            Cell.LatentHeat = gDisasters.HeatSystem.calculateFreezingLatentHeat(cloudDensity)
+            return Cell.LatentHeat
         end
     else
-        Cell.latentheat = 0
-        return Cell.latentheat
+        Cell.LatentHeat = 0
+        return Cell.LatentHeat
     end
 end
 
@@ -515,26 +521,21 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local averageTemperature = totalTemperature / count
     local currentTemperature = Cell.temperature or 23
 
-    local temperatureDropPerMeter = 0.00650 -- Gradiente adiabático estándar en °C por metro
-    local zInMeters = z
-    
-    if zInMeters < 0 then zInMeters = 0 end
-
-    -- Calcular la temperatura en la superficie
-    local altitudeAdjustment = zInMeters * temperatureDropPerMeter
-    
-    local skybox = getMapSkyBox()
-    local maxAltitude = skybox[2].z or 1000
-
     -- Factores adicionales (solar, terreno, etc.)
     local solarInfluence = gDisasters.HeatSystem.CalculateSolarRadiation(x, y, z, gDisasters.DayNightSystem.Time)
     local terraintemperatureEffect = Cell.terrainTemperatureEffect or 0
     local coolingEffect = gDisasters.HeatSystem.CalculateCoolEffect(x, y, z)
                         
+    local z_min = math.max(z, 0)
+
+    local temperatureDropPerMeter = 0.00650 -- Gradiente adiabático estándar en °C por metro
+    local altitudeAdjustment = z_min * temperatureDropPerMeter -- Calcular la temperatura en la superficie
+    local skybox = getMapSkyBox()
+    local maxAltitude = skybox[2].z or 1000
 
     local incomingEnergy = solarInfluence * (1 - (Cell.albedo or 0.3))
     local outgoingRadiation = gDisasters.HeatSystem.CalculateRadiationEmissionFactor(x,y,z) * (currentTemperature ^ 4)
-    local convectiveAdjustment = gDisasters.HeatSystem.CalculateConvectiveFactor(x,y,z) * (z / maxAltitude) * (averageTemperature - currentTemperature)
+    local convectiveAdjustment = gDisasters.HeatSystem.CalculateConvectiveFactor(x,y,z) * (z_min / maxAltitude) * (averageTemperature - currentTemperature)
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
     local deltaTemperature = (incomingEnergy - outgoingRadiation) / ((Cell.mass or 1) * gDisasters.HeatSystem.materialHeatCapacity) * (Cell.thermalInertia or 1)
 
@@ -589,11 +590,11 @@ end
 
 
 -- Función para calcular la presión de una celda basada en temperatura y humedad
-gDisasters.HeatSystem.CalculatePressure = function(x, y, z) 
+gDisasters.HeatSystem.CalculatePressure = function(x, y, z)
     local Cell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not Cell then return 0 end -- Verificar que la celda actual exista
 
-    local T = Cell.temperature or 23
+    local T = convert_CelciustoKelvin(Cell.temperature or 23) -- Suponiendo que la temperatura se pasa en °C
 
     -- Definir valores de los parámetros
     local P0 = 1013.25 -- Presión al nivel del mar estándar en hPa
@@ -601,9 +602,20 @@ gDisasters.HeatSystem.CalculatePressure = function(x, y, z)
     local gravity = 9.80665 -- Aceleración debido a la gravedad en m/s²
     local molarmass = 0.02897 -- Masa molar del aire en kg/mol
     local gas_constant = 8.31447 -- Constante específica del aire en J/(mol·K)
-   
-    local P1 = math.Clamp(convert_HpatoPa((P0 * math.exp(-gravity * molarmass * (z - h0) / (gas_constant * T)))), gDisasters.HeatSystem.minPressure, gDisasters.HeatSystem.maxPressure)
-   
+    
+    -- Estimar la temperatura a la altitud 'z'
+    local lapse_rate = 0.0065  -- Tasa de descenso de temperatura en K/m
+    local T_at_z = T - lapse_rate * z  -- Aproximación de la temperatura a la altitud 'z'
+    T_at_z = math.max(T_at_z, 0)  -- Evitar temperaturas negativas
+
+    -- Ecuación barométrica para la presión
+    local P1 = math.exp(-gravity * molarmass * (z - h0) / (gas_constant * T_at_z)) * P0
+    -- Convertir la presión de hPa a Pa
+    P1 = convert_HpatoPa(P1)
+    
+    -- Limitar la presión a los valores máximo y mínimo
+    P1 = math.Clamp(P1, gDisasters.HeatSystem.minPressure, gDisasters.HeatSystem.maxPressure)
+
     Cell.pressure = P1
     
     return Cell.pressure
@@ -694,7 +706,7 @@ gDisasters.HeatSystem.CalculateWindSpeed = function(x, y, z)
     local windSpeedRef = (1 / airDensity) * (pressureGradient + temperatureInfluence)
 
     -- Ajustar la velocidad del viento por el efecto de altitud (por ejemplo, aumentando un 5% por cada 100 metros)
-    local altitudeEffect = 1 + (altitude * 0.0005)  -- Ajuste para incremento de velocidad de viento con la altitud
+    local altitudeEffect = 1 + math.min(altitude * 0.0005, 0.1) -- Ajuste para incremento de velocidad de viento con la altitud
 
     -- Calcular la velocidad del viento real
     local windSpeed = windSpeedRef * altitudeEffect / terrainFriction
@@ -1296,7 +1308,7 @@ gDisasters.HeatSystem.CalculateMass = function(x, y, z)
     local airDensity = Cell.airdensity
 
     -- Calcular volumen de la celda
-    local cellVolume = gDisasters.HeatSystem.cellArea
+    local cellVolume = gDisasters.HeatSystem.cellVolumen
 
     -- Calcular masa
     local mass = airDensity * cellVolume
