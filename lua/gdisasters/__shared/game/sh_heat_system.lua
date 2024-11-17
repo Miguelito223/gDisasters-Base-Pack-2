@@ -130,12 +130,46 @@ gDisasters.HeatSystem.CalculateThermalInertia = function(x, y, z)
     return Cell.thermalInertia
 end
 
+gDisasters.HeatSystem.CalculateSurroundingTemperature = function(x, y, z)
+    local grid = gDisasters.HeatSystem.GridMap
+    if not grid then return 0 end  -- Verifica si la celda existe
+    local Cell = gDisasters.HeatSystem.GridMap[x][y][z]
+    if not Cell then return 0 end  -- Verifica si la celda existe
+
+    local neighborTemperatures = {}
+    
+    -- Verifica y obtiene la temperatura de las celdas vecinas
+    for dx = -1, 1 do
+        for dy = -1, 1 do
+            for dz = -1, 1 do
+                -- Ignorar la celda central (dx=0, dy=0, dz=0)
+                if not (dx == 0 and dy == 0 and dz == 0) then
+                    local neighborCell = grid[x + dx * gDisasters.HeatSystem.cellSize] and grid[x + dx * gDisasters.HeatSystem.cellSize][y + dy * gDisasters.HeatSystem.cellSize] and grid[x + dx * gDisasters.HeatSystem.cellSize][y + dy * gDisasters.HeatSystem.cellSize][z + dz * gDisasters.HeatSystem.cellSize]
+                    if neighborCell and neighborCell.temperature then
+                        table.insert(neighborTemperatures, neighborCell.temperature)
+                    end
+                end
+            end
+        end
+    end
+
+    -- Calcula el promedio de temperaturas circundantes
+    local totalTemperature = 0
+    for _, temp in ipairs(neighborTemperatures) do
+        totalTemperature = totalTemperature + temp
+    end
+    
+    Cell.surroundingTemperature = #neighborTemperatures > 0 and (totalTemperature / #neighborTemperatures) or 23 -- Valor predeterminado si no hay vecinos
+    return Cell.surroundingTemperature
+
+end
+
 gDisasters.HeatSystem.CalculateConvectiveFactor = function(x, y, z)
     local Cell = gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z]
     if not Cell then return 0 end  -- Verifica si la celda existe
     
     local temperature = Cell.temperature or 23  -- Temperatura de la celda (en °C)
-    local surroundingTemperature = 20  -- Temperatura del aire circundante (en °C, ajustable)
+    local surroundingTemperature = gDisasters.HeatSystem.CalculateSurroundingTemperature(x,y,z) -- Temperatura del aire circundante (en °C, ajustable)
     local windSpeed = Cell.windSpeed or 0.1  -- Velocidad del viento (en m/s)
     local airDensity = Cell.airdensity or 0.01
     
@@ -145,10 +179,6 @@ gDisasters.HeatSystem.CalculateConvectiveFactor = function(x, y, z)
     -- Cálculo de la diferencia de temperatura entre la superficie y el aire
     local deltaT = temperature - surroundingTemperature
     
-    -- Reducir la convección si el delta de temperatura es bajo
-    if math.abs(deltaT) < 2 then
-        deltaT = deltaT * 0.5  -- Amortiguación para variaciones de temperatura bajas
-    end
     -- Cálculo del factor de convección (en función de la diferencia de temperatura, la densidad del aire y la velocidad del viento)
     local convectiveFactor = heatTransferCoefficient * airDensity * windSpeed * deltaT
     
@@ -158,22 +188,63 @@ gDisasters.HeatSystem.CalculateConvectiveFactor = function(x, y, z)
     return Cell.convectiveFactor
 end
 
+gDisasters.HeatSystem.CalculateAmbientTemperature = function(x, y, z)
+    local grid = gDisasters.HeatSystem.GridMap
+    if not grid then return 0 end  -- Verifica si la celda existe
+    local Cell = gDisasters.HeatSystem.GridMap[x][y][z]
+    if not Cell then return 0 end  -- Verifica si la celda existe
+
+    local neighborTemperatures = {}
+    local sigma = 5.67e-8  -- Constante de Stefan-Boltzmann
+
+    -- Recorrer vecinos
+    for dx = -1, 1 do
+        for dy = -1, 1 do
+            for dz = -1, 1 do
+                -- Ignorar la celda central
+                if not (dx == 0 and dy == 0 and dz == 0) then
+                    local neighborCell = grid[x + dx * gDisasters.HeatSystem.cellSize] and grid[x + dx * gDisasters.HeatSystem.cellSize][y + dy * gDisasters.HeatSystem.cellSize] and grid[x + dx * gDisasters.HeatSystem.cellSize][y + dy * gDisasters.HeatSystem.cellSize][z + dz * gDisasters.HeatSystem.cellSize]
+                    if neighborCell then
+                        -- Si tiene temperatura, considerar
+                        if neighborCell.temperature then
+                            table.insert(neighborTemperatures, neighborCell.temperature)
+                        -- Si tiene radiación, convertir a temperatura
+                        elseif neighborCell.radiationEmission then
+                            local emissivity = neighborCell.emissivity or 0.5
+                            local tempKelvin = math.pow(neighborCell.radiationEmission / (sigma * emissivity), 0.25)
+                            table.insert(neighborTemperatures, convert_KelvintoCelcius(tempKelvin))
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    -- Promedio de temperaturas vecinas
+    local totalTemperature = 0
+    for _, temp in ipairs(neighborTemperatures) do
+        totalTemperature = totalTemperature + temp
+    end
+
+    Cell.ambientTemperature =  #neighborTemperatures > 0 and (totalTemperature / #neighborTemperatures) or 23
+    return Cell.ambientTemperature  -- Valor predeterminado
+end
+
 gDisasters.HeatSystem.CalculateRadiationEmissionFactor = function(x, y, z)
     local Cell = gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z]
     if not Cell then return 0 end  -- Verifica si la celda existe
     
     local temperature = Cell.temperature or 23  -- Temperatura de la celda (en °C)
     local area = gDisasters.HeatSystem.cellArea or 1  -- Área de la celda (en m²)
-    local emissivity = Cell.emissivity or 0.9  -- Emisividad de la superficie (valor entre 0 y 1)
+    local emissivity = Cell.emissivity or 0.5  -- Emisividad de la superficie (valor entre 0 y 1)
     local temperatureKelvin = convert_CelciustoKelvin(temperature)  -- Convertir temperatura a Kelvin
-    local ambientTemperature = convert_CelciustoKelvin(23)  -- Temperatura ambiente en Kelvin (ajustable)
+    local ambientTemperature = convert_CelciustoKelvin(gDisasters.HeatSystem.CalculateAmbientTemperature(x,y,z))  -- Temperatura ambiente en Kelvin (ajustable)
 
     -- Constante de Stefan-Boltzmann (en W/m²·K⁴)
     local sigma = 5.67e-8  
 
-    local temperatureDifference = math.max(temperatureKelvin^4 - ambientTemperature^4, 0) -- Evita valores negativos
     -- Cálculo de la radiación emitida por la superficie
-    local radiationEmission = sigma * emissivity * area * temperatureDifference
+    local radiationEmission = sigma * emissivity * area * temperatureKelvin^4
     
     -- Guardar el valor de la emisión de radiación en la celda
     Cell.radiationEmission = radiationEmission * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
@@ -534,7 +605,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local maxAltitude = skybox[2].z or 1000
 
     local incomingEnergy = solarInfluence * (1 - (Cell.albedo or 0.3))
-    local outgoingRadiation = gDisasters.HeatSystem.CalculateRadiationEmissionFactor(x,y,z) * (currentTemperature ^ 4)
+    local outgoingRadiation = gDisasters.HeatSystem.CalculateRadiationEmissionFactor(x,y,z)
     local convectiveAdjustment = gDisasters.HeatSystem.CalculateConvectiveFactor(x,y,z) * (z_min / maxAltitude) * (averageTemperature - currentTemperature)
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
     local deltaTemperature = (incomingEnergy - outgoingRadiation) / ((Cell.mass or 1) * gDisasters.HeatSystem.materialHeatCapacity) * (Cell.thermalInertia or 1)
