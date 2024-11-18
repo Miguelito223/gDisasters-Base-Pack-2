@@ -170,7 +170,7 @@ gDisasters.HeatSystem.CalculateConvectiveFactor = function(x, y, z)
     
     local temperature = Cell.temperature or 23  -- Temperatura de la celda (en °C)
     local surroundingTemperature = gDisasters.HeatSystem.CalculateSurroundingTemperature(x,y,z) -- Temperatura del aire circundante (en °C, ajustable)
-    local windSpeed = Cell.windSpeed or 0.1  -- Velocidad del viento (en m/s)
+    local windSpeed = Cell.windSpeed or 0  -- Velocidad del viento (en m/s)
     local airDensity = Cell.airdensity or 0.01
     
     -- Constantes para el cálculo
@@ -236,7 +236,7 @@ gDisasters.HeatSystem.CalculateRadiationEmissionFactor = function(x, y, z)
     
     local temperature = Cell.temperature or 23  -- Temperatura de la celda (en °C)
     local area = gDisasters.HeatSystem.cellArea or 1  -- Área de la celda (en m²)
-    local emissivity = Cell.emissivity or 0.5  -- Emisividad de la superficie (valor entre 0 y 1)
+    local emissivity = gDisasters.HeatSystem.CalculateEmissivity(x,y,z)
     local temperatureKelvin = convert_CelciustoKelvin(temperature)  -- Convertir temperatura a Kelvin
     local ambientTemperature = convert_CelciustoKelvin(gDisasters.HeatSystem.CalculateAmbientTemperature(x,y,z))  -- Temperatura ambiente en Kelvin (ajustable)
 
@@ -608,7 +608,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local outgoingRadiation = gDisasters.HeatSystem.CalculateRadiationEmissionFactor(x,y,z)
     local convectiveAdjustment = gDisasters.HeatSystem.CalculateConvectiveFactor(x,y,z) * (z_min / maxAltitude) * (averageTemperature - currentTemperature)
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
-    local deltaTemperature = (incomingEnergy - outgoingRadiation) / ((Cell.mass or 1) * gDisasters.HeatSystem.materialHeatCapacity) * (Cell.thermalInertia or 1)
+    local deltaTemperature = (incomingEnergy - outgoingRadiation) / ((gDisasters.HeatSystem.CalculateMass(x, y, z) or 1) * gDisasters.HeatSystem.materialHeatCapacity) * (gDisasters.HeatSystem.CalculateThermalInertia(x, y, z) or 1)
 
     -- Calcular la nueva temperatura
     local newTemperature = math.Clamp(currentTemperature + deltaTemperature + temperatureChange + convectiveAdjustment  + terraintemperatureEffect + coolingEffect - altitudeAdjustment, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
@@ -735,7 +735,7 @@ gDisasters.HeatSystem.CalculateWindSpeed = function(x, y, z)
     local terrainFriction = Cell.terrainwindEffect or 1  -- Coeficiente de fricción según el tipo de terreno
 
     -- Calcular la densidad del aire en la celda actual
-    local airDensity = Cell.airdensity
+    local airDensity = gDisasters.HeatSystem.CalculateAirDensity(x,y,z)
 
     -- Variables para el gradiente de presión y temperatura
     local deltaPressure = 0
@@ -794,7 +794,7 @@ gDisasters.HeatSystem.CalculateWindDirection = function(x, y, z)
     local pressure = Cell.pressure or 101325
 
     -- Calcular la densidad del aire en la celda actual
-    local airDensity = Cell.airdensity
+    local airDensity = gDisasters.HeatSystem.CalculateAirDensity(x, y, z)
 
     -- Recuperar presiones de las celdas adyacentes en los ejes x, y y z
     local pressureLeft = gDisasters.HeatSystem.GridMap[x-1] and gDisasters.HeatSystem.GridMap[x-1][y] and gDisasters.HeatSystem.GridMap[x-1][y][z] and gDisasters.HeatSystem.GridMap[x-1][y][z].pressure or pressure
@@ -844,7 +844,7 @@ gDisasters.HeatSystem.CalculateAirflow = function(x, y, z)
     local area = gDisasters.HeatSystem.cellArea or 1  -- Área de la celda, en m²
 
     -- Calcular la densidad del aire en la celda actual
-    local airDensity = Cell.airdensity
+    local airDensity = gDisasters.HeatSystem.CalculateAirDensity(x, y, z)
 
     -- Ajustar el flujo en función de las diferencias de presión y temperatura con celdas vecinas
     local deltaPressure = 0
@@ -1451,11 +1451,6 @@ gDisasters.HeatSystem.GenerateGrid = function()
                         gDisasters.HeatSystem.CalculateHumidity(x,y,z)
                         gDisasters.HeatSystem.CalculatePressure(x,y,z)
                         gDisasters.HeatSystem.Calculatetemperaturebh(x, y, z)
-                        
-                        gDisasters.HeatSystem.CalculateAirDensity(x, y, z)
-                        gDisasters.HeatSystem.CalculateMass(x, y, z)
-                        gDisasters.HeatSystem.CalculateThermalInertia(x, y, z)
-                        gDisasters.HeatSystem.CalculateEmissivity(x,y,z)
 
                         -- Calcular la velocidad de aire
                         gDisasters.HeatSystem.CalculateWindSpeed(x,y,z)
@@ -1597,10 +1592,7 @@ gDisasters.HeatSystem.UpdateGrid = function()
                         gDisasters.HeatSystem.CalculatePressure(x, y, z)
                         gDisasters.HeatSystem.Calculatetemperaturebh(x, y, z)
                         
-                        gDisasters.HeatSystem.CalculateAirDensity(x, y, z)
                         gDisasters.HeatSystem.CalculateMass(x, y, z)
-                        gDisasters.HeatSystem.CalculateThermalInertia(x, y, z)
-                        gDisasters.HeatSystem.CalculateEmissivity(x,y,z)
                         
                         -- Calcular la velocidad de aire
                         gDisasters.HeatSystem.CalculateWindSpeed(x, y, z)
