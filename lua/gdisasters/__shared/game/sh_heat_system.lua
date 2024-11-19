@@ -347,7 +347,7 @@ gDisasters.HeatSystem.CalculateEmissivity = function(x, y, z)
         Cell.emissivity = 0
     end
 
-    return Cell.emissivity   -- Valor por defecto si no se especifica el tipo de terreno
+    return Cell.emissivity or 0   -- Valor por defecto si no se especifica el tipo de terreno
 end
 
 gDisasters.HeatSystem.CalculateVPsHb = function(x, y, z)
@@ -1419,7 +1419,7 @@ gDisasters.HeatSystem.CalculateAlbedo = function(x, y, z)
         Cell.albedo = 0.3
     end
     
-    return Cell.albedo    -- Valor por defecto si no se especifica el tipo de terreno
+    return Cell.albedo or 0.3    -- Valor por defecto si no se especifica el tipo de terreno
 end
 
 -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
