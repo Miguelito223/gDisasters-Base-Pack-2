@@ -335,24 +335,19 @@ gDisasters.HeatSystem.CalculateEmissivity = function(x, y, z)
 
     if terrainType == "Snow" then
         Cell.emissivity = 0.80
-        return Cell.emissivity
     elseif terrainType == "Sand" then
         Cell.emissivity = 0.76
-        return Cell.emissivity
     elseif terrainType == "Water" then
         Cell.emissivity = 0.95
-        return Cell.emissivity  -- Albedo para agua
     elseif terrainType == "Grass" then
         Cell.emissivity = 0.92
-        return Cell.emissivity  -- Albedo para bosque
     elseif terrainType == "Asfalt" then
         Cell.emissivity = 0.85
-        return Cell.emissivity   -- Albedo para asfalto
     else
         Cell.emissivity = 0
-        return Cell.emissivity   -- Valor por defecto si no se especifica el tipo de terreno
     end
 
+    return Cell.emissivity   -- Valor por defecto si no se especifica el tipo de terreno
 end
 
 gDisasters.HeatSystem.CalculateVPsHb = function(x, y, z)
@@ -521,43 +516,57 @@ gDisasters.HeatSystem.CalculatelatentHeat = function(x, y, z)
 end
 
 gDisasters.HeatSystem.CalculateTerrainInfluence = function(x, y, z)
-    local Cell = gDisasters.HeatSystem.GridMap[x][y][z]
-    if not Cell then return end
-   
-    if Cell.terrainType == "Grass" then
-        Cell.terrainTemperatureEffect = gDisasters.HeatSystem.GrassTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
-        Cell.terrainHumidityEffect = gDisasters.HeatSystem.GrassHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
-        Cell.terrainwindEffect = gDisasters.HeatSystem.GrassWindEffect * gDisasters.HeatSystem.TerrainCoefficient
-    elseif Cell.terrainType == "Snow" then
-        Cell.terrainTemperatureEffect = gDisasters.HeatSystem.SnowTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
-        Cell.terrainHumidityEffect = gDisasters.HeatSystem.SnowHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
-        Cell.terrainwindEffect = gDisasters.HeatSystem.SnowWindEffect * gDisasters.HeatSystem.TerrainCoefficient
-    elseif Cell.terrainType == "Asfalt" then
-        Cell.terrainTemperatureEffect = gDisasters.HeatSystem.AsfaltTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
-        Cell.terrainHumidityEffect = gDisasters.HeatSystem.AsfaltHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
-        Cell.terrainwindEffect = gDisasters.HeatSystem.AsfaltWindEffect * gDisasters.HeatSystem.TerrainCoefficient   
-    elseif Cell.terrainType == "Sand" then
-        Cell.terrainTemperatureEffect = gDisasters.HeatSystem.SandTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
-        Cell.terrainHumidityEffect = gDisasters.HeatSystem.SandHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
-        Cell.terrainwindEffect = gDisasters.HeatSystem.SandWindEffect * gDisasters.HeatSystem.TerrainCoefficient   
-    elseif Cell.terrainType == "Water" then
-        Cell.terrainTemperatureEffect = gDisasters.HeatSystem.waterTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
-        Cell.terrainHumidityEffect = gDisasters.HeatSystem.waterHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
-        Cell.terrainwindEffect = gDisasters.HeatSystem.waterWindEffect * gDisasters.HeatSystem.TerrainCoefficient
-    elseif Cell.terrainType == "Land" then
-        Cell.terrainTemperatureEffect = gDisasters.HeatSystem.GrassTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
-        Cell.terrainHumidityEffect = gDisasters.HeatSystem.GrassHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
-        Cell.terrainwindEffect = gDisasters.HeatSystem.GrassWindEffect * gDisasters.HeatSystem.TerrainCoefficient       
-    elseif Cell.terrainType == "Air" then
-        Cell.terrainTemperatureEffect = 0
-        Cell.terrainHumidityEffect = 0
-        Cell.terrainwindEffect = 0
+    local Cell = gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z]
+    if not Cell then return {temperatureEffect = 0, humidityEffect = 0, windEffect = 0} end
+
+    local effects = {
+        temperatureEffect = 0,
+        humidityEffect = 0,
+        windEffect = 0
+    }
+
+    local terrainType = Cell.terrainType or "Air"
+
+    if terrainType == "Grass" then
+        effects.temperatureEffect = gDisasters.HeatSystem.GrassTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
+        effects.humidityEffect = gDisasters.HeatSystem.GrassHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
+        effects.windEffect = gDisasters.HeatSystem.GrassWindEffect * gDisasters.HeatSystem.TerrainCoefficient
+    elseif terrainType == "Snow" then
+        effects.temperatureEffect = gDisasters.HeatSystem.SnowTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
+        effects.humidityEffect = gDisasters.HeatSystem.SnowHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
+        effects.windEffect = gDisasters.HeatSystem.SnowWindEffect * gDisasters.HeatSystem.TerrainCoefficient
+    elseif terrainType == "Asfalt" then
+        effects.temperatureEffect = gDisasters.HeatSystem.AsfaltTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
+        effects.humidityEffect = gDisasters.HeatSystem.AsfaltHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
+        effects.windEffect = gDisasters.HeatSystem.AsfaltWindEffect * gDisasters.HeatSystem.TerrainCoefficient
+    elseif terrainType == "Sand" then
+        effects.temperatureEffect = gDisasters.HeatSystem.SandTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
+        effects.humidityEffect = gDisasters.HeatSystem.SandHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
+        effects.windEffect = gDisasters.HeatSystem.SandWindEffect * gDisasters.HeatSystem.TerrainCoefficient
+    elseif terrainType == "Water" then
+        effects.temperatureEffect = gDisasters.HeatSystem.waterTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
+        effects.humidityEffect = gDisasters.HeatSystem.waterHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
+        effects.windEffect = gDisasters.HeatSystem.waterWindEffect * gDisasters.HeatSystem.TerrainCoefficient
+    elseif terrainType == "Land" then
+        effects.temperatureEffect = gDisasters.HeatSystem.GrassTemperatureEffect * gDisasters.HeatSystem.TerrainCoefficient
+        effects.humidityEffect = gDisasters.HeatSystem.GrassHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
+        effects.windEffect = gDisasters.HeatSystem.GrassWindEffect * gDisasters.HeatSystem.TerrainCoefficient
+    elseif terrainType == "Air" then
+        effects.temperatureEffect = 0
+        effects.humidityEffect = 0
+        effects.windEffect = 0
     else
-        Cell.terrainTemperatureEffect = 0
-        Cell.terrainHumidityEffect = 0
-        Cell.terrainwindEffect = 0
+        effects.temperatureEffect = 0
+        effects.humidityEffect = 0
+        effects.windEffect = 0
     end
 
+    -- Guardar los valores en la celda para futuros cálculos
+    Cell.terrainTemperatureEffect = effects.temperatureEffect
+    Cell.terrainHumidityEffect = effects.humidityEffect
+    Cell.terrainWindEffect = effects.windEffect
+
+    return effects
 end
 
 gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
@@ -604,7 +613,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local skybox = getMapSkyBox()
     local maxAltitude = skybox[2].z or 1000
 
-    local incomingEnergy = solarInfluence * (1 - (Cell.albedo or 0.3))
+    local incomingEnergy = solarInfluence * (1 - (gDisasters.HeatSystem.CalculateAlbedo(x, y, z) or 0.3))
     local outgoingRadiation = gDisasters.HeatSystem.CalculateRadiationEmissionFactor(x,y,z)
     local convectiveAdjustment = gDisasters.HeatSystem.CalculateConvectiveFactor(x,y,z) * (z_min / maxAltitude) * (averageTemperature - currentTemperature)
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
@@ -1398,23 +1407,19 @@ gDisasters.HeatSystem.CalculateAlbedo = function(x, y, z)
 
     if terrainType == "Snow" then
         Cell.albedo = 0.85
-        return Cell.albedo    -- Albedo para asfalto
     elseif terrainType == "Sand" then
-        Cell.albedo = 0.4
-        return Cell.albedo    -- Albedo para asfalto       
+        Cell.albedo = 0.4   
     elseif terrainType == "Water" then
-        Cell.albedo = 0.08
-        return Cell.albedo    -- Albedo para asfalto       
+        Cell.albedo = 0.08    
     elseif terrainType == "Grass" then
         Cell.albedo = 0.15
-        return Cell.albedo    -- Albedo para asfalto
     elseif terrainType == "Asfalt" then
         Cell.albedo = 0.1
-        return Cell.albedo    -- Albedo para asfalto
     else
         Cell.albedo = 0.3
-        return Cell.albedo    -- Valor por defecto si no se especifica el tipo de terreno
     end
+    
+    return Cell.albedo    -- Valor por defecto si no se especifica el tipo de terreno
 end
 
 -- Función para generar la cuadrícula y actualizar la temperatura en cada ciclo
@@ -1443,8 +1448,6 @@ gDisasters.HeatSystem.GenerateGrid = function()
                         gDisasters.HeatSystem.CalculateSources(x, y, z)
                         -- Calcular la influencia de terreno
                         gDisasters.HeatSystem.CalculateTerrainInfluence(x, y, z)
-
-                        gDisasters.HeatSystem.CalculateAlbedo(x, y, z)
 
                         -- Calcular la temperatura y la humedad de la celda actual 
                         gDisasters.HeatSystem.CalculateTemperature(x,y,z)
@@ -1583,8 +1586,6 @@ gDisasters.HeatSystem.UpdateGrid = function()
                         
                         -- Calcular la influencia de terreno
                         gDisasters.HeatSystem.CalculateTerrainInfluence(x, y, z)
-                        
-                        gDisasters.HeatSystem.CalculateAlbedo(x, y, z)
                         
                         -- Calcular la temperatura y la humedad de la celda actual 
                         gDisasters.HeatSystem.CalculateTemperature(x, y, z)
