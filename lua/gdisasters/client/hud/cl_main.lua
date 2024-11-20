@@ -456,10 +456,10 @@ function hud_DrawHeatSystemINFO()
 			draw.DrawText( language.GetPhrase("gd_hud_coolingeffect")..convert_CelciustoKelvin(Cooling_Effect).."°K", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_cooling_Effect.x , pos_cooling_Effect.y, color, TEXT_ALIGN_LEFT )	
 		end
 
-		if GetConVar("gdisasters_hud_windtype"):GetString() == "km/h" then
+		if GetConVar("gdisasters_hud_windtype"):GetString() == " km/h" then
 			draw.DrawText( language.GetPhrase("gd_hud_airflow")..Air_Flow.." km/h", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_Air_Flow.x , pos_Air_Flow.y, color, TEXT_ALIGN_LEFT )
 		elseif GetConVar("gdisasters_hud_windtype"):GetString() == "mph" then
-			draw.DrawText( language.GetPhrase("gd_hud_airflow")..convert_KMPHtoMPH(Air_Flow).." km/h", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_Air_Flow.x , pos_Air_Flow.y, color, TEXT_ALIGN_LEFT )
+			draw.DrawText( language.GetPhrase("gd_hud_airflow")..convert_KMPHtoMPH(Air_Flow).." mph", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_Air_Flow.x , pos_Air_Flow.y, color, TEXT_ALIGN_LEFT )
 		end
 		
 		
