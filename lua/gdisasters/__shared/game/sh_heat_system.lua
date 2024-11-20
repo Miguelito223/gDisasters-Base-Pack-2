@@ -120,7 +120,7 @@ gDisasters.HeatSystem.CalculateThermalInertia = function(x, y, z)
     local Cell = gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z]
     if not Cell then return 0 end  -- Verifica si la celda existe
 
-    local airDensity = Cell.airdensity
+    local airDensity = gDisasters.HeatSystem.CalculateAirDensity(x, y, z)
     local materialHeatCapacity = gDisasters.HeatSystem.materialHeatCapacity  -- Capacidad calorífica del aire (J/(kg·°C))
     local cellThickness = gDisasters.HeatSystem.cellSize  -- Espesor de la celda (en metros, ajustable)
 
@@ -171,7 +171,7 @@ gDisasters.HeatSystem.CalculateConvectiveFactor = function(x, y, z)
     local temperature = Cell.temperature or 23  -- Temperatura de la celda (en °C)
     local surroundingTemperature = gDisasters.HeatSystem.CalculateSurroundingTemperature(x,y,z) -- Temperatura del aire circundante (en °C, ajustable)
     local windSpeed = Cell.windSpeed or 0  -- Velocidad del viento (en m/s)
-    local airDensity = Cell.airdensity or 0.01
+    local airDensity = gDisasters.HeatSystem.CalculateAirDensity(x, y, z)
     
     -- Constantes para el cálculo
     local heatTransferCoefficient = 20  -- Coeficiente de transferencia de calor por convección (ajustable)
@@ -397,7 +397,7 @@ end
 
 gDisasters.HeatSystem.CalculatePrecipitation = function(x, y, z)
     local Cell = gDisasters.HeatSystem.GridMap[x][y][z]
-    local latentHeat = Cell.LatentHeat or 0.01
+    local latentHeat = gDisasters.HeatSystem.CalculatelatentHeat(x, y, z)
     local Temperature = Cell.temperature or 23
     local Humidity = Cell.humidity or 25
 
@@ -501,18 +501,16 @@ gDisasters.HeatSystem.CalculatelatentHeat = function(x, y, z)
     if cloudDensity > 0 then
         if (currentTemperature > gDisasters.HeatSystem.freezingTemperature) then 
             Cell.LatentHeat = gDisasters.HeatSystem.calculateCondensationLatentHeat(cloudDensity)
-            return Cell.LatentHeat
         elseif (currentTemperature >= gDisasters.HeatSystem.boilingTemperature) then 
             Cell.LatentHeat = gDisasters.HeatSystem.CalculateVaporizationLatentHeat(cloudDensity)
-            return Cell.LatentHeat
         elseif (currentTemperature <= gDisasters.HeatSystem.freezingTemperature) then 
             Cell.LatentHeat = gDisasters.HeatSystem.calculateFreezingLatentHeat(cloudDensity)
-            return Cell.LatentHeat
         end
     else
         Cell.LatentHeat = 0
-        return Cell.LatentHeat
     end
+
+    return Cell.LatentHeat
 end
 
 gDisasters.HeatSystem.CalculateTerrainInfluence = function(x, y, z)
@@ -603,7 +601,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
 
     -- Factores adicionales (solar, terreno, etc.)
     local solarInfluence = gDisasters.HeatSystem.CalculateSolarRadiation(x, y, z, gDisasters.DayNightSystem.Time)
-    local terraintemperatureEffect = Cell.terrainTemperatureEffect or 0
+    local terraintemperatureEffect = gDisasters.HeatSystem.CalculateTerrainInfluence(x,y,z)[1]
     local coolingEffect = gDisasters.HeatSystem.CalculateCoolEffect(x, y, z)
                         
     local z_min = math.max(z, 0)
@@ -613,11 +611,11 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local skybox = getMapSkyBox()
     local maxAltitude = skybox[2].z or 1000
 
-    local incomingEnergy = solarInfluence * (1 - (gDisasters.HeatSystem.CalculateAlbedo(x, y, z) or 0.3))
+    local incomingEnergy = solarInfluence * (1 - gDisasters.HeatSystem.CalculateAlbedo(x, y, z))
     local outgoingRadiation = gDisasters.HeatSystem.CalculateRadiationEmissionFactor(x,y,z)
     local convectiveAdjustment = gDisasters.HeatSystem.CalculateConvectiveFactor(x,y,z) * (z_min / maxAltitude) * (averageTemperature - currentTemperature)
     local temperatureChange = gDisasters.HeatSystem.TempDiffusionCoefficient * (averageTemperature - currentTemperature)
-    local deltaTemperature = (incomingEnergy - outgoingRadiation) / ((gDisasters.HeatSystem.CalculateMass(x, y, z) or 1) * gDisasters.HeatSystem.materialHeatCapacity) * (gDisasters.HeatSystem.CalculateThermalInertia(x, y, z) or 1)
+    local deltaTemperature = (incomingEnergy - outgoingRadiation) / (gDisasters.HeatSystem.CalculateMass(x, y, z) * gDisasters.HeatSystem.materialHeatCapacity) * gDisasters.HeatSystem.CalculateThermalInertia(x, y, z) 
 
     -- Calcular la nueva temperatura
     local newTemperature = math.Clamp(currentTemperature + deltaTemperature + temperatureChange + convectiveAdjustment  + terraintemperatureEffect + coolingEffect - altitudeAdjustment, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
@@ -627,13 +625,26 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     return Cell.temperature
 end
 
-gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)    
+gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)
     local totalHumidity = 0
     local count = 0
 
-    local Cell = gDisasters.HeatSystem.GridMap[x][y][z]
+    local Cell = gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z]
     if not Cell then return 0 end -- Verificar que la celda actual exista
 
+    -- Factor de temperatura (influencia en la capacidad del aire para retener humedad)
+    local temperature = Cell.temperature or 23
+    local temperatureFactor = 1 + ((temperature - 23) * 0.02) -- Incremento del 2% por grado Celsius adicional
+
+    -- Altitud (disminución de humedad en altitudes mayores)
+    local altitude = z
+    local altitudeFactor = math.max(0.8, 1 - (altitude / 10000)) -- Reducir humedad en altitudes altas, mínimo 80%
+
+    -- Velocidad del viento (dispersión de humedad)
+    local windSpeed = Cell.windSpeed or 0
+    local windFactor = 1 + (windSpeed * 0.05) -- Incremento del 5% por m/s de viento
+
+    -- Recopilar humedad de celdas vecinas
     for dx = -1, 1 do
         for dy = -1, 1 do
             for dz = -1, 1 do
@@ -651,20 +662,23 @@ gDisasters.HeatSystem.CalculateHumidity = function(x, y, z)
         end
     end
 
-    if count == 0 then 
-        Cell.humidity = 25
-        return Cell.humidity
-    end
+    -- Calcular la humedad promedio de los vecinos
+    local averageHumidity = (count > 0) and (totalHumidity / count) or 25 -- Valor por defecto si no hay vecinos
 
-    local averageHumidity = totalHumidity / count
-
+    -- Calcular nuevos efectos
     local currentHumidity = Cell.humidity or 25
-    local terrainHumidityEffect = Cell.terrainHumidityEffect
+    local terrainHumidityEffect = gDisasters.HeatSystem.CalculateTerrainInfluence(x,y,z)[2]
     local humidityChange = gDisasters.HeatSystem.HumidityDiffusionCoefficient * (averageHumidity - currentHumidity)
-    local newHumidity = math.Clamp(currentHumidity + humidityChange + terrainHumidityEffect, gDisasters.HeatSystem.minHumidity, gDisasters.HeatSystem.maxHumidity)
-    
+
+    -- Incorporar todos los factores en el cálculo de la nueva humedad
+    local newHumidity = currentHumidity + humidityChange + terrainHumidityEffect
+    newHumidity = newHumidity * temperatureFactor * altitudeFactor * windFactor
+
+    -- Clampear la humedad a los límites permitidos
+    newHumidity = math.Clamp(newHumidity, gDisasters.HeatSystem.minHumidity, gDisasters.HeatSystem.maxHumidity)
+
+    -- Guardar y devolver la nueva humedad
     Cell.humidity = newHumidity
-    
     return Cell.humidity
 end
 
@@ -741,7 +755,7 @@ gDisasters.HeatSystem.CalculateWindSpeed = function(x, y, z)
     local temperature = Cell.temperature or 23
     local pressure = Cell.pressure or 101325
     local altitude = z or 0  -- Altitud de la celda (puede ser en metros)
-    local terrainFriction = Cell.terrainwindEffect or 1  -- Coeficiente de fricción según el tipo de terreno
+    local terrainFriction = gDisasters.HeatSystem.CalculateTerrainInfluence(x,y,z)[3] -- Coeficiente de fricción según el tipo de terreno
 
     -- Calcular la densidad del aire en la celda actual
     local airDensity = gDisasters.HeatSystem.CalculateAirDensity(x,y,z)
@@ -795,6 +809,7 @@ gDisasters.HeatSystem.CalculateWindSpeed = function(x, y, z)
     -- Limitar la velocidad del viento a los valores mínimos y máximos establecidos en el sistema
     return Cell.windspeed
 end
+
 gDisasters.HeatSystem.CalculateWindDirection = function(x, y, z)
     local Cell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not Cell then return Vector(0, 0, 0) end  -- Retorna un vector nulo si la celda no existe
@@ -1385,7 +1400,7 @@ gDisasters.HeatSystem.CalculateMass = function(x, y, z)
     local Cell = gDisasters.HeatSystem.GridMap[x][y][z]
     if not Cell then return 0 end -- Verificar que la celda exista
     -- Calcular densidad del aire en la celda
-    local airDensity = Cell.airdensity
+    local airDensity = gDisasters.HeatSystem.CalculateAirDensity(x, y, z)
 
     -- Calcular volumen de la celda
     local cellVolume = gDisasters.HeatSystem.cellVolumen
@@ -1447,7 +1462,6 @@ gDisasters.HeatSystem.GenerateGrid = function()
                         -- Agregar fuente de temperatura    
                         gDisasters.HeatSystem.CalculateSources(x, y, z)
                         -- Calcular la influencia de terreno
-                        gDisasters.HeatSystem.CalculateTerrainInfluence(x, y, z)
 
                         -- Calcular la temperatura y la humedad de la celda actual 
                         gDisasters.HeatSystem.CalculateTemperature(x,y,z)
@@ -1584,16 +1598,11 @@ gDisasters.HeatSystem.UpdateGrid = function()
                     if gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z] then
                         local Cell = gDisasters.HeatSystem.GridMap[x][y][z]
                         
-                        -- Calcular la influencia de terreno
-                        gDisasters.HeatSystem.CalculateTerrainInfluence(x, y, z)
-                        
                         -- Calcular la temperatura y la humedad de la celda actual 
                         gDisasters.HeatSystem.CalculateTemperature(x, y, z)
                         gDisasters.HeatSystem.CalculateHumidity(x, y, z)
                         gDisasters.HeatSystem.CalculatePressure(x, y, z)
                         gDisasters.HeatSystem.Calculatetemperaturebh(x, y, z)
-                        
-                        gDisasters.HeatSystem.CalculateMass(x, y, z)
                         
                         -- Calcular la velocidad de aire
                         gDisasters.HeatSystem.CalculateWindSpeed(x, y, z)
