@@ -921,11 +921,10 @@ gDisasters.HeatSystem.GetCellType = function(x, y, z)
     end
     
     local cellSize = gDisasters.HeatSystem.cellSize
-    local traceStart = Vector(x, y, z)
+    local traceStart = Vector(x, y, z + (cellSize / 2))
     -- Limitar la posición final del rayo dentro de los límites de la celda
-    local traceEnd = traceStart - Vector(0, 0, cellSize) -- Asegurarse de que el rayo no salga de la celda
-    -- Aumentar la distancia del trace para cubrir más terreno pero limitado al tamaño de la celda
-    traceEnd = traceStart + Vector(0, 0, -cellSize)
+    local traceEnd = traceStart - Vector(0, 0, z - (cellSize / 2)) -- Asegurarse de que el rayo no salga de la celda
+
     -- Comprobar colisión con agua
     local trWater = util.TraceLine({
         start = traceStart,
@@ -935,6 +934,7 @@ gDisasters.HeatSystem.GetCellType = function(x, y, z)
     })
 
     if trWater.Hit then
+        table.insert(gDisasters.HeatSystem.WaterSources, {x = x, y = y , z = z})
         return "Water"
     end
 
@@ -948,19 +948,25 @@ gDisasters.HeatSystem.GetCellType = function(x, y, z)
 
     if trLand.Hit then
         if trLand.MatType == MAT_GRASS then
+            table.insert(gDisasters.HeatSystem.GrassSources, {x = x, y = y , z = z})
             return "Grass"
         elseif trLand.MatType == MAT_SNOW then
+            table.insert(gDisasters.HeatSystem.SnowSources, {x = x, y = y , z = z})
             return "Snow"
         elseif trLand.MatType == MAT_SAND then
+            table.insert(gDisasters.HeatSystem.SandSources, {x = x, y = y , z = z})
             return "Sand"
         elseif trLand.MatType == MAT_CONCRETE then
+            table.insert(gDisasters.HeatSystem.AsfaltSources, {x = x, y = y , z = z})
             return "Asfalt"
         else
+            table.insert(gDisasters.HeatSystem.LandSources, {x = x, y = y , z = z})
             return "Land" -- Cualquier otro material sólido se clasifica como "Land"
         end
     end
 
     -- Si no detecta colisiones con agua ni tierra, se considera "Air"
+    table.insert(gDisasters.HeatSystem.AirSources, {x = x, y = y , z = z})
     return "Air"
 end
 
@@ -1161,85 +1167,19 @@ gDisasters.HeatSystem.GetClosestDistance = function(x, y, z, sources)
 end
 
 -- Función para calcular el tipo de terreno más cercano
-gDisasters.HeatSystem.CalculateSources = function(x, y, z)
+gDisasters.HeatSystem.CalculateTerrainType = function(x, y, z)
     local Cell = gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z]
-    if not Cell then return "Air" end  -- Valor predeterminado si la celda no existe
-    
-    print("Calculando tipo de terreno para la celda...")
-
-    -- Añadir todas las fuentes pertinentes (si es necesario)
-    gDisasters.HeatSystem.AddLandSources(x, y, z)
-    gDisasters.HeatSystem.AddWaterSources(x, y, z)
-    gDisasters.HeatSystem.AddAirSources(x, y, z)
-
-    -- Obtener las distancias más cercanas a cada tipo de fuente
-    local closestWaterDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.WaterSources) or math.huge
-    local closestLandDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.LandSources) or math.huge
-    local closestSandDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.SandSources) or math.huge
-    local closestGrassDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.GrassSources) or math.huge
-    local closestSnowDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.SnowSources) or math.huge
-    local closestAsfaltDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.AsfaltSources) or math.huge
-    local closestAirDist = gDisasters.HeatSystem.GetClosestDistance(x, y, z, gDisasters.HeatSystem.AirSources) or math.huge
-
-    -- Tabla de distancias con prioridades para cada tipo de fuente
-    local distances = {
-        {type = "Water", distance = closestWaterDist, priority = 6},
-        {type = "Sand", distance = closestSandDist, priority = 3},
-        {type = "Grass", distance = closestGrassDist, priority = 2},
-        {type = "Snow", distance = closestSnowDist, priority = 5},
-        {type = "Asfalt", distance = closestAsfaltDist, priority = 1},
-        {type = "Land", distance = closestLandDist, priority = 4},
-        {type = "Air", distance = closestAirDist, priority = 7},  -- Última prioridad (si no hay nada cercano)
-    }
-
-    -- Buscar el tipo de terreno más cercano con la menor distancia y prioridad
-    local closestType = "Air"  -- Valor predeterminado
-    local minDistance = math.huge
-    local highestPriority = 7
-
-    for _, entry in ipairs(distances) do
-        if entry.distance and entry.distance < minDistance and entry.priority <= highestPriority then
-            minDistance = entry.distance
-            closestType = entry.type
-            highestPriority = entry.priority
-        end
+    if not Cell then
+        return "Air"  -- Si la celda no existe, asumimos que está en el aire.
     end
 
-    print(string.format("Tipo de terreno más cercano: %s con distancia: %.2f", closestType, minDistance))
-    Cell.terrainType = closestType
+    -- Determinar el tipo de terreno directamente con ray tracing
+    local cellType = gDisasters.HeatSystem.GetCellType(x, y, z)
+
+    -- Actualizar el tipo de terreno en la celda
+    Cell.terrainType = cellType or "Air"  -- Por defecto, "Air" si no se detecta un tipo válido.
+
     return Cell.terrainType
-end
-
--- Función para obtener las coordenadas de las fuentes de agua
-gDisasters.HeatSystem.AddWaterSources = function(x,y,z)
-    local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
-    if celltype == "Water" then
-        table.insert(gDisasters.HeatSystem.WaterSources, {x = x, y = y , z = z})
-    end
-end
-
--- Función para obtener las coordenadas de las fuentes de tierra
-gDisasters.HeatSystem.AddLandSources = function(x,y,z)
-    local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
-    if celltype == "Sand" then
-        table.insert(gDisasters.HeatSystem.SandSources, {x = x, y = y , z = z})
-    elseif celltype == "Grass" then
-        table.insert(gDisasters.HeatSystem.GrassSources, {x = x, y = y , z = z})
-    elseif celltype == "Snow" then
-        table.insert(gDisasters.HeatSystem.SnowSources, {x = x, y = y , z = z})
-    elseif celltype == "Asfalt" then
-        table.insert(gDisasters.HeatSystem.AsfaltSources, {x = x, y = y , z = z})
-    elseif celltype == "Land" then
-        table.insert(gDisasters.HeatSystem.LandSources, {x = x, y = y , z = z})
-    end
-end
-
--- Función para obtener las coordenadas de las fuentes de aire
-gDisasters.HeatSystem.AddAirSources = function(x,y,z)
-    local celltype = gDisasters.HeatSystem.GetCellType(x, y, z)
-    if celltype == "Air" then
-        table.insert(gDisasters.HeatSystem.AirSources, {x = x, y = y , z = z})
-    end
 end
 
 gDisasters.HeatSystem.AdjustCloudBaseHeight = function(x,y,z)
@@ -1454,7 +1394,7 @@ gDisasters.HeatSystem.GenerateGrid = function()
                         gDisasters.HeatSystem.GridMap[x][y][z] = {}
 
                         -- Agregar fuente de temperatura    
-                        gDisasters.HeatSystem.CalculateSources(x, y, z)
+                        gDisasters.HeatSystem.CalculateTerrainType(x,y,z)
                         -- Calcular la influencia de terreno
 
                         -- Calcular la temperatura y la humedad de la celda actual 

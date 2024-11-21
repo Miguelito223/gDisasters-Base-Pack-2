@@ -388,7 +388,7 @@ function hud_DrawHeatSystemINFO()
 	local pos_dew_point        = Vector(280 * xscale, 860 * yscale, 0)
 	local pos_air_temperature_bh      	   = Vector(280 * xscale, 890 * yscale, 0)
 	local pos_latent_heat                 = Vector(280 * xscale, 920 * yscale , 0)
-	local pos_cooling_Effect             = Vector(280 * xscale, 950 * yscale , 0)
+	local pos_Terrain_Type             = Vector(280 * xscale, 950 * yscale , 0)
 	local pos_cloud_Density               = Vector(280 * xscale, 980 * yscale , 0)
 	local pos_Solar_Influence               = Vector(280 * xscale, 1010 * yscale , 0)
 	local pos_Heat_Index             = Vector(280 * xscale, 1040 * yscale , 0)
@@ -399,7 +399,6 @@ function hud_DrawHeatSystemINFO()
 	local air_tmpbh = math.Round(cell.temperaturebh,1)
 	local dewpoint =  math.Round(cell.dewpoint,1)
 	local solarInfluence =  math.Round(cell.solarInfluence,1)
-	local coolingEffect = math.Round(cell.coolingEffect,1)
 	local LatentHeat = math.Round(cell.LatentHeat,1)
 	local VPs = math.Round(cell.VPs,1)
 	local VPsHb = math.Round(cell.VPshb,1)
@@ -413,7 +412,7 @@ function hud_DrawHeatSystemINFO()
 	local Air_Temp_bh = tostring(air_tmpbh)
 	local Solar_Influence = tostring(solarInfluence)
 	local Dew_Point = tostring(dewpoint)
-	local Cooling_Effect = tostring(coolingEffect)
+	local Terrain_Type = tostring(cell.terrainType)
 	local Latent_Heat = tostring(LatentHeat)
 	local cloud_Density = tostring(cloudDensity)
 	local Heat_Index = tostring(Heatindex)
@@ -439,24 +438,21 @@ function hud_DrawHeatSystemINFO()
 			draw.DrawText( language.GetPhrase("gd_hud_dewpoint")..Dew_Point.."°C", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_dew_point.x , pos_dew_point.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			draw.DrawText( language.GetPhrase("gd_hud_windchill")..Wind_Chill.."°C", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_wind_chill.x , pos_wind_chill.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			draw.DrawText( language.GetPhrase("gd_hud_heatindex")..Heat_Index.."°C", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_Heat_Index.x , pos_Heat_Index.y, color, TEXT_ALIGN_LEFT )
-			draw.DrawText( language.GetPhrase("gd_hud_coolingeffect")..Cooling_Effect.."°C", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_cooling_Effect.x , pos_cooling_Effect.y, color, TEXT_ALIGN_LEFT )			
 		elseif GetConVar("gdisasters_hud_temptype"):GetString() == "°F" then
 			
 			draw.DrawText( language.GetPhrase("gd_hud_wet_bulve_temperature").. convert_CelciustoFahrenheit(Air_Temp_bh) .."°F", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature_bh.x , pos_air_temperature_bh.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			draw.DrawText( language.GetPhrase("gd_hud_dewpoint")..convert_CelciustoFahrenheit(Dew_Point).."°F", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_dew_point.x , pos_dew_point.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			draw.DrawText( language.GetPhrase("gd_hud_windchill")..convert_CelciustoFahrenheit(Wind_Chill).."°F", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_wind_chill.x , pos_wind_chill.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			draw.DrawText( language.GetPhrase("gd_hud_heatindex")..convert_CelciustoFahrenheit(Heat_Index).."°F", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_Heat_Index.x , pos_Heat_Index.y, color, TEXT_ALIGN_LEFT )
-			draw.DrawText( language.GetPhrase("gd_hud_coolingeffect")..convert_CelciustoFahrenheit(Cooling_Effect).."°F", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_cooling_Effect.x , pos_cooling_Effect.y, color, TEXT_ALIGN_LEFT )	
 		
 		elseif GetConVar("gdisasters_hud_temptype"):GetString() == "°K" then
 			draw.DrawText( language.GetPhrase("gd_hud_wet_bulve_temperature").. convert_CelciustoKelvin(Air_Temp_bh) .."°K", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_air_temperature_bh.x , pos_air_temperature_bh.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			draw.DrawText( language.GetPhrase("gd_hud_dewpoint")..convert_CelciustoKelvin(Dew_Point).."°K", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_dew_point.x , pos_dew_point.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			draw.DrawText( language.GetPhrase("gd_hud_windchill")..convert_CelciustoKelvin(Wind_Chill).."°K", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_wind_chill.x , pos_wind_chill.y, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT )
 			draw.DrawText( language.GetPhrase("gd_hud_heatindex")..convert_CelciustoKelvin(Heat_Index).."°K", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_Heat_Index.x , pos_Heat_Index.y, color, TEXT_ALIGN_LEFT )
-			draw.DrawText( language.GetPhrase("gd_hud_coolingeffect")..convert_CelciustoKelvin(Cooling_Effect).."°K", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_cooling_Effect.x , pos_cooling_Effect.y, color, TEXT_ALIGN_LEFT )	
 		end
 
-		if GetConVar("gdisasters_hud_windtype"):GetString() == " km/h" then
+		if GetConVar("gdisasters_hud_windtype"):GetString() == "km/h" then
 			draw.DrawText( language.GetPhrase("gd_hud_airflow")..Air_Flow.." km/h", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_Air_Flow.x , pos_Air_Flow.y, color, TEXT_ALIGN_LEFT )
 		elseif GetConVar("gdisasters_hud_windtype"):GetString() == "mph" then
 			draw.DrawText( language.GetPhrase("gd_hud_airflow")..convert_KMPHtoMPH(Air_Flow).." mph", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_Air_Flow.x , pos_Air_Flow.y, color, TEXT_ALIGN_LEFT )
@@ -467,7 +463,7 @@ function hud_DrawHeatSystemINFO()
 		draw.DrawText( language.GetPhrase("gd_hud_clouddensity")..cloud_Density.." g/m³", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_cloud_Density.x , pos_cloud_Density.y, color2, TEXT_ALIGN_LEFT )
 		draw.DrawText( language.GetPhrase("gd_hud_precipitation")..Precipitation, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_Precipitation.x , pos_Precipitation.y, color, TEXT_ALIGN_LEFT )	
 		draw.DrawText( language.GetPhrase("gd_hud_solarinfluence")..Solar_Influence.." W/m²", "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_Solar_Influence.x , pos_Solar_Influence.y, color, TEXT_ALIGN_LEFT )
-
+		draw.DrawText( language.GetPhrase("gd_hud_terraintype")..Terrain_Type, "gDisastersFont_"..tostring(math.Round(scale * 25)), pos_Terrain_Type.x , pos_Terrain_Type.y, color, TEXT_ALIGN_LEFT )			
 	end
 
 	local function drawBars()
