@@ -550,6 +550,7 @@ gDisasters.HeatSystem.CalculateTerrainInfluence = function(x, y, z)
         effects.humidityEffect = gDisasters.HeatSystem.GrassHumidityEffect * gDisasters.HeatSystem.TerrainCoefficient
         effects.windEffect = gDisasters.HeatSystem.GrassWindEffect * gDisasters.HeatSystem.TerrainCoefficient
     elseif terrainType == "Air" then
+        effects.temperatureEffect = 0
         effects.humidityEffect = 0
         effects.windEffect = 0
     else
@@ -605,6 +606,8 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local skybox = getMapSkyBox()
     local maxAltitude = skybox[2].z or 1000
 
+    local terrainTemperatureEffect = gDisasters.HeatSystem.CalculateTerrainInfluence(x,y,z).temperatureEffect
+
     local incomingRadiation = gDisasters.HeatSystem.CalculateincomingRadiation(x, y, z, gDisasters.DayNightSystem.Time)
     local outgoingRadiation = gDisasters.HeatSystem.CalculateRadiationEmissionFactor(x,y,z)
     local convectiveAdjustment = gDisasters.HeatSystem.CalculateConvectiveFactor(x,y,z) * (z_min / maxAltitude) * (averageTemperature - currentTemperature)
@@ -612,7 +615,7 @@ gDisasters.HeatSystem.CalculateTemperature = function(x, y, z)
     local deltaTemperature = (incomingRadiation - outgoingRadiation) / (gDisasters.HeatSystem.CalculateMass(x, y, z) * gDisasters.HeatSystem.materialHeatCapacity) * gDisasters.HeatSystem.CalculateThermalInertia(x, y, z) 
 
     -- Calcular la nueva temperatura
-    local newTemperature = math.Clamp(currentTemperature + deltaTemperature + temperatureChange + convectiveAdjustment - altitudeAdjustment, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
+    local newTemperature = math.Clamp(currentTemperature + deltaTemperature + temperatureChange + convectiveAdjustment + terrainTemperatureEffect - altitudeAdjustment, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
     
     Cell.temperature = newTemperature
     
