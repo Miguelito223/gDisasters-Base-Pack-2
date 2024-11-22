@@ -131,6 +131,15 @@ concommand.Add("gdisasters_heat_system_getcurrentcell", function(ply)
 	PrintTable(gDisasters.HeatSystem.GridMap[px][py][pz])
 end)
 
+concommand.Add("gdisasters_heat_system_getcellpos", function(ply)
+	local pos = ply:GetPos()
+	local px, py, pz = math.floor(pos.x / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.y / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
+	
+	if gDisasters.HeatSystem.GridMap[px][py][pz] then
+		print("Position: X= " .. px, "Y= " .. py, "Z= " .. pz)
+	end
+end)
+
 concommand.Add("gdisasters_heat_system_getlandcells", function(ply)
 	PrintTable(gDisasters.HeatSystem.LandSources)
 end)

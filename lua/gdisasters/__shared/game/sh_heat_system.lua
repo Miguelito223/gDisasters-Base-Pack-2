@@ -188,48 +188,6 @@ gDisasters.HeatSystem.CalculateConvectiveFactor = function(x, y, z)
     return Cell.convectiveFactor
 end
 
-gDisasters.HeatSystem.CalculateAmbientTemperature = function(x, y, z)
-    local grid = gDisasters.HeatSystem.GridMap
-    if not grid then return 0 end  -- Verifica si la celda existe
-    local Cell = gDisasters.HeatSystem.GridMap[x][y][z]
-    if not Cell then return 0 end  -- Verifica si la celda existe
-
-    local neighborTemperatures = {}
-    local sigma = 5.67e-8  -- Constante de Stefan-Boltzmann
-
-    -- Recorrer vecinos
-    for dx = -1, 1 do
-        for dy = -1, 1 do
-            for dz = -1, 1 do
-                -- Ignorar la celda central
-                if not (dx == 0 and dy == 0 and dz == 0) then
-                    local neighborCell = grid[x + dx * gDisasters.HeatSystem.cellSize] and grid[x + dx * gDisasters.HeatSystem.cellSize][y + dy * gDisasters.HeatSystem.cellSize] and grid[x + dx * gDisasters.HeatSystem.cellSize][y + dy * gDisasters.HeatSystem.cellSize][z + dz * gDisasters.HeatSystem.cellSize]
-                    if neighborCell then
-                        -- Si tiene temperatura, considerar
-                        if neighborCell.temperature then
-                            table.insert(neighborTemperatures, neighborCell.temperature)
-                        -- Si tiene radiación, convertir a temperatura
-                        elseif neighborCell.radiationEmission then
-                            local emissivity = neighborCell.emissivity or 0.5
-                            local tempKelvin = math.pow(neighborCell.radiationEmission / (sigma * emissivity), 0.25)
-                            table.insert(neighborTemperatures, convert_KelvintoCelcius(tempKelvin))
-                        end
-                    end
-                end
-            end
-        end
-    end
-
-    -- Promedio de temperaturas vecinas
-    local totalTemperature = 0
-    for _, temp in ipairs(neighborTemperatures) do
-        totalTemperature = totalTemperature + temp
-    end
-
-    Cell.ambientTemperature =  #neighborTemperatures > 0 and (totalTemperature / #neighborTemperatures) or 23
-    return Cell.ambientTemperature  -- Valor predeterminado
-end
-
 gDisasters.HeatSystem.CalculateRadiationEmissionFactor = function(x, y, z)
     local Cell = gDisasters.HeatSystem.GridMap[x] and gDisasters.HeatSystem.GridMap[x][y] and gDisasters.HeatSystem.GridMap[x][y][z]
     if not Cell then return 0 end  -- Verifica si la celda existe
@@ -238,7 +196,6 @@ gDisasters.HeatSystem.CalculateRadiationEmissionFactor = function(x, y, z)
     local area = gDisasters.HeatSystem.cellArea or 1  -- Área de la celda (en m²)
     local emissivity = gDisasters.HeatSystem.CalculateEmissivity(x,y,z)
     local temperatureKelvin = convert_CelciustoKelvin(temperature)  -- Convertir temperatura a Kelvin
-    local ambientTemperature = convert_CelciustoKelvin(gDisasters.HeatSystem.CalculateAmbientTemperature(x,y,z))  -- Temperatura ambiente en Kelvin (ajustable)
 
     -- Constante de Stefan-Boltzmann (en W/m²·K⁴)
     local sigma = 5.67e-8  
@@ -247,7 +204,7 @@ gDisasters.HeatSystem.CalculateRadiationEmissionFactor = function(x, y, z)
     local radiationEmission = sigma * emissivity * area * temperatureKelvin^4
     
     -- Guardar el valor de la emisión de radiación en la celda
-    Cell.radiationEmission = radiationEmission * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
+    Cell.radiationEmission = (radiationEmission * temperatureKelvin^4) * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
     
     return Cell.radiationEmission
 end
@@ -1591,12 +1548,15 @@ gDisasters.HeatSystem.UpdatePlayerGrid = function()
                 local pos = ply:GetPos()
                 local px, py, pz = math.floor(pos.x / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.y / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
                 
+                -- Ajustar la posición para que esté dentro de la celda
+                local cellPos = Vector(px, py, pz)
+
                 -- Comprueba si la posición calculada está dentro de los límites de la cuadrícula
                 if gDisasters.HeatSystem.GridMap[px] and gDisasters.HeatSystem.GridMap[px][py] and gDisasters.HeatSystem.GridMap[px][py][pz] then
                     local Cell = gDisasters.HeatSystem.GridMap[px][py][pz]
 
                     -- Verifica si las propiedades de la celda son válidas
-                    if Cell.temperature and Cell.humidity and Cell.pressure and Cell.windspeed and Cell.winddirection and Cell.terrainType and Cell.cloudDensity then
+                    if Cell.temperature and Cell.humidity and Cell.pressure and Cell.windspeed and Cell.winddirection then
                         -- Actualiza las variables de la atmósfera del jugador
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"] = Cell.temperature
                         GLOBAL_SYSTEM_TARGET["Atmosphere"]["Humidity"] = Cell.humidity
