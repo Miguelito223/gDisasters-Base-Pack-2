@@ -204,7 +204,7 @@ gDisasters.HeatSystem.CalculateRadiationEmissionFactor = function(x, y, z)
     local radiationEmission = sigma * emissivity * area * temperatureKelvin^4
     
     -- Guardar el valor de la emisión de radiación en la celda
-    Cell.radiationEmission = (radiationEmission * temperatureKelvin^4) * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
+    Cell.radiationEmission = radiationEmission * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
     
     return Cell.radiationEmission
 end
