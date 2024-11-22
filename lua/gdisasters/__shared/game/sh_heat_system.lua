@@ -926,7 +926,7 @@ gDisasters.HeatSystem.GetCellType = function(x, y, z)
     local cellSize = gDisasters.HeatSystem.cellSize
     local traceStart = Vector(x, y, z + (cellSize / 2))
     -- Limitar la posición final del rayo dentro de los límites de la celda
-    local traceEnd = traceStart - Vector(0, 0, z - (cellSize / 2)) -- Asegurarse de que el rayo no salga de la celda
+    local traceEnd = Vector(0, 0, z - (cellSize / 2)) -- Asegurarse de que el rayo no salga de la celda
 
     -- Comprobar colisión con agua
     local trWater = util.TraceLine({
