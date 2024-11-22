@@ -926,7 +926,7 @@ gDisasters.HeatSystem.GetCellType = function(x, y, z)
     local cellSize = gDisasters.HeatSystem.cellSize
     local traceStart = Vector(x, y, z + (cellSize / 2))
     -- Limitar la posición final del rayo dentro de los límites de la celda
-    local traceEnd = Vector(0, 0, z - (cellSize / 2)) -- Asegurarse de que el rayo no salga de la celda
+    local traceEnd = Vector(x, y, z - (cellSize / 2)) -- Asegurarse de que el rayo no salga de la celda
 
     -- Comprobar colisión con agua
     local trWater = util.TraceLine({
@@ -1623,7 +1623,7 @@ gDisasters.HeatSystem.UpdateEntityGrid = function()
         if CurTime() > gDisasters.HeatSystem.nextUpdateGridEntity then
             gDisasters.HeatSystem.nextUpdateGridEntity = CurTime() + gDisasters.HeatSystem.updateInterval
 
-            for _, ent in pairs(ents.GetAll()) do
+            for k, ent in pairs(ents.GetAll()) do
                 if ent:IsValid() and ent:GetPhysicsObject():IsValid() then
                     local pos = ent:GetPos()
                     local px, py, pz = math.floor(pos.x / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.y / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
@@ -1764,15 +1764,29 @@ gDisasters.HeatSystem.DrawGridDebug = function()
                         local temperature = Cell.temperature -- Obtener la temperatura de la celda
                         local color = gDisasters.HeatSystem.TemperatureToColor(temperature)
 
-                        -- Dibujar el cubo en la posición correspondiente con el color calculado
+                        -- Dibujar las líneas de la celda
                         render.SetColorMaterial()
-                        render.DrawBox(cellPos, Angle(0, 0, 0), Vector(-gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize), Vector(gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize), color)
+                        render.DrawLine(cellPos + Vector(-gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize), cellPos + Vector(gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize), color, true)
+                        render.DrawLine(cellPos + Vector(gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize), cellPos + Vector(gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize), color, true)
+                        render.DrawLine(cellPos + Vector(gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize), cellPos + Vector(-gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize), color, true)
+                        render.DrawLine(cellPos + Vector(-gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize), cellPos + Vector(-gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize), color, true)
+
+                        render.DrawLine(cellPos + Vector(-gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize), cellPos + Vector(gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize), color, true)
+                        render.DrawLine(cellPos + Vector(gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize), cellPos + Vector(gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize), color, true)
+                        render.DrawLine(cellPos + Vector(gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize), cellPos + Vector(-gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize), color, true)
+                        render.DrawLine(cellPos + Vector(-gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize), cellPos + Vector(-gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize), color, true)
+
+                        render.DrawLine(cellPos + Vector(-gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize), cellPos + Vector(-gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize), color, true)
+                        render.DrawLine(cellPos + Vector(gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize), cellPos + Vector(gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize), color, true)
+                        render.DrawLine(cellPos + Vector(gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize), cellPos + Vector(gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize), color, true)
+                        render.DrawLine(cellPos + Vector(-gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize, -gDisasters.HeatSystem.cellSize), cellPos + Vector(-gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize, gDisasters.HeatSystem.cellSize), color, true)
                     end
                 end
             end
         end
     end
 end
+
 
 hook.Add("InitPostEntity", "gDisasters_GenerateGrid", gDisasters.HeatSystem.GenerateGrid)
 hook.Add("Think", "gDisasters_UpdateGrid", gDisasters.HeatSystem.UpdateGrid)
