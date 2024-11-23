@@ -164,29 +164,26 @@ function hud_DrawBarometer()
 		
 		
 	end
-	
-	local function drawBarometerArrow()
-		surface.SetDrawColor( 255, 255, 255, 255 )
-		
-		local pressure                     = GetGlobalFloat("gDisasters_Pressure")
-		local clockhead                    = surface.GetTextureID( "hud/clockhead" )
-		local angle                        = math.Clamp((((106000-math.Clamp(pressure,94000,106000))/ 12000) * 180),20,160)
-		
-		local x0, y0                       = -90 , 0
-		
-		local c = math.cos( math.rad( angle ) )
-		local s = math.sin( math.rad( angle ) )
+    local function drawBarometerArrow()
+        surface.SetDrawColor(255, 255, 255)
+        local pressure = GetGlobalFloat("gDisasters_Pressure")
+        pressure = math.Clamp(pressure, 94000, 106000)
+        local clockhead = surface.GetTextureID("hud/clockhead")
+        local angle = math.Clamp((((106000 - pressure) / 12000) * 180), 20, 160)
 
-		local newx = y0 * s - x0 * c
-		local newy = y0 * c + x0 * s
-		
-		
-		surface.SetTexture( clockhead )
-		surface.DrawTexturedRectRotated( 540 + newx, 1130 + newy, 219, 39, angle )
+        local x0, y0 = -90, 0
+        local c = math.cos(math.rad(angle))
+        local s = math.sin(math.rad(angle))
+        local newx = y0 * s - x0 * c
+        local newy = y0 * c + x0 * s
 
-		
+        -- Ajustar la posición de la aguja para que no se salga de los límites
+        local centerX, centerY = 550 * xscale, 1130 * yscale
+        local needleWidth, needleHeight = 219 * xscale, 39 * yscale
 
-	end
+        surface.SetTexture(clockhead)
+        surface.DrawTexturedRectRotated(centerX + newx * xscale, centerY + newy * yscale, needleWidth, needleHeight, angle)
+    end
 	
 
 
