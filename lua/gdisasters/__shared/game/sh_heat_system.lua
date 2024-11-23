@@ -365,47 +365,35 @@ gDisasters.HeatSystem.CalculatePrecipitation = function(x, y, z)
             -- Disparar la lógica de formación de nubes aquí
             gDisasters.HeatSystem.CreateCloud(x, y, z)
             Cell.precipitation = "Cloud"
-            return Cell.precipitation
         end
-
-
     elseif Humidity < gDisasters.HeatSystem.lowHumidityThreshold and Temperature < gDisasters.HeatSystem.lowTemperatureThreshold then
         if latentHeat > gDisasters.HeatSystem.stormLatentHeatThreshold then
             -- Trigger storm formation logic here
             gDisasters.HeatSystem.CreateStorm(x, y, z)
             Cell.precipitation = "Storming"
-            return  Cell.precipitation
         end
-    
-
     elseif Temperature <= gDisasters.HeatSystem.hailTemperatureThreshold and Humidity >= gDisasters.HeatSystem.hailHumidityThreshold then
         if latentHeat > gDisasters.HeatSystem.hailLatentHeatThreshold then
             -- Trigger hail formation logic here
             gDisasters.HeatSystem.CreateHail(x, y, z)
             Cell.precipitation = "Hailing"
-            return Cell.precipitation
         end
-    
-
     elseif Temperature <= gDisasters.HeatSystem.rainTemperatureThreshold and Humidity >= gDisasters.HeatSystem.rainHumidityThreshold then
         if latentHeat >= gDisasters.HeatSystem.rainLatentHeatThreshold then
             -- Disparar la lógica de formación de lluvia aquí
             gDisasters.HeatSystem.CreateRain(x, y, z)
             Cell.precipitation = "Raining"
-            return Cell.precipitation
         end
-    
-
     elseif Temperature <= gDisasters.HeatSystem.snowTemperatureThreshold then
         if latentHeat >= gDisasters.HeatSystem.snowLatentHeatThreshold then
             -- Disparar la lógica de formación de nieve aquí
             gDisasters.HeatSystem.CreateSnow(x, y, z)
             Cell.precipitation = "Snowing"
-            return Cell.precipitation
         end
+    else
+        Cell.precipitation = "clear"
     end
 
-    Cell.precipitation = "clear"
     return Cell.precipitation
 end
 
