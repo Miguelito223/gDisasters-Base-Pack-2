@@ -108,7 +108,7 @@ function ENT:MoveCloud()
 		local pos = self:GetPos()
 		local ex, ey, ez = math.floor(pos.x / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.y / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
 		
-		if gDisasters.HeatSystem.GridMap[ex] andgDisasters.HeatSystem.GridMap[ex][ey] and gDisasters.HeatSystem.GridMap[ex][ey][ez] then
+		if gDisasters.HeatSystem.GridMap[ex] and gDisasters.HeatSystem.GridMap[ex][ey] and gDisasters.HeatSystem.GridMap[ex][ey][ez] then
 			local cell = gDisasters.HeatSystem.GridMap[ex][ey][ez]
 			local wind_speed, wind_dir = cell.windspeed, cell.winddirection
 			
