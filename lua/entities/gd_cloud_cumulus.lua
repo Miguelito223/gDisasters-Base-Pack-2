@@ -104,13 +104,33 @@ function ENT:AtmosphericReposition()
 end
 
 function ENT:MoveCloud()
-    local wind_speed, wind_dir = GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"], GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]
-    
-    -- Reducir la velocidad del viento aplicada a las nubes
-    local wind_speed_reduction_factor = 0.1  -- Ajusta este valor según sea necesario
-    
-    local next_pos = self:GetPos() + (wind_dir * (wind_speed * wind_speed_reduction_factor))
-    self:SetPos(next_pos)
+	if GetConVar("gdisasters_heat_system_enabled"):GetInt() >= 1 then 
+		local pos = self:GetPos()
+		local ex, ey, ez = math.floor(pos.x / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.y / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize, math.floor(pos.z / gDisasters.HeatSystem.cellSize) * gDisasters.HeatSystem.cellSize
+		
+		if gDisasters.HeatSystem.GridMap[ex][ey][ez] then
+			local cell = gDisasters.HeatSystem.GridMap[ex][ey][ez]
+			local wind_speed, wind_dir = cell.windspeed, cell.winddirection
+			
+			-- Reducir la velocidad del viento aplicada a las nubes
+			local wind_speed_reduction_factor = 0.1  -- Ajusta este valor según sea necesario
+			
+			local next_pos = pos + (wind_dir * (wind_speed * wind_speed_reduction_factor))
+			self:SetPos(next_pos)	
+
+		end
+    else
+		local wind_speed, wind_dir = GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Speed"], GLOBAL_SYSTEM["Atmosphere"]["Wind"]["Direction"]
+		
+
+
+		-- Reducir la velocidad del viento aplicada a las nubes
+		local wind_speed_reduction_factor = 0.1  -- Ajusta este valor según sea necesario
+		
+		local next_pos = self:GetPos() + (wind_dir * (wind_speed * wind_speed_reduction_factor))
+		self:SetPos(next_pos)		
+	end
+
 end
 
 function ENT:Think()

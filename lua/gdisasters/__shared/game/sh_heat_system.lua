@@ -202,6 +202,7 @@ gDisasters.HeatSystem.CalculateRadiationEmissionFactor = function(x, y, z)
 
     -- Cálculo de la radiación emitida por la superficie
     local radiationEmission = sigma * emissivity * area * temperatureKelvin^4
+    radiationEmission = radiationEmission / area
     
     -- Guardar el valor de la emisión de radiación en la celda
     Cell.radiationEmission = radiationEmission * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
@@ -246,11 +247,12 @@ gDisasters.HeatSystem.CalculateincomingRadiation = function(x, y, z, hour)
     -- Cálculo de la irradiancia en el suelo (W/m²) ajustada para condiciones atmosféricas
     local airMass = 1 / math.max(0.1, math.sin(solarAltitudeAngle))
     local irradiance = solarConstant * math.sin(solarAltitudeAngle) * math.exp(-0.1 * airMass) * attenuationFactor
-    
+    irradiance = irradiance * (1 - gDisasters.HeatSystem.CalculateAlbedo(x, y, z))
+
     -- Guardar la influencia solar ajustada en la celda
-    Cell.solarInfluence = (irradiance * (1 - gDisasters.HeatSystem.CalculateAlbedo(x, y, z))) * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
+    Cell.incomingRadiation = irradiance * (gDisasters.HeatSystem.SolarInfluenceCoefficient or 0.01)
     
-    return Cell.solarInfluence
+    return Cell.incomingRadiation
 end
 
 gDisasters.HeatSystem.CalculateVPs = function(x, y, z)
@@ -429,23 +431,6 @@ gDisasters.HeatSystem.CalculateHeatIndex = function(x, y, z)
     local HI = convert_FahrenheittoCelcius(c1 + (c2 * T) + (c3 * RH) + (c4 * T * RH) + (c5 * T * T) + (c6 * RH * RH) + (c7 * T * T * RH) + (c8 * T * RH * RH) + (c9 * T * T * RH * RH))
     Cell.heatindex = math.Clamp( HI, gDisasters.HeatSystem.minTemperature, gDisasters.HeatSystem.maxTemperature)
     return Cell.heatindex
-end
-
-
-
-
-gDisasters.HeatSystem.CalculateCoolEffect = function(x, y, z)
-    local Cell = gDisasters.HeatSystem.GridMap[x][y][z]
-    if not Cell then return end
-
-    local solarInfluence = Cell.solarInfluence or 0
-    if solarInfluence <= 0 then
-        Cell.coolingEffect = gDisasters.HeatSystem.coolingFactor * gDisasters.HeatSystem.CoolingCoefficient
-        return Cell.coolingEffect
-    else
-        Cell.coolingEffect = 0
-        return Cell.coolingEffect
-    end
 end
 
 gDisasters.HeatSystem.CalculatelatentHeat = function(x, y, z)
