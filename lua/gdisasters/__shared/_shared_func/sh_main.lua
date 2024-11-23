@@ -474,6 +474,14 @@ function convert_HpatoPa(Hpa)
 	return Hpa * 100
 end
 
+function convert_WtoWpm2(W, Area)
+	return W / Area
+end
+
+function convert_Wpm2toW(W, Area)
+	return W * Area
+end
+
 function convert_KevintoCelcius(Kevin)
 	return Kevin - 273.15
 end
