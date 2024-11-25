@@ -712,7 +712,7 @@ gDisasters.HeatSystem.CalculateWindSpeed = function(x, y, z)
     if not Cell then return 0 end -- Si la celda no existe, retornar 0
 
     local temperature = Cell.temperature or GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"]
-    local pressure = Cell.pressure or 101325
+    local pressure = Cell.pressure or GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"]
     local altitude = z or 0  -- Altitud de la celda (puede ser en metros)
     local terrainFriction = gDisasters.HeatSystem.CalculateTerrainInfluence(x,y,z).windEffect -- Coeficiente de fricción según el tipo de terreno
 
@@ -774,7 +774,7 @@ gDisasters.HeatSystem.CalculateWindDirection = function(x, y, z)
     if not Cell then return Vector(0, 0, 0) end  -- Retorna un vector nulo si la celda no existe
 
     local temperature = Cell.temperature or GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"]
-    local pressure = Cell.pressure or 101325
+    local pressure = Cell.pressure or GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"]
 
     -- Calcular la densidad del aire en la celda actual
     local airDensity = gDisasters.HeatSystem.CalculateAirDensity(x, y, z)
@@ -823,7 +823,7 @@ gDisasters.HeatSystem.CalculateAirflow = function(x, y, z)
 
     local windSpeed = Cell.windSpeed or GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["Speed"]
     local temperature = Cell.temperature or GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"]
-    local pressure = Cell.pressure or 101325
+    local pressure = Cell.pressure or GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"]
     local area = gDisasters.HeatSystem.cellArea or 1  -- Área de la celda, en m²
 
     -- Calcular la densidad del aire en la celda actual
@@ -843,7 +843,7 @@ gDisasters.HeatSystem.CalculateAirflow = function(x, y, z)
                     if gDisasters.HeatSystem.GridMap[nx] and gDisasters.HeatSystem.GridMap[nx][ny] and gDisasters.HeatSystem.GridMap[nx][ny][nz] then
                         local neighborCell = gDisasters.HeatSystem.GridMap[nx][ny][nz]
                         if neighborCell then
-                            deltaPressure = deltaPressure + ((neighborCell.pressure or 101325) - pressure)
+                            deltaPressure = deltaPressure + ((neighborCell.pressure or GLOBAL_SYSTEM_TARGET["Atmosphere"]["Pressure"]) - pressure)
                             deltaTemperature = deltaTemperature + ((neighborCell.temperature or GLOBAL_SYSTEM_TARGET["Atmosphere"]["Temperature"]) - temperature)
                             neighborCount = neighborCount + 1
                         end
