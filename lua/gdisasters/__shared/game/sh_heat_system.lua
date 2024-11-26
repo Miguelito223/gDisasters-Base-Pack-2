@@ -38,8 +38,6 @@ gDisasters.HeatSystem.updateInterval = GetConVar("gdisasters_heat_system_updatei
 gDisasters.HeatSystem.updateBatchSize = GetConVar("gdisasters_heat_system_updatebatchsize"):GetInt()
 gDisasters.HeatSystem.nextUpdateGrid = CurTime()
 gDisasters.HeatSystem.nextUpdateGridPlayer = CurTime()
-gDisasters.HeatSystem.nextUpdateWeather = CurTime()
-gDisasters.HeatSystem.nextThunderThink = CurTime()
 gDisasters.HeatSystem.nextUpdateGridEntity = CurTime()
 
 gDisasters.HeatSystem.TempDiffusionCoefficient = GetConVar("gdisasters_heat_system_tempdifussioncoefficient"):GetFloat()
@@ -1668,9 +1666,8 @@ gDisasters.HeatSystem.UpdateEntityGrid = function()
                         end
 
                         -- Verifica si las propiedades de la celda son válidas
-                        if Cell.windspeed and Cell.winddirection and windphysics_enabled and windspeed >= 1 and CurTime() >= GLOBAL_SYSTEM["Atmosphere"]["Wind"]["NextThink"] then
-                            GLOBAL_SYSTEM["Atmosphere"]["Wind"]["NextThink"] = CurTime() + GetConVar( "gdisasters_wind_physics_simquality" ):GetFloat()
-                            
+                        if Cell.windspeed and Cell.winddirection and windphysics_enabled and windspeed >= 1 then
+
                             local phys = ent:GetPhysicsObject()
                             local outdoor = isOutdoor(ent, true) 
 				            local blocked = IsSomethingBlockingWind(ent)
