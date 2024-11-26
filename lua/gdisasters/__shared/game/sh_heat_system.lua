@@ -1668,7 +1668,9 @@ gDisasters.HeatSystem.UpdateEntityGrid = function()
                         end
 
                         -- Verifica si las propiedades de la celda son válidas
-                        if Cell.windspeed and Cell.winddirection and windphysics_enabled and windspeed >= 1 and CurTime() >= GLOBAL_SYSTEM_TARGET["Atmosphere"]["Wind"]["NextThink"] then
+                        if Cell.windspeed and Cell.winddirection and windphysics_enabled and windspeed >= 1 and CurTime() >= GLOBAL_SYSTEM["Atmosphere"]["Wind"]["NextThink"] then
+                            GLOBAL_SYSTEM["Atmosphere"]["Wind"]["NextThink"] = CurTime() + GetConVar( "gdisasters_wind_physics_simquality" ):GetFloat()
+                            
                             local phys = ent:GetPhysicsObject()
                             local outdoor = isOutdoor(ent, true) 
 				            local blocked = IsSomethingBlockingWind(ent)
