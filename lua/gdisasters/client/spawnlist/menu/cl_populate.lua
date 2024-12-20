@@ -61,6 +61,8 @@ NPCs
 --]]
 
 AddToGDSpawnMenu("Bcat lol" , "gd_npc_bcat", "NPCs", "Nextbot", false)
+AddToGDSpawnMenu("xshitter" , "gd_npc_shitter", "NPCs", "Nextbot", false)
+AddToGDSpawnMenu("rainbowdoes'ntstuff" , "gd_npc_rainbow", "NPCs", "Nextbot", false)
 AddToGDSpawnMenu("Nurse" , "gd_npc_nurse", "NPCs", "Nextbot", false)
 
 --[[
