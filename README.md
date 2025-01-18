@@ -39,10 +39,10 @@ Q: Why don't work the smart tornado? how smart tornadoes work?
 A:  The smart tornado follow the paths of the compatible map. if smart tornadoes don't work, is because you are in a incompatible map. Use "gdisasters_tornadocompat_maps" to see compatible maps
 
 Q: How do I add more maps to the mod compatible list?
-A: in discussions you have a tutorial on how to do it, if you still have the doubt, check the github or simply tell me the map you want so that I can add it to the list, you can also help with S37K, which is a very good complement to get the mapbounds and I also did a recent mod that added commands go check it out [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2921980754&searchtext=s37k] Here [/url]
+A: in discussions you have a tutorial on how to do it, if you still have the doubt, check the github or simply tell me the map you want so that I can add it to the list, you can also help with S37K, which is a very good complement to get the mapbounds and I also did a recent mod that added commands go check it out https://steamcommunity.com/sharedfiles/filedetails/?id=2921980754&searchtext=s37k
 
 Q: Why the autospawn not work? 
-A: is because a bug or error I committed, notify me of the error and while I try to fix it use it: [url=https://steamcommunity.com/workshop/filedetails/?id=1520063045] Here [/url]
+A: is because a bug or error I committed, notify me of the error and while I try to fix it use it: https://steamcommunity.com/workshop/filedetails/?id=1520063045
 
 Q: Why the gdisasters spawnmenu no work in multiplayer? Why am I getting errors of "Couldn't include file" ?
 A: because you have the outdated mod, try to reinstall the mod or else the game. Another reason may be because you have the gdisasters base pack 1 or another mod that causes that problem. Please disable it. 
